@@ -1,0 +1,3457 @@
+<?xml version="1.0" encoding="ISO-8859-2"?>
+<responseWrapper>
+<response>
+<header>
+<version>version 1.0</version>
+<sendTime>2003-09-01T04:13:06</sendTime>
+<source resource="http://tiger.cs.umb.edu:8080/efg/servlet/search">http://tiger.cs.umb.edu:8080/efg/servlet/search</source>
+<destination resource="umb-ppp-237.dialup.umb.edu">158.121.99.237</destination>
+<type>search</type>
+</header>
+<content>
+<count>36</count>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Mech-poly-fv-510-184.jpg#Mech-poly-fv-510.jpg</Image>
+<Item name="HW with dark central bar or spot">Horizontal bar present</Item>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="Early stages">Aggregated</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">polymnia</Item>
+<Image name="Image: female dorsal">Mech-poly-fd-510-184.jpg#Mech-poly-fd-510.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Common in the lowlands on both slopes.</Item>
+<Item name="FW length male">35</Item>
+<Item name="Author">Bates</Item>
+<Item name="FW length female">34</Item>
+<Item name="Live underside female">Mech-poly-fv-8138-168.jpg#Mech-poly-fv-8138-72.jpg</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Comments">One of the most abundant and widespread species in the country.</Item>
+<Image name="Image: male ventral">Mech-poly-mv-509-184.jpg#Mech-poly-mv-509.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Mechanitis polymnia</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">68</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Bright yellow spots or bands</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">0-700 m</Item>
+<Image name="Image: male dorsal">Mech-poly-md-509-184.jpg#Mech-poly-md-509.jpg</Image>
+<Item name="Migration">Common</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Mech-poly-mv-8156-168.jpg#Mech-poly-mv-8156-72.jpg</Item>
+<Item name="Atlantic slope">0-700 m</Item>
+<Item name="FW length (range in mm)">34-35 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Black broken by light colors</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Jaltomata</Taxon>
+<Taxon name="Species">repandidentata</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">chrysotrichum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">jamaicense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">lanceifolium</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rudepannum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rugosum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">siparunoides</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">No</Item>
+<Item name="Identification">Forewing mostly black from coalesced markings, yellow medial band broken into spots, an isolated orange-brown spot in tornus (connected in congeners), hindwing discal bar greatly reduced below. Female like male, but hindwing discal bar reduced or absent.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 10 January 2001. Updated: 8 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">68</Item>
+<Item name="Center of FW discal cell">Cell mostly black with light spots at end</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Clustered</Item>
+<Item name="Genus">Mechanitis</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Tiger</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">lysimnia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Tithorea</Taxon>
+<Taxon name="Species">harmonia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Melinaea</Taxon>
+<Taxon name="Species">ethra</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypothyris</Taxon>
+<Taxon name="Species">euclea</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Thyridia</Taxon>
+<Taxon name="Species">psidii</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">68 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Pte-tig-fv-664-184.jpg#Pte-tig-fv-664.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="Early stages">Unknown</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">tigranes</Item>
+<Image name="Image: female dorsal">Pte-tig-fd-664-184.jpg#Pte-tig-fd-664.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">On Pacific slope at 1100-1500 m; Atlantic slope at 700-1200 m.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">(Godman &amp; Salvin) </Item>
+<Item name="FW length female">25</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Item name="Comments">This species needs more study to determine if it is a form of P. artena associated with wet habitats (see DeVries 1987) or a distinct species. I have commonly found it to be sympatric with P. artena and consistently different in wing shape and pattern characters at Monteverde.</Item>
+<Image name="Image: male ventral">Pte-tig-mv-640-184.jpg#Pte-tig-mv-640.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Pteronymia tigranes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">52</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1100-1500 m</Item>
+<Image name="Image: male dorsal">Pte-tig-md-640-184.jpg#Pte-tig-md-640.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">700-1200 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Unknown</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Medium size, costa of dorsal forewing entirely black, hindwing fringe scales black, postdiscal bar very wide, M2 partly white.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">25-27 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 10 April 2001. Updated: 12 June 2001. </Item>
+<Item name="Species range">Costa Rica</Item>
+<Item name="Female Wingspan">50</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Genus">Pteronymia</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">simplex</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypoleria</Taxon>
+<Taxon name="Species">cassotis</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">andromica</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-52 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Nape-tolo-fv-524-184.jpg#Nape-tolo-fv-524.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Natural history and behavior">Found in both mature forest and secondary areas.</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">tolosa</Item>
+<Image name="Image: female dorsal">Nape-tolo-fd-524-184.jpg#Nape-tolo-fd-524.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Widespread on both slopes, but not reaching the lowland dry forest on the Pacific side, and not resident in the cloud forest.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">Godman</Item>
+<Item name="FW length female">27-28</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Comments">Found in both mature forest and secondary areas.</Item>
+<Image name="Image: male ventral">Nape-tolo-mv-515-184.jpg#Nape-tolo-mv-515.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Napeogenes tolosa</Item>
+<Item name="Margin of FWD with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Male Wingspan (mm)">54</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Bright yellow spots or bands</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">700-1500 m</Item>
+<Image name="Image: male dorsal">Nape-tolo-md-505-184.jpg#Nape-tolo-md-505.jpg</Image>
+<Item name="Migration">Common</Item>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Atlantic slope">0-1500 m</Item>
+<Item name="FW length (range in mm)">27-28 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Lycianthes</Taxon>
+<Taxon name="Species">multiflora</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">No</Item>
+<Item name="Identification">Small, antennae black, marginal white spots on forewing and hindwing, few large spots on forewing.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 12 January 2001. Updated: 6 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">55</Item>
+<Item name="Center of FW discal cell">Cell mostly black with light spots at end</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Napeogenes</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Spotted orange and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">peredia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">polymnia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypothyris</Taxon>
+<Taxon name="Species">lycaste</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">54-55 mm </Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Tith-tarr-fv-535-184.jpg#Tith-tarr-fv-535.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">tarricina</Item>
+<Image name="Image: female dorsal">Tith-tarr-fd-535-184.jpg#Tith-tarr-fd-535.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Pacific slope from 700-1500 m; Atlantic slope down to the lowlands.</Item>
+<Item name="FW length male">41</Item>
+<Item name="Author">Godman &amp; Salvin</Item>
+<Item name="FW length female">40</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Comments">The amount of black on the hindwing disc is highly variable as is the shape of the yellow spots on the forewing. Unusual in not using Solanaceae as larval hosts. The hosts are vines with clear sap containing pyrrholyzine alkaloids instead of the usual white latex of most family members. </Item>
+<Image name="Image: male ventral">Tith-tarr-mv-534-184.jpg#Tith-tarr-mv-534.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black alternating with white</Item>
+<Item name="Scientific name">Tithorea tarricina</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">77</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">Yes</Item>
+<Item name="FW postmedian pattern">Bright yellow spots or bands</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Tith-tarr-md-534-184.jpg#Tith-tarr-md-534.jpg</Image>
+<Item name="Migration">Uncommon</Item>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Live underside male">Tith-tarr-mdv-168.jpg#Tith-tarr-mdv-72.jpg</Item>
+<Item name="Atlantic slope">0-1500 m</Item>
+<Item name="FW length (range in mm)">40-41 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Black broken by light colors</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup comment="(Apocynaceae)">
+<TaxonReference>
+<Taxon name="Genus">Prestonia</Taxon>
+<Taxon name="Species">longifolia</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Large size, broad wings, many small forewing spots, black antennae, small white checks on wing edges.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 William A. Haber, whaber@racsa.co.cr
+Created: 28 December 2000. Updated: 6 June 2001.</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">76</Item>
+<Item name="Center of FW discal cell">Cell mostly black with light spots at end</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Tithorea</Item>
+<Item name="Margin of HWV mostly with">2 spots per cell</Item>
+<Item name="Color pattern">Spotted orange and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Callithomia</Taxon>
+<Taxon name="Species">hezia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hyposcada</Taxon>
+<Taxon name="Species">virginiana</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">polymnia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Olyras</Taxon>
+<Taxon name="Species">crathis</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">76-77 mm</Item>
+<Item name="Bar at end of FW discal cell">n/a</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Sca_zib-fv-o375-184.jpg#Sca-zib-fv-o375.jpg</Image>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Natural history and behavior">Flies low to the ground with shallow wingbeats. Males form small leks in sunny places in understory.  Females oviposit on seedlings in light gaps.</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">zibia</Item>
+<Image name="Image: female dorsal">Sca_zib-fd-o374-184.jpg#Sca-zib-fd-o374.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution"> Atlantic lowlands, 0-700 m; Poco Sol field station.</Item>
+<Item name="FW length male">23</Item>
+<Item name="Author">(Bates)</Item>
+<Item name="FW length female">21-22</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">Flies low to the ground with shallow wingbeats. Males form small, single-species leks in sunny places in forest understory. Females oviposit on seedlings in light gaps.</Item>
+<Image name="Image: male ventral">Sca_zib-mv-o431-184.jpg#Sca-zib-mv-o431.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Scada zibia</Item>
+<Item name="Flight period">5,7,8,11</Item>
+<Item name="Margin of FWD with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Male Wingspan (mm)">39</Item>
+<Item name="Abundance">Rare</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Lemon yellow bordered by black</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Sca_zib-md-o430-184.jpg#Sca-zib-md-o430.jpg</Image>
+<Item name="Migration">Rare or none</Item>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Atlantic slope">0-700 m</Item>
+<Item name="FW length (range in mm)">21-23 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">arboreum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">siparunoides</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Traslucent yellow bars, small white spot lines on dorsal borders of both wings, black antennae.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber,whaber@racsa.co.cr
+Created: 28 December 2000. Updated: 12 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Nicaragua to South America</Item>
+<Item name="Female Wingspan">44</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by yellow</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Scada</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Yellow and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Aeria</Taxon>
+<Taxon name="Species">eurimedea</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">zelica</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">39-44 mm</Item>
+<Item name="Bar at end of FW discal cell">n/a</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ith_pat-fv-bar-o325-184.jpg#Ith_pat-fv-bar-o325.jpg</Image>
+<Item name="Border at FW apex">Thick and triangular</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="Species">patilla</Item>
+<Item name="Antenna color">Black tip</Item>
+<Image name="Image: female dorsal">Ith_pat-fd-bar-o324-184.jpg#Ith_pat-fd-bar-o324.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Much thinner than neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Common on Pacific slope above 700 m and down to lowlnads on Atlantic side.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">Hewitson</Item>
+<Item name="FW length female">25-26</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Ith_pat-mv-o342-184.jpg#Ith_pat-mv-o342.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Ithomia patilla</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">50</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">0-1500 m</Item>
+<Image name="Image: male dorsal">Ith_pat-md-o341.184.jpg#Ith-pat-md-ex.jpg</Image>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Live underside male">Ith-pat-mv-6110-168.jpg#Ith-pat-mv-6110-72.jpg</Item>
+<Item name="Atlantic slope">0-1500 m</Item>
+<Item name="Coastal border of HWV">Yellow at base</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Brachistus</Taxon>
+<Taxon name="Species">stramoniifolius</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Lycianthes</Taxon>
+<Taxon name="Species">multiflora</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Witheringia</Taxon>
+<Taxon name="Species">meiantha</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Witheringia</Taxon>
+<Taxon name="Species">solanacea</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Tigre</Taxon>
+<Taxon name="Species">Bajo</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Black postdiscal bar large and extending down vein Cu1, fw discal cell with or without a bar, red-brown in dhw border, broad triangular border at fw apex.</Item>
+<Item name="FW discal cell with central bar">Yes</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">25-27 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 9 January 2001. Updated: 6 June 2001.</Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">54</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">Opaque bar or spot</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Ithomia</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">diasa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">rubescens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">paula</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">oto</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-54 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ole-vic-fv-606-1-184.jpg#Ole-vic-fv-606-1.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">vicina</Item>
+<Image name="Image: female dorsal">Ole-vic-fd-606-1-184.jpg#Ole-vic-fd-606-1.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Much thinner than neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Common in cloud forest, uncommon on both slopes below 1200 m.</Item>
+<Item name="FW length male">26</Item>
+<Item name="Author">(Salvin)</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Ole-vic-mv-643-184.jpg#Ole-vic-mv-643.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Oleria vicina</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">49</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Ole-vic-md-643-184.jpg#Ole-vic-md-643.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Uncommon</Item>
+<Item name="Inner edge of HW border">With tooth-like projections</Item>
+<Item name="Atlantic slope">1200-1500 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Lycianthes</Taxon>
+<Taxon name="Species">multiflora</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Lycianthes</Taxon>
+<Taxon name="Species">synanthera</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">trizygum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Forewing discal bar strong, black apex incised with two white spots, postdiscal bar triangular, white subapical bar poorly developed, veins M2 and M3 black, dorsal borders red brown.</Item>
+<Item name="FW discal cell with central bar">Yes</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">26 mm</Item>
+<Item name="End bar of FW discal cell">Triangular (end pointed)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 3 April 2001. Updated: 6 June 2001.</Item>
+<Item name="Species range">Costa Rica and Panama</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">Opaque bar or spot</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Red-brown with black edging (clearwings)</Item>
+<Item name="Outer end of HW discal cell">Convex</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Oleria</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">rubescens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">nero</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">anette</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">patilla</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">diasa</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">49-54 mm </Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Gre-oto-fv-630-184.jpg#Gre-oto-fv-630.jpg</Image>
+<Item name="Border at FW apex">Thick and triangular</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">oto</Item>
+<Image name="Image: female dorsal">Gre-oto-fd-630-184.jpg#Gre-oto-fd-630.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Much thinner than neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Common on Pacific side from lowlands to 1500 m, rare on Atlantic slope down to 200 m.</Item>
+<Item name="FW length male">29</Item>
+<Item name="Author">(Hewitson)</Item>
+<Item name="FW length female">27-31</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Gre-oto-mv-629-184.jpg#Gre-oto-mv-629.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Greta oto</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">58</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">0-1500 m</Item>
+<Image name="Image: male dorsal">Gre-oto-md-629-184.jpg#Gre-oto-md-629.jpg</Image>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">With tooth-like projections</Item>
+<Item name="Live underside male">Gre-oto-mv-s7372-184.jpg#Gre-oto-mv-s7372-72.jpg</Item>
+<Item name="Atlantic slope">0-1500 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">lanatum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">racemosum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Luis</Taxon>
+<Taxon name="Species">San</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Black forewing apex broad with inner edge almost straight, white medial bar strong and bordering black apex.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">27-31 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 8 April 2001. Updated: 5 June 2001.</Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">56</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Red-brown with black edging (clearwings)</Item>
+<Item name="Outer end of HW discal cell">Convex</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Greta</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">paula</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">patilla</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">cotytto</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">56-58 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ith-xen-fv-670-184.jpg#Ith-xen-fv-670.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Species">xenos</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Image name="Image: female dorsal">Ith-xen-fd-670-184.jpg#Ith-xen-fd-670.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">More common on Pacific side (1000-1500 m); rarely occurring down to 800 m on Atlantic side.</Item>
+<Item name="FW length male">33</Item>
+<Item name="Author">(Bates)</Item>
+<Item name="FW length female">32</Item>
+<Item name="End of FW discal cell">Smoky translucent bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Scientific name">Ithomia xenos</Item>
+<Image name="Image: male ventral">Ith-xen-mv-669-184.jpg#Ith-xen-mv-669.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">63</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Ith-xen-md-669-184.jpg#Ith-xen-md-669.jpg</Image>
+<Item name="Migration">Common</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Ith-xen-mv-s7367-184.jpg#Ith-xen-mv-s7367-72.jpg</Item>
+<Item name="Atlantic slope">700-1500 m</Item>
+<Item name="FW length (range in mm)">32-33 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Acnistus</Taxon>
+<Taxon name="Species">arborescens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cuatresia</Taxon>
+<Taxon name="Species">riparia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Witheringia</Taxon>
+<Taxon name="Species">cuneata</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Bar in fw discal cell, vfw margin without white spot line, narrow black hw border, hw apex rounded, black rear margin of fw very wide.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 28 December 2000. Updated: 8 June 2001.</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Species range">Costa Rica and Panama</Item>
+<Item name="Female Wingspan">64</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Ithomia</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Golden translucent</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">cranto</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Talamancana</Taxon>
+<Taxon name="Species">lonera</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">relata</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">fulvescens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">fulvimargo</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">63-64 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Pte-tig-fv-664-184.jpg#Pte-tig-fv-664.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="Early stages">Unknown</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">tigranes</Item>
+<Image name="Image: female dorsal">Pte-tig-fd-664-184.jpg#Pte-tig-fd-664.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">On Pacific slope at 1100-1500 m; Atlantic slope at 700-1200 m.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">(Godman &amp; Salvin) </Item>
+<Item name="FW length female">25</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Item name="Comments">This species needs more study to determine if it is a form of P. artena associated with wet habitats (see DeVries 1987) or a distinct species. I have commonly found it to be sympatric with P. artena and consistently different in wing shape and pattern characters at Monteverde.</Item>
+<Image name="Image: male ventral">Pte-tig-mv-640-184.jpg#Pte-tig-mv-640.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Pteronymia tigranes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">52</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1100-1500 m</Item>
+<Image name="Image: male dorsal">Pte-tig-md-640-184.jpg#Pte-tig-md-640.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">700-1200 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Unknown</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Smaller than P. artena, costa of dorsal forewing entirely black, hindwing fringe scales black, postdiscal bar wide, M2 all black.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">25-27 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 10 April 2001. Updated: 12 June 2001. </Item>
+<Item name="Species range">Costa Rica</Item>
+<Item name="Female Wingspan">50</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Genus">Pteronymia</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">simplex</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypoleria</Taxon>
+<Taxon name="Species">cassotis</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">andromica</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-52 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Pse-uti-fv-652-184.jpg#Pse-uti-fv-652.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Early stages">Unknown</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">utilla</Item>
+<Image name="Image: female dorsal">Pse-uti-fd-652-184.jpg#Pse-uti-fd-652.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Atlantic lowlands to 1100 m; common at Refugio Eladio.</Item>
+<Item name="FW length male">22</Item>
+<Item name="Author">(Godman &amp; Salvin)</Item>
+<Item name="FW length female">22</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Pse-uti-mv-651-184.jpg#Pse-uti-mv-651.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Pseudoscada utilla</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">43</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Pse-uti-md-651-184.jpg#Pse-uti-md-651.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Rare or none</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Live underside male">Pse-uti-mv-8091-168.jpg#Pse-uti-mv-8091-72.jpg</Item>
+<Item name="Atlantic slope">0-1200 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Unknown</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Small, black postdiscal bar pointed, hindwing border with smooth inner edge, dorsal forewing borders entirely black, inner edge of forewing apical border with a bump, thoracic markings white (compare with P. parva).</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">22 mm</Item>
+<Item name="End bar of FW discal cell">Triangular (end pointed)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 3 April 2001. Updated: 12 June 2001. </Item>
+<Item name="Species range">Nicaragua to South America</Item>
+<Item name="Female Wingspan">45</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">Convex</Item>
+<Item name="Egg">Unknown</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Pseudoscada</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Hypoleria</Taxon>
+<Taxon name="Species">cassotis</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">parva</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">tigranes</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">polissena</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">43-45 mm </Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Gre-pol-fv-636-184.jpg#Gre-pol-fv-636.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">polissena</Item>
+<Image name="Image: female dorsal">Gre-pol-fd-636-184.jpg#Gre-pol-fd-636.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Common on upper Pacific slope at 1300 to 1600 m and Atlantic slope down to 700 m (Poco sol).</Item>
+<Item name="FW length male">29</Item>
+<Item name="Author">(Haensch)</Item>
+<Item name="FW length female">27</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Gre-pol-mv-635-184.jpg#Gre-pol-mv-635.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Greta polissena</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">52</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Gre-pol-md-635-184.jpg#Gre-pol-md-635.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">With tooth-like projections</Item>
+<Item name="Live underside male">Gret-poli-mv-o2-184.jpg#Gret-poli-mv-o2-72.jpg</Item>
+<Item name="Atlantic slope">700-1500 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">fragile</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">irazuense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">megalophyllum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">rugulosum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">panamense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">berry</Taxon>
+<Taxon name="Species">button</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Forewing postdiscal bar narrow, dorsal borders mostly black, costal margin of ventral hindwing of male with a central black spot.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">27-29 mm</Item>
+<Item name="End bar of FW discal cell">Thin, barely wider than veins</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 3 April 2001. Updated: 5 June 2001.</Item>
+<Item name="Species range">Costa Rica to South America</Item>
+<Item name="Female Wingspan">55</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Red-brown with black edging (clearwings)</Item>
+<Item name="Outer end of HW discal cell">Convex</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Greta</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">anette</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">simplex</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypoleria</Taxon>
+<Taxon name="Species">cassotis</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">52-55 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Nape-pere-fv-527-184.jpg#Nape-pere-fv-527.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Natural history and behavior">Usually flying at 2-5 m above ground.</Item>
+<Item name="Early stages">Unknown</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">peredia</Item>
+<Image name="Image: female dorsal">Nape-pere-fd-527-184.jpg#Nape-pere-fd-527.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Atlantic slope at 400-900 m.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">Schaus</Item>
+<Item name="FW length female">29-30</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Comments">Eresia sticta and Eresia poecilina, thought to be Batesian mimics, are very similar in appearance .</Item>
+<Image name="Image: male ventral">Nape-pere-mv-512-184.jpg#Nape-pere-mv-512.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Napeogenes peredia</Item>
+<Item name="Margin of FWD with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Male Wingspan (mm)">54</Item>
+<Item name="Abundance">Rare</Item>
+<Item name="Basal third of FW mostly black">Yes</Item>
+<Item name="FW postmedian pattern">Bright yellow spots or bands</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Nape-pere-md-511-184.jpg#Nape-pere-md-511.jpg</Image>
+<Item name="Migration">Rare or none</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Atlantic slope">0-700 m</Item>
+<Item name="FW length (range in mm)">27-30 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Unknown</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">No</Item>
+<Item name="Identification">Small, many small yellow spots on forewing, two rows of yellow spots on hindwing, antennae yellow-tipped.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 12 January 2001. Updated: 12 June 2001.</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Costa Rica to South America</Item>
+<Item name="Female Wingspan">56</Item>
+<Item name="Center of FW discal cell">Cell mostly black with light spots at end</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Unknown</Item>
+<Item name="Genus">Napeogenes</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Spotted orange and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Callithomia</Taxon>
+<Taxon name="Species">hezia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">tolosa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hyposcada</Taxon>
+<Taxon name="Species">virginiana</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">54-56 mm </Item>
+<Item name="Bar at end of FW discal cell">n/a</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ole-zel-fv-645-184.jpg#Ole-zel-fv-645.jpg</Image>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Natural history and behavior">Low flying in light areas in forest understory.</Item>
+<Item name="Early stages">Unknown</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">zelica</Item>
+<Image name="Image: female dorsal">Ole-zel-fd-645-184.jpg#Ole-zel-fd-645.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Occurring at 500-900 m on Atlantic slope; common at Refugio Eladio, uncommon at Poco Sol.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">(Druce)</Item>
+<Item name="FW length female">27</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">Low flying in light areas in forest understory.</Item>
+<Image name="Image: male ventral">Ole-zel-mv-644-184.jpg#Ole-zel-mv-644.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Oleria zelica</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">52</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Lemon yellow bordered by black</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Ole-zel-md-644-184.jpg#Ole-zel-md-644.jpg</Image>
+<Item name="Migration">Rare or none</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Atlantic slope">700-1200 m</Item>
+<Item name="FW length (range in mm)">27 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Unknown</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Translucent yellow bars, black antennae, large white spots at forewing apex.</Item>
+<Item name="FW discal cell with central bar">Opaque bar or spot</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 3 April 2001. Updated: 6 June 2001.</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Costa Rica to South America</Item>
+<Item name="Female Wingspan">55</Item>
+<Item name="Center of FW discal cell">Opaque bar or spot</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by yellow</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Unknown</Item>
+<Item name="Genus">Oleria</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Yellow and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Aeria</Taxon>
+<Taxon name="Species">eurimedea</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Scada</Taxon>
+<Taxon name="Species">zibia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Godyris</Taxon>
+<Taxon name="Species">zavaleta</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">cranto</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">52-55 mm </Item>
+<Item name="Bar at end of FW discal cell">Yes</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Dir-rel-fv-org-610-184.jpg#Dir-rel-fv-org-610.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">relata</Item>
+<Image name="Image: female dorsal">Dir-rel-fd-org-610-184.jpg#Dir-rel-fd-org-610.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Both slopes down to about 700 m.</Item>
+<Item name="FW length male">37</Item>
+<Item name="Author">Butler &amp; Druce</Item>
+<Item name="FW length female">36</Item>
+<Item name="End of FW discal cell">Smoky translucent bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Scientific name">Dircenna relata</Item>
+<Image name="Image: male ventral">Dir-rel-mv-org-602-184.jpg#Dir-rel-mv-org-602.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">74</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">700-1500 m</Item>
+<Image name="Image: male dorsal">Dir-rel-md-org-602-184.jpg#Dir-rel-md-org-602.jpg</Image>
+<Item name="Migration">Common</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Dir-rel-org-mv-s7342-288.jpg#Dir-rel-org-mv-s7342-72.jpg</Item>
+<Item name="Atlantic slope">700-1500 m</Item>
+<Item name="FW length (range in mm)">36-37 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">chrysotrichum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rudepannum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">umbellatum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Antennae orange in life, smoky shading in forewing discal cell not reaching vein Cu1, size medium, pattern generally bolder than chiriquensis and klugii but less than olyras, shading on ventral hindwing disc often yellow, pattern darker in female.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 17 February 2001. Updated: 5 June 2001.</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Species range">Nicaragua to Panama</Item>
+<Item name="Female Wingspan">71</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Dircenna</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Golden translucent</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">klugii</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">olyras</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hyalyris</Taxon>
+<Taxon name="Species">excelsa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">xenos</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">cranto</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">71-74 mm </Item>
+<Item name="Bar at end of FW discal cell">Translucent smoky gray</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Thyr-psid-fv-522-184.jpg#Thyr-psid-fv-522.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="HW with dark central bar or spot">Dark spot present</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">psidii</Item>
+<Image name="Image: female dorsal">Thyr-psid-fd-522-184.jpg#Thyr-psid-fd-522.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Atlantic lowlands up to about 500 m.</Item>
+<Item name="FW length male">39</Item>
+<Item name="Author">(Bates)</Item>
+<Item name="FW length female">39-40</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Comments">Solanum circinatum and S. diversifolium were formerly in Cyphomandra.</Item>
+<Item name="Scientific name">Thyridia psidii</Item>
+<Image name="Image: male ventral">Thyr-psid-mv-533-184.jpg#Thyr-psid-mv-533.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">75</Item>
+<Item name="Abundance">Rare</Item>
+<Item name="Basal third of FW mostly black">Yes</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Thyr-psid-md-533-184.jpg#Thyr-psid-md-533.jpg</Image>
+<Item name="Migration">Rare or none</Item>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Atlantic slope">0-700 m</Item>
+<Item name="FW length (range in mm)">39-40 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">circinatum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">diversifolium</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Large, forewing mostly black, hindwing discal bar reduced to a spot, paired spots on dorsal forewing and ventral hindwing margin (single in Mechanitis), only tips of antennae yellow.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 13 January 2001. Updated: 12 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">77-78</Item>
+<Item name="Center of FW discal cell">Cell mostly black with light spots at end</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Thyridia</Item>
+<Item name="Margin of HWV mostly with">2 spots per cell</Item>
+<Item name="Color pattern">Spotted orange and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">polymnia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Olyras</Taxon>
+<Taxon name="Species">crathis</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hyalyris</Taxon>
+<Taxon name="Species">excelsa</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">75-78 mm </Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Pte-sim-fv-648-184.jpg#Pte-sim-fv-648.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">simplex</Item>
+<Image name="Image: female dorsal">Pte-sim-fd-648-184.jpg#Pte-sim-fd-648.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">From 1200-1600 m on both slopes, but more common on Pacific side.</Item>
+<Item name="FW length male">25</Item>
+<Item name="Author">(Salvin)</Item>
+<Item name="FW length female">26-28</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Pte-sim-mv-656-184.jpg#Pte-sim-mv-656.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Orange-brown</Item>
+<Item name="Scientific name">Pteronymia simplex</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">50</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Pte-sim-md-656-184.jpg#Pte-sim-md-656.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">1200-1500 m</Item>
+<Item name="Coastal border of HWV">Silver-white at base</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">aphyodendron</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">brenesii</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">pastillum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">pertenue</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">ramonense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rovirosanum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">tuerckheimii</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Black postdiscal bar very narrow, white forewing spots and medial bar highly reduced, border of dorsal hindwing usually black, hindwing fringe scales orange.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">25-28 mm</Item>
+<Item name="End bar of FW discal cell">Thin, barely wider than veins</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 10 April 2001. Updated: 12 June 2001. </Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">54-56</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Genus">Pteronymia</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Episcada</Taxon>
+<Taxon name="Species">salvinia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">polissena</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-56 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Hypo-virg-fv-501-184.jpg#Hypo-virg-fv-501.jpg</Image>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Natural history and behavior">Tends to be solitary and not join leks of other ithomiines, but two or more males often congregate in open spots in the understory.</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">virginiana</Item>
+<Image name="Image: female dorsal">Hypo-virg-fd-502-184.jpg#Hypo-virg-fd-502.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Uncommon on upper Pacific slope, more abundant at mid-elevation on Atlantic slope (Refugio Eladio).</Item>
+<Item name="FW length male">33</Item>
+<Item name="Author">(Haensch)</Item>
+<Item name="FW length female">34</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Comments">The only ithomiine in Costa Rica known to use Gesneriaceae as larval hosts. </Item>
+<Image name="Image: male ventral">Hypo-virg-mv-503-184.jpg#Hypo-virg-mv-503.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Hyposcada virginiana</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">58-63</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">Yes</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Hypo-virg-md-503-184.jpg#Hypo-virg-md-503.jpg</Image>
+<Item name="Migration">Uncommon</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Hyp-vir-mv-7264-168.jpg#Hyp-vir-mv-7264-72.jpg</Item>
+<Item name="Atlantic slope">0-1200 m</Item>
+<Item name="FW length (range in mm)">33-34 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup comment="(Gesneriaceae)">
+<TaxonReference>
+<Taxon name="Genus">Columnea</Taxon>
+<Taxon name="Species">consanguinea</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+<SpeciesGroup comment="(Gesneriaceae)">
+<TaxonReference>
+<Taxon name="Genus">Columnea</Taxon>
+<Taxon name="Species">grata</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+<SpeciesGroup comment="(Gesneriaceae)">
+<TaxonReference>
+<Taxon name="Genus">Drymonia</Taxon>
+<Taxon name="Species">conchocalyx</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Spots on forewing white- not yellow, antennae black, bold white spots at hindwing apex.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber,whaber@racsa.co.cr
+Created: 28 December 2000. Updated: 12 June 2001.</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">67</Item>
+<Item name="Center of FW discal cell">Cell mostly black with light spots at end</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Hyposcada</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Spotted orange and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">peredia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">tolosa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Callithomia</Taxon>
+<Taxon name="Species">hezia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">polymnia</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">58-67 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Epi-sal-fv-616-184.jpg#Epi-sal-fv-616.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="Early stages">Aggregated</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">salvinia</Item>
+<Image name="Image: female dorsal">Epi-sal-fd-616-184.jpg#Epi-sal-fd-616.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Open areas</Item>
+<Item name="Local distribution">Most abundant on the Pacific side at 1300-1500 m.</Item>
+<Item name="FW length male">26</Item>
+<Item name="Author">(Bates)</Item>
+<Item name="FW length female">26</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Epi-sal-mv-615-184.jpg#Epi-sal-mv-615.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Episcada salvinia</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">51</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Epi-sal-md-615-184.jpg#Epi-sal-md-615.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Live underside male">Epis-salv-mv-s1848-184.jpg#Epis-salv-mv-s1848-72.jpg</Item>
+<Item name="Atlantic slope">1200-1500 m</Item>
+<Item name="Coastal border of HWV">Silver-white at base</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">aphyodendron</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Postdiscal bar triangular with pointed end, border of dorsal hindwing often red-brown, hindwing fringe scales black, forewing vein M2 partly white, head narrow compared with Pteronymia.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">26 mm</Item>
+<Item name="End bar of FW discal cell">Triangular (end pointed)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber,whaber@racsa.co.cr
+Created: 28 December 2000. Updated: 12 June 2001.</Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">50-52</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Red-brown with black edging (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Clustered</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Episcada</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">simplex</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">anette</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-52 mm</Item>
+<Item name="Bar at end of FW discal cell">Black ground with small yellow spots</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Pte-par-fv-654-184.jpg#Pte-par-fv-654.jpg</Image>
+<Item name="Border at FW apex">Thick and triangular</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">parva</Item>
+<Image name="Image: female dorsal">Pte-par-fd-650-184.jpg#Pte-par-fd-650.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Atlantic lowlands up to 1200 m (Poco Sol, Refugio Eladio, San Gerardo).</Item>
+<Item name="FW length male">21</Item>
+<Item name="Author">(Salvin)</Item>
+<Item name="FW length female">21</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Pte-par-mv-649-184.jpg#Pte-par-mv-649.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Pteronymia parva</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">41</Item>
+<Item name="Abundance">Rare</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Pte-par-md-649-184.jpg#Pte-par-md-649.jpg</Image>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Migration">Altitudinal migrant on Atlantic slope?</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">0-1200 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">arboreum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Small, forewing apical border thick with smoothly curving inner edge, postdiscal bar broad with end forked, thoracic markings yellow.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">21 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 10 April 2001. Updated: 12 June 2001. </Item>
+<Item name="Species range">Costa Rica and Panama</Item>
+<Item name="Female Wingspan">42</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Genus">Pteronymia</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Pseudoscada</Taxon>
+<Taxon name="Species">utilla</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">paula</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypoleria</Taxon>
+<Taxon name="Species">cassotis</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">41-42 mm</Item>
+<Item name="Bar at end of FW discal cell">n/a</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ith-xen-fv-670-184.jpg#Ith-xen-fv-670.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">xenos</Item>
+<Image name="Image: female dorsal">Ith-xen-fd-670-184.jpg#Ith-xen-fd-670.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">More common on Pacific side (1000-1500 m); rarely occurring down to 800 m on Atlantic side.</Item>
+<Item name="FW length male">33</Item>
+<Item name="Author">(Bates)</Item>
+<Item name="FW length female">32</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">Often lays eggs on bare stems or moss on stems well below the leafy twigs.</Item>
+<Image name="Image: male ventral">Ith-xen-mv-669-184.jpg#Ith-xen-mv-669.jpg</Image>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Ithomia xenos</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">63</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Ith-xen-md-669-184.jpg#Ith-xen-md-669.jpg</Image>
+<Item name="Migration">Common</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Ith-xen-mv-s7367-184.jpg#Ith-xen-mv-s7367-72.jpg</Item>
+<Item name="Atlantic slope">700-1500 m</Item>
+<Item name="FW length (range in mm)">32-33 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Acnistus</Taxon>
+<Taxon name="Species">arborescens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cuatresia</Taxon>
+<Taxon name="Species">riparia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Witheringia</Taxon>
+<Taxon name="Species">cuneata</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Bar in forewing discal cell, vfw margin without white spot line, hindwing apex rounded.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 28 December 2000. Updated: 8 June 2001.</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Species range">Costa Rica and Panama</Item>
+<Item name="Female Wingspan">64</Item>
+<Item name="Center of FW discal cell">Opaque bar or spot</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Ithomia</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Golden translucent</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">cranto</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Talamancana</Taxon>
+<Taxon name="Species">lonera</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">relata</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">fulvescens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">fulvimargo</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">63-64 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Gody-zava-fv-538-184.jpg#Gody-zava-fv-538.jpg</Image>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="Natural history and behavior">Flies at 1-5 m in forest understory and light gaps. </Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">zavaleta</Item>
+<Image name="Image: female dorsal">Gody-zava-fd-538-184.jpg#Gody-zava-fd-538.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Atlantic slope from lowlands to about 900 m; less abundant toward lowlands. Common at Refugio Eladio and Poco Sol; not reaching San Gerardo.</Item>
+<Item name="FW length male">31</Item>
+<Item name="Author">Fox</Item>
+<Item name="FW length female">33</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">Sexually dimorphic; female belongs to a different mimicry pattern.</Item>
+<Image name="Image: male ventral">Gody-zava-mv-550-184.jpg#Gody-zava-mv-550.jpg</Image>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Godyris zavaleta</Item>
+<Item name="Margin of FWD with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Male Wingspan (mm)">62</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Lemon yellow bordered by black</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Gody-zava-md-550-184.jpg#Gody-zava-md-550.jpg</Image>
+<Item name="Migration">Altitudinal migration on Atlantic slope?</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Atlantic slope">0-1200 m</Item>
+<Item name="FW length (range in mm)">31-33 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup comment="cf.">
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">nocturnum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Similar to the male, but hindwing discal area red-brown not yellow, prominent white marginal spots above, forewing more yellow than G. zygia.</Item>
+<Item name="FW discal cell with central bar">Smoky translucent mark</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 13 January 2001. Updated: 5 June 2001.</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">65</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by yellow</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Godyris</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Yellow and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Godyris</Taxon>
+<Taxon name="Species">zygia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Olyras</Taxon>
+<Taxon name="Species">insignis</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">cranto</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">zelica</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">62-65 mm</Item>
+<Item name="Bar at end of FW discal cell">Yes</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Pte-sim-fv-648-184.jpg#Pte-sim-fv-648.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">simplex</Item>
+<Image name="Image: female dorsal">Pte-sim-fd-648-184.jpg#Pte-sim-fd-648.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">From 1200-1600 m on both slopes, but more common on Pacific side.</Item>
+<Item name="FW length male">25</Item>
+<Item name="Author">(Salvin)</Item>
+<Item name="FW length female">26-28</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Pte-sim-mv-656-184.jpg#Pte-sim-mv-656.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Orange-brown</Item>
+<Item name="Scientific name">Pteronymia simplex</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">50</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Pte-sim-md-656-184.jpg#Pte-sim-md-656.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">1200-1500 m</Item>
+<Item name="Coastal border of HWV">Silver-white at base</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">aphyodendron</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">brenesii</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">pastillum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">pertenue</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">ramonense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rovirosanum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">tuerckheimii</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Black postdiscal bar with forked end, border of dorsal hindwing usually black, hindwing fringe scales orange.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">25-28 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 10 April 2001. Updated: 12 June 2001. </Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">54-56</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Genus">Pteronymia</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Episcada</Taxon>
+<Taxon name="Species">salvinia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">polissena</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-56 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Mel-scy-fv-601-1-184.jpg#Mel-scy-fv-601-1.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">scylax</Item>
+<Image name="Image: female dorsal">Mel-scy-fd-601-2-184.jpg#Mel-scy-fd-601-2.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Uncommon in forest fragments on lower Pacific slope; recorded once in Pe?as Blancas valley at 400 m.</Item>
+<Item name="FW length male">43</Item>
+<Item name="Author">Salvin</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Scientific name">Melinaea scylax</Item>
+<Image name="Image: male ventral">Meli-scyl-mv-531-184.jpg#Meli-scyl-mv-531.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">82</Item>
+<Item name="Abundance">Rare</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">0-1200 m</Item>
+<Image name="Image: male dorsal">Meli-scyl-md-531-184.jpg#Meli-scyl-md-531.jpg</Image>
+<Item name="Migration">Rare or none</Item>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Atlantic slope">0-700 m</Item>
+<Item name="FW length (range in mm)">43 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Black broken by light colors</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup comment="(apparently in captivity, DeVries 1987)">
+<TaxonReference>
+<Taxon name="Genus">Juanulloa</Taxon>
+<Taxon name="Species">mexicana</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Merinthopodium</Taxon>
+<Taxon name="Species">neuranthum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">No</Item>
+<Item name="Identification">Large, forewing medial band continuous, no hindwing discal bar, no white marginal spots below, forewing rear margin black only at end, yellow spot in forewing tornus.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 13 January 2001. Updated: 5 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Species range">Costa Rica to South America</Item>
+<Item name="Female Wingspan">74-80</Item>
+<Item name="Center of FW discal cell">Opaque bar or spot</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Genus">Melinaea</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Barless tigre</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">lysimnia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Mechanitispolymnia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Tithorea</Taxon>
+<Taxon name="Species">harmonia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypothyris</Taxon>
+<Taxon name="Species">lycaste</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">74-82 mm </Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ith_pat-fv-bar-o325-184.jpg#Ith_pat-fv-bar-o325.jpg</Image>
+<Item name="Border at FW apex">Thick and triangular</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">patilla</Item>
+<Image name="Image: female dorsal">Ith_pat-fd-bar-o324-184.jpg#Ith_pat-fd-bar-o324.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Much thinner than neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Common on Pacific slope above 700 m and down to lowlnads on Atlantic side.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">Hewitson</Item>
+<Item name="FW length female">25-26</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Ith_pat-mv-o342-184.jpg#Ith_pat-mv-o342.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Ithomia patilla</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">50</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">0-1500 m</Item>
+<Image name="Image: male dorsal">Ith_pat-md-o341.184.jpg#Ith-pat-md-ex.jpg</Image>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Live underside male">Ith-pat-mv-6110-168.jpg#Ith-pat-mv-6110-72.jpg</Item>
+<Item name="Atlantic slope">0-1500 m</Item>
+<Item name="Coastal border of HWV">Yellow at base</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Brachistus</Taxon>
+<Taxon name="Species">stramoniifolius</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Lycianthes</Taxon>
+<Taxon name="Species">multiflora</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Witheringia</Taxon>
+<Taxon name="Species">meiantha</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Witheringia</Taxon>
+<Taxon name="Species">solanacea</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Tigre</Taxon>
+<Taxon name="Species">Bajo</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Black postdiscal bar large and extending down vein Cu1, no bar in forewing discal cell, red-brown in dorsal hindwing border, broad triangular border at forewing apex.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">25-27 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 9 January 2001. Updated: 6 June 2001.</Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">54</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Ithomia</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">diasa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">rubescens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">paula</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">oto</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-54 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ole-rub-fv-5511-184.jpg#Ole-rub-fv-5511.jpg</Image>
+<Item name="Border at FW apex">Thick and triangular</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">rubescens</Item>
+<Image name="Image: female dorsal">Ole-rub-fd-5509-184.jpg#Ole-rub-fd-5509.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Much thinner than neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Common on Atlantic side at 700-1200 m; rare on Pacific side above 1200 m.</Item>
+<Item name="FW length male">25</Item>
+<Item name="Author">(Butler &amp; Druce)</Item>
+<Item name="FW length female">23</Item>
+<Item name="Live underside female">Oler-rube-fv-s5057-184.jpg#Oler-rube-fv-s5057-72.jpg</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Ole-rub-mv-642-184.jpg#Ole-rub-mv-642.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Oleria rubescens</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">50</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Ole-rub-md-642-184.jpg#Ole-rub-md-642.jpg</Image>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Migration">Uncommon</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">700-1500 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">siparunoides</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Strong forewing discal bar, black forewing apex narrow with curved inner edge, postdiscal bar rectangular, veins M2 and M3 black.</Item>
+<Item name="FW discal cell with central bar">Yes</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="FW length (range in mm)">23-25 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 3 April 2001. Updated: 6 June 2001. </Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">49</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">Opaque bar or spot</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Red-brown with black edging (clearwings)</Item>
+<Item name="Outer end of HW discal cell">Convex</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Oleria</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">vicina</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">diasa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">patilla</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">nero</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">49-50 mm </Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Cer-tut-fv-5490-184.jpg#Cer-tut-fv-5490.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="HW with dark central bar or spot">Horizontal bar present</Item>
+<Item name="Species">tutia</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Image name="Image: female dorsal">Cer-tut-fd-5470-184.jpg#Cer-tut-fd-5470.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Open areas</Item>
+<Item name="Local distribution">Atlantic slope from about 400-800 m elevation.</Item>
+<Item name="FW length male">27</Item>
+<Item name="Author">(Bates)</Item>
+<Item name="End of FW discal cell">Smoky translucent bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">Recorded once at San Gerardo (1100 m) and once near La Tigra (450 m).</Item>
+<Item name="Scientific name">Ceratinia tutia</Item>
+<Image name="Image: male ventral">Cer-tut-mv-5486-184.jpg#Cer-tut-mv-5486.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">52-53</Item>
+<Item name="Abundance">Rare</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Cera_tuti-md-s5484-184.jpg#Cera_tuti-md-s5484.jpg</Image>
+<Item name="Migration">Not known </Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Cera-tuti-mv-s2631-184.jpg#Cera-tuti-mv-s2631-72.jpg</Item>
+<Item name="Atlantic slope">0-1200 m</Item>
+<Item name="FW length (range in mm)">27 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Black broken by light colors</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">aphyodendron</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Like H. euclea, but translucent; dorsal forewing lacks yellow marginal spots; yellow and black on forewing variable; hindwing discal bar variable.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 13 January 2001. Updated: 5 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Nicaragua to South America</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">Special concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Genus">Ceratinia</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Tiger</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Hypothyris</Taxon>
+<Taxon name="Species">euclea</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">agalla</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">52-53 mm </Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Dir-rel-fv-org-610-184.jpg#Dir-rel-fv-org-610.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">relata</Item>
+<Image name="Image: female dorsal">Dir-rel-fd-org-610-184.jpg#Dir-rel-fd-org-610.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Both slopes down to about 700 m.</Item>
+<Item name="FW length male">37</Item>
+<Item name="Author">Butler &amp; Druce</Item>
+<Item name="FW length female">36</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Scientific name">Dircenna relata</Item>
+<Image name="Image: male ventral">Dir-rel-mv-org-602-184.jpg#Dir-rel-mv-org-602.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">74</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">700-1500 m</Item>
+<Image name="Image: male dorsal">Dir-rel-md-org-602-184.jpg#Dir-rel-md-org-602.jpg</Image>
+<Item name="Migration">Common</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Dir-rel-org-mv-s7342-288.jpg#Dir-rel-org-mv-s7342-72.jpg</Item>
+<Item name="Atlantic slope">700-1500 m</Item>
+<Item name="FW length (range in mm)">36-37 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">chrysotrichum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rudepannum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">umbellatum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Antennae orange in life, smoky shading in forewing discal cell not reaching vein Cu1, size medium, pattern generally bolder than chiriquensis and klugii but less than olyras, shading on ventral hindwing disc often yellow, pattern darker in female.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 17 February 2001. Updated: 5 June 2001.</Item>
+<Item name="FW with light postdiscal bar">No distinct light bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Species range">Nicaragua to Panama</Item>
+<Item name="Female Wingspan">71</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Dircenna</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Golden translucent</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">klugi</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">olyras</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hyalyris</Taxon>
+<Taxon name="Species">excelsa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">cranto</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">xenos</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">71-74 mm</Item>
+<Item name="Bar at end of FW discal cell">Translucent smoky gray</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Mech-poly-fv-510-184.jpg#Mech-poly-fv-510.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="HW with dark central bar or spot">Dark spot present</Item>
+<Item name="Species">polymnia</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Image name="Image: female dorsal">Mech-poly-fd-510-184.jpg#Mech-poly-fd-510.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Common in the lowlands on both slopes.</Item>
+<Item name="FW length male">35</Item>
+<Item name="Author">Bates</Item>
+<Item name="FW length female">34</Item>
+<Item name="Live underside female">Mech-poly-fv-8138-168.jpg#Mech-poly-fv-8138-72.jpg</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Opaque</Item>
+<Item name="Comments">One of the most abundant and widespread species in the country.</Item>
+<Image name="Image: male ventral">Mech-poly-mv-509-184.jpg#Mech-poly-mv-509.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Mechanitis polymnia</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">68</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Bright yellow spots or bands</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">0-700 m</Item>
+<Image name="Image: male dorsal">Mech-poly-md-509-184.jpg#Mech-poly-md-509.jpg</Image>
+<Item name="Migration">Common</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Live underside male">Mech-poly-mv-8156-168.jpg#Mech-poly-mv-8156-72.jpg</Item>
+<Item name="Atlantic slope">0-700 m</Item>
+<Item name="FW length (range in mm)">34-35 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Black broken by light colors</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Jaltomata</Taxon>
+<Taxon name="Species">procumbens</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">jamaicense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">lanceifolium</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rudepannum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">rugosum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">siparunoides</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">No</Item>
+<Item name="Identification">Female like male, but hw discal bar reduced or absent.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 10 January 2001. Updated: 8 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">68</Item>
+<Item name="Center of FW discal cell">Cell mostly black with light spots at end</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Clustered</Item>
+<Item name="Genus">Mechanitis</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Barless tigre</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">lysimnia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Tithorea</Taxon>
+<Taxon name="Species">harmonia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Melinaea</Taxon>
+<Taxon name="Species">ethra</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypothyris</Taxon>
+<Taxon name="Species">lycaste</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Thyridia</Taxon>
+<Taxon name="Species">psidii</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">68 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ith-ter-fv-602-1-184.jpg#Ith-ter-fv-602-1.jpg</Image>
+<Item name="Border at FW apex">Thick and triangular</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Early stages">Unknown</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">terra</Item>
+<Image name="Image: female dorsal">Ith-ter-fd-602-2-184.jpg#Ith-ter-fd-602-2.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Not recorded at Monteverde. Known from similar Atlantic slope habitats to the south.</Item>
+<Item name="FW length male">23</Item>
+<Item name="Author">Haensch</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Ith_ter-mv-o386-184.jpg#Ith_ter-mv-o386.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Ithomia terra</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">46</Item>
+<Item name="Abundance">Not yet recorded</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Ith_ter-md-o385-184.jpg#Ith_ter-md-o385.jpg</Image>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Migration">Not known </Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">0-700 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Unknown</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Small, no red-brown in the borders above, veins at end of hindwing discal cell with broad black shading, black postdiscal bar short, forewing vein M2 all black, no yellow at base of ventral hindwing.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="FW length (range in mm)">23 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 9 January 2001. Updated: 8 June 2001.</Item>
+<Item name="Species range">Costa Rica to South America</Item>
+<Item name="Female Wingspan">46</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">Endangered</Item>
+<Item name="Genus">Ithomia</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">bolivari</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">diasa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">paula</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypoleria</Taxon>
+<Taxon name="Species">cassotis</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">46 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Gody-zava-fv-538-184.jpg#Gody-zava-fv-538.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">zavaleta</Item>
+<Image name="Image: female dorsal">Gody-zava-fd-538-184.jpg#Gody-zava-fd-538.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Atlantic slope from lowlands to about 900 m; less abundant toward lowlands. Common at Refugio Eladio and Poco Sol; not reaching San Gerardo.</Item>
+<Item name="FW length male">31</Item>
+<Item name="Author">Fox</Item>
+<Item name="FW length female">33</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">Sexually dimorphic; female belongs to a different mimicry pattern.</Item>
+<Item name="Scientific name">Godyris zavaleta</Item>
+<Image name="Image: male ventral">Gody-zava-mv-550-184.jpg#Gody-zava-mv-550.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Male Wingspan (mm)">62</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Item name="Pacific slope">Not present</Item>
+<Image name="Image: male dorsal">Gody-zava-md-550-184.jpg#Gody-zava-md-550.jpg</Image>
+<Item name="Migration">Altitudinal migration on Atlantic slope?</Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Atlantic slope">0-1200 m</Item>
+<Item name="FW length (range in mm)">31-33 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup comment="cf.">
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">nocturnum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Similar to the male, but hw discal area red-brown not yellow, prominent white marginal spots above, fw more yellow than G. zygia.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 13 January 2001. Updated: 5 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Mexico to South America</Item>
+<Item name="Female Wingspan">65</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Godyris</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Barless tigre</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Godyris</Taxon>
+<Taxon name="Species">zygia</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hyalyris</Taxon>
+<Taxon name="Species">excelsa</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">dero</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Mechanitis</Taxon>
+<Taxon name="Species">polymnia</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">62-65 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Epi-sal-fv-616-184.jpg#Epi-sal-fv-616.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="Early stages">Aggregated</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">salvinia</Item>
+<Image name="Image: female dorsal">Epi-sal-fd-616-184.jpg#Epi-sal-fd-616.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Open areas</Item>
+<Item name="Local distribution">Most abundant on the Pacific side at 1300-1500 m.</Item>
+<Item name="FW length male">26</Item>
+<Item name="Author">(Bates)</Item>
+<Item name="FW length female">26</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Epi-sal-mv-615-184.jpg#Epi-sal-mv-615.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Episcada salvinia</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">51</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Epi-sal-md-615-184.jpg#Epi-sal-md-615.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Live underside male">Epis-salv-mv-s1848-184.jpg#Epis-salv-mv-s1848-72.jpg</Item>
+<Item name="Atlantic slope">1200-1500 m</Item>
+<Item name="Coastal border of HWV">Silver-white at base</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Solanum</Taxon>
+<Taxon name="Species">aphyodendron</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Postdiscal bar triangular with pointed end, border of dhw usually black, hw fringe scales black, fw vein M2 partly white.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">26 mm</Item>
+<Item name="End bar of FW discal cell">Triangular (end pointed)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber,whaber@racsa.co.cr
+Created: 28 December 2000. Updated: 12 June 2001.</Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">52</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">V-shaped</Item>
+<Item name="Egg">Clustered</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Episcada</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">simplex</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">anette</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">50-52 mm</Item>
+<Item name="Bar at end of FW discal cell">Black ground with small yellow spots</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Gody-zygi-fv-539-184.jpg#Gody-zygi-fv-539.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">Yes (Male)</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">zygia</Item>
+<Image name="Image: female dorsal">Gody-zygi-fd-539-184.jpg#Gody-zygi-fd-539.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Southern pacific region at 0-1000 m reaching as far north as the Central Valley. Not recorded from the Monteverde region.</Item>
+<Item name="FW length male">33</Item>
+<Item name="Author">(Godman &amp; Salvin)</Item>
+<Item name="FW length female">30</Item>
+<Item name="Live underside female">Gody-zygi-fv-s2672-184.jpg#Gody-zygi-fv-s2672-72.jpg</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">May be a Pacific slope subspecies of G. zavaleta (DeVries 1987). </Item>
+<Item name="Scientific name">Godyris zygia</Item>
+<Image name="Image: male ventral">God-zyg-mv-663-184.jpg#God-zyg-mv-663.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Male Wingspan (mm)">63</Item>
+<Item name="Abundance">Not recorded from Monteverde. </Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Image name="Image: male dorsal">God-zyg-md-663-184.jpg#God-zyg-md-663.jpg</Image>
+<Item name="Migration">Not known </Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="FW length (range in mm)">30-33 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup comment="cf.">
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">nocturnum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Similar to male G. zavaleta, but smoky pattern more pronounced, forewing discal cell mostly dark, forewing with much less yellow.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 13 January 2001. Updated: 12 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Costa Rica and Panama</Item>
+<Item name="Female Wingspan">60</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Male</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Godyris</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Yellow and black</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Godyris</Taxon>
+<Taxon name="Species">zavaleta</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Oleria</Taxon>
+<Taxon name="Species">zelica</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">60-63 mm</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Ole-pau-fv-357-184.jpg#Ole-pau-fv-357.jpg</Image>
+<Item name="Border at FW apex">Thick and triangular</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">n/a</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">paula</Item>
+<Image name="Image: female dorsal">Ole-pau-fd-357-184.jpg#Ole-pau-fd-357.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Much thinner than neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Both forest and open</Item>
+<Item name="Local distribution">Common on Atlantic side up to 800 m; uncommon on Pacific side from 700-1500 m.</Item>
+<Item name="Author">(Weymer)</Item>
+<Item name="FW length female">23</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Ole-pau-mv-5506-184.jpg#Ole-pau-mv-5506.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Oleria paula</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Abundance">Uncommon</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">700-1500 m</Item>
+<Image name="Image: male dorsal">Ole-pau-md-5505-184.jpg#Ole-pau-md-5505.jpg</Image>
+<Item name="Border of FW apex">Much thicker than adjacent black border</Item>
+<Item name="Migration">Uncommon</Item>
+<Item name="Inner edge of HW border">Uniformly smooth</Item>
+<Item name="Atlantic slope">0-1500 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Present during migration</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Lycianthes</Taxon>
+<Taxon name="Species">multiflora</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Black forewing apex broad with straight inner edge, white forewing bar covers M2 and M3, forewing discal bar absent or rarely visible as a weak smudge.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">Partly white</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">23 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 3 April 2001. Updated: 6 June 2001.</Item>
+<Item name="Species range">Mexico to Panama</Item>
+<Item name="Female Wingspan">46</Item>
+<Item name="Dorsal ground color">With some red- or orange-brown</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Both</Item>
+<Item name="Margin of HWD">Red-brown with black edging (clearwings)</Item>
+<Item name="Outer end of HW discal cell">Convex</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Oleria</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Ithomia</Taxon>
+<Taxon name="Species">patilla</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">oto</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">parva</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">cotytto</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">46 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Image name="Image: female ventral">Gre-pol-fv-636-184.jpg#Gre-pol-fv-636.jpg</Image>
+<Item name="Border at FW apex">Narrow</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Black tip</Item>
+<Item name="Species">polissena</Item>
+<Image name="Image: female dorsal">Gre-pol-fd-636-184.jpg#Gre-pol-fd-636.jpg</Image>
+<Item name="Border of FW cell Cu1-Cu2">Same as neighboring cells</Item>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Common on upper Pacific slope at 1300 to 1600 m and Atlantic slope down to 700 m (Poco sol).</Item>
+<Item name="FW length male">29</Item>
+<Item name="Author">(Haensch)</Item>
+<Item name="FW length female">27</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Transparent (clear with black veins)</Item>
+<Image name="Image: male ventral">Gre-pol-mv-635-184.jpg#Gre-pol-mv-635.jpg</Image>
+<Item name="FW with translucent smoky black markings">No</Item>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="Scientific name">Greta polissena</Item>
+<Item name="Margin of FWD with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Male Wingspan (mm)">52</Item>
+<Item name="Abundance">Common</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Without a yellow pattern</Item>
+<Item name="Color of HW discal area">Clear with black veins</Item>
+<Item name="Pacific slope">1200-1500 m</Item>
+<Image name="Image: male dorsal">Gre-pol-md-635-184.jpg#Gre-pol-md-635.jpg</Image>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="Migration">Common</Item>
+<Item name="Inner edge of HW border">With tooth-like projections</Item>
+<Item name="Live underside male">Gret-poli-mv-o2-184.jpg#Gret-poli-mv-o2-72.jpg</Item>
+<Item name="Atlantic slope">700-1500 m</Item>
+<Item name="Coastal border of HWV">All brown</Item>
+<Item name="Costal margin of FWD along discal cell">Black bordered by orange-brown</Item>
+<Item name="Cloud forest">Breeds in cloud forest</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">fragile</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">irazuense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">megalophyllum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">rugulosum</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">panamense</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">berry</Taxon>
+<Taxon name="Species">Button</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">Yes</Item>
+<Item name="Identification">Dorsal borders entirely black, postdiscal bar wide, M2 and M3 at most weakly bowed.</Item>
+<Item name="FW discal cell with central bar">No</Item>
+<Item name="Base of FW vein M2">All black</Item>
+<Item name="FW with light postdiscal bar">White bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="FW length (range in mm)">27-29 mm</Item>
+<Item name="End bar of FW discal cell">Rectangular (end broad)</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 3 April 2001. Updated: 5 June 2001.</Item>
+<Item name="Species range">Costa Rica to South America</Item>
+<Item name="Female Wingspan">55</Item>
+<Item name="Dorsal ground color">All black</Item>
+<Item name="Center of FW discal cell">No distinct mark</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by transparent (clearwings)</Item>
+<Item name="Outer end of HW discal cell">Convex</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Margin of HWV with line of spots">No (only 1 to 3 spots at apex)</Item>
+<Item name="Status">No concern</Item>
+<Item name="Genus">Greta</Item>
+<Item name="Margin of HWV mostly with">No spots</Item>
+<Item name="Color pattern">Clearwing</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Greta</Taxon>
+<Taxon name="Species">andromica</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">simplex</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Pteronymia</Taxon>
+<Taxon name="Species">artena</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Hypoleria</Taxon>
+<Taxon name="Species">cassotis</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">52-55 mm</Item>
+<Item name="Bar at end of FW discal cell">No</Item>
+</TaxonEntry>
+<TaxonEntry dataSourceName="ITHChar28sep01Data">
+<Item name="Margin of HWD with line of spots">Yes (4 or more spots along margin)</Item>
+<Image name="Image: female ventral">Gody-zygi-fv-539-184.jpg#Gody-zygi-fv-539.jpg</Image>
+<Item name="Scent scales on costal margin of HWD">No (Female)</Item>
+<Item name="HW with dark central bar or spot">No bar or spot</Item>
+<Item name="Early stages">Solitary</Item>
+<Item name="Antenna color">Orange tip</Item>
+<Item name="Species">zygia</Item>
+<Image name="Image: female dorsal">Gody-zygi-fd-539-184.jpg#Gody-zygi-fd-539.jpg</Image>
+<EntryList name="Other adult foods">
+<Entry></Entry>
+</EntryList>
+<Item name="Habitat">Forest</Item>
+<Item name="Local distribution">Southern pacific region at 0-1000 m reaching as far north as the Central Valley. Not recorded from the Monteverde region.</Item>
+<Item name="FW length male">33</Item>
+<Item name="Author">(Godman &amp; Salvin)</Item>
+<Item name="FW length female">30</Item>
+<Item name="Live underside female">Gody-zygi-fv-s2672-184.jpg#Gody-zygi-fv-s2672-72.jpg</Item>
+<Item name="End of FW discal cell">Opaque bar</Item>
+<Item name="HW scale density">Translucent (shaded yellow to orange)</Item>
+<Item name="Comments">May be a Pacific slope subspecies of G. zavaleta (DeVries 1987). </Item>
+<Item name="Scientific name">Godyris zygia</Item>
+<Image name="Image: male ventral">God-zyg-mv-663-184.jpg#God-zyg-mv-663.jpg</Image>
+<Item name="Color of HW fringe">Black</Item>
+<Item name="FW with translucent smoky black markings">Yes</Item>
+<Item name="Margin of FWD with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Male Wingspan (mm)">63</Item>
+<Item name="Abundance">Not recorded from Monteverde.</Item>
+<Item name="Basal third of FW mostly black">No</Item>
+<Item name="FW postmedian pattern">Pale translucent yellow areas</Item>
+<Item name="Color of HW discal area">Translucent yellow to dark orange-brown</Item>
+<Image name="Image: male dorsal">God-zyg-md-663-184.jpg#God-zyg-md-663.jpg</Image>
+<Item name="Migration">Not known </Item>
+<Item name="Border of FW apex">About same width as adjacent black border</Item>
+<Item name="FW length (range in mm)">30-33 mm</Item>
+<Item name="Costal margin of FWD along discal cell">Solid black</Item>
+<Item name="Cloud forest">Not present</Item>
+<SpeciesGroupList name="Larval food plants">
+<SpeciesGroup comment="cf.">
+<TaxonReference>
+<Taxon name="Genus">Cestrum</Taxon>
+<Taxon name="Species">nocturnum</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Hind margin of FWD all black">No</Item>
+<Item name="Identification">Similar to female G. zavaleta, but smoky pattern more pronounced, fw discal cell mostly dark, fw with much less yellow.</Item>
+<Item name="Footer">Images and text copyright (c) 2001 by William A. Haber, whaber@racsa.co.cr
+Created: 13 January 2001. Updated: 12 June 2001.</Item>
+<Item name="FW with light postdiscal bar">Yellow bar</Item>
+<Item name="Margin of FWV with line of 4 or more spots">Yes (4 or more spots along margin)</Item>
+<Item name="Species range">Costa Rica and Panama</Item>
+<Item name="Female Wingspan">60</Item>
+<Item name="Center of FW discal cell">Smoky translucent mark</Item>
+<Item name="Sex">Female</Item>
+<Item name="Margin of HWD">Black bordered by orange-brown</Item>
+<Item name="Status">No concern</Item>
+<Item name="Margin of HWV with line of spots">Yes (4 or more spots along margin)</Item>
+<Item name="Egg">Solitary</Item>
+<Item name="Genus">Godyris</Item>
+<Item name="Margin of HWV mostly with">1 spot per cell</Item>
+<Item name="Color pattern">Barless tigre</Item>
+<SpeciesGroupList name="Similar species">
+<SpeciesGroup>
+<TaxonReference>
+<Taxon name="Genus">Godyris</Taxon>
+<Taxon name="Species">zavaleta</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Dircenna</Taxon>
+<Taxon name="Species">dero</Taxon>
+</TaxonReference>
+<TaxonReference>
+<Taxon name="Genus">Napeogenes</Taxon>
+<Taxon name="Species">cranto</Taxon>
+</TaxonReference>
+</SpeciesGroup>
+</SpeciesGroupList>
+<Item name="Wingspan">60-63 mm</Item>
+</TaxonEntry>
+</content>
+<diagnostics>
+<diagnostic code="RECORD_COUNT" severity="info">36</diagnostic>
+</diagnostics>
+</response>
+</responseWrapper>
+
+
+
+
+
+

@@ -1,0 +1,8 @@
+#$Id$	
+# Run this file only once after a mySQL installation
+CREATE DATABASE IF NOT EXISTS efg;
+DROP USER efg;
+CREATE USER efg IDENTIFIED BY 'efg';
+
+
+

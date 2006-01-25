@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resource xmlns="http://www.namespaceTBD.org/digir">
+	<name>Morning gloriesOf Costa Rica</name>
+	<code>UMASS-EFG</code>
+	<relatedInformation>http://www.cs.umb.edu/efg/</relatedInformation>
+	<contact type="technical">
+		<name>efg</name>
+		<title>Software Engineer</title>
+		<emailAddress>efg@cs.umb.edu</emailAddress>
+	</contact>
+	<abstract>Morning gloriesOf Costa Rica</abstract>
+	<keywords>Descriptive Data</keywords>
+	<citation>Morning gloriesOf Costa Rica, data provided by Dr W. Haber</citation>
+	<useRestrictions>This data can be used freely subject to individual records.</useRestrictions>
+	<conceptualSchema schemaLocation="http://digir.sourceforge.net/fed/beta3/darwin2.xsd">http://www.namespaceTBD.org/darwin2</conceptualSchema>
+	<recordLimit>16</recordLimit>
+	<recordIdentifier>UMBEFG-Ipomea</recordIdentifier>
+	<numberOfRecords>16</numberOfRecords>
+	<dateLastUpdated>2002-05-30T14:22:00-05:00</dateLastUpdated>
+</resource>

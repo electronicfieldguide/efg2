@@ -1,0 +1,58 @@
+1. Inner groups cannot be moved around.They must always be part of the outer group.
+2. All other groups can be moved around.
+3. Fix holdsmultiple problem with mediaresources
+4. Fix size problem fields.
+
+
+Solanaceae Data(1) -> Family, Ith, palm,EFGCR,Ipo
+HetData
+
+Make the thing called 'A' look the same as the thing.
+
+Write templates and say that the thing that is called 'Common Name' replace with the thing that is called 'Family Common Name'
+
+And so on..
+There may be some slight problems but perhaps we can deal with them when they happen.
+
+Convention for naming things in jsp template pages
+
+group : group id : group rank:character rank 
+'gl':group id : group rank
+'cl':groupid:group rank:character rank
+ 
+if group rank the same means use it to sort characterValues
+
+Use this to sort groups into characterValue ranks
+	<group rank="1" id="1">
+				<characterValue rank="1" text="Field Guide to the Bogs of Southern New England"/>
+				<characterValue rank="2" text="by Marsha Salett"/>
+			</group>
+
+group:1:1:1
+group:1:1:2
+Distinguish between a group label and a characterLabel
+<group rank="2" id="2" label="Taxonomy">
+				<groups>
+					<group rank="1" id="3">
+						<characterValue rank="1" value="Common Name"/>
+						<characterValue rank="2"/>
+						<characterValue rank="3"/>
+						<characterValue rank="4" value="Genus"/>
+						<characterValue rank="5" value="Species"/>
+						<characterValue rank="6" value="Author"/>
+						<characterValue rank="7" value="Family"/>
+						<characterValue rank="8" value="Family Common Name"/>
+					</group>
+					<group rank="2" id="4">
+						<characterValue rank="1" value="Main Image"/>
+					</group>
+				</groups>
+			</group>
+
+group:2:2:1:select=CommonName
+group:2:2:1:label='SomeText' een
+
+Differentiate between labels and text..
+
+
+

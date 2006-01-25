@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Stanley D Blum (California Academy of Sciences) -->
+<!-- $Id$ -->
+<request xmlns="http://digir.net/schema/protocol/2003/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:darwin="http://digir.net/schema/conceptual/darwin/2003/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://digir.net/schema/protocol/2003/1.0 http://digir.sourceforge.net/schema/protocol/2003/1.0/digir.xsd http://digir.net/schema/conceptual/darwin/2003/1.0 http://digir.sourceforge.net/schema/conceptual/darwin/2003/1.0/darwin2.xsd">
+	<header>
+		<version>1.0</version>
+		<sendTime>2003-03-09T19:14:58-05:00</sendTime>
+		<source></source>
+		<destination></destination>
+		<type>inventory</type>
+	</header>
+	<inventory>
+		<darwin:Genus/>
+		<count>true</count>
+	</inventory>
+</request>

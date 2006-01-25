@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EFGDocument>
+	<TaxonEntry>
+		<Items name="Created">
+			<Item caption="21_February_2001">21 February 2001</Item>
+		</Items>
+		<Items name="Page header">
+			<Item caption="Monteverde_Plants:_Acnistus_arborescens">Monteverde Plants: Acnistus arborescens</Item>
+		</Items>
+		<Items name="Sim Species with desc">
+			<Item caption="?Lacks_the_tomato_leaf_odor_characteristic_of_many_solanaceous_species._Most_individuals_have_at_least_some_leaves_with_small_wart-like_galls_caused_by_mites.?">?Lacks the tomato leaf odor characteristic of many solanaceous species. Most individuals have at least some leaves with small wart-like galls caused by mites.?</Item>
+		</Items>
+		<Items name="Species">
+			<Item caption="arborescens">arborescens</Item>
+		</Items>
+		<Items name="Abundance">
+			<Item caption="Common_at_1000-1400_m,_less_abundant_at_higher_and_lower_elevations.">Common at 1000-1400 m, less abundant at higher and lower elevations.</Item>
+		</Items>
+		<Items name="Author">
+			<Item caption="(L.)_Schltdl.">(L.) Schltdl.</Item>
+		</Items>
+		<Items name="Comments">
+			<Item caption="Because_of_its_habitat_and_distinctive_features,_this_species_is_hard_to_confuse_with_any_other_tree.">Because of its habitat and distinctive features, this species is hard to confuse with any other tree.</Item>
+		</Items>
+		<Items name="Credits">
+			<Item caption="Images_and_text_copyright_©_2002-2005_by_William_A._Haber,_www.cs.umb.edu/efg.">Images and text copyright © 2002-2005 by William A. Haber, www.cs.umb.edu/efg.</Item>
+		</Items>
+		<Items name="Description">
+			<Item caption="Small_to_medium-sized_tree,_reproductive_at_2-10_m;_bark_beige,_corky_with_deep_virtical_ridges_and_fissures;_leaves_alternate,_often_not_paired,_to_25_cm_long,_glabrous,_elliptic,_entire,_often_with_small_wart-like_galls;_flowers_white_in_dense_fasciles_in_leaf_axils_or_at_leafless_nodes,_bell-shaped,_1_cm_long,_with_5_recurved_lobes,_green-spotted_inside,_anthers_cream,_fragrant;_fruit_a_7_mm_orange_juicy_berry_with_many_small_flat_seeds.">Small to medium-sized tree, reproductive at 2-10 m; bark beige, corky with deep virtical ridges and fissures; leaves alternate, often not paired, to 25 cm long, glabrous, elliptic, entire, often with small wart-like galls; flowers white in dense fasciles in leaf axils or at leafless nodes, bell-shaped, 1 cm long, with 5 recurved lobes, green-spotted inside, anthers cream, fragrant; fruit a 7 mm orange juicy berry with many small flat seeds.</Item>
+		</Items>
+		<Items name="Family">
+			<Item caption="Solanaceae">Solanaceae</Item>
+		</Items>
+		<Items name="Family common name">
+			<Item caption="Potato_Family">Potato Family</Item>
+		</Items>
+		<MediaResources name="Flower" ordered="false">
+			<MediaResource caption="" type="Image">Acni_arbo-fl-184.jpg#Acni-arbo-hfl-s3103-72.jpg</MediaResource>
+		</MediaResources>
+		<MediaResources name="Flowering habit" ordered="false">
+			<MediaResource caption="FFFFF" type="Image">Acni_arbo-hfl-184.jpg#Acni-arbo-fl-o2-72.jpg</MediaResource>
+			<MediaResource caption="yyy" type="Image">Acni_arbo-hfl-184.jpg#Acni-arbo-fl-o2-72.jpg</MediaResource>
+			<MediaResource caption="zzz" type="Image">Acni_arbo-hfl-184.jpg#Acni-arbo-fl-o2-72.jpg</MediaResource>
+		</MediaResources>
+		<Items name="Flowering habit">
+			<Item caption="Acni_arbo-hfl-184.jpg#Acni-arbo-fl-o2-72.jpg">Acni_arbo-hfl-184.jpg#Acni-arbo-fl-o2-72.jpg</Item>
+		</Items>
+		<Items name="Genus">
+			<Item caption="Acnistus">Acnistus</Item>
+		</Items>
+		<Items name="Habitat">
+			<Item caption="Open_areas_such_as_roadsides,_old_pastures,_and_young_secondary_forest.">Open areas such as roadsides, old pastures, and young secondary forest.</Item>
+		</Items>
+		
+		<EFGLists name="Herbivores" type="efgList" ordered="false">
+			<EFGList serviceLink="Scientific name">Ithomia heraldica</EFGList>
+		</EFGLists>
+		<Items name="Identification">
+			<Item caption="?_small_tree_with_corky,_fissured,_beige_bark
+?_large_simple_leaves,_rarely_paired,_often_with_wart-like_galls
+?_1_cm_white_bell-shaped_flowers_in_sessile_groups
+?_small_orange_berries">? small tree with corky, fissured, beige bark
+? large simple leaves, rarely paired, often with wart-like galls
+? 1 cm white bell-shaped flowers in sessile groups
+? small orange berries</Item>
+		</Items>
+		<MediaResources name="Image fl lg" ordered="false">
+			<MediaResource caption="" type="Image">Acni_arbo-fl-184.jpg#Acni-arbo-hfl-s3103-72.jpg</MediaResource>
+		</MediaResources>
+		<MediaResources name="Image fr lg" ordered="false">
+			<MediaResource caption="" type="Image">Acni_arbo-hfl-184.jpg#Acni-arbo-fl-o2-72.jp</MediaResource>
+		</MediaResources>
+		<Items name="Local distribution">
+			<Item caption="Common_in_disturbed_areas_from_700_to_1500_m_on_the_Pacific_slope;_rarely_cultivated_on_Atlantic_slope.">Common in disturbed areas from 700 to 1500 m on the Pacific slope; rarely cultivated on Atlantic slope.</Item>
+		</Items>
+		<Items name="Phenology">
+			<Item caption="Flower:_jan-feb,_may-jun._Fruit:_may-sep._Some_individuals_can_be_found_in_flower_at_any_time.">Flower: jan-feb, may-jun. Fruit: may-sep. Some individuals can be found in flower at any time.</Item>
+		</Items>
+		<Items name="Pollinators">
+			<Item caption="Small_insects_including_bees,_wasps,_flies,_butterflies,_beetles,_and_ocasionally_hummingbirds.">Small insects including bees, wasps, flies, butterflies, beetles, and ocasionally hummingbirds.</Item>
+		</Items>
+		<Items name="Scientific name">
+			<Item caption="Acnistus_arborescens">Acnistus arborescens</Item>
+		</Items>
+		<Items name="Seed dispersers">
+			<Item caption="The_fruits_are_eaten_by_more_than_40_species_of_birds.">The fruits are eaten by more than 40 species of birds.</Item>
+		</Items>
+		<EFGLists name="Similar species" type="efgList" ordered="false">
+			<EFGList serviceLink="Scientific name">Cestrum megalophyllum</EFGList>
+				<EFGList serviceLink="Scientific name">Ithomia heraldica</EFGList>
+		</EFGLists>
+		<Items name="Species range">
+			<Item caption="Mexico_to_Costa_Rica;_Ecuador_and_Peru.">Mexico to Costa Rica; Ecuador and Peru.</Item>
+		</Items>
+		<Items name="Updated">
+			<Item caption="12_May_2001">12 May 2001</Item>
+		</Items>
+		<Items name="Voucher">
+			<Item caption="Haber_462">Haber 462</Item>
+		</Items>
+	</TaxonEntry>
+</EFGDocument>

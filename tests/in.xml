@@ -1,0 +1,24 @@
+<request xmlns="http://www.namespaceTBD.org/digir" xmlns:darwin="http://www.namespaceTBD.org/darwin" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.namespaceTBD.org/digir digir.xsd http://www.namespaceTBD.org/darwin darwin.xsd">
+   <header>
+      <requestType>search</requestType>
+   </header>
+   <search>
+           <filter>
+         <and>
+            <in>
+               <list xsi:type="darwin:list">
+                  <darwin:Species>polymnia</darwin:Species>
+                  <darwin:Species>lysimnia</darwin:Species>
+               </list>
+            </in>
+            <equals>
+               <darwin:Genus>Mechanitis</darwin:Genus>
+            </equals>
+         </and>
+      </filter>
+      <records start="0" limit="20">
+      <structure/>
+     </records>
+<count>true</count>
+   </search>
+</request>

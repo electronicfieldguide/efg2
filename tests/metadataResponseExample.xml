@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Stanley D Blum (California Academy of Sciences) -->
+<!-- $Id$ -->
+<response xmlns="http://www.namespaceTBD.org/digir" xmlns:darwin="http://www.namespaceTBD.org/darwin2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.namespaceTBD.org/digir http://digir.sourceforge.net/prot/beta3/digir.xsd http://www.namespaceTBD.org/darwin2 http://digir.sourceforge.net/fed/beta3/darwin2.xsd">
+	<header>
+		<version>beta3</version>
+		<sendTime>2002-05-31T12:57:00-05:00</sendTime>
+		<source>http://tsadev.speciesanalyst.net/digir/reflector.php</source>
+		<destination>216.91.87.102</destination>
+		<type>metadata</type>
+	</header>
+	<content>
+		<metadata>
+			<provider>
+				<name>EFG</name>
+				<accessPoint>http://tiger.cs.umb.edu:8080/efg</accessPoint>
+				<implementation>Java 2 SDK 1.4.0</implementation>
+				<host>
+					<name>Electronic Field Guide: An Object-Oriented WWW Database to Identify Species and Record Ecological Observations</name>
+					<code>EFG</code>
+					<relatedInformation>http://www.cs.umb.edu/efg/</relatedInformation>
+					<contact type="administrative">
+						<name>Robert A. Morris</name>
+						<title>Professor</title>
+						<emailAddress>ram@cs.umb.edu</emailAddress>
+						<phone>(617)287-6466</phone>
+					</contact>
+					<abstract>A dummy provider.</abstract>
+				</host>
+				<resource>
+					<name>efg</name>
+					<code>EFG</code>
+						<relatedInformation>http://www.cs.umb.edu/efg/</relatedInformation>
+					<contact type="technical">
+						<name>efg</name>
+						<title>Software Engineer</title>
+					<emailAddress>efg@cs.umb.edu</emailAddress>
+					</contact>
+					<abstract>A dummy resource .</abstract>
+					<keywords>Dummy keyword</keywords>
+					<citation>Data obtained from the Costa Rica</citation>
+					<useRestrictions>This data can be used freely as it is completely meaningless.</useRestrictions>
+					<conceptualSchema schemaLocation="http://digir.sourceforge.net/fed/beta3/darwin2.xsd">http://www.namespaceTBD.org/darwin2</conceptualSchema>
+					<recordLimit>200</recordLimit>
+					<recordIdentifier>EFG</recordIdentifier>
+					<!-- recordBasis>Living Organism</recordBasis -->
+					<numberOfRecords>200</numberOfRecords>
+					<dateLastUpdated>2002-05-30T14:22:00-05:00</dateLastUpdated>
+				</resource>
+			</provider>
+		</metadata>
+	</content>
+</response>

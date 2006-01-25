@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EFGSearchPageConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="EFGSearchPageConfig.xsd">
+	<datasource name="dummy_data_source" maximumPlateSize="200">
+		<captions>
+			<defaultLabel>dummy</defaultLabel>
+		</captions>
+		<groups>
+			<group>dummy</group>
+		</groups>
+		<images>
+			<defaultLabel>dummy</defaultLabel>
+		</images>
+		<templates>
+			<lists>
+				<listsUnsorted>xxx</listsUnsorted>
+			</lists>
+			<plates>
+				<platesUnsorted>yyy</platesUnsorted>
+			</plates>
+		</templates>
+		
+		
+		<!--
+			<listsNoGroup>default</listsNoGroup>
+			<listsGroup>default</listsGroup>
+			<platesNoGroup>default</platesNoGroup>
+			<platesGroup>default</platesGroup>
+-->
+		
+	</datasource>
+</EFGSearchPageConfig>

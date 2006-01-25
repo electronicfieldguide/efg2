@@ -1,0 +1,64 @@
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
+<!-- $Id$ -->
+<project name="buildTemplatesSources" default="generate" basedir=".">
+	<property environment="myenv"/>
+	<property name="app.name" value="app"/>
+	<property name="efg.home" value="."/>
+	<property name="compiled" value="${efg.home}/compiled"/>
+	<property name="jars.home" value="${efg.home}/lib"/>
+	<property name="args" value=""/>
+	<!--
+Templates generation
+-->
+	<!--  search page generation-->
+	<property name="taxonPage.src.dir" value="project/efg/template/taxonPageTemplates"/>
+	<path id="compile.class.path">
+		<fileset dir="${jars.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<pathelement location="${compiled}"/>
+	</path>
+	<target name="prepare">
+		<mkdir dir="${compiled}"/>
+	</target>
+	<target name="compile" depends="clean,prepare">
+		<javac srcdir="project" destdir="compiled" debug="on" optimize="off" deprecation="on">
+			<classpath refid="compile.class.path"/>
+		</javac>
+	</target>
+	<target name="generate" depends="cleanGenerator">
+		<java fork="yes" classname="org.exolab.castor.builder.SourceGenerator">
+			<arg line="-verbose -i templateConfigFiles/taxonPageTemplate.xsd -package project.efg.templates.taxonPageTemplates -types j2"/>
+			<classpath refid="compile.class.path"/>
+		</java>
+		<copy todir="source/project">
+			<fileset dir="project" excludes="*.xml"/>
+		</copy>
+	</target>
+	<target name="clean">
+		<delete quiet="true">
+			<fileset dir="${searchPage.src.dir}" includes="*.*~,#*.*#" defaultexcludes="no"/>
+		</delete>
+		<delete quiet="true">
+			<fileset dir="${templates.src.dir}" includes="*.*~,#*.*#" defaultexcludes="no"/>
+		</delete>
+		<delete quiet="true">
+			<fileset dir="${taxonPage.src.dir}" includes="*.*~,#*.*#" defaultexcludes="no"/>
+		</delete>
+	</target>
+	<target name="cleanSource">
+		<fileset dir="${efg.home}/source/project/efg/templates/taxonPageTemplates"/>
+	</target>
+	<target name="cleanGenerator" depends="clean">
+		<delete quiet="true">
+			<fileset dir="project/efg/templates/taxonPageTemplates"/>
+		</delete>
+		<delete quiet="true">
+			<fileset dir="${src}" includes="*.*~,#*.*#" defaultexcludes="no"/>
+		</delete>
+		<delete quiet="true">
+			<fileset dir="${compiled}" includes="*.*~,#*.*#" defaultexcludes="no"/>
+		</delete>
+	</target>
+
+</project>

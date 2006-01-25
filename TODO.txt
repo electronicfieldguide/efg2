@@ -1,0 +1,2 @@
+1. Links on EFGLists to other datasources must be fixed.
+2. Refactor to make independent of relational databases.

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<request xmlns="http://digir.net/schema/protocol/2003/1.0" xmlns:darwin="http://digir.net/schema/conceptual/darwin/2003/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="digir.xsd darwin2.xsd">
+	<header>
+		<version>0.91</version>
+		<sendTime>1997-07-16T19:20:30.45+01:00</sendTime>
+		<source>128.32.214.123</source>
+		<destination resource="MammalsDwC2">http://128.32.214.123:80/DiGIRprov/ttuwww/DiGIR.php</destination>
+		<type>search</type>
+	</header>
+	<search>
+		<filter>
+			<and>
+				<equals>
+					<darwin:Genus>Mechanitis</darwin:Genus>
+				</equals>
+				<and>
+					<notEquals>
+						<darwin:Species>polymnia</darwin:Species>
+					</notEquals>
+					<notEquals>
+						<darwin:Species>lysimnia</darwin:Species>
+					</notEquals>
+				</and>
+			</and>
+		</filter>
+       <records start="0" limit="10">
+<structure/>
+                </records>
+
+		<count>true</count>
+	</search>
+</request>
