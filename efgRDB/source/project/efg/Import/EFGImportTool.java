@@ -182,9 +182,8 @@ public class EFGImportTool
 	    return h;
 	}
         String[] header = new String[h.length];
-	
-        for(int i = 0; i < h.length; i++) {
-            header[i] = (String) this.mappingTable.get(h[i]);
+	for(int i = 0; i < h.length; i++) {
+	    header[i] = (String)this.mappingTable.get(h[i].trim());
         }
         return header;
     }
@@ -224,14 +223,19 @@ public class EFGImportTool
 	    }
 	    if (datasource == DATA_DS) {
 		//use the names in the metadata file
-	      header = this.translateHeader(header, tableName);
+		header = this.translateHeader(header, tableName);
 	    }
 	  
-	    EFGRDBImportUtils.createAndPopulateTable(tableName, header, records);
+	    boolean boolT = EFGRDBImportUtils.createAndPopulateTable(tableName, header, records);
 	    //create Helper tables
-	    System.out.println("The Database table: " + tableName + " was successfully created.");
-	    return true;
-	
+	    if(boolT){
+		System.out.println("The Database table: " + tableName + " was successfully created.");
+		return true;
+	    }
+	    System.out.println("The Database table: " + tableName + " could not be created successfully.");
+	    return false;
+	    
+	    
 	} catch (Exception e) {
 	    System.out.println("The Database table: " + tableName + " could not be created.");
 	    LoggerUtils.logErrors(e);
@@ -265,10 +269,11 @@ public class EFGImportTool
 	    String[] row;
 	    int nRows = records.size();
 	    //Hashtable mapping = new Hashtable(2 * nRows); // The load factor will be 0.5
-	    
 	    for(int j = 0; j < nRows; j++) {
 		row = (String[]) records.get(j);
-		this.mappingTable.put(row[nameIndex], row[legalnameIndex]);
+		log.debug("Adding: " + row[nameIndex] + " as name");
+		log.debug("Adding: " + row[legalnameIndex] + " as legalname");
+		this.mappingTable.put(row[nameIndex].trim(), row[legalnameIndex].trim());
 	    }
 	    return true;
 	}
@@ -311,8 +316,11 @@ public class EFGImportTool
     }
 }
 //$Log$
-//Revision 1.1  2006/01/25 21:03:42  kasiedu
-//Initial revision
+//Revision 1.2  2006/01/26 04:20:46  kasiedu
+//no message
+//
+//Revision 1.1.1.1  2006/01/25 21:03:42  kasiedu
+//Release for Costa rica
 //
 //Revision 1.1.1.1  2003/10/17 17:03:05  kimmylin
 //no message
