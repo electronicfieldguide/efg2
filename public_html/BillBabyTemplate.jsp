@@ -111,7 +111,7 @@
 	String fieldValue = null;
      %>
 		<title>Templates for <%=dataSourceName%></title>
-		<link href="famstyle.css" rel="stylesheet"/>
+		<link href="http://alpaca.cs.umb.edu/efg/monteverde/famstyle.css" rel="stylesheet"/>
 	</head>
 <body>
 <form method="post" action="<%=context%>/configTaxonPage">
@@ -301,15 +301,16 @@
 							<td>
 								<table cellspacing="5" border="0"><!--IMAGES -->
 									<%	
-									for(int counter1 = 0;  counter1 < numberOfImages; counter1++){
+									for(int counter1 = 0;  counter1 < 2; counter1++){
 										curName = name + ":" + (counter1 + 1);
 										
 
 									%>
 									<tr>
 										<td class="id_text">
+											<img src="Acni_arbo-fl-184.jpg" alt="Flower"/>
 											<select name="<%=curName%>" size="1"> 
-											<!-- Image fields -->
+											
 											<%
 												
 												fieldValue = (String)groupTable.get(curName);
@@ -338,12 +339,15 @@
 												}
 											%>
 											
-											<br/><input type="text" name="<%=clName%>" value="<%=fieldValue%>"/><!-- IMAGE CAPTION -->
+											<br/><input type="text" name="<%=clName%>" value="<%=fieldValue%>"/>
 										</td>
 										<% if((counter1 + 1) < numberOfImages){
 											curName = name + ":" + (counter1 + 2);
 										%>
 										<td class="id_text">
+										
+											<img src="Acni_arbo-hfl-184.jpg" alt="Flowering habit"/>
+
 											<select name="<%=curName%>" size="1"> 
 											<%
 												fieldValue = (String)groupTable.get(curName);
@@ -392,7 +396,7 @@
 
 								<%
 								int counterx = 0;	
-								for(counterx = 0;  counterx < numberOfIdentifications; counterx++){
+								for(counterx = 0;  counterx < 1; counterx++){
 									curName = name + ":" + (counterx + 1);
 									bool = false;
 									fieldValue = (String)groupTable.get(curName);
@@ -435,7 +439,7 @@
 											fieldValue ="";
 										}
 								%>
-									 <input type="text" name="<%=clName%>" value="<%=fieldValue%>"/> 
+									 <!--input type="text" name="<%=clName%>" value="<%=fieldValue%>"/--> 
 								</p>
 							</td>
 						</tr>
@@ -452,7 +456,7 @@
 							<td>
 							<!-- find how many field names then create as many paragraphs 	-->
 								<%	
-								for(int counter = 0; counter < tableSize; counter++){
+								for(int counter = 0; counter < 12; counter++){
 									curName = name + ":" + (counter + 1);
 									clName = "cl:" +  groupRank + ":" + (groupRank + counter + 1);
 									bool = false;
@@ -498,12 +502,13 @@
 					<% groupRank = groupRank + 1;
 		   			   name = "group:" + groupRank + ":" + groupRank;
 					   curName = name + ":1";
-					   String groupLabel1 = "gl:" +  groupRank + ":" + groupRank;
+ 						String groupLabel1 = "gl:" +  groupRank + ":" + groupRank;
   						String glValue1 = (String)groupTable.get(groupLabel1);
 						if(glValue1 == null){
 							glValue1 ="";
 						}
 
+		
 					   clName = "gl:" +  groupRank + ":" + groupRank;
 					   bool = false;
 					   String clValue = (String)groupTable.get(clName);
@@ -554,6 +559,7 @@
 							</td>
 						</tr>
 					</table>
+	
 				</td>
 			</tr>
 		</table>

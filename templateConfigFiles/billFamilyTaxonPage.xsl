@@ -24,7 +24,7 @@
 					<xsl:when test="$datasource and $templateConfigFile">
 						<xsl:call-template name="start">
 							<xsl:with-param name="taxonEntry" select="//TaxonEntry"/>
-							<xsl:with-param name="groups" select="document($templateConfigFile)/TaxonPageTemplates/TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
+							<xsl:with-param name="groups" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
@@ -309,7 +309,7 @@
 						<xsl:sort data-type="number" order="ascending" select="@rank"/>
 						<xsl:variable name="label">
 							<xsl:choose>
-								<xsl:when test="@label">
+								<xsl:when test="not(string(@label))=''">
 									<xsl:value-of select="@label"/>
 								</xsl:when>
 								<xsl:otherwise>
@@ -355,14 +355,16 @@
 	<xsl:template name="handleGroups34">
 		<xsl:param name="groups34"/>
 		<xsl:param name="taxonEntry"/>
-		<td>
-			<table cellspacing="5" border="0">
-				<xsl:call-template name="handleGroup3">
-					<xsl:with-param name="group3" select="$groups34[@rank=3]"/>
-					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
-				</xsl:call-template>
-			</table>
-		</td>
+		<xsl:if test="$groups34[@rank=3]">
+			<td>
+				<table cellspacing="5" border="0">
+					<xsl:call-template name="handleGroup3">
+						<xsl:with-param name="group3" select="$groups34[@rank=3]"/>
+						<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+					</xsl:call-template>
+				</table>
+			</td>
+		</xsl:if>
 		<xsl:if test="$groups34[@rank=4]">
 			<td>
 				<xsl:call-template name="handleGroup4">
@@ -382,7 +384,7 @@
 						<xsl:sort data-type="number" order="ascending" select="@rank"/>
 						<xsl:variable name="label">
 							<xsl:choose>
-								<xsl:when test="@label">
+								<xsl:when test="not(string(@label))=''">
 									<xsl:value-of select="@label"/>
 								</xsl:when>
 								<xsl:otherwise>
@@ -425,9 +427,18 @@
 			<xsl:for-each select="$group3/characterValue">
 				<xsl:sort data-type="number" order="ascending" select="@rank"/>
 				<xsl:variable name="current_rank" select="@rank"/>
-				<xsl:variable name="label" select="@label"/>
 				<xsl:if test="$current_rank mod $number-per-row = 1">
 					<xsl:variable name="character1" select="@value"/>
+					<xsl:variable name="label">
+						<xsl:choose>
+							<xsl:when test="not(string(@label))=''">
+								<xsl:value-of select="@label"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$character1"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<tr>
 						<td class="id_text">
 							<xsl:call-template name="displayMediaResources">
@@ -435,10 +446,29 @@
 								<xsl:with-param name="label" select="$label"/>
 							</xsl:call-template>
 						</td>
-						<xsl:if test="not($current_rank  = $total_count)">
+						<xsl:if test="not(number($current_rank)  = number($total_count))">
 							<td class="id_text">
-								<xsl:variable name="character2" select="following-sibling::characterValue[1]/@value"/>
-								<xsl:variable name="label2" select="following-sibling::characterValue[1]/@label"/>
+								<xsl:variable name="character2">
+									<xsl:choose>
+										<xsl:when test="ancestor::group/characterValue[number(@rank)=(number($current_rank) + 1)]">
+											<xsl:value-of select="ancestor::group/characterValue[number(@rank)=(number($current_rank) + 1)]/@value"/>
+										</xsl:when>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:variable name="label2">
+									<xsl:choose>
+										<xsl:when test="ancestor::group/characterValue[number(@rank)=(number($current_rank) + 1)]">
+											<xsl:choose>
+												<xsl:when test="not(string(ancestor::group/characterValue[number(@rank)=(number($current_rank) + 1)]/@label))=''">
+													<xsl:value-of select="ancestor::group/characterValue[number(@rank)=(number($current_rank) + 1)]/@label"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="$character2"/>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:when>
+									</xsl:choose>
+								</xsl:variable>
 								<xsl:call-template name="displayMediaResources">
 									<xsl:with-param name="mediaresources" select="$taxonEntry/MediaResources[@name=$character2]"/>
 									<xsl:with-param name="label" select="$label2"/>
@@ -511,73 +541,81 @@
 				<xsl:value-of select="$creditVariables/characterValue[@rank=1]/@label"/>
 			</xsl:if>
 		</xsl:variable>
+	
 		<br/>
 		<hr/>
 		<br/>
-		<table width="100%" bgcolor="white">
-			<tr>
-				<td>
-					<xsl:choose>
-						<xsl:when test="$groupLabel">
-							<xsl:choose>
-								<xsl:when test="$text">
-									<xsl:call-template name="outputStrong">
-										<xsl:with-param name="character" select="$groupLabel"/>
-										<xsl:with-param name="states" select="$text"/>
-									</xsl:call-template>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:variable name="states">
-										<xsl:call-template name="handleCharacters">
-											<xsl:with-param name="character" select="$character"/>
-											<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
-										</xsl:call-template>
-									</xsl:variable>
-									<xsl:call-template name="outputStrong">
-										<xsl:with-param name="character" select="$groupLabel"/>
-										<xsl:with-param name="states" select="$states"/>
-									</xsl:call-template>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:variable name="var1">
+		<xsl:choose>
+			<xsl:when test="string($groupLabel)='' and string($character)='' and string($text)='' and string($label)=''">
+			</xsl:when>
+			<xsl:otherwise>
+			<table width="100%" bgcolor="white">
+				<tr>
+					<td>
+						<xsl:choose>
+							<xsl:when test="not(string($groupLabel)='')">
 								<xsl:choose>
-									<xsl:when test="$label">
-										<xsl:call-template name="handleCharacters">
-											<xsl:with-param name="character" select="$label"/>
-											<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+									<xsl:when test="not(string($text))=''">
+										<xsl:call-template name="outputStrong">
+											<xsl:with-param name="character" select="$groupLabel"/>
+											<xsl:with-param name="states" select="$text"/>
 										</xsl:call-template>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="$character"/>
+										<xsl:variable name="states">
+											<xsl:call-template name="handleCharacters">
+												<xsl:with-param name="character" select="$character"/>
+												<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:call-template name="outputStrong">
+											<xsl:with-param name="character" select="$groupLabel"/>
+											<xsl:with-param name="states" select="$states"/>
+										</xsl:call-template>
 									</xsl:otherwise>
 								</xsl:choose>
-							</xsl:variable>
-							<xsl:choose>
-								<xsl:when test="$text">
-									<xsl:call-template name="outputStrong">
-										<xsl:with-param name="character" select="$var1"/>
-										<xsl:with-param name="states" select="$text"/>
-									</xsl:call-template>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:variable name="var2">
-										<xsl:call-template name="handleCharacters">
-											<xsl:with-param name="character" select="$character"/>
-											<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:variable name="var1">
+									<xsl:choose>
+										<xsl:when test="not(string($label))=''">
+											<xsl:call-template name="handleCharacters">
+												<xsl:with-param name="character" select="$label"/>
+												<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+											</xsl:call-template>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$character"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:choose>
+									<xsl:when test="not(string($text))=''">
+										<xsl:call-template name="outputStrong">
+											<xsl:with-param name="character" select="$var1"/>
+											<xsl:with-param name="states" select="$text"/>
 										</xsl:call-template>
-									</xsl:variable>
-									<xsl:call-template name="outputStrong">
-										<xsl:with-param name="character" select="$var1"/>
-										<xsl:with-param name="states" select="$var2"/>
-									</xsl:call-template>
-								</xsl:otherwise>
-							</xsl:choose>
-						</xsl:otherwise>
-					</xsl:choose>
-				</td>
-			</tr>
-		</table>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:variable name="var2">
+											<xsl:call-template name="handleCharacters">
+												<xsl:with-param name="character" select="$character"/>
+												<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+											</xsl:call-template>
+										</xsl:variable>
+										<xsl:call-template name="outputStrong">
+											<xsl:with-param name="character" select="$var1"/>
+											<xsl:with-param name="states" select="$var2"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:otherwise>
+						</xsl:choose>
+					</td>
+				</tr>
+			</table>
+			</xsl:otherwise>
+		</xsl:choose>
+	
 	</xsl:template>
 </xsl:stylesheet>

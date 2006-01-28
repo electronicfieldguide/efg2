@@ -3,11 +3,11 @@ I. MySQL Installation
    We recomnmend that you read through all of the instructions below before you install MySQL on your System.
    1.Unzip mysql-5.0.18 to any location of your choice.
    2.Open the unzipped directory and double click on setup.exe to install MySQL.
-   3.During the installation process, accept all the defaults. You can choose the 'Skip sign-Up' option when 
+   3.During the installation accept all the defaults. You can choose the 'Skip sign-Up' option when 
    the installer asks you to 'Create a new free MySQl.com account'
    4.Click Finish to finish installation.
    5. You will then be directed to an installer that guides you through the configuration of your MySQL server.
-   6.Accept defaults until you get to the page that asks 'Please select a server type. This will influence..'
+   6.Accept defaults until you get to the page that says 'Please select a server type. This will influence..'
    then choose the 'Server Machine option'.
    7. Accept all the defaults until you get to 'Please select the deafult character set'
    8. Choose the option 'Best Support for Multilingualism'.

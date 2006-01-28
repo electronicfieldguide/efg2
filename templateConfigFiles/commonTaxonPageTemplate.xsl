@@ -3,7 +3,7 @@
 	<!-- $Id$ -->
 	<xsl:param name="serverbase"/> 
 	<!-- The name of the template configuration for the current datasource. Must be a path relative to the location of this XSL file-->
-	<xsl:param name="datasource"/>
+	<xsl:param name="datasource" select="'SolaData'"/>
 	<xsl:param name="search"/>
 	<xsl:param name="mediaResourceField"/>
 <xsl:param name="fieldName"/>

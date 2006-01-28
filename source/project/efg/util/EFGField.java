@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2003  University of Massachusetts Boston
  *
- * Authors: Matthew Passell<mpassell@cs.umb.edu>
+ * Authors: Matthew Passell<mpassell@cs.umb.edu> , Jacob K. Asiedu
  *
  * This file is part of the UMB Electronic Field Guide.
  * UMB Electronic Field Guide is free software; you can redistribute it 
@@ -367,8 +367,11 @@ public class EFGField
 }
 
 //$Log$
-//Revision 1.1  2006/01/25 21:03:48  kasiedu
-//Initial revision
+//Revision 1.2  2006/01/28 15:14:57  kasiedu
+//Checked in bug fixes from Costa Rica
+//
+//Revision 1.1.1.1  2006/01/25 21:03:48  kasiedu
+//Release for Costa rica
 //
 //Revision 1.1.1.1  2003/10/17 17:03:03  kimmylin
 //no message
