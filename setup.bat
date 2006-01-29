@@ -37,9 +37,10 @@ if defined JAVA_HOME (
     goto error
 )
 
-xcopy tomcat-users.xml "%CATALINA_HOME%"\conf\ /E
-xcopy efg.xml "%CATALINA_HOME%"\conf\Catalina\localhost /E
-xcopy efg.war "%CATALINA_HOME%"\webapps
+copy tomcat-users.xml "%CATALINA_HOME%"\conf\ /Y 
+copy efg.xml "%CATALINA_HOME%"\conf\Catalina\localhost /Y 
+copy lib\mysqldriver.jar "%CATALINA_HOME%"\common\lib
+
 
 
 goto success
@@ -55,12 +56,15 @@ goto end
 
 :success
 echo.
-echo.Great! All needed evironment variables are found!
+echo.Set up completed successfully!!
 
 :end
 echo.
 
 REM $Log$
+REM Revision 1.2  2006/01/29 03:09:41  kasiedu
+REM Updated stuff allows efg2 to run in a web application called efg2
+REM
 REM Revision 1.1  2006/01/26 04:20:46  kasiedu
 REM no message
 REM

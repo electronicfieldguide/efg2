@@ -8,7 +8,7 @@
 		<html>
 			<head>
 				<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-				<script src="http://alpaca.cs.umb.edu/efg/monteverde/efgScript.js" type="text/JavaScript"/>
+				<script src="efgScript.js" type="text/JavaScript"/>
 				<script type="text/javaScript">
 					<xsl:attribute name="href"><xsl:value-of select="concat(serverbase,$jscript)"/></xsl:attribute>
 				</script>

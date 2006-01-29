@@ -38,13 +38,6 @@ I. MySQL Installation
    25. Installation of 'mysql-query-browser-1.1.19-win.msi'
    and 'mysql-administ	rator-1.1.7-win.msi' is optional.
 
-   26. Everytime that you are ready to import  a file or files into the database, repeat steps 21 and 22. 
-	Step 23 needs to be done only once.
-	then at the command prompt type : 
-	
-	source grant.txt
-   27. After successful importation of files into your database, follow the steps in 26 above but enter:
-	revoke.txt instead at the command prompt.
 
 
 
