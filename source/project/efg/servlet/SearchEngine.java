@@ -53,7 +53,7 @@ import project.efg.templates.taxonPageTemplates.*;
 public class SearchEngine  extends HttpServlet implements EFGImportConstants
 {
     private Format formatter = new SimpleDateFormat(EFGImportConstants.DIGIR_TIME);//Used as part of DiGIR response
-    private String maxDispStr, applyXSLServlet, displayFormat, realPath;
+    private String maxDispStr, applyXSLServlet, fopServlet, displayFormat, realPath;
     private int defaultMaxDisplay, maxDisplay;
     private static ServletConfig servletConfig;
     //private static String currentDatabase;
@@ -92,6 +92,9 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 	}
 	if ((applyXSLServlet = config.getInitParameter("applyXSLServlet")) == null)
 	    throw new ServletException("applyXSLServlet servlet parameter required.");
+
+	if ((fopServlet = config.getInitParameter("fopServlet")) == null)
+	    throw new ServletException("fopServlet servlet parameter required.");
     }
 
     /**
@@ -128,14 +131,6 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 		if (digirRequest != null){//There is a DiGIR request
 		    try{
 			if (EFGImportConstants.HTML.equalsIgnoreCase(displayFormat)) {
-			    /*res.setContentType(EFGImportConstants.TEXT_HTML);
-			      if(!EFGServletUtils.configuredDatasources.contains(dsName.toLowerCase().trim())){
-			      PrintWriter out = res.getWriter();
-			      out.println("<H3>The Datasource " + dsName + "  has not yet been configured by author.</H3>");				
-			      out.flush();
-			      res.flushBuffer();
-			      return;
-			      }*/
 			    present(req, res, qHandler.buildResult(req, res, servletConfig));
 			}
 			else{
@@ -148,14 +143,6 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 		}	
 		else if (displayFormat == null || (displayFormat.equalsIgnoreCase(EFGImportConstants.HTML))) {
 		    res.setContentType(EFGImportConstants.TEXT_HTML);
-	
-		    /*if(!EFGServletUtils.configuredDatasources.contains(dsName.toLowerCase().trim())){
-		      PrintWriter out = res.getWriter();
-		      out.println("<H3>The Datasource " + dsName +  " has not yet been configured by author.</H3>");				
-		      out.flush();
-		      res.flushBuffer();
-		      return;
-		      }*/
 		    present(req, res, qHandler.buildResult(req, res, servletConfig));
 		}
 		else {
@@ -171,7 +158,6 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 	    res.flushBuffer();
 	}
     }
-    
     /**
      * Handles an HTTP GET request - Based most likely on a clicked link.
      *
@@ -183,7 +169,6 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
     {
 	doPost(req, res);
     }
-  
     /**
      * This class forward the result to ApplyXSL servlet with appropriate xsl file 
      * depending on the number of the taxon in the result document. If there is one 
@@ -236,6 +221,7 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 	    fileLocationBuffer.append(File.separator);
 	    fileLocationBuffer.append(dsName);
 	    if (taxonSize == 1){//NEEDS ENHANCEMENT..CURRENTLY ASSUMES A 1-1 MAPPING BETWEEN FILE AND DATASOURCE
+		//if pdf
 		fileLocationBuffer.append(EFGImportConstants.TAXONPAGE_FILLER);
 	    }
 	    else{
@@ -297,7 +283,7 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 			}
 			searchType = req.getParameter(EFGImportConstants.SEARCHTYPE);
 			if(searchType != null){
-			    xslFileName = "defaultSearchFile.xsl";//use default serach page xsl
+			    xslFileName = "defaultSearchFile.xsl";//use default search page xsl
 			    if(EFGImportConstants.SEARCH_PLATES_TYPE.equalsIgnoreCase(searchType)){
 				if(imageField != null){
 				    req.setAttribute("mediaResourceField",imageField);
@@ -328,8 +314,35 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 		
 		//get xsl file name from the templateConfig file name
 		String forwardString = context + "/" + EFGImportConstants.TEMPLATES_FOLDER_NAME +"/" + xslFileName;
-		//added "UTF-8" to make the source compile without warnings
-		String fwdStrEncoded = "/" + applyXSLServlet + "?xsl=" + URLEncoder.encode(forwardString, "UTF-8");
+		String fwdStrEncoded = "?xsl=" + URLEncoder.encode(forwardString, "UTF-8");
+		if(xslFileName.endsWith(".fo")){
+		    //if fop set fop pdf file name
+		    //make up a pdfFile name
+		    String xslFileLoc = fileLocationBuffer1.toString();
+		    int lastInd = xslFileLoc.lastIndexOf(File.separator);
+		    StringBuffer pdfFileBuffer = new StringBuffer();
+		    pdfFileBuffer.append(xslFileLoc.substring(0,lastInd));
+		    pdfFileBuffer.append(File.separator);
+		    pdfFileBuffer.append(dsName);
+		    pdfFileBuffer.append("_");
+		    if (taxonSize == 1){
+			pdfFileBuffer.append("taxonPage");
+		    }
+		    else{
+			pdfFileBuffer.append("searchPage");
+		    }
+		  
+		    pdfFileBuffer.append(".pdf");
+		    req.setAttribute("pdfFile",pdfFileBuffer.toString());
+		    req.setAttribute("xslFileLocation", xslFileLoc);
+		    fwdStrEncoded = "/" + fopServlet + fwdStrEncoded;
+		}
+		else{
+		    //added "UTF-8" to make the source compile without warnings
+		    //if xsl file ends in .fo forward to fop servlet..otherwise forward to applyXSl servlet
+		 
+		    fwdStrEncoded = "/" + applyXSLServlet + fwdStrEncoded;
+		}
 		ServletContext sctxt = getServletConfig().getServletContext();
 		RequestDispatcher rd = sctxt.getRequestDispatcher(fwdStrEncoded);
 		rd.forward(req, res);
@@ -372,8 +385,11 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
     }
 }
 //$Log$
-//Revision 1.1  2006/01/25 21:03:48  kasiedu
-//Initial revision
+//Revision 1.2  2006/02/10 02:10:16  kasiedu
+//Added a set-up for Fop templates
+//
+//Revision 1.1.1.1  2006/01/25 21:03:48  kasiedu
+//Release for Costa rica
 //
 //Revision 1.8  2005/08/19 14:34:53  kasiedu
 //Removed the dependence on the string 'efg' which was being used as servlet context.
