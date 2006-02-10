@@ -166,12 +166,16 @@ public class FOPServlet extends HttpServlet
 	    try{
 		File pdfFile = new File((String)request.getAttribute("pdfFile"));
 		File xslFile = new File((String)request.getAttribute("xslFileLocation"));
-		if(pdfFile.exists()){
+		String serverContext = request.getContextPath();
+		String server = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+		String fullServer = server + serverContext;
+		/*if(pdfFile.exists()){
 		    if(pdfFile.lastModified() >= xslFile.lastModified()){
-			redirect(response,pdfFile.getName());
+			redirect(response,pdfFile.getName(),fullServer );
 			return;
 		    }
-		}
+		}*/
+		
 		driver.reset();
                 OutputStream out = new FileOutputStream(pdfFile);
 		driver.setOutputStream(out);
@@ -182,12 +186,12 @@ public class FOPServlet extends HttpServlet
 		javax.xml.transform.Source xsl = getXSLSource(request);
 		javax.xml.transform.Source xml = getXMLSource(request);
 		Transformer transformer= tFactory.newTransformer(xsl);
-                
+                transformer.setParameter("serverbase",fullServer);
                 javax.xml.transform.Result res = new SAXResult(driver.getContentHandler());
                 transformer.transform(xml, res);
                 FormattingResults results = driver.getResults();
 		out.close();
-		redirect(response,pdfFile.getName());
+		redirect(response,pdfFile.getName(),fullServer);
             }
             catch(Exception ioe)
             {
@@ -195,9 +199,11 @@ public class FOPServlet extends HttpServlet
             }
         }
     }
-    private void redirect(HttpServletResponse response, String pdfFile)throws Exception{
+    private void redirect(HttpServletResponse response, String pdfFile, String server)throws Exception{
+	
 	StringBuffer buf = new StringBuffer();
-	buf.append("/html/");
+	buf.append(server);
+	buf.append("/templateConfigFiles/");
 	buf.append(pdfFile);
 	String encodedURL = response.encodeRedirectURL(buf.toString());
 	response.sendRedirect(encodedURL);		      

@@ -134,7 +134,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>FopServlet</servlet-name>
-		<servlet-class>project.efg.servlet.FopServlet</servlet-class>
+		<servlet-class>project.efg.servlet.FOPServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>configTaxonPage</servlet-name>

@@ -331,7 +331,7 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
 		    else{
 			pdfFileBuffer.append("searchPage");
 		    }
-		  
+		    pdfFileBuffer.append(System.currentTimeMillis());
 		    pdfFileBuffer.append(".pdf");
 		    req.setAttribute("pdfFile",pdfFileBuffer.toString());
 		    req.setAttribute("xslFileLocation", xslFileLoc);
@@ -385,6 +385,9 @@ public class SearchEngine  extends HttpServlet implements EFGImportConstants
     }
 }
 //$Log$
+//Revision 1.3  2006/02/10 03:47:39  kasiedu
+//Added templates for generating PDF files
+//
 //Revision 1.2  2006/02/10 02:10:16  kasiedu
 //Added a set-up for Fop templates
 //
