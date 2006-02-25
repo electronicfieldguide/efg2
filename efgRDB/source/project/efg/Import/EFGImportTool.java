@@ -108,6 +108,10 @@ public class EFGImportTool
 	switch(datasource) {
 	    // create warning when user try to import a single table	
 	case DATA_DS:
+	    //find metadata table
+	    //Get table headers of datatable, convert to acceptable table columns, create a metadata table
+	    //with default values
+	    //import it and do what you already do with data tables
 	    log.error("Please import the metadata table together with the data table.");
 	    System.err.println("Please import the metadata table together with the data table.");
 	    break;
@@ -118,15 +122,6 @@ public class EFGImportTool
 	case BOTH_DS:
 	    System.out.println(""); 
 	    System.out.println("About to Import : " + args[1] + " and " + args[2] + " into Relational Database.");
-	    //create efg database if it does not already exists
-	    //assumes that a user with enough privileges has already been created if not print message and ask user to 
-	    //to run script first
-	    //create super user efgSuper with all privileges and efg with only select privileges
-	    /*if(!EFGImportUtils.createDatabase(EFGImportConstants.DATABASE_NAME)){
-		System.err.println("You do not have enough privileges to create the database: " + EFGImportConstants.DATABASE_NAME  + ".");
-		System.err.println("Please follow the instructions in installation instructions that comes with this application on how to set up your Database");
-		return;
-		}*/
 	    if (!EFGRDBImportUtils.isExistTable(efgDBTableNames)) {
 		EFGRDBImportUtils.createEFGMappingTable(efgDBTableNames);
 	    }
@@ -316,6 +311,9 @@ public class EFGImportTool
     }
 }
 //$Log$
+//Revision 1.3  2006/02/25 13:14:31  kasiedu
+//New classes for import GUI
+//
 //Revision 1.2  2006/01/26 04:20:46  kasiedu
 //no message
 //
