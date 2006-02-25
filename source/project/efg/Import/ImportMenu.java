@@ -50,7 +50,7 @@ public class ImportMenu extends JDialog {
 		      DBObject dbObject){
 	super(frame,title,modal);
 	setSize(new Dimension(220, 150));
-	setLocationRelativeTo(frame);
+	//setLocationRelativeTo(frame);
 	addWindowListener(new WindowAdapter() {
 		public void windowClosing(WindowEvent e) {
 		    close();
@@ -66,23 +66,28 @@ public class ImportMenu extends JDialog {
 	JPanel panel = new JPanel();
 	panel.setLayout(new GridLayout(5,1));
 	
-	JButton addNewDatasourceBtn = new JButton("Import/Remove Datasources");
+	JButton addNewDatasourceBtn = new JButton("Import");
+	addNewDatasourceBtn.setToolTipText("All Database related stuff..Add/Remove a Key");
 	addNewDatasourceBtn.setHorizontalAlignment(SwingConstants.LEFT);
 	addNewDatasourceBtn.addActionListener(new HandleDatasourceListener(dbObject));
 	
-	JButton deployImagesBtn = new JButton("Deploy/Undeploy Images");
+	JButton deployImagesBtn = new JButton("MediaResources");
+	deployImagesBtn.setToolTipText("Add/Remove Images");
 	deployImagesBtn.setHorizontalAlignment(SwingConstants.LEFT);
       	deployImagesBtn.addActionListener(new DeployImagesListener(webappsDirectory.getImagesDirectory()));
-
+	
 	JButton helpBtn = new JButton("Help");
+	helpBtn.setToolTipText("Help about this application");
 	helpBtn.setHorizontalAlignment(SwingConstants.LEFT);
-	helpBtn.addActionListener(new HelpListener());
-
+	helpBtn.addActionListener(new HelpListener(project.efg.util.EFGImportConstants.HELP_FILE));
+	
 	JButton aboutBtn = new JButton("About");
+	aboutBtn.setToolTipText("About EFG Project");
 	aboutBtn.setHorizontalAlignment(SwingConstants.LEFT);
-	//aboutBtn.addActionListener(new AboutListener(this));
+	aboutBtn.addActionListener(new AboutListener());
 
 	JButton exitBtn = new JButton("Exit");
+	exitBtn.setToolTipText("Exit application");
 	exitBtn.setHorizontalAlignment(SwingConstants.LEFT);
 	exitBtn.addActionListener(new ExitListener(this));
 
@@ -95,7 +100,8 @@ public class ImportMenu extends JDialog {
 	return panel;
     }
      public void close(){
-	this.dispose();
+	 this.dispose();
+	System.exit(0);
      }
     class DeployImagesListener implements ActionListener{
 	private String imagesDirectory;
@@ -105,7 +111,7 @@ public class ImportMenu extends JDialog {
 	public void actionPerformed(ActionEvent evt) {
 	    try{
 		FileTreeBrowserMain ftb = new FileTreeBrowserMain(null, 
-								  "Deploy Images", 
+								  "EFG2 Web Application Images", 
 								  true,
 								  imagesDirectory);
 		ftb.show();
@@ -123,7 +129,16 @@ public class ImportMenu extends JDialog {
 	public void actionPerformed(ActionEvent evt) {
 	    try{
 		if(this.dbObject == null){
-		    throw new Exception("DBObject is null");
+		    StringBuffer buffer = new StringBuffer("Successful Database login is required to Import data.\n");
+		    buffer.append("Please consult our documentation via the help menu on how to start this application!!!\n");
+		    JOptionPane.showMessageDialog(
+						  null,
+						  buffer.toString(),
+						  "Error Message",
+						  JOptionPane.ERROR_MESSAGE
+						  ); 
+		    log.error(buffer.toString());
+		    return;
 		}
 		SynopticKeyTreeMain ftb = new SynopticKeyTreeMain(null,
 								  "List Of EFG Database Tables",
@@ -155,31 +170,7 @@ public class ImportMenu extends JDialog {
 	    this.iMenu.close();
 	}
     }
-    class HelpListener implements ActionListener{
-	
-	public void actionPerformed(ActionEvent evt) {
-	    String url = project.efg.util.EFGImportConstants.HELP_FILE;
-	    
-	    if (!(url.startsWith("http:") || url.startsWith("file:"))) {
-		// If it's not a fully qualified URL, assume it's a file.
-		if (url.startsWith("/")) {
-		    // Absolute path, so just prepend "file:"
-		    url = "file:" + url;
-		}
-		else {
-		    try {
-			// Assume it's relative to the starting point.
-			File f = new File(url);
-			url = f.toURL().toString();
-		    }
-		    catch (Exception e) {
-			url = "http://efg.cs.umb.edu/";
-		    }
-		}
-	    }
-	    new HelpFile(url).setVisible(true);
-	}
-    }
+  
     public static void main(String[] args){
 	EFGWebAppsDirectoryObject obj = new EFGWebAppsDirectoryObject(null);
 	obj.setImagesDirectory("EFGImages");

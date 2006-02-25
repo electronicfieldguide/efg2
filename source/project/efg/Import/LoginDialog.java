@@ -51,8 +51,12 @@ public class LoginDialog extends JDialog {
      */
     public LoginDialog(Frame parent) {
 	super(parent, "Login", true);
-	
-
+	//setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	addWindowListener(new WindowAdapter() {
+		public void windowClosing(WindowEvent e) {
+		    dispose();
+		}
+	    });
 	JPanel pp = new JPanel(new DialogLayout2());
 	pp.setBorder(new CompoundBorder(
 					new EtchedBorder(EtchedBorder.RAISED),
@@ -110,6 +114,7 @@ public class LoginDialog extends JDialog {
 	return this.isSuccess;
     }
     public static void main( String args[] ) {
+	
 	LoginDialog dlg = new LoginDialog(null);
 	dlg.show();
 	if(dlg.isSuccess()){

@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.BufferedInputStream;
@@ -49,7 +50,7 @@ import javax.swing.UIManager;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.tree.*;//DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
+//import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 // import log4j packages
@@ -536,12 +537,13 @@ public class FileTreeBrowser implements DropTargetListener,
 class FileTree extends JTree implements Autoscroll {
     public static final Insets defaultScrollInsets = new Insets(8, 8, 8, 8);
     protected Insets scrollInsets = defaultScrollInsets;
-    protected DefaultTreeModel model;
+    protected SynopticKeyTreeModel model;
     public FileTree(String path) throws FileNotFoundException, SecurityException {
 	super((TreeModel)null);      // Create the JTree itself
 
 	// Use horizontal and vertical lines
 	putClientProperty("JTree.lineStyle", "Angled");
+	this.setToolTipText("Drag and Drop one or more Image(s) Folder into this Window."); 
 	// Create the first node
 	int index = path.lastIndexOf(File.separator);	
 	String parent = null;
@@ -552,12 +554,17 @@ class FileTree extends JTree implements Autoscroll {
 	FileTreeNode rootNode = new FileTreeNode(parent, path);
 	// Populate the root node with its subdirectories
 	boolean addedNodes = rootNode.populateDirectories(true);
-	this.model = new DefaultTreeModel(rootNode);
-	setModel(this.model);
+	this.model = new SynopticKeyTreeModel(rootNode,new TreeStringComparator());
+	this.setModel(this.model);
+	//this.model = new DefaultTreeModel(rootNode);
+	//setModel(this.model);
 
 	// Listen for Tree Selection Events
 	addTreeExpansionListener(new TreeExpansionHandler());
     }
+    public String getToolTipText(MouseEvent evt) {
+	return getToolTipText();
+    } 
     // Returns the full pathname for a path, or null if not a known path
     public String getPathName(TreePath path) {
 	Object o = path.getLastPathComponent();
@@ -572,7 +579,7 @@ class FileTree extends JTree implements Autoscroll {
     public FileTreeNode addNode(FileTreeNode parent, String name) {
 	int index = parent.addNode(name);
 	if (index != -1) {
-	    ((DefaultTreeModel)getModel()).nodesWereInserted(
+	    ((SynopticKeyTreeModel)getModel()).nodesWereInserted(
 							     parent, 
 							     new int[] { index }
 							     );
@@ -635,7 +642,7 @@ class FileTree extends JTree implements Autoscroll {
 	    // arrange to have it fully populated.
 	    FileTreeNode node = (FileTreeNode)path.getLastPathComponent();
 	    if (node.populateDirectories(true)) {
-		((DefaultTreeModel)tree.getModel()).nodeStructureChanged(node);  
+		((SynopticKeyTreeModel)tree.getModel()).nodeStructureChanged(node);  
 	    }
 	}
 

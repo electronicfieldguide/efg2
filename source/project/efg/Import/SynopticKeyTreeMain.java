@@ -27,8 +27,9 @@ public class SynopticKeyTreeMain extends JDialog {
     SynopticKeyTree tree;
     //FileTreeBrowser target;
     final JButton deleteBtn = new JButton("Delete Datasource");
-    final JButton updateBtn = new JButton("Update Display Name");
+    final JButton updateBtn = new JButton("Change Display Name");
     final JButton doneBtn = new JButton("Done");
+    final JButton helpBtn = new JButton("Help");
 
     static Logger log = null;
     static{
@@ -60,6 +61,7 @@ public class SynopticKeyTreeMain extends JDialog {
 	String message = "";
 	try{
 	    this.tree = new SynopticKeyTree(dbObject);
+	    this.tree.setToolTipText("Drag and Drop Keys here, to import into Database"); 
 	}
 	catch(Exception ee){
 	    message = ee.getMessage();
@@ -79,19 +81,28 @@ public class SynopticKeyTreeMain extends JDialog {
     }
     private JPanel addPanel(){
 	JPanel panel = new JPanel(new BorderLayout());
-	
 	JPanel btnPanel = new JPanel();
-	/*updateBtn.addActionListener(new UpdateListener(this.tree));
-	btnPanel.add(updateBtn);*/
+
+	updateBtn.addActionListener(new UpdateListener(this.tree));
+	updateBtn.setToolTipText("Click to edit display name of a selected node");
+	btnPanel.add(updateBtn);
+	
 	
 	deleteBtn.addActionListener(new DeleteListener(this.tree));
+	deleteBtn.setToolTipText("Click to delete a selected node");
 	btnPanel.add(deleteBtn);
 	
-	doneBtn.addActionListener(new DoneListener(this)); 
+	
+	helpBtn.setToolTipText("Click to get Help");
+	helpBtn.addActionListener(new HelpListener(project.efg.util.EFGImportConstants.HELP_FILE_KEY));
+	btnPanel.add(helpBtn);
+	
+	doneBtn.addActionListener(new DoneListener(this));
+	doneBtn.setToolTipText("Click to exit this application"); 
 	btnPanel.add(doneBtn);
-	
-	
-	panel.add(new JScrollPane(this.tree), BorderLayout.CENTER);
+	JScrollPane pane = new JScrollPane(this.tree);
+
+	panel.add(pane, BorderLayout.CENTER);
 	panel.add(btnPanel, BorderLayout.SOUTH);
 	return panel;
     }
@@ -115,6 +126,7 @@ public class SynopticKeyTreeMain extends JDialog {
 	    this.tree.updateSelectedNode();
 	}
     }
+
     class DoneListener implements ActionListener{
 	private SynopticKeyTreeMain treeBrowser;
 	public 	DoneListener(SynopticKeyTreeMain treeBrowser){

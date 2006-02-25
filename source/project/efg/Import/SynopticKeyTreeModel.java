@@ -7,14 +7,14 @@ package project.efg.Import;
 import javax.swing.tree.*;
 import java.util.Comparator;
 
-public class SynopticTreeModel extends DefaultTreeModel {
+public class SynopticKeyTreeModel extends DefaultTreeModel {
     private Comparator comparator;
     
-    public SynopticTreeModel(TreeNode node, Comparator c) {
+    public SynopticKeyTreeModel(TreeNode node, Comparator c) {
 	super(node);
 	comparator = c;
     }
-    public SynopticTreeModel(TreeNode node, boolean asksAllowsChildren, Comparator c) {
+    public SynopticKeyTreeModel(TreeNode node, boolean asksAllowsChildren, Comparator c) {
 	super(node, asksAllowsChildren);
 	comparator = c;
     }

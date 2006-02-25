@@ -28,6 +28,7 @@ public class FileTreeBrowserMain extends JDialog {
     FileTreeBrowser target;
     final JButton deleteBtn = new JButton("Delete File/Folder");
     final JButton doneBtn = new JButton("Done");
+    final JButton helpBtn = new JButton("Help");
 
     static Logger log = null;
     static{
@@ -79,12 +80,20 @@ public class FileTreeBrowserMain extends JDialog {
     private JPanel addPanel(){
 	JPanel panel = new JPanel(new BorderLayout());
 	
-
 	JPanel btnPanel = new JPanel();
+
 	deleteBtn.addActionListener(new DeleteListener(this.tree));
+	deleteBtn.setToolTipText("Select a file/folder and click to remove it from Web application");
 	btnPanel.add(deleteBtn);
 	
+	helpBtn.addActionListener(new HelpListener(project.efg.util.EFGImportConstants.HELP_FILE_IMAGES));
+	helpBtn.setToolTipText("Click to get Help");
+	
+	btnPanel.add(helpBtn);
+	
+	
 	doneBtn.addActionListener(new DoneListener(this)); 
+	doneBtn.setToolTipText("To exit application");
 	btnPanel.add(doneBtn);
 	
 	
@@ -126,8 +135,7 @@ public class FileTreeBrowserMain extends JDialog {
 			    toBeSelNode = parent;
 			}
 			//make the node visible by scrolling to it
-			//DefaultTreeModel getModel()
-			TreeNode[] nodes = ((DefaultTreeModel)tree.getModel()).getPathToRoot(toBeSelNode);
+			TreeNode[] nodes = ((SynopticKeyTreeModel)tree.getModel()).getPathToRoot(toBeSelNode);
 			TreePath path = new TreePath(nodes); 
 			tree.scrollPathToVisible(path); 
 			tree.setSelectionPath(path);
@@ -138,7 +146,7 @@ public class FileTreeBrowserMain extends JDialog {
 				//delete from file system
 				deleteFile(file);
 				//remove the node from the parent
-				((DefaultTreeModel)tree.getModel()).removeNodeFromParent(selNode);
+				((SynopticKeyTreeModel)tree.getModel()).removeNodeFromParent(selNode);
 			    }
 			    catch(Exception ee){
 				System.err.println(ee.getMessage());

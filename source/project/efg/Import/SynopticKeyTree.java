@@ -9,6 +9,7 @@ import java.awt.dnd.*;
 import java.awt.datatransfer.*;
 import java.util.*;
 import javax.swing.event.*;
+import java.awt.event.MouseEvent;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Insets;
@@ -36,7 +37,7 @@ public class SynopticKeyTree extends JTree {
 	catch(Exception ee){
 	}
     }
-    DefaultTreeModel model;
+    private SynopticKeyTreeModel model;
     private DBObject dbObject;
     // protected DefaultTreeModel model;
     protected EFGDatasourceObjectList lists; 
@@ -62,13 +63,15 @@ public class SynopticKeyTree extends JTree {
 	super(root, asks); 
 	this.init(dbObject); 
     }
-  
+    public String getToolTipText(MouseEvent evt) {
+	return getToolTipText();
+    } 
     private void init(DBObject dbObject) {
-	putClientProperty("JTree.lineStyle", "Angled");
+	this.setRowHeight(0);
+	this.putClientProperty("JTree.lineStyle", "Angled");
 	this.getSelectionModel().setSelectionMode(
 						  TreeSelectionModel.SINGLE_TREE_SELECTION);
 	this.setEditable(false);
-	//this.setEditable(true);
 	this.setShowsRootHandles(true);
 
 	this.dbObject = dbObject;
@@ -87,7 +90,8 @@ public class SynopticKeyTree extends JTree {
 	rootDS.setMetadataName(project.efg.util.EFGImportConstants.EFG_DATABASE_METADATA_NAME);
 	rootDS.setDataName(project.efg.util.EFGImportConstants.EFG_DATABASE_DATA_NAME);
 	DefaultMutableTreeNode root = new DefaultMutableTreeNode(rootDS);
-	this.model = new DefaultTreeModel(root);
+	//this.model = new DefaultTreeModel(root);
+	this.model = new SynopticKeyTreeModel(root,new TreeStringComparator());
 	this.setModel(this.model);
     }
     public void createNodesFromDB(){
@@ -133,10 +137,55 @@ public class SynopticKeyTree extends JTree {
 	    (DefaultMutableTreeNode)this.getLastSelectedPathComponent(); 
 	
 	if (selNode != null) { 
+	    
 	    //get the parent of the selected node
 	    MutableTreeNode parent = (MutableTreeNode)(selNode.getParent());
 	    // if the parent is not null
 	    if (parent != null) {
+		String newDisplayName = JOptionPane.showInputDialog("New Display Name:");
+		if(newDisplayName == null){
+		    return;
+		}
+
+		if(newDisplayName.trim().equals("")){
+		    message ="Display Name cannot be the empty String"; 
+		    JOptionPane.showMessageDialog(
+						  null,
+						  message,
+						  "Error Message",
+						  JOptionPane.ERROR_MESSAGE
+						  );
+		    return;
+		}
+		newDisplayName = newDisplayName.trim();
+		DefaultTreeModel model = (DefaultTreeModel)this.getModel();
+		DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+		EFGDatasourceObjectInterface ds =
+		    (EFGDatasourceObjectInterface)selNode.getUserObject();
+		
+		int childCount = root.getChildCount();
+		for (int j = 0; j < childCount; j++) {
+		    DefaultMutableTreeNode node = (DefaultMutableTreeNode)root.getChildAt(j);
+		    EFGDatasourceObjectInterface current = (EFGDatasourceObjectInterface)node.getUserObject();
+		    if (current.equals(ds)){
+			continue;
+		    }
+		    else{
+			if(current.getDisplayName().equalsIgnoreCase(newDisplayName.trim())){
+			    
+			    message ="A node with the same already exists in the database." +
+				"Change the name and try again"; 
+			    JOptionPane.showMessageDialog(
+							  null,
+							  message,
+							  "Warning Message",
+							  JOptionPane.ERROR_MESSAGE
+							  );
+			    return;
+			}
+		    }
+		}
+		//what do you do if a name already exists
 		TreePath selectionPath =this.getSelectionPath();
 		//get the sibling node to be selected after removing the
 		//selected node
@@ -145,30 +194,33 @@ public class SynopticKeyTree extends JTree {
 		if(toBeSelNode == null){
 		    toBeSelNode = parent;
 		}
+
 		//make the node visible by scrolling to it
-		TreeNode[] nodes = ((DefaultTreeModel)this.getModel()).getPathToRoot(toBeSelNode);
+		TreeNode[] nodes = model.getPathToRoot(toBeSelNode);
 		TreePath path = new TreePath(nodes); 
 		this.scrollPathToVisible(path); 
 		this.setSelectionPath(path);
-		EFGDatasourceObjectInterface ds =
-		    (EFGDatasourceObjectInterface)selNode.getUserObject();
-		System.out.println("DisplayName: " + ds.getDisplayName());
-		
-		/*if(this.lists.removeEFGDatasourceObject(ds)){
-		    ((DefaultTreeModel)this.getModel()).removeNodeFromParent(selNode);
+	
+		String oldName = ds.getDisplayName();
+		ds.setDisplayName(newDisplayName);
+		//make a call to database too
+		boolean bool = this.lists.changeDisplayName(ds);
+		if(bool){
+		    ds.setDisplayName(newDisplayName);
 		}
 		else{
-		    message = "Cannot be removed from database"; 
-		    log.error(message);
+		    message ="Display Name could not be changed!!!"; 
 		    JOptionPane.showMessageDialog(
-					  null,
-					  message,
-					  "Error Message",
-					  JOptionPane.ERROR_MESSAGE
-					  ); 
-		    
-					  }*/
-	    } 
+						  null,
+						  message,
+						  "Error Message",
+						  JOptionPane.ERROR_MESSAGE
+					      );
+		    ds.setDisplayName(oldName);
+		    log.error(message);
+		}
+		this.model.reload();
+	    }
 	    else{
 		message = "You are not allowed to edit the Database display name!!! " ;
 		log.info(message);
@@ -181,8 +233,8 @@ public class SynopticKeyTree extends JTree {
 	    }
 	}
 	else{
-	    message = "Please select a datasource and edit the " + 
-		" display name before you click on this button!! ";
+	    message = "Please select a datasource and " + 
+		" before you click on this  button!! ";
 	    log.error(message);
 	    JOptionPane.showMessageDialog(
 					  null,
@@ -224,6 +276,8 @@ public class SynopticKeyTree extends JTree {
 		    (EFGDatasourceObjectInterface)selNode.getUserObject();
 		if(this.lists.removeEFGDatasourceObject(ds)){
 		    ((DefaultTreeModel)this.getModel()).removeNodeFromParent(selNode);
+		    this.model.reload(parent);
+			  
 		}
 		else{
 		    message = "Cannot be removed from database"; 
@@ -413,33 +467,5 @@ public class SynopticKeyTree extends JTree {
 	    }
 	    return false;
 	}
-    }
-    class MyTreeModelListener implements TreeModelListener {
-        public void treeNodesChanged(TreeModelEvent e) {
-            DefaultMutableTreeNode node;
-            node = (DefaultMutableTreeNode)
-		(e.getTreePath().getLastPathComponent());
-	    
-            /*
-             * If the event lists children, then the changed
-             * node is the child of the node we've already
-             * gotten.  Otherwise, the changed node and the
-             * specified node are the same.
-             */
-            try {
-                int index = e.getChildIndices()[0];
-                node = (DefaultMutableTreeNode)
-                       (node.getChildAt(index));
-            } catch (NullPointerException exc) {}
-
-            System.out.println("The user has finished editing the node.");
-            System.out.println("New value: " + node.getUserObject());
-        }
-        public void treeNodesInserted(TreeModelEvent e) {
-        }
-        public void treeNodesRemoved(TreeModelEvent e) {
-        }
-        public void treeStructureChanged(TreeModelEvent e) {
-        }
     }
 }
