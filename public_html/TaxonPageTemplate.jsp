@@ -11,8 +11,8 @@
   <center>
       <table>
 			  <tr>
-					  <td> 	<!-- <a target="_blank" href="http://orca.cs.umb.edu:8080/efg/taxondisplay?uniqueID=a192.168.104.1151136995870433&isTaxon=true">Jenn's Template  Sample</a>--></td>
-					  <td> 	 <a target="_blank" href="MarshaSpeciesPageData.html">Marsha's Template Sample </a></td>
+					  <td> 	</td>
+					  <td> 	 <a target="_blank" href="MarshaSpeciesPageTemplate.html">Marsha's Template Sample </a></td>
 					  <td> 	 <a target="_blank" href="SolaData.html">Bill's Template Sample </a></td>
 			  </tr>
 			<tr/>

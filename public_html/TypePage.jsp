@@ -14,19 +14,16 @@
   <body bgcolor="#ffffff">
     <h2 align="center">Search/Browse EFG Datasources</h2>
   <center>
-      <% EFGDataSourceHelper dsHelper = dsHelperFactory.getDataSourceHelper(); %>
+      <% RDBDataSourceHelper dsHelper = (RDBDataSourceHelper)dsHelperFactory.getDataSourceHelper(); %>
       <% Iterator dsNameIter = dsHelper.getDSNames().iterator(); %>
       <table>
 		  <% while (dsNameIter.hasNext()) { %>
 		  <tr>
 			 <td>
 				<% String dsName = (String)dsNameIter.next();
-						/*if(!EFGServletUtils.configuredDatasources.contains(dsName.toLowerCase().trim())){//show only configured datasources
-							continue; //skip it
-						}
-						else{*/
-							found = true;
-					//}
+				
+					found = true;
+					
 
 				 %>
 				<%= dsHelper.makeReadable(dsName) %>

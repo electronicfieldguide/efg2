@@ -272,6 +272,12 @@ public class EFGRDBTableCreator implements Serializable
 		    errBuffer.append("The table: ");
 		    errBuffer.append(this.tableName);
 		    errBuffer.append(" contains a blank column name.\n");
+		    if(i != 0){
+		    errBuffer.append(" This column comes after the column named: " + tableHeader[i-1]  + "\n");
+			}
+			if((i+1) < tableHeader.length){
+			errBuffer.append( " and before "  + tableHeader[i + 1] + "\n");
+			}
 		    errBuffer.append("It is prefered that you  remove the column and restart the import application!!\n");
 		    System.err.println(errBuffer.toString());
 		    //throw new Exception(errBuffer.toString());
@@ -325,8 +331,9 @@ public class EFGRDBTableCreator implements Serializable
      *
      * @param row a list containg the data to populate the table. 
      */
-    public void populateTable(List row) 
+    public boolean populateTable(List row) 
     {
+	boolean bool = true;
    	try{
 	    //start a transactionALL_EFG_RDB_TABLES
 	    conn.setAutoCommit(false);
@@ -362,6 +369,7 @@ public class EFGRDBTableCreator implements Serializable
 		    }
 		}
 		catch(Exception eex){
+		    
 		    /* log.error("eex error: " + eex.getMessage());
 		    if (eex instanceof SQLException) {
 			SQLException se = (SQLException) eex;
@@ -376,6 +384,7 @@ public class EFGRDBTableCreator implements Serializable
 	    closeRDBresources();
 	}
 	catch(Exception e){
+	    bool = false;
 	    try{
 		System.err.println(e.getMessage());
 		LoggerUtils.logErrors(e);
@@ -386,6 +395,7 @@ public class EFGRDBTableCreator implements Serializable
 		LoggerUtils.logErrors(ex);
 	    }
 	}
+	return bool;
     }
     
     /**
@@ -500,8 +510,11 @@ public class EFGRDBTableCreator implements Serializable
 }
 
 //$Log$
-//Revision 1.1  2006/01/25 21:03:42  kasiedu
-//Initial revision
+//Revision 1.2  2006/01/26 04:20:46  kasiedu
+//no message
+//
+//Revision 1.1.1.1  2006/01/25 21:03:42  kasiedu
+//Release for Costa rica
 //
 //Revision 1.1.1.1  2003/10/17 17:03:05  kimmylin
 //no message

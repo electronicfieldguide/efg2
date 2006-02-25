@@ -52,7 +52,7 @@
 		<xsl:for-each select="$efgLists/EFGList">
 			<xsl:variable name="character" select="."/>
 			<xsl:choose>
-				<xsl:when test="@serviceLink">
+				<xsl:when test="not(string(@serviceLink))=''">
 					<xsl:variable name="serviceLink" select="@serviceLink"/>
 					<xsl:variable name="url">
 						<xsl:choose>
@@ -143,20 +143,23 @@
 			</xsl:for-each>
 		</xsl:if>
 		<xsl:if test="count(MediaResources) &gt; 0">
-			<xsl:variable name="MediaResources" select="MediaResources"/>
-			<xsl:for-each select="$MediaResources">
+			
+			<xsl:for-each select="MediaResources">
 				<xsl:sort select="@name"/>
-				<xsl:variable name="Med" select="MediaResource"/>
+				<xsl:variable name="fieldName" select="@name"/>
 				<tr>
 					<td>
-						<xsl:value-of select="@name"/>
+						<xsl:value-of select="$fieldName"/>
 					</td>
 					<td>
 						<table>
 							<xsl:for-each select="MediaResource">
 								<td>
 									<xsl:call-template name="outputMediaresource">
-										<xsl:with-param name="mediaresource" select="."/>
+										<xsl:with-param name="imageName" select="."/>
+											<xsl:with-param name="imageCaption" select="@caption"/>
+											<xsl:with-param name="type" select="@type"/>
+											<xsl:with-param name="otherCaption" select="$fieldName"/>
 									</xsl:call-template>
 								</td>
 							</xsl:for-each>
@@ -168,10 +171,12 @@
 	</xsl:template>
 	<!-- Output a mediaresource element if it is an image -->
 	<xsl:template name="outputMediaresource">
-		<xsl:param name="mediaresource"/>
-		<xsl:variable name="imageName" select="$mediaresource/@name"/>
-		<xsl:variable name="imageCaption" select="$mediaresource/@caption"/>
-		<xsl:if test="$mediaresource/@type = string($imagetype)">
+		<xsl:param name="imageName"/>
+		<xsl:param name="imageCaption"/>
+		<xsl:param name="type"/>
+		<xsl:param name="otherCaption"/>
+		
+		<xsl:if test="string($type) = string($imagetype)">
 			<xsl:variable name="imageURL">
 				<xsl:value-of select="concat($serverbase, '/', $imagebase, '/', string($imageName))"/>
 			</xsl:variable>
@@ -180,6 +185,14 @@
 			</img>
 			<br clear="all"/>
 		</xsl:if>
-		<xsl:value-of select="$imageCaption"/>
+		<xsl:choose>
+			<xsl:when test="not(string($imageCaption))=''">
+			<xsl:value-of select="$imageCaption"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$otherCaption"/>
+			</xsl:otherwise>
+		</xsl:choose>
+		
 	</xsl:template>
 </xsl:stylesheet>

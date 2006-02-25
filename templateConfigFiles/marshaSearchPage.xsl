@@ -19,7 +19,7 @@
 					<xsl:when test="$datasource and $templateConfigFile" >
 							<xsl:call-template name="start">
 					<xsl:with-param name="taxonEntry" select="//TaxonEntry"/>
-					<xsl:with-param name="groups" select="document($templateConfigFile)/TaxonPageTemplates/TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
+					<xsl:with-param name="groups" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
 				</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
@@ -94,7 +94,15 @@
 				<xsl:for-each select="characterValue">
 					<xsl:sort data-type="number" order="ascending" select="@rank"/>
 					<xsl:variable name="character" select="@value"/>
-					<xsl:variable name="label" select="@label"/>
+				
+					<xsl:variable name="label">
+						<xsl:choose>
+							<xsl:when test="not(string(@label))=''">
+							<xsl:value-of select="@label"/>
+							</xsl:when>
+							<xsl:value-of select="@value"/>
+						</xsl:choose>
+					</xsl:variable>
 					<xsl:if test="position()=1">
 						<td class="heading">
 							<xsl:value-of select="string($label)"/>
@@ -127,7 +135,6 @@
 							</xsl:variable>
 							-->
 							<td class="images">
-					
 								<xsl:call-template name="displayMediaResources">
 									<xsl:with-param name="mediaresources" select="$taxonEntry/MediaResources[@name=string($character)]"/>
 								</xsl:call-template>
@@ -229,14 +236,17 @@
 			<xsl:for-each select="$group4/characterValue">
 				<xsl:sort data-type="number" order="ascending" select="@rank"/>
 				<xsl:variable name="mediaresourceField" select="@value"/>
-				<xsl:variable name="label" select="@label"/>
-				<!--
-				<xsl:variable name="label1">
-					<xsl:if test="$taxonEntry/Items[@name=string($label)]">
-						<xsl:value-of select="$taxonEntry/Items[@name=string($label)]/Item"/>
-					</xsl:if>
-				</xsl:variable>
-				-->
+				<xsl:variable name="label">
+						<xsl:choose>
+							<xsl:when test="not(string(@label))=''">
+							<xsl:value-of select="@label"/>
+							</xsl:when>
+							<xsl:value-of select="@value"/>
+						</xsl:choose>
+					</xsl:variable>
+				
+				
+			
 				<xsl:if test="$taxonEntry/MediaResources[@name=$mediaresourceField]">
 					<xsl:call-template name="displayMediaResources">
 						<xsl:with-param name="mediaresources" select="$taxonEntry/MediaResources[@name=$mediaresourceField]"/>

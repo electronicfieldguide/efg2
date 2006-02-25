@@ -7,26 +7,24 @@
 		<html>
 			<head>
 				<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
-				
 				<link rel="stylesheet">
-				<xsl:attribute name="href">
-						<xsl:value-of select="concat(serverbase,$css)"/>
-				</xsl:attribute> 
+					<xsl:attribute name="href"><xsl:value-of select="concat(serverbase,$css)"/></xsl:attribute>
 				</link>
-				<title><xsl:value-of select="concat('Taxon Page for  ',$datasource)"/></title>
-
+				<title>
+					<xsl:value-of select="concat('Taxon Page for  ',$datasource)"/>
+				</title>
 			</head>
 			<body>
 				<xsl:choose>
-					<xsl:when test="$datasource and $templateConfigFile" >
-							<xsl:call-template name="start">
-					<xsl:with-param name="taxonEntry" select="//TaxonEntry"/>
-					<xsl:with-param name="groups" select="document($templateConfigFile)/TaxonPageTemplates/TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
-				</xsl:call-template>
+					<xsl:when test="$datasource and $templateConfigFile">
+						<xsl:call-template name="start">
+							<xsl:with-param name="taxonEntry" select="//TaxonEntry"/>
+							<xsl:with-param name="groups" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
+						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
 						<h2 align="center">
-						<xsl:text>Datasource must be specified</xsl:text>
+							<xsl:text>Datasource must be specified</xsl:text>
 						</h2>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -96,7 +94,16 @@
 				<xsl:for-each select="characterValue">
 					<xsl:sort data-type="number" order="ascending" select="@rank"/>
 					<xsl:variable name="character" select="@value"/>
-					<xsl:variable name="label" select="@label"/>
+					<xsl:variable name="label">
+						<xsl:choose>
+							<xsl:when test="not(string(@label))=''">
+								<xsl:value-of select="@label"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="@value"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
 					<xsl:if test="position()=1">
 						<td class="heading">
 							<xsl:value-of select="string($label)"/>
@@ -117,19 +124,13 @@
 						</td>
 					</xsl:if>
 					<xsl:if test="$taxonEntry/EFGLists[@name=string($character)]">
-																
+						<xsl:call-template name="displayLists">
+							<xsl:with-param name="lists" select="$taxonEntry/EFGLists[@name=string($character)]"/>
+						</xsl:call-template>
 					</xsl:if>
 					<xsl:choose>
 						<xsl:when test="$taxonEntry/MediaResources[@name=string($character)]">
-							<!--
-							<xsl:variable name="label1">
-								<xsl:if test="$taxonEntry/Items[@name=string($label)]">
-									<xsl:value-of select="$taxonEntry/Items[@name=string($label)]/Item"/>
-								</xsl:if>
-							</xsl:variable>
-							-->
 							<td class="images">
-					
 								<xsl:call-template name="displayMediaResources">
 									<xsl:with-param name="mediaresources" select="$taxonEntry/MediaResources[@name=string($character)]"/>
 								</xsl:call-template>
@@ -147,6 +148,18 @@
 				</xsl:for-each>
 			</tr>
 		</xsl:for-each>
+	</xsl:template>
+	<xsl:template name="displayLists">
+		<xsl:param name="lists"/>
+		
+			<td class="data">
+				<xsl:for-each select="$lists/EFGList">
+			
+					<xsl:value-of select="concat(@serviceLink, '|   ')"/>
+					<xsl:value-of select="."/>
+				</xsl:for-each>
+			</td>
+		
 	</xsl:template>
 	<xsl:template name="handleGroup6">
 		<xsl:param name="group"/>
@@ -231,7 +244,16 @@
 			<xsl:for-each select="$group4/characterValue">
 				<xsl:sort data-type="number" order="ascending" select="@rank"/>
 				<xsl:variable name="mediaresourceField" select="@value"/>
-				<xsl:variable name="label" select="@label"/>
+				<xsl:variable name="label">
+					<xsl:choose>
+						<xsl:when test="not(string(@label))=''">
+							<xsl:value-of select="@label"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="@value"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<!--
 				<xsl:variable name="label1">
 					<xsl:if test="$taxonEntry/Items[@name=string($label)]">

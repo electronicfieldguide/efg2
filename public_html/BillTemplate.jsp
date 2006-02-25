@@ -24,7 +24,9 @@
 				mediaResourcesTable.add(fieldName);
 			}
 		}
-		characterSet.add(fieldName.trim());;	
+		else{
+			characterSet.add(fieldName.trim());
+		}	
 	 }
 	 int numberOfImages = mediaResourcesTable.size();
 	 int characterSetSize = characterSet.size();
@@ -109,7 +111,7 @@
 	String fieldValue = null;
      %>
 		<title>Templates for <%=dataSourceName%></title>
-		<link href="http://alpaca.cs.umb.edu/efg/monteverde/famstyle.css" rel="stylesheet"/>
+		<link href="famstyle.css" rel="stylesheet"/>
 	</head>
 <body>
 <form method="post" action="<%=context%>/configTaxonPage">
@@ -300,7 +302,7 @@
 								<table cellspacing="5" border="0"><!--IMAGES -->
 									<%	
 									for(int counter1 = 0;  counter1 < numberOfImages; counter1++){
-										curName = name + ":" + counter1 + 1;
+										curName = name + ":" + (counter1 + 1);
 										
 
 									%>
@@ -329,7 +331,7 @@
 												}
 											%>
 											</select>
-											<%clName = "cl:" +  groupRank + ":" + groupRank + counter1 + 1;
+											<%clName = "cl:" +  groupRank + ":" + (groupRank + counter1 + 1);
 												fieldValue = (String)groupTable.get(clName);
 												if(fieldValue == null){
 													fieldValue ="";
@@ -339,7 +341,7 @@
 											<br/><input type="text" name="<%=clName%>" value="<%=fieldValue%>"/><!-- IMAGE CAPTION -->
 										</td>
 										<% if((counter1 + 1) < numberOfImages){
-											curName = name + ":" + counter1 + 2;
+											curName = name + ":" + (counter1 + 2);
 										%>
 										<td class="id_text">
 											<select name="<%=curName%>" size="1"> 
@@ -364,7 +366,7 @@
 												}
 											%>
 											</select>
-											<%clName = "cl:" +  groupRank + ":" + groupRank + counter1 + 2;
+											<%clName = "cl:" +  groupRank + ":" + (groupRank + counter1 + 2);
 												fieldValue = (String)groupTable.get(clName);
 												if(fieldValue == null){
 													fieldValue ="";
@@ -391,7 +393,7 @@
 								<%
 								int counterx = 0;	
 								for(counterx = 0;  counterx < numberOfIdentifications; counterx++){
-									curName = name + ":" + counterx + 1;
+									curName = name + ":" + (counterx + 1);
 									bool = false;
 									fieldValue = (String)groupTable.get(curName);
 									if(fieldValue == null){
@@ -427,7 +429,7 @@
 								<%}%>
 
 								<p class="id_text">
- 								<%clName = "cl:" +  groupRank + ":" + groupRank + counterx + 1;
+ 								<%clName = "cl:" +  groupRank + ":" + (groupRank + counterx + 1);
 										fieldValue = (String)groupTable.get(clName);
 										if(fieldValue == null){
 											fieldValue ="";
@@ -451,8 +453,8 @@
 							<!-- find how many field names then create as many paragraphs 	-->
 								<%	
 								for(int counter = 0; counter < tableSize; counter++){
-									curName = name + ":" + counter + 1;
-									clName = "cl:" +  groupRank + ":" + groupRank + counter + 1;
+									curName = name + ":" + (counter + 1);
+									clName = "cl:" +  groupRank + ":" + (groupRank + counter + 1);
 									bool = false;
 									fieldValue = (String)groupTable.get(clName);
 									if(fieldValue == null){
@@ -496,6 +498,12 @@
 					<% groupRank = groupRank + 1;
 		   			   name = "group:" + groupRank + ":" + groupRank;
 					   curName = name + ":1";
+					   String groupLabel1 = "gl:" +  groupRank + ":" + groupRank;
+  						String glValue1 = (String)groupTable.get(groupLabel1);
+						if(glValue1 == null){
+							glValue1 ="";
+						}
+
 					   clName = "gl:" +  groupRank + ":" + groupRank;
 					   bool = false;
 					   String clValue = (String)groupTable.get(clName);
@@ -516,7 +524,7 @@
 						<tr>
 							<td>
 								<p class="detail_text">
-									<input type="text" name="<%=clName%>" value="<%=clValue%>"/> 	<!-- CREDITS -->					
+									<input type="text" name="<%=groupLabel1%>" value="<%=glValue1%>"/> 	<!-- CREDITS -->					
 									<select name="<%=curName%>" size="1"> 
 				  					<%
 										ii=0;
@@ -536,12 +544,13 @@
 											ii++;
 										}
 									%>
-									</select>    
+									</select>  <input type="text" name="<%=tlName%>" value="<%=tlValue%>"/>   
 									</p>
+									<!--
 									<p class="detail_text">
-										<input type="text" name="<%=clName%>" value="<%=clValue%>"/> 	<!-- CREDITS -->		
-										<input type="text" name="<%=tlName%>" value="<%=tlValue%>"/> 	<!-- CREDITS -->								
-									</p>
+										<input type="text" name="<%=clName%>" value="<%=clValue%>"/> 	
+										<input type="text" name="<%=tlName%>" value="<%=tlValue%>"/> 							
+									</p>-->
 							</td>
 						</tr>
 					</table>

@@ -108,6 +108,10 @@ public class EFGImportTool
 	switch(datasource) {
 	    // create warning when user try to import a single table	
 	case DATA_DS:
+	    //find metadata table
+	    //Get table headers of datatable, convert to acceptable table columns, create a metadata table
+	    //with default values
+	    //import it and do what you already do with data tables
 	    log.error("Please import the metadata table together with the data table.");
 	    System.err.println("Please import the metadata table together with the data table.");
 	    break;
@@ -118,15 +122,6 @@ public class EFGImportTool
 	case BOTH_DS:
 	    System.out.println(""); 
 	    System.out.println("About to Import : " + args[1] + " and " + args[2] + " into Relational Database.");
-	    //create efg database if it does not already exists
-	    //assumes that a user with enough privileges has already been created if not print message and ask user to 
-	    //to run script first
-	    //create super user efgSuper with all privileges and efg with only select privileges
-	    /*if(!EFGImportUtils.createDatabase(EFGImportConstants.DATABASE_NAME)){
-		System.err.println("You do not have enough privileges to create the database: " + EFGImportConstants.DATABASE_NAME  + ".");
-		System.err.println("Please follow the instructions in installation instructions that comes with this application on how to set up your Database");
-		return;
-		}*/
 	    if (!EFGRDBImportUtils.isExistTable(efgDBTableNames)) {
 		EFGRDBImportUtils.createEFGMappingTable(efgDBTableNames);
 	    }
@@ -182,9 +177,8 @@ public class EFGImportTool
 	    return h;
 	}
         String[] header = new String[h.length];
-	
-        for(int i = 0; i < h.length; i++) {
-            header[i] = (String) this.mappingTable.get(h[i]);
+	for(int i = 0; i < h.length; i++) {
+	    header[i] = (String)this.mappingTable.get(h[i].trim());
         }
         return header;
     }
@@ -224,14 +218,19 @@ public class EFGImportTool
 	    }
 	    if (datasource == DATA_DS) {
 		//use the names in the metadata file
-	      header = this.translateHeader(header, tableName);
+		header = this.translateHeader(header, tableName);
 	    }
 	  
-	    EFGRDBImportUtils.createAndPopulateTable(tableName, header, records);
+	    boolean boolT = EFGRDBImportUtils.createAndPopulateTable(tableName, header, records);
 	    //create Helper tables
-	    System.out.println("The Database table: " + tableName + " was successfully created.");
-	    return true;
-	
+	    if(boolT){
+		System.out.println("The Database table: " + tableName + " was successfully created.");
+		return true;
+	    }
+	    System.out.println("The Database table: " + tableName + " could not be created successfully.");
+	    return false;
+	    
+	    
 	} catch (Exception e) {
 	    System.out.println("The Database table: " + tableName + " could not be created.");
 	    LoggerUtils.logErrors(e);
@@ -265,10 +264,11 @@ public class EFGImportTool
 	    String[] row;
 	    int nRows = records.size();
 	    //Hashtable mapping = new Hashtable(2 * nRows); // The load factor will be 0.5
-	    
 	    for(int j = 0; j < nRows; j++) {
 		row = (String[]) records.get(j);
-		this.mappingTable.put(row[nameIndex], row[legalnameIndex]);
+		log.debug("Adding: " + row[nameIndex] + " as name");
+		log.debug("Adding: " + row[legalnameIndex] + " as legalname");
+		this.mappingTable.put(row[nameIndex].trim(), row[legalnameIndex].trim());
 	    }
 	    return true;
 	}
@@ -311,8 +311,14 @@ public class EFGImportTool
     }
 }
 //$Log$
-//Revision 1.1  2006/01/25 21:03:42  kasiedu
-//Initial revision
+//Revision 1.3  2006/02/25 13:14:31  kasiedu
+//New classes for import GUI
+//
+//Revision 1.2  2006/01/26 04:20:46  kasiedu
+//no message
+//
+//Revision 1.1.1.1  2006/01/25 21:03:42  kasiedu
+//Release for Costa rica
 //
 //Revision 1.1.1.1  2003/10/17 17:03:05  kimmylin
 //no message

@@ -204,7 +204,7 @@ public class EFGRDBImportUtils implements EFGRDBConstants
      * @param records a List, each of which's member is a String Array containing the data for each column in the header.
      * @see EFGImportTool#importData(String , int)
      */
-    public static void createAndPopulateTable(String tableName, String[] header, List records)
+    public static boolean createAndPopulateTable(String tableName, String[] header, List records)
     {
 	if(!initialized ){
 	    init();
@@ -213,7 +213,7 @@ public class EFGRDBImportUtils implements EFGRDBConstants
 	rdb.setTableName(tableName);
 	rdb.createTable(header);
 	//populate current table
-	rdb.populateTable(records);
+	return rdb.populateTable(records);
     }
    /**
      * Closes the connection object used in this application. It is the responsibility of the user 
@@ -315,8 +315,11 @@ public class EFGRDBImportUtils implements EFGRDBConstants
 }
 
 //$Log$
-//Revision 1.1  2006/01/25 21:03:42  kasiedu
-//Initial revision
+//Revision 1.2  2006/01/26 04:20:46  kasiedu
+//no message
+//
+//Revision 1.1.1.1  2006/01/25 21:03:42  kasiedu
+//Release for Costa rica
 //
 //Revision 1.1.1.1  2003/10/17 17:03:05  kimmylin
 //no message

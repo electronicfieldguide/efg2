@@ -3,11 +3,11 @@ I. MySQL Installation
    We recomnmend that you read through all of the instructions below before you install MySQL on your System.
    1.Unzip mysql-5.0.18 to any location of your choice.
    2.Open the unzipped directory and double click on setup.exe to install MySQL.
-   3.During the installation process, accept all the defaults. You can choose the 'Skip sign-Up' option when 
+   3.During the installation accept all the defaults. You can choose the 'Skip sign-Up' option when 
    the installer asks you to 'Create a new free MySQl.com account'
    4.Click Finish to finish installation.
    5. You will then be directed to an installer that guides you through the configuration of your MySQL server.
-   6.Accept defaults until you get to the page that asks 'Please select a server type. This will influence..'
+   6.Accept defaults until you get to the page that says 'Please select a server type. This will influence..'
    then choose the 'Server Machine option'.
    7. Accept all the defaults until you get to 'Please select the deafult character set'
    8. Choose the option 'Best Support for Multilingualism'.
@@ -38,13 +38,6 @@ I. MySQL Installation
    25. Installation of 'mysql-query-browser-1.1.19-win.msi'
    and 'mysql-administ	rator-1.1.7-win.msi' is optional.
 
-   26. Everytime that you are ready to import  a file or files into the database, repeat steps 21 and 22. 
-	Step 23 needs to be done only once.
-	then at the command prompt type : 
-	
-	source grant.txt
-   27. After successful importation of files into your database, follow the steps in 26 above but enter:
-	revoke.txt instead at the command prompt.
 
 
 

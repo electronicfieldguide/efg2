@@ -75,6 +75,8 @@ public interface EFGImportConstants {
     String TEMPLATES_CONFIG_SRC="EFGSearchPageConfig.xml";   
     String TEMPLATES_FOLDER_NAME="templateConfigFiles";   
     String SEARCHTYPE="searchType";
+    String IMAGES_DIR = "EFGImages";
+
     /**
      * The standard columnnames for representing field attributes 
      * within an ODBC source.
@@ -154,4 +156,15 @@ public interface EFGImportConstants {
     String SEARCH_TYPE_STR="searchType";
     String SEARCH_PLATES_TYPE="plates";
     String SEARCH_LISTS_TYPE="lists";
+    
+    String EFG_APPS="efg2";
+    String EFG_WEB_APPS="webapps";
+    String HELP_FILE = "help.html";
+    String HELP_FILE_KEY = "help.html#Key";
+    String HELP_FILE_IMAGES = "help.html#Images";
+
+    String EFG_DATABASE_ROOT_NAME = "EFG Database Root";
+    String EFG_DATABASE_DATA_NAME = "EFG";
+    String EFG_DATABASE_METADATA_NAME = "EFG";
+
 }// EFGImportConstants

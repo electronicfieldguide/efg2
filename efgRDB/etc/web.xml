@@ -120,6 +120,10 @@
 			<param-value>ApplyXSL</param-value>
 		</init-param>
 			<init-param>
+			<param-name>fopServlet</param-name>
+			<param-value>FopServlet</param-value>
+		</init-param>
+			<init-param>
 			<param-name>database</param-name>
 			<param-value>MySQL</param-value>
 		</init-param>
@@ -127,6 +131,10 @@
 	<servlet>
 		<servlet-name>ApplyXSL</servlet-name>
 		<servlet-class>project.efg.servlet.ApplyXSL</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>FopServlet</servlet-name>
+		<servlet-class>project.efg.servlet.FOPServlet</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>configTaxonPage</servlet-name>
@@ -161,6 +169,10 @@
 	<servlet-mapping>
 		<servlet-name>ApplyXSL</servlet-name>
 		<url-pattern>/ApplyXSL</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FopServlet</servlet-name>
+		<url-pattern>/FopServlet</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>configTaxonPage</servlet-name>
