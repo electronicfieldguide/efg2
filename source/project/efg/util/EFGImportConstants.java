@@ -160,6 +160,8 @@ public interface EFGImportConstants {
     String EFG_APPS="efg2";
     String EFG_WEB_APPS="webapps";
     String HELP_FILE = "help.html";
+    String HELP_FILE_KEY = "help.html#Key";
+    String HELP_FILE_IMAGES = "help.html#Images";
 
     String EFG_DATABASE_ROOT_NAME = "EFG Database Root";
     String EFG_DATABASE_DATA_NAME = "EFG";
