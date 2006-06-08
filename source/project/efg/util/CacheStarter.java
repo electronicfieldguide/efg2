@@ -162,9 +162,9 @@ public class CacheStarter {
 	    */
 	    String[] url = 
 	    {
-	       "http://antelope.cs.umb.edu:8080/efg2/SearchPageNantucketInvasives.jsp?displayName=invasives",
-	       "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_CommonName.xsl",
-		   "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_ScientificName.xsl"};
+	       "http://localhost:8080/efg2/SearchPageNantucketInvasives.jsp?displayName=invasives",
+	       "http://localhost:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_CommonName.xsl",
+		   "http://localhost:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_ScientificName.xsl"};
 	    
 	    // Create a method instance.
 	    for(int i = 0; i < url.length;i++){

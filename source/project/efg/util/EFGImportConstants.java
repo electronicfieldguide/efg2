@@ -27,6 +27,8 @@ import java.util.Set;
  * USA
  */
 public interface EFGImportConstants {
+	String XSL_SEARCH_GROUPS = "xslSearchAllGroups";
+	String SEARCH_GROUP = "searchPageGroups";
 	String IMAGES_MAX_DIM="imagemaxdim";
 	String DS_DATA_COL= "DS_DATA";
 	String DISPLAY_NAME_COL="DISPLAY_NAME";
