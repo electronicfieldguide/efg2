@@ -93,7 +93,7 @@
 	-->
 	<servlet>
 		<servlet-name>loggerServlet</servlet-name>
-		<servlet-class>project.efg.servlet.LoggerServlet</servlet-class>
+		<servlet-class>project.efg.servlets.efgImpl.LoggerServlet</servlet-class>
 		<init-param>
 			<param-name>log4j-init-file</param-name>
 			<param-value>WEB-INF/classes/project/efg/util/log4j.properties</param-value>
@@ -101,16 +101,8 @@
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>taxondisplay</servlet-name>
-		<servlet-class>project.efg.servlet.TaxonDisplayServlet</servlet-class>
-		<init-param>
-			<param-name>taxonSet</param-name>
-			<param-value>taxonSet</param-value>
-		</init-param>
-	</servlet>
-	<servlet>
 		<servlet-name>search</servlet-name>
-		<servlet-class>project.efg.servlet.SearchEngine</servlet-class>
+		<servlet-class>project.efg.servlets.efgImpl.SearchEngine</servlet-class>
 		<init-param>
 			<param-name>defaultMaxDisplay</param-name>
 			<param-value>20</param-value>
@@ -130,16 +122,18 @@
 	</servlet>
 	<servlet>
 		<servlet-name>ApplyXSL</servlet-name>
-		<servlet-class>project.efg.servlet.ApplyXSL</servlet-class>
+		<servlet-class>project.efg.servlets.efgImpl.ApplyXSL</servlet-class>
 	</servlet>
 	<servlet>
 		<servlet-name>FopServlet</servlet-name>
-		<servlet-class>project.efg.servlet.FOPServlet</servlet-class>
+		<servlet-class>project.efg.servlets.efgImpl.FOPServlet</servlet-class>
 	</servlet>
+	<!--
 	<servlet>
 		<servlet-name>configTaxonPage</servlet-name>
 		<servlet-class>project.efg.servlet.TaxonPageTemplateConfig</servlet-class>
 	</servlet>
+	-->
 	<!--
 		Define mappings that are used by the servlet container to
 		translate a particular request URI (context-relative) to a
@@ -157,11 +151,12 @@
 		You may define any number of servlet mappings, including zero.
 		It is also legal to define more than one mapping for the same
 		servlet, if you wish to.
-	-->
+	
 	<servlet-mapping>
 		<servlet-name>taxondisplay</servlet-name>
 		<url-pattern>/taxondisplay</url-pattern>
 	</servlet-mapping>
+	-->
 	<servlet-mapping>
 		<servlet-name>search</servlet-name>
 		<url-pattern>/search</url-pattern>
@@ -174,10 +169,12 @@
 		<servlet-name>FopServlet</servlet-name>
 		<url-pattern>/FopServlet</url-pattern>
 	</servlet-mapping>
+	<!--
 	<servlet-mapping>
 		<servlet-name>configTaxonPage</servlet-name>
 		<url-pattern>/configTaxonPage</url-pattern>
 	</servlet-mapping>
+	-->
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>

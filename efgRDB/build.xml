@@ -38,9 +38,11 @@ $Id$
 	<target name="clean">
 	</target>
 	<target name="compile" depends="prepare">
+		<!--
 		<copy todir="${src.temp.home}">
 			<fileset dir="${local_source.home}"/>
 		</copy>
+		-->
 		<javac srcdir="${src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on">
 			<classpath refid="compile.class.path"/>
 		</javac>
@@ -91,6 +93,5 @@ $Id$
 	<target name="all" depends="clean,prepare,compile"/>
 	<target name="dist" depends="prepare,compile">
 		<jar jarfile="${dist.home}/${dist.src}" basedir="."/>
-		<!--	<jar jarfile="${dist.home}/${dist.war}" basedir="${deploy.home}"/> -->
 	</target>
 </project>
