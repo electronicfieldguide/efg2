@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="source"/>
+	<classpathentry kind="src" path="unitTests"/>
+	<classpathentry kind="src" path="lib"/>
+	<classpathentry exported="true" kind="lib" path="lib/avalon.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/batik.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/castor-0.9.5.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/fop.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jakarta-oro-2.0.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jdom.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/mysqldriver.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ostermillerutils_1_05_00_for_java_1_4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xerces.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre"/>
+	<classpathentry exported="true" kind="var" path="TOMCAT"/>
+	<classpathentry exported="true" kind="lib" path="lib/spring.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/rowset.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry sourcepath="ECLIPSE_HOME/plugins/org.eclipse.jdt.source_3.1.1/src/org.junit_3.8.1/junitsrc.zip" kind="var" path="JUNIT_HOME/junit.jar"/>
+	<classpathentry kind="lib" path="C:/cvscheckout/efg2/lib/oscache-2.3.jar"/>
+	<classpathentry kind="lib" path="C:/cvscheckout/efg2/lib/commons-httpclient-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/cvscheckout/efg2/lib/commons-codec-1.3.jar"/>
+	<classpathentry kind="output" path="compiled"/>
+</classpath>
