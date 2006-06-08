@@ -1,15 +1,18 @@
 <%@page import="java.util.Iterator,
 project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface,
-project.efg.Imports.efgInterface.EFGDatasourceObjectInterface" %>
-
+project.efg.Imports.efgInterface.EFGDatasourceObjectInterface,
+project.efg.servlets.efgInterface.ServletAbstractFactoryInterface,
+project.efg.servlets.factory.ServletAbstractFactoryCreator,
+project.efg.util.EFGImportConstants" %>
+					
 <% 
    String context = request.getContextPath();
 	boolean found = false;
-	EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
-	Iterator dsNameIter = 
-	dsHelper.getDataSourceNames().getEFGDatasourceObjectListIterator(); 
+      ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
+	EFGDatasourceObjectListInterface listInter = servFactory.getListOfDatasources();
+	Iterator dsNameIter = listInter.getEFGDatasourceObjectListIterator(); 
 %>
-
+	
 <html>
   <head>
     <title>Search/Browse EFG Datasources</title>
@@ -25,19 +28,22 @@ project.efg.Imports.efgInterface.EFGDatasourceObjectInterface" %>
 				<% 
 					EFGDatasourceObjectInterface obj = (EFGDatasourceObjectInterface)dsNameIter.next();
 					String displayName = obj.getDisplayName();
+					
 					found = true;
 				 %>
+					<%=displayName%>
+
 			 </td>
 			 <td>
 			 	 <a  title="search datasource" href="<%=context%>/SearchPage.jsp?pageType=option&displayName=<%=displayName%>">
 					search
 				 </a>
 				  </td> <td>
-					 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=lists&maxDisplay=<%=EFGImportConstants.MAX_DISPLAY_IGNORE%>" title="browse a list of taxon names">
+					 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=lists" title="browse a list of taxon names">
 					browse lists
 				 </a>
 				  </td> <td>
-				 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=plates&maxDisplay=<%=EFGImportConstants.MAX_DISPLAY_IGNORE%>"  title="browse  plates">
+				 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=plates"  title="browse  plates">
 					browse plates
 				 </a>	 
 			 </td>

@@ -1,7 +1,12 @@
-	table.specieslist {
-	  width: 60%;
+table.header {
 	  margin-left: 20px;
-	  margin-right: 5%;
+	  margin-right: 0px;
+	  border-collapse: collapse; 
+	  }
+	table.specieslist {
+	  width: 100%;
+	  margin-left: 0px;
+	  margin-right: 0px;
 	  border-collapse: collapse; 
 	  }
 	td {
@@ -10,8 +15,11 @@
 	  font-size: 8pt;
 	   }
 	td.title {
-	   align: right;
+	   align: left;
+	   width: 100%;
+	   margin-left: 0px;
 	   padding-bottom: 10px;
+	   padding-right: 100px;
 	   border-bottom-style: solid;
 	   border-bottom-width: 2px;
 	   border-bottom-color: darkblue;
@@ -37,7 +45,7 @@
 	  font-size: 11pt;
 	  padding-bottom: 30px;
 	  padding-top: 30px;
-	  padding-left: 22px;
+	  padding-left: 0px;
 	  }
 	td.commonheader {
 	   color: #000000;
@@ -47,6 +55,7 @@
 	   border-bottom-style: solid;
 	   border-bottom-color: #000000;
 	   border-bottom-width: 1px;
+	   padding-right: 25px;
 	   }
 	td.sciheader {
 	   color: #000000;
@@ -59,39 +68,41 @@
 	   border-bottom-width: 1px;
 	   }
 	td.commonname {
-	   color: #000000;
-	   font-family: helvetica, verdana, arial;
-	   font-size: 10pt;
-	   padding-bottom: 9px;
-	   }
-	td.sciname {
-	   color: #000000;
-	   font-family: helvetica, verdana, arial;
-	   font-style: italic;
-	   font-size: 10pt;
-	   padding-bottom: 9px;
-	   }
+    color: #000000;
+    font-family: helvetica, verdana, arial;
+    font-size: 10pt;
+    padding-bottom: 7px;
+    padding-right: 35px;
+    }
+ td.sciname {
+    color: #000000;
+    font-family: helvetica, verdana, arial;
+    font-style: italic;
+    font-size: 10pt;
+    padding-bottom: 7px;
+    padding-right: 35px;
+    }
 	td.spacerwidth {
 	   width: 80px;
 	   }
 	td.spacerheight {
 	   height: 10px;
 	   }
-	a.commonname {
+	a.commonname1st {
 	  color: #336600;
 	  font-family: helvetica, verdana, arial;
 	  font-size: 10pt;
 	  text-align: left;
 	  text-decoration: none;
 	  }
-	a.commonname:hover {
+	a.commonname1st:hover {
 	  color: #1c86ee;
 	  font-family: helvetica, verdana, arial;
 	  font-size: 10pt;
 	  text-align: left;
 	  text-decoration: underline;
 	  }
-	a.sciname {
+	a.sciname2nd {
 	  color: #000000;
 	  font-family: helvetica, verdana, arial;
 	  font-style: italic;
@@ -99,7 +110,7 @@
 	  text-align: left;
 	  text-decoration: none;
 	  }
-	a.sciname:hover {
+	a.sciname2nd:hover {
 	  color: #000000;
 	  font-family: helvetica, verdana, arial;
 	  font-style: italic;
@@ -107,6 +118,36 @@
 	  text-align: left;
 	  text-decoration: underline;
 	  }
+	a.commonname2nd {
+	  color: #000000;
+	  font-family: helvetica, verdana, arial;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: none;
+	  }
+	a.commonname2nd:hover {
+	  color: #000000;
+	  font-family: helvetica, verdana, arial;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: underline;
+	  }
+	a.sciname1st {
+	  color: #336600;
+	  font-family: helvetica, verdana, arial;
+	  font-style: italic;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: none;
+	  }
+	a.sciname1st:hover {
+	  color: #1c86ee;
+	  font-family: helvetica, verdana, arial;
+	  font-style: italic;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: underline;
+	  }	  
 	caption {
 	  text-align: center;
 	  vertical-align: bottom;
@@ -120,3 +161,4 @@
 	   font-family: helvetica, verdana, arial;
 	   font-style: italic;
 	   font-size: 10pt;
+	  }

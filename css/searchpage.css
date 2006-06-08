@@ -1,0 +1,136 @@
+body {
+	font-family: arial, verdana, helvetica;
+	background-color: #DDEEFF;
+	margin-left: 20px;
+}
+p.title {
+	font-size: 1.4em;
+	color: #003399;
+	font-weight: bold;
+}
+p.instruct {
+	font-size: .8em;
+	color: #003399;
+	font-weight: normal;
+	padding-bottom: 0px;
+}
+table {
+	margin-top: 20px;
+	margin-bottom: 10px;
+	border-collapse: collapse;
+}
+th {
+	color: #09600F;
+	text-align: left;
+	font-size: 1em;
+}
+tr.section {
+	background-color: #FFFFFF;
+}
+td.sectionleft {
+	background-color: #FFFFFF;
+	font-size: .9em;
+	font-weight: 100;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-left : solid 1px green;
+}
+td.sectionright {
+	background-color: #FFFFFF;
+	font-size: .9em;
+	font-weight: 100;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-right : solid 1px green;
+}
+td.spacer {
+	height: 15px;
+}
+td.padder {
+	height: 3px;
+	background-color: #FFFFFF;
+}
+td.paddertopleft {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-top : solid 1px green;
+	border-left : solid 1px green;
+}
+td.paddertopright {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-top : solid 1px green;
+	border-right : solid 1px green;
+}
+td.padderbottomleft {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-bottom : solid 1px green;
+	border-left : solid 1px green;
+}
+td.padderbottomright {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-bottom : solid 1px green;
+	border-right : solid 1px green;
+}
+td.radioheader {
+	font-size: .9em;
+	font-weight: normal;
+	text-align: right;
+	color: #003399;
+}
+table.radiothumbs {
+	border: solid black 1px;
+	font-size: .8em;
+	padding: 44px;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	background-color: #FFFFFF;
+}
+td.radiothumbs {
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 10px;
+	padding-bottom: 15px;
+	vertical-align: bottom;
+}
+td.submitsearch {
+	font-size: .8em;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-top: solid 1px #003399;
+	border-bottom: solid 1px #003399;
+	align: left;
+}
+table.search {
+	width: 100%;
+	margin-bottom: 0px;
+}
+.display {
+	padding-right: 10px;
+	font-size: .9em;
+	font-weight: normal;
+}
+.matches {
+	padding-right: 15px;
+	font-size: .9em;
+	font-weight: normal;
+}
+.search {
+	padding-right: 5px;
+}
+.clear {
+}
+.nohits {
+	font-style: italic;
+	background-color: #FFFF99;
+	color: #660033;
+	padding: 3px;
+}
+.searchcrit {
+	font-weight: bold;
+	font-style: normal;
+}

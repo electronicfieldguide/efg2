@@ -1,4 +1,4 @@
-<%@ page import ="project.efg.efgDocument,org.exolab.castor.xml.Marshaller,org.exolab.castor.xml.Unmarshaller" %>
+<%@ page import ="project.efg.efgDocument.EFGDocument,org.exolab.castor.xml.Marshaller,org.exolab.castor.xml.Unmarshaller" %>
 <%
     response.setContentType("text/xml");
 
