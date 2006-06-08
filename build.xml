@@ -14,7 +14,7 @@ b) Relational Database
 	ant deployRDB
 	ant cleanRDB	
 -->
-<project name="Electronic Field Guide" default="compile" basedir=".">
+<project name="Electronic Field Guide" default="compileRDB" basedir=".">
 	<property environment="myenv"/>
 	<property name="app.name" value="efg2"/>
 	<property name="tomcat.home" value="${myenv.CATALINA_HOME}"/>
@@ -31,6 +31,8 @@ b) Relational Database
 	<property name="root.path" value="${myenv.SystemRoot}"/>
 	<property name="efg_public_html.home" value="${efg.home}/public_html"/>
 	<property name="efg_lib.home" value="${efg.home}/lib"/>
+	<property name="efg_lib.home.properties" value="${efg_lib.home}/properties"/>
+	<property name="efg_lib.home.logs" value="${efg_lib.home}/logs"/>
 	<property name="efg_source.home" value="${efg.home}/source"/>
 	<property name="efg.images.home" value="${efg.home}/../EFGImages"/>
 	<property name="icons.home" value="${efg.home}/../EFGIcons"/>
@@ -57,8 +59,8 @@ b) Relational Database
 		<fileset dir="${efg_lib.home}">
 			<include name="*.jar"/>
 		</fileset>
-		<fileset dir="${efg_lib.home}">
-			<include name="*.properties"/>
+		<fileset dir="${efg_lib.home.properties}">
+			<include name="**.*"/>
 		</fileset>
 	</path>
 	<!-- deployImages -->
@@ -93,18 +95,13 @@ b) Relational Database
 	</target>
 	<!-- Compile main sources-->
 	<target name="compileMain" depends="prepare">
+		<ant antfile="${efg.home}/generateTomcatUsers.xml" inheritAll="true" target="generate"/>
+		<ant antfile="${efg.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
+		<ant antfile="${efg.home}/generateEFGField.xml" inheritAll="true" target="generate"/>
 		<ant antfile="${efg.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
 		<copy todir="${src.temp.home}">
 			<fileset dir="${efg_source.home}"/>
 		</copy>
-		<!--
-		<ant antfile="${efg.home}/buildTemplates.xml" inheritAll="true" target="cleanGenerator"/>
--->
-		<copy todir="${compile.home}">
-			<fileset dir="${efg_properties.home}" includes="**/*.properties" excludes="log4j.properties, log4j_rdb.properties"/>
-		</copy>
-		<copy file="${efg_properties.home}/log4j.properties" todir="${compile.home}/project/efg/util/"/>
-		<copy file="${efg_properties.home}/log4j_rdb.properties" todir="${compile.home}/project/efg/util/"/>
 	</target>
 	<!-- Compile object store sources with main sources-->
 	<target name="compileOS" depends="compileMain">
@@ -115,7 +112,7 @@ b) Relational Database
 	<target name="prepareDeploy">
 		<mkdir dir="${deploy.home}"/>
 		<mkdir dir="${deploy.home}/EFGImages"/>
-			<mkdir dir="${deploy.home}/EFGIcons"/>
+		<mkdir dir="${deploy.home}/EFGIcons"/>
 		<mkdir dir="${deploy.home}/html"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/WEB-INF"/>
@@ -126,7 +123,7 @@ b) Relational Database
 		<copy todir="${deploy.home}/WEB-INF/fedSchema">
 			<fileset dir="${efg_fedSchema.home}"/>
 		</copy>
-			<copy todir="${deploy.home}/EFGIcons">
+		<copy todir="${deploy.home}/EFGIcons">
 			<fileset dir="../EFGIcons" includes="**/*.*"/>
 		</copy>
 		<copy todir="${deploy.home}">
@@ -135,15 +132,14 @@ b) Relational Database
 		<copy todir="${deploy.home}/WEB-INF/metadata">
 			<fileset dir="${efg_metadata.home}"/>
 		</copy>
-			<copy todir="${deploy.home}/WEB-INF/classes">
+		<copy todir="${deploy.home}/WEB-INF/classes">
 			<fileset dir="compiled" includes="*.*"/>
 		</copy>
 		<copy todir="${deploy.home}/WEB-INF/lib">
 			<fileset dir="${efg_lib.home}"/>
 		</copy>
-		
-				<copy file="${efg.home}/lib/mysqldriver.jar" todir="${tomcat.home}/common/lib"/>
-
+		<copy file="${efg.home}/lib/mysqldriver.jar" todir="${tomcat.home}/common/lib"/>
+		<!-- CREATE A PROPERTIES FILE ON SERVER AND COPY ALL PROPERTIES FILE THERE-->
 		<copy file="${efg_properties.home}/log4j.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
 	</target>
 	<target name="deployRDB" depends="compileRDB,prepareDeploy">
@@ -151,35 +147,65 @@ b) Relational Database
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg_public_html.home}"/>
 		</copy>
-		
-				<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
-				<copy file="efg.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
-
-	
+		<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
+		<copy file="efg.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
 		<copy todir="${deploy.home}/templateConfigFiles">
 			<fileset dir="templateConfigFiles"/>
 		</copy>
 	</target>
 	<target name="jarRDBImport" depends="compileRDB">
-		<jar jarfile="${efg.home}/lib/rdbImport.jar">
+		<jar jarfile="${efg.home}/lib/rdbImport.jar" basedir="compiled">
+			<!-- DELETE ME AFTER TESTS
+			<fileset dir="compiled" includes="project/efg/efgField/*.class"/>
+			<fileset dir="compiled" includes="project/efg/efgField/types/*.class"/>
+			<fileset dir="compiled" includes="project/efg/efgDocument/*.class"/>
+			<fileset dir="compiled" includes="project/efg/efgDocument/types/*.class"/>
 			<fileset dir="compiled" includes="project/efg/db/*.class"/>
-			<fileset dir="compiled" includes="project/efg/efgInterface/*.class"/>
+			<fileset dir="compiled" includes="project/efg/**.class"/>
+			-->
+			<!--
 			<fileset dir="compiled" includes="project/efg/Import/*.class"/>
 			<fileset dir="compiled" includes="project/efg/util/*.class"/>
+			<fileset dir="compiled" includes="project/efg/tomcatusers/*.class"/>
+			-->
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
-				<section name="project.efg.Import.EFGDataPrepareTool.class">
+				<section name="project.efg.Imports.efgImpl.LoginDialog.class">
 					<attribute name="Sealed" value="false"/>
 				</section>
 			</manifest>
 		</jar>
-		<copy file="${efg_properties.home}/log4j_rdb.properties" todir="${efg.home}/lib"/>
-		<copy file="${compile.home}/project/efg/Import/RDBprops.properties" todir="${efg.home}/lib"/>
-		<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg.home}/lib"/>
+		<mkdir dir="logs"/>
+		<mkdir dir="${efg_lib.home.logs}"/>
+		<!-- COPY FROM rdb properties location -->
+		<copy todir="${efg_lib.home.properties}">
+			<fileset dir="${rdb.src.home}/properties"/>
+		</copy>
+		<copy todir="${efg_lib.home.properties}">
+			<fileset dir="${efg_properties.home}"/>
+		</copy>
+		<!--
+		<copy file="${rdb.src.home}/properties/**.*" todir="${efg_lib.home.properties}"/>
+		<copy file="${efg_properties.home}/**.*" todir="${efg_lib.home.properties}"/>
+-->
+		<move file="${efg_lib.home.properties}/log4j_rdb.properties" tofile="${efg_lib.home.properties}/log4j.properties"/>
+		<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg_lib.home}"/>
+		<delete dir="temp"/>
 	</target>
 	<!-- Compile RDB sources with main sources-->
 	<target name="compileRDB" depends="compileMain">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="compile"/>
+	</target>
+	<!-- Compile RDB sources with main sources-->
+	<target name="deploy" depends="compileRDB">
+		<copy todir="${tomcat.home}/webapps/efg2/WEB-INF/classes/project">
+			<fileset dir="compiled/project"/>
+		</copy>
+		<delete quiet="true">
+			<fileset dir="${tomcat.home}/logs">
+				<include name="*.*"/>
+			</fileset>
+		</delete>
 	</target>
 	<target name="importRDB" depends="compileRDB">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="import"/>
@@ -195,11 +221,25 @@ b) Relational Database
 		<ant antfile="${ostore.src.home}/build.xml" inheritAll="true" target="clean"/>
 	</target>
 	<target name="cleanSource">
-		<ant antfile="${efg.home}/buildTemplates.xml" inheritAll="true" target="cleanSource"/>
+		<ant antfile="${efg.home}/buildTemplates.xml" inheritAll="true" target="clean"/>
 	</target>
-	<target name="cleanAll" depends="cleanRDB, cleanSource">
+	<target name="cleanTomcatUsers">
+		<ant antfile="${efg.home}/generateTomcatUsers.xml" inheritAll="true" target="clean"/>
+	</target>
+	<target name="cleanEFGField">
+		<ant antfile="${efg.home}/generateEFGField.xml" inheritAll="true" target="clean"/>
+	</target>
+	<target name="cleanAll" depends="cleanRDB, cleanSource,cleanTomcatUsers,cleanEFGField">
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
+		<delete dir="	${efg_lib.home.properties}" quiet="true"/>
+		<delete dir="${efg_lib.home.logs}" quiet="true"/>
+		<delete quiet="true">
+			<fileset dir="logs">
+				<include name="*.*"/>
+			</fileset>
+		</delete>
+		<delete file="${efg.home}/lib/rdbImport.jar" quiet="true"/>
 	</target>
 	<target name="cleanRDB">
 		<!-- -->

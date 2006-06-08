@@ -20,4 +20,8 @@
 
 6. Add a tool that manages MySQL (grants and revokes privileges etc).
    Should be a front end to the import code..Make users enter their MySQl admin passwords.
+
+
+7. states:
+ resourceLink|a,b,c
 	 

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:complexType name="EFGFieldType">
+		<xs:annotation>
+			<xs:documentation>A type for the EFGField element</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="name" use="required">
+			<xs:annotation>
+				<xs:documentation>The  original name of the  field</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="legalName" use="required">
+			<xs:annotation>
+				<xs:documentation>The legal name of the field</xs:documentation>
+			</xs:annotation>
+			<xs:simpleType>
+				<xs:restriction base="xs:string">
+					<xs:minLength value="1"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:attribute>
+		<xs:attribute name="efgFieldType" type="EFGFieldTypeEnum" default="Categorical">
+			<xs:annotation>
+				<xs:documentation>A choice of what this field is</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="isSearchable" type="xs:boolean" default="true">
+			<xs:annotation>
+				<xs:documentation>true if this field is searchable, false otherwise</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="isList" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>true if this field is a list false otherwise</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="onTaxonPage" type="xs:boolean" default="false">
+			<xs:annotation>
+				<xs:documentation>True if this field should appear on the taxon page, false otherwise. This is just a suggestion to application writers</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="order" type="xs:positiveInteger" use="required">
+			<xs:annotation>
+				<xs:documentation>The order in which this field should appear on a user interface. This is just a suggestion to an application.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="EFGFields">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="EFGField" type="EFGFieldType" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="datasourceName" use="required">
+				<xs:annotation>
+					<xs:documentation>The name of the datasource for which this document was createdr. TODO: Use a GUID?</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:minLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="EFGFieldTypeEnum">
+		<xs:annotation>
+			<xs:documentation xml:lang="en-us">Each efgFieldType attribute must have at least one of these enumerated values as its value</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NCName">
+			<xs:enumeration value="Narrative">
+				<xs:annotation>
+					<xs:documentation xml:lang="en-us">Image -- An image is a primarily symbolic visual representation other than text. For example - images and photographs of physical objects, paintings, prints, drawings, other images and graphics, animations and moving pictures, film, diagrams, maps, musical notation. Note that image may include both electronic and physical representations.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MediaResource">
+				<xs:annotation>
+					<xs:documentation xml:lang="en-us">Text -- A text is a resource whose content is primarily words for reading. For example - books, letters, dissertations, poems, newspapers, articles, archives of mailing lists. Note that facsimiles or images of texts are still of the genre text. Text may contain embedded still image illustrations, e. g., formatted html pages.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="Categorical"/>
+			<xs:enumeration value="NumericValue"/>
+			<xs:enumeration value="NumericRange"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
