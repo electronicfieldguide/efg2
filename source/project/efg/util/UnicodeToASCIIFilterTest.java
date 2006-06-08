@@ -1,11 +1,10 @@
-package project.efg.digir;
 /**
  * $Id$
  * $Name$
- * 
- * Copyright (c) 2003  University of Massachusetts Boston
  *
- * Authors: Jacob K Asiedu, Kimmy Lin
+ * Copyright (c) 2006  University of Massachusetts Boston
+ *
+ * Authors: Jacob K Asiedu
  *
  * This file is part of the UMB Electronic Field Guide.
  * UMB Electronic Field Guide is free software; you can redistribute it
@@ -26,18 +25,33 @@ package project.efg.digir;
  * Boston, MA 02111-1307
  * USA
  */
+package project.efg.util;
+
+import junit.framework.TestCase;
+
 /**
- * A temporary object used in some of the stack operations Should be extended to
- * implement equals and hashcode if it is used as part of a Collection.
+ * @author kasiedu
+ *
  */
-public class OR extends LOP {
-	String name;
-
-	public OR(String name) {
-		this.name = name;
+public class UnicodeToASCIIFilterTest extends TestCase {
+ public static void main(String[] args) {
+		junit.textui.TestRunner.run(UnicodeToASCIIFilterTest.class);
 	}
 
-	public String getName() {
-		return this.name;
+	/*
+	 * @see TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
+		
 	}
+
+	/*
+	 * Test method for 'project.efg.util.UnicodeToASCIIFilter.filter(Reader, PrintWriter)'
+	 */
+	public void testFilterReaderPrintWriter() {
+	
+		
+	}
+
 }

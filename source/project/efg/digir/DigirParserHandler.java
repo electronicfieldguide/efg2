@@ -27,22 +27,29 @@
 
 package project.efg.digir;
 
-import project.efg.efgInterface.*;
-import project.efg.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Stack;
 
-import java.util.*;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
-import org.xml.sax.InputSource;
 import org.xml.sax.helpers.DefaultHandler;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+
+import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
+import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
+import project.efg.servlets.efgImpl.EFGContextListener;
+import project.efg.servlets.efgInterface.EFGDataSourceHelperInterface;
+import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
+import project.efg.util.EFGImportConstants;
 /**
  * This class parses the DiGIR request and handles its elements
  * while constructing a DiGIR response.
@@ -110,6 +117,7 @@ public class DigirParserHandler extends DefaultHandler
 	    _parser = factory.newSAXParser();
 	}
 	catch(Exception e){
+		log.error(e.getMessage());
 	    LoggerUtilsServlet.logErrors(e);
 	}
     }
@@ -261,6 +269,7 @@ public class DigirParserHandler extends DefaultHandler
 	    _parser.parse(source, this);
 	}
 	catch(Exception e) {
+		log.error(e.getMessage());
 	    LoggerUtilsServlet.logErrors(e);
 	}   
     }
@@ -274,9 +283,18 @@ public class DigirParserHandler extends DefaultHandler
 	errorMessages = new StringBuffer();
 
 	//Get all the data sources in our Database
-	EFGDSHelperFactory dsHelperFactory = new EFGDSHelperFactory();
-	EFGDataSourceHelper dsHelper = dsHelperFactory.getDataSourceHelper();
-	dataSources = dsHelper.getDSNames();     
+    EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
+    EFGDatasourceObjectListInterface lists = dsHelper.getDataSourceNames();
+    Iterator iter = lists.getEFGDatasourceObjectListIterator();
+    
+	 dataSources = new ArrayList();
+	 
+	 while(iter.hasNext()){
+		 EFGDatasourceObjectInterface datasource = (EFGDatasourceObjectInterface)iter.next();
+		 String str = datasource.getDisplayName();
+		 dataSources.add(str);
+	 }
+	  
 
 	requestedDataSources = new LinkedList();
 
@@ -411,9 +429,9 @@ public class DigirParserHandler extends DefaultHandler
 	}
 	else{
 	    if(localName.trim().indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1){
-		EFGServletUtils.addToSet(localName.trim());
+		EFGContextListener.addToSet(localName.trim());
 	    }
-	    if (EFGServletUtils.contains(localName.trim())) {//A federation schema type
+	    if (EFGContextListener.contains(localName.trim())) {//A federation schema type
 		if (_filterType == 1) {
 		    _type = 0;
 		    stack2.push(localName);
@@ -472,6 +490,7 @@ public class DigirParserHandler extends DefaultHandler
 	    }
 	}
 	catch(Exception e){
+		log.error(e.getMessage());
 	    LoggerUtilsServlet.logErrors(e);
 	}
     }
@@ -603,6 +622,7 @@ public class DigirParserHandler extends DefaultHandler
 	    }
 	}
 	catch(Exception e){
+		log.error(e.getMessage());
 	    LoggerUtilsServlet.logErrors(e);
 	}
 	finally {
@@ -716,8 +736,11 @@ public class DigirParserHandler extends DefaultHandler
 }
 
 //$Log$
-//Revision 1.1  2006/01/25 21:03:48  kasiedu
-//Initial revision
+//Revision 1.1.1.1.2.1  2006/06/08 13:13:55  kasiedu
+//New  files
+//
+//Revision 1.1.1.1  2006/01/25 21:03:48  kasiedu
+//Release for Costa rica
 //
 //Revision 1.4  2005/04/27 19:41:22  ram
 //Recommit all of ram's allegedly working copy of efgNEW...

@@ -1,23 +1,57 @@
 package project.efg.digir;
+/**
+ * $Id$
+ * $Name$
+ * 
+ * Copyright (c) 2003  University of Massachusetts Boston
+ *
+ * Authors: Jacob K Asiedu, Kimmy Lin
+ *
+ * This file is part of the UMB Electronic Field Guide.
+ * UMB Electronic Field Guide is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2, or
+ * (at your option) any later version.
+ *
+ * UMB Electronic Field Guide is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the UMB Electronic Field Guide; see the file COPYING.
+ * If not, write to:
+ * Free Software Foundation, Inc.
+ * 59 Temple Place, Suite 330
+ * Boston, MA 02111-1307
+ * USA
+ */
+/**
+ * A temporary object used in some of the stack operations Should be extended to
+ * implement equals and hashcode if it is used as part of a Collection.
+ */
 
-
-import project.efg.util.*;
-import project.efg.efgInterface.*;
-//import project.efg.db.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.*;
-import java.net.*;
-import org.jdom.*;
-import org.jdom.Document;
-import org.xml.sax.InputSource;
+import java.io.File;
+import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.text.*;
-import java.util.*;
-import org.jdom.input.SAXBuilder;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.Namespace;
+import org.jdom.input.SAXBuilder;
+
+import project.efg.Imports.efgImportsUtil.LoggerUtils;
+import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
+import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
+import project.efg.servlets.efgImpl.EFGContextListener;
+import project.efg.servlets.efgInterface.EFGDataSourceHelperInterface;
 
 public class DiGIRProcessor {
   private DigirParserHandler dph;
@@ -271,8 +305,8 @@ public class DiGIRProcessor {
       SAXBuilder parser = null;
       Document doc = null;
       
-      String metadataFile = EFGServletUtils.getEFGMetaDataFileName(); //Get metadata file name. 
-    String pathToResourceFiles = EFGServletUtils.getPathToResourceFiles();//Get the path to all the metadata files containing info about each resource
+      String metadataFile = EFGContextListener.getEFGMetaDataFileName(); //Get metadata file name. 
+    String pathToResourceFiles = EFGContextListener.getPathToResourceFiles();//Get the path to all the metadata files containing info about each resource
     
      
      parser = new SAXBuilder();
@@ -292,9 +326,18 @@ public class DiGIRProcessor {
      //If the list of DataSources is empty then get all the DataSources from our Database
      //otherwise use the DataSources from the request that exist in our DataBase
      if((requestedDataSources == null) || (requestedDataSources.size() == 0)){
-       EFGDSHelperFactory dsHelperFactory = new EFGDSHelperFactory();
-       EFGDataSourceHelper dsHelper = dsHelperFactory.getDataSourceHelper();
-       requestedDataSources = dsHelper.getDSNames();
+    	// EFGDataSourceHelperFactoryInterface dsHelperFactory = new EFGDataSourceHelperFactoryImpl();
+         EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
+         EFGDatasourceObjectListInterface lists = dsHelper.getDataSourceNames();
+         Iterator iter = lists.getEFGDatasourceObjectListIterator();
+         
+    	 requestedDataSources = new ArrayList();
+    	 
+    	 while(iter.hasNext()){
+    		 EFGDatasourceObjectInterface datasource = (EFGDatasourceObjectInterface)iter.next();
+    		 String str = datasource.getDisplayName();
+    		 requestedDataSources.add(str);
+    	 }
      }
      //for each resource get the associated metadata resource information.
      efgIter = requestedDataSources.iterator();
