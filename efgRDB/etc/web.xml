@@ -74,6 +74,14 @@
 			<param-name>scope</param-name>
 			<param-value>application</param-value>
 		</init-param>
+			<init-param>
+			<param-name>ICacheKeyProvider</param-name>
+			<param-value>project.efg.util.EFGCacheProvider</param-value>
+		</init-param>
+			<init-param>
+			<param-name>ICacheGroupsProvider</param-name>
+			<param-value>project.efg.util.EFGCacheGroup</param-value>
+		</init-param>
 	</filter>
 	<filter>
 		<filter-name>CacheFilterStaticContent</filter-name>
