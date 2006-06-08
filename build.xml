@@ -16,7 +16,7 @@ b) Relational Database
 -->
 <project name="Electronic Field Guide" default="compile" basedir=".">
 	<property environment="myenv"/>
-	<property name="app.name" value="efg"/>
+	<property name="app.name" value="efg2"/>
 	<property name="tomcat.home" value="${myenv.CATALINA_HOME}"/>
 	<!--
    <property name="tomcat.home" value="C:\jakarta-tomcat-5.0.28"/> 
@@ -94,8 +94,6 @@ b) Relational Database
 	<!-- Compile main sources-->
 	<target name="compileMain" depends="prepare">
 		<ant antfile="${efg.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
-		<touch file="${efg.home}/templatesOrig/TaxonPageTemplatesTypeDescriptor.java"/>
-		<copy file="${efg.home}/templatesOrig/TaxonPageTemplatesTypeDescriptor.java" todir="${efg_source.home}/project/efg/templates/taxonPageTemplates"/>
 		<copy todir="${src.temp.home}">
 			<fileset dir="${efg_source.home}"/>
 		</copy>
@@ -143,6 +141,9 @@ b) Relational Database
 		<copy todir="${deploy.home}/WEB-INF/lib">
 			<fileset dir="${efg_lib.home}"/>
 		</copy>
+		
+				<copy file="${efg.home}/lib/mysqldriver.jar" todir="${tomcat.home}/common/lib"/>
+
 		<copy file="${efg_properties.home}/log4j.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
 	</target>
 	<target name="deployRDB" depends="compileRDB,prepareDeploy">

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
-	<xsl:variable name="groups" select="document(string($searchTemplateConfig))/TaxonPageTemplates/TaxonPageTemplate[@datasourceName=string($datasource)]/groups"/>
+	<xsl:variable name="groups" select="document(string($searchTemplateConfig))//TaxonPageTemplate[@datasourceName=string($datasource)]/groups"/>
 	<xsl:variable name="title">
 		<xsl:choose>
 			<xsl:when test="$groups/group[@id=1]/characterValue">
@@ -150,11 +150,11 @@
 			<xsl:variable name="linkURL">
 				<xsl:choose>
 					<xsl:when test="not(string($sci_name1))='' and not(string($sci_name2))=''">
-						<xsl:value-of select="concat(string($query), string($captionField1), '=',string($sci_name1),'&amp;',string($captionField2),'=',string($sci_name2))"/>
+						<xsl:value-of select="concat(string($query), string($captionField1), '=',string($sci_name1),'&amp;',string($captionField2),'=',string($sci_name2),'&amp;maxDisplay=1')"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:if test="not(string($sci_name1))=''">
-							<xsl:value-of select="concat($query, $captionField1, '=', $sci_name1)"/>
+							<xsl:value-of select="concat($query, $captionField1, '=', $sci_name1,'&amp;maxDisplay=1')"/>
 						</xsl:if>
 					</xsl:otherwise>
 				</xsl:choose>

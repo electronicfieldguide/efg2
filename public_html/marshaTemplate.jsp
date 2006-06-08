@@ -24,7 +24,9 @@
 				mediaResourcesTable.add(fieldName);
 			}
 		}
-		characterSet.add(fieldName.trim());;	
+		else{
+			characterSet.add(fieldName.trim());
+		}	
 	}
 	int imagesSize = mediaResourcesTable.size();	
 	int characterSetSize = characterSet.size();
@@ -99,7 +101,7 @@
 	//sort and iterate
 	%>
 	<title><%=dataSourceName%></title>
-	<link href="http://antelope.cs.umb.edu:8080/efg/bogstyle.css" rel="stylesheet" />
+	<link href="bogstyle.css" rel="stylesheet" />
 	</head>
 	<body>
 	 <form method="post" action="<%=context%>/configTaxonPage">

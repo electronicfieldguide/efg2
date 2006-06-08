@@ -4,7 +4,7 @@
 	<!--
 	<xsl:variable name="groups" select="document($searchTemplateConfig)/TaxonPageTemplates/TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
 -->
-	<xsl:variable name="groups" select="document(string($searchTemplateConfig))/TaxonPageTemplates/TaxonPageTemplate[@datasourceName=string($datasource)]/groups"/>
+	<xsl:variable name="groups" select="document(string($searchTemplateConfig))//TaxonPageTemplate[@datasourceName=string($datasource)]/groups"/>
 	<xsl:variable name="title">
 		<xsl:choose>
 			<xsl:when test="$groups/group[@id=1]/characterValue">
@@ -177,7 +177,7 @@
 			</xsl:variable>
 		<a class="sciname">
 			<xsl:attribute name="href">
-			<xsl:value-of select="concat(string($appender1),string($appender2),string($appender3))"/>
+			<xsl:value-of select="concat(string($appender1),string($appender2),string($appender3),'&amp;maxDisplay=1')"/>
 			</xsl:attribute>
 			<xsl:value-of select="string($Item2)"/>
 			<xsl:if test="not(string($Item3))=''">
@@ -189,7 +189,7 @@
 		<xsl:param name="header"/>
 		<xsl:param name="Item"/>
 		<a class="commonname">
-			<xsl:attribute name="href"><xsl:value-of select="concat(string($serverbase),'/search?displayFormat=html&amp;dataSourceName=',string($datasource),'&amp;',string($header),'=',string($Item))"/></xsl:attribute>
+			<xsl:attribute name="href"><xsl:value-of select="concat(string($serverbase),'/search?displayFormat=html&amp;dataSourceName=',string($datasource),'&amp;',string($header),'=',string($Item),'&amp;maxDisplay=1')"/></xsl:attribute>
 			<xsl:value-of select="string($Item)"/>
 		</a>
 	</xsl:template>

@@ -41,7 +41,7 @@
 		<td>
 			<select name="<%=EFGImportConstants.SEARCH_TYPE_STR%>" size="1">
 				<option value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>">Plates</option>
-				<option value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>">Lists</option>
+				<option value="<%=EFGImportConstants.SEARCH_LISTS_TYPE%>">Lists</option>
 			</select>
             </td>
 	    <tr>

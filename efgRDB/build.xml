@@ -76,6 +76,8 @@ $Id$
 		<copy todir="${deploy.home}/WEB-INF/lib">
 			<fileset dir="${local_lib.home}"/>
 		</copy>
+		
+	
 		<copy todir="${deploy.home}/WEB-INF/classes">
 			<fileset dir="${compile.home}" includes="project/efg/digir/*"/>
 			<fileset dir="${compile.home}" includes="project/efg/efgInterface/*"/>

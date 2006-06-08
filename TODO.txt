@@ -1,2 +1,23 @@
 1. Links on EFGLists to other datasources must be fixed.
-2. Refactor to make independent of relational databases.
+2. Refactor to make source code independent of relational databases.
+3. Make possible to import only data/metadata.
+4. Replace info file columns with the following:
+	- html page shows each field name with radio buttons
+		-numeric
+		-numericRange
+		-isNarrative
+		-categorical
+		-mediaresources/lists/simple
+
+	-display order - left of each field is a text box already filled with numbers.
+	-reorder that sorts the list
+	
+		
+5. Add deployer
+	- deploy webapps
+	- deploy images
+	- deploy templates and management tools
+
+6. Add a tool that manages MySQL (grants and revokes privileges etc).
+   Should be a front end to the import code..Make users enter their MySQl admin passwords.
+	 
