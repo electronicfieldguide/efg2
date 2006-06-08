@@ -8,6 +8,7 @@
 				<title>Default Taxon Display</title>
 			</head>
 			<body>
+			
 				<table border="1" width="90%" align="center">
 					<tr>
 						<th>Field Name</th>

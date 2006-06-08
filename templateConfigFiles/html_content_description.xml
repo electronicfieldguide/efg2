@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by Markus Nosse (University of Mass/Boston - Biology Dept.) -->
+<content-description>
+	<title>
+		<content-item name="Scientific name" method="value-only-italic"/>
+		<content-item name="Author" method="value-only"/>
+	</title>
+	<images>
+		<content-item name="Image: male dorsal" class="id_text" method="image">
+			<caption class="id_text">Male dorsal</caption>
+		</content-item>
+		<content-item name="Image: male ventral" class="id_text" method="image">
+			<caption class="id_text">Male ventral</caption>
+		</content-item>
+		<content-item name="Image: female dorsal" class="id_text" method="image">
+			<caption class="id_text">Female dorsal</caption>
+		</content-item>
+		<content-item name="Image: female ventral" class="id_text" method="image">
+			<caption class="id_text">Female ventral</caption>
+		</content-item>
+		<content-item name="Live underside male" class="id_text" method="image">
+			<caption class="id_text">Live underside male</caption>
+		</content-item>
+		<content-item name="Live underside female" class="id_text" method="image">
+			<caption class="id_text">Live underside female</caption>
+		</content-item>
+	</images>
+	<identification>
+		<content-item name="Identification" class="id_text" method="plaintext">
+			<caption class="id_strong">Identification</caption>
+		</content-item>
+		<content-item name="Male Wingspan (mm)" class="id_text" method="plaintext">
+			<caption class="id_strong">Wingspan</caption>
+		</content-item>
+		<content-item name="FW length (range in mm)" class="id_text" method="plaintext">
+			<caption class="id_strong">Forewing Length</caption>
+		</content-item>
+		<content-item method="copy-of">
+			<p class="id_text">Horizontal bars = 1cm</p>
+		</content-item>
+	</identification>
+	<details>
+		<content-item name="Local distribution" class="detail_text" method="plaintext">
+			<caption class="detail_text">Local distribution</caption>
+		</content-item>
+		<content-item name="Similar species" class="detail_text" method="speciesref">
+			<caption class="detail_text">Similar species</caption>
+		</content-item>
+		<content-item name="Species range" class="detail_text" method="plaintext">
+			<caption class="detail_text">Species range</caption>
+		</content-item>
+		<content-item name="Abundance" class="detail_text" method="plaintext">
+			<caption class="detail_text">Abundance</caption>
+		</content-item>
+		<content-item name="Early stages" class="detail_text" method="plaintext">
+			<caption class="detail_text">Early stages</caption>
+		</content-item>
+		<content-item name="Larval food plants" class="detail_text" method="speciesref">
+			<caption class="detail_text">Larval host plants</caption>
+		</content-item>
+		<content-item name="Comments" class="detail_text" method="plaintext">
+			<caption class="detail_text">Comments</caption>
+		</content-item>
+	</details>
+	
+	<footer>
+	<content-item name="Footer" class="credits" method="plaintext">
+			<caption class="credits">Credits</caption>
+		</content-item>
+		<!--
+		<content-item method="copy-of">
+			<p class="id_text">Images and Text Copyright (c) 2000-01 William A. Haber<br/>
+http://www.cs.umb.edu/~whaber</p>
+		</content-item>
+-->
+	</footer>
+	
+</content-description>

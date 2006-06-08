@@ -14,7 +14,9 @@
  <xsl:param name="serviceLinkFiller" select="'_EFG_'"/>
  
 	<xsl:param name="templateConfigFile" select="concat($datasource,'_TaxonPage.xml')"/>
-	<xsl:param name="imagebase" select="'efgimagesthumbs'"/>
+	<xsl:param name="imagebase" select="'EFGImages'"/>
+		<xsl:param name="imagebase_thumbs" select="'efgimagesthumbs'"/>
+			<xsl:param name="imagebase_large" select="'EFGImages'"/>
 	<xsl:param name="imagetype" select="'Image'"/>
 	<xsl:param name="audiotype" select="'Audio'"/>
 	<xsl:param name="vidoetype" select="'Video'"/>

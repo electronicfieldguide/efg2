@@ -3,6 +3,7 @@
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
 	<xsl:variable name="images-per-row" select="3"/>
 	<xsl:template match="/">
+		<xsl:variable name="dsname" select="//datasources/datasource[1]/@name"/>
 		<xsl:variable name="total_count" select="count(//TaxonEntry)"/>
 		<html>
 			<body>
@@ -10,6 +11,7 @@
 				<table border="0" width="100%">
 					<xsl:apply-templates select="//TaxonEntry">
 						<xsl:with-param name="total_count" select="$total_count"/>
+						<xsl:with-param name="dsname" select="$dsname"/>
 					</xsl:apply-templates>
 				</table>
 			</body>
@@ -17,19 +19,26 @@
 	</xsl:template>
 	<xsl:template match="TaxonEntry">
 		<xsl:param name="total_count"/>
+		<xsl:param name="dsname"/>
 		<xsl:param name="current_pos" select="position()"/>
 		<xsl:if test="$current_pos mod $images-per-row = 1">
 			<tr>
 				<xsl:call-template name="display-images">
 					<xsl:with-param name="current_taxon" select="self::TaxonEntry"/>
+					<xsl:with-param name="dsname" select="$dsname"/>
+					<xsl:with-param name="uniqueID" select="@recordID"/>
 				</xsl:call-template>
 				<xsl:if test="not($current_pos  = $total_count)">
 					<xsl:call-template name="display-images">
 						<xsl:with-param name="current_taxon" select="following-sibling::TaxonEntry[1]"/>
+						<xsl:with-param name="dsname" select="$dsname"/>
+						<xsl:with-param name="uniqueID" select="following-sibling::TaxonEntry[1]/@recordID"/>
 					</xsl:call-template>
 					<xsl:if test="not($current_pos + 1 = $total_count)">
 						<xsl:call-template name="display-images">
 							<xsl:with-param name="current_taxon" select="following-sibling::TaxonEntry[2]"/>
+							<xsl:with-param name="dsname" select="$dsname"/>
+							<xsl:with-param name="uniqueID" select="following-sibling::TaxonEntry[2]/@recordID"/>
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:if>
@@ -38,29 +47,41 @@
 	</xsl:template>
 	<xsl:template name="display-images">
 		<xsl:param name="current_taxon"/>
+		<xsl:param name="dsname"/>
+		<xsl:param name="uniqueID"/>
 		<td align="center">
 			<!-- Fields are aggregated and that needs to be solved also output a generic page if transformation fails-->
 			<xsl:variable name="sci_name">
-				<xsl:value-of select="$current_taxon/Items[@name=$fieldName]/Item"/>
+				<xsl:choose>
+					<xsl:when test="string($current_taxon/Items[@name=$fieldName]/Item)=''">
+						<xsl:value-of select="$current_taxon/Items[@databaseName=$fieldName]/Item"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$current_taxon/Items[@name=$fieldName]/Item"/>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:variable>
 			<xsl:variable name="imageName">
-				<xsl:if test="$mediaResourceField">
-					<xsl:if test="not($mediaResourceField)=''">
-						<xsl:if test="$current_taxon/MediaResources">
-							<xsl:if test="$current_taxon/MediaResources[@name=$mediaResourceField]">
-								<xsl:value-of select="$current_taxon/MediaResources[@name=$mediaResourceField]/MediaResource"/>
-							</xsl:if>
-						</xsl:if>
+				<xsl:if test="not($mediaResourceField)=''">
+					<xsl:if test="$current_taxon/MediaResources">
+						<xsl:choose>
+							<xsl:when test="string($current_taxon/MediaResources[@name=$mediaResourceField])=''">
+								<xsl:value-of select="$current_taxon/MediaResources[@databaseName=$mediaResourceField]/MediaResource[1]"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$current_taxon/MediaResources[@name=$mediaResourceField]/MediaResource[1]"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 				</xsl:if>
 			</xsl:variable>
 			<xsl:variable name="linkURL">
 				<xsl:choose>
 					<xsl:when test="$datasource=''">
-						<xsl:value-of select="concat($serverbase, '/search?',$fieldName,'=',$sci_name, '&amp;maxDisplay=1&amp;displayFormat=HTML')"/>
+						<xsl:value-of select="concat($serverbase, '/search?uniqueID=',$uniqueID, '&amp;dataSourceName=',$dsname, '&amp;displayFormat=HTML')"/>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="concat($serverbase, '/search',  '?dataSourceName=', $datasource, '&amp;',  $fieldName, '=', $sci_name, '&amp;maxDisplay=1&amp;displayFormat=HTML')"/>
+						<xsl:value-of select="concat($serverbase, '/search?uniqueID=',$uniqueID,'&amp;displayName=', $datasource, '&amp;dataSourceName=',$dsname,'&amp;displayFormat=HTML')"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>

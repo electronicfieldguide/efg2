@@ -63,9 +63,48 @@
 		<param-name>EFG_THUMB_NAILS_DIR</param-name>
 		<param-value>EFG_ThumbNails_EFG</param-value>
 	</context-param>
-	
+	<filter>
+		<filter-name>CacheFilter</filter-name>
+		<filter-class>com.opensymphony.oscache.web.filter.CacheFilter</filter-class>
+		<init-param>
+			<param-name>time</param-name>
+			<param-value>-1</param-value>
+		</init-param>
+		<init-param>
+			<param-name>scope</param-name>
+			<param-value>application</param-value>
+		</init-param>
+	</filter>
+	<filter>
+		<filter-name>CacheFilterStaticContent</filter-name>
+		<filter-class>com.opensymphony.oscache.web.filter.CacheFilter</filter-class>
+		<init-param>
+			<param-name>expires</param-name>
+			<param-value>time</param-value>
+		</init-param>
+	</filter>
+	<!--
+	<filter>
+		<filter-name>Compress</filter-name>
+		<filter-class>com.jspbook.GZIPFilter</filter-class>
+	</filter>
+-->
+	<filter-mapping>
+		<filter-name>CacheFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>CacheFilterStaticContent</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<!--
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<url-pattern>/search/*</url-pattern>
+	</filter-mapping>
+-->
 	<listener>
-		<listener-class>project.efg.servlet.EFGContextListener</listener-class>
+		<listener-class>project.efg.servlets.efgImpl.EFGContextListener</listener-class>
 	</listener>
 	<!--
 		Servlet definitions for the servlets that make up
@@ -100,6 +139,13 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
+	<!--
+		<servlet>
+		<servlet-name>cacheServlet</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.CacheServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+-->
 	<servlet>
 		<servlet-name>search</servlet-name>
 		<servlet-class>project.efg.servlets.efgImpl.SearchEngine</servlet-class>
@@ -111,11 +157,11 @@
 			<param-name>applyXSLServlet</param-name>
 			<param-value>ApplyXSL</param-value>
 		</init-param>
-			<init-param>
+		<init-param>
 			<param-name>fopServlet</param-name>
 			<param-value>FopServlet</param-value>
 		</init-param>
-			<init-param>
+		<init-param>
 			<param-name>database</param-name>
 			<param-value>MySQL</param-value>
 		</init-param>

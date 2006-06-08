@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by Markus Nosse (University of Mass/Boston - Biology Dept.) -->
+<content-description>
+	<title>
+		<content-item name="Common Name" method="value-only"/>
+	</title>
+	<sciname>
+		<content-item name="Genus" method="value-only-italic"/>
+		<content-item name="Species" method="value-only-italic"/>
+	</sciname>
+	<family>
+		<content-item name="Family" method="value-only"/>
+	</family>
+	<images>
+		<content-item name="Plant (IMG)" class="id_text" method="image">
+			<caption class="id_text">Whole Plant</caption>
+		</content-item>
+			<content-item name="Macro (IMG)" class="id_text" method="image">
+			<caption class="id_text">Flower</caption>
+		</content-item>
+			<content-item name="Habitat (IMG)" class="id_text" method="image">
+			<caption class="id_text">Habitat</caption>
+		</content-item>
+		<content-item name="Fruit (IMG)" class="id_text" method="image">
+			<caption class="id_text">Fruit</caption>
+		</content-item>
+		<content-item name="Leaf (IMG)" class="id_text" method="image">
+			<caption class="id_text">Leaf</caption>
+		</content-item>
+		<content-item name="Stem (IMG)" class="id_text" method="image">
+			<caption class="id_text">Stem</caption>
+		</content-item>
+		<content-item name="Extra (IMG)" class="id_text" method="image">
+			<caption class="id_text"></caption>
+		</content-item>
+	</images>
+	<details>
+		<content-item name="Synonyms" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">Synonyms</caption>
+		</content-item>
+			<content-item name="Growth Form" class="detail_text" method="plaintext">
+			<caption class="detail_text">Growth Form</caption>
+		</content-item>
+		<!--
+		<content-item name="Fruit Color (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Fruit Color</caption>
+		</content-item>
+			<content-item name="Flower Color (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Flower Color</caption>
+		</content-item>
+		<content-item name="Petal Number (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Petal Number</caption>
+		</content-item>
+	<content-item name="Leaf/Leaflet Shape (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Leaf Shape</caption>
+		</content-item>
+		<content-item name="Leaf Arrangement (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Leaf Arrangement</caption>
+		</content-item>
+			<content-item name="Leaf Grouping (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Leaf Grouping </caption>
+		</content-item>
+		<content-item name="Leaf Margins (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Leaf Margins </caption>
+		</content-item>
+		<content-item name="Leaf Venation (SYN)" class="detail_text" method="plaintext">
+			<caption class="detail_text">Leaf Venation </caption>
+		</content-item>
+	
+
+		<content-item name="REPRODUCTION" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">REPRODUCTION</caption>
+		</content-item>
+-->
+	<content-item name="THE PLANT" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">THE PLANT</caption>
+		</content-item>
+		<content-item name="THE LEAVES" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">THE LEAVES</caption>
+		</content-item>
+		<content-item name="THE STEM" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">THE STEM</caption>
+		</content-item>
+		<content-item name="THE FLOWERS" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">THE FLOWERS</caption>
+		</content-item>
+		<content-item name="THE FRUITS" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">THE FRUITS</caption>
+		</content-item>
+		<content-item name="THE HABITAT" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">THE HABITAT</caption>
+		</content-item>
+			<content-item name="DISPERSAL METHODS" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">DISPERSAL</caption>
+		</content-item>
+			<content-item name="KEY ID FEATURES" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">KEY ID FEATURES</caption>
+		</content-item>
+			<content-item name="SIMILAR SPECIES" class="detail_text" method="bulleted-lists">
+			<caption class="detail_text">SIMILAR SPECIES</caption>
+		</content-item>
+		<content-item name="NOTES" class="detail_text" method="plaintext">
+			<caption class="detail_text">NOTES</caption>
+		</content-item>
+				<content-item name="Degree of invasiveness on Nantucket" class="detail_text" method="plaintext">
+			<caption class="detail_text">Degree of invasiveness on Nantucket</caption>
+		</content-item>
+		<content-item name="Degree of invasiveness in Massachusetts" class="detail_text" method="plaintext">
+			<caption class="detail_text">Degree of invasiveness in Massachusetts</caption>
+		</content-item>
+		
+			<content-item name="ORIGIN" class="detail_text" method="plaintext">
+			<caption class="detail_text">ORIGIN</caption>
+		</content-item>
+	</details>
+	<footer>
+		<content-item method="copy-of">
+			<p class="credits">
+				<strong>Credits: </strong>The Electronic Field Guide to the Invasive Plants of Nantucket (c) 2005-2006 Maria Mitchell Association, EFG Project, UMass Boston</p>
+		</content-item>
+	</footer>
+	<tokenizers>
+		<tokenizer token=";"/>
+		<tokenizer token=":"/>
+		<tokenizer token="("/>
+	</tokenizers>
+</content-description>
