@@ -14,7 +14,7 @@ URL="<%=buf.toString() %>/efgKeys">
 </HEAD>
 <BODY>
 <SCRIPT>
-window.location.href = '<%=buf.toString()%>' + '/efgKeys';
+window.location.href = '<%=buf.toString()%>' + '/efg2';
 </SCRIPT>
 </BODY>
 </HTML>

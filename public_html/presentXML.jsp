@@ -1,11 +1,11 @@
-<%@ page import ="java.io.*,java.util.*,org.jdom.*,org.jdom.output.*" %>
+<%@ page import ="project.efg.efgDocument,org.exolab.castor.xml.Marshaller,org.exolab.castor.xml.Unmarshaller" %>
 <%
     response.setContentType("text/xml");
 
-    Document doc= (Document)request.getAttribute("resultSet");
-   XMLOutputter outputter = new XMLOutputter();
+    EFGDocument doc= (EFGDocument)request.getAttribute("resultSet");
+  
     try {
-      outputter.output(doc, response.getWriter());
+      doc.marshal(response.getWriter());
 
     }
     catch (Exception e) {

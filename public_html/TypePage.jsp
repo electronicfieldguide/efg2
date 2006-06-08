@@ -1,9 +1,13 @@
-<%@page import="java.util.Iterator, java.net.URLEncoder, project.efg.util.*,project.efg.efgInterface.*" %>
-<jsp:useBean id="dsHelperFactory" class="project.efg.efgInterface.EFGDSHelperFactory" 
-  scope="page" />
+<%@page import="java.util.Iterator,
+project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface,
+project.efg.Imports.efgInterface.EFGDatasourceObjectInterface" %>
+
 <% 
    String context = request.getContextPath();
 	boolean found = false;
+	EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
+	Iterator dsNameIter = 
+	dsHelper.getDataSourceNames().getEFGDatasourceObjectListIterator(); 
 %>
 
 <html>
@@ -14,30 +18,26 @@
   <body bgcolor="#ffffff">
     <h2 align="center">Search/Browse EFG Datasources</h2>
   <center>
-      <% RDBDataSourceHelper dsHelper = (RDBDataSourceHelper)dsHelperFactory.getDataSourceHelper(); %>
-      <% Iterator dsNameIter = dsHelper.getDSNames().iterator(); %>
       <table>
 		  <% while (dsNameIter.hasNext()) { %>
 		  <tr>
 			 <td>
-				<% String dsName = (String)dsNameIter.next();
-				
+				<% 
+					EFGDatasourceObjectInterface obj = (EFGDatasourceObjectInterface)dsNameIter.next();
+					String displayName = obj.getDisplayName();
 					found = true;
-					
-
 				 %>
-				<%= dsHelper.makeReadable(dsName) %>
 			 </td>
 			 <td>
-			 	 <a  title="search datasource" href="<%=context%>/SearchPage.jsp?pageType=option&dataSourceName=<%=URLEncoder.encode(dsName)%>">
+			 	 <a  title="search datasource" href="<%=context%>/SearchPage.jsp?pageType=option&displayName=<%=displayName%>">
 					search
 				 </a>
 				  </td> <td>
-					 <a  href="<%=context%>/search?dataSourceName=<%=URLEncoder.encode(dsName)%>&searchType=lists&maxDisplay=<%=EFGImportConstants.MAX_DISPLAY_IGNORE%>" title="browse a list of taxon names">
+					 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=lists&maxDisplay=<%=EFGImportConstants.MAX_DISPLAY_IGNORE%>" title="browse a list of taxon names">
 					browse lists
 				 </a>
 				  </td> <td>
-				 <a  href="<%=context%>/search?dataSourceName=<%=URLEncoder.encode(dsName)%>&searchType=plates&maxDisplay=<%=EFGImportConstants.MAX_DISPLAY_IGNORE%>"  title="browse a  plates">
+				 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=plates&maxDisplay=<%=EFGImportConstants.MAX_DISPLAY_IGNORE%>"  title="browse  plates">
 					browse plates
 				 </a>	 
 			 </td>
@@ -46,7 +46,7 @@
 		  <% 
 		}
 			if(!found){%>
-			<h3> No datasources configured by author(s)</h3>
+			<h3> No datasources uploaded by author(s)</h3>
 		<%}
 		 %>
       </table>
