@@ -65,9 +65,6 @@
 			</xsl:call-template></xsl:variable>
 		
 				<xsl:call-template name="display-image">
-				<!--
-					<xsl:with-param name="image" select="./MediaResources[@name=$items[1]/@name]/MediaResource[1]"/>
--->
 					<xsl:with-param name="image"  select="$images"/>
 					<xsl:with-param name="item" select="$items[1]"/>
 				</xsl:call-template>
@@ -86,7 +83,7 @@
 		</xsl:variable>
 		<xsl:if test="not(string($image))=''">
 			<xsl:if test="position() > 1">
-				<xsl:value-of select="'#'"/>
+				<xsl:value-of select="','"/>
 			</xsl:if>
 			<xsl:value-of select="$image"/>
 		</xsl:if>
@@ -122,14 +119,7 @@
 					<td class="id_text">
 						<xsl:attribute name="class"><xsl:value-of select="$item/caption/@class"/></xsl:attribute>
 						<a>
-							<xsl:choose>
-								<xsl:when test="contains($image,'#')"><!-- FIX ME # now is a separator between images of the same type-->
-									<xsl:attribute name="href"><xsl:value-of select="concat($imagebase-large,'/',substring-after(string($image),'#'))"/></xsl:attribute>
-								</xsl:when>
-								<xsl:otherwise>
 									<xsl:attribute name="href"><xsl:value-of select="concat($imagebase-large,'/',$image)"/></xsl:attribute>
-								</xsl:otherwise>
-							</xsl:choose>
 							<img>
 								<xsl:attribute name="src"><xsl:value-of select="concat($imagebase-thumbs,'/',string($image))"/></xsl:attribute>
 								<xsl:attribute name="alt"><xsl:value-of select="$item/caption"/></xsl:attribute>

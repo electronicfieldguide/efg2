@@ -198,10 +198,10 @@ td.rowspacer {
 				<xsl:variable name="linkURL">
 					<xsl:choose>
 						<xsl:when test="$datasource=''">
-							<xsl:value-of select="concat($serverbase, '/Redirect.jsp?uniqueID=',$uniqueID, '&amp;dataSourceName=',$dsname, '&amp;displayFormat=HTML')"/>
+							<xsl:value-of select="concat($serverbase, '/Redirect.jsp?displayFormat=HTML', '&amp;dataSourceName=',$dsname, '&amp;uniqueID=',$uniqueID)"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="concat($serverbase, '/Redirect.jsp?uniqueID=',$uniqueID,'&amp;displayName=', $datasource, '&amp;dataSourceName=',$dsname,'&amp;displayFormat=HTML')"/>
+							<xsl:value-of select="concat($serverbase, '/Redirect.jsp?displayFormat=HTML','&amp;displayName=', $datasource, '&amp;dataSourceName=',$dsname,'&amp;uniqueID=',$uniqueID)"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
