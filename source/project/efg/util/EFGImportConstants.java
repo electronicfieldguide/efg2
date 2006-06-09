@@ -44,7 +44,7 @@ public interface EFGImportConstants {
 
 	// A property name for the maximum dimension property of Images
 	String MAX_DIM_NAME = "EFG_MAX_DIM";
-
+	String MAX_DIM_STR = "imagemaxdim";
 	// A property name for the directory holding EFG images
 	String EFG_IMAGES_DIR_NAME = "EFG_IMAGES_DIR";
 
@@ -59,6 +59,7 @@ public interface EFGImportConstants {
 
 	// READ FROM A PROPERTIES FILE
 	String MAX_DIM = "200";
+	
 
 	String XSL_PROPERTIES_FILE = "XSLProps.properties";
 

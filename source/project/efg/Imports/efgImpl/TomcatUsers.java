@@ -242,7 +242,7 @@ public class TomcatUsers {
 		String catalina_home = null;
 
 		if (args.length > 0) {
-			//System.out.println(":" + args[0]);
+			
 			catalina_home = args[0];
 
 		} else {

@@ -48,12 +48,24 @@ public class EFGCacheProvider implements ICacheKeyProvider {
 		if(displayFormat== null){
 			displayFormat="";
 		}
+		String datasourceName = req.getParameter(EFGImportConstants.DATASOURCE_NAME);
+		if(datasourceName== null){
+			datasourceName="";
+		}
+		String uniqueID = req.getParameter(EFGImportConstants.UNIQUEID_STR);
+		if(uniqueID== null){
+			uniqueID="";
+		}
 		StringBuffer key = new StringBuffer();
 		key.append(displayName.trim());
 		key.append("_");
 		key.append(displayFormat.trim());
 		key.append("_");
 		key.append(xslName.trim());
+		key.append("_");
+		key.append(datasourceName.trim());
+		key.append("_");
+		key.append(uniqueID.trim());
 		
 		log.debug("Generated key : " + key.toString());
 		return key.toString();

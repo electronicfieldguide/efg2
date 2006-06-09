@@ -247,7 +247,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		EFGCSVDataExtractorImpl extractor = new EFGCSVDataExtractorImpl(new URI(
 				csvFileName));
 		int cols = extractor.getNumberOfColumns();
-		System.out.println("Number of columns: " + cols);
+		log.debug("Number of columns: " + cols);
 		String[] labels = extractor.getFieldNames();
 		printLine(labels);
 		printUnderScoreLine(labels);

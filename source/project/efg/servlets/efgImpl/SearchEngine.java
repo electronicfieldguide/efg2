@@ -105,7 +105,6 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 	throws ServletException, IOException {
 		try {
-			
 			String displayFormat = req
 			.getParameter(EFGImportConstants.DISPLAY_FORMAT);
 			
@@ -115,11 +114,9 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			log.debug("After get query instance");
 			if (displayFormat.equalsIgnoreCase(EFGImportConstants.XML)) {
 				presentXML(req, res, query.getEFGDocument());
-			} else {
-			
+			} else {	
 				present(req, res, query.getEFGDocument());
 			}
-			
 		} catch (Exception ee) {
 			log.error(ee.getMessage());
 			LoggerUtilsServlet.logErrors(ee);
@@ -131,7 +128,6 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			res.flushBuffer();
 		}
 	}
-	
 	/**
 	 * Handles an HTTP GET request - Based most likely on a clicked link.
 	 * 
@@ -195,24 +191,11 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 		ResponseObject resObject = null;
 		
 		try{
-			log.debug("Before res object");
+			
+			
 			resObject = ResponseObjectFactory.getResponseObject(req,
 					efgDocument, realPath);
-			log.debug("after res object");
-			log.debug("before images object");
-			/*if((efgDocument != null)&&
-				(efgDocument.getTaxonEntries() != null) &&
-					(efgDocument.getTaxonEntries().getTaxonEntryCount() > 0)){
-				log.debug("About to generate Images!!");
-				ImageGenerator imageg = new ImageGenerator();
-				imageg.generateImages(efgDocument.getTaxonEntries());
-				log.debug("Done generating Images!!");
-			}
-			else{
-				log.debug("No Images!!");
-			}
-			log.debug("after images object");
-			*/
+			
 		} catch (Exception e) {//forward to error page
 			log.error(e.getMessage());
 			efgDocument = null;
@@ -228,6 +211,9 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	}
 }
 //$Log$
+//Revision 1.1.2.2  2006/06/09 14:39:49  kasiedu
+//New Properties files
+//
 //Revision 1.1.2.1  2006/06/08 13:27:42  kasiedu
 //New files
 //

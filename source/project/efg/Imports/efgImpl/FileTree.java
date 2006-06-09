@@ -93,16 +93,14 @@ public class FileTree extends JTree implements Autoscroll {
 			parent = path.substring(0, index);
 			path = path.substring(index + 1, path.length());
 		}
+		FileTreeNode rootNode = null;
+		try{
+		rootNode = new FileTreeNode(parent, path);
 		
-		FileTreeNode rootNode = new FileTreeNode(parent, path);
-		// Populate the root node with its subdirectories
-		// boolean addedNodes =
 		rootNode.populateDirectories(true);
 		//READ FROM PROPERTIES FILE
 		
-		this.model =SynopticKeyTreeModelFactory.getSynopticKeyTreeModel(rootNode); //new SynopticKeyTreeModel(rootNode,
-				//ComparatorFactory.getComparator(
-				//		EFGImportConstants.EFGProperties.getProperty("treeString.compare")));
+		this.model =SynopticKeyTreeModelFactory.getSynopticKeyTreeModel(rootNode); 
 		this.setModel(this.model);
 		// make the root node the selected node
 
@@ -111,6 +109,10 @@ public class FileTree extends JTree implements Autoscroll {
 		this.setSelectionPath(pathT);
 		// Listen for Tree Selection Events
 		addTreeExpansionListener(handler);
+		}
+		catch(Exception ee){
+			
+		}
 	}
 
 	/**

@@ -3,6 +3,10 @@
  */
 package project.efg.util;
 
+import java.io.File;
+import java.io.InputStream;
+import java.util.Properties;
+
 import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
@@ -13,7 +17,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.servlets.rdb.QueryExecutor;
-import project.efg.util.EFGImportConstants;
 
 /**
  * @author kasiedu
@@ -22,7 +25,7 @@ import project.efg.util.EFGImportConstants;
 public class CacheStarter {
 	
 	private QueryExecutor queryExecutor;
-	private static String defaultServer = "http://localhost:8080/efg2/";
+	private static String defaultServer = "http://antelope.cs.umb.edu:8080/efg2/";
 	private static String redirectString = "Redirect.jsp?displayName=";
 	private static String displayFormat = "&displayFormat=HTML";
 	private static String XSLNAME = "&xslName=";
@@ -145,30 +148,54 @@ public class CacheStarter {
 		return queryBuffer.toString();
 		
 	}
+	public static String getURLProperty(){
+		try{
+			File file1 = new File(".");
+			log.debug("Abs: " + file1.getAbsolutePath());
+			InputStream input = 
+				project.efg.util.CacheStarter.class.getResourceAsStream("/properties/cacheURLS.properties");
+		
+		
+		
+					Properties properties = new Properties();
+					properties.load(input);
+					if(input != null){
+						input.close();
+					}
+					return properties.getProperty("urls");
+				
+		}
+		catch(Exception ee){
+			ee.printStackTrace();
+			log.error(ee.getMessage());
+		}
+		return null;
+	}
 	public static void main(String[] args) throws Exception{
+		  String[] urls = 
+		    {
+		       "http://antelope.cs.umb.edu:8080/efg2/SearchPageNantucketInvasives.jsp?displayName=invasives",
+		       "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_CommonName.xsl",
+			   "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_ScientificName.xsl"};
+		    
 		LoggerUtils utils = new LoggerUtils();
 		utils.toString();
-		//CacheStarter cacheStarter = new CacheStarter();
-		//log.debug("url: " + url);
-		//cacheStarter.executeCache(null);
-		
-//		 Create an instance of HttpClient.
-	   HttpClient client = new HttpClient();
-	   /* String[] url = 
-	    {
-	       "http://antelope.cs.umb.edu:8080/efg2/SearchPageNantucketInvasives.jsp?displayName=invasives",
-	       "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_CommonName.xsl",
-		   "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_ScientificName.xsl"};
-	    */
-	    String[] url = 
-	    {
-	       "http://localhost:8080/efg2/SearchPageNantucketInvasives.jsp?displayName=invasives",
-	       "http://localhost:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_CommonName.xsl",
-		   "http://localhost:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_ScientificName.xsl"};
+		/*String url = CacheStarter.getURLProperty();
+	    String []urls = null;
+	    if(url == null){
+	    	urls = defaulturls;
+	    }
+	    else{
+	    	urls = url.split(EFGImportConstants.COMMASEP);
+	    }*/
 	    
+       //		 Create an instance of HttpClient.
+	   HttpClient client = new HttpClient();
+	
+	  
 	    // Create a method instance.
-	    for(int i = 0; i < url.length;i++){
-	    	GetMethod method = new GetMethod(url[i]);
+	    for(int i = 0; i < urls.length;i++){
+	    	GetMethod method = new GetMethod(urls[i]);
 	    
 	    // Provide custom retry handler is necessary
 	    method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, 
@@ -179,10 +206,10 @@ public class CacheStarter {
 	      int statusCode = client.executeMethod(method);
 
 	      if (statusCode != HttpStatus.SC_OK) {
-	    	 System.out.println("Method failed: " + method.getStatusLine());
+	    	 log.debug("Method failed: " + method.getStatusLine());
 	      }
 	      else{
-	    	  System.out.println("Method returned OK");
+	    	  log.debug("Method returned OK");
 	      }
 
 	      // Read the response body.
@@ -190,14 +217,14 @@ public class CacheStarter {
 
 	      // Deal with the response.
 	      // Use caution: ensure correct character encoding and is not binary data
-	     System.out.println("At end");
+	     log.debug("At end");
 
 	    } catch (Exception e) {
-	    	System.out.println(e.getMessage());
+	    	log.debug(e.getMessage());
 	    } finally {
 	      // Release the connection.
 	      method.releaseConnection();
-	      System.out.println("Done");
+	      log.debug("Done");
 	    }  
 	    }	
 	}

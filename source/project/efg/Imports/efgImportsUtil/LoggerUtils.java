@@ -63,7 +63,7 @@ public class LoggerUtils {
 	static {
 		try {
 			URL url = project.efg.Imports.efgImportsUtil.LoggerUtils.class
-					.getResource("/properties/log4j.properties");
+					.getResource("/properties/log4j_rdb.properties");
 			//String props = url.getFile();// user_dir + File.separator +
 											// "log4j.properties";
 			String props = URLDecoder.decode(url.getFile(),"UTF-8");

@@ -49,9 +49,12 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
+import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.efgInterface.EFGWebAppsDirectoryInterface;
 import project.efg.Imports.factory.EFGWebAppsDirectoryFactory;
 import project.efg.util.EFGImportConstants;
+
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 
 /**
@@ -71,7 +74,9 @@ public class ImportMenu extends JFrame {
 	private EFGWebAppsDirectoryInterface webappsDirectory;
 
 	final public static Hashtable imageCacheTable = new Hashtable();
-
+	 private static GeneralCacheAdministrator cacheAdmin;
+		
+	
 	private DBObject dbObject;
 
 	static Logger log = null;
@@ -94,7 +99,16 @@ public class ImportMenu extends JFrame {
 		this(title, catalina_home, null);
 
 	}
-
+	public  static GeneralCacheAdministrator getCacheAdmin(){
+		if(cacheAdmin == null){
+			cacheAdmin = new GeneralCacheAdministrator();
+			cacheAdmin.setAlgorithmClass("com.opensymphony.oscache.base.algorithm.LRUCache");
+			cacheAdmin.setCacheCapacity(1000);
+			//cacheAdmin.setOverflowPersistence()
+		}
+		
+		return cacheAdmin;
+	}
 	public ImportMenu(String title, String catalina_home, DBObject dbObject) {
 		super(title);
 		this.catalina_home = catalina_home;
@@ -240,7 +254,12 @@ public class ImportMenu extends JFrame {
 	}
 
 	public static void main(String[] args) {
-
+	String catHome = "C:\\Program Files\\Apache Software Foundation\\Tomcat 5.0";
+	LoggerUtils utils = new LoggerUtils();
+	utils.toString();
+	ImportMenu menu = new ImportMenu("Import Menu",catHome,
+				null);
+		menu.show();
 	}
 } // ImportMenu
 

@@ -36,14 +36,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,8 +50,11 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreeSelectionModel;
 
-import project.efg.util.EFGImportConstants;
 import org.apache.log4j.Logger;
+
+import project.efg.util.EFGImportConstants;
+
+
 
 /**
  * FileTreeBrowserMain.java
@@ -68,7 +68,7 @@ import org.apache.log4j.Logger;
 public class FileTreeBrowserMain extends JDialog {
 
 	static final long serialVersionUID = 1;
-
+	
 	FileTree tree;
 
 	FileTreeBrowser target;
@@ -88,9 +88,11 @@ public class FileTreeBrowserMain extends JDialog {
 
 
 	JFrame frame;
-
-	JLabel imageLabel;
-
+	JComponent treeView;
+	JComponent imageView;
+	EFGJLabel imageLabel;
+	static int maxDim = 0;
+	protected JPanel panel = new JPanel();
 	static Logger log = null;
 	static {
 		try {
@@ -130,8 +132,8 @@ public class FileTreeBrowserMain extends JDialog {
 			showErrorMessage(ee.getMessage());
 			return;
 		}
-		JComponent treeView = addTreePanel();
-		JComponent imageView = addImagePanel();
+		treeView = addTreePanel();
+		imageView = addImagePanel();
 		// Add the scroll panes to a split pane.
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 		splitPane.setLeftComponent(treeView);
@@ -179,14 +181,41 @@ public class FileTreeBrowserMain extends JDialog {
 		// Create the HTML viewing pane.
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		this.imageLabel = new JLabel(FileTreeBrowserMain.imageL);
+		this.imageLabel = new EFGJLabel(FileTreeBrowserMain.imageL);
 		this.imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(this.imageLabel, BorderLayout.CENTER);
 		JScrollPane imgView = new JScrollPane(panel);
 		return imgView;
 
 	}
-
+	public static int getMaxDim(){
+		
+		if(maxDim <= 0){
+			String maxDimStr = 
+				EFGImportConstants.EFGProperties.getProperty(EFGImportConstants.MAX_DIM_STR);
+		
+			if((maxDimStr == null)){
+				maxDimStr = EFGImportConstants.MAX_DIM;
+			}
+			try{
+				maxDim = Integer.parseInt(maxDimStr);
+				log.debug("MaxDim is set from properties file to: " + maxDim);
+			}
+			catch(Exception ee){
+				try{
+				maxDimStr = EFGImportConstants.MAX_DIM;
+				maxDim = Integer.parseInt(maxDimStr);
+				}
+				catch(Exception eex){
+					log.error(eex.getMessage());
+					log.error("Default max dimension is not set!!!");
+				}
+			}
+				log.debug("MaxDim is set to: " + maxDim);
+		}
+		
+		return maxDim;
+	}
 	private JPanel addTreePanel() {
 		JPanel panel = new JPanel(new BorderLayout());
 
@@ -226,54 +255,28 @@ public class FileTreeBrowserMain extends JDialog {
 			super();
 			this.tree = tree;
 		}
-
-		/** Returns an ImageIcon, or null if the path was invalid. */
-		protected synchronized ImageIcon createImageIcon(String path) {
-			ImageIcon icon = null;
-			try {
-				if ((path == null) || (path.trim().equals(""))) {
-					log.error("The supplied file is null or the empty string");
-					return icon;
-				}
-				File f = new File(path);
-				if (f.exists()) {
-					if (!f.isDirectory()) {
-						icon = (ImageIcon) project.efg.Imports.efgImpl.ImportMenu.imageCacheTable
-								.get(path.trim());
-						if (icon == null) {
-							icon = new ImageIcon(path);
-							project.efg.Imports.efgImpl.ImportMenu.imageCacheTable.put(
-									path, icon);
-						}
-					}
-				} else {
-					log.error("Couldn't find file: " + path);
-				}
-			} catch (Exception ee) {
-				log.error(ee.getMessage());
-			}
-			return icon;
-		}
-
 		public void valueChanged(TreeSelectionEvent e) {
-			Object o = tree.getLastSelectedPathComponent();
-			if (o instanceof FileTreeNode) {// only do this when it
-														// is an instance
-				FileTreeNode node = (FileTreeNode) o;
-
-				String path = node.getFullName();
-				ImageIcon icon = createImageIcon(path);
-				if (icon == null) {
-					imageLabel.setText(FileTreeBrowserMain.imageL);
-				} else {
-					imageLabel.setText("");
+			try{
+				Object o = tree.getLastSelectedPathComponent();
+				if (o instanceof FileTreeNode) {// only do this when it
+												// is an instance
+					FileTreeNode node = (FileTreeNode) o;
+					String path = node.getFullName();
+					if (path == null) {
+						imageLabel.setText(FileTreeBrowserMain.imageL);
+					} else {
+						imageLabel.setText("");
+					}
+					imageLabel.setEFGJLabel(path,getMaxDim());
+					imageLabel.setLocation(60,60);
+					imageLabel.repaint();
 				}
-				imageLabel.setIcon(icon);
-
+			}
+			catch(Exception ee){
+				imageLabel.setText("Image too large to draw");
 			}
 		}
 	}
-
 	class DeleteListener implements ActionListener {
 		private FileTree tree;
 

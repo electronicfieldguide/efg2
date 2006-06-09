@@ -64,7 +64,7 @@ public  class FileTreeNode extends DefaultMutableTreeNode implements
 
 	protected String fullName; // Full pathname
 
-	protected boolean populated;// true if we have been populated
+	protected boolean populated = false;// true if we have been populated
 
 	protected boolean interim; // true if we are in interim state
 
@@ -165,13 +165,16 @@ public  class FileTreeNode extends DefaultMutableTreeNode implements
 		if (populated == false) {
 			File f;
 			try {
+				
 				f = new File(fullName);
 			} catch (SecurityException e) {
 				populated = true;
+			
 				return false;
 			}
 
 			if (interim == true) {
+				
 				// We have had a quick look here before:
 				// remove the dummy node that we added last time
 				removeAllChildren();
@@ -180,32 +183,41 @@ public  class FileTreeNode extends DefaultMutableTreeNode implements
 			String[] names = f.list(); // Get list of contents
 			// Process the contents
 			ArrayList list = new ArrayList();
+		
 			for (int i = 0; i < names.length; i++) {
+				
 				String name = names[i];
+				
 				File d = new File(fullName, name);
 				try {
 					FileTreeNode node = new FileTreeNode(fullName, name);
 					list.add(node);
+					
 					if (descend && d.isDirectory()) {
+						
 						node.populateDirectories(false);
 					}
 					addedNodes = true;
 					if (descend == false) {
+						
 						// Only add one node if not descending
-						break;
+						continue;
 					}
 				} catch (Throwable t) {
+					
 					// Ignore phantoms or access problems
 				}
 			}
 
 			if (addedNodes == true) {
+				
 				// Now sort the list of contained files and directories
 				Object[] nodes = list.toArray();
 				Arrays.sort(nodes, 
 						ComparatorFactory.getComparator(EFGImportConstants.EFGProperties.getProperty("filetreenode.comparator")));
 				// Add sorted items as children of this node
 				for (int j = 0; j < nodes.length; j++) {
+					
 					this.add((FileTreeNode) nodes[j]);
 				}
 			}
@@ -215,12 +227,16 @@ public  class FileTreeNode extends DefaultMutableTreeNode implements
 			// set populated to true. Otherwise, we set interim
 			// so that we look again in the future if we need to
 			if (descend == true || addedNodes == false) {
+				
 				populated = true;
 			} else {
+			
 				// Just set interim state
 				interim = true;
 			}
+			
 		}
+		
 		return addedNodes;
 	}
 
@@ -229,7 +245,9 @@ public  class FileTreeNode extends DefaultMutableTreeNode implements
 	// the index of the inserted node.
 	public int addNode(String name) {
 		// If not populated yet, do nothing
+		
 		if (populated == true) {
+			
 			// Do not add a new node if
 			// the required node is already there
 			int childCount = getChildCount();
@@ -242,12 +260,15 @@ public  class FileTreeNode extends DefaultMutableTreeNode implements
 						node.interim = true;
 						node.populated = false;
 					}
+					
 					return -1;
 				}
+				
 			}
 			// Add a new node
 			try {
 				FileTreeNode node = new FileTreeNode(fullName, name);
+				
 				add(node);
 				return childCount;
 			} catch (Exception e) {

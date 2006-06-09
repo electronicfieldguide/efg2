@@ -604,6 +604,13 @@ public class FileTreeBrowser implements DropTargetListener,
 }
 
 class DnDUtils {
+	static Logger log = null;
+	static {
+		try {
+			log = Logger.getLogger(DnDUtils.class);
+		} catch (Exception ee) {
+		}
+	}
 	public static String showActions(int action) {
 		String actions = "";
 		if ((action & (DnDConstants.ACTION_LINK | DnDConstants.ACTION_COPY_OR_MOVE)) == 0) {
@@ -631,7 +638,7 @@ class DnDUtils {
 
 	public static void debugPrintln(String s) {
 		if (debugEnabled) {
-			System.out.println(s);
+			log.debug(s);
 		}
 	}
 

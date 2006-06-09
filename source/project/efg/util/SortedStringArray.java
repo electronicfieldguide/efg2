@@ -98,7 +98,7 @@ public class SortedStringArray {
         sortedArray.sort();
 
         for(int i = 0; i < sortedArray.getArraySize(); ++i){
-            System.out.println("arr1: " + sortedArray.getName(i));
+            log.debug("arr1: " + sortedArray.getName(i));
             
         }
     }
