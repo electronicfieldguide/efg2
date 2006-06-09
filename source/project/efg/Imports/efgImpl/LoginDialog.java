@@ -24,6 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -157,18 +158,40 @@ public class LoginDialog extends JDialog {
 	public boolean isSuccess() {
 		return this.isSuccess;
 	}
-
+	private static FileLock getLock(){
+		FileLock lock = null;
+		try {
+			RandomAccessFile raf = new RandomAccessFile(EFGImportConstants.LOCK_FILE, "rw");
+			FileChannel channel = raf.getChannel();
+			
+			lock = channel.tryLock();
+			
+		}
+		catch(Exception ee){
+			log.error("Error ocurred while getting a lock");
+			log.error(ee.getMessage());
+		}
+		return lock;
+	}
+	private static void releaseLock(FileLock lock){
+		
+		if(lock == null){
+			return;
+		}
+		try {
+			lock.release();
+			log.error("Lock released");
+		} catch (IOException e) {
+			log.error("Could not release locks");
+			log.error(e.getMessage());
+		}
+	}
 	public static void callImportMenu(String args[]) {
-		
-		
 		ImportMenu menu = null;
 		FileLock lock = null;
 		String catalina_home = null;
 		try {
-			RandomAccessFile raf = new RandomAccessFile(EFGImportConstants.LOCK_FILE, "rw");
-			FileChannel channel = raf.getChannel();
-
-			lock = channel.tryLock();
+			lock = getLock();
 			if (lock == null) {
 				JOptionPane
 						.showMessageDialog(
@@ -188,9 +211,10 @@ public class LoginDialog extends JDialog {
 					log.debug("Cat home after: " + catalina_home);
 				}
 			} else {
-						//<usage> java project.efg.Imports.efgImpl.ImportMenu <catalina-home>";
 				log.error(usage_message);
+				releaseLock(lock);
 				log.error("Exiting application..");
+				
 				System.err.println(usage_message);
 				System.exit(1);
 			}
@@ -209,24 +233,25 @@ public class LoginDialog extends JDialog {
 							dbObject);
 					menu.show();
 				}
+				else{
+					releaseLock(lock);
+				}
 			} else {
 				StringBuffer message = new StringBuffer();
-				message
-						.append("The 'CATALINA_HOME' environment variable  must be set for this application\n");
-				message
-						.append("to run successfully.");
-				message
-						.append("Consult your administrator on how to set environment variables\n");
+				message.append("The 'CATALINA_HOME' environment variable  must be set for this application\n");
+				message.append("to run successfully.");
+				message.append("Consult your administrator on how to set environment variables\n");
 				System.err.println(message.toString());
+				releaseLock(lock);
 				System.exit(1);
 			}
 		} catch (Exception ee) {
+			releaseLock(lock);
 			log.error(ee.getMessage());
 		} 
 	}
 
 	public static void main(String args[]) {
-		
 		LoginDialog.callImportMenu(args);
 	}
 }

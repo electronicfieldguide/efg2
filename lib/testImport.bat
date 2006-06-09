@@ -14,7 +14,7 @@ set CLASSPATH=%CP%
 
 
 
-java -classpath "%CLASSPATH%" project/efg/Import/ImportMenu
+java -classpath "%CLASSPATH%" project/efg/Imports/efgImpl/ImportMenu
 
 ECHO.
 

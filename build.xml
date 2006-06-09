@@ -141,6 +141,8 @@ b) Relational Database
 		<copy file="${efg.home}/lib/mysqldriver.jar" todir="${tomcat.home}/common/lib"/>
 		<!-- CREATE A PROPERTIES FILE ON SERVER AND COPY ALL PROPERTIES FILE THERE-->
 		<copy file="${efg_properties.home}/log4j.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
+		<copy file="${efg_properties.home}/log4j_rdb.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
+			
 	</target>
 	<target name="deployRDB" depends="compileRDB,prepareDeploy">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
@@ -187,8 +189,9 @@ b) Relational Database
 		<!--
 		<copy file="${rdb.src.home}/properties/**.*" todir="${efg_lib.home.properties}"/>
 		<copy file="${efg_properties.home}/**.*" todir="${efg_lib.home.properties}"/>
--->
+
 		<move file="${efg_lib.home.properties}/log4j_rdb.properties" tofile="${efg_lib.home.properties}/log4j.properties"/>
+	-->
 		<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg_lib.home}"/>
 		<delete dir="temp"/>
 	</target>
