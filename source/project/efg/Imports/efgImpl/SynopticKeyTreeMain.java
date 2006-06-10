@@ -63,9 +63,9 @@ import project.efg.util.EFGImportConstants;
  * @author <a href="mailto:kasiedu@cs.umb.edu">Jacob K Asiedu</a>
  * @version 1.0
  */
-public class SynopticKeyTreeMain extends JDialog {
+public class SynopticKeyTreeMain extends JDialog  {
 	static final long serialVersionUID = 1;
-
+	
 	private SynopticKeyTreeInterface tree;
 	//private SynopticKeyTreeFactoryInterface treeFactory;
 	final JButton deleteBtn = 
@@ -97,7 +97,7 @@ public class SynopticKeyTreeMain extends JDialog {
 	}
 
 	public SynopticKeyTreeMain(DBObject db, JFrame frame) {
-		this(frame, "", false, db);
+		this(frame, "", true, db);
 	}
 	
 	public SynopticKeyTreeMain(JFrame frame, String title, boolean modal,
@@ -106,6 +106,7 @@ public class SynopticKeyTreeMain extends JDialog {
 		this.parentFrame = frame;
 
 		setSize(new Dimension(600, 400));
+	
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				close();
@@ -130,8 +131,9 @@ public class SynopticKeyTreeMain extends JDialog {
 		JComponent newContentPane = addPanel();
 		setContentPane(newContentPane);
 	} // SynoptcKeyTreeMain constructor
-
+	
 	public void close() {
+		
 		this.dispose();
 	}
 
@@ -197,7 +199,9 @@ public class SynopticKeyTreeMain extends JDialog {
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-			this.manipulator.processNode();
+			
+				this.manipulator.processNode();
+			
 		}
 	}
 /**
@@ -216,4 +220,5 @@ public class SynopticKeyTreeMain extends JDialog {
 			this.treeBrowser.close();
 		}
 	}
+
 } // SynopticKeyTreeMain

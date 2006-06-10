@@ -56,7 +56,6 @@ import project.efg.Imports.efgImpl.EFGTableModel;
 import project.efg.Imports.efgImpl.MyJComboBox;
 import project.efg.Imports.efgImpl.TableSorter;
 import project.efg.Imports.efgImpl.TableSorterObject;
-import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.util.EFGImportConstants;
 
 /**
@@ -228,6 +227,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 	 * @see project.efg.Imports.efgImpl.TabelSorterMainInterface#close()
 	 */
 	public void close() {
+	
 		this.dispose();
 	}
 

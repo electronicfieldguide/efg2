@@ -94,6 +94,7 @@ public class EditMetadata extends DataManipulatorInterface {
 		TableSorterMainInterface newContentPane = 
 			new TableSorterMain(
 				tree.getDBObject(), ds,tree.frame);
+		
 		newContentPane.show();
 		
 		return true;

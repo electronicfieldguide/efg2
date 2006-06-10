@@ -13,8 +13,6 @@ import java.io.FileOutputStream;
 
 import org.apache.log4j.Logger;
 
-import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
-
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGEncodeParam;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
@@ -153,7 +151,7 @@ public class ThumbNailGenerator {
 			}
 		} catch (Exception ee) {
 			done = false;
-			LoggerUtilsServlet.logErrors(ee);
+			ee.printStackTrace();
 		} finally {
 			try {
 				if (out != null) {

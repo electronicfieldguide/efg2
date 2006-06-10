@@ -482,10 +482,14 @@ public class FileTreeBrowser implements DropTargetListener,
 				os.write(buffer, 0, len);
 			}
 			if (is != null) {
+				
 				is.close();
+				is = null;
 			}
 			if (os != null) {
+				os.flush();
 				os.close();
+				os = null;
 			}
 			log.debug("Here");
 			//String name = srcFile.getName();
@@ -524,27 +528,13 @@ public class FileTreeBrowser implements DropTargetListener,
 		// Update the tree display
 		if (targetNode != null) {
 			tree.addNode(targetNode, name);
+			/*DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+			
+			model.reload(root);*/
+			
 		}
 	}
-	/**
-	  *Replace the last occurence of aOldPattern in aInput with aNewPattern
-	  * @param aInput is the original String which may contain substring aOldPattern
-	  * @param aOldPattern is the non-empty substring which is to be replaced
-	  * @param aNewPattern is the replacement for aOldPattern
-	  */
-	  private  String replace(
-	    final String aInput,
-	    final String aOldPattern,
-	    final String aNewPattern
-	  ){
-	     if ( aOldPattern.equals("") ) {
-	        throw new IllegalArgumentException("Old pattern must have content.");
-	     }
-	     log.debug("aInput: " + aInput);
-	     log.debug("aOldPattern: " + aOldPattern);
-	     log.debug("aNewPattern: " + aNewPattern);
-	     return aInput.replaceAll(aOldPattern,aNewPattern);
-	  }
 	protected void transferDirectory(int action, File srcDir,
 			File targetDirectory, FileTreeNode targetNode) {
 		DnDUtils.debugPrintln((action == DnDConstants.ACTION_COPY ? "Copy"
@@ -588,6 +578,10 @@ public class FileTreeBrowser implements DropTargetListener,
 		// Add a node for the new directory
 		if (targetNode != null) {
 			targetNode = tree.addNode(targetNode, name);
+			/*DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+			DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
+			
+			model.reload(root);*/
 		}
 		// Now copy the directory content.
 		File[] files = srcDir.listFiles();
@@ -601,6 +595,26 @@ public class FileTreeBrowser implements DropTargetListener,
 		}
 		// Remove the source directory after moving
 	}
+
+	/**
+	  *Replace the last occurence of aOldPattern in aInput with aNewPattern
+	  * @param aInput is the original String which may contain substring aOldPattern
+	  * @param aOldPattern is the non-empty substring which is to be replaced
+	  * @param aNewPattern is the replacement for aOldPattern
+	  */
+	  private  String replace(
+	    final String aInput,
+	    final String aOldPattern,
+	    final String aNewPattern
+	  ){
+	     if ( aOldPattern.equals("") ) {
+	        throw new IllegalArgumentException("Old pattern must have content.");
+	     }
+	     log.debug("aInput: " + aInput);
+	     log.debug("aOldPattern: " + aOldPattern);
+	     log.debug("aNewPattern: " + aNewPattern);
+	     return aInput.replaceAll(aOldPattern,aNewPattern);
+	  }
 }
 
 class DnDUtils {
