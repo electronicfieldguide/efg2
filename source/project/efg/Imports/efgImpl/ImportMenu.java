@@ -195,8 +195,12 @@ public class ImportMenu extends JFrame {
 
 		public void actionPerformed(ActionEvent evt) {
 			try {
-				FileTreeBrowserMain ftb = new FileTreeBrowserMain(this.frame,
-						EFGImportConstants.EFGProperties.getProperty("DeployImagesListener.title"), true, imagesDirectory);
+				FileTreeBrowserMain ftb = 
+					new FileTreeBrowserMain(
+						this.frame,
+						EFGImportConstants.EFGProperties.getProperty("DeployImagesListener.title"),
+						true, 
+						imagesDirectory);
 				ftb.show();
 			} catch (Exception ee) {
 				log.error(ee.getMessage());
@@ -209,7 +213,8 @@ public class ImportMenu extends JFrame {
 
 		private JFrame frame;
 
-		public HandleDatasourceListener(DBObject dbObject, JFrame frame) {
+		public HandleDatasourceListener(DBObject dbObject, 
+				JFrame frame) {
 			this.dbObject = dbObject;
 			this.frame = frame;
 		}

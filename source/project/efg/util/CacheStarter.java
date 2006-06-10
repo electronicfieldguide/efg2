@@ -15,7 +15,6 @@ import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
-import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.servlets.rdb.QueryExecutor;
 
 /**
@@ -178,8 +177,8 @@ public class CacheStarter {
 		       "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_CommonName.xsl",
 			   "http://antelope.cs.umb.edu:8080/efg2/Redirect.jsp?displayName=invasives&displayFormat=HTML&xslName=NantucketListsTemplate_ScientificName.xsl"};
 		    
-		LoggerUtils utils = new LoggerUtils();
-		utils.toString();
+		//LoggerUtils utils = new LoggerUtils();
+		//utils.toString();
 		/*String url = CacheStarter.getURLProperty();
 	    String []urls = null;
 	    if(url == null){
@@ -206,10 +205,10 @@ public class CacheStarter {
 	      int statusCode = client.executeMethod(method);
 
 	      if (statusCode != HttpStatus.SC_OK) {
-	    	 log.debug("Method failed: " + method.getStatusLine());
+	    	 System.out.println("Method failed: " + method.getStatusLine());
 	      }
 	      else{
-	    	  log.debug("Method returned OK");
+	    	  System.out.println("Method returned OK");
 	      }
 
 	      // Read the response body.
@@ -217,14 +216,14 @@ public class CacheStarter {
 
 	      // Deal with the response.
 	      // Use caution: ensure correct character encoding and is not binary data
-	     log.debug("At end");
+	      System.out.println("At end");
 
 	    } catch (Exception e) {
-	    	log.debug(e.getMessage());
+	    	 System.out.println(e.getMessage());
 	    } finally {
 	      // Release the connection.
 	      method.releaseConnection();
-	      log.debug("Done");
+	      System.out.println("Done");
 	    }  
 	    }	
 	}

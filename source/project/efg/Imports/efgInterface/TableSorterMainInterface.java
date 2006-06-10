@@ -82,6 +82,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 			EFGDatasourceObjectInterface ds, 
 			JFrame frame) {
 		super(frame, ds.getDisplayName(), true);
+		setLocationRelativeTo(frame);
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		this.ds = ds;

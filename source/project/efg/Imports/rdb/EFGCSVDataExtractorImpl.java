@@ -33,6 +33,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
+import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
@@ -56,6 +57,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 	}
 
 	private LabeledCSVParser lcsvp;
+	private String[] fieldNames;
 	//private CSVParse lcsvp;
 	/**
 	 * Defaults to a comma separated delimiter if none is specified.
@@ -167,7 +169,39 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		}
 		return null;
 	}
-
+	private String[] getParsedFieldNames() {
+		
+		try {
+			return processFields(this.lcsvp.getLabels());
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		return null;
+	}
+	private String[] processFields(String[] csvFields){
+		ArrayList lists = new ArrayList(csvFields.length);
+		int size = csvFields.length; 
+		log.debug("Field Size before trim: " + size);
+		for(int i=0; i < csvFields.length; i++){
+			String field = csvFields[i];
+			if((field == null) || (field.trim().equals(""))){
+				--size;
+			}
+			else{
+				lists.add(field);
+			}
+		}
+		if(size < 1){
+			return null;
+		}
+		log.debug("Field Size after trim: " + size);
+		String[] toReturn = new String[size];
+		for(int j=0; j < size; j++){
+			String field = (String)lists.get(j);
+			toReturn[j]= field;
+		}
+		return toReturn;
+	}
 	/**
 	 * A string array of field names to be used to create a database table. The
 	 * order of the strings in the array must match the order of the data values
@@ -176,12 +210,12 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 	 * @return a string array of field names
 	 */
 	public String[] getFieldNames() {
-		try {
-			return this.lcsvp.getLabels();
-		} catch (Exception ee) {
-			log.error(ee.getMessage());
+		if(this.fieldNames == null){
+			this.fieldNames = getParsedFieldNames();
 		}
-		return null;
+		return this.fieldNames;
+	
+		
 	}
 
 	/**

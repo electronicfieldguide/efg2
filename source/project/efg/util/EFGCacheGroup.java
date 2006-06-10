@@ -39,18 +39,10 @@ public class EFGCacheGroup implements ICacheGroupsProvider {
 	}
 	private String[] getGroup(HttpServletRequest req){
 		String uniqueID = req.getParameter(EFGImportConstants.UNIQUEID_STR);
-		if(uniqueID != null){
-			return new String[]{"uniqueIDs"};
-		}
-		String[] groups = {EFGImportConstants.XSL_SEARCH_GROUPS,
-				EFGImportConstants.SEARCH_GROUP};
-		log.debug("groups created with defaults: '" + 
-				EFGImportConstants.XSL_SEARCH_GROUPS + 
-				"' and '" + 
-				EFGImportConstants.SEARCH_GROUP + 
-				"'" 
-				);
-		return groups;
+		if((uniqueID == null) || (uniqueID.trim().equals(""))){//use the default cache
+			return null;
+		}//return null which is the default in the Filter
+		return new String[]{"uniqueIDs"};//return this group. If cache fills up remove uniqueID's first from  the cache
 	}
 
 }

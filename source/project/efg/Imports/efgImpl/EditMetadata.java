@@ -91,11 +91,11 @@ public class EditMetadata extends DataManipulatorInterface {
 
 		EFGDatasourceObjectInterface ds = (EFGDatasourceObjectInterface) selNode
 				.getUserObject();
-		//String displayName = ds.getDisplayName();
 		TableSorterMainInterface newContentPane = 
 			new TableSorterMain(
-				tree.getDBObject(), ds, null);
+				tree.getDBObject(), ds,tree.frame);
 		newContentPane.show();
+		
 		return true;
 	}
 }

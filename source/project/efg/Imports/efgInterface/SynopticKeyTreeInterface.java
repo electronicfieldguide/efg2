@@ -77,7 +77,7 @@ public abstract class SynopticKeyTreeInterface extends JTree{
 	
 
 	private DBObject dbObject;
-	protected JFrame frame;
+	public JFrame frame;
 	protected SynopticKeyTreeModelInterface model;
 
 	protected EFGDatasourceObjectListInterface lists;
