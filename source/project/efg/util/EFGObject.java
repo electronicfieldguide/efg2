@@ -36,7 +36,7 @@ import org.apache.log4j.Logger;
  * 
  * @see #SearchPage.jsp
  */
-public class EFGObject implements Comparable{
+public class EFGObject implements java.lang.Comparable{
 
 	private String name;
 	private String databaseName;
@@ -103,6 +103,9 @@ public class EFGObject implements Comparable{
 	
 }
 // $Log$
+// Revision 1.1.2.2  2006/06/20 13:34:11  kasiedu
+// Fixed errors in image uploader
+//
 // Revision 1.1.2.1  2006/06/08 13:22:47  kasiedu
 // New  files
 //

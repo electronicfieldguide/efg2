@@ -31,6 +31,7 @@
  */
 package project.efg.Imports.efgImpl;
 
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
@@ -69,7 +70,8 @@ public class EditMetadata extends DataManipulatorInterface {
 	 * @see project.efg.Imports.efgImpl.DataManipulatorInterface#processNode()
 	 */
 	public boolean processNode() {
-		SynopticKeyTreeInterface tree = this.getSynopticKeyTreeInterface();
+		
+		final SynopticKeyTreeInterface tree = this.getSynopticKeyTreeInterface();
 		String message = "";
 		// get the selected node
 		DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) tree
@@ -89,14 +91,28 @@ public class EditMetadata extends DataManipulatorInterface {
 			return false;
 		}
 
-		EFGDatasourceObjectInterface ds = (EFGDatasourceObjectInterface) selNode
+		final EFGDatasourceObjectInterface ds = (EFGDatasourceObjectInterface) selNode
 				.getUserObject();
-		TableSorterMainInterface newContentPane = 
-			new TableSorterMain(
-				tree.getDBObject(), ds,tree.frame);
-		
-		newContentPane.show();
-		
+		Thread worker = new Thread(){
+			public void run(){
+				try{
+					TableSorterMainInterface newContentPane = 
+						new TableSorterMain(
+							tree.getDBObject(), ds,null);
+					
+					newContentPane.show();
+					Thread.sleep(5000);
+				}catch(Exception ee){
+					
+				}
+				SwingUtilities.invokeLater(new Runnable(){
+					public void run(){
+						
+					}
+				});
+			}
+		};
+		worker.start();		
 		return true;
 	}
 }

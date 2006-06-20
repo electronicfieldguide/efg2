@@ -102,10 +102,12 @@ public class EFGJLabel extends JLabel {
 			if (scale < 1.0d) {
 				tx.scale(scale, scale);
 			}
+		
 			// Paint image.
-			Graphics2D g2d = (Graphics2D) g;
+			Graphics2D g2d = (Graphics2D)g;
 			g2d.drawImage(image, tx, null);
 			g2d.dispose();
+			image.flush();
 		} catch (Exception e) {
 			log.error(this.path + " is not an image");
 		}

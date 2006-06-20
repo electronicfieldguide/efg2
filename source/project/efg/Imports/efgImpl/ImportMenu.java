@@ -52,6 +52,7 @@ import org.apache.log4j.Logger;
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.efgInterface.EFGWebAppsDirectoryInterface;
 import project.efg.Imports.factory.EFGWebAppsDirectoryFactory;
+import project.efg.util.DnDFileBrowserMain;
 import project.efg.util.EFGImportConstants;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
@@ -195,12 +196,19 @@ public class ImportMenu extends JFrame {
 
 		public void actionPerformed(ActionEvent evt) {
 			try {
-				FileTreeBrowserMain ftb = 
+				/*FileTreeBrowserMain ftb = 
 					new FileTreeBrowserMain(
 						this.frame,
 						EFGImportConstants.EFGProperties.getProperty("DeployImagesListener.title"),
 						true, 
+						imagesDirectory);*/
+				DnDFileBrowserMain ftb = 
+					new DnDFileBrowserMain(
+						this.frame,
+						EFGImportConstants.EFGProperties.getProperty("DeployImagesListener.title"),
+						true, 
 						imagesDirectory);
+				
 				ftb.show();
 			} catch (Exception ee) {
 				log.error(ee.getMessage());
@@ -233,6 +241,7 @@ public class ImportMenu extends JFrame {
 					log.error(buffer.toString());
 					return;
 				}
+				//run this in another thread?
 				SynopticKeyTreeMain ftb = new SynopticKeyTreeMain(this.frame,
 						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.title")	
 		, true, this.dbObject);

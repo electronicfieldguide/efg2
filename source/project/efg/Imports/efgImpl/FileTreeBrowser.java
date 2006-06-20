@@ -52,11 +52,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.Vector;
 
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -68,17 +73,19 @@ import project.efg.util.ThumbNailGeneratorWrapper;
 public class FileTreeBrowser implements DropTargetListener,
 		PropertyChangeListener {
 	FileTree tree;
+	private Map importedFiles;
+	File[] fileList = null;
 	protected ThumbNailGeneratorWrapper generatorWrapper;
 	protected DropTarget dropTarget;
 	
 	protected boolean acceptableType; // Indicates whether data is acceptable
 
 	TreePath[] selections; // Initially selected rows
-
+	//private JProgressBar progressBar;
 	TreePath leadSelection; // Initial lead selection
-
+	
 	boolean copyOverExistingFiles;
-	//private ComparatorFactoryInterface compFactory;
+
 	
 	static Logger log = null;
 	static {
@@ -88,9 +95,10 @@ public class FileTreeBrowser implements DropTargetListener,
 		}
 	}
 	
-	public FileTreeBrowser(FileTree tree) {
+	public FileTreeBrowser(FileTree tree,JProgressBar progressBar) {
 		this.tree = tree;
-		this.generatorWrapper = new ThumbNailGeneratorWrapper();
+		
+		this.importedFiles = Collections.synchronizedMap(new TreeMap());
 		// Listen for changes in the enabled property
 		
 		tree.addPropertyChangeListener(this);
@@ -107,6 +115,7 @@ public class FileTreeBrowser implements DropTargetListener,
 
 	// Implementation of the DropTargetListener interface
 	public void dragEnter(DropTargetDragEvent dtde) {
+	
 		DnDUtils.debugPrintln("dragEnter, drop action = "
 				+ DnDUtils.showActions(dtde.getDropAction()));
 
@@ -153,49 +162,75 @@ public class FileTreeBrowser implements DropTargetListener,
 		dragUnderFeedback(dtde, acceptedDrag);
 	}
 
-	public void drop(DropTargetDropEvent dtde) {
-		DnDUtils.debugPrintln("DropTarget drop, drop action = "
-				+ DnDUtils.showActions(dtde.getDropAction()));
+	public void drop( DropTargetDropEvent dtde) {
+		
+	
+		
+				try{
+					log.debug("DropTarget drop, drop action = "
+							+ DnDUtils.showActions(dtde.getDropAction()));
 
-		// Check the drop action
-		if ((dtde.getDropAction() == DnDConstants.ACTION_COPY_OR_MOVE)
-				|| (dtde.getDropAction() == DnDConstants.ACTION_MOVE)) {
-			// Accept the drop and get the transfer data
-			dtde.acceptDrop(dtde.getDropAction());
-			Transferable transferable = dtde.getTransferable();
-			boolean dropSucceeded = false;
-			try {
-				tree.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+					// Check the drop action
+					if ((dtde.getDropAction() == DnDConstants.ACTION_COPY_OR_MOVE)
+							|| (dtde.getDropAction() == DnDConstants.ACTION_MOVE)) {
+						// Accept the drop and get the transfer data
+						dtde.acceptDrop(dtde.getDropAction());
+						Transferable transferable = dtde.getTransferable();
+						boolean dropSucceeded = false;
+						try {
+							tree.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				// Save the user's selections
-				saveTreeSelection();
-				if (transferable
-						.isDataFlavorSupported(FileTreeNode.TREENODE_FLAVOR)) {
-					dropSucceeded = dropFile(DnDConstants.ACTION_MOVE,
-							transferable, dtde.getLocation());
-				} else if (transferable
-						.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-					dropSucceeded = dropFile(DnDConstants.ACTION_COPY,
-							transferable, dtde.getLocation());
+							// Save the user's selections
+							saveTreeSelection();
+							if (transferable
+									.isDataFlavorSupported(FileTreeNode.TREENODE_FLAVOR)) {
+								dropSucceeded = dropFile(DnDConstants.ACTION_MOVE,
+										transferable, dtde.getLocation());
+							} else if (transferable
+									.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+								dropSucceeded = dropFile(DnDConstants.ACTION_COPY,
+										transferable, dtde.getLocation());
+							}
+							// else if it is a FileTreeNode thing do something else
+							log.debug("Drop completed, success: "
+									+ dropSucceeded);
+						
+							
+							if(dropSucceeded){
+								restoreTreeSelection();
+								dtde.dropComplete(dropSucceeded);
+								DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+								model.reload();
+								
+								
+								//CreateThumbNailsThread thumbsthread =
+								//new CreateThumbNailsThread(this.importedFiles,this.progressBar);
+								//thumbsthread.start();	
+							}
+						
+						} catch (Exception e) {
+							log.error(e.getMessage());
+							e.printStackTrace();
+							log.debug("Exception while handling drop " + e);
+						} finally {
+							tree.setCursor(Cursor.getDefaultCursor());
+
+							// Restore the user's selections
+							restoreTreeSelection();
+							dtde.dropComplete(dropSucceeded);
+							DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+							model.reload();
+							
+						}
+					} else {
+						log.debug("Drop target rejected drop");
+						dtde.dropComplete(false);
+					}
+				
+				}catch(Exception ee){
+					System.err.println(ee.getMessage());
 				}
-				// else if it is a FileTreeNode thing do something else
-				DnDUtils.debugPrintln("Drop completed, success: "
-						+ dropSucceeded);
-			} catch (Exception e) {
-				log.error(e.getMessage());
-				e.printStackTrace();
-				DnDUtils.debugPrintln("Exception while handling drop " + e);
-			} finally {
-				tree.setCursor(Cursor.getDefaultCursor());
-
-				// Restore the user's selections
-				restoreTreeSelection();
-				dtde.dropComplete(dropSucceeded);
-			}
-		} else {
-			DnDUtils.debugPrintln("Drop target rejected drop");
-			dtde.dropComplete(false);
-		}
+				
 	}
 
 	// PropertyChangeListener interface
@@ -209,6 +244,313 @@ public class FileTreeBrowser implements DropTargetListener,
 	}
 
 	// Internal methods start here
+
+
+	protected void checkTransferType(DropTargetDragEvent dtde) {
+		// Accept a list of files
+		acceptableType = false;
+		
+		if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+			acceptableType = true;
+		}
+		// else if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+		// acceptableType = true;
+		// }
+		DnDUtils.debugPrintln("Data type acceptable - " + acceptableType);
+	}
+
+	// This method handles a drop for a list of files
+	protected boolean dropFile(int action, final Transferable transferable,
+			final Point location) throws IOException,
+			UnsupportedFlavorException, MalformedURLException {
+		
+		List files = null;
+		
+		if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
+			files = (List) transferable
+			.getTransferData(DataFlavor.javaFileListFlavor);
+		} else if (transferable
+				.isDataFlavorSupported(FileTreeNode.TREENODE_FLAVOR)) {
+			files = (List) transferable
+			.getTransferData(FileTreeNode.TREENODE_FLAVOR);
+		} else {
+			return false;
+		}
+		TreePath treePath = tree.getPathForLocation(location.x, location.y);
+		File targetDirectory = findTargetDirectory(location);
+		if (treePath == null || targetDirectory == null) {
+			return false;
+		}
+		
+		FileTreeNode node = (FileTreeNode) treePath.getLastPathComponent();
+		// Highlight the drop location while we perform the drop
+		tree.setSelectionPath(treePath);
+		this.fileList = getFileList(files);
+		// Don't overwrite files by default
+		copyOverExistingFiles = false;
+		
+		
+		
+		// Copy or move each source object to the target
+		for (int i = 0; i < fileList.length; i++) {
+			File f = fileList[i];
+			if (f.isDirectory()) {
+				transferDirectory(action, f, targetDirectory, node);
+				// create directory inside thumbnails directory
+			} else {
+				try {
+					transferFile(action, fileList[i], targetDirectory, node);
+				} catch (IllegalStateException e) {
+					return false;
+				}
+			}
+		}
+		
+		return true;
+		
+	}
+
+	protected File findTargetDirectory(Point location) {
+		TreePath treePath = tree.getPathForLocation(location.x, location.y);
+		if (treePath != null) {
+			FileTreeNode node = (FileTreeNode) treePath.getLastPathComponent();
+			// Only allow a drop on a writable directory
+			if (node.isDir()) {
+				try {
+					File f = new File(node.getFullName());
+					if (f.canWrite()) {
+						return f;
+					}
+				} catch (Exception e) {
+					log.error(e.getMessage());
+				}
+			}
+		}
+		return null;
+	}
+
+	protected void saveTreeSelection() {
+		selections = tree.getSelectionPaths();
+		leadSelection = tree.getLeadSelectionPath();
+		tree.clearSelection();
+	}
+
+	protected void restoreTreeSelection() {
+		tree.setSelectionPaths(selections);
+		
+		// Restore the lead selection
+		if (leadSelection != null) {
+			tree.removeSelectionPath(leadSelection);
+			tree.addSelectionPath(leadSelection);
+		}
+	}
+
+	// Get the list of files being transferred and
+	// remove any duplicates. For example, if the
+	// list contains /a/b/c/d and /a/b/c/d, the
+	// second entry is removed.
+	protected File[] getFileList(List files) {
+		int size = files.size();
+		
+		// Get the files into an array for sorting
+		File[] f = new File[size];
+		Iterator iter = files.iterator();
+		int count = 0;
+		while (iter.hasNext()) {
+			f[count++] = (File) iter.next();
+		}
+		
+		// Sort the files into alphabetical order
+		// based on pathnames.
+		Arrays.sort(f, ComparatorFactory
+				.getComparator(EFGImportConstants.EFGProperties
+						.getProperty("filename.comparator")));
+		
+		// Remove duplicates, retaining the results in a Vector
+		Vector v = new Vector();
+		char separator = File.separatorChar;
+		outer: for (int i = f.length - 1; i >= 0; i--) {
+			String secondPath = f[i].getAbsolutePath();
+			int secondLength = secondPath.length();
+			for (int j = i - 1; j >= 0; j--) {
+				String firstPath = f[j].getAbsolutePath();
+				int firstLength = firstPath.length();
+				if (secondPath.startsWith(firstPath)
+						&& firstLength != secondLength
+						&& secondPath.charAt(firstLength) == separator) {
+					continue outer;
+				}
+			}
+			v.add(f[i]);
+		}
+		// Copy the retained files into an array
+		f = new File[v.size()];
+		v.copyInto(f);
+		
+		return f;
+	}
+
+	// Copy or move a file
+	protected void transferFile(int action, File srcFile, File targetDirectory,
+			FileTreeNode targetNode) {
+		
+		DnDUtils.debugPrintln((action == DnDConstants.ACTION_COPY ? "Copy"
+				: "Move")
+				+ " file "
+				+ srcFile.getAbsolutePath()
+				+ " to "
+				+ targetDirectory.getAbsolutePath());
+		// Create a File entry for the target
+		String name = srcFile.getName();
+		File newFile = new File(targetDirectory, name);
+	
+		if (newFile.exists()) {
+			// Already exists - is it the same file?
+			if (newFile.equals(srcFile)) {// overwrite it
+				
+				return;
+			}
+			// File of this name exists in this directory
+			if (copyOverExistingFiles == false) {
+				int res = JOptionPane.showOptionDialog(tree,
+						"A file called\n   " + name
+						+ "\nalready exists in the directory\n   "
+						+ targetDirectory.getAbsolutePath()
+						+ "\nOverwrite it?", "File Exists",
+						JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, new String[] {
+					"Yes", "Yes to All", "No", "Cancel" }, "No");
+				switch (res) {
+				case 1: // Yes to all
+					copyOverExistingFiles = true;
+				case 0: // Yes
+					break;
+				case 2: // No
+					return;
+				default: // Cancel
+					throw new IllegalStateException("Cancelled");
+				}
+			}
+		} else {
+			// New file - create it
+			try {
+				//put in file map
+				newFile.createNewFile();
+							} catch (IOException e) {
+				log.error(e.getMessage());
+				JOptionPane.showMessageDialog(tree,
+						"Failed to create new file\n  "
+						+ newFile.getAbsolutePath(),
+						"File Creation Failed", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		BufferedInputStream is = null;
+		BufferedOutputStream os = null;
+		try {
+			
+		    is = new BufferedInputStream(
+						 new FileInputStream(srcFile));
+		    os = new BufferedOutputStream(
+						  new FileOutputStream(newFile));
+		    int size = 4096;
+		    byte[] buffer = new byte[size];
+		    int len;
+		    while ((len = is.read(buffer, 0, size)) > 0) {
+			os.write(buffer, 0, len);
+		    }
+		    this.importedFiles.put(srcFile.getAbsolutePath(),targetDirectory.getAbsolutePath());
+
+		} catch (IOException e) {
+		    log.error(e.getMessage());
+		    JOptionPane.showMessageDialog(tree, 
+						  "Failed to copy file\n  " +
+						  name + "\nto directory\n  " +
+						  targetDirectory.getAbsolutePath(),
+						  "File Copy Failed",
+						  JOptionPane.ERROR_MESSAGE);
+		    return;
+		} finally {
+		    try {
+			if (is != null) {
+			    is.close();
+			}
+			if (os != null) {
+			    os.close();
+			}
+		    } catch (IOException e) {
+		    }      
+		}
+		// Copy the data and close file.
+		// Update the tree display
+		if (targetNode != null) {
+			tree.addNode(targetNode, name);
+			((DefaultTreeModel) tree.getModel()).nodeChanged(targetNode);
+		}
+	}
+
+	protected void transferDirectory(int action, File srcDir,
+			File targetDirectory, FileTreeNode targetNode) {
+		DnDUtils.debugPrintln((action == DnDConstants.ACTION_COPY ? "Copy"
+				: "Move")
+				+ " directory "
+				+ srcDir.getAbsolutePath()
+				+ " to "
+				+ targetDirectory.getAbsolutePath());
+		
+		// Do not copy a directory into itself or
+		// a subdirectory of itself.
+		File parentDir = targetDirectory;
+		while (parentDir != null) {
+			if (parentDir.equals(srcDir)) {
+				DnDUtils.debugPrintln("-- SUPPRESSED");
+				return;
+			}
+			parentDir = parentDir.getParentFile();
+		}
+		// Copy the directory itself, then its contents
+		// Create a File entry for the target
+		String name = srcDir.getName();
+		File newDir = new File(targetDirectory, name);
+		
+		if (newDir.exists()) {
+			// Already exists - is it the same directory?
+			if (newDir.equals(srcDir)) {
+				// Exactly the same file - ignore
+				
+				return;
+			}
+		} else {
+			// Directory does not exist - create it
+			if (newDir.mkdir() == false) {
+				// Failed to create - abandon this directory
+				JOptionPane.showMessageDialog(tree,
+						"Failed to create target directory\n  "
+						+ newDir.getAbsolutePath(),
+						"Directory creation Failed", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		// Add a node for the new directory
+		if (targetNode != null) {
+			targetNode = tree.addNode(targetNode, name);
+			((DefaultTreeModel) tree.getModel()).nodeChanged(targetNode);
+		}
+		// Now copy the directory content.
+		File[] files = srcDir.listFiles();
+	
+		
+		
+		for (int i = 0; i < files.length; i++) {
+			File f = files[i];
+			if (f.isFile()) {
+				transferFile(action, f, newDir, targetNode);
+			} else if (f.isDirectory()) {
+				transferDirectory(action, f, newDir, targetNode);
+			}
+		}
+		// Remove the source directory after moving
+	}
 
 	protected boolean acceptOrRejectDrag(DropTargetDragEvent dtde) {
 		int dropAction = dtde.getDropAction();
@@ -267,354 +609,13 @@ public class FileTreeBrowser implements DropTargetListener,
 		}
 	}
 
-	protected void checkTransferType(DropTargetDragEvent dtde) {
-		// Accept a list of files
-		acceptableType = false;
-
-		if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-			acceptableType = true;
-		}
-		// else if (dtde.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-		// acceptableType = true;
-		// }
-		DnDUtils.debugPrintln("Data type acceptable - " + acceptableType);
-	}
-
-	// This method handles a drop for a list of files
-	protected boolean dropFile(int action, Transferable transferable,
-			Point location) throws IOException, UnsupportedFlavorException,
-			MalformedURLException {
-
-		List files = null;
-
-		if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-			files = (List) transferable
-					.getTransferData(DataFlavor.javaFileListFlavor);
-		} else if (transferable
-				.isDataFlavorSupported(FileTreeNode.TREENODE_FLAVOR)) {
-			files = (List) transferable
-					.getTransferData(FileTreeNode.TREENODE_FLAVOR);
-		} else {
-			return false;
-		}
-		TreePath treePath = tree.getPathForLocation(location.x, location.y);
-		File targetDirectory = findTargetDirectory(location);
-		if (treePath == null || targetDirectory == null) {
-			return false;
-		}
-		FileTreeNode node = (FileTreeNode) treePath
-				.getLastPathComponent();
-		// Highlight the drop location while we perform the drop
-		tree.setSelectionPath(treePath);
-
-		// Get File objects for all files being
-		// transferred, eliminating duplicates.
-
-		File[] fileList = getFileList(files);
-		// Don't overwrite files by default
-		copyOverExistingFiles = false;
-		// Copy or move each source object to the target
-		for (int i = 0; i < fileList.length; i++) {
-			File f = fileList[i];
-			if (f.isDirectory()) {
-				transferDirectory(action, f, targetDirectory, node);
-				//create directory inside thumbnails directory
-			} else {
-				try {
-					transferFile(action, fileList[i], targetDirectory, node);
-					//create thumbnails
-				} catch (IllegalStateException e) {
-					// Cancelled by user
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-	protected File findTargetDirectory(Point location) {
-		TreePath treePath = tree.getPathForLocation(location.x, location.y);
-		if (treePath != null) {
-			FileTreeNode node = (FileTreeNode) treePath
-					.getLastPathComponent();
-			// Only allow a drop on a writable directory
-			if (node.isDir()) {
-				try {
-					File f = new File(node.getFullName());
-					if (f.canWrite()) {
-						return f;
-					}
-				} catch (Exception e) {
-					log.error(e.getMessage());
-				}
-			}
-		}
-		return null;
-	}
-
 	protected boolean isAcceptableDropLocation(Point location) {
 		return findTargetDirectory(location) != null;
 	}
 
-	protected void saveTreeSelection() {
-		selections = tree.getSelectionPaths();
-		leadSelection = tree.getLeadSelectionPath();
-		tree.clearSelection();
-	}
 
-	protected void restoreTreeSelection() {
-		tree.setSelectionPaths(selections);
 
-		// Restore the lead selection
-		if (leadSelection != null) {
-			tree.removeSelectionPath(leadSelection);
-			tree.addSelectionPath(leadSelection);
-		}
-	}
 
-	// Get the list of files being transferred and
-	// remove any duplicates. For example, if the
-	// list contains /a/b/c/d and /a/b/c/d, the
-	// second entry is removed.
-	protected File[] getFileList(List files) {
-		int size = files.size();
-
-		// Get the files into an array for sorting
-		File[] f = new File[size];
-		Iterator iter = files.iterator();
-		int count = 0;
-		while (iter.hasNext()) {
-			f[count++] = (File) iter.next();
-		}
-
-		// Sort the files into alphabetical order
-		// based on pathnames.
-		Arrays.sort(f, ComparatorFactory.getComparator(EFGImportConstants.EFGProperties.getProperty("filename.comparator")));
-		
-
-		// Remove duplicates, retaining the results in a Vector
-		Vector v = new Vector();
-		char separator = File.separatorChar;
-		outer: for (int i = f.length - 1; i >= 0; i--) {
-			String secondPath = f[i].getAbsolutePath();
-			int secondLength = secondPath.length();
-			for (int j = i - 1; j >= 0; j--) {
-				String firstPath = f[j].getAbsolutePath();
-				int firstLength = firstPath.length();
-				if (secondPath.startsWith(firstPath)
-						&& firstLength != secondLength
-						&& secondPath.charAt(firstLength) == separator) {
-					continue outer;
-				}
-			}
-			v.add(f[i]);
-		}
-		// Copy the retained files into an array
-		f = new File[v.size()];
-		v.copyInto(f);
-
-		return f;
-	}
-
-	// Copy or move a file
-	protected void transferFile(int action, File srcFile, File targetDirectory,
-			FileTreeNode targetNode) {
-		DnDUtils.debugPrintln((action == DnDConstants.ACTION_COPY ? "Copy"
-				: "Move")
-				+ " file "
-				+ srcFile.getAbsolutePath()
-				+ " to "
-				+ targetDirectory.getAbsolutePath());
-		// Create a File entry for the target
-		String name = srcFile.getName();
-		File newFile = new File(targetDirectory, name);
-		if (newFile.exists()) {
-			// Already exists - is it the same file?
-			if (newFile.equals(srcFile)) {//overwrite it
-			
-				return;
-			}
-			// File of this name exists in this directory
-			if (copyOverExistingFiles == false) {
-				int res = JOptionPane.showOptionDialog(tree,
-						"A file called\n   " + name
-								+ "\nalready exists in the directory\n   "
-								+ targetDirectory.getAbsolutePath()
-								+ "\nOverwrite it?", "File Exists",
-						JOptionPane.DEFAULT_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, new String[] {
-								"Yes", "Yes to All", "No", "Cancel" }, "No");
-				switch (res) {
-				case 1: // Yes to all
-					copyOverExistingFiles = true;
-				case 0: // Yes
-					break;
-				case 2: // No
-					return;
-				default: // Cancel
-					throw new IllegalStateException("Cancelled");
-				}
-			}
-		} else {
-			// New file - create it
-			try {
-				newFile.createNewFile();
-			} catch (IOException e) {
-				log.error(e.getMessage());
-				JOptionPane.showMessageDialog(tree,
-						"Failed to create new file\n  "
-								+ newFile.getAbsolutePath(),
-						"File Creation Failed", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
-		// Copy the data and close file.
-		BufferedInputStream is = null;
-		BufferedOutputStream os = null;
-		try {
-			is = new BufferedInputStream(new FileInputStream(srcFile));
-			os = new BufferedOutputStream(new FileOutputStream(newFile));
-			int size = 4096;
-			byte[] buffer = new byte[size];
-			int len;
-			while ((len = is.read(buffer, 0, size)) > 0) {
-				os.write(buffer, 0, len);
-			}
-			if (is != null) {
-				
-				is.close();
-				is = null;
-			}
-			if (os != null) {
-				os.flush();
-				os.close();
-				os = null;
-			}
-			log.debug("Here");
-			//String name = srcFile.getName();
-			//File newFile = new File(targetDirectory);
-			String targetPath = targetDirectory.getAbsolutePath();
-			String thumbsDir = replace(targetPath,
-					EFGImportConstants.EFG_IMAGES_DIR,
-					EFGImportConstants.EFGIMAGES_THUMBS);
-			//generate a thumbnail
-			this.generatorWrapper.startGeneration(
-					targetPath,
-					thumbsDir,name);
-			//copy to new directory
-		} catch (IOException e) {
-			log.error(e.getMessage());
-			JOptionPane.showMessageDialog(tree, "Failed to copy file\n  "
-					+ name + "\nto directory\n  "
-					+ targetDirectory.getAbsolutePath(), "File Copy Failed",
-					JOptionPane.ERROR_MESSAGE);
-			return;
-		} finally {
-			try {
-				if (is != null) {
-					is.close();
-				}
-				if (os != null) {
-					os.close();
-				}
-			} catch (IOException e) {
-			}
-		}
-		// Remove the source if this is a move operation.
-		// if (action == DnDConstants.ACTION_MOVE){
-		// srcFile.delete();
-		// }
-		// Update the tree display
-		if (targetNode != null) {
-			tree.addNode(targetNode, name);
-			/*DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-			DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-			
-			model.reload(root);*/
-			
-		}
-	}
-	protected void transferDirectory(int action, File srcDir,
-			File targetDirectory, FileTreeNode targetNode) {
-		DnDUtils.debugPrintln((action == DnDConstants.ACTION_COPY ? "Copy"
-				: "Move")
-				+ " directory "
-				+ srcDir.getAbsolutePath()
-				+ " to "
-				+ targetDirectory.getAbsolutePath());
-
-		// Do not copy a directory into itself or
-		// a subdirectory of itself.
-		File parentDir = targetDirectory;
-		while (parentDir != null) {
-			if (parentDir.equals(srcDir)) {
-				DnDUtils.debugPrintln("-- SUPPRESSED");
-				return;
-			}
-			parentDir = parentDir.getParentFile();
-		}
-		// Copy the directory itself, then its contents
-		// Create a File entry for the target
-		String name = srcDir.getName();
-		File newDir = new File(targetDirectory, name);
-		if (newDir.exists()) {
-			// Already exists - is it the same directory?
-			if (newDir.equals(srcDir)) {
-				// Exactly the same file - ignore
-				return;
-			}
-		} else {
-			// Directory does not exist - create it
-			if (newDir.mkdir() == false) {
-				// Failed to create - abandon this directory
-				JOptionPane.showMessageDialog(tree,
-						"Failed to create target directory\n  "
-								+ newDir.getAbsolutePath(),
-						"Directory creation Failed", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-		}
-		// Add a node for the new directory
-		if (targetNode != null) {
-			targetNode = tree.addNode(targetNode, name);
-			/*DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-			DefaultMutableTreeNode root = (DefaultMutableTreeNode)model.getRoot();
-			
-			model.reload(root);*/
-		}
-		// Now copy the directory content.
-		File[] files = srcDir.listFiles();
-		for (int i = 0; i < files.length; i++) {
-			File f = files[i];
-			if (f.isFile()) {
-				transferFile(action, f, newDir, targetNode);
-			} else if (f.isDirectory()) {
-				transferDirectory(action, f, newDir, targetNode);
-			}
-		}
-		// Remove the source directory after moving
-	}
-
-	/**
-	  *Replace the last occurence of aOldPattern in aInput with aNewPattern
-	  * @param aInput is the original String which may contain substring aOldPattern
-	  * @param aOldPattern is the non-empty substring which is to be replaced
-	  * @param aNewPattern is the replacement for aOldPattern
-	  */
-	  private  String replace(
-	    final String aInput,
-	    final String aOldPattern,
-	    final String aNewPattern
-	  ){
-	     if ( aOldPattern.equals("") ) {
-	        throw new IllegalArgumentException("Old pattern must have content.");
-	     }
-	     log.debug("aInput: " + aInput);
-	     log.debug("aOldPattern: " + aOldPattern);
-	     log.debug("aNewPattern: " + aNewPattern);
-	     return aInput.replaceAll(aOldPattern,aNewPattern);
-	  }
 }
 
 class DnDUtils {

@@ -125,16 +125,26 @@ public class FileTree extends JTree implements Autoscroll {
 		TreePath selectionPath = this.getSelectionPath();
 		String fileName = getPathName(selectionPath);
 		File file = new File(fileName);
+		
 		this.removeSelectedNode(selNode, file);
 	}
 
 	public void removeSelectedNode(DefaultMutableTreeNode selNode, File file) {
 		if (selNode != null) {
+			
 			// get the parent of the selected node
 			MutableTreeNode parent = (MutableTreeNode) (selNode.getParent());
 
 			// if the parent is not null
 			if (parent != null) {
+				if(file.isDirectory()){
+					if (JOptionPane.showConfirmDialog(this,
+							"Do you want to delete the directory '" + file.getName()+ "' ?",
+							"Delete Directory?", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+				
+						return;
+					}
+				}
 				MutableTreeNode toBeSelNode = getSibling(selNode);
 
 				// if there are no siblings select the parent node after
@@ -302,7 +312,7 @@ public class FileTree extends JTree implements Autoscroll {
 	private void deleteFromThumbNailsDir(File file){
 		String imageName = file.getAbsolutePath();
 		String thumbsName = replace(imageName,
-				EFGImportConstants.EFG_IMAGES_DIR,
+				EFGImportConstants.EFGIMAGES,
 				EFGImportConstants.EFGIMAGES_THUMBS);
 		
 		File thumbsFile = new File(thumbsName);

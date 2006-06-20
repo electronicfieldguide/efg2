@@ -36,6 +36,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -43,6 +44,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
@@ -68,12 +70,12 @@ import project.efg.util.EFGImportConstants;
 public class FileTreeBrowserMain extends JDialog {
 
 	static final long serialVersionUID = 1;
-	
+	JProgressBar progressBar = new JProgressBar();
 	FileTree tree;
 
 	FileTreeBrowser target;
 
-	static String imageL = 
+	public static String imageL = 
 		EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.imageL");
 
 	final JButton deleteBtn = 
@@ -82,6 +84,8 @@ public class FileTreeBrowserMain extends JDialog {
 	final JButton doneBtn =
 		new JButton(EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.doneBtn"));
 
+	final JButton refreshBtn =
+		new JButton("Refresh");
 
 	final JButton helpBtn = 
 		new JButton(EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.helpBtn"));
@@ -100,12 +104,12 @@ public class FileTreeBrowserMain extends JDialog {
 		} catch (Exception ee) {
 		}
 	}
-
+	private String imagesDirectory;
 	public FileTreeBrowserMain(JFrame frame, boolean modal,
 			String imagesDirectory) {
 		this(frame, "", modal, imagesDirectory);
 	}
-
+	
 	public FileTreeBrowserMain(String imagesDirectory, JFrame frame) {
 		this(frame, "", false, imagesDirectory);
 	}
@@ -120,13 +124,15 @@ public class FileTreeBrowserMain extends JDialog {
 				close();
 			}
 		});
+		this.imagesDirectory = imagesDirectory;
 		try {
-			this.tree = new FileTree(imagesDirectory);
+			
+			this.tree = new FileTree(this.imagesDirectory);
 			this.tree.setEditable(false);
 			this.tree.setShowsRootHandles(true);
 			this.tree.addTreeSelectionListener(new FileTreeSelectionListener(
 					tree));
-			this.target = new FileTreeBrowser(tree);
+			this.target = new FileTreeBrowser(tree,this.progressBar);
 			initTree();
 		} catch (Exception ee) {
 			showErrorMessage(ee.getMessage());
@@ -153,9 +159,9 @@ public class FileTreeBrowserMain extends JDialog {
 
 		// Add the split pane to this panel.
 		setContentPane(splitPane);
+		
 		// read catalina home environment variable
 	} // FileTreeBrowserMain constructor
-
 	public synchronized void showErrorMessage(String message) {
 		log.error(message);
 		JOptionPane.showMessageDialog(frame, message, "Error Message",
@@ -177,13 +183,25 @@ public class FileTreeBrowserMain extends JDialog {
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
 	}
 
+	private void refresh(){
+		//this.repaint();
+		this.validate();
+		
+		
+	}
+
 	private JScrollPane addImagePanel() {
 		// Create the HTML viewing pane.
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
+		
+	    progressBar.setValue(0);
+	    progressBar.setStringPainted(true);
+        progressBar.setString("");          //but don't paint it
 		this.imageLabel = new EFGJLabel(FileTreeBrowserMain.imageL);
 		this.imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(this.imageLabel, BorderLayout.CENTER);
+		panel.add(this.progressBar,BorderLayout.SOUTH);
 		JScrollPane imgView = new JScrollPane(panel);
 		return imgView;
 
@@ -243,6 +261,12 @@ public class FileTreeBrowserMain extends JDialog {
 		
 		btnPanel.add(doneBtn);
 
+		refreshBtn.addActionListener(new RefreshListener(this));
+		refreshBtn.setToolTipText(
+				"Click to see new updates to Tree");
+		
+		//btnPanel.add(refreshBtn);
+		
 		panel.add(new JScrollPane(this.tree), BorderLayout.CENTER);
 		panel.add(btnPanel, BorderLayout.SOUTH);
 		return panel;
@@ -250,7 +274,7 @@ public class FileTreeBrowserMain extends JDialog {
 
 	class FileTreeSelectionListener implements TreeSelectionListener {
 		private FileTree tree;
-
+		
 		public FileTreeSelectionListener(FileTree tree) {
 			super();
 			this.tree = tree;
@@ -258,19 +282,24 @@ public class FileTreeBrowserMain extends JDialog {
 		public void valueChanged(TreeSelectionEvent e) {
 			try{
 				Object o = tree.getLastSelectedPathComponent();
+				
+				
 				if (o instanceof FileTreeNode) {// only do this when it
 												// is an instance
 					FileTreeNode node = (FileTreeNode) o;
 					String path = node.getFullName();
 					if (path == null) {
+						
 						imageLabel.setText(FileTreeBrowserMain.imageL);
 					} else {
+						
 						imageLabel.setText("");
 					}
 					imageLabel.setEFGJLabel(path,getMaxDim());
 					imageLabel.setLocation(60,60);
 					imageLabel.repaint();
 				}
+				
 			}
 			catch(Exception ee){
 				imageLabel.setText("Image too large to draw");
@@ -299,6 +328,17 @@ public class FileTreeBrowserMain extends JDialog {
 
 		public void actionPerformed(ActionEvent evt) {
 			this.treeBrowser.close();
+		}
+	}
+	class RefreshListener implements ActionListener {
+		private FileTreeBrowserMain treeBrowser;
+
+		public RefreshListener(FileTreeBrowserMain treeBrowser) {
+			this.treeBrowser = treeBrowser;
+		}
+
+		public void actionPerformed(ActionEvent evt) {
+			this.treeBrowser.refresh();
 		}
 	}
 } // FileTreeBrowserMain
