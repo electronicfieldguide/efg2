@@ -70,9 +70,9 @@ public interface EFGImportConstants {
 	String APPLYXSL="ApplyXSL";
 	String ERROR_PAGE="ErrorPage.jsp";
 	String UNIQUEID_STR="uniqueID";
-	String EFGIMAGES_THUMBS = "efgimagesthumbs1";
+	String EFGIMAGES_THUMBS = "efgimagesthumbs";
 
-	String EFGIMAGES = "EFGImages1";
+	String EFGIMAGES = "EFGImages";
 
 	String DEFAULT_MAX_DIM = "200";
 
