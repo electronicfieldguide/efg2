@@ -126,6 +126,7 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 			addPropertyFiles();
 			addSQLKeyWords();
 			} catch (Exception e) {
+		   	e.printStackTrace();
 			log.error(e.getMessage());
 		}
 	}
@@ -152,7 +153,7 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 	 */
 	private static boolean addPropertyFiles(){
 		try{
-			URL propsURL = 
+		 			URL propsURL = 
 				project.efg.Imports.rdb.EFGRDBImportUtils.class.getResource("/properties");
 		
 			String dir = URLDecoder.decode(propsURL.getFile(),"UTF-8");
@@ -179,10 +180,11 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 	 */
 	private static void processFiles(File file) throws Exception{
 		String[] propertyFiles = file.list();
-		
+	
 		for(int i=0; i < propertyFiles.length; i++){
 			String currentFile = propertyFiles[i];
 			File newFile = new File(file,currentFile);
+
 			if(newFile.isDirectory()){
 				processFiles(newFile);
 			}
@@ -214,6 +216,9 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 }
 
 // $Log$
+// Revision 1.1.2.2  2006/06/21 04:21:37  kasiedu
+// Fixed some errors that did not show up in eclipse in build file
+//
 // Revision 1.1.2.1  2006/06/08 13:27:42  kasiedu
 // New files
 //

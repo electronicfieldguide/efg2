@@ -12,62 +12,34 @@ $Id$
 <project name="Electronic Field Guide" default="compile" basedir=".">
 	<property environment="myenv"/>
 	<property name="local.home" value="${rdb.src.home}"/>
-	<property name="local_properties.home" value="${local.home}/properties"/>
-	<property name="local_lib.home" value="${local.home}/lib"/>
-	<property name="local_source.home" value="${local.home}/source"/>
-	<property name="local_public_html.home" value="${local.home}/public_html"/>
+	<property name="local.properties.home" value="${local.home}/properties"/>
+	<property name="local.lib.home" value="${local.home}/lib"/>
+	<property name="local.source.home" value="${local.home}/source"/>
+	<property name="local.public_html.home" value="${local.home}/public_html"/>
 	<path id="compile.class.path">
-		<fileset dir="${efg_lib.home}">
+		<fileset dir="${efg2.lib.home}">
 			<include name="*.jar"/>
 		</fileset>
 		<pathelement location="${tomcat.home}/common/lib/servlet-api.jar"/>
 		<pathelement location="${tomcat.home}/common/lib/servlet.jar"/>
 	</path>
 	<path id="run.class.path">
-		<fileset dir="${efg_lib.home}">
+		<fileset dir="${efg2.lib.home}">
 			<include name="*.jar"/>
 		</fileset>
 		<pathelement location="${tomcat.home}/common/lib/servlet-api.jar"/>
 		<pathelement location="${tomcat.home}/common/lib/servlet.jar"/>
-		<pathelement path="${local_lib.home}/mysqldriver.jar"/>
+		<pathelement path="${local.lib.home}/mysqldriver.jar"/>
 		<pathelement location="${compile.home}"/>
 	</path>
-	<target name="prepare">
-		<!-- Empty for now-->
-	</target>
-	<target name="clean">
-	</target>
-	<target name="compile" depends="prepare">
-		<!--
-		<copy todir="${src.temp.home}">
-			<fileset dir="${local_source.home}"/>
-		</copy>
-		-->
-		<javac srcdir="${src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on">
-			<classpath refid="compile.class.path"/>
-		</javac>
-		<copy todir="${compile.home}">
-			<fileset dir="${local_properties.home}" includes="**/*.properties" excludes="RDBprops.properties"/>
-		</copy>
-		<copy file="${local_properties.home}/RDBprops.properties" todir="${compile.home}/project/efg/Import/"/>
-	</target>
-	<target name="import">
-		<!-- echo message="running Application "/-->
-		<java fork="yes" classname="project.efg.Import.EFGImportTool">
-			<arg line="${args}"/>
-			<classpath refid="run.class.path"/>
-		</java>
-	</target>
-	<target name="sql2xml">
-		<!-- echo message="running Application "/-->
-		<java fork="yes" classname="project.efg.efgInterface.SQL2XML">
-			<arg line="${args}"/>
-			<classpath refid="run.class.path"/>
-		</java>
-	</target>
-	<target name="deploy" depends="compile">
+	
+
+	
+	
+	
+	<target name="deploy">
 		<copy todir="${deploy.home}">
-			<fileset dir="${local_public_html.home}"/>
+			<fileset dir="${local.public_html.home}"/>
 		</copy>
 		<!--
 		Copy parent public_html directory
@@ -76,7 +48,7 @@ $Id$
 			<fileset dir="${local.home}/etc"/>
 		</copy>
 		<copy todir="${deploy.home}/WEB-INF/lib">
-			<fileset dir="${local_lib.home}"/>
+			<fileset dir="${local.lib.home}"/>
 		</copy>
 		
 	
@@ -90,8 +62,8 @@ $Id$
 			<fileset dir="${compile.home}" includes="*.properties"/>
 		</copy>
 	</target>
-	<target name="all" depends="clean,prepare,compile"/>
-	<target name="dist" depends="prepare,compile">
+	<target name="all"/>
+	<target name="dist">
 		<jar jarfile="${dist.home}/${dist.src}" basedir="."/>
 	</target>
 </project>

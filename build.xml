@@ -3,24 +3,23 @@
 Th parent build file for this application.
 to compile/deploy/clean with:
 
-	ant compileRDB
-	ant deployRDB
-	ant cleanRDB	
+	ant compile
+	ant deploy
+	ant clean	
 -->
-<project name="Electronic Field Guide" default="compileRDB" basedir=".">
+<project name="Electronic Field Guide" default="compile" basedir=".">
 	<property environment="myenv"/>
 	<property name="app.name" value="efg2"/>
 	<property name="tomcat.home" value="${myenv.CATALINA_HOME}"/>
-
 	<property name="efg2.home" value="."/>
-	<!-- Where the object store build file can be found-->
-	
 	<property name="rdb.src.home" value="${efg2.home}/efgRDB"/>
 	<property name="efg2.properties.home" value="${efg2.home}/properties"/>
 	<property name="ant.home" value="${myenv.ANT_HOME}"/>
 	<property name="dist.war" value="${app.name}.war"/>
 	<property name="efg2.public_html.home" value="${efg2.home}/public_html"/>
 	<property name="efg2.lib.home" value="${efg2.home}/lib"/>
+	<property name="efg2.lib.home.properties" value="${efg2.lib.home}/properties"/>
+	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
 	<property name="efg2.images.home" value="${efg2.home}/../EFGImages"/>
 	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
@@ -32,7 +31,7 @@ to compile/deploy/clean with:
 	<!--  src files are copied to this temporal location before compilation-->
 	<property name="src.temp.home" value="${efg2.home}/temp"/>
 	<!-- Main class path required by all classes-->
-	<path id="compileMain.class.path">
+	<path id="compile.class.path">
 		<!-- all compile-time jars should be the same as the runtime jars.... ram -->
 		<!-- For Tomcat 5.0 and upwards-->
 		<pathelement location="${tomcat.home}/common/lib/servlet-api.jar"/>
@@ -79,6 +78,7 @@ to compile/deploy/clean with:
 	<target name="prepareDeploy">
 		<mkdir dir="${deploy.home}"/>
 		<mkdir dir="${deploy.home}/EFGIcons"/>
+		<mkdir dir="${deploy.home}/EFGImages"/>
 		<mkdir dir="${deploy.home}/html"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/WEB-INF"/>
@@ -110,7 +110,7 @@ to compile/deploy/clean with:
 		<copy file="${efg2.properties.home}/log4j_rdb.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
 			
 	</target>
-	<target name="deploy" depends="compile,prepareDeploy">
+	<target name="deploy" depends="compile, prepareDeploy">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.public_html.home}"/>
@@ -120,8 +120,16 @@ to compile/deploy/clean with:
 		<copy todir="${deploy.home}/templateConfigFiles">
 			<fileset dir="templateConfigFiles"/>
 		</copy>
+			<copy todir="${tomcat.home}/webapps/efg2/WEB-INF/classes/project">
+			<fileset dir="compiled/project"/>
+		</copy>
+		<delete quiet="true">
+			<fileset dir="${tomcat.home}/logs">
+				<include name="*.*"/>
+			</fileset>
+		</delete>
 	</target>
-	<target name="jarRDBImport" depends="compileRDB">
+	<target name="jarImport" depends="compile">
 		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
 	
 			<manifest>
@@ -131,12 +139,10 @@ to compile/deploy/clean with:
 				</section>
 			</manifest>
 		</jar>
-		<mkdir dir="logs"/>
 		<mkdir dir="${efg2.lib.home.logs}"/>
+		<mkdir dir="${efg2.lib.home.properties}"/>
 		<!-- COPY FROM rdb properties location -->
-		<copy todir="${efg2.lib.home.properties}">
-			<fileset dir="${rdb.src.home}/properties"/>
-		</copy>
+		
 		<copy todir="${efg2.lib.home.properties}">
 			<fileset dir="${efg2.properties.home}"/>
 		</copy>
@@ -146,22 +152,12 @@ to compile/deploy/clean with:
 	</target>
 	<!-- Compile RDB sources with main sources-->
 	<target name="compile" depends="compileMain">
-		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="compile"/>
+		<javac srcdir="${src.temp.home}" destdir="compiled" debug="on" optimize="off" deprecation="on">
+			<classpath refid="compile.class.path"/>
+		</javac>
 	</target>
-	<!-- Compile RDB sources with main sources-->
-	<target name="deploy" depends="compile">
-		<copy todir="${tomcat.home}/webapps/efg2/WEB-INF/classes/project">
-			<fileset dir="compiled/project"/>
-		</copy>
-		<delete quiet="true">
-			<fileset dir="${tomcat.home}/logs">
-				<include name="*.*"/>
-			</fileset>
-		</delete>
-	</target>
-	<target name="import" depends="compile">
-		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="import"/>
-	</target>
+
+	
 
 	<target name="cleanSource">
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="clean"/>
