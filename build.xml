@@ -170,7 +170,7 @@ to compile/deploy/clean with:
 	<target name="cleanEFGField">
 		<ant antfile="${efg2.home}/generateEFGField.xml" inheritAll="true" target="clean"/>
 	</target>
-	<target name="cleanAll" depends="clean, cleanSource,cleanTomcatUsers,cleanEFGField">
+	<target name="cleanAll" depends="cleanSource,cleanTomcatUsers,cleanEFGField">
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
 		<delete dir="	${efg2.lib.home.properties}" quiet="true"/>

@@ -38,13 +38,16 @@ public class EFGCacheProvider implements ICacheKeyProvider {
 	public String createCacheKey(HttpServletRequest req,
 			ServletCacheAdministrator admin, Cache cache) {
 		String uniqueID = req.getParameter(EFGImportConstants.UNIQUEID_STR);
+		String key = null;
 		if((uniqueID == null) || (uniqueID.trim().equals(""))){//use the default cache
-			return admin.generateEntryKey(null, req,ScopeEventListenerImpl.APPLICATION_SCOPE);
+			key = admin.generateEntryKey(null, req,ScopeEventListenerImpl.APPLICATION_SCOPE);
 		}
-		StringBuffer key = new StringBuffer();
-		key.append(uniqueID.trim());
-		log.debug("Generated key : " + key.toString());//otherwise cache the page
-		return key.toString();
+		else{
+		    key = uniqueID.trim();
+		    
+		}
+		log.debug("Key is : " + key);
+		return key;
 	}
 
 }
