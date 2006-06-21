@@ -75,22 +75,30 @@ to compile/deploy/clean with:
 		</copy>
 	</target>
 	<!-- Make preparations for deployment-->
-	<target name="prepareDeploy">
+	<target name="prepareDeploy" depends="deployEFGIcons">
 		<mkdir dir="${deploy.home}"/>
-		<mkdir dir="${deploy.home}/EFGIcons"/>
 		<mkdir dir="${deploy.home}/EFGImages"/>
 		<mkdir dir="${deploy.home}/html"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/WEB-INF"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes"/>
+		<mkdir dir="${deploy.home}/WEB-INF/classes/properties"/>
 		<mkdir dir="${deploy.home}/WEB-INF/fedSchema"/>
 		<mkdir dir="${deploy.home}/WEB-INF/metadata"/>
 		<mkdir dir="${deploy.home}/WEB-INF/lib"/>
+		
+		
+		<copy todir="${deploy.home}">
+			<fileset dir="${efg2.public_html.home}"/>
+		</copy>
+		<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
+		<copy file="efg2.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
+
+		<copy todir="${deploy.home}/templateConfigFiles">
+			<fileset dir="templateConfigFiles"/>
+		</copy>
 		<copy todir="${deploy.home}/WEB-INF/fedSchema">
 			<fileset dir="${efg2.fedSchema.home}"/>
-		</copy>
-		<copy todir="${deploy.home}/EFGIcons">
-			<fileset dir="../EFGIcons" includes="**/*.*"/>
 		</copy>
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.home}" includes="*.html"/>
@@ -98,40 +106,39 @@ to compile/deploy/clean with:
 		<copy todir="${deploy.home}/WEB-INF/metadata">
 			<fileset dir="${efg2.metadata.home}"/>
 		</copy>
-		<copy todir="${deploy.home}/WEB-INF/classes">
-			<fileset dir="compiled" includes="*.*"/>
+		<copy todir="${deploy.home}/WEB-INF/classes/properties">
+			<fileset dir="properties" excludes="log4j*.*"/>
 		</copy>
 		<copy todir="${deploy.home}/WEB-INF/lib">
-			<fileset dir="${efg2.lib.home}"/>
+			<fileset dir="${efg2.lib.home}" includes="*.jar"/>
 		</copy>
+		<delete quiet="true">
+			<fileset dir="${deploy.home}/WEB-INF/lib" includes="rdbImport.jar,mysqldriver.jar,servlet-api.jar,junit.jar, *.fp5, *.bat"/>
+		</delete>
+		
 		<copy file="${efg2.home}/lib/mysqldriver.jar" todir="${tomcat.home}/common/lib"/>
 		<!-- CREATE A PROPERTIES FILE ON SERVER AND COPY ALL PROPERTIES FILE THERE-->
 		<copy file="${efg2.properties.home}/log4j.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
 		<copy file="${efg2.properties.home}/log4j_rdb.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
-			
 	</target>
 	<target name="deploy" depends="compile, prepareDeploy">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
-		<copy todir="${deploy.home}">
-			<fileset dir="${efg2.public_html.home}"/>
+		<copy todir="${deploy.home}/WEB-INF/classes">
+			<fileset dir="compiled" includes="*.*"/>
 		</copy>
-		<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
-		<copy file="efg2.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
-		<copy todir="${deploy.home}/templateConfigFiles">
-			<fileset dir="templateConfigFiles"/>
-		</copy>
+		<!---->
 			<copy todir="${tomcat.home}/webapps/efg2/WEB-INF/classes/project">
 			<fileset dir="compiled/project"/>
 		</copy>
+
 		<delete quiet="true">
 			<fileset dir="${tomcat.home}/logs">
-				<include name="*.*"/>
+				<include name="efg.log"/>
 			</fileset>
 		</delete>
 	</target>
 	<target name="jarImport" depends="compile">
 		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
-	
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
 				<section name="project.efg2.Imports.efgImpl.LoginDialog.class">
@@ -142,11 +149,9 @@ to compile/deploy/clean with:
 		<mkdir dir="${efg2.lib.home.logs}"/>
 		<mkdir dir="${efg2.lib.home.properties}"/>
 		<!-- COPY FROM rdb properties location -->
-		
 		<copy todir="${efg2.lib.home.properties}">
 			<fileset dir="${efg2.properties.home}"/>
 		</copy>
-	
 		<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg2.lib.home}"/>
 		<delete dir="temp"/>
 	</target>
@@ -156,9 +161,6 @@ to compile/deploy/clean with:
 			<classpath refid="compile.class.path"/>
 		</javac>
 	</target>
-
-	
-
 	<target name="cleanSource">
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="clean"/>
 	</target>

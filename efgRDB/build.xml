@@ -23,43 +23,14 @@ $Id$
 		<pathelement location="${tomcat.home}/common/lib/servlet-api.jar"/>
 		<pathelement location="${tomcat.home}/common/lib/servlet.jar"/>
 	</path>
-	<path id="run.class.path">
-		<fileset dir="${efg2.lib.home}">
-			<include name="*.jar"/>
-		</fileset>
-		<pathelement location="${tomcat.home}/common/lib/servlet-api.jar"/>
-		<pathelement location="${tomcat.home}/common/lib/servlet.jar"/>
-		<pathelement path="${local.lib.home}/mysqldriver.jar"/>
-		<pathelement location="${compile.home}"/>
-	</path>
-	
 
-	
-	
-	
 	<target name="deploy">
 		<copy todir="${deploy.home}">
-			<fileset dir="${local.public_html.home}"/>
+			<fileset dir="${local.public_html.home}" excludes="*.txt"/>
 		</copy>
-		<!--
-		Copy parent public_html directory
-		-->
+	
 		<copy todir="${deploy.home}/WEB-INF">
 			<fileset dir="${local.home}/etc"/>
-		</copy>
-		<copy todir="${deploy.home}/WEB-INF/lib">
-			<fileset dir="${local.lib.home}"/>
-		</copy>
-		
-	
-		<copy todir="${deploy.home}/WEB-INF/classes">
-			<fileset dir="${compile.home}" includes="project/efg/digir/*"/>
-			<fileset dir="${compile.home}" includes="project/efg/efgInterface/*"/>
-			<fileset dir="${compile.home}" includes="project/efg/Import/*"/>
-			<fileset dir="${compile.home}" includes="project/efg/servlet/*"/>
-			<fileset dir="${compile.home}" includes="project/efg/templates/taxonPageTemplates/*"/>
-			<fileset dir="${compile.home}" includes="project/efg/util/*"/>
-			<fileset dir="${compile.home}" includes="*.properties"/>
 		</copy>
 	</target>
 	<target name="all"/>

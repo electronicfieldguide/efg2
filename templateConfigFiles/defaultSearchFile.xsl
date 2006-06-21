@@ -89,7 +89,7 @@
 				<xsl:attribute name="href"><xsl:value-of select="$linkURL"/></xsl:attribute>
 				<xsl:if test="not(string($imageName))=''">
 					<xsl:variable name="imageURL">
-						<xsl:value-of select="concat($serverbase, '/', $imagebase, '/', $imageName)"/>
+						<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
 					</xsl:variable>
 					<img>
 						<xsl:attribute name="src"><xsl:value-of select="$imageURL"/></xsl:attribute>

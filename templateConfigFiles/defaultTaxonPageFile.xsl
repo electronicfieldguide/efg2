@@ -178,12 +178,19 @@
 		<xsl:param name="otherCaption"/>
 		
 		<xsl:if test="string($type) = string($imagetype)">
-			<xsl:variable name="imageURL">
-				<xsl:value-of select="concat($serverbase, '/', $imagebase, '/', string($imageName))"/>
+		
+			<xsl:variable name="imageURL_thumb">
+				<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', string($imageName))"/>
 			</xsl:variable>
+				<xsl:variable name="imageURL_large">
+				<xsl:value-of select="concat($serverbase, '/', $imagebase_large, '/', string($imageName))"/>
+			</xsl:variable>
+			<a>
+				<xsl:attribute name="href"><xsl:value-of select="$imageURL_large"/></xsl:attribute>
 			<img>
-				<xsl:attribute name="src"><xsl:value-of select="$imageURL"/></xsl:attribute>
+				<xsl:attribute name="src"><xsl:value-of select="$imageURL_thumb"/></xsl:attribute>
 			</img>
+			</a>
 			<br clear="all"/>
 		</xsl:if>
 		<xsl:choose>

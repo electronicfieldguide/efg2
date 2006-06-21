@@ -78,7 +78,7 @@ project.efg.util.EFGImportConstants" %>
 			ItemsType items = searchable.getStates();
 		 	MediaResourcesType mediaResources = searchable.getMediaResources();
 		 	EFGListsType  listsType = searchable.getEFGLists();
-             	StatisticalMeasuresType stats = searchable.getStatisticalMeasures();
+             		StatisticalMeasuresType stats = searchable.getStatisticalMeasures();
 	     		%>
 	     		<tr>
                  		<td align="right"><b><%=fieldName%>:</b></td>

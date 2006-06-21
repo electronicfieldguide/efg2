@@ -35,15 +35,15 @@ project.efg.util.EFGImportConstants" %>
 
 			 </td>
 			 <td>
-			 	 <a  title="search datasource" href="<%=context%>/SearchPage.jsp?pageType=option&displayName=<%=displayName%>">
+			 	 <a  title="search datasource" href="<%=context%>/SearchPage.jsp?pageType=option&displayFormat=HTML&displayName=<%=displayName%>">
 					search
 				 </a>
 				  </td> <td>
-					 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=lists" title="browse a list of taxon names">
+					 <a  href="<%=context%>/search?displayFormat=HTML&displayName=<%=displayName%>&searchType=lists" title="browse a list of taxon names">
 					browse lists
 				 </a>
 				  </td> <td>
-				 <a  href="<%=context%>/search?displayName=<%=displayName%>&searchType=plates"  title="browse  plates">
+				 <a  href="<%=context%>/search?displayFormat=HTML&displayName=<%=displayName%>&searchType=plates"  title="browse  plates">
 					browse plates
 				 </a>	 
 			 </td>
