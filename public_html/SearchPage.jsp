@@ -11,7 +11,15 @@ project.efg.efgDocument.MediaResourceType,
 project.efg.efgDocument.StatisticalMeasuresType,
 project.efg.efgDocument.StatisticalMeasureType,
 project.efg.efgDocument.EFGListsType,
-project.efg.util.EFGImportConstants" %>
+project.efg.Imports.efgImportsUtil.EFGTypeComparator,
+project.efg.Imports.efgImportsUtil.MediaResourceTypeComparator,
+project.efg.util.EFGImportConstants,
+project.efg.util.EFGDocumentSorter,
+project.efg.util.EFGListTypeSorter,
+project.efg.util.EFGTypeSorter,
+project.efg.util.MediaResourceTypeSorter,
+project.efg.util.StatisticalMeasureTypeSorter
+" %>
 
 <% 
    String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
@@ -75,22 +83,28 @@ project.efg.util.EFGImportConstants" %>
 	   		
 		 	String fieldName =searchable.getName();
 			String legalName = searchable.getLegalName();
+			
+			Iterator itemsIter = null;
 			ItemsType items = searchable.getStates();
 		 	MediaResourcesType mediaResources = searchable.getMediaResources();
 		 	EFGListsType  listsType = searchable.getEFGLists();
              		StatisticalMeasuresType stats = searchable.getStatisticalMeasures();
+			EFGDocumentSorter sorter = null;
 	     		%>
 	     		<tr>
                  		<td align="right"><b><%=fieldName%>:</b></td>
 	           		<td>	
 					<% 
-						if((items != null)&&(items.getItemCount() > 0)){		 
+						if((items != null)&&(items.getItemCount() > 0)){
+							sorter = new EFGTypeSorter();
+							sorter.sort(new EFGTypeComparator(),items);		
+							itemsIter = sorter.getIterator();		 
 					%>
 			 				<select name="<%=legalName%>" size="4"  multiple="multiple">
                 						<option value="<%=EFGImportConstants.EFG_ANY%>">any</option>
             						<% 
-			   					for (int i=0; i < items.getItemCount(); i++ ) {
- 									EFGType item = items.getItem(i); 
+			   					while (itemsIter.hasNext()) {
+ 									EFGType item =(EFGType)itemsIter.next(); 
 		         					%>
                        					<option><%=item.getContent()%>
                     					<% 
@@ -99,7 +113,8 @@ project.efg.util.EFGImportConstants" %>
              					</select>
 		    				<% 
 						}  
-              	  		  	else if((stats != null)&&(stats.getStatisticalMeasureCount() > 0)){
+              	  		  		else if((stats != null)&&(stats.getStatisticalMeasureCount() > 0)){
+								
 						%>
 							<input type="text" name="<%=fieldName%>" maxlength="20"/>
 							<% String str ="";
@@ -117,12 +132,15 @@ project.efg.util.EFGImportConstants" %>
 			 			<%
 						}
   					  	else if((mediaResources!= null)&&(mediaResources.getMediaResourceCount() > 0)){
+							sorter = new MediaResourceTypeSorter();
+							sorter.sort(new MediaResourceTypeComparator(),mediaResources);		
+							itemsIter = sorter.getIterator();
 						%>
 				 			<select name="<%=legalName%>" size="4"  multiple="multiple">
                 						<option>any</option>
             						<% 
-			   					for (int m=0; m < mediaResources.getMediaResourceCount();m++ ) {
- 									MediaResourceType mediaResource = mediaResources.getMediaResource(m); 
+								while (itemsIter.hasNext()) {
+ 									MediaResourceType mediaResource =(MediaResourceType)itemsIter.next(); 
 		         					%>
                        					<option><%=mediaResource.getContent()%>
                     					<% 
@@ -132,12 +150,15 @@ project.efg.util.EFGImportConstants" %>
 					 	<%
 						}
 			 			else if((listsType != null)&&(listsType.getEFGListCount() > 0)){
+							sorter = new EFGListTypeSorter();
+							sorter.sort(new EFGTypeComparator(),listsType);		
+							itemsIter = sorter.getIterator();
 						%>
 				 			<select name="<%=legalName%>" size="4"  multiple="multiple">
                 						<option>any</option>
             						<% 	
-			   					for (int l=0; l< listsType.getEFGListCount();l++ ) {
- 									EFGType listType = listsType.getEFGList(l); 
+			   					while (itemsIter.hasNext()) {
+ 									EFGType listType =(EFGType)itemsIter.next(); 
 		         					%>
                        					<option><%=listType.getContent()%>
                     					<% 
