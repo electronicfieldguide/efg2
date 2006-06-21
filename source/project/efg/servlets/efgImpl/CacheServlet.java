@@ -76,7 +76,7 @@ public class CacheServlet extends HttpServlet {
 		//String url = getServletURL(req);
 		CacheStarter cacheStarter = new CacheStarter();
 		//log.debug("url: " + url);
-		cacheStarter.executeCache(url);
+		//cacheStarter.executeCache(url);
 		log.debug("cache starter execution done");
 	}
 	private static synchronized String getServletURL(HttpServletRequest request)
