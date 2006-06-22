@@ -56,6 +56,11 @@
 				<xs:documentation>The name of the datasource whose data will be transformed using a given XSL File and the configured data for the datasource. This name must be unique within thescope of a TaxonPageTemplate element. see unique constraint on root element.</xs:documentation>
 			</xs:annotation>
 		</xs:attribute>
+		<xs:attribute name="displayName">
+			<xs:annotation>
+				<xs:documentation>Human readable name</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
 	</xs:complexType>
 	<xs:complexType name="taxonPageTemplatesType">
 		<xs:sequence maxOccurs="unbounded">

@@ -1,36 +1,53 @@
-1. Inner groups cannot be moved around.They must always be part of the outer group.
-2. All other groups can be moved around.
-3. Fix holdsmultiple problem with mediaresources
-4. Fix size problem fields.
+$Id$
+
+Convention for displaying templates on jsp pages.
+See TaxonPageTemplate.xsd
+
+DataTypes:
+
+1.groups
+	Is the root node. It can never be a leaf node. It has children 'group'.
+	It could be recursive. 
+	e.g:
+		groups->group->character or groups->group->groups->group->character
+
+2.group:
+	Has groups or character as children. It can never be a leaf node.
+
+3. characterValue
+	Is always a leaf node.
 
 
-Solanaceae Data(1) -> Family, Ith, palm,EFGCR,Ipo
-HetData
+4.gl is a label type- means a group label  
 
-Make the thing called 'A' look the same as the thing.
+5. cl is a label type -means a character label 
 
-Write templates and say that the thing that is called 'Common Name' replace with the thing that is called 'Family Common Name'
+6. tl is a text label for a group or character - allows users to specify the text that should be used
 
-And so on..
-There may be some slight problems but perhaps we can deal with them when they happen.
+7. text is a piece of text that should be used as replacement for a state/pseudo state
+
 
 Convention for naming things in jsp template pages
+gl means group label
+cl means character label
 
-group : group id : group rank:character rank 
-'gl':group id : group rank
+label : group id : group rank:character rank 
+'gl':groupid:group rank[:character rank]
 'cl':groupid:group rank:character rank
- 
-if group rank the same means use it to sort characterValues
+'tl':groupid:group rank[:character rank]
 
-Use this to sort groups into characterValue ranks
+
+
+Things with the same group rank will be sorted based on the rank of their characterValues.
+
 	<group rank="1" id="1">
-				<characterValue rank="1" text="Field Guide to the Bogs of Southern New England"/>
-				<characterValue rank="2" text="by Marsha Salett"/>
-			</group>
+	       <characterValue rank="1" text="Field Guide to the Bogs of Southern New England"/>
+	        <characterValue rank="2" text="by Marsha Salett"/>
+	</group>
 
 group:1:1:1
 group:1:1:2
-Distinguish between a group label and a characterLabel
+Distinguish between a group label and a character Label
 <group rank="2" id="2" label="Taxonomy">
 				<groups>
 					<group rank="1" id="3">

@@ -112,7 +112,7 @@
 			}
 		%>
 		<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_STR%>"  value="<%=dataSourceName%>"/>
-		<input type="hidden"   name="<%=EFGImportConstants. XSL_STRING%>"  value="<%=xslFileName%>"/>
+		<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
 		<span class="title"> 
 			<input type="text" name="<%=name%>" value="<%=fieldValue%>" size="50"/>
 		</span>
