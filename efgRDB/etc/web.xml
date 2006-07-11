@@ -30,13 +30,7 @@
 		You can define any number of context initialization
 		parameters, including zero.
 	-->
-	<context-param>
-		<param-name>Registry_TableName</param-name>
-		<param-value> type_registry</param-value>
-		<description>
-		
-		</description>
-	</context-param>
+	
 	<context-param>
 		<param-name>schemaNames</param-name>
 		<param-value>darwin2.xsd</param-value>
@@ -50,18 +44,6 @@
 		<description>
 			The file Name of the xml file describing the metadata associated with this application(For DiGIR use).
 		</description>
-	</context-param>
-	<context-param>
-		<param-name>EFG_IMAGES_DIR</param-name>
-		<param-value>EFGImages</param-value>
-	</context-param>
-	<context-param>
-		<param-name>EFG_MAX_DIM</param-name>
-		<param-value>200</param-value>
-	</context-param>
-	<context-param>
-		<param-name>EFG_THUMB_NAILS_DIR</param-name>
-		<param-value>EFG_ThumbNails_EFG</param-value>
 	</context-param>
 	<filter>
 		<filter-name>CacheFilter</filter-name>
@@ -83,6 +65,7 @@
 			<param-value>project.efg.util.EFGCacheGroup</param-value>
 		</init-param>
 	</filter>
+		<!--
 	<filter>
 		<filter-name>CacheFilterStaticContent</filter-name>
 		<filter-class>com.opensymphony.oscache.web.filter.CacheFilter</filter-class>
@@ -91,30 +74,28 @@
 			<param-value>time</param-value>
 		</init-param>
 	</filter>
-	<!--
+
 	<filter>
 		<filter-name>Compress</filter-name>
 		<filter-class>com.jspbook.GZIPFilter</filter-class>
 	</filter>
--->
+
 	<filter-mapping>
 		<filter-name>CacheFilter</filter-name>
 		<url-pattern>*.jsp</url-pattern>
 	</filter-mapping>
+-->
 		<filter-mapping>
 		<filter-name>CacheFilter</filter-name>
 		<url-pattern>/search/*</url-pattern>
 	</filter-mapping>
+		<!--
 	<filter-mapping>
 		<filter-name>CacheFilterStaticContent</filter-name>
 		<url-pattern>*.jsp</url-pattern>
 	</filter-mapping>
-	<!--
-	<filter-mapping>
-		<filter-name>Compress</filter-name>
-		<url-pattern>/search/*</url-pattern>
-	</filter-mapping>
 -->
+
 	<listener>
 		<listener-class>project.efg.servlets.efgImpl.EFGContextListener</listener-class>
 	</listener>
@@ -186,12 +167,15 @@
 		<servlet-name>FopServlet</servlet-name>
 		<servlet-class>project.efg.servlets.efgImpl.FOPServlet</servlet-class>
 	</servlet>
-	<!--
+	<!--	-->
 	<servlet>
 		<servlet-name>configTaxonPage</servlet-name>
-		<servlet-class>project.efg.servlet.TaxonPageTemplateConfig</servlet-class>
+		<servlet-class>project.efg.servlets.efgImpl.TaxonPageTemplateConfig</servlet-class>
 	</servlet>
-	-->
+<servlet>
+		<servlet-name>upload</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.UploadResources</servlet-class>
+	</servlet>
 	<!--
 		Define mappings that are used by the servlet container to
 		translate a particular request URI (context-relative) to a
@@ -227,12 +211,16 @@
 		<servlet-name>FopServlet</servlet-name>
 		<url-pattern>/FopServlet</url-pattern>
 	</servlet-mapping>
-	<!--
+	<!-- 	-->
 	<servlet-mapping>
 		<servlet-name>configTaxonPage</servlet-name>
 		<url-pattern>/configTaxonPage</url-pattern>
 	</servlet-mapping>
-	-->
+	<servlet-mapping>
+		<servlet-name>upload</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+<!--
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
@@ -269,7 +257,7 @@
 			<form-error-page>/login-error.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
-	<!-- 30 minute session timeout -->
+	 30 minute session timeout -->
 	<!-- 
         <session-config> 
 		<session-timeout>30</session-timeout>
