@@ -3,8 +3,12 @@
  */
 package project.efg.servlets.efgInterface;
 
+import java.io.File;
 import java.net.URLEncoder;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,21 +49,42 @@ public class XSLTResponseObject extends ResponseObject {
 	 */
 	protected void createForwardPage() {
 		String displayName = req.getParameter(EFGImportConstants.DISPLAY_NAME);
-		req.setAttribute(EFGImportConstants.DISPLAY_NAME, displayName);
+		
+		if((displayName != null) && (!displayName.trim().equals(""))){
+			req.setAttribute(EFGImportConstants.DISPLAY_NAME, displayName);
+		}
 		
 		String dsName = req.getParameter(EFGImportConstants.DATASOURCE_NAME);
-		
+		boolean noDSName = false;
 		
 		try {
 			if (dsName == null) {
 				try {
 					dsName = this.getDatasourceName(efgDocument);
-					log.debug("DatasourceName obtained from EFgDocument: " + dsName);
+					log.debug("DatasourceName obtained from EFGDocument: " + dsName);
+					noDSName = true;
 				} catch (Exception ee) {
 					log.error(ee.getMessage());
 				}
 			}
+			Map map = req.getParameterMap();
+			Map mapNew = null;
+			try{
+				log.debug("About to copy  map. Size is: " + map.size());
+				mapNew = copyMap(map);
+				log.debug("Done copying map . Size is: " + mapNew.size());
+			}
+			catch(Exception iii){
+				log.debug("Exception occured in copying map");
+			}
 			if(dsName != null){
+				if(noDSName){
+					String[] aValue = new String[1];
+					aValue[0] = dsName;
+					log.debug("About to add to map. Size is: " + mapNew.size());
+					mapNew.put(EFGImportConstants.DATASOURCE_NAME,aValue);
+					log.debug("Done adding map . Size is: " + mapNew.size());
+				}
 				req.setAttribute(EFGImportConstants.DATASOURCE_NAME, dsName);
 			}
 			else{
@@ -72,9 +97,11 @@ public class XSLTResponseObject extends ResponseObject {
 			
 			XSLTObjectInterface xslType = 
 				this.getXSLTObject();
-		
-			XSLProperties xslProps = xslType.getXSLProperties(req.getParameterMap(), realPath);
+			String xslFileLocation = realPath + EFGImportConstants.TEMPLATES_FOLDER_NAME + File.separator;
 			
+			log.debug("call xslProps");
+			XSLProperties xslProps = xslType.getXSLProperties(mapNew, xslFileLocation);
+			log.debug("Done xslProps");
 			if (xslProps == null) {
 				throw new Exception(
 						"Could not find xsl file for: " + 
@@ -84,10 +111,14 @@ public class XSLTResponseObject extends ResponseObject {
 			
 			
 			Properties props = xslProps.getXSLParameters();
+			log.debug("call props");
 			if (props != null) {
 				this.setRequests(req, props);
 			}
+			log.debug("Done props");
 			String xslFileName = xslProps.getXSLFileName();
+			log.debug("call xslFileName: " + xslFileName);
+			req.setAttribute(EFGImportConstants.XSL_STRING, xslFileName);
 			// get xsl file name from the templateConfig file name
 			StringBuffer forwardStringBuffer = 
 			new StringBuffer(req.getContextPath());
@@ -108,9 +139,23 @@ public class XSLTResponseObject extends ResponseObject {
 			this.forwardPage = fwdStrEncodedBuffer.toString();
 		}
 		catch(Exception ee){
+			ee.printStackTrace();
 			log.error(ee.getMessage());
 			//create fwd page and return its page
 		}
+	}
+	private Map copyMap(Map map){
+		log.debug("Inside copyMap");
+		Map newmap = new HashMap(map.size());
+		    Iterator it = map.entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry pairs = (Map.Entry)it.next();
+		        String key = (String)pairs.getKey();
+		        String[] val = (String[])pairs.getValue();
+		        log.debug("About to put: " +  key +  "  and   " + val[0] );
+		        newmap.put(key,val);
+		    }
+		return newmap;
 	}
 	private String getDatasourceName(EFGDocument efgDocument) throws Exception {
 		String dsName = null;

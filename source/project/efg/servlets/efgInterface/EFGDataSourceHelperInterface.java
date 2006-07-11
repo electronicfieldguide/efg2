@@ -27,8 +27,10 @@
 
 package project.efg.servlets.efgInterface;
 
-import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
+import java.util.List;
+
 import project.efg.servlets.factory.ServletAbstractFactoryCreator;
+import project.efg.util.EFGDisplayObjectList;
 
 
 
@@ -52,7 +54,7 @@ public class  EFGDataSourceHelperInterface
      *
      * @return a list ot data source names.
      */
-    public EFGDatasourceObjectListInterface getDataSourceNames(){
+    public EFGDisplayObjectList getDataSourceNames(){
     	return this.servFactory.getListOfDatasources();
     }
   
@@ -61,20 +63,29 @@ public class  EFGDataSourceHelperInterface
   * @param dataSourceName
   * @return a list of MediaResource objects for the current datasource
   */
-    public  SearchableListInterface getMediaResourceFields(String displayName,String dataSourceName){
-    	return this.servFactory.getMediaResourceLists(displayName,dataSourceName);
+    public  SearchableListInterface getMediaResourceFields(String displayName,String datasourceName){
+    	return this.servFactory.getMediaResourceLists(displayName,datasourceName);
     }
     /**
      * @param dataSourceName the name of the data source
      * @return a SearchableListInterface mapping searchable fields to its values
      */
-    public SearchableListInterface getSearchable(String displayName,String dataSourceName){
-    	return this.servFactory.getSearchableLists(displayName,dataSourceName);
+    public SearchableListInterface getSearchable(String displayName,String datasourceName){
+    	return this.servFactory.getSearchableLists(displayName,datasourceName);
+    }
+    public List getAllFields(String displayName,String datasourceName){
+    	return this.servFactory.getAllFields(displayName,datasourceName);
+    }
+    public List getTaxonPageFields(String displayName,String datasourceName){
+    	return this.servFactory.getTaxonPageFields(displayName,datasourceName);
     }
 
   
 }
 //$Log$
+//Revision 1.1.2.2  2006/07/11 21:48:47  kasiedu
+//"Added more configuration info"
+//
 //Revision 1.1.2.1  2006/06/08 13:27:42  kasiedu
 //New files
 //

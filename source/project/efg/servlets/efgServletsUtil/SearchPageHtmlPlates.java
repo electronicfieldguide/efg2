@@ -82,42 +82,41 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 				(displayNames.length > 0)) {	
 			displayName = displayNames[0];
 		}
+		
+		String xslFileName = null;
+		
+		try {
+			String[] xslFileNames = 
+				(String[])parameters.get(EFGImportConstants.XSL_STRING);
+			
+			if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
+				xslFileName = this.getXSLFile(realPath,
+						datasourceName, 
+						EFGImportConstants.SEARCHPAGE_PLATES_XSL);
+				if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
+				 throw new Exception("Cannot find xslFile..Use defaults..");
+				}
+			}
+			else{
+				xslFileName = xslFileNames[0];
+			}
+				
+				if(!this.isXSLFileExists(realPath,xslFileName)){
+					log.debug("Xsl file does not exists using defaults");
+					 throw new Exception("Cannot find xslFile..Use defaults..");
+				}
+			
+		}
+		catch (Exception ee) {
+			xslFileName = EFGImportConstants.DEFAULT_SEARCH_FILE;//"defaultSearchFile.xsl";
+			
+		}
 		Properties properties = new Properties();
 		properties.setProperty(EFGImportConstants.SEARCH_PAGE_STR,
 				EFGImportConstants.SEARCHPAGE_PLATES_FILLER);
 		
 		
-		String xslFileName = (String)parameters.get(EFGImportConstants.XSL_STRING);
-		
-		boolean isDefault = false;
-		try {
-			String[] xslFileNames = 
-				(String[])parameters.get(EFGImportConstants.XSL_STRING);
-			//check to see that it exists
-			if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
-				xslFileName = this.getXSLFileName(displayName,datasourceName,
-						EFGImportConstants.SEARCHPAGE_PLATES_XSL);
-				if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
-				
-					log.debug("xslFileNames is null.using default!!");
-					xslFileName = "defaultSearchFile.xsl";
-					isDefault = true;
-				}
-			}
-			else{
-				xslFileName = xslFileNames[0];
-				if(!this.isXSLFileExists(realPath,xslFileName)){
-					xslFileName = "defaultSearchFile.xsl";
-					isDefault = true;
-				}
-			}
-		}
-		catch (Exception ee) {
-			xslFileName = "defaultSearchFile.xsl";
-			isDefault = true;
-		}
-		
-			if (isDefault) {
+			
 				try {
 					log.debug("using default stylesheet");
 					log.debug("Display Name: " + displayName);
@@ -140,7 +139,7 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 					log.error(eee.getMessage());
 				}
 			
-			}
+			
 		
 		
 		// forward the xml doc ApplyXSL servlet

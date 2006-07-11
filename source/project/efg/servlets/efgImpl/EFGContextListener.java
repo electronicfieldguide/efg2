@@ -349,7 +349,7 @@ public class EFGContextListener implements ServletContextListener {
 				}
 			}
 			staleFiles = new File(fullPath + File.separator
-					+ EFGImportConstants.TEMPLATES_FOLDER_NAME);
+					+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
 			if (!staleFiles.exists()) {
 				return;
 			}
@@ -358,17 +358,9 @@ public class EFGContextListener implements ServletContextListener {
 			for (int f = 0; f < list.length; f++) {
 				File staleFile = list[f];
 	
-				if (staleFile.getName().endsWith("_old")) {
-					if ((staleFile.getName().indexOf(
-							EFGImportConstants.SEARCHPAGE_LISTS_FILLER) > -1)
-							|| (staleFile.getName().indexOf(
-									EFGImportConstants.SEARCHPAGE_PLATES_FILLER) > -1)
-							|| (staleFile.getName().indexOf(
-									EFGImportConstants.SEARCHPAGE_FILLER) > -1)
-							|| (staleFile.getName().indexOf(
-									EFGImportConstants.TAXONPAGE_FILLER) > -1)) {
+				if (staleFile.getName().endsWith("_old")) {				
 						this.deleteDir(list[f]);
-					}
+				
 				}
 			}
 		}
@@ -651,6 +643,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.1.2.2  2006/07/11 21:48:22  kasiedu
+// "Added more configuration info"
+//
 // Revision 1.1.2.1  2006/06/08 13:27:42  kasiedu
 // New files
 //

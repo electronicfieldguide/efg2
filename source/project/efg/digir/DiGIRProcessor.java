@@ -48,10 +48,10 @@ import org.jdom.Namespace;
 import org.jdom.input.SAXBuilder;
 
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
-import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
-import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
 import project.efg.servlets.efgImpl.EFGContextListener;
 import project.efg.servlets.efgInterface.EFGDataSourceHelperInterface;
+import project.efg.util.EFGDisplayObject;
+import project.efg.util.EFGDisplayObjectList;
 
 public class DiGIRProcessor {
   private DigirParserHandler dph;
@@ -328,14 +328,14 @@ public class DiGIRProcessor {
      if((requestedDataSources == null) || (requestedDataSources.size() == 0)){
     	// EFGDataSourceHelperFactoryInterface dsHelperFactory = new EFGDataSourceHelperFactoryImpl();
          EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
-         EFGDatasourceObjectListInterface lists = dsHelper.getDataSourceNames();
-         Iterator iter = lists.getEFGDatasourceObjectListIterator();
+         EFGDisplayObjectList lists = dsHelper.getDataSourceNames();
+         Iterator iter = lists.getIterator();
          
     	 requestedDataSources = new ArrayList();
     	 
     	 while(iter.hasNext()){
-    		 EFGDatasourceObjectInterface datasource = (EFGDatasourceObjectInterface)iter.next();
-    		 String str = datasource.getDisplayName();
+    		 EFGDisplayObject datasource = (EFGDisplayObject)iter.next();
+    		 String str = datasource.getDatasourceName();
     		 requestedDataSources.add(str);
     	 }
      }

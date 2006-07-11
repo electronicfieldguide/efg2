@@ -29,6 +29,7 @@
  */
 package project.efg.Imports.rdb;
 
+import java.io.File;
 import java.net.URI;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
@@ -349,6 +350,23 @@ public class EFGDatasourceObjectListImpl extends
 				if (index > -1) {
 					this.lists.remove(index);
 				}
+				//also delete the file if it exists
+				
+				try{
+					File templatesFiles = new File(this.getTemplateConfig() + 
+							datafn +
+							EFGImportConstants.XML_EXT);
+					if(templatesFiles.exists()){
+						boolean bool = templatesFiles.delete();
+						if(!bool){
+							throw new Exception("Application could not delete the template " +
+									templatesFiles.getAbsolutePath());
+						}
+					}
+				}
+				catch(Exception ee){
+					log.error(ee.getMessage());
+				}
 				isDone = true;
 			}
 		} catch (Exception ex) {
@@ -357,6 +375,6 @@ public class EFGDatasourceObjectListImpl extends
 
 		return isDone;
 	}
-
+	
 }// EFGDatasourceObjectList
 

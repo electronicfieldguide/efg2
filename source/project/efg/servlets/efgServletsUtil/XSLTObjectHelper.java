@@ -7,8 +7,6 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 
-import project.efg.util.EFGImportConstants;
-
 /**
  * @author kasiedu
  *
@@ -22,21 +20,6 @@ public class XSLTObjectHelper {
 		}
 	}
 	public XSLTObjectHelper(){}
-	/**
-	 * 
-	 * @param dsName
-	 * @param realPath
-	 * @return
-	 */
-	  private String constructXSLFileName( 
-			  String realPath, String xslFileName){
-		StringBuffer fileLocationBuffer = new StringBuffer();
-		fileLocationBuffer.append(realPath);
-		fileLocationBuffer.append(EFGImportConstants.TEMPLATES_FOLDER_NAME);
-		fileLocationBuffer.append(File.separator);
-		fileLocationBuffer.append(xslFileName);
-    	return fileLocationBuffer.toString();
-    }
 	/**
 	 * 
 	 * @param dsName
@@ -57,5 +40,18 @@ public class XSLTObjectHelper {
 			log.error(ee.getMessage());
 		}
 		return false;
+	}
+	/**
+	 * 
+	 * @param dsName
+	 * @param realPath
+	 * @return
+	 */
+	  private String constructXSLFileName( 
+			  String realPath, String xslFileName){
+		StringBuffer fileLocationBuffer = new StringBuffer();
+		fileLocationBuffer.append(realPath);
+		fileLocationBuffer.append(xslFileName);
+		return fileLocationBuffer.toString();
 	}
 }

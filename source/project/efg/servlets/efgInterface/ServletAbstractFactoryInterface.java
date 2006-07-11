@@ -31,9 +31,11 @@
  */
 package project.efg.servlets.efgInterface;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
-import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
+import project.efg.util.EFGDisplayObjectList;
 
 /**
  * @author kasiedu
@@ -55,7 +57,7 @@ public abstract class ServletAbstractFactoryInterface {
 	 * 
 	 * @return alist of datasources from the database
 	 */
-	public EFGDatasourceObjectListInterface getListOfDatasources(){
+	public EFGDisplayObjectList getListOfDatasources() {
 		
 		return this.createListOfDatasources();
 	}
@@ -69,6 +71,12 @@ public abstract class ServletAbstractFactoryInterface {
 	public SearchableListInterface getMediaResourceLists(String displayName, String datasourceName){
 		return this.createMediaResourceLists(displayName,datasourceName);
 	}
+	 public List getAllFields(String displayName,String dataSourceName){
+		 return this.createAllFields(displayName,dataSourceName);
+	 }
+	 public List getTaxonPageFields(String displayName,String dataSourceName){
+	    	return this.createTaxonPageFields(displayName,dataSourceName);
+	    }
 	public String getFirstFieldName(String displayName, String datasourceName){
 		return this.createFirstFieldName(displayName,datasourceName);
 	}
@@ -82,8 +90,10 @@ public abstract class ServletAbstractFactoryInterface {
 
 	protected abstract SearchableListInterface createMediaResourceLists(String displayName,String datasourceName);
 	protected abstract SearchableListInterface createSearchableLists(String displayName,String datasourceName);
-	protected abstract EFGDatasourceObjectListInterface createListOfDatasources();
+	protected abstract EFGDisplayObjectList createListOfDatasources();
 	protected abstract String createFirstFieldName(String displayName,String datasourceName);
 	protected abstract String createFirstMediaResourceFieldName(String displayName,String datasourceName);
-	
+	protected abstract List createAllFields(String displayName,String dataSourceName);
+	protected abstract List createTaxonPageFields(String displayName,String dataSourceName);
+	 
 }

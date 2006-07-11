@@ -1,5 +1,6 @@
 package project.efg.Imports.rdb;
 
+import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -14,6 +15,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgImportsUtil.EFGUtils;
+import project.efg.Imports.efgImportsUtil.TaxonPageDefaultConfig;
 import project.efg.Imports.efgInterface.CSV2DatabaseAbstract;
 import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
@@ -53,11 +55,11 @@ import project.efg.util.EFGImportConstants;
 public class CSV2Database extends CSV2DatabaseAbstract {
 
 	private JdbcTemplate jdbcTemplate;
-
+	private String templateConfigHome;
 	private String[] dataHeaders;
 
 	private String metadataTableName; // metadata table to use
-
+	
 	private String tableName;
 
 	private Comparator compare;
@@ -79,7 +81,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			EFGDataExtractorInterface dataExtractor, DBObject dbObject,
 			boolean isUpdate) {
 		super(datasource, dataExtractor, dbObject, isUpdate);
-		log.debug("After super");
+		
 		this.dataHeaders = this.dataExtractor.getFieldNames();
 		log.debug("After get header");
 		this.txManager = this.getTransactionManager(this.dbObject);
@@ -126,7 +128,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					if (isSuccess) {// replace table
 						isSuccess = this.createDataTable();
 						if(isSuccess){
-						log.debug("Updates run successfully");
+							log.debug("Updates run successfully");
+							//do nothing
 						}
 					}
 				} else {// we are not doing updates
@@ -183,14 +186,26 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							log.debug("About to create new Metadata table");
 							isSuccess = this.createMetadataTable(fieldNames,
 									legalNames);
+							if(isSuccess){//create a new Default template file
+								String tempConfigLocation = this.getTemplateConfig();
+								
+								
+								TaxonPageDefaultConfig taxonPageConfig =
+									new TaxonPageDefaultConfig(tempConfigLocation);
+								boolean bool = taxonPageConfig.processNew(this.getDataTableName(),this.getDisplayName());
+								if(!bool){
+									log.error("Could not create default templates for '" + this.getDisplayName() + "'");
+								}
+							}
+							//create the default Template files for the current datasource 
 						} else {// use an old metadata table as template
 							log
 									.debug("About to clone an existing Metadata table");
 							// find out if this metadata table exists. Quit if
 							// it does not
-							String metadataTableToClone = this
-									.findMetadataTable(this.datasource
-											.getTemplateDisplayName());
+
+							EFGQueueObjectInterface metadataTableToClone =
+								this.findMetadataTable(this.datasource.getTemplateDisplayName());
 
 							if (metadataTableToClone == null) {// specified
 								// metadata
@@ -206,8 +221,18 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 								isSuccess = false;
 							} else {// specified metadata table exists. copy it
 								isSuccess = this.cloneMetadataTable(
-										metadataTableToClone, fieldNames,
+										metadataTableToClone.getObject(0), fieldNames,
 										legalNames);
+								if(isSuccess){//get the template file and clone it for the current datasource
+									String dataTableAssociateWithClonedMetadataTable =
+										metadataTableToClone.getObject(1);
+									boolean bool = this.copyClone(dataTableAssociateWithClonedMetadataTable);
+									
+									if(!bool){
+										log.error("Could not create default templates for '" + this.getDisplayName() + "'");
+									}
+								}
+								//if isSuccess clone the template files for this stuff
 							}
 						}
 
@@ -243,6 +268,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						.error("Please view the logs for more verbose error messages!!!");
 				return false;
 			}
+			
 		} catch (Exception ex) {
 			txManager.rollback(status);
 			return false;
@@ -250,7 +276,6 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		txManager.commit(status);
 		return isSuccess;
 	}
-
 	/**
 	 * @return the name of the database table created for the current data
 	 */
@@ -266,6 +291,27 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		return this.metadataTableName;
 	}
 
+	private boolean copyClone(String clonedDataTableName){
+		
+		
+		TaxonPageDefaultConfig taxonPageConfig =
+			new TaxonPageDefaultConfig(this.getTemplateConfig());
+		boolean bool = taxonPageConfig.cloneOldFile(clonedDataTableName, this.getDataTableName(),this.getDisplayName());
+		if(!bool){
+			log.error("Could not create  templates for '" + this.getDisplayName() + "'");
+		}
+		return bool;
+	}
+	private String getTemplateConfig(){
+		if(this.templateConfigHome == null){
+			this.templateConfigHome = this.getCatalinaHome() + File.separator
+			+ EFGImportConstants.EFG_WEB_APPS
+			+ File.separator + EFGImportConstants.EFG_APPS + 
+			File.separator + EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
+			+ File.separator ;
+		}
+		return this.templateConfigHome;
+	}
 	private DataSourceTransactionManager getTransactionManager(DBObject dbObject){
 		return EFGRDBImportUtils.getTransactionManager(dbObject);
 	}
@@ -472,17 +518,17 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 *            else System finds the metadataTable in the database. If system
 	 *            cannot find metadata table in database it returns null;
 	 */
-	private String findMetadataTable(String displayName) {
-		String str = null;
+	private EFGQueueObjectInterface findMetadataTable(String displayName) {
+		EFGQueueObjectInterface queue = null;
 
 		if ((displayName == null) || (displayName.trim().equals(""))) {
-			str = null;
+			
 			log.error("Specified display name: '" + displayName
 					+ "' was null or the empty string.");
 		} else {
 			if (checkEFGRDBTable()) {
 				StringBuffer query = new StringBuffer(
-						"SELECT DS_METADATA FROM ");
+						"SELECT DS_METADATA, DS_DATA FROM ");
 				query.append(this.efgRDBTable);
 				query.append(" WHERE DISPLAY_NAME=");
 				query.append("\"");
@@ -492,27 +538,27 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						+ displayName);
 				try {
 					java.util.List list = executeQueryForList(query.toString(),
-							1);
+							2);
 					for (java.util.Iterator iter = list.iterator(); iter
 							.hasNext();) {
-						EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
+						queue = (EFGQueueObjectInterface) iter
 								.next();
-						str = queue.getObject(0);
+						//str = queue.getObject(0);
 						break;//because only one row is required
 					}
-					if (str == null) {
+					if (queue == null) {
 						log
 								.error("A metadataTable could not be found with display name:  "
 										+ displayName);
-						str = null;
+						
 					}
 				} catch (Exception ee) {
 					this.logMessage(ee);
-					str = null;
+					queue = null;
 				}
 			}
 		}
-		return str;
+		return queue;
 	}
 
 	/**

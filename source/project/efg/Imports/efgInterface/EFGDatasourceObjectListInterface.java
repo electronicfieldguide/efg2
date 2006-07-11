@@ -35,17 +35,21 @@
  */
 package project.efg.Imports.efgInterface;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.DBObject;
+import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.factory.StateObjectFactory;
+import project.efg.util.EFGImportConstants;
 
 public abstract class EFGDatasourceObjectListInterface {
 	protected ArrayList lists;
 	protected DBObject dbObject;
+	protected String templateConfigHome;
 	static Logger log = null;
 
 	static {
@@ -61,6 +65,20 @@ public abstract class EFGDatasourceObjectListInterface {
 		this.lists = new ArrayList();
 		 this.stateFactory =
 				new StateObjectFactory();
+	}
+	
+	private String getCatalinaHome(){
+		return EFGUtils.getCatalinaHome();
+	}
+	protected String getTemplateConfig(){
+		if(this.templateConfigHome == null){
+			this.templateConfigHome = this.getCatalinaHome() + File.separator
+			+ EFGImportConstants.EFG_WEB_APPS
+			+ File.separator + EFGImportConstants.EFG_APPS + 
+			File.separator + EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
+			+ File.separator ;
+		}
+		return this.templateConfigHome;
 	}
 	private EFGDatasourceObjectListInterface() {
 		this(null);

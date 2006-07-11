@@ -204,7 +204,7 @@ public class LoginDialog extends JDialog {
 
 			 if (args.length > 0) {
 				catalina_home = args[0].toString();
-				log.debug("Cat home: " + catalina_home);
+				
 				int index = catalina_home.lastIndexOf("\"");
 				if (index > -1) {
 					catalina_home = catalina_home.substring(0, index);

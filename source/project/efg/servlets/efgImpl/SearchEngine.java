@@ -112,7 +112,7 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			log.debug("Get query instance");
 			EFGHTTPQuery query = EFGHTTPQueryFactory.getQueryInstance(req);
 			log.debug("After get query instance");
-			if (displayFormat.equalsIgnoreCase(EFGImportConstants.XML)) {
+			if (EFGImportConstants.XML.equalsIgnoreCase(displayFormat)) {
 				presentXML(req, res, query.getEFGDocument());
 			} else {	
 				present(req, res, query.getEFGDocument());
@@ -191,8 +191,6 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 		ResponseObject resObject = null;
 		
 		try{
-			
-			
 			resObject = ResponseObjectFactory.getResponseObject(req,
 					efgDocument, realPath);
 			
@@ -211,6 +209,9 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	}
 }
 //$Log$
+//Revision 1.1.2.3  2006/07/11 21:48:22  kasiedu
+//"Added more configuration info"
+//
 //Revision 1.1.2.2  2006/06/09 14:39:49  kasiedu
 //New Properties files
 //

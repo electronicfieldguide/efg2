@@ -63,7 +63,7 @@ public class TaxonPageHtml extends XSLTObjectInterface {
 		String xslFileName = null;
 		String datasourceName = null;
 		String displayName = null;
-		boolean isDefault = false;
+		
 		try { 
 			if(parameters == null){
 				log.debug("Parameters is null");
@@ -73,47 +73,50 @@ public class TaxonPageHtml extends XSLTObjectInterface {
 			
 			
 			if((datasourceNames != null) &&(datasourceNames.length > 0)){
-				datasourceName = datasourceNames[0];
-				
+				datasourceName = datasourceNames[0];	
 			}
 			if((displayNames != null) &&(displayNames.length > 0)){
 				displayName = displayNames[0];
 			}
-			log.debug("Import Constants String : " + EFGImportConstants.XSL_STRING);
-			xslFileNames = (String[])parameters.get(EFGImportConstants.XSL_STRING);
+			try {
+				xslFileNames = 
+					(String[])parameters.get(EFGImportConstants.XSL_STRING);
+				
+				if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
+					xslFileName = this.getXSLFile(realPath,
+							datasourceName, 
+							EFGImportConstants.TAXONPAGE_XSL);
+					if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
+					 throw new Exception("Cannot find xslFile..Use defaults..");
+					}
+				}
+				else{
+					xslFileName = xslFileNames[0];
+				}
+					
+					if(!this.isXSLFileExists(realPath,xslFileName)){
+						log.debug("Xsl file does not exists using defaults");
+						 throw new Exception("Cannot find xslFile..Use defaults..");
+					}
+				
+			}
+			catch (Exception ee) {
+				xslFileName = EFGImportConstants.DEFAULT_TAXON_PAGE_FILE;//"defaultTaxonPageFile.xsl";
+				
+			}
 			
-			//check to see that it exists
-			if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
-				//get the xsl file name from the database
-				log.debug("xslFileName is null.Getting from Database");
-				xslFileName = this.getXSLFileName(displayName,datasourceName,EFGImportConstants.TAXONPAGE_XSL);
-				if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
-					xslFileName = "defaultTaxonPageFile.xsl";
-					log.debug("xslFileNames is null.using default!!");
-					isDefault = true;
-				}
-			}
-			else{
-				log.debug("XSL_FILENAME: " + xslFileNames[0]);
-				xslFileName = xslFileNames[0];
-				if(!this.isXSLFileExists(realPath,xslFileName)){
-					log.debug("xslFileName is does not exists.using default!!");
-					xslFileName = "defaultTaxonPageFile.xsl";
-					isDefault = true;
-				}
-			}
 		}
 		catch (Exception ee) {
 			xslFileName = "defaultTaxonPageFile.xsl";
 			log.debug("An exception is thrown.using default!!");
-			isDefault = true;
+			
 			log.debug(ee.getMessage());
 			ee.printStackTrace();
 		}
 		try {
 			
 			Properties properties = new Properties();
-			if(isDefault){
+		
 				if(parameters == null){
 					log.error("Map parameters is null");
 				}
@@ -122,7 +125,7 @@ public class TaxonPageHtml extends XSLTObjectInterface {
 				if (fieldName != null) {
 					properties.setProperty("fieldName", fieldName);
 				}
-			}
+		
 			XSLProperties xslProps = new XSLProperties();
 			xslProps.setXSLFileName(xslFileName);
 			xslProps.setXSLParameters(properties);

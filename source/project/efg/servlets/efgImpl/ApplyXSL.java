@@ -117,7 +117,9 @@ public class ApplyXSL extends HttpServlet {
 			throws ServletException, IOException {
 		//do splitting to fop here
 		
-		String dsName = (String) req.getAttribute(EFGImportConstants.DISPLAY_NAME);
+		String dsName = (String) req.getAttribute(EFGImportConstants.DATASOURCE_NAME);
+		String displayName = (String) req.getAttribute(EFGImportConstants.DISPLAY_NAME);
+		String xslName  = (String)req.getAttribute(EFGImportConstants.XSL_STRING);
 
 		ApplyXSLInterface applyXSL = ApplyXSLInterface
 				.createApplyXSLInterface();
@@ -126,28 +128,41 @@ public class ApplyXSL extends HttpServlet {
 		javax.xml.transform.Source xml = applyXSL.getXMLSource(req);
 
 		if ((xsl != null) && (xml != null)) {
-			Transformer transformer;
+			Transformer transformer = null;
 			try {
 				String header = getHeader(req);
 				log.debug("Setting transformer");
 				transformer = tFactory.newTransformer(xsl);
 				log.debug("Setting transformer done");
+				
 				String serverContext = req.getContextPath();
 				String server = req.getScheme() + "://" + req.getServerName()
 						+ ":" + req.getServerPort();
-
-				transformer.setParameter("datasource", dsName);
+				
+				transformer.setParameter(EFGImportConstants.XSL_STRING,xslName);
+				log.debug("xslName: " + xslName);
+				
+				transformer.setParameter(EFGImportConstants.DATASOURCE_NAME, dsName.toLowerCase());
 				log.debug("Datasource: " + dsName);
+				
+				transformer.setParameter(EFGImportConstants.DISPLAY_NAME, displayName);
+				log.debug("DisplayName: " + displayName);
+				
 				transformer.setParameter("server", server);
 				log.debug("server: " + server);
+				
 				transformer.setParameter("header", header);
 				log.debug("header: " + header);
+				
 				transformer.setParameter("serverContext", serverContext);
 				log.debug("serverContext: " + serverContext);
+				
 				String query = EFGImportConstants.SEARCH_STR + dsName
 						+ EFGImportConstants.AMP;
+				
 				transformer.setParameter("query", query);
 				log.debug("query: " + query);
+				
 				transformer.setParameter("serverbase", server + serverContext);
 
 				String searchPage = (String) req
@@ -168,9 +183,13 @@ public class ApplyXSL extends HttpServlet {
 				else{
 					log.debug("mediaresource field is null!!");
 				}
-				if (req.getAttribute("fieldName") != null) {
-					transformer.setParameter("fieldName", (String) req
-							.getAttribute("fieldName"));
+				String fieldName = (String) req.getAttribute("fieldName");
+				if (fieldName != null) {
+					log.debug("FieldName: " + fieldName);
+					transformer.setParameter("fieldName",fieldName);
+				}
+				else{
+					log.debug("fieldName is null!!");
 				}
 				// set more parameters
 				// if more than one means go to search results page
@@ -317,6 +336,9 @@ public class ApplyXSL extends HttpServlet {
 	}*/
 }
 // $Log$
+// Revision 1.1.2.2  2006/07/11 21:48:22  kasiedu
+// "Added more configuration info"
+//
 // Revision 1.1.2.1  2006/06/08 13:27:42  kasiedu
 // New files
 //

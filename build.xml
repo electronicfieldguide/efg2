@@ -18,6 +18,17 @@ to compile/deploy/clean with:
 	<property name="dist.war" value="${app.name}.war"/>
 	<property name="efg2.public_html.home" value="${efg2.home}/public_html"/>
 	<property name="efg2.lib.home" value="${efg2.home}/lib"/>
+	
+	<property name="efg2.css.home" value="${efg2.home}/css"/>
+	<property name="efg2.templatecss.home" value="${efg2.home}/templateCSSDirectory"/>
+	
+	<property name="efg2.javascript.home" value="${efg2.home}/js"/>
+	<property name="efg2.templatejavascript.home" value="${efg2.home}/templateJavascriptDirectory"/>
+		<property name="efg2.templateimages.home" value="${efg2.home}/templateImagesDirectory"/>
+
+	<property name="efg2.jsp.home" value="${efg2.home}/jsp"/>
+	<property name="efg2.templatejsp.home" value="${efg2.home}/templateJSP"/>
+	
 	<property name="efg2.lib.home.properties" value="${efg2.lib.home}/properties"/>
 	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
@@ -57,9 +68,6 @@ to compile/deploy/clean with:
 			<fileset dir="${icons.home}/"/>
 		</copy>
 	</target>
-	<!--
-	 <pathconvert  pathsep=";" property="compileMain.class.path" refid="compileMain.path"/>
-   -->
 	<target name="prepare">
 		<mkdir dir="${compile.home}"/>
 		<mkdir dir="${src.temp.home}"/>
@@ -79,21 +87,49 @@ to compile/deploy/clean with:
 		<mkdir dir="${deploy.home}"/>
 		<mkdir dir="${deploy.home}/EFGImages"/>
 		<mkdir dir="${deploy.home}/html"/>
+		<mkdir dir="${deploy.home}/css"/>
+		<mkdir dir="${deploy.home}/templateCSSDirectory"/>
+		<mkdir dir="${deploy.home}/js"/>
+		<mkdir dir="${deploy.home}/templateJavascriptDirectory"/>
+		<mkdir dir="${deploy.home}/templateJSP"/>
+		<mkdir dir="${deploy.home}/templateImagesDirectory"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
+		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
 		<mkdir dir="${deploy.home}/WEB-INF"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes/properties"/>
 		<mkdir dir="${deploy.home}/WEB-INF/fedSchema"/>
 		<mkdir dir="${deploy.home}/WEB-INF/metadata"/>
 		<mkdir dir="${deploy.home}/WEB-INF/lib"/>
+		<mkdir dir="${deploy.home}/templateimages"/>
 		
 		
+		<copy todir="${deploy.home}/templateImagesDirectory">
+			<fileset dir="${efg2.templateimages.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/css">
+			<fileset dir="${efg2.css.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateCSSDirectory">
+			<fileset dir="${efg2.templatecss.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/js">
+			<fileset dir="${efg2.javascript.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateJavascriptDirectory">
+			<fileset dir="${efg2.templatejavascript.home}"/>
+		</copy>
+			<copy todir="${deploy.home}">
+			<fileset dir="${efg2.jsp.home}"/>
+		</copy>
 		<copy todir="${deploy.home}">
-			<fileset dir="${efg2.public_html.home}"/>
+			<fileset dir="${efg2.jsp.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateJSP">
+				<fileset dir="${efg2.templatejsp.home}"/>
 		</copy>
 		<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
 		<copy file="efg2.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
-
 		<copy todir="${deploy.home}/templateConfigFiles">
 			<fileset dir="templateConfigFiles"/>
 		</copy>
@@ -115,7 +151,6 @@ to compile/deploy/clean with:
 		<delete quiet="true">
 			<fileset dir="${deploy.home}/WEB-INF/lib" includes="rdbImport.jar,mysqldriver.jar,servlet-api.jar,junit.jar, *.fp5, *.bat"/>
 		</delete>
-		
 		<copy file="${efg2.home}/lib/mysqldriver.jar" todir="${tomcat.home}/common/lib"/>
 		<!-- CREATE A PROPERTIES FILE ON SERVER AND COPY ALL PROPERTIES FILE THERE-->
 		<copy file="${efg2.properties.home}/log4j.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
@@ -123,14 +158,13 @@ to compile/deploy/clean with:
 	</target>
 	<target name="deploy" depends="compile, prepareDeploy">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
-		<copy todir="${deploy.home}/WEB-INF/classes">
+		<!--<copy todir="${deploy.home}/WEB-INF/classes">
 			<fileset dir="compiled" includes="*.*"/>
 		</copy>
-		<!---->
-			<copy todir="${tomcat.home}/webapps/efg2/WEB-INF/classes/project">
+		-->
+		<copy todir="${tomcat.home}/webapps/efg2/WEB-INF/classes/project">
 			<fileset dir="compiled/project"/>
 		</copy>
-
 		<delete quiet="true">
 			<fileset dir="${tomcat.home}/logs">
 				<include name="efg.log"/>

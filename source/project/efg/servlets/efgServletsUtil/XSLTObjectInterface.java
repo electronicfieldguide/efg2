@@ -31,6 +31,7 @@
  */
 package project.efg.servlets.efgServletsUtil;
 
+import java.io.File;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -38,6 +39,8 @@ import org.apache.log4j.Logger;
 import project.efg.servlets.efgInterface.SearchableListInterface;
 import project.efg.servlets.efgInterface.ServletAbstractFactoryInterface;
 import project.efg.servlets.factory.ServletAbstractFactoryCreator;
+import project.efg.util.EFGImportConstants;
+import project.efg.util.FindTemplate;
 
 /**
  * @author kasiedu
@@ -57,10 +60,23 @@ public abstract class XSLTObjectInterface {
 		this.servFactory = ServletAbstractFactoryCreator.getInstance();
 		this.xsltHelper = new XSLTObjectHelper();
 	}
-	public String getXSLFileName(String displayName, String datasourceName, String fieldName){
+	/**
+	 * @param displayName
+	 * @param datasourceName
+	 * @param xslType = must one of plates, lists or taxonPage
+	 * @return
+	 */
+	public String getXSLFile(String realPath,String datasourceName, 
+			String xslType) {
+		String xmlFile = realPath + File.separator + EFGImportConstants.XML;
+		
+		FindTemplate template = new FindTemplate(xmlFile,datasourceName,xslType);
+		return template.getXSLFileName();
+	}
+	/*public String getXSLFileName(String displayName, String datasourceName, String fieldName){
 		
 		return servFactory.getXSLFileName(displayName,datasourceName,fieldName);
-	}
+	}*/
 	public SearchableListInterface getSearchableLists(String displayName, String datasourceName){
 		return servFactory.getSearchableLists(displayName,datasourceName);
 	}
@@ -83,6 +99,7 @@ public abstract class XSLTObjectInterface {
 			  String xslFileName){
 		log.debug("Real Path: " + realPath);
 		log.debug("FileName: " + xslFileName);
+		
 		return this.xsltHelper.isXSLFileExists(realPath,xslFileName);
 	}
 	protected String getFirstImageField(String displayName, String datasourceName) {
@@ -100,6 +117,7 @@ public abstract class XSLTObjectInterface {
 		try{
 			
 			fieldName= servFactory.getFirstFieldName(displayName,datasourceName);
+			
 		}
 		catch(Exception ee){
 			log.error(ee.getMessage());

@@ -113,6 +113,8 @@ public class RemoveSelectedNode extends DataManipulatorInterface {
 		if (tree.getLists().removeEFGDatasourceObject(ds.getDisplayName())) {// make
 			((DefaultTreeModel) tree.getModel()).removeNodeFromParent(selNode);
 			((SynopticKeyTreeModelInterface)tree.getModel()).reload(parent);
+		
+			//remove the datasource template file from the file system
 			return true;
 		} else {
 			message = EFGImportConstants.EFGProperties

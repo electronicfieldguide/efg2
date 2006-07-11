@@ -3,7 +3,6 @@
 
 
 set LOG4J=log4j-1.2.8.jar
-set CASTOR=castor-0.9.5.2.jar
 set common_logs=commons-logging.jar
 set common_codec=commons-codec-1.3.jar
 set MYSQL_DRIVER=mysqldriver.jar
@@ -15,14 +14,14 @@ set COMMONS=commons-logging.jar
 set _CP=%CLASSPATH%
 set CP=%CLASSPATH%
 set POINT=.
-set CP=%CP%;%CASTOR%;%LOG4J%;%common_logs%;%common_codec%;%IMPORT_JAR%;%CD%;%POINT%;%MYSQL_DRIVER%;%SPRING%;%ROWSET%;%OSTER_JAR%;%COMMONS;.;properties%
+set CP=%CP%;%LOG4J%;%common_logs%;%common_codec%;%IMPORT_JAR%;%CD%;%POINT%;%MYSQL_DRIVER%;%SPRING%;%ROWSET%;%OSTER_JAR%;%COMMONS;.;properties%
 set CLASSPATH=%CP%
 set cat=%CATALINA_HOME%
 
 echo %cat%
 
 
-java -classpath "%CLASSPATH%" project/efg/Imports/efgImpl/LoginDialog "%cat%"
+java -classpath "%CLASSPATH%" project/efg/util/TemplateProducer
 
 ECHO.
 

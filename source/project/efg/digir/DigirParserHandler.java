@@ -44,11 +44,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
-import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
 import project.efg.servlets.efgImpl.EFGContextListener;
 import project.efg.servlets.efgInterface.EFGDataSourceHelperInterface;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
+import project.efg.util.EFGDisplayObject;
+import project.efg.util.EFGDisplayObjectList;
 import project.efg.util.EFGImportConstants;
 /**
  * This class parses the DiGIR request and handles its elements
@@ -284,14 +284,14 @@ public class DigirParserHandler extends DefaultHandler
 
 	//Get all the data sources in our Database
     EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
-    EFGDatasourceObjectListInterface lists = dsHelper.getDataSourceNames();
-    Iterator iter = lists.getEFGDatasourceObjectListIterator();
+    EFGDisplayObjectList lists = dsHelper.getDataSourceNames();
+    Iterator iter = lists.getIterator();
     
 	 dataSources = new ArrayList();
 	 
 	 while(iter.hasNext()){
-		 EFGDatasourceObjectInterface datasource = (EFGDatasourceObjectInterface)iter.next();
-		 String str = datasource.getDisplayName();
+		 EFGDisplayObject datasource = (EFGDisplayObject)iter.next();
+		 String str = datasource.getDatasourceName();
 		 dataSources.add(str);
 	 }
 	  
@@ -736,6 +736,9 @@ public class DigirParserHandler extends DefaultHandler
 }
 
 //$Log$
+//Revision 1.1.1.1.2.2  2006/07/11 21:44:19  kasiedu
+//"Added more configuration info"
+//
 //Revision 1.1.1.1.2.1  2006/06/08 13:13:55  kasiedu
 //New  files
 //

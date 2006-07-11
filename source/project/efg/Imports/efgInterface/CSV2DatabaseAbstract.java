@@ -109,7 +109,10 @@ public abstract class CSV2DatabaseAbstract {
 		this.dbObject = dbObject;
 		
 	}
-
+	public String getCatalinaHome(){
+		return EFGUtils.getCatalinaHome();
+	}
+	
 	/**
 	 * Import the current data into your database.
 	 * 

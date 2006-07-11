@@ -49,6 +49,7 @@ import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
+import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.efgInterface.EFGWebAppsDirectoryInterface;
 import project.efg.Imports.factory.EFGWebAppsDirectoryFactory;
@@ -113,6 +114,8 @@ public class ImportMenu extends JFrame {
 	public ImportMenu(String title, String catalina_home, DBObject dbObject) {
 		super(title);
 		this.catalina_home = catalina_home;
+		//set the catalina home 
+		EFGUtils.setCatalinaHome(this.catalina_home);
 		setSize(new Dimension(220, 150));
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -196,12 +199,7 @@ public class ImportMenu extends JFrame {
 
 		public void actionPerformed(ActionEvent evt) {
 			try {
-				/*FileTreeBrowserMain ftb = 
-					new FileTreeBrowserMain(
-						this.frame,
-						EFGImportConstants.EFGProperties.getProperty("DeployImagesListener.title"),
-						true, 
-						imagesDirectory);*/
+			
 				DnDFileBrowserMain ftb = 
 					new DnDFileBrowserMain(
 						this.frame,

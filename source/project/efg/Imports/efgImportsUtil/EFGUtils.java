@@ -189,7 +189,9 @@ public class EFGUtils {
 		}
 		return envVars;
 	}
-
+	public static void setCatalinaHome(String catalina){
+		catalina_home = catalina;
+	}
 	public static String getCatalinaHome() {
 		if (catalina_home != null) {
 			return catalina_home;
@@ -261,6 +263,9 @@ public class EFGUtils {
 }
 
 // $Log$
+// Revision 1.1.2.2  2006/07/11 21:46:12  kasiedu
+// "Added more configuration info"
+//
 // Revision 1.1.2.1  2006/06/08 13:27:40  kasiedu
 // New files
 //

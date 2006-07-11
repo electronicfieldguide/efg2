@@ -65,57 +65,58 @@ public class SearchPageHtmlLists extends XSLTObjectInterface {
 			log.error("Map parameters is null");
 		}
 		String[] displayNames =(String[])parameters.get(EFGImportConstants.DISPLAY_NAME); 
+		log.debug("Got display names1");
 		String[] datasourceNames = (String[])parameters.get(EFGImportConstants.DATASOURCE_NAME);
+		log.debug("Got datasource names1");
 		String datasourceName = null;
 		String displayName = null;
 		
 		if((datasourceNames != null) &&(datasourceNames.length > 0)){
 			datasourceName = datasourceNames[0];
-			
+			log.debug("Got datasource names2");
 		}
 		if((displayNames != null) &&(displayNames.length > 0)){
 			displayName = displayNames[0];
+			log.debug("Got display names2");
 		}
 		String xslFileName = null;
-		boolean isDefault = false;
+		//boolean isDefault = false;
 		try {
 			String[] xslFileNames = 
 				(String[])parameters.get(EFGImportConstants.XSL_STRING);
-			//xslFileName = (String)parameters.get(EFGImportConstants.XSL_STRING);
-			//check to see that it exists
+			
+			log.debug("Got xsl  names");
 			if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
-				xslFileName = this.getXSLFileName(
-						displayName,
+				xslFileName = this.getXSLFile(realPath,
 						datasourceName, 
 						EFGImportConstants.SEARCHPAGE_LISTS_XSL);
 				if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
-				
-					log.debug("xslFileNames is null.using default!!");
-					xslFileName = "defaultSearchFile.xsl";
-					isDefault = true;
+				 throw new Exception("Cannot find xslFile..Use defaults..");
 				}
 			}
 			else{
 				xslFileName = xslFileNames[0];
-				if(!this.isXSLFileExists(realPath,xslFileName)){
-					xslFileName = "defaultSearchFile.xsl";
-					isDefault = true;
-				}
 			}
+				
+				if(!this.isXSLFileExists(realPath,xslFileName)){
+					log.debug("Xsl file does not exists using defaults");
+					 throw new Exception("Cannot find xslFile..Use defaults..");
+				}
+			
 		}
 		catch (Exception ee) {
-			xslFileName = "defaultSearchFile.xsl";
-			isDefault = true;
+			xslFileName = EFGImportConstants.DEFAULT_SEARCH_FILE;//"defaultSearchFile.xsl";
+			//isDefault = true;
 		}
 		Properties properties = new Properties();
 		properties.setProperty(EFGImportConstants.SEARCH_PAGE_STR,
 				EFGImportConstants.SEARCHPAGE_LISTS_FILLER);
-		if(isDefault){
+		//if(isDefault){
 			String fieldName =this.getFirstSearchableState(displayName,datasourceName);
 			if (fieldName != null) {
 				properties.setProperty("fieldName", fieldName);
 			}
-		}
+		//}
 		
 		try {
 			XSLProperties xslProps = new XSLProperties();
@@ -129,5 +130,7 @@ public class SearchPageHtmlLists extends XSLTObjectInterface {
 		}
 		return null;
 	}
+
+	
 	
 }
