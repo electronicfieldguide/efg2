@@ -3,17 +3,27 @@
 	<!-- $Id$ -->
 	<xsl:param name="serverbase"/> 
 	<!-- The name of the template configuration for the current datasource. Must be a path relative to the location of this XSL file-->
-	<xsl:param name="datasource"/>
+	<xsl:param name="dataSourceName"/>
+		<xsl:param name="datasource"/>
+	<xsl:param name="displayName"/>
 	<xsl:param name="search"/>
 	<xsl:param name="mediaResourceField"/>
-<xsl:param name="fieldName"/>
-
+	<xsl:param name="templateConfigFile" select="concat('xml/',$dataSourceName,'.xml')"/>
+	<xsl:param name="template_css_dir" select="'/templateCSSDirectory/'"/>
+	<xsl:param name="template_images_dir" select="'/templateImagesDirectory/'"/>
+	<xsl:param name="css_home" select="concat($serverbase,$template_css_dir)"/>
+	<xsl:param name="template_images_home" select="concat($serverbase,$template_images_dir)"/>
+   <xsl:param name="fieldName"/>
+   
+  
+<xsl:param name="xslName"/>
 	<!--
 	<xsl:param name="header"/>
+	<xsl:param name="templateConfigFile" select="concat($datasource,'_TaxonPage.xml')"/>
  -->
  <xsl:param name="serviceLinkFiller" select="'_EFG_'"/>
  
-	<xsl:param name="templateConfigFile" select="concat($datasource,'_TaxonPage.xml')"/>
+
 	<xsl:param name="imagebase" select="'EFGImages'"/>
 		<xsl:param name="imagebase_thumbs" select="'efgimagesthumbs'"/>
 			<xsl:param name="imagebase_large" select="'EFGImages'"/>
@@ -23,8 +33,8 @@
 	<xsl:param name="header"/>
 	<xsl:param name="serviceLinkConstant" select="'service'"/>
 	<xsl:variable name="colon">:</xsl:variable>
-	<xsl:variable name="searchTemplateConfig" select="concat($datasource,$search)"/>
-	<xsl:param name="query" select="concat($serverbase,'/search?dataSourceName=',$datasource,'&amp;')"/>
+	<xsl:variable name="searchTemplateConfig" select="concat($dataSourceName,$search)"/>
+	<xsl:param name="query" select="concat($serverbase,'/search?dataSourceName=',$dataSourceName,'&amp;')"/>
 
 	<!-- 
 	<xsl:variable name="header">
@@ -199,7 +209,7 @@
 		<xsl:param name="efgLists"/>
 		<a>
 			<xsl:attribute name="href">
-			<xsl:value-of select="concat(string($serverbase),'/search?displayFormat=html&amp;dataSourceName=',string($datasource),'&amp;digir=',string($digirHeaders))"/>
+			<xsl:value-of select="concat(string($serverbase),'/search?displayFormat=html&amp;dataSourceName=',string($dataSourceName),'&amp;digir=',string($digirHeaders))"/>
 			<xsl:variable name="counter" select="count($efgLists/EFGList)"/>
 			<xsl:for-each select="$efgLists/EFGList">
 				<xsl:variable name="serviceLink1">

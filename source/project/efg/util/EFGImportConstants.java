@@ -27,6 +27,32 @@ import java.util.Set;
  * USA
  */
 public interface EFGImportConstants {
+	String TEMPLATE_SUCCESS_PAGE = "/UploadSuccess.jsp";
+	String templateImagesDirectory ="templateImagesDirectory";
+	String templateCSSDirectory="templateCSSDirectory";
+	String templateJavascriptDirectory="templateJavascriptDirectory";
+	String ITEMTYPE ="efgItemtype";
+	int TEMPLATE_IMAGES_DEFAULT_SIZE=1000000;
+	int TEMPLATE_CSS_DEFAULT_SIZE=1000000;
+	int TEMPLATE_JAVASCRIPT_DEFAULT_SIZE=1000000;
+	
+	String IMGTYPE= "imageType";
+	String CSSTYPE ="cssType";
+	String JAVASCRIPTYPE = "javascriptType";
+	
+	String GROUP_TEXT_LABEL = "gtl";
+
+	String GROUP_LABEL = "gl";
+
+	String GROUP = "group";
+
+	String COLON_SEPARATOR = ":";
+
+	String CHARACTER_TEXT_LABEL = "ctl";
+
+	String CHARACTER_LABEL = "cl";
+	
+	
 	String XSL_SEARCH_GROUPS = "xslSearchAllGroups";
 	String SEARCH_GROUP = "searchPageGroups";
 	String IMAGES_MAX_DIM="imagemaxdim";
@@ -76,8 +102,8 @@ public interface EFGImportConstants {
 
 	String DEFAULT_MAX_DIM = "200";
 
-	String DATASOURCE_STR = "dataSourceName";
-
+	
+	String ISDEFAULT_STR="isDefault";
 	String XSL_STRING = "xslName";
 
 	String SUBMIT = "submit";
@@ -126,7 +152,8 @@ public interface EFGImportConstants {
 	String METAFILESUFFIX = "Info";
 
 	String EXCEL_EXT = ".xls";
-
+	String TEMPLATE_ERROR_PAGE = "/TemplateError.jsp";
+	String TEMPLATE_SCHEMA_NAME = "TaxonPageTemplate.xsd";
 	String XML_EXT = ".xml";
 
 	String DATAFILESUFFIX = "Data";
@@ -145,22 +172,18 @@ public interface EFGImportConstants {
 
 	String SEARCH_STR = "search?" + EFGImportConstants.DATASOURCE_NAME + "=";
 
-	String DEFAULT_XSL_FILE = "ListPlatesUnsorted.xsl";
-
-	String DEFAULT_SEARCH_TEMPLATE = "PlatesUnsorted";
-
-	String DEFAULT_SEARCH_PAGE_STRING = "Unsorted";
+	
 
 	String XSL_EXT = ".xsl";
+	String DEFAULT_SEARCH_FILE ="defaultSearchFile.xsl";
+	String DEFAULT_TAXON_PAGE_FILE ="defaultTaxonPageFile.xsl";
+	
 
 	String SEARCH_PAGE_TITLE = "title";
 
-	String TEMPLATES_XML_SRC = "Templates.xml";
-
-	String TEMPLATES_CONFIG_SRC = "EFGSearchPageConfig.xml";
 
 	String TEMPLATES_FOLDER_NAME = "templateConfigFiles";
-
+	String TEMPLATES_XML_FOLDER_NAME = TEMPLATES_FOLDER_NAME + File.separator + XML;
 	String SEARCHTYPE = "searchType";
 
 	String IMAGES_DIR = "EFGImages";
@@ -195,7 +218,7 @@ public interface EFGImportConstants {
 
 	String WEIGHT = "weight";
 
-	String SPECIESPAGEDATA = "speciesPageData";
+	String SPECIESPAGETA = "speciesPageta";
 
 	String HOLDSMULTIPLEVALUES = "holdsMultipleValues";
 
@@ -319,10 +342,10 @@ public interface EFGImportConstants {
 	String NO_MATCH_ATTR="nomatch_attr";
 	
 	String WILDCARD = "*";
+	String TEMPLATE_JSP_LOCTION="/templateJSP";
+	String TEST_TAXON_CONFIG_PAGE =TEMPLATE_JSP_LOCTION+  "/TestTaxonPage.jsp";
 
-	String TEST_TAXON_CONFIG_PAGE = "/TestTaxonPage.jsp";
-
-	String TEST_SEARCH_CONFIG_PAGE = "/TestSearchPage.jsp";
+	String TEST_SEARCH_CONFIG_PAGE =TEMPLATE_JSP_LOCTION+  "/TestSearchPage.jsp";
 
 	String SERVICE_LINK_FILLER = "_EFG_";
 

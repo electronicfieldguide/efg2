@@ -31,20 +31,6 @@ public class ResponseObjectFactory {
 	public ResponseObjectFactory() {
 	
 	}
-	private static int getTaxonSize( EFGDocument efgDocument ){
-		int taxonSize = -1;
-		
-			if(efgDocument != null){
-				try{
-					taxonSize = efgDocument.getTaxonEntries().getTaxonEntryCount();
-				}
-				catch(Exception ee){
-					log.error(ee.getMessage());
-					taxonSize = 0;
-				}
-			}
-		return taxonSize;
-	}
 	public static synchronized ResponseObject getResponseObject(HttpServletRequest req,
 			 EFGDocument efgDocument, String realPath){
 		
@@ -62,6 +48,20 @@ public class ResponseObjectFactory {
 				return new XSLTResponseObject(req,efgDocument,realPath);
 			}
 		
+	}
+	private static int getTaxonSize( EFGDocument efgDocument ){
+		int taxonSize = -1;
+		
+			if(efgDocument != null){
+				try{
+					taxonSize = efgDocument.getTaxonEntries().getTaxonEntryCount();
+				}
+				catch(Exception ee){
+					log.error(ee.getMessage());
+					taxonSize = 0;
+				}
+			}
+		return taxonSize;
 	}
 
 }

@@ -8,18 +8,18 @@
 			<head>
 				<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 				<link rel="stylesheet">
-					<xsl:attribute name="href"><xsl:value-of select="concat(serverbase,$css)"/></xsl:attribute>
+					<xsl:attribute name="href"><xsl:value-of select="concat($css_home,$css)"/></xsl:attribute>
 				</link>
 				<title>
-					<xsl:value-of select="concat('Taxon Page for  ',$datasource)"/>
+					<xsl:value-of select="concat('Taxon Page for  ',$displayName)"/>
 				</title>
 			</head>
 			<body>
 				<xsl:choose>
-					<xsl:when test="$datasource and $templateConfigFile">
-						<xsl:call-template name="start">
+					<xsl:when test="$dataSourceName and $templateConfigFile">
+						<xsl:call-template name="xslPages">
 							<xsl:with-param name="taxonEntry" select="//TaxonEntry"/>
-							<xsl:with-param name="groups" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$datasource]/groups"/>
+							<xsl:with-param name="xslPage" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$dataSourceName]/XSLFileNames/xslTaxonPages/xslPage"/>
 						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
@@ -30,6 +30,59 @@
 				</xsl:choose>
 			</body>
 		</html>
+	</xsl:template>
+	<xsl:template name="xslPages">
+		<xsl:param name="taxonEntry"/>
+		<xsl:param name="xslPage"/>
+		
+		<xsl:for-each select="$xslPage">
+			<xsl:variable name="fileName" select="@fileName"/>
+			
+			<xsl:if test="$fileName=$xslName">
+				<xsl:call-template name="start">
+					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+					<xsl:with-param name="groups" select="groups"/>
+				</xsl:call-template>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+	<xsl:template name="start">
+		<xsl:param name="taxonEntry"/>
+		<xsl:param name="groups"/>
+		<xsl:if test="$groups/group[@id='1']">
+			<xsl:variable name="group1" select="$groups/group[@id=1]"/>
+			<xsl:call-template name="handleGroup1">
+				<xsl:with-param name="group1" select="$group1"/>
+			</xsl:call-template>
+		</xsl:if>
+		<table>
+		
+			<!-- -->
+			<xsl:if test="$groups/group[@id=2 or @id=3 or @id=4]">
+				
+				<xsl:variable name="groups234" select="$groups/group[@id=2 or @id=3 or @id=4]"/>
+				<xsl:call-template name="handleGroups234">
+					<xsl:with-param name="group" select="$groups234"/>
+					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+				</xsl:call-template>
+			</xsl:if>
+			<xsl:if test="$groups/group[@id=5]">
+				
+				<xsl:variable name="group5" select="$groups/group[@id=5]"/>
+				<xsl:call-template name="handleGroup5">
+					<xsl:with-param name="group" select="$group5"/>
+					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+				</xsl:call-template>
+			</xsl:if>
+		</table>
+		<xsl:if test="$groups/group[@id=6]">
+			
+			<xsl:variable name="group6" select="$groups/group[@id=6]"/>
+			<xsl:call-template name="handleGroup6">
+				<xsl:with-param name="group" select="$group6"/>
+				<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+			</xsl:call-template>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template name="handleGroup1">
 		<xsl:param name="group1"/>
@@ -50,40 +103,6 @@
 				</span>
 			</xsl:if>
 		</xsl:for-each>
-	</xsl:template>
-	<xsl:template name="start">
-		<xsl:param name="taxonEntry"/>
-		<xsl:param name="groups"/>
-		<xsl:if test="$groups/group[@id='1']">
-			<xsl:variable name="group1" select="$groups/group[@id=1]"/>
-			<xsl:call-template name="handleGroup1">
-				<xsl:with-param name="group1" select="$group1"/>
-			</xsl:call-template>
-		</xsl:if>
-		<table>
-			<!-- -->
-			<xsl:if test="$groups/group[@id=2 or @id=3 or @id=4]">
-				<xsl:variable name="groups234" select="$groups/group[@id=2 or @id=3 or @id=4]"/>
-				<xsl:call-template name="handleGroups234">
-					<xsl:with-param name="group" select="$groups234"/>
-					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
-				</xsl:call-template>
-			</xsl:if>
-			<xsl:if test="$groups/group[@id=5]">
-				<xsl:variable name="group5" select="$groups/group[@id=5]"/>
-				<xsl:call-template name="handleGroup5">
-					<xsl:with-param name="group" select="$group5"/>
-					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
-				</xsl:call-template>
-			</xsl:if>
-		</table>
-		<xsl:if test="$groups/group[@id=6]">
-			<xsl:variable name="group6" select="$groups/group[@id=6]"/>
-			<xsl:call-template name="handleGroup6">
-				<xsl:with-param name="group" select="$group6"/>
-				<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
-			</xsl:call-template>
-		</xsl:if>
 	</xsl:template>
 	<xsl:template name="handleGroup5">
 		<xsl:param name="group"/>
@@ -151,15 +170,12 @@
 	</xsl:template>
 	<xsl:template name="displayLists">
 		<xsl:param name="lists"/>
-		
-			<td class="data">
-				<xsl:for-each select="$lists/EFGList">
-			
-					<xsl:value-of select="concat(@serviceLink, '|   ')"/>
-					<xsl:value-of select="."/>
-				</xsl:for-each>
-			</td>
-		
+		<td class="data">
+			<xsl:for-each select="$lists/EFGList">
+				<xsl:value-of select="concat(@serviceLink, '|   ')"/>
+				<xsl:value-of select="."/>
+			</xsl:for-each>
+		</td>
 	</xsl:template>
 	<xsl:template name="handleGroup6">
 		<xsl:param name="group"/>

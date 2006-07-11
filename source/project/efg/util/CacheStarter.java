@@ -13,9 +13,6 @@ import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.log4j.Logger;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
-
-import project.efg.servlets.rdb.QueryExecutor;
 
 /**
  * @author kasiedu
@@ -24,10 +21,10 @@ import project.efg.servlets.rdb.QueryExecutor;
 public class CacheStarter {
     static Logger log = null;
     static {
-	try {
-	    log = Logger.getLogger(CacheStarter.class);
-	} catch (Exception ee) {
-	}
+		try {
+	    	log = Logger.getLogger(CacheStarter.class);
+		} 	catch (Exception ee) {
+		}
     }
     /**
      * 

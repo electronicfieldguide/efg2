@@ -35,7 +35,6 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
-//import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,8 +43,6 @@ import org.apache.log4j.Logger;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 
-import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
-import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
 import project.efg.efgDocument.TaxonEntries;
 import project.efg.efgDocument.TaxonEntryType;
@@ -53,6 +50,8 @@ import project.efg.efgDocument.TaxonEntryTypeItem;
 import project.efg.servlets.efgInterface.EFGHTTPQuery;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.servlets.factory.TaxonEntryItemBuilder;
+import project.efg.util.EFGDisplayObject;
+import project.efg.util.EFGDisplayObjectList;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGObject;
 import project.efg.util.UnicodeToASCIIFilter;
@@ -125,6 +124,7 @@ public class SQLQuery extends EFGHTTPQuery {
 					legalName = legalName.replaceAll(
 							EFGImportConstants.SERVICE_LINK_FILLER, " ");
 				}
+				
 				String[] paramValues = req.getParameterValues(legalName);
 				log.debug("paramaValues length: " + paramValues.length);
 
@@ -366,11 +366,11 @@ public class SQLQuery extends EFGHTTPQuery {
 		return typeTable;
 	}
 
-	protected List toLists(EFGDatasourceObjectListInterface listinter) {
+	protected List toLists(EFGDisplayObjectList listinter) {
 		List list = new ArrayList(listinter.getCount());
 		for (java.util.Iterator iter = listinter
-				.getEFGDatasourceObjectListIterator(); iter.hasNext();) {
-			EFGDatasourceObjectInterface queue = (EFGDatasourceObjectInterface) iter
+				.getIterator(); iter.hasNext();) {
+			EFGDisplayObject queue = (EFGDisplayObject) iter
 					.next();
 
 			list.add(queue.getDisplayName());
