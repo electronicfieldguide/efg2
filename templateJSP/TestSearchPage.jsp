@@ -35,16 +35,10 @@
   </head>
   <body bgcolor="#ffffff">
   	<center>
-		<% if(fieldName != null){
-				
-			%>
-			<H3>The Datasource "<%=displayName%>" has been configured successfully!!!.</H3>
+		
+			<h3>The Datasource "<%=displayName%>" has been configured successfully!!!.</h3>
 			<p align="center"><a href="javascript:history.back()">Go back to configuration Page<a></p><br/><br/>
 			<p align="center"> <a href="<%=querySearch.toString()%>"  target="TestWindow">Test Search Page<a></p><br/><br/>
-		<%} else { %>
-			<H3>The Datasource "<%=dsName%>" could not be configured!!!!.</H3>
-			<p align="center"><a href="javascript:history.back()">Go back to configuration Page and fix any errors!!<a></p><br/><br/>
-		<%}%>
   	</center>
   </body>
 </html>

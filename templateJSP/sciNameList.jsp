@@ -16,7 +16,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			String realPath = getServletContext().getRealPath("/");
 			String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
 			String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
-			String xslFileName = "nantucketCommonNameSearchList.xsl";
+			String xslFileName = "nantucketSciNameSearchList.xsl";
 			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
 			StringBuffer fileName = new StringBuffer(realPath);
 			 fileName.append(File.separator);
@@ -138,7 +138,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 							<td class="spacerheight"></td>
 						</tr>
 						<tr>
-								<td class="sciname">
+							<td class="commonname">
 								<%
 									name = tp.getCharacter(isNew,isNew);
 									fieldValue = (String)groupTable.get(name);
@@ -171,8 +171,10 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										ii++;
 									}
 								%>
-								</select> 
-									<%
+								</select>   
+							</td>
+							<td class="sciname">
+								<%
 									name = tp.getCharacter(isOld,isNew);
 									fieldValue = (String)groupTable.get(name);
 									if(fieldValue == null){
@@ -204,9 +206,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										ii++;
 									}
 								%>
-								</select>     
-							</td>
-							<td class="commonname">
+								</select>   
 								<%
 									name = tp.getCharacter(isOld,isNew);
 									fieldValue = (String)groupTable.get(name);

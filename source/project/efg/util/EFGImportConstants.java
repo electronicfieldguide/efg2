@@ -354,11 +354,11 @@ public interface EFGImportConstants {
 	String SEARCHPAGE_PLATES_FILLER = "_search_page_plates.xml";
 
 	String SEARCH_TYPE_STR = "searchType";
-
+	String TEMPLATE_NAME="templateName";
 	String SEARCH_PLATES_TYPE = "plates";
-
+	String SEARCH_TAXON_TYPE = "taxon";
 	String SEARCH_LISTS_TYPE = "lists";
-
+	String CONFIG_TYPE="configType";
 	String EFG_APPS = "efg2";
 
 	String EFG_WEB_APPS = "webapps";

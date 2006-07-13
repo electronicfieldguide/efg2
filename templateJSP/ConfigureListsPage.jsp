@@ -8,16 +8,16 @@ project.efg.util.EFGImportConstants
 %>
 <html>
   <head>
-    <title>Configuration of a Taxon Page Template for <%=displayName%></title>
+    <title>Configuration of a List Template for <%=displayName%></title>
   </head>
   <body bgcolor="#ffffff">
-    <h2 align="center">Configuration of a Taxon Page Template for <%=displayName%></h2>
+    <h2 align="center">Configuration of a List Template for <%=displayName%></h2>
   	<center>
   		<form name="configure" action="Redirect2Template.jsp">
   			Select a template to configure for your Datasource:
       		<select name="<%=EFGImportConstants.TEMPLATE_NAME%>" title="Select a template from list below">
-				<option value="plateTemplate1.html">Taxon Page Template1</option>
-				<option value="plateTemplate2.html">Taxon Page Template2</option>
+				<option value="commonNameList.jsp">List Template1</option>
+				<option value="sciNameList.jsp">List Template2</option>
     		</select>
     		<input type="hidden" name="<%=EFGImportConstants.DATASOURCE_NAME%>" value="<%=dsName%>"/>
     		<input type="hidden" name="<%=EFGImportConstants.DISPLAY_NAME%>" value="<%=displayName%>"/>
@@ -25,13 +25,13 @@ project.efg.util.EFGImportConstants
     	</form>
     	<br/><br/>
     	<hr/>
-    	<h2>View Existing Taxon Page Templates</h2>
+    	<h2>View Existing List Templates</h2>
     	<table>
     		<tr>
-    			<td><a href="TaxonPageTemplate1.html" target="tp1">Taxon Page Template1</td>
+    			<td><a href="listTemplate1.html" target="list1">List Template1</td>
     		</tr>
     		<tr>
-    			<td><a href="TaxonPageTemplate2.html" target="tp2">Taxon Page Template2</td>
+    			<td><a href="listTemplate2.html" target="list2">List Template2</td>
     		</tr>
     	</table>
   	</center>

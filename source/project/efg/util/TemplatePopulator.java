@@ -69,7 +69,7 @@ public class TemplatePopulator implements EFGImportConstants{
 			log.debug("xslPage is not null");
 			return populateTable(xslPage);
 		}
-		return null;
+		return new Hashtable();
 	}
 	/**
 	 * @param xslPage
@@ -153,7 +153,7 @@ public class TemplatePopulator implements EFGImportConstants{
 	private XslPage getXSL(TaxonPageTemplates tps, String xslName, String xslType, String dsName) {
 
 		
-		XslPage currentPage = null;
+		XslPage page = null;
 		
 
 		try {
@@ -182,11 +182,14 @@ public class TemplatePopulator implements EFGImportConstants{
 						xslPageType = xslFileNames.getXslListPages();
 						
 					}
-
+					if(xslPageType == null){
+						break;
+					}
 					for (int j = 0; j < xslPageType.getXslPageCount(); ++j) {// find
-						currentPage = xslPageType.getXslPage(j);
+						XslPage currentPage = xslPageType.getXslPage(j);
 						String currentXSLFile = currentPage.getFileName();
 						if(currentXSLFile.equalsIgnoreCase(xslName)){
+							page = currentPage; 
 							break;
 						}
 					}
@@ -200,7 +203,7 @@ public class TemplatePopulator implements EFGImportConstants{
 			return null;
 		}
 		
-		return currentPage;
+		return page;
 	}
 
 	private TaxonPageTemplates getTaxonPageTemplate(String fileName) {

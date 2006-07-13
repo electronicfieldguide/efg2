@@ -13,7 +13,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 	<head>
 		<%
 			String context = request.getContextPath();
-String realPath = getServletContext().getRealPath("/");
+			String realPath = getServletContext().getRealPath("/");
 			String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
 			String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 			String xslFileName = "nantucketCommonNameSearchPlate.xsl";
@@ -60,7 +60,7 @@ String realPath = getServletContext().getRealPath("/");
 						<td class="thumbnail">
 								<select name="<%=name%>"  title="Select an  an Image Field From the List">
 								<%
-									
+									ii=0;
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
@@ -97,7 +97,7 @@ String realPath = getServletContext().getRealPath("/");
 								%>
 								<select name="<%=name%>"  title="Select A Field To Be Used As Caption">
 								<%
-									
+									ii=0;
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
@@ -130,7 +130,7 @@ String realPath = getServletContext().getRealPath("/");
 								%>
 								<select name="<%=name%>"  title="Select A Field That Should be Appended To The Selected Field(on the left), To Be Used As Caption">
 								<%
-									
+									ii=0;
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
@@ -162,7 +162,7 @@ String realPath = getServletContext().getRealPath("/");
 						<td class="rowspacer"></td>
 					</tr>
 				</table>
-				<br/><br/>
+		<br/><br/>
 				<%
 									
 									fieldValue = (String)groupTable.get(EFGImportConstants.ISDEFAULT_STR);
@@ -173,7 +173,7 @@ String realPath = getServletContext().getRealPath("/");
 								
 									
 					%>
-				
+				<p>The following is not part of the template:
 			<select name="<%=EFGImportConstants.ISDEFAULT_STR%>"  title="Indicate whether this template should be the default for search results page">
 				<option value="false">Do not use as Default Template</option>
 				<%if(bool.booleanValue() ){
@@ -183,7 +183,7 @@ String realPath = getServletContext().getRealPath("/");
 					  <option value="true">Use as Default Template</option>
 					<%}%>
 			</select>
-				<br/><br/>
+			</p><br/><br/>
 				<input type="hidden"   name="<%=EFGImportConstants.DISPLAY_NAME%>"  value="<%=displayName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_NAME%>"  value="<%=datasourceName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
