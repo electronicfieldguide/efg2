@@ -23,7 +23,9 @@
 	<classpathentry exported="true" kind="lib" path="lib/junit.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/oscache-2.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2re1.4.2_10"/>
-	<classpathentry kind="lib" path="lib/commons-fileupload-1.1.1.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2re1.4.2_10"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-fileupload-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-io-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/Tidy.jar"/>
 	<classpathentry kind="output" path="compiled"/>
 </classpath>
