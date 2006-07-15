@@ -12,11 +12,13 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 <html>
 	<head>
 		<%
+	
 			String context = request.getContextPath();
 			String realPath = getServletContext().getRealPath("/");
 			String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
 			String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 			String xslFileName = "nantucketSciNameSearchList.xsl";
+            String templateMatch ="List Template2";
 			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
 			StringBuffer fileName = new StringBuffer(realPath);
 			 fileName.append(File.separator);
@@ -271,6 +273,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			</p><br/><br/>
 		<input type="hidden"   name="<%=EFGImportConstants.DISPLAY_NAME%>"  value="<%=displayName%>"/>
 		<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_NAME%>"  value="<%=datasourceName%>"/>
+		<input type="hidden"   name="<%=EFGImportConstants.HTML_TEMPLATE_NAME%>"  value="<%=templateMatch%>"/>
 		<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
 		<input type="hidden"   name="<%=EFGImportConstants.SEARCH_PAGE_STR%>"  value="<%=EFGImportConstants.SEARCH_PAGE_STR%>"/>
 		<input type="hidden"   name="<%=EFGImportConstants.SEARCH_TYPE_STR%>"  value="<%=EFGImportConstants.SEARCH_LISTS_TYPE%>"/>

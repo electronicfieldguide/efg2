@@ -2,6 +2,7 @@
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
+
 	<xsl:variable name="images-per-row" select="2"/>
 	<xsl:template match="/">
 		<html>
@@ -66,8 +67,8 @@
 							</xsl:choose>
 						</xsl:variable>
 						<td>
-							<a>
-								<xsl:attribute name="href"><xsl:value-of select="$url"/></xsl:attribute>
+							<a href="{$url}">
+							
 								<xsl:value-of select="$character"/>
 							</a>
 							<xsl:text>&#160;&#160;</xsl:text>
@@ -178,11 +179,9 @@
 			<xsl:variable name="imageURL_large">
 				<xsl:value-of select="concat($serverbase, '/', $imagebase_large, '/', string($imageName))"/>
 			</xsl:variable>
-			<a>
-				<xsl:attribute name="href"><xsl:value-of select="$imageURL_large"/></xsl:attribute>
-				<img>
-					<xsl:attribute name="src"><xsl:value-of select="$imageURL_thumb"/></xsl:attribute>
-				</img>
+			<a href="{$imageURL_large}">
+				<img src="{$imageURL_thumb}"/>
+				
 			</a>
 			<br clear="all"/>
 		</xsl:if>

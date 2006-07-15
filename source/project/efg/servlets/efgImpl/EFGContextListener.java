@@ -28,13 +28,17 @@
 package project.efg.servlets.efgImpl;
 
 //import java.beans.Introspector;
+import java.beans.Introspector;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Driver;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -45,6 +49,7 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
@@ -57,6 +62,7 @@ import project.efg.servlets.efgInterface.EFGServletInitializerInterface;
 import project.efg.servlets.efgServletsUtil.EFGServletInitializerInstance;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.TemplateMapObjectHandler;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
@@ -72,7 +78,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 public class EFGContextListener implements ServletContextListener {
 	private EFGServletInitializerInterface sit;
-
+	
 	private static ServletContext servletContext;
 	
 	private static String metadataFileName;
@@ -84,7 +90,7 @@ public class EFGContextListener implements ServletContextListener {
 	private static String path;
 
 	private static Set set;
-
+	
 	public static Set configuredDatasources = Collections
 			.synchronizedSet(new HashSet(20));
 
@@ -102,6 +108,7 @@ public class EFGContextListener implements ServletContextListener {
 	public  static GeneralCacheAdministrator getCacheAdmin(){
 		return cacheAdmin;
 	}
+
 	/**
 	 * Set the servlet context's parameters in EFGServletUtils. Called whenever
 	 * the efg web application is starting up.
@@ -143,65 +150,9 @@ public class EFGContextListener implements ServletContextListener {
 		addConfiguredDatasources();
 		createConfigFileMap();
 		EFGRDBImportUtils.init();
-		//http://localhost:8080/efg2/
-		//clean();
-		
+		createTemplateObjectMap();
 		
 	}
-	 /** Static method that returns the servlet context
-     *  attribute named "EFG_IMAGES_DIR" if it is available.
-     *  Returns an empty string if the attribute is
-     *  unavailable.
-     *
-     *Taken from More Servlets and JavaServer Pages
-     *  from Prentice Hall and Sun Microsystems Press,
-     *  http://www.moreservlets.com/.
-     *  &copy; 2002 Marty Hall; may be freely used or adapted.
-     */
-    public static String getEFGImagesDirectory(){
-	String name =
-	    (String)servletContext.getAttribute(EFGImportConstants.EFG_IMAGES_DIR_NAME);
-	if (name == null) {
-	    name = "";
-	}
-	return(name);
-    }
-    /** Static method that returns the servlet context
-     *  attribute named "EFG_IMAGES_THUMBNAIL_DIR" if it is available.
-     *  Returns an empty string if the attribute is
-     *  unavailable.
-     *Taken from More Servlets and JavaServer Pages
-     *  from Prentice Hall and Sun Microsystems Press,
-     *  http://www.moreservlets.com/.
-     *  &copy; 2002 Marty Hall; may be freely used or adapted.
-     */
-    public static String getEFGThumbnailsDiretcory(){
-	String name =
-	    (String)servletContext.getAttribute(EFGImportConstants.EFG_THUMB_NAILS_DIR_NAME);
-	if (name == null) {
-	    name = "";
-	}
-	return(name);
-    }
-	
-
-	/**
-	 * Static method that returns the servlet context attribute named
-	 * "EFG_IMAGES_THUMBNAIL_DIR" if it is available. Returns an empty string if
-	 * the attribute is unavailable. Taken from More Servlets and JavaServer
-	 * Pages from Prentice Hall and Sun Microsystems Press,
-	 * http://www.moreservlets.com/. &copy; 2002 Marty Hall; may be freely used
-	 * or adapted.
-	 */
-	public synchronized static String getImagesMaxDim() {
-		String name = (String)servletContext.getAttribute(EFGImportConstants.MAX_DIM_NAME);
-		if (name == null) {
-			name = "";
-		}
-		return (name);
-	}
-
-	
 	/**
 	 * This method is called when the Context is destroyed. The Database is
 	 * closed, all threads that are bound to the session are removed and the
@@ -211,27 +162,27 @@ public class EFGContextListener implements ServletContextListener {
 	 *            the ServletContextEvent object
 	 */
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
+		System.out.println("Destroying driver manager!!");
+		destroyDriverManager();
 		try {
-			EFGUtils.log(this.getClass().getName() + ", destroy() finished.");
-			EFGUtils.log("EFG context destroyed");
+			EFGUtils.log("Context is being destroyed");
+			
+			EFGUtils.log("Writing TemplateObject Map");
+			writeTemplateObject();
+			EFGUtils.log("Clean up old xml files");
 			clean();
-			sit.contextDestroyed();
+			EFGUtils.log("Destroy cache");
+			//perhaps also serialize this
 			cacheAdmin.destroy();
-
+			sit.contextDestroyed();
 		} catch (Exception e) {
+			System.out.println("Context is being destroyed threw an exception");
 			EFGUtils.log(e.getMessage());
 		}
-	}
-
-	
-
-	// Remove all image thumbnails on undeploy or container shutdown
-	public void destroy() {
-
+		EFGUtils.log("EFG context destroyed");
 	}
 	
-
-	/**
+	 /**
 	 * Writes lines of HTML to a PrintWriter.
 	 * 
 	 * @param lines
@@ -314,144 +265,6 @@ public class EFGContextListener implements ServletContextListener {
 		}
 		return true;
 	}
-
-	private  void addConfiguredDatasources() {
-		
-		/*  try{ String templateFile =
-		  servletContext.getRealPath("/templateConFigFiles") + File.separator +
-		  EFGImportConstants.TEMPLATES_CONFIG_SRC; FileReader reader = new
-		  FileReader(new File(templateFile));
-		 project.efg.templates.searchPageConfig.EFGSearchPageConfig espc =
-		  (EFGSearchPageConfig)EFGSearchPageConfig.unmarshalEFGSearchPageConfig(reader);
-		  if(espc != null){ int dsCount = espc.getDatasourceCount(); for(int i =
-		  0; i < dsCount; i++){
-		  project.efg.templates.searchPageConfig.Datasource datasource =
-		  espc.getDatasource(i); String name = datasource.getName().trim();
-		  configuredDatasources.add(name.toLowerCase()); } } } catch(Exception
-		  ee){ if(log != null){ LoggerUtils.logErrors(ee); } else{
-		 LoggerUtilsServlet.logErrors(ee); } }
-		 */
-	}
-
-
-
-	
-		private void clean() {
-			String fullPath = servletContext.getRealPath("/");
-			// Retrieve directory path and get full list of files
-			File staleFiles = new File(fullPath);
-			String thmDir = EFGImportConstants.EFGIMAGES_THUMBS;
-			File[] list = staleFiles.listFiles();
-	
-			for (int f = 0; f < list.length; f++) {
-				if (list[f].getName().equals(thmDir)) {
-					this.deleteDir(list[f]);
-				}
-			}
-			staleFiles = new File(fullPath + File.separator
-					+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
-			if (!staleFiles.exists()) {
-				return;
-			}
-			list = staleFiles.listFiles();
-	
-			for (int f = 0; f < list.length; f++) {
-				File staleFile = list[f];
-	
-				if (staleFile.getName().endsWith("_old")) {				
-						this.deleteDir(list[f]);
-				
-				}
-			}
-		}
-
-
-
-	/*public synchronized String getQueryHandlerName() {
-		return (String) configMap.get("className");
-	}*/
-//	 Deletes all files and subdirectories under dir.
-	// Returns true if all deletions were successful.
-	// If a deletion fails, the method stops attempting to delete and returns
-	// false.
-	private boolean deleteDir(File dir) {
-		if (dir.isDirectory()) {
-			String[] children = dir.list();
-			for (int i = 0; i < children.length; i++) {
-				boolean success = deleteDir(new File(dir, children[i]));
-				if (!success) {
-					return false;
-				}
-			}
-		}
-		// The directory is now empty so delete it
-		return dir.delete();
-	}
-	/**
-	 * This method takes a String and returns an encoded version of the String
-	 * that can be used as a Java class name.
-	 * 
-	 * @param origString
-	 *            the pre-encoded string
-	 * @return the encoded string to be used as a java class name
-	 */
-	/*private static String encodeToJavaClassName(String origString) {
-		StringBuffer sb = new StringBuffer(origString);
-		int strLength = sb.length();
-
-		if (strLength > 0 && !Character.isJavaIdentifierStart(sb.charAt(0)))
-			sb.setCharAt(0, '_');
-
-		for (int i = 1; i < strLength; i++)
-			if (!Character.isJavaIdentifierPart(sb.charAt(i)))
-				sb.setCharAt(i, '_');
-
-		return sb.toString();
-	}*/
-
-	private void readConfigFile(String fileName) {
-		// get the path to properties file
-		if (path == null)
-			path = servletContext.getRealPath("/WEB-INF/classes/")
-					+ System.getProperty("file.separator");
-
-		String fullPath = path + fileName;
-
-		try {
-			// Read the file
-			BufferedReader propFile = new BufferedReader(new FileReader(
-					fullPath));
-			String word = null;
-			while ((word = propFile.readLine()) != null) {
-				if (!word.startsWith("#")) {// Strings that starts with the "#"
-											// sign are comments
-					String[] tokens = word.split("=");
-					String temp1 = null;
-					String temp2 = null;
-					if (tokens.length == 2) {
-						temp1 = tokens[0];
-						temp2 = tokens[1];
-						int index = temp2.indexOf("#");
-						if (index != -1) {
-							temp2 = tokens[1].substring(0, index - 1);
-						}
-						configMap.put(temp1, temp2);
-					} else {
-						log.debug("property file content incorrect");
-					}
-				}
-			}// end while
-		} catch (Exception e) {
-			if (log != null) {
-				log.error(e.getMessage());
-				LoggerUtils.logErrors(e);
-			} else {
-				LoggerUtilsServlet.logErrors(e);
-			}
-		}
-	}
-
-	
 
 	/**
 	 * Returns the fullPath to the metadata file
@@ -550,19 +363,38 @@ public class EFGContextListener implements ServletContextListener {
      */
   
 
-    /**
-     * Obtain the context path of the passed in HttpServletRequest.
-     *
-     * @param request an HttpServletRequest object that contains a user's request paramters
-     * @return a string containg the context path of the servlet that receive the request 
-     * @throws ServletException
-     * @throws IOException
-     */
-   /* public static String getContextPath(HttpServletRequest request)
-	throws ServletException, IOException 
-    {
-    	return request.getContextPath();
-    }*/
+	private void writeTemplateObject(){
+		String mutex ="";
+		synchronized (mutex) {
+				String mapLocation  = servletContext.getRealPath("/WEB-INF") + File.separator + EFGImportConstants.TEMPLATE_MAP_NAME;	
+				TemplateMapObjectHandler.writeTemplateObject(mapLocation);	
+		}
+	}
+	/**
+	 * 
+	 */
+	private void createTemplateObjectMap() {
+		String mutex ="";
+		synchronized (mutex) {
+				String mapLocation  = servletContext.getRealPath("/WEB-INF") + File.separator + EFGImportConstants.TEMPLATE_MAP_NAME;	
+				TemplateMapObjectHandler.createTemplateObjectMap(mapLocation);	
+		}
+	}
+	private void destroyDriverManager() { 
+	    try { 
+	      Introspector.flushCaches(); 
+	      for (Enumeration e = DriverManager.getDrivers(); e.hasMoreElements();) { 
+	        Driver driver = (Driver) e.nextElement(); 
+	        if (driver.getClass().getClassLoader() == getClass().getClassLoader()) { 
+	          DriverManager.deregisterDriver(driver);          
+	        } 
+	      } 
+	    } catch (Throwable e) { 
+	      System.err.println("Failled to cleanup ClassLoader for webapp"); 
+	      e.printStackTrace(); 
+	    } 
+	  }
+
 	
 	/**
 	 * Parse a schema and populate a Set with the members of the schema
@@ -576,7 +408,129 @@ public class EFGContextListener implements ServletContextListener {
 		String[] arr = schemaNames.split("\\s");
 		fillSet(arr, path);
 	}
-//	 Looks for a servlet context init parameter with a
+
+	private  void addConfiguredDatasources() {
+		
+		/*  try{ String templateFile =
+		  servletContext.getRealPath("/templateConFigFiles") + File.separator +
+		  EFGImportConstants.TEMPLATES_CONFIG_SRC; FileReader reader = new
+		  FileReader(new File(templateFile));
+		 project.efg.templates.searchPageConfig.EFGSearchPageConfig espc =
+		  (EFGSearchPageConfig)EFGSearchPageConfig.unmarshalEFGSearchPageConfig(reader);
+		  if(espc != null){ int dsCount = espc.getDatasourceCount(); for(int i =
+		  0; i < dsCount; i++){
+		  project.efg.templates.searchPageConfig.Datasource datasource =
+		  espc.getDatasource(i); String name = datasource.getName().trim();
+		  configuredDatasources.add(name.toLowerCase()); } } } catch(Exception
+		  ee){ if(log != null){ LoggerUtils.logErrors(ee); } else{
+		 LoggerUtilsServlet.logErrors(ee); } }
+		 */
+	}
+	private void clean() {
+		String fullPath = servletContext.getRealPath("/");
+		
+		File staleFiles = new File(fullPath + File.separator
+				+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
+		if (!staleFiles.exists()) {
+			EFGUtils.log(staleFiles.getAbsolutePath() + " does not yet exists");
+			return;
+		}
+		File[] list = staleFiles.listFiles();
+		EFGUtils.log("Number of files to remove: " + list.length);
+		for (int f = 0; f < list.length; f++) {
+			File staleFile = list[f];
+	
+			if (staleFile.getName().endsWith("_old")) {	
+				EFGUtils.log("Removing: " + staleFile.getAbsolutePath());
+					this.deleteDir(list[f]);
+			
+			}
+		}
+	}
+	/*public synchronized String getQueryHandlerName() {
+			return (String) configMap.get("className");
+		}*/
+	//	 Deletes all files and subdirectories under dir.
+		// Returns true if all deletions were successful.
+		// If a deletion fails, the method stops attempting to delete and returns
+		// false.
+		private boolean deleteDir(File dir) {
+			if (dir.isDirectory()) {
+				String[] children = dir.list();
+				for (int i = 0; i < children.length; i++) {
+					boolean success = deleteDir(new File(dir, children[i]));
+					if (!success) {
+						return false;
+					}
+				}
+			}
+			// The directory is now empty so delete it
+			return dir.delete();
+		}
+	/**
+	 * This method takes a String and returns an encoded version of the String
+	 * that can be used as a Java class name.
+	 * 
+	 * @param origString
+	 *            the pre-encoded string
+	 * @return the encoded string to be used as a java class name
+	 */
+	/*private static String encodeToJavaClassName(String origString) {
+		StringBuffer sb = new StringBuffer(origString);
+		int strLength = sb.length();
+	
+		if (strLength > 0 && !Character.isJavaIdentifierStart(sb.charAt(0)))
+			sb.setCharAt(0, '_');
+	
+		for (int i = 1; i < strLength; i++)
+			if (!Character.isJavaIdentifierPart(sb.charAt(i)))
+				sb.setCharAt(i, '_');
+	
+		return sb.toString();
+	}*/
+	
+	private void readConfigFile(String fileName) {
+		// get the path to properties file
+		if (path == null)
+			path = servletContext.getRealPath("/WEB-INF/classes/")
+					+ System.getProperty("file.separator");
+	
+		String fullPath = path + fileName;
+	
+		try {
+			// Read the file
+			BufferedReader propFile = new BufferedReader(new FileReader(
+					fullPath));
+			String word = null;
+			while ((word = propFile.readLine()) != null) {
+				if (!word.startsWith("#")) {// Strings that starts with the "#"
+											// sign are comments
+					String[] tokens = word.split("=");
+					String temp1 = null;
+					String temp2 = null;
+					if (tokens.length == 2) {
+						temp1 = tokens[0];
+						temp2 = tokens[1];
+						int index = temp2.indexOf("#");
+						if (index != -1) {
+							temp2 = tokens[1].substring(0, index - 1);
+						}
+						configMap.put(temp1, temp2);
+					} else {
+						log.debug("property file content incorrect");
+					}
+				}
+			}// end while
+		} catch (Exception e) {
+			if (log != null) {
+				log.error(e.getMessage());
+				LoggerUtils.logErrors(e);
+			} else {
+				LoggerUtilsServlet.logErrors(e);
+			}
+		}
+	}
+	//	 Looks for a servlet context init parameter with a
 	// given name. If it finds it, it puts the value into
 	// a servlet context attribute with the same name. If
 	// the init parameter is missing, it puts a default
@@ -598,7 +552,7 @@ public class EFGContextListener implements ServletContextListener {
 	 */
 	private void createKeyWordMap() {
 		// get the path to properties file
-		String fullPath = servletContext.getRealPath("/WEB-INF/classes/"
+		String fullPath = servletContext.getRealPath("/WEB-INF/classes/properties/"
 				+ File.separator + EFGImportConstants.EFG_KEYWORDS_PROPERTIES);
 		try {
 			// Read the file
@@ -643,6 +597,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.1.2.3  2006/07/15 13:42:09  kasiedu
+// no message
+//
 // Revision 1.1.2.2  2006/07/11 21:48:22  kasiedu
 // "Added more configuration info"
 //

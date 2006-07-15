@@ -3,12 +3,18 @@
  */
 package project.efg.util;
 
+import java.io.Serializable;
+
 /**
  * @author kasiedu
  *
  */
-public class EFGDisplayObject implements java.lang.Comparable{
+public class EFGDisplayObject implements java.lang.Comparable, Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String displayName;
 	private String datasourceName;
 	public EFGDisplayObject(){

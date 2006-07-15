@@ -90,7 +90,7 @@
 							</h1>
 						</td>
 						<td rowspan="3">
-							<img src="{$imagetitle}" alt="" height="168" width="257" border="0"/>
+							<img src="{$imagetitle}" alt="" border="0"/>
 						</td>
 					</tr>
 					<tr>
@@ -253,7 +253,7 @@
 					</xsl:choose>
 				</xsl:variable>
 				<a href="{$linkURL}">
-					<img height="112" width="111" border="0" src="{$src}" alt="{$alt}"/>
+					<img  border="0" src="{$src}" alt="{$alt}"/>
 				</a>
 			</xsl:if>
 		</td>
@@ -272,7 +272,7 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<img height="112" width="108" border="0" src="{$src}" alt="{$alt}"/>
+				<img  border="0" src="{$src}" alt="{$alt}"/>
 			</xsl:if>
 		</td>
 	</xsl:template>

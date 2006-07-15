@@ -234,8 +234,7 @@ td.rowspacer {
 					</xsl:choose>
 				</xsl:variable>
 				<td class="caption">
-					<a class="caption">
-						<xsl:attribute name="href"><xsl:value-of select="$linkURL"/></xsl:attribute>
+					<a class="caption" href="{$linkURL}">
 						<xsl:value-of select="$currentname"/>
 					</a>
 				</td>
@@ -289,6 +288,17 @@ td.rowspacer {
 				<xsl:variable name="linkURL">
 					<xsl:choose>
 						<xsl:when test="$datasource=''">
+							<xsl:value-of select="concat($hrefCommon,$uniqueID)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($hrefCommon,$uniqueID,'&amp;displayName=', $datasource)"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<!--
+				<xsl:variable name="linkURL">
+					<xsl:choose>
+						<xsl:when test="$datasource=''">
 							<xsl:value-of select="concat($serverbase, '/Redirect.jsp?uniqueID=',$uniqueID, '&amp;dataSourceName=',$dsname, '&amp;displayFormat=HTML')"/>
 						</xsl:when>
 						<xsl:otherwise>
@@ -296,18 +306,17 @@ td.rowspacer {
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
+-->
 				<td class="thumbnail">
-					<a class="thumbnail">
-						<xsl:attribute name="href"><xsl:value-of select="$linkURL"/></xsl:attribute>
+					<a class="thumbnail" href="{$linkURL}">
 						<xsl:choose>
 							<xsl:when test="string($imageName)=''">
 								<xsl:if test="not(string($altImage))=''">
 									<xsl:variable name="imageURL">
 										<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $altImage)"/>
 									</xsl:variable>
-									<img>
-										<xsl:attribute name="src"><xsl:value-of select="$imageURL"/></xsl:attribute>
-									</img>
+									
+									<img src="{$imageURL}"/>
 								</xsl:if>
 							</xsl:when>
 							<xsl:otherwise>
@@ -315,9 +324,8 @@ td.rowspacer {
 									<xsl:variable name="imageURL">
 										<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
 									</xsl:variable>
-									<img>
-										<xsl:attribute name="src"><xsl:value-of select="$imageURL"/></xsl:attribute>
-									</img>
+									<img src="{$imageURL}"/>
+									
 								</xsl:if>
 							</xsl:otherwise>
 						</xsl:choose>
@@ -326,11 +334,6 @@ td.rowspacer {
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
-	<xsl:template name="findAltImage">
-		<xsl:param name="mediaresources"/>
-		<xsl:for-each select="$mediaresources">
-			
-	</xsl:for-each>
-	</xsl:template>
+	
 	
 </xsl:stylesheet>

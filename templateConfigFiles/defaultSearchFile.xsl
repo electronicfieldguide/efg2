@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
+	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:variable name="images-per-row" select="3"/>
 	<xsl:template match="/">
 		<xsl:variable name="dsname" select="//datasources/datasource[1]/@name"/>
@@ -76,24 +77,23 @@
 				</xsl:if>
 			</xsl:variable>
 			<xsl:variable name="linkURL">
-				<xsl:choose>
-					<xsl:when test="$datasource=''">
-						<xsl:value-of select="concat($serverbase, '/search?uniqueID=',$uniqueID, '&amp;dataSourceName=',$dsname, '&amp;displayFormat=HTML')"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="concat($serverbase, '/search?uniqueID=',$uniqueID,'&amp;displayName=', $datasource, '&amp;dataSourceName=',$dsname,'&amp;displayFormat=HTML')"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:variable>
-			<a>
-				<xsl:attribute name="href"><xsl:value-of select="$linkURL"/></xsl:attribute>
+					<xsl:choose>
+						<xsl:when test="$datasource=''">
+							<xsl:value-of select="concat($hrefCommon,$uniqueID)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($hrefCommon,$uniqueID,'&amp;displayName=', $datasource)"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+		
+			<a href="{$linkURL}">
+		
 				<xsl:if test="not(string($imageName))=''">
 					<xsl:variable name="imageURL">
 						<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
 					</xsl:variable>
-					<img>
-						<xsl:attribute name="src"><xsl:value-of select="$imageURL"/></xsl:attribute>
-					</img>
+					<img src="{$imageURL}"/>
 					<br clear="all"/>
 				</xsl:if>
 				<xsl:value-of select="string($sci_name)"/>

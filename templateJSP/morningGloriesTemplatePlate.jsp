@@ -12,9 +12,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 <html>
 	<head>
 		<%
+			String templateMatch ="Plate Template3";
 			String context = request.getContextPath();
 			String realPath = getServletContext().getRealPath("/");
 			String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
+         
 			String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 			String xslFileName = "morningGloriesPlates.xsl";
 			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
@@ -38,7 +40,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			fileName.append(datasourceName.toLowerCase());
 			fileName.append(EFGImportConstants.XML_EXT);
 			Hashtable groupTable = tpop.populateTable(fileName.toString(), xslFileName, EFGImportConstants.SEARCHPAGE_PLATES_XSL, datasourceName );
-		    File imageFiles = new File(realPath + File.separator +  EFGImportConstants.templateImagesDirectory);
+		    	File imageFiles = new File(realPath + File.separator +  EFGImportConstants.templateImagesDirectory);
 			File[] imageFileList = imageFiles.listFiles(); 
 		%>
 		<title>xxx</title>
@@ -477,6 +479,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			</p><br/><br/>
 				<input type="hidden"   name="<%=EFGImportConstants.DISPLAY_NAME%>"  value="<%=displayName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_NAME%>"  value="<%=datasourceName%>"/>
+				<input type="hidden"   name="<%=EFGImportConstants.HTML_TEMPLATE_NAME%>"  value="<%=templateMatch%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.SEARCH_PAGE_STR%>"  value="<%=EFGImportConstants.SEARCH_PAGE_STR%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.SEARCH_TYPE_STR%>"  value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>"/>

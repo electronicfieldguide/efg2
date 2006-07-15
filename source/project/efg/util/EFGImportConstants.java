@@ -27,6 +27,7 @@ import java.util.Set;
  * USA
  */
 public interface EFGImportConstants {
+	String TEMPLATE_MAP_NAME="templateMap.out";
 	String TEMPLATE_SUCCESS_PAGE = "/UploadSuccess.jsp";
 	String templateImagesDirectory ="templateImagesDirectory";
 	String templateCSSDirectory="templateCSSDirectory";
@@ -152,7 +153,7 @@ public interface EFGImportConstants {
 	String METAFILESUFFIX = "Info";
 
 	String EXCEL_EXT = ".xls";
-	String TEMPLATE_ERROR_PAGE = "/TemplateError.jsp";
+	String TEMPLATE_ERROR_PAGE = "/templateJSP/TemplateError.jsp";
 	String TEMPLATE_SCHEMA_NAME = "TaxonPageTemplate.xsd";
 	String XML_EXT = ".xml";
 
@@ -355,6 +356,7 @@ public interface EFGImportConstants {
 
 	String SEARCH_TYPE_STR = "searchType";
 	String TEMPLATE_NAME="templateName";
+	String HTML_TEMPLATE_NAME="htmlTemplateName";
 	String SEARCH_PLATES_TYPE = "plates";
 	String SEARCH_TAXON_TYPE = "taxon";
 	String SEARCH_LISTS_TYPE = "lists";

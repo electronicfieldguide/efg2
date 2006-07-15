@@ -4,7 +4,6 @@
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
 	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:include href="dateTemplate.xsl"/>
-
 	<xsl:variable name="xslPage" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$dataSourceName]/XSLFileNames/xslPlatePages/xslPage[@fileName=$xslName]"/>
 	<xsl:variable name="title" select="$xslPage/groups/group[@id='1']/@text"/>
 	<xsl:variable name="imagetitle" select="concat($template_images_home,$xslPage/groups/group[@id='2']/@text)"/>
@@ -111,7 +110,6 @@
 			<head>
 				<meta http-equiv="content-type" content="text/html;charset=iso-8859-1"/>
 				<title>
-			
 					<xsl:value-of select="$checkListTitle"/>
 				</title>
 			</head>
@@ -127,7 +125,7 @@
 							</h1>
 						</td>
 						<td rowspan="3">
-							<img src="{$imagetitle}" alt="" height="168" width="200" border="0"/>
+							<img src="{$imagetitle}" alt="" border="0"/>
 						</td>
 					</tr>
 					<tr>
@@ -324,23 +322,39 @@
 		<xsl:param name="caption2"/>
 		<td align="center">
 			<xsl:if test="not(string($image1))=''">
-				<a>
-					<xsl:attribute name="href"><xsl:value-of select="concat($imagebase_large,'/',$image1)"/></xsl:attribute>
-					<img height="184" width="323" border="0">
-						<xsl:attribute name="src"><xsl:value-of select="concat($imagebase_thumbs,'/',string($image1))"/></xsl:attribute>
-						<xsl:attribute name="alt"><xsl:choose><xsl:when test="string($caption1)=''"><xsl:value-of select="$image1"/></xsl:when><xsl:otherwise><xsl:value-of select="$caption1"/></xsl:otherwise></xsl:choose></xsl:attribute>
-					</img>
+				<xsl:variable name="href" select="concat($imagebase_large,'/',$image1)"/>
+				<a href="{$href}">
+					<xsl:variable name="src" select="concat($imagebase_thumbs,'/',string($image1))"/>
+					<xsl:variable name="alt">
+						<xsl:choose>
+							<xsl:when test="string($caption1)=''">
+								<xsl:value-of select="$image1"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$caption1"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+					<img border="0" src="{$src}" alt="{$alt}"/>
 				</a>
 			</xsl:if>
 		</td>
 		<td align="center">
 			<xsl:if test="not(string($image2))=''">
-				<a>
-					<xsl:attribute name="href"><xsl:value-of select="concat($imagebase_large,'/',$image2)"/></xsl:attribute>
-					<img height="184" width="327" border="0">
-						<xsl:attribute name="src"><xsl:value-of select="concat($imagebase_thumbs,'/',string($image2))"/></xsl:attribute>
-						<xsl:attribute name="alt"><xsl:choose><xsl:when test="string($caption2)=''"><xsl:value-of select="$image2"/></xsl:when><xsl:otherwise><xsl:value-of select="$caption2"/></xsl:otherwise></xsl:choose></xsl:attribute>
-					</img>
+				<xsl:variable name="href" select="concat($imagebase_large,'/',$image2)"/>
+				<a href="{$href}">
+					<xsl:variable name="src" select="concat($imagebase_thumbs,'/',string($image2))"/>
+					<xsl:variable name="alt">
+						<xsl:choose>
+							<xsl:when test="string($caption2)=''">
+								<xsl:value-of select="$image2"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$caption2"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:variable>
+						<img border="0" src="{$src}" alt="{$alt}"/>
 				</a>
 			</xsl:if>
 		</td>
