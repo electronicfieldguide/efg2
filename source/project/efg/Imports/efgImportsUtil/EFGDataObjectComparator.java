@@ -56,7 +56,7 @@
  * implement equals and hashcode if it is used as part of a Collection.
  */
 package project.efg.Imports.efgImportsUtil;
-import project.efg.servlets.efgInterface.SearchableObject;
+import project.efg.servlets.efgInterface.EFGDataObject;
 
 
 /**
@@ -65,7 +65,7 @@ import project.efg.servlets.efgInterface.SearchableObject;
  * 
  * @see #RDBDataSourceHelper.java
  */
-public class SearchableObjectComparator implements java.util.Comparator {
+public class EFGDataObjectComparator implements java.util.Comparator {
 
 	
 	  /**
@@ -101,12 +101,15 @@ public class SearchableObjectComparator implements java.util.Comparator {
      * 	       being compared by this Comparator.
      */
 	public final int compare(Object object1, Object object2) {
-		SearchableObject dbean1 = (SearchableObject) object1;
-		SearchableObject dbean2 = (SearchableObject) object2;
+		EFGDataObject dbean1 = (EFGDataObject) object1;
+		EFGDataObject dbean2 = (EFGDataObject) object2;
 		return dbean1.getOrder() - dbean2.getOrder();
 	}
-} // SearchableObjectComparator
+} // EFGDataObjectComparator
 // $Log$
+// Revision 1.1.2.1  2006/07/20 02:19:51  kasiedu
+// no message
+//
 // Revision 1.1.2.1  2006/06/08 13:27:40  kasiedu
 // New files
 //

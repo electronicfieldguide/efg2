@@ -30,6 +30,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
     
 			Iterator it =null;
 			List table = dsHelper.getTaxonPageFields(displayName,datasourceName);
+			
 			TemplatePopulator tpop = new  TemplatePopulator();
 
 			Hashtable groupTable = tpop.populateTable(fileName.toString(), xslFileName, EFGImportConstants.SEARCHPAGE_LISTS_XSL, datasourceName );

@@ -25,7 +25,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
     
 			Iterator it =null;
 			List table = dsHelper.getTaxonPageFields(displayName,datasourceName);
-		
+		    List mediaResourceFields = dsHelper.getMediaResourceFields(displayName,datasourceName);
 			int tableSize = table.size();
 			TemplateProducer tp = new TemplateProducer();
 			boolean isNew = true;
@@ -59,21 +59,22 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				<table class="resultsdisplay">
 					<tr>
 						<td class="thumbnail">
+							<% if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){%>
 								<select name="<%=name%>"  title="Select an  an Image Field From the List">
 								<%
 									ii=0;
-									it = table.iterator();
+									it = mediaResourceFields.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
-										<option>
+											<option>
 										<%
 										}
 										if(fieldName.equals(fieldValue)){
 										%>
-										<option selected="selected"><%=fieldName%></option>
+											<option selected="selected"><%=fieldName%></option>
 										<%
 										}
 										else{
@@ -85,6 +86,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}
 								%>
 								</select>   
+							<%}%>
 						</td>
 					</tr>
 					<tr>
@@ -102,24 +104,29 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}	
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
-										<option>
+												<option>
 										<%
 										}
 										if(fieldName.equals(fieldValue)){
 										%>
-										<option selected="selected"><%=fieldName%></option>
+												<option selected="selected"><%=fieldName%></option>
 										<%
 										}
 										else{
 										%>
-											<option><%=fieldName%></option>
+												<option><%=fieldName%></option>
 										<%
 										}
 										ii++;
-									}
+									}	
 								%>
 								</select>   
 								<%
@@ -135,24 +142,29 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}	
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
-										<option>
+											<option>
 										<%
 										}
 										if(fieldName.equals(fieldValue)){
 										%>
-										<option selected="selected"><%=fieldName%></option>
+												<option selected="selected"><%=fieldName%></option>
 										<%
 										}
 										else{
 										%>
-											<option><%=fieldName%></option>
+												<option><%=fieldName%></option>
 										<%
 										}
 										ii++;
-									}
+									}	
 								%>
 								</select>   
 						</td>

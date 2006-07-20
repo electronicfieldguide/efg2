@@ -44,7 +44,7 @@ import project.efg.util.EFGObject;
 
 /**
  * @author kasiedu
- *
+ * 
  */
 public class EFGDocumentTypesFactory {
 	static Logger log = null;
@@ -54,16 +54,19 @@ public class EFGDocumentTypesFactory {
 		} catch (Exception ee) {
 		}
 	}
-	private EFGParseObjectFactory parseFactory = 
-		CreateEFGParseObjectFactory.getInstance();
+
+	private EFGParseObjectFactory parseFactory = CreateEFGParseObjectFactory
+			.getInstance();
+
 	private QueryExecutor queryExecutor;
+
 	private EFGParseStates efgParseStates;
-	public EFGDocumentTypesFactory(){
+
+	public EFGDocumentTypesFactory() {
 		this.queryExecutor = new QueryExecutor();
 		this.efgParseStates = new EFGParseStates();
 	}
-	
-	
+
 	private String getSearchableDataQuery(String name, String ds) {
 		StringBuffer queryBuffer = new StringBuffer();
 		queryBuffer.append("SELECT ");
@@ -72,139 +75,159 @@ public class EFGDocumentTypesFactory {
 		queryBuffer.append(ds);
 		return queryBuffer.toString();
 	}
-	private EFGParseObjectList parseObject(List list,String separator, EFGObject efgObject){
-		EFGParseObjectList oldList =
-			new EFGParseObjectList();
+
+	private EFGParseObjectList parseObject(List list, String separator,
+			EFGObject efgObject) {
+		EFGParseObjectList oldList = new EFGParseObjectList();
 		oldList.setDatabaseName(efgObject.getDatabaseName());
 		oldList.setName(efgObject.getName());
-		
-		for (java.util.Iterator iter = list.iterator(); iter
-		.hasNext();) {
-			EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter
-			.next();
+
+		for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
+			EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
+					.next();
 			String states = queue.getObject(0);
 			if ((states != null) && (!states.trim().equals(""))) {
-				EFGParseObjectList lists1 =
-					this.efgParseStates.parseStates(separator,states);
+				EFGParseObjectList lists1 = this.efgParseStates.parseStates(
+						separator, states);
 				oldList.addEFGParseObjectList(lists1);
 			}
 		}
 		return oldList;
 	}
-	private ItemsType createCategorical(List list,EFGObject efgObject){
+
+	private ItemsType createCategorical(List list, EFGObject efgObject) {
 		ItemsType items = null;
 		try {
-			EFGParseObjectList oldList = 
-				parseObject(list,EFGImportConstants.ORCOMMAPATTERN,efgObject);
-			if(oldList.getSize() > 0){
-				items  = parseFactory.createItems(oldList);
-				if(items != null){
+			EFGParseObjectList oldList = parseObject(list,
+					EFGImportConstants.ORCOMMAPATTERN, efgObject);
+			if (oldList.getSize() > 0) {
+				items = parseFactory.createItems(oldList);
+				if (items != null) {
 					items.setName(oldList.getName());
 					items.setDatabaseName(oldList.getDatabaseName());
 				}
 			}
-		}
-		catch(Exception ee){
+		} catch (Exception ee) {
 			log.error(ee.getMessage());
 		}
 		return items;
 	}
-	private MediaResourcesType createMediaResources(List list,EFGObject efgObject){
-		MediaResourcesType media = null;
-		
+	private ItemsType createNarrative(List list, EFGObject efgObject) {
+		ItemsType items = null;
 		try {
-			EFGParseObjectList oldList = 
-				parseObject(list,EFGImportConstants.LISTSEP,efgObject);
-			if(oldList.getSize() > 0){
-				media = 
-					parseFactory.createMediaResources(oldList);
-				if(media != null){
+			EFGParseObjectList oldList = parseObject(list,
+					EFGImportConstants.NOPATTERN, efgObject);
+			if (oldList.getSize() > 0) {
+				items = parseFactory.createItems(oldList);
+				if (items != null) {
+					items.setName(oldList.getName());
+					items.setDatabaseName(oldList.getDatabaseName());
+				}
+			}
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		return items;
+	}
+	private MediaResourcesType createMediaResources(List list,
+			EFGObject efgObject) {
+		MediaResourcesType media = null;
+
+		try {
+			EFGParseObjectList oldList = parseObject(list,
+					EFGImportConstants.LISTSEP, efgObject);
+			if (oldList.getSize() > 0) {
+				media = parseFactory.createMediaResources(oldList);
+				if (media != null) {
 					media.setName(oldList.getName());
 					media.setDatabaseName(oldList.getDatabaseName());
 				}
 			}
-		}
-		catch(Exception ee){
+		} catch (Exception ee) {
 			log.error(ee.getMessage());
 		}
 		return media;
 	}
-	private EFGListsType createEFGLists(List list,EFGObject efgObject){
+
+	private EFGListsType createEFGLists(List list, EFGObject efgObject) {
 		EFGListsType lists = null;
 		try {
-			EFGParseObjectList oldList = 
-				parseObject(list,EFGImportConstants.LISTSEP,efgObject);
-			
-			if(oldList.getSize() > 0){
-				lists = 
-					parseFactory.createEFGLists(oldList);
-				if(lists != null){
+			EFGParseObjectList oldList = parseObject(list,
+					EFGImportConstants.LISTSEP, efgObject);
+
+			if (oldList.getSize() > 0) {
+				lists = parseFactory.createEFGLists(oldList);
+				if (lists != null) {
 					lists.setName(oldList.getName());
 					lists.setDatabaseName(oldList.getDatabaseName());
 				}
 			}
-		}
-		catch(Exception ee){
+		} catch (Exception ee) {
 			log.error(ee.getMessage());
 		}
 		return lists;
 	}
-	private StatisticalMeasuresType createStatisticalMeasures(List list,EFGObject efgObject){
+
+	private StatisticalMeasuresType createStatisticalMeasures(List list,
+			EFGObject efgObject) {
 		StatisticalMeasuresType stats = null;
-		
+
 		try {
-			EFGParseObjectList oldList = 
-				parseObject(list,EFGImportConstants.ORCOMMAPATTERN,efgObject);
-			
-			if(oldList.getSize() > 0){
-				stats = 
-				parseFactory.createStatisticalMeasures(oldList);
-				if(stats != null){
+			EFGParseObjectList oldList = parseObject(list,
+					EFGImportConstants.ORCOMMAPATTERN, efgObject);
+
+			if (oldList.getSize() > 0) {
+				stats = parseFactory.createStatisticalMeasures(oldList);
+				if (stats != null) {
 					stats.setName(oldList.getName());
 					stats.setDatabaseName(oldList.getDatabaseName());
 				}
 			}
-		}
-		catch(Exception ee){
+		} catch (Exception ee) {
 			log.error(ee.getMessage());
 		}
 		return stats;
 	}
 
 	public synchronized Object getInstance(EFGObject efgObject,
-			String datasource){
-		
+			String datasource) {
+
 		List list;
 		try {
 			list = this.queryExecutor.executeQueryForList(
-					getSearchableDataQuery(efgObject.getDatabaseName(), datasource), 1);
-			if(list == null){
-				throw new Exception("List is null for field name: " +
-						efgObject.getDatabaseName());
+					getSearchableDataQuery(efgObject.getDatabaseName(),
+							datasource), 1);
+			if (list == null) {
+				throw new Exception("List is null for field name: "
+						+ efgObject.getDatabaseName());
 			}
-		if (EFGImportConstants.ISLISTS.equalsIgnoreCase(efgObject.getDataType())) {
-			return createEFGLists(list,efgObject);
-		} else if (EFGImportConstants.NUMERIC.equalsIgnoreCase(efgObject.getDataType())) {
-			return createStatisticalMeasures(list,efgObject);
-			
-		}
-		else if (EFGImportConstants.NUMERICRANGE.equalsIgnoreCase(efgObject.getDataType())) {
-			return createStatisticalMeasures(list,efgObject);
-			
-		}
-		else if (EFGImportConstants.MEDIARESOURCE.equalsIgnoreCase(efgObject.getDataType())) {
-			return createMediaResources(list,efgObject);
-		} else if (EFGImportConstants.CATEGORICAL.equals(efgObject.getDataType())) {
-			return createCategorical(list,efgObject);
+			if (EFGImportConstants.ISLISTS.equalsIgnoreCase(efgObject
+					.getDataType())) {
+				return createEFGLists(list, efgObject);
+			} else if (EFGImportConstants.NUMERIC.equalsIgnoreCase(efgObject
+					.getDataType())) {
+				return createStatisticalMeasures(list, efgObject);
+
+			} else if (EFGImportConstants.NUMERICRANGE
+					.equalsIgnoreCase(efgObject.getDataType())) {
+				return createStatisticalMeasures(list, efgObject);
+
+			} else if (EFGImportConstants.MEDIARESOURCE
+					.equalsIgnoreCase(efgObject.getDataType())) {
+				return createMediaResources(list, efgObject);
+			} else if (EFGImportConstants.CATEGORICAL.equals(efgObject
+					.getDataType())) {
+				return createCategorical(list, efgObject);
+			}
+			 else if (EFGImportConstants.NARRATIVE.equals(efgObject
+				.getDataType())) {
+			return createNarrative(list, efgObject);
 		}
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
 		return null;
-		
+
 	}
 
-	
-	
-	
 }

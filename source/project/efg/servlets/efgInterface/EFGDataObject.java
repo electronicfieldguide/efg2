@@ -35,7 +35,7 @@ import project.efg.efgDocument.StatisticalMeasuresType;
  * @author kasiedu
  *
  */
-public interface SearchableObject{
+public interface EFGDataObject{
 	/**
 	 * 
 	 * @param order in which this object appears in a list
@@ -115,7 +115,7 @@ public interface SearchableObject{
 	 * @param object
 	 * @return
 	 */
-	public boolean equals(SearchableObject object);
+	public boolean equals(EFGDataObject object);
 	/**
 	 * 
 	 * @return

@@ -1,76 +1,756 @@
-<% 
-   String context = request.getContextPath();
-   String dsName = request.getParameter("dataSourceName");
-   String url = "";
-%>
+<%@page import="
+java.io.File,
+java.util.List,
+java.util.ArrayList,
+java.util.Iterator,
+java.util.Hashtable,
+project.efg.servlets.efgInterface.EFGDataSourceHelperInterface,
+project.efg.util.EFGImportConstants,
+project.efg.util.TemplateProducer,
+project.efg.util.TemplatePopulator,
+project.efg.Imports.efgInterface.EFGQueueObjectInterface
+" %>
 <html>
-  <head>
-  </head>
-  <body bgcolor="#ffffff">
-    <h2 align="center">Click to view Template</h2>
-  <center>
-      <table>
-			  <tr>
-					  <td> 	</td>
-					  <td> 	 <a target="_blank" href="MarshaSpeciesPageTemplate.html">Marsha's Template Sample </a></td>
-					  <td> 	 <a target="_blank" href="SolaData.html">Bill's Template Sample </a></td>
-			  </tr>
-			<tr/>
-			<tr/>
-			<tr/>
-			  </table>
+	<head>
+			<%
+			String templateMatch ="Taxon Page Template1";
+			String context = request.getContextPath();
+			String realPath = getServletContext().getRealPath("/");
+			String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
+			String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
+			String xslFileName = "nantucketTaxonPageTemplate.xsl";
+			String fieldName = null;
+			String characterText = null;
+			String characterValue = null;
+			String fieldValue = null;
+			String catNarrativeName=null;
+			String listsName = null;
+			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
+			Iterator it =null;
 
-				<hr/><br/><br/>
-			<h3 align="center"> Select a template from the list below</h3>
-			</table> <table>
+			List table = dsHelper.getTaxonPageFields(displayName,datasourceName);
+			List mediaResourceFields = dsHelper.getMediaResourceFields(displayName,datasourceName);
+			List efgList = dsHelper.getEFGListsFields(displayName,datasourceName);
 
-		  	<tr>
-							
-				<td>
-					<% url = "xslFileName=billFamilyTaxonPage.xsl&dataSourceName=" + dsName;%>
-			 	 	<a  title="" href="<%=context%>/BillTemplate.jsp?<%=url%>">
+			boolean isListsExists = false;
+			boolean isImagesExists = false;
+			boolean isTableExists = false;
+			if((efgList != null) && (efgList.size() > 0)){
+				isListsExists = true;	
+			}
+			if((table != null) && (table.size() > 0)){
+				isTableExists = true;	
+			}
 
-						Bill's Template
-				 	</a>
-				</td> 
- </tr>
-<tr>
+			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
+				isImagesExists = true;	
+			}
+			
+			int numberOfImagesPerRow = 4;
+			TemplateProducer tp = new TemplateProducer();
+			boolean isNew = true;
+			boolean isOld = false;
+			String name = null;
+			int ii = 0;
+			TemplatePopulator tpop = new  TemplatePopulator();
+			StringBuffer fileName = new StringBuffer(realPath);
+			fileName.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME); 
+			fileName.append(File.separator);
+			fileName.append(datasourceName.toLowerCase());
+			fileName.append(EFGImportConstants.XML_EXT);
+			Hashtable groupTable = tpop.populateTable(fileName.toString(), xslFileName, EFGImportConstants.TAXONPAGE_XSL, datasourceName );
+	      String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory + "/nantuckettaxonpage.css";
 
-				<td>
-					<% url = "xslFileName=marshaTaxonPage.xsl&dataSourceName=" + dsName;%>
+		%>
 
-			 	 	<a  title="search datasource" href="<%=context%>/marshaTemplate.jsp?<%=url%>">
-						Marsha's Template
-				 	</a>
-				</td> 
- </tr>
-<!--
-<tr>
+		<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+	<title>Taxon Page Configuration of <%=displayName%></title>
+	<link rel="stylesheet" href="<%=cssLocation%>"/>
+	</head>
+	<body>
+		<form method="post" action="<%=context%>/configTaxonPage">
+			<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				if(isTableExists){
+			%>
+			<table class="title">
+				<tr>
+					<td class="comname" colspan="2">
+						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+							<%
+								ii=0;
+								it = table.iterator();
+								while (it.hasNext()) {
+									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+									 if(isImagesExists) {
+										if(mediaResourceFields.contains(queueObject)){
+											continue;
+										}
+									}	
+									fieldName = (String)queueObject.getObject(1);
+									if(ii==0){
+									%>
+											<option>
+									<%
+									}
+									if(fieldName.equals(fieldValue)){
+									%>
+											<option selected="selected"><%=fieldName%></option>
+									<%
+									}
+									else{
+									%>
+										<option><%=fieldName%></option>
+									<%
+									}
+									ii++;
+								}	
+							%>
+						</select>   
+					</td>
+				</tr>
+				<tr>
+					<td class="sciname">
+					<%
+						name =tp.getCharacter(isOld,isOld);
+						fieldValue = (String)groupTable.get(name);
+						if(fieldValue == null){
+							fieldValue ="";
+						}
+					%>
+						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+							<%
+								ii=0;
+								it = table.iterator();
+								while (it.hasNext()) {
+									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+									 if(isImagesExists) {
+										if(mediaResourceFields.contains(queueObject)){
+											continue;
+										}
+									}	
+									fieldName = (String)queueObject.getObject(1);
+									if(ii==0){
+									%>
+											<option>
+									<%
+									}
+									if(fieldName.equals(fieldValue)){
+									%>
+											<option selected="selected"><%=fieldName%></option>
+									<%
+									}
+									else{
+									%>
+										<option><%=fieldName%></option>
+									<%
+									}
+									ii++;
+								}	
+							%>
+						</select>   
+					<%
+						name =tp.getCharacter(isOld,isOld);
+						fieldValue = (String)groupTable.get(name);
+						if(fieldValue == null){
+							fieldValue ="";
+						}
+					%>
+						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+							<%
+								ii=0;
+								it = table.iterator();
+								while (it.hasNext()) {
+									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+									 if(isImagesExists) {
+										if(mediaResourceFields.contains(queueObject)){
+											continue;
+										}
+									}	
+									fieldName = (String)queueObject.getObject(1);
+									if(ii==0){
+									%>
+											<option>
+									<%
+									}
+									if(fieldName.equals(fieldValue)){
+									%>
+											<option selected="selected"><%=fieldName%></option>
+									<%
+									}
+									else{
+									%>
+										<option><%=fieldName%></option>
+									<%
+									}
+									ii++;
+								}	
+							%>
+						</select>   
+					</td>
+					<td class="famname">
+					<%
+						name =tp.getCharacter(isOld,isOld);
+						fieldValue = (String)groupTable.get(name);
+						if(fieldValue == null){
+							fieldValue ="";
+						}
+					%>
+						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+							<%
+								ii=0;
+								it = table.iterator();
+								while (it.hasNext()) {
+									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+									 if(isImagesExists) {
+										if(mediaResourceFields.contains(queueObject)){
+											continue;
+										}
+									}	
+									fieldName = (String)queueObject.getObject(1);
+									if(ii==0){
+									%>
+											<option>
+									<%
+									}
+									if(fieldName.equals(fieldValue)){
+									%>
+											<option selected="selected"><%=fieldName%></option>
+									<%
+									}
+									else{
+									%>
+										<option><%=fieldName%></option>
+									<%
+									}
+									ii++;
+								}	
+							%>
+						</select>   
+					</td>
+				</tr>
+			</table>
+			<%}//end if isTableExists
+			name =tp.getCharacter(isNew,isNew);//guaranteed to be generated at least once
+			 if(isImagesExists) {
+			%>
+			<table class="outerimageframe">
+				<tr>
+					<td>
+						<table class="imageframe">
+							<tr>
+								<td>
+								<%
+									List labelList = new ArrayList();
+									for(int zz = 0; zz < mediaResourceFields.size(); zz++){
+										if ( (zz % numberOfImagesPerRow )== 0){
+											if( zz != 0){
+												name =tp.getCharacter(isOld,isOld);
+											}
+											fieldValue = (String)groupTable.get(name);
+											if(fieldValue == null){
+												fieldValue ="";
+											}
+								%>
+									<table class="images">
+										<tr>
+											<td class="thumb">
+												<div class="thumb">
+													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														it = mediaResourceFields.iterator();
+														characterText = tp.getCurrentCharacterText(name);
+														labelList.add(characterText);
+														while (it.hasNext()) {
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															fieldName = (String)queueObject.getObject(1);
+															if(ii==0){
+															%>
+																	<option>
+															<%
+															}
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}
+															ii++;
+														}// end while	
+													%>
+													</select> 
+												</div>
+											</td>
+											<%if( (zz + 1) < mediaResourceFields.size()){
+													name =tp.getCharacter(isOld,isOld);
+													fieldValue = (String)groupTable.get(name);
+													if(fieldValue == null){
+														fieldValue ="";
+													}
+												%>
+											<td class="thumb">
+												<div class="thumb">
+													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														it = mediaResourceFields.iterator();
+														characterText = tp.getCurrentCharacterText(name);
+														labelList.add(characterText);
+												
+														while (it.hasNext()) {
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															fieldName = (String)queueObject.getObject(1);
+															if(ii==0){
+															%>
+																	<option>
+															<%
+															}
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}
+															ii++;
+														}//end while	
+													%>
+													</select> 
+												</div>
+											</td>
+											<%}//end if zz+1 < mediaResources.size()
+												if( (zz + 2) < mediaResourceFields.size()){
+													name =tp.getCharacter(isOld,isOld);
+													fieldValue = (String)groupTable.get(name);
+													if(fieldValue == null){
+														fieldValue ="";
+													}
+											%>
+											<td class="thumb">
+												<div class="thumb">
+													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														characterText = tp.getCurrentCharacterText(name);
+														labelList.add(characterText);
 
+														it = mediaResourceFields.iterator();
+														while (it.hasNext()) {
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															fieldName = (String)queueObject.getObject(1);
+															if(ii==0){
+															%>
+																	<option>
+															<%
+															}
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}
+															ii++;
+														}//end while	
+													%>
+													</select> 
+												</div>
+											</td>
+											<%}//end if zz+2 < mediaResources.size()
+												if( (zz + 3) < mediaResourceFields.size()){
+													name =tp.getCharacter(isOld,isOld);
+													fieldValue = (String)groupTable.get(name);
+													if(fieldValue == null){
+														fieldValue ="";
+													}
+											%>
+											<td class="thumb">
+												<div class="thumb">
+													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														it = mediaResourceFields.iterator();
+														characterText = tp.getCurrentCharacterText(name);
+														labelList.add(characterText);
 
-				<td>
-					<% url = "xslFileName=jennInvasivesTaxonPage.xsl&dataSourceName=" + dsName;%>
+														while (it.hasNext()) {
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															fieldName = (String)queueObject.getObject(1);
+															if(ii==0){
+															%>
+																	<option>
+															<%
+															}
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}
+															ii++;
+														}//end while	
+													%>
+													</select> 
+												</div>
+											</td>
+											<%}// if zz+ 3 < mediaResourceFields.size()
+											%>
+										</tr>
+										<tr>
+											<%
+											   name = (String)labelList.get(zz);
+												fieldValue = (String)groupTable.get(name);
+												if(fieldValue == null){
+													fieldValue ="";
+												}
+											%>
+											<td class="id_text"><input size="20" type="text"  title="ENTER IMAGE CAPTION HERE" name="<%=name%>" value="<%=fieldValue%>"/></td>
+										    <%
+												if( (zz + 1) < mediaResourceFields.size()){
+											   name = (String)labelList.get(zz+1);
+												fieldValue = (String)groupTable.get(name);
+												if(fieldValue == null){
+													fieldValue ="";
+												}
+											%>
+											<td class="id_text"><input size="20" type="text"  title="ENTER IMAGE CAPTION HERE" name="<%=name%>" value="<%=fieldValue%>"/></td>
+											<%} //end if zz + 1
+												if( (zz + 2) < mediaResourceFields.size()){
+											   name = (String)labelList.get(zz+2);
+												fieldValue = (String)groupTable.get(name);
+												if(fieldValue == null){
+													fieldValue ="";
+												}
+											%>
+											<td class="id_text"><input size="20" type="text"  title="ENTER IMAGE CAPTION HERE" name="<%=name%>" value="<%=fieldValue%>"/></td>
+											<%} //end if zz + 2
+												if( (zz + 3) < mediaResourceFields.size()){
+											   name = (String)labelList.get(zz+3);
+												fieldValue = (String)groupTable.get(name);
+												if(fieldValue == null){
+													fieldValue ="";
+												}
+											%>
+											<td class="id_text"><input size="20" type="text"  title="ENTER IMAGE CAPTION HERE" name="<%=name%>" value="<%=fieldValue%>"/></td>
+											<%}//end if zz + 3%>
+										</tr>
+									</table>
+									<%
+										}//end if for numberofimages mod zz
+									}//end outer for loop over mediaResourceTable
+									%>
+								</td>
+							</tr>
+						</table>
+						<%
+							name =tp.getCharacterText(isNew,isNew);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+							fieldValue ="";
+							}				
+						%>
+						<div class="photocred"><input size="80" type="text"  title="ENTER IMAGE CREDITS HERE" name="<%=name%>" value="<%=fieldValue%>"/></div>
+			<%
+			}//end if isImagesExists
+			if((isTableExists) || (isListsExists)){
+			%>
+						<table bgcolor="white" width="100%" class="details">
+							<tr>
+								<td>
+								<!-- It is a lists -->
+									<%
+										name =tp.getCharacter(isNew,isNew);
+										fieldValue = (String)groupTable.get(name);
+										if(fieldValue == null){
+											fieldValue ="";
+										}	//end if fieldValue == null		
+										characterText = tp.getCurrentCharacterText(name);
+										characterValue = (String)groupTable.get(characterText);
+										if(characterValue == null){
+											characterValue ="";
+										}
+										if(isListsExists){
+									%>
+									<p class="detail_text">
+										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
+													<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														it = efgList.iterator();
+														while (it.hasNext()) {
+															if(ii == 0){
+															%>
+																	<option>
+															<%
+															}//end if ii =0 
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															fieldName = (String)queueObject.getObject(1);
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}//fieldName.equals(fieldValue)
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}//end else
+															ii++;
+														}//end while	
+													%>
+													</select> 
+									</p>
+								<%
+								}// end if isListsExists
+								name =tp.getCharacter(isNew,isNew);
+								fieldValue = (String)groupTable.get(name);
+								if(fieldValue == null){
+									fieldValue ="";
+								}	//end if fieldValue == null		
+								characterText = tp.getCurrentCharacterText(name);
+								characterValue = (String)groupTable.get(characterText);
+								if(characterValue == null){
+									characterValue ="";
+								}
+								if(isTableExists){
+								%>
+									<p class="detail_text">
+										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
+													<select name="<%=name%>"  title="Select A Field Categorical or Narrative Field">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														it = table.iterator();
+														while (it.hasNext()) {
+															if(ii == 0){
+															%>
+																	<option>
+															<%
+															}//end if ii =0 
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															if(isImagesExists) {
+																if(mediaResourceFields.contains(queueObject)){
+																	continue;
+																}
+															}	
+															if(isListsExists) {
+																if(efgList.contains(queueObject)){
+																	continue;
+																}
+															}	
+															fieldName = (String)queueObject.getObject(1);
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}//fieldName.equals(fieldValue)
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}//end else
+															ii++;
+														}//end while	
+													%>
+													</select> 
+									</p>
+								<%
+								}// end if  isTableExists
+								name =tp.getCharacter(isNew,isNew);
+								if(isListsExists){
+									for(int zz = 0; zz < efgList.size(); zz++){
+											
+											if(zz!=0){
+												name =tp.getCharacter(isOld,isOld);
+											}
+											fieldValue = (String)groupTable.get(name);
+											if(fieldValue == null){
+												fieldValue ="";
+											}//end if fieldValue == null				
+											characterText = tp.getCurrentCharacterText(name);
+											characterValue = (String)groupTable.get(characterText);
+											if(characterValue == null){
+												characterValue ="";
+											}
+											
+									%>
+									<p class="detail_text">
+										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
+													<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														it = efgList.iterator();
+														while (it.hasNext()) {
+															if(ii == 0){
+															%>
+																	<option>
+															<%
+															}//end if ii =0 
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															fieldName = (String)queueObject.getObject(1);
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}//fieldName.equals(fieldValue)
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}//end else
+															ii++;
+														}//end while	
+													%>
+													</select> 
+									</p>
+								<%}//end for loop
+								}// end if isListsExists
+									
+										int ww = 0;
+										name =tp.getCharacter(isNew,isNew);
 
-			 	 	<a  title="search datasource" href="<%=context%>/jennTemplate.jsp?<%=url%>">
+										for(int zz = 0; zz < table.size(); zz++){
+											EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)table.get(zz);
+											if(isImagesExists) {
+												if(mediaResourceFields.contains(queueObject1)){
+													continue;
+												}
+											}	
+											if(isListsExists) {
+												if(efgList.contains(queueObject1)){
+													continue;
+												}
+											}	
+											if(ww !=0){
+												name =tp.getCharacter(isOld,isOld);
+											}
+											fieldValue = (String)groupTable.get(name);
+											if(fieldValue == null){
+												fieldValue ="";
+											}//end if fieldValue == null				
+											characterText = tp.getCurrentCharacterText(name);
+											characterValue = (String)groupTable.get(characterText);
+											if(characterValue == null){
+												characterValue ="";
+											}
+									%>
+									<p class="detail_text">
+										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
+													<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<%
+														ii=0;
+														it = table.iterator();
+														while (it.hasNext()) {
+															if(ii == 0){
+															%>
+																	<option>
+															<%
+															}//end if ii =0 
+															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+															if(isImagesExists) {
+																if(mediaResourceFields.contains(queueObject)){
+																	continue;
+																}
+															}	
+															if(isListsExists) {
+																if(efgList.contains(queueObject)){
+																	continue;
+																}
+															}	
+															fieldName = (String)queueObject.getObject(1);
+															if(fieldName.equals(fieldValue)){
+															%>
+																	<option selected="selected"><%=fieldName%></option>
+															<%
+															}//fieldName.equals(fieldValue)
+															else{
+															%>
+																<option><%=fieldName%></option>
+															<%
+															}//end else
+															ii++;
+														}//end while	
+													%>
+													</select> 
+									</p>
+								<%
+									ww++;
+									}//end for loop isTableExists
+								%>																	
+								</td>
+							</tr>
+						</table>
+						<%} // end if isTable or islistExists
+						%>
+						<br/>
+						<hr/>
+						<br/>
+						<table class="credits">
+							<tr>
+								<td>
+									<p class="credits">
+										<%
+											name =tp.getCharacterText(isNew,isNew);
+											fieldValue = (String)groupTable.get(name);
+											if(fieldValue == null){
+											fieldValue ="";
+											}				
+										%>
+										<strong>Credits: </strong><input size="100" type="text"  title="ENTER CREDIT INFORMATION" name="<%=name%>" value="<%=fieldValue%>"/>
+									</p>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+							<%
+									
+									fieldValue = (String)groupTable.get(EFGImportConstants.ISDEFAULT_STR);
+									if(fieldValue == null){
+										fieldValue = "false";
+									}
+									Boolean bool = new Boolean(fieldValue);
+								
+									
+					%>
 
-						Jenn's Template
-				 	</a>
-				 </td> 
- </tr><tr>
+				<p>The following is not part of the template:
+			<select name="<%=EFGImportConstants.ISDEFAULT_STR%>"  title="Indicate whether this template should be the default for search results page">
+				<option value="false">Do not use as Default Template</option>
+				<%if(bool.booleanValue() ){
+					%>
+					 <option value="true" selected="selected">Use as Default Template</option>
+					 <%} else{%>
+					  <option value="true">Use as Default Template</option>
+					<%}%>
+			</select>
+			</p><br/><br/>
 
+				<input type="hidden"   name="<%=EFGImportConstants.DISPLAY_NAME%>"  value="<%=displayName%>"/>
+				<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_NAME%>"  value="<%=datasourceName%>"/>
+				<input type="hidden"   name="<%=EFGImportConstants.HTML_TEMPLATE_NAME%>"  value="<%=templateMatch%>"/>
+				<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
+				<input type="submit"  name="submit" value="Click to submit" align="middle" />	
 
-				<td>
-					<% url = "xslFileName=nantucketTaxonPage.xsl&dataSourceName=" + dsName;%>
-
-			 	 	<a  title="search datasource" href="<%=context%>/nanTemplate.jsp?<%=url%>">
-
-						Nantucket Template
-				 	</a>
-				</td> 
-			</tr>
--->
-			<br/><br/>
-      </table>
-  </center>
-  </body>
+		</form>
+	</body>
 </html>

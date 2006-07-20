@@ -26,11 +26,13 @@
 */
 package project.efg.Imports.efgInterface;
 
+import java.util.Comparator;
+
 /**
  * @author kasiedu
  *
  */
-public interface EFGQueueObjectInterface {
+public interface EFGQueueObjectInterface extends Comparator{
 
 	/**
 	 * Maintains the order in which objects are added to it
@@ -41,5 +43,8 @@ public interface EFGQueueObjectInterface {
 	public abstract String getObject(int position);
 
 	public abstract int getSize();
+	public abstract int hashCode();
+	public boolean equals(Object obj);
+	public String toString();
 
 }

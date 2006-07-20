@@ -37,10 +37,10 @@ import project.efg.efgDocument.ItemsType;
 import project.efg.efgDocument.MediaResourcesType;
 import project.efg.efgDocument.StatisticalMeasuresType;
 import project.efg.servlets.efgInterface.SearchableInterface;
-import project.efg.servlets.efgInterface.SearchableListInterface;
-import project.efg.servlets.efgInterface.SearchableObject;
+import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
+import project.efg.servlets.efgInterface.EFGDataObject;
 import project.efg.servlets.efgServletsUtil.SearchableList;
-import project.efg.servlets.efgServletsUtil.SearchableObjectImpl;
+import project.efg.servlets.efgServletsUtil.EFGDataObjectImpl;
 import project.efg.servlets.factory.EFGDocumentTypesFactory;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGObject;
@@ -69,17 +69,12 @@ public class SearchableImpl extends SearchableInterface {
 		this.queryExecutor = new QueryExecutor();
 		this.typesFactory = new EFGDocumentTypesFactory();
 	}
-	private void setNames(SearchableListInterface searchLists){
-		searchLists.setDatasourceName(this.datasourceName);
-		searchLists.setDisplayName(this.displayName);
-		searchLists.setMetadatasourceName(this.metadatasourceName);
-	}
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see project.efg.servlets.efgInterface.SearchableInterface#getMediaResources(java.lang.String)
 	 */
-	public SearchableListInterface getMediaResources(String displayName, String datasourceName)
+	public EFGDataObjectListInterface getMediaResources(String displayName, String datasourceName)
 			throws Exception {
 		//cache me
 		this.addCommonItems(displayName, datasourceName,false);
@@ -92,7 +87,7 @@ public class SearchableImpl extends SearchableInterface {
 	 * 
 	 * @see project.efg.servlets.rdb.DisplayLists#getSearchables(java.lang.String)
 	 */
-	public SearchableListInterface getSearchables(String displayName, String datasourceName)
+	public EFGDataObjectListInterface getSearchables(String displayName, String datasourceName)
 			throws Exception {
 		//cache me ..make displayName and datasourceName same
 		this.addCommonItems(displayName, datasourceName,true);
@@ -105,7 +100,7 @@ public class SearchableImpl extends SearchableInterface {
 	 * 
 	 * @see project.efg.servlets.efgInterface.SearchableInterface#createMediaResourcesList()
 	 */
-	public SearchableListInterface createMediaResourcesList() {
+	public EFGDataObjectListInterface createMediaResourcesList() {
 		return new SearchableList(ComparatorFactory
 				.getComparator("searchableobject.comparator"));
 	}
@@ -113,21 +108,26 @@ public class SearchableImpl extends SearchableInterface {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see project.efg.servlets.efgInterface.SearchableInterface#createSearchableObject()
+	 * @see project.efg.servlets.efgInterface.SearchableInterface#createEFGDataObject()
 	 */
-	public SearchableObject createSearchableObject() {
-		return new SearchableObjectImpl();
+	public EFGDataObject createEFGDataObject() {
+		return new EFGDataObjectImpl();
 	}
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see project.efg.servlets.efgInterface.SearchableInterface#createSearchableList()
 	 */
-	public SearchableListInterface createSearchableList() {
+	public EFGDataObjectListInterface createSearchableList() {
 		return new SearchableList(ComparatorFactory
 				.getComparator("searchableobject.comparator"));
 	}
 	
+	private void setNames(EFGDataObjectListInterface searchLists){
+		searchLists.setDatasourceName(this.datasourceName);
+		searchLists.setDisplayName(this.displayName);
+		searchLists.setMetadatasourceName(this.metadatasourceName);
+	}
 	private void addCommonItems(String displayName, String datasourceName,boolean isSearchable)
 			throws Exception {
 try {
@@ -262,7 +262,7 @@ try {
 			String name = queue.getObject(1);
 			int order = Integer.parseInt(queue.getObject(2));
 
-			SearchableObject search = createSearchableObject();
+			EFGDataObject search = createEFGDataObject();
 
 			search.setLegalName(legal);
 			search.setOrder(order);
@@ -305,9 +305,9 @@ try {
 				continue;
 			}
 			if (!isSearchable) {
-				this.mediaResourceList.addSearchable(search);
+				this.mediaResourceList.addEFGDataObject(search);
 			} else {
-				this.searchableList.addSearchable(search);
+				this.searchableList.addEFGDataObject(search);
 			}
 		}
 

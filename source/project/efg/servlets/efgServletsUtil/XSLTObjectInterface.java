@@ -36,7 +36,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
-import project.efg.servlets.efgInterface.SearchableListInterface;
+import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
 import project.efg.servlets.efgInterface.ServletAbstractFactoryInterface;
 import project.efg.servlets.factory.ServletAbstractFactoryCreator;
 import project.efg.util.EFGImportConstants;
@@ -77,10 +77,10 @@ public abstract class XSLTObjectInterface {
 		
 		return servFactory.getXSLFileName(displayName,datasourceName,fieldName);
 	}*/
-	public SearchableListInterface getSearchableLists(String displayName, String datasourceName){
+	public EFGDataObjectListInterface getSearchableLists(String displayName, String datasourceName){
 		return servFactory.getSearchableLists(displayName,datasourceName);
 	}
-	public  SearchableListInterface 
+	public  EFGDataObjectListInterface 
 	getMediaResourceLists(String displayName, String datasourceName){
 		return servFactory.getMediaResourceLists(displayName,datasourceName);
 	}

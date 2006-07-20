@@ -90,8 +90,11 @@ public class EFGParseObjectComparator implements java.util.Comparator {
 		}
 		return -1;
 	}
-} // SearchableObjectComparator
+} // EFGDataObjectComparator
 // $Log$
+// Revision 1.1.2.2  2006/07/20 02:19:51  kasiedu
+// no message
+//
 // Revision 1.1.2.1  2006/06/08 13:27:40  kasiedu
 // New files
 //

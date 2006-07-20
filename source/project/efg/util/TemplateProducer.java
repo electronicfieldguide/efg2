@@ -40,17 +40,31 @@ public class TemplateProducer implements EFGImportConstants{
 	 */
 	public TemplateProducer() {
 	}
-
+	/**
+	 * 
+	 * @param isNewGroupID - true, means Create a new group id
+	 * @param isNewGroupRank - true means Create a new group rank
+	 * @return a unique string that signifies this group text
+	 */
 	public String getGroupText(boolean isNewGroupID, boolean isNewGroupRank){
 		this.currentGroupText = add(isNewGroupID, isNewGroupRank,false, GROUP_TEXT_LABEL);
 		return this.currentGroupText;
 	}
-
+	/**
+	 * 
+	 * @param label - Generate the current group text for the given label
+	 * @return a groupText representation of the given label
+	 */
 	public String getCurrentGroupText(String label) {
 		this.currentGroupText = this.extractType(label,GROUP_TEXT_LABEL);
 		return this.currentGroupText;
 	}
-
+	/**
+	 * 
+	 * @param isNewGroupID - 
+	 * @param isNewGroupRank
+	 * @return
+	 */
 	public String getGroup(boolean isNewGroupID, boolean isNewGroupRank){
 		this.currentGroup = this.add(isNewGroupID, isNewGroupRank,false, GROUP);
 		return this.currentGroup;
@@ -60,7 +74,12 @@ public class TemplateProducer implements EFGImportConstants{
 		this.currentGroup = this.extractType(label,GROUP);
 		return this.currentGroup;
 	}
-
+/**
+ * Create a label for a group
+ * @param isNewGroupID
+ * @param isNewGroupRank
+ * @return
+ */
 	public String getGroupLabel(boolean isNewGroupID, boolean isNewGroupRank){
 		this.currentGroupLabel = add(isNewGroupID, isNewGroupRank,false, GROUP_LABEL);
 		return this.currentGroupLabel;
@@ -71,7 +90,12 @@ public class TemplateProducer implements EFGImportConstants{
 		return this.currentGroupLabel;
 	}
 
-	// handle characters
+	/**
+	 * Create a label for a character
+	 * @param isNewGroupID
+	 * @param isNewGroupRank
+	 * @return
+	 */
 	public String getCharacterLabel(boolean isNewGroupID, boolean isNewGroupRank){
 		this.currentCharacterLabel = add(isNewGroupID, isNewGroupRank,true, CHARACTER_LABEL);
 		return this.currentCharacterLabel;
@@ -101,6 +125,12 @@ public class TemplateProducer implements EFGImportConstants{
 		this.currentCharacterText = this.extractType(label,CHARACTER_TEXT_LABEL);
 		return this.currentCharacterText;
 	}
+	/**
+	 * Replace the Group or Character string with replacement
+	 * @param label
+	 * @param replacement
+	 * @return
+	 */
 	private String extractType(String label, String replacement){
 		String type = "";
 		if((label == null) || (label.trim().equals(""))){
@@ -124,7 +154,14 @@ public class TemplateProducer implements EFGImportConstants{
 		return type;
 	}
 
-
+/**
+ * 
+ * @param isNewGroupID
+ * @param isNewGroupRank
+ * @param isCharacter
+ * @param type
+ * @return
+ */
 	private String add(boolean isNewGroupID, boolean isNewGroupRank, boolean isCharacter,String type) {
 		incrementGroupID(isNewGroupID);
 		incrementGroupRank(isNewGroupRank);

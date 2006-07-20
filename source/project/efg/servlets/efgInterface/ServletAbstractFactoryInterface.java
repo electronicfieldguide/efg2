@@ -39,7 +39,7 @@ import project.efg.util.EFGDisplayObjectList;
 
 /**
  * @author kasiedu
- *
+ * 
  */
 public abstract class ServletAbstractFactoryInterface {
 	static Logger log = null;
@@ -50,50 +50,158 @@ public abstract class ServletAbstractFactoryInterface {
 		} catch (Exception ee) {
 		}
 	}
-	public ServletAbstractFactoryInterface(){
-		
+
+	public ServletAbstractFactoryInterface() {
+
 	}
+
 	/**
 	 * 
 	 * @return alist of datasources from the database
 	 */
 	public EFGDisplayObjectList getListOfDatasources() {
-		
+
 		return this.createListOfDatasources();
 	}
+
 	/**
 	 * 
-	 * @return a list of searchable fields given a 
+	 * @return a list of searchable fields given a
 	 */
-	public SearchableListInterface getSearchableLists(String displayName,String datasourceName){
-		return this.createSearchableLists(displayName,datasourceName);
+	public EFGDataObjectListInterface getSearchableLists(String displayName,
+			String datasourceName) {
+		return this.createSearchableLists(displayName, datasourceName);
 	}
-	public SearchableListInterface getMediaResourceLists(String displayName, String datasourceName){
-		return this.createMediaResourceLists(displayName,datasourceName);
-	}
-	 public List getAllFields(String displayName,String dataSourceName){
-		 return this.createAllFields(displayName,dataSourceName);
-	 }
-	 public List getTaxonPageFields(String displayName,String dataSourceName){
-	    	return this.createTaxonPageFields(displayName,dataSourceName);
-	    }
-	public String getFirstFieldName(String displayName, String datasourceName){
-		return this.createFirstFieldName(displayName,datasourceName);
-	}
-	public String getFirstMediaResourceFieldName(String displayName, String datasourceName){
-		return this.createFirstMediaResourceFieldName(displayName,datasourceName);
-	}
-	public String getXSLFileName(String displayName, String datasourceName,String fieldName){
-		return this.getXSLFileNameFromDB(displayName,datasourceName,fieldName);
-	}
-	protected abstract String getXSLFileNameFromDB(String displayName,String datasourceName,String fieldName);
 
-	protected abstract SearchableListInterface createMediaResourceLists(String displayName,String datasourceName);
-	protected abstract SearchableListInterface createSearchableLists(String displayName,String datasourceName);
+	public EFGDataObjectListInterface getMediaResourceLists(String displayName,
+			String datasourceName) {
+		return this.createMediaResourceLists(displayName, datasourceName);
+	}
+	public List getMediaResourceFields(String displayName,
+			String datasourceName) {
+		return this.createMediaResourceFields(displayName, datasourceName);
+	}
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getEFGListsFields(String displayName,
+			String datasourceName) {
+		
+		return this.createEFGListsFields(displayName,datasourceName);
+	}
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getStatisticalMeasuresFields(
+			String displayName, String datasourceName) {
+		return this.createStatisticalMeasuresFields(displayName,datasourceName);
+	}
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getCategoricalItemFields(
+			String displayName, String datasourceName) {
+		
+		return this.createCategoricalItemFields(displayName,datasourceName);
+	}
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getNarrativeItemFields(
+			String displayName, String datasourceName) {
+		
+		return this.createNarrativeItemFields(displayName,datasourceName);
+	}
+
+	public List getAllFields(String displayName, String dataSourceName) {
+		return this.createAllFields(displayName, dataSourceName);
+	}
+
+	public List getTaxonPageFields(String displayName, String dataSourceName) {
+		return this.createTaxonPageFields(displayName, dataSourceName);
+	}
+
+	public String getFirstFieldName(String displayName, String datasourceName) {
+		return this.createFirstFieldName(displayName, datasourceName);
+	}
+
+	public String getFirstMediaResourceFieldName(String displayName,
+			String datasourceName) {
+		return this.createFirstMediaResourceFieldName(displayName,
+				datasourceName);
+	}
+
+	public String getXSLFileName(String displayName, String datasourceName,
+			String fieldName) {
+		return this
+				.getXSLFileNameFromDB(displayName, datasourceName, fieldName);
+	}
+
+	protected abstract String getXSLFileNameFromDB(String displayName,
+			String datasourceName, String fieldName);
+
+	protected abstract EFGDataObjectListInterface createMediaResourceLists(
+			String displayName, String datasourceName);
+	protected abstract List createMediaResourceFields(
+			String displayName, String datasourceName);
+	protected abstract EFGDataObjectListInterface createSearchableLists(
+			String displayName, String datasourceName);
+
 	protected abstract EFGDisplayObjectList createListOfDatasources();
-	protected abstract String createFirstFieldName(String displayName,String datasourceName);
-	protected abstract String createFirstMediaResourceFieldName(String displayName,String datasourceName);
-	protected abstract List createAllFields(String displayName,String dataSourceName);
-	protected abstract List createTaxonPageFields(String displayName,String dataSourceName);
-	 
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	protected abstract List createEFGListsFields(String displayName,
+			String datasourceName);
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	protected abstract List createStatisticalMeasuresFields(
+			String displayName, String datasourceName);
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	protected abstract List createCategoricalItemFields(
+			String displayName, String datasourceName);
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	protected abstract List createNarrativeItemFields(
+			String displayName, String datasourceName);
+	
+	protected abstract String createFirstFieldName(String displayName,
+			String datasourceName);
+
+	protected abstract String createFirstMediaResourceFieldName(
+			String displayName, String datasourceName);
+
+	protected abstract List createAllFields(String displayName,
+			String dataSourceName);
+
+	protected abstract List createTaxonPageFields(String displayName,
+			String dataSourceName);
+
 }

@@ -63,14 +63,58 @@ public class  EFGDataSourceHelperInterface
   * @param dataSourceName
   * @return a list of MediaResource objects for the current datasource
   */
-    public  SearchableListInterface getMediaResourceFields(String displayName,String datasourceName){
-    	return this.servFactory.getMediaResourceLists(displayName,datasourceName);
+    public  List getMediaResourceFields(String displayName,String datasourceName){
+    	return this.servFactory.getMediaResourceFields(displayName,datasourceName);
     }
     /**
-     * @param dataSourceName the name of the data source
-     * @return a SearchableListInterface mapping searchable fields to its values
-     */
-    public SearchableListInterface getSearchable(String displayName,String datasourceName){
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getEFGListsFields(String displayName,
+			String datasourceName) {
+		return  this.servFactory.getEFGListsFields(displayName,datasourceName);
+	
+	}
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getStatisticalMeasuresFields(
+			String displayName, String datasourceName) {
+		 return this.servFactory.getStatisticalMeasuresFields(displayName,datasourceName);
+	
+	}
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getCategoricalItemFields(
+			String displayName, String datasourceName) {
+		return this.servFactory.getCategoricalItemFields(displayName,datasourceName);
+		
+	}
+
+	/**
+	 * 
+	 * @param dataSourceName
+	 * @return a list of MediaResource objects for the current datasource
+	 */
+	public List getNarrativeItemFields(
+			String displayName, String datasourceName) {
+		return this.servFactory.getNarrativeItemFields(displayName,datasourceName);
+	}
+    /**
+	 * @param dataSourceName
+	 *            the name of the data source
+	 * @return a EFGDataObjectListInterface mapping searchable fields to its
+	 *         values
+	 */
+    public EFGDataObjectListInterface getSearchable(String displayName,String datasourceName){
     	return this.servFactory.getSearchableLists(displayName,datasourceName);
     }
     public List getAllFields(String displayName,String datasourceName){
@@ -83,6 +127,9 @@ public class  EFGDataSourceHelperInterface
   
 }
 //$Log$
+//Revision 1.1.2.3  2006/07/20 02:19:52  kasiedu
+//no message
+//
 //Revision 1.1.2.2  2006/07/11 21:48:47  kasiedu
 //"Added more configuration info"
 //

@@ -37,8 +37,8 @@ import org.apache.log4j.Logger;
  *
  */
 public abstract class SearchableInterface {
-	protected SearchableListInterface searchableList;
-	protected SearchableListInterface mediaResourceList;
+	protected EFGDataObjectListInterface searchableList;
+	protected EFGDataObjectListInterface mediaResourceList;
 	static Logger log = null;
 	static {
 		try {
@@ -54,32 +54,32 @@ public abstract class SearchableInterface {
 	/**
 	 * Return a list of searchable items given a display name
 	 * @param datasourceName - The name of the datasource Table
-	 * @return SearchableListInterface that encapsulate the lists.
+	 * @return EFGDataObjectListInterface that encapsulate the lists.
 	 * @throws Exception 
 	 */
-	public abstract SearchableListInterface getSearchables( String displayName, String datasourceName) throws Exception;
+	public abstract EFGDataObjectListInterface getSearchables( String displayName, String datasourceName) throws Exception;
 	/**
 	 * Return a list of Medairesource items given a display name
 	 * @param datasourceName - The name of the datasource Table
-	 * @return SearchableListInterface that encapsulate the lists.
+	 * @return EFGDataObjectListInterface that encapsulate the lists.
 	 * @throws Exception 
 	 */
-	public abstract SearchableListInterface getMediaResources(String displayName,String datasourceName) throws Exception;
+	public abstract EFGDataObjectListInterface getMediaResources(String displayName,String datasourceName) throws Exception;
 	/**
 	 * A factory method
-	 * @return the SearchableObject created by the implementation class
+	 * @return the EFGDataObject created by the implementation class
 	 */
-	public abstract SearchableObject createSearchableObject();
+	public abstract EFGDataObject createEFGDataObject();
 	/**
 	 * A factory for creating a searchable list by implementing classes
 	 * @return
 	 */
-	public abstract SearchableListInterface createSearchableList();
+	public abstract EFGDataObjectListInterface createSearchableList();
 	/**
 	 * A factory for creating a MediaResource list by implementing classes
 	 * @return
 	 */
-	public abstract SearchableListInterface createMediaResourcesList();
+	public abstract EFGDataObjectListInterface createMediaResourcesList();
 	
 	
 }

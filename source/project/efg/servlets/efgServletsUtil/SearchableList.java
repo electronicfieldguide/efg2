@@ -29,13 +29,13 @@ package project.efg.servlets.efgServletsUtil;
 
 import java.util.Comparator;
 
-import project.efg.servlets.efgInterface.SearchableListInterface;
+import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
 
 /**
  * @author kasiedu
  *
  */
-public class SearchableList extends SearchableListInterface {
+public class SearchableList extends EFGDataObjectListInterface {
 
 	public SearchableList(Comparator compare){
 		super(compare);

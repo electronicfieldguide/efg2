@@ -37,34 +37,34 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
-import project.efg.servlets.efgInterface.SearchableObject;
+import project.efg.servlets.efgInterface.EFGDataObject;
 
 /**
  * @author kasiedu
  *
  */
-public abstract class SearchableListInterface {
+public abstract class EFGDataObjectListInterface {
 	private String displayName;
 	private String datasourceName;
 	private String metadatasourceName;
 	private Comparator compare;
 	private List list;
 	
-	public SearchableListInterface(Comparator compare){
+	public EFGDataObjectListInterface(Comparator compare){
 		this.compare = compare;
 		this.list = new ArrayList();
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgImpl.SearchableListInterafce#addSearchable(project.efg.servlets.efgInterface.SearchableObject)
+	 * @see project.efg.servlets.efgImpl.SearchableListInterafce#addEFGDataObject(project.efg.servlets.efgInterface.EFGDataObject)
 	 */
-	public void addSearchable(SearchableObject searchable){
+	public void addEFGDataObject(EFGDataObject searchable){
 		this.list.add(searchable);
 		Collections.sort(this.list,this.compare);
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgImpl.SearchableListInterafce#removeSearchable(project.efg.servlets.efgInterface.SearchableObject)
+	 * @see project.efg.servlets.efgImpl.SearchableListInterafce#removeSearchable(project.efg.servlets.efgInterface.EFGDataObject)
 	 */
-	public boolean removeSearchable(SearchableObject searchable){
+	public boolean removeEFGDataObject(EFGDataObject searchable){
 		return this.list.remove(searchable);
 	}
 	public void setDisplayName(String display){
@@ -88,10 +88,10 @@ public abstract class SearchableListInterface {
 	}
 	
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgImpl.SearchableListInterafce#getSearchableObject(int)
+	 * @see project.efg.servlets.efgImpl.SearchableListInterafce#getEFGDataObject(int)
 	 */
-	public SearchableObject getSearchableObject(int order){
-		return (SearchableObject)this.list.get(order);
+	public EFGDataObject getEFGDataObject(int order){
+		return (EFGDataObject)this.list.get(order);
 	}
 
 	
@@ -103,16 +103,16 @@ public abstract class SearchableListInterface {
 	}
 
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableListInterafce#getSearchleObjectsCount()
+	 * @see project.efg.servlets.efgInterface.EFGDataObjectListInterafce#getSearchleObjectsCount()
 	 */
-	public int getSearchleObjectsCount() {
+	public int getEFGDataObjectCount() {
 		return this.list.size();
 	}
 
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgImpl.SearchableListInterafce#getSearchableList()
+	 * @see project.efg.servlets.efgImpl.EFGDataObjectListInterafce#getSearchableList()
 	 */
-	public SearchableListInterface getSearchableList(){
+	public EFGDataObjectListInterface getEFGDataObjectList(){
 		return this;
 	}
 	

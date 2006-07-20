@@ -33,13 +33,13 @@ import project.efg.efgDocument.EFGListsType;
 import project.efg.efgDocument.ItemsType;
 import project.efg.efgDocument.MediaResourcesType;
 import project.efg.efgDocument.StatisticalMeasuresType;
-import project.efg.servlets.efgInterface.SearchableObject;
+import project.efg.servlets.efgInterface.EFGDataObject;
 
 /**
  * @author kasiedu
  *
  */
-public class SearchableObjectImpl implements SearchableObject {
+public class EFGDataObjectImpl implements EFGDataObject {
 	private ItemsType statesList;
 	private StatisticalMeasuresType statsList;
 	private MediaResourcesType media;
@@ -51,11 +51,11 @@ public class SearchableObjectImpl implements SearchableObject {
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(SearchableObjectImpl.class);
+			log = Logger.getLogger(EFGDataObjectImpl.class);
 		} catch (Exception ee) {
 		}
 	}
-	public SearchableObjectImpl(){
+	public EFGDataObjectImpl(){
 		
 	}
 	/**
@@ -105,9 +105,9 @@ public class SearchableObjectImpl implements SearchableObject {
 		this.legalName = legalName;
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableObject#equals(project.efg.servlets.efgInterface.SearchableObject)
+	 * @see project.efg.servlets.efgInterface.EFGDataObject#equals(project.efg.servlets.efgInterface.EFGDataObject)
 	 */
-	public boolean equals(SearchableObject object) {
+	public boolean equals(EFGDataObject object) {
 		return this.getOrder() == object.getOrder();
 	}
 	public int hashCode(){
@@ -122,7 +122,7 @@ public class SearchableObjectImpl implements SearchableObject {
 		return this.statesList;
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableObject#setItems(project.efg.efgDocument.ItemsType)
+	 * @see project.efg.servlets.efgInterface.EFGDataObject#setItems(project.efg.efgDocument.ItemsType)
 	 */
 	public void setStates(ItemsType list) {
 		if(list != null){
@@ -139,7 +139,7 @@ public class SearchableObjectImpl implements SearchableObject {
 		return this.statsList;
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableObject#setStatisticalMeasures(project.efg.efgDocument.StatisticalMeasuresType)
+	 * @see project.efg.servlets.efgInterface.EFGDataObject#setStatisticalMeasures(project.efg.efgDocument.StatisticalMeasuresType)
 	 */
 	public void setStatisticalMeasures(StatisticalMeasuresType list) {
 		//sort here
@@ -149,13 +149,13 @@ public class SearchableObjectImpl implements SearchableObject {
 	
 	
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableObject#getEFGLists()
+	 * @see project.efg.servlets.efgInterface.EFGDataObject#getEFGLists()
 	 */
 	public EFGListsType getEFGLists() {
 		return this.efgLists;
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableObject#setEFGListsType(project.efg.efgDocument.EFGListsType)
+	 * @see project.efg.servlets.efgInterface.EFGDataObject#setEFGListsType(project.efg.efgDocument.EFGListsType)
 	 */
 	public void setEFGListsType(EFGListsType lists) {
 		//sort here
@@ -163,13 +163,13 @@ public class SearchableObjectImpl implements SearchableObject {
 		
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableObject#getMediaResources()
+	 * @see project.efg.servlets.efgInterface.EFGDataObject#getMediaResources()
 	 */
 	public MediaResourcesType getMediaResources() {
 		return this.media;
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.SearchableObject#setMediaResources(project.efg.efgDocument.MediaResourcesType)
+	 * @see project.efg.servlets.efgInterface.EFGDataObject#setMediaResources(project.efg.efgDocument.MediaResourcesType)
 	 */
 	public void setMediaResources(MediaResourcesType mediaResources) {
 		//sort here

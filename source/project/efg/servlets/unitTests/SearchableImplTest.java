@@ -9,8 +9,8 @@ import junit.framework.TestCase;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import project.efg.servlets.efgInterface.SearchableInterface;
-import project.efg.servlets.efgInterface.SearchableListInterface;
-import project.efg.servlets.efgInterface.SearchableObject;
+import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
+import project.efg.servlets.efgInterface.EFGDataObject;
 import project.efg.servlets.rdb.EFGRDBUtils;
 import project.efg.servlets.rdb.SearchableImpl;
 import project.efg.util.EFGImportConstants;
@@ -92,16 +92,17 @@ public class SearchableImplTest extends TestCase {
 	public final void testGetSearchables() {
 	
 		try {
-			SearchableListInterface list=  
+			EFGDataObjectListInterface list=  
 				search.getSearchables(this.displayName,this.datasourceName);
 			assertNotNull("List must not be null",list);
 			assertEquals("Expected number 3. Number from DB=",3,
-					list.getSearchleObjectsCount());
+					list.getEFGDataObjectCount());
 			
-			int counter = list.getSearchleObjectsCount();
+			int counter = list.getEFGDataObjectCount();
 			System.out.println("Counter: " + counter);
 			for(int i = 0; i < counter; i++){
-				SearchableObject obj= list.getSearchableObject(i);
+				//EFGDataObject obj= list.getEFGDataObject(i);
+				EFGDataObject obj= null;//list.getEFGDataObject(i);
 				if(obj.getStates() != null){
 					System.out.println("Name: " + obj.getName() + ". State object position: " + 
 							obj.getOrder() + " get postion: " + i);
@@ -135,11 +136,11 @@ public class SearchableImplTest extends TestCase {
 	
 
 	/*
-	 * Test method for 'project.efg.servlets.rdb.SearchableImpl.createSearchableObject()'
+	 * Test method for 'project.efg.servlets.rdb.SearchableImpl.createEFGDataObject()'
 	 */
-	public final void testCreateSearchableObject() {
+	public final void testCreateEFGDataObject() {
 		assertNotNull("Searchable object must not be null",
-			this.search.createSearchableObject());
+			this.search.createEFGDataObject());
 
 	}
 

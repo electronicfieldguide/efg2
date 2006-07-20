@@ -679,8 +679,9 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 				log.debug("text is the empty string or null");
 				return null;
 			}
-			CharacterValue cv = null;
-			cv = findCharacter(group, Integer.parseInt(characterRank));
+
+			 CharacterValue cv = 
+				 findCharacter(group, Integer.parseInt(characterRank));
 
 			if (cv == null) {
 				log.debug("CharacterValue is  null");
@@ -688,10 +689,16 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 				cv = new CharacterValue();
 				cv.setRank(Integer.parseInt(characterRank));
 				vGroupTypeItem.setCharacterValue(cv);
+				
 				group.addGroupTypeItem(vGroupTypeItem);
 				log.debug("characterRank is: " + characterRank);
 			}
-			if ((EFGImportConstants.CHARACTER_LABEL)
+			if ((EFGImportConstants.CHARACTER_TEXT_LABEL)
+					.equalsIgnoreCase(identifier.trim())) {//handle character text labels
+				log.debug("Character text  label");
+				cv.setText(text);
+			}
+			else if ((EFGImportConstants.CHARACTER_LABEL)
 					.equalsIgnoreCase(identifier.trim())
 					|| ((EFGImportConstants.GROUP_TEXT_LABEL)
 							.equalsIgnoreCase(identifier.trim()))) {

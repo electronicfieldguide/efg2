@@ -7,7 +7,7 @@ project.efg.servlets.efgInterface.EFGDataSourceHelperInterface,
 project.efg.efgDocument.EFGType,
 project.efg.efgDocument.ItemsType,
 project.efg.servlets.efgInterface.SearchableObject,
-project.efg.servlets.efgInterface.SearchableListInterface,
+project.efg.servlets.efgInterface.EFGDataObjectListInterface,
 project.efg.efgDocument.MediaResourcesType,
 project.efg.efgDocument.MediaResourceType,
 project.efg.efgDocument.StatisticalMeasuresType,
@@ -22,7 +22,7 @@ project.efg.util.EFGImportConstants" %>
    String context = request.getContextPath();
   
    EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
-   SearchableListInterface searchables = dsHelper.getSearchable(displayName,datasourceName);	
+   EFGDataObjectListInterface searchables = dsHelper.getSearchable(displayName,datasourceName);	
    if(datasourceName == null){
 	datasourceName=searchables.getDatasourceName();		
    }

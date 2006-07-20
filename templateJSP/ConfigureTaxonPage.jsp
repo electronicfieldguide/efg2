@@ -16,7 +16,7 @@ project.efg.util.EFGImportConstants
   		<form name="configure" action="Redirect2Template.jsp">
   			Select a template to configure for your Datasource:
       		<select name="<%=EFGImportConstants.TEMPLATE_NAME%>" title="Select a template from list below">
-				<option value="plateTemplate1.html">Taxon Page Template1</option>
+				<option value="TaxonPageTemplate.jsp">Taxon Page Template1</option>
 				<option value="plateTemplate2.html">Taxon Page Template2</option>
     		</select>
     		<input type="hidden" name="<%=EFGImportConstants.DATASOURCE_NAME%>" value="<%=dsName%>"/>

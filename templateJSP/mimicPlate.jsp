@@ -25,7 +25,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
     
 			Iterator it =null;
 			List table = dsHelper.getTaxonPageFields(displayName,datasourceName);
-		
+		 	List mediaResourceFields = dsHelper.getMediaResourceFields(displayName,datasourceName);
 			int tableSize = table.size();
 			TemplateProducer tp = new TemplateProducer();
 			boolean isNew = true;
@@ -67,6 +67,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						}
 					%>
 					<td rowspan="3">
+						
 						<select name="<%=name%>"  title="Select an image from List">
 								<%
 									for (ii=0; ii<imageFileList.length; ii++ ) {
@@ -206,6 +207,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -240,6 +246,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -276,6 +287,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -309,6 +325,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -343,6 +364,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -376,6 +402,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -409,6 +440,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -442,6 +478,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -475,6 +516,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+										 if(mediaResourceFields != null) {
+											if(mediaResourceFields.contains(queueObject)){
+												continue;
+											}
+										}
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -504,33 +550,34 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										fieldValue ="";
 									}
 								%>
-								<select name="<%=name%>"  title="Select a column from the list">
-								<%
-									ii = 0;
-									it = table.iterator();
-									while (it.hasNext()) {
-										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-										fieldName = (String)queueObject.getObject(1);
-										if(ii==0){
-										%>
-										<option>
+								<% if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){%>
+										<select name="<%=name%>"  title="Select an Image from the list">
 										<%
-										}
-										if(fieldName.equals(fieldValue)){
+											ii = 0;
+											it = mediaResourceFields.iterator();
+											while (it.hasNext()) {
+												EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+												fieldName = (String)queueObject.getObject(1);
+												if(ii==0){
+												%>
+												<option>
+												<%
+												}
+												if(fieldName.equals(fieldValue)){
+												%>
+												<option selected="selected"><%=fieldName%></option>
+												<%
+												}
+												else{
+												%>
+													<option><%=fieldName%></option>
+												<%
+												}
+												ii++;
+											}
 										%>
-										<option selected="selected"><%=fieldName%></option>
-										<%
-										}
-										else{
-										%>
-											<option><%=fieldName%></option>
-										<%
-										}
-										ii++;
-									}
-								%>
-								</select>   
-	
+										</select>  
+									<%}	%>				
 				</td>
 				<td align="center">
 								<%
@@ -540,32 +587,36 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										fieldValue ="";
 									}
 								%>
-								<select name="<%=name%>"  title="Select a column from the list">
-									<%
-									ii = 0;
-									it = table.iterator();
-									while (it.hasNext()) {
-										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-										fieldName = (String)queueObject.getObject(1);
-										if(ii==0){
+								<% if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){%>
+										<select name="<%=name%>"  title="Select an Image from the list">
+											<%
+												ii = 0;
+												it = mediaResourceFields.iterator();
+												while (it.hasNext()) {
+													EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+													fieldName = (String)queueObject.getObject(1);
+													if(ii==0){
+													%>
+													<option>
+													<%
+													}
+													if(fieldName.equals(fieldValue)){
+													%>
+													<option selected="selected"><%=fieldName%></option>
+													<%
+													}
+													else{
+													%>
+														<option><%=fieldName%></option>
+													<%
+													}
+													ii++;
+												}
 										%>
-										<option>
-										<%
-										}
-										if(fieldName.equals(fieldValue)){
-										%>
-										<option selected="selected"><%=fieldName%></option>
-										<%
-										}
-										else{
-										%>
-											<option><%=fieldName%></option>
-										<%
-										}
-										ii++;
-									}
-								%>
-								</select>  				
+									</select>  
+								<%
+								}
+							%>				
 				</td>
 			</tr>
 		</table>

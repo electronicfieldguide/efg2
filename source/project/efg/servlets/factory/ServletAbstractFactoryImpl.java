@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
 import project.efg.servlets.efgImpl.EFGContextListener;
 import project.efg.servlets.efgInterface.SearchableInterface;
-import project.efg.servlets.efgInterface.SearchableListInterface;
+import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
 import project.efg.servlets.efgInterface.ServletAbstractFactoryInterface;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.servlets.rdb.QueryExecutor;
@@ -62,6 +62,7 @@ public class ServletAbstractFactoryImpl extends
 		} catch (Exception ee) {
 		}
 	}
+	private String commonQuery = "SELECT DISTINCT LEGALNAME,NAME FROM ";
 	private QueryExecutor queryExecutor;
 	/**
 	 * 
@@ -79,7 +80,7 @@ public class ServletAbstractFactoryImpl extends
 	/* (non-Javadoc)
 	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createMediaResourceLists(java.lang.String, java.lang.String)
 	 */
-	protected SearchableListInterface createMediaResourceLists(String displayName, 
+	protected EFGDataObjectListInterface createMediaResourceLists(String displayName, 
 			String datasourceName) {
 		return examineListsCache(displayName, 
 				datasourceName,false);
@@ -153,7 +154,7 @@ public class ServletAbstractFactoryImpl extends
 	/* (non-Javadoc)
 	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createSearchableLists(java.lang.String, java.lang.String)
 	 */
-	protected SearchableListInterface createSearchableLists(String displayName, 
+	protected EFGDataObjectListInterface createSearchableLists(String displayName, 
 			String datasourceName) {
 		return this.examineListsCache(displayName, 
 				datasourceName,true);
@@ -192,20 +193,12 @@ public class ServletAbstractFactoryImpl extends
 	protected List createTaxonPageFields(String displayName, String datasourceName) {
 		List arrList = new ArrayList();
 		try {
-			String metaName = getMetadataNameFromCache(displayName, datasourceName);
 			
 			StringBuffer queryBuffer = new StringBuffer();
-			queryBuffer.append("SELECT DISTINCT LEGALNAME,NAME FROM ");
-			queryBuffer.append(metaName);
+			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE ONTAXONPAGE='true' ORDER BY NAME");
+			arrList = this.getQuery(queryBuffer.toString());
 			
-			
-			List lists = this.queryExecutor.executeQueryForList(
-					queryBuffer.toString(),2);
-			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
-				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
-				arrList.add(queue);
-			}
 		} catch (Exception e) {
 			
 		}
@@ -221,6 +214,129 @@ public class ServletAbstractFactoryImpl extends
 		return this.examineXSLCache(displayName,datasourceName,fieldName);
 	
 	}
+	/* (non-Javadoc)
+	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createEFGListsFields(java.lang.String, java.lang.String)
+	 */
+	protected List createEFGListsFields(String displayName, String datasourceName) {
+		List arrList = new ArrayList();
+		try {
+			
+			StringBuffer queryBuffer = new StringBuffer();
+			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
+			queryBuffer.append(" WHERE ISLISTS='true' ORDER BY NAME");
+			arrList = this.getQuery(queryBuffer.toString());
+			
+		} catch (Exception e) {
+			
+		}
+		return arrList;
+		
+	}
+	/* (non-Javadoc)
+	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createStatisticalMeasuresFields(java.lang.String, java.lang.String)
+	 */
+	protected List createStatisticalMeasuresFields(String displayName, String datasourceName) {
+		List arrList = new ArrayList();
+		try {
+			
+			StringBuffer queryBuffer = new StringBuffer();
+			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
+			queryBuffer.append(" WHERE ");
+			queryBuffer.append("(NUMERICValue='true' or NUMERICRANGE='true')");
+			arrList = this.getQuery(queryBuffer.toString());
+			
+		} catch (Exception e) {
+			
+		}
+		return arrList;
+		
+	}
+	/* (non-Javadoc)
+	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createCategoricalItemFields(java.lang.String, java.lang.String)
+	 */
+	protected List createCategoricalItemFields(String displayName, String datasourceName) {
+		
+		List arrList = new ArrayList();
+		try {
+			
+			StringBuffer queryBuffer = new StringBuffer();
+			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
+			queryBuffer.append(" WHERE CATEGORICAL='true' ORDER BY NAME");
+			arrList = this.getQuery(queryBuffer.toString());
+			
+		} catch (Exception e) {
+			
+		}
+		return arrList;
+	
+	}
+	/* (non-Javadoc)
+	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createNarrativeItemFields(java.lang.String, java.lang.String)
+	 */
+	protected List createNarrativeItemFields(String displayName, String datasourceName) {
+		List arrList = new ArrayList();
+		try {
+			
+			StringBuffer queryBuffer = new StringBuffer();
+			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
+			queryBuffer.append(" WHERE NARRATIVE='true' ORDER BY NAME");
+			arrList = this.getQuery(queryBuffer.toString());
+			
+		} catch (Exception e) {
+			
+		}
+		return arrList;
+	
+	}
+	/* (non-Javadoc)
+	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createMediaResourceLists(java.lang.String, java.lang.String)
+	 */
+	protected List createMediaResourceFields(String displayName, 
+			String datasourceName) {
+		List arrList = new ArrayList();
+		try {
+			
+			StringBuffer queryBuffer = new StringBuffer();
+			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
+			queryBuffer.append(" WHERE MEDIARESOURCE='true' ORDER BY NAME");
+			arrList = this.getQuery(queryBuffer.toString());
+			
+		} catch (Exception e) {
+			
+		}
+		return arrList;
+		
+		
+		
+	}
+	private List getQuery(String query){
+		List arrList = new ArrayList();
+		try {
+			List lists = this.queryExecutor.executeQueryForList(
+					query,2);
+			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
+				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
+				arrList.add(queue);
+			}
+		} catch (Exception e) {
+			
+		}
+		return arrList;
+	}
+	private String getCommonQuery(String displayName, String datasourceName) {
+		
+		StringBuffer queryBuffer = new StringBuffer();
+		queryBuffer.append(this.commonQuery);
+		queryBuffer.append(getMetadataNameFromCache(displayName, datasourceName));
+		return queryBuffer.toString();
+	}
+
+
+
+
+	
+
+	
 	private String examineXSLCache(String displayName, 
 			String datasourceName, 
 			String fieldName){
@@ -275,9 +391,6 @@ public class ServletAbstractFactoryImpl extends
 		}
 		return xslName;
 	}
-
-
-
 
 	private String buildAllDataSourcesQuery(){
 		String efgRDBTable = EFGImportConstants.EFGProperties
@@ -358,12 +471,9 @@ public class ServletAbstractFactoryImpl extends
 		return key.toString();
 	}
 
-
-
-
-	private SearchableListInterface examineListsCache(String displayName, 
+	private EFGDataObjectListInterface examineListsCache(String displayName, 
 			String datasourceName,boolean isSearchable){
-		SearchableListInterface lists = null;
+		EFGDataObjectListInterface lists = null;
 		String key = this.constructCacheKey(displayName, 
 				datasourceName,isSearchable+"");
 		
@@ -371,7 +481,7 @@ public class ServletAbstractFactoryImpl extends
 			EFGContextListener.getCacheAdmin();//get cache
 		try {
 		  
-			lists = (SearchableListInterface)cacheAdmin.getFromCache(key,
+			lists = (EFGDataObjectListInterface)cacheAdmin.getFromCache(key,
 					CacheEntry.INDEFINITE_EXPIRY);
 			log.debug("Object obtained from cache ");
 		} catch (NeedsRefreshException nre) {
@@ -390,7 +500,7 @@ public class ServletAbstractFactoryImpl extends
 		    	log.debug("Object put in cache");
 		    } catch (Exception ex) {
 		        // We have the current content if we want fail-over.
-		    	lists = (SearchableListInterface)nre.getCacheContent();
+		    	lists = (EFGDataObjectListInterface)nre.getCacheContent();
 		    	log.debug("Object fail over obejct ");
 		        // It is essential that cancelUpdate is called if the
 		        // cached content is not rebuilt
@@ -450,7 +560,6 @@ public class ServletAbstractFactoryImpl extends
 		}
 		return metaName;
 	}
-
 
 
 	

@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1" xmlns:xalan="http://xml.apache.org/xalan" xmlns:sorter="project.efg.util.SortedStringArray" extension-element-prefixes="sorter" exclude-result-prefixes="sorter">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1" xmlns:xalan="http://xml.apache.org/xalan" 
+xmlns:sorter="project.efg.util.SortedStringArray"
+xmlns:imageList="project.efg.util.ImageDisplayList"  extension-element-prefixes="sorter imageList" exclude-result-prefixes="sorter imageList">
+
+	<xalan:component prefix="imageList" functions="addImageDisplay getImageName  getImageCaption getSize">
+		<xalan:script lang="javaclass" src="xalan://project.efg.util.ImageDisplayList"/>
+	</xalan:component>
 	<xalan:component prefix="sorter" functions="sort addName  getName  getArraySize">
 		<xalan:script lang="javaclass" src="xalan://project.efg.util.SortedStringArray"/>
 	</xalan:component>
+
 	<!-- $Id$ -->
 	<xsl:template name="outputCaption">
 		<xsl:param name="cap1"/>
@@ -22,6 +29,7 @@
 		</xsl:variable>
 		<xsl:value-of select="$caption"/>
 	</xsl:template>
+	<!--
 	<xsl:template name="populateMap">
 		<xsl:param name="taxonEntries"/>
 		<xsl:param name="mySorter"/>
@@ -42,6 +50,20 @@
 			</xsl:variable>
 			<xsl:if test="not(string($caption))=''">
 				<xsl:variable name="new-pop" select="sorter:addName($mySorter, string($caption))"/>
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:template>
+-->
+	<xsl:template name="populateImageList">
+		<xsl:param name="mediaresources"/>
+		<xsl:param name="myImageList"/>
+		<xsl:param name="caption"/>
+		<xsl:for-each select="$mediaresources/MediaResource">
+			<xsl:variable name="med">
+				<xsl:value-of select="."/>
+			</xsl:variable>
+			<xsl:if test="not(string($med))=''">
+				<xsl:variable name="new-pop" select="imageList:addImageDisplay($myImageList, string($med),string($caption))"/>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
