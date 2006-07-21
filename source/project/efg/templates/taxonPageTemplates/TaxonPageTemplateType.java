@@ -34,29 +34,18 @@ public class TaxonPageTemplateType implements java.io.Serializable {
     //--------------------------/
 
     /**
-     * The xsl file that will be used together with xml sources
-     * generated from this template to transform xml data of the
-     * given datasource to a taxon page
-     */
-    private java.lang.String _xslFileName;
-
-    /**
      * The name of the datasource whose data will be transformed
      * using a given XSL File and the configured data for the
-     * datasource. This name must be unique within thescope of a
+     * datasource. This name must be unique within the scope of a
      * TaxonPageTemplate element. see unique constraint on root
      * element.
      */
     private java.lang.String _datasourceName;
 
     /**
-     * Encapsulates the various groups making up a template chosen
-     * by an author. Each group id must be unique within the scope
-     * of the groups element. Each group id is resolvable by the
-     * xpath leading to that group. group's could have the same id
-     * as long as they do not vbelong to the same parent directly.
+     * Field _XSLFileNames
      */
-    private project.efg.templates.taxonPageTemplates.GroupsType _groups;
+    private project.efg.templates.taxonPageTemplates.XslFileNamesType _XSLFileNames;
 
 
       //----------------/
@@ -77,7 +66,7 @@ public class TaxonPageTemplateType implements java.io.Serializable {
      * 'datasourceName' has the following description: The name of
      * the datasource whose data will be transformed using a given
      * XSL File and the configured data for the datasource. This
-     * name must be unique within thescope of a TaxonPageTemplate
+     * name must be unique within the scope of a TaxonPageTemplate
      * element. see unique constraint on root element.
      * 
      * @return the value of field 'datasourceName'.
@@ -88,34 +77,14 @@ public class TaxonPageTemplateType implements java.io.Serializable {
     } //-- java.lang.String getDatasourceName() 
 
     /**
-     * Returns the value of field 'groups'. The field 'groups' has
-     * the following description: Encapsulates the various groups
-     * making up a template chosen by an author. Each group id must
-     * be unique within the scope of the groups element. Each group
-     * id is resolvable by the xpath leading to that group. group's
-     * could have the same id as long as they do not vbelong to the
-     * same parent directly.
+     * Returns the value of field 'XSLFileNames'.
      * 
-     * @return the value of field 'groups'.
+     * @return the value of field 'XSLFileNames'.
      */
-    public project.efg.templates.taxonPageTemplates.GroupsType getGroups()
+    public project.efg.templates.taxonPageTemplates.XslFileNamesType getXSLFileNames()
     {
-        return this._groups;
-    } //-- project.efg.templates.taxonPageTemplates.GroupsType getGroups() 
-
-    /**
-     * Returns the value of field 'xslFileName'. The field
-     * 'xslFileName' has the following description: The xsl file
-     * that will be used together with xml sources generated from
-     * this template to transform xml data of the given datasource
-     * to a taxon page
-     * 
-     * @return the value of field 'xslFileName'.
-     */
-    public java.lang.String getXslFileName()
-    {
-        return this._xslFileName;
-    } //-- java.lang.String getXslFileName() 
+        return this._XSLFileNames;
+    } //-- project.efg.templates.taxonPageTemplates.XslFileNamesType getXSLFileNames() 
 
     /**
      * Method isValid
@@ -160,7 +129,7 @@ public class TaxonPageTemplateType implements java.io.Serializable {
      * 'datasourceName' has the following description: The name of
      * the datasource whose data will be transformed using a given
      * XSL File and the configured data for the datasource. This
-     * name must be unique within thescope of a TaxonPageTemplate
+     * name must be unique within the scope of a TaxonPageTemplate
      * element. see unique constraint on root element.
      * 
      * @param datasourceName the value of field 'datasourceName'.
@@ -171,34 +140,14 @@ public class TaxonPageTemplateType implements java.io.Serializable {
     } //-- void setDatasourceName(java.lang.String) 
 
     /**
-     * Sets the value of field 'groups'. The field 'groups' has the
-     * following description: Encapsulates the various groups
-     * making up a template chosen by an author. Each group id must
-     * be unique within the scope of the groups element. Each group
-     * id is resolvable by the xpath leading to that group. group's
-     * could have the same id as long as they do not vbelong to the
-     * same parent directly.
+     * Sets the value of field 'XSLFileNames'.
      * 
-     * @param groups the value of field 'groups'.
+     * @param XSLFileNames the value of field 'XSLFileNames'.
      */
-    public void setGroups(project.efg.templates.taxonPageTemplates.GroupsType groups)
+    public void setXSLFileNames(project.efg.templates.taxonPageTemplates.XslFileNamesType XSLFileNames)
     {
-        this._groups = groups;
-    } //-- void setGroups(project.efg.templates.taxonPageTemplates.GroupsType) 
-
-    /**
-     * Sets the value of field 'xslFileName'. The field
-     * 'xslFileName' has the following description: The xsl file
-     * that will be used together with xml sources generated from
-     * this template to transform xml data of the given datasource
-     * to a taxon page
-     * 
-     * @param xslFileName the value of field 'xslFileName'.
-     */
-    public void setXslFileName(java.lang.String xslFileName)
-    {
-        this._xslFileName = xslFileName;
-    } //-- void setXslFileName(java.lang.String) 
+        this._XSLFileNames = XSLFileNames;
+    } //-- void setXSLFileNames(project.efg.templates.taxonPageTemplates.XslFileNamesType) 
 
     /**
      * Method unmarshalTaxonPageTemplateType

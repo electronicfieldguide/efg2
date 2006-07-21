@@ -64,44 +64,6 @@ public class TaxonPageTemplateTypeDescriptor extends org.exolab.castor.xml.util.
         org.exolab.castor.xml.FieldValidator               fieldValidator = null;
         //-- initialize attribute descriptors
         
-        //-- _xslFileName
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.String.class, "_xslFileName", "xslFileName", org.exolab.castor.xml.NodeType.Attribute);
-        desc.setImmutable(true);
-        handler = (new org.exolab.castor.xml.XMLFieldHandler() {
-            public java.lang.Object getValue( java.lang.Object object ) 
-                throws IllegalStateException
-            {
-                TaxonPageTemplateType target = (TaxonPageTemplateType) object;
-                return target.getXslFileName();
-            }
-            public void setValue( java.lang.Object object, java.lang.Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    TaxonPageTemplateType target = (TaxonPageTemplateType) object;
-                    target.setXslFileName( (java.lang.String) value);
-                }
-                catch (java.lang.Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public java.lang.Object newInstance( java.lang.Object parent ) {
-                return null;
-            }
-        } );
-        desc.setHandler(handler);
-        desc.setRequired(true);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _xslFileName
-        fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        { //-- local scope
-            StringValidator typeValidator = new StringValidator();
-            typeValidator.setWhiteSpace("preserve");
-            fieldValidator.setValidator(typeValidator);
-        }
-        desc.setValidator(fieldValidator);
         //-- _datasourceName
         desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(java.lang.String.class, "_datasourceName", "datasourceName", org.exolab.castor.xml.NodeType.Attribute);
         desc.setImmutable(true);
@@ -136,34 +98,35 @@ public class TaxonPageTemplateTypeDescriptor extends org.exolab.castor.xml.util.
         fieldValidator.setMinOccurs(1);
         { //-- local scope
             StringValidator typeValidator = new StringValidator();
+            typeValidator.setMinLength(1);
             typeValidator.setWhiteSpace("preserve");
             fieldValidator.setValidator(typeValidator);
         }
         desc.setValidator(fieldValidator);
         //-- initialize element descriptors
         
-        //-- _groups
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(project.efg.templates.taxonPageTemplates.GroupsType.class, "_groups", "groups", org.exolab.castor.xml.NodeType.Element);
+        //-- _XSLFileNames
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(project.efg.templates.taxonPageTemplates.XslFileNamesType.class, "_XSLFileNames", "XSLFileNames", org.exolab.castor.xml.NodeType.Element);
         handler = (new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
             {
                 TaxonPageTemplateType target = (TaxonPageTemplateType) object;
-                return target.getGroups();
+                return target.getXSLFileNames();
             }
             public void setValue( java.lang.Object object, java.lang.Object value) 
                 throws IllegalStateException, IllegalArgumentException
             {
                 try {
                     TaxonPageTemplateType target = (TaxonPageTemplateType) object;
-                    target.setGroups( (project.efg.templates.taxonPageTemplates.GroupsType) value);
+                    target.setXSLFileNames( (project.efg.templates.taxonPageTemplates.XslFileNamesType) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new project.efg.templates.taxonPageTemplates.GroupsType();
+                return new project.efg.templates.taxonPageTemplates.XslFileNamesType();
             }
         } );
         desc.setHandler(handler);
@@ -171,7 +134,7 @@ public class TaxonPageTemplateTypeDescriptor extends org.exolab.castor.xml.util.
         desc.setMultivalued(false);
         addFieldDescriptor(desc);
         
-        //-- validation code for: _groups
+        //-- validation code for: _XSLFileNames
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
         fieldValidator.setMinOccurs(1);
         { //-- local scope
