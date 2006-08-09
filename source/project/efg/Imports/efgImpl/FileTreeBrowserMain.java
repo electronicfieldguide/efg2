@@ -36,7 +36,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -217,7 +216,7 @@ public class FileTreeBrowserMain extends JDialog {
 			}
 			try{
 				maxDim = Integer.parseInt(maxDimStr);
-				log.debug("MaxDim is set from properties file to: " + maxDim);
+				//log.debug("MaxDim is set from properties file to: " + maxDim);
 			}
 			catch(Exception ee){
 				try{

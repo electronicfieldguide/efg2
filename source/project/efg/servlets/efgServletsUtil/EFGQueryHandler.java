@@ -30,7 +30,7 @@ package project.efg.servlets.efgServletsUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.efgDocument.EFGDocument;
 import project.efg.servlets.efgInterface.EFGHTTPQuery;
@@ -38,13 +38,7 @@ import project.efg.servlets.factory.EFGRequestFactory;
 
 public class EFGQueryHandler
 {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGQueryHandler.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
     /**
      * Interpret the passed in parameters, find matching taxa, and build
@@ -56,7 +50,7 @@ public class EFGQueryHandler
      * @return a jdom Document that conforms to our schema EFGDocument.xsd
      */
     public EFGDocument buildResult(HttpServletRequest req, HttpServletResponse res){
-    	log.debug("About to process request");
+    	
     	EFGHTTPQuery query = this.buildQueryObject(req);
     	if(query == null){
     		return null;
@@ -69,6 +63,9 @@ public class EFGQueryHandler
 }
 
 //$Log$
+//Revision 1.1.2.2  2006/08/09 18:55:25  kasiedu
+//latest code confimrs to what exists on Panda
+//
 //Revision 1.1.2.1  2006/06/08 13:27:43  kasiedu
 //New files
 //

@@ -13,10 +13,10 @@ public class TemplateObject implements Serializable{
  /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 private EFGDisplayObject displayObject;
  private String templateName;
- 
+ private String guid;
  public TemplateObject(){
 	 
  }
@@ -31,5 +31,14 @@ private EFGDisplayObject displayObject;
  }
  public String getTemplateName(){
 	 return this.templateName;
+ }
+ public String toString(){
+	return "Template: " + this.getTemplateName() + " Guid: " + this.getGUID();
+ }
+ public void setGUID(String guid){
+	 this.guid = guid;
+ }
+ public String getGUID(){
+	 return this.guid;
  }
 }

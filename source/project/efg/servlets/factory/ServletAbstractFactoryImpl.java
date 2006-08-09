@@ -30,7 +30,7 @@ package project.efg.servlets.factory;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
 import project.efg.servlets.efgImpl.EFGContextListener;
@@ -43,6 +43,7 @@ import project.efg.servlets.rdb.SearchableImpl;
 import project.efg.util.EFGDisplayObject;
 import project.efg.util.EFGDisplayObjectList;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.EFGMediaResourceSearchableObject;
 
 import com.opensymphony.oscache.base.CacheEntry;
 import com.opensymphony.oscache.base.NeedsRefreshException;
@@ -54,14 +55,7 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
  */
 public class ServletAbstractFactoryImpl extends
 		ServletAbstractFactoryInterface {
-	static Logger log = null;
-
-	static {
-		try {
-			log = Logger.getLogger(ServletAbstractFactoryImpl.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	private String commonQuery = "SELECT DISTINCT LEGALNAME,NAME FROM ";
 	private QueryExecutor queryExecutor;
 	/**
@@ -86,70 +80,54 @@ public class ServletAbstractFactoryImpl extends
 				datasourceName,false);
 		
 	}
-	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createFirstMediaResourceFieldName(java.lang.String, java.lang.String)
+	/**
+	 * This is called in instances where a datasource uses the default template
+	 * @param displayName - The display name for the current datasource
+	 * @param datasourceName - The datasource name created by database
 	 */
-	protected String createFirstMediaResourceFieldName(String displayName, 
-			String datasourceName) {
-		List lists;
-		try {
-			String metaName = null;
-			lists = this.queryExecutor.executeQueryForList(
-					getMetadataQuery(displayName,datasourceName),1);
-			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
-				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
-				metaName = queue.getObject(0);
-				break;
-			}
-			StringBuffer queryBuffer = new StringBuffer();
-			queryBuffer.append("SELECT DISTINCT LEGALNAME FROM ");
-			queryBuffer.append(metaName);
-			queryBuffer.append(" WHERE MEDIARESOURCE='true' ORDER BY ORDERVALUE");
-			
-			lists = this.queryExecutor.executeQueryForList(
-					queryBuffer.toString(),1);
-			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
-				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
-				return queue.getObject(0);
-			}
-		} catch (Exception e) {
-			
-		}
-		return null;
+	protected EFGMediaResourceSearchableObject createFirstField(String displayName, String datasourceName) {
+		EFGMediaResourceSearchableObject searchObj = new EFGMediaResourceSearchableObject();
+		String metaName = getMetadataNameFromCache(displayName, datasourceName);
 		
-	}
-	/* (non-Javadoc)
-	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createFieldsSortedByOrder(java.lang.String, java.lang.String)
-	 */
-	protected String createFirstFieldName(String displayName, 
-			String datasourceName) {
-	
-		List lists;
+		StringBuffer queryBuffer = new StringBuffer();
+		queryBuffer.append("SELECT DISTINCT  ");
+		queryBuffer.append(EFGImportConstants.LEGALNAME);
+		queryBuffer.append(",");
+		queryBuffer.append(EFGImportConstants.MEDIARESOURCE);
+		queryBuffer.append(",");
+		queryBuffer.append(EFGImportConstants.SEARCHABLE);
+		queryBuffer.append( " FROM ");
+		queryBuffer.append(metaName);
+		queryBuffer.append(" ORDER BY ORDERVALUE");
 		try {
-			String metaName = null;
-			lists = this.queryExecutor.executeQueryForList(
-					getMetadataQuery(displayName,datasourceName),1);
+			List lists = this.queryExecutor.executeQueryForList(
+					queryBuffer.toString(),3);
 			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
 				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
-				metaName = queue.getObject(0);
-				break;
+				if(queue.getObject(2).equalsIgnoreCase("true")){
+					if(searchObj.getMediaResourceField().equals("")){
+						searchObj.setMediaResourceField(queue.getObject(2));
+					}					
+				}
+				else if(queue.getObject(1).equalsIgnoreCase("true")){
+					if(searchObj.getSearchableField().equals("")){
+						searchObj.setSearchableField(queue.getObject(1));
+					}
+				}
+				if((!searchObj.getMediaResourceField().equals("")) && 
+						(!searchObj.getSearchableField().equals(""))){
+					break;
+				}
 			}
-			StringBuffer queryBuffer = new StringBuffer();
-			queryBuffer.append("SELECT DISTINCT LEGALNAME FROM ");
-			queryBuffer.append(metaName);
-			queryBuffer.append(" ORDER BY ORDERVALUE");
-			
-			lists = this.queryExecutor.executeQueryForList(
-					queryBuffer.toString(),1);
-			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
-				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
-				return queue.getObject(0);
-			}
+			 
 		} catch (Exception e) {
-			
+		
+			LoggerUtilsServlet.logErrors(e);
 		}
-		return null;
+		return searchObj;
 	}
+
+
 	
 	/* (non-Javadoc)
 	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createSearchableLists(java.lang.String, java.lang.String)
@@ -182,7 +160,7 @@ public class ServletAbstractFactoryImpl extends
 				arrList.add(queue);
 			}
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 		
@@ -196,11 +174,11 @@ public class ServletAbstractFactoryImpl extends
 			
 			StringBuffer queryBuffer = new StringBuffer();
 			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
-			queryBuffer.append(" WHERE ONTAXONPAGE='true' ORDER BY NAME");
+			queryBuffer.append(" WHERE ONTAXONPAGE=\"true\" ORDER BY NAME");
 			arrList = this.getQuery(queryBuffer.toString());
 			
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 		
@@ -208,12 +186,12 @@ public class ServletAbstractFactoryImpl extends
 	/* (non-Javadoc)
 	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#getXSLFileNameFromDB(java.lang.String, java.lang.String)
 	 */
-	protected String getXSLFileNameFromDB(String displayName, 
+	/*protected String getXSLFileNameFromDB(String displayName, 
 			String datasourceName, 
 			String fieldName) {
 		return this.examineXSLCache(displayName,datasourceName,fieldName);
 	
-	}
+	}*/
 	/* (non-Javadoc)
 	 * @see project.efg.servlets.efgInterface.ServletAbstractFactoryInterface#createEFGListsFields(java.lang.String, java.lang.String)
 	 */
@@ -223,11 +201,11 @@ public class ServletAbstractFactoryImpl extends
 			
 			StringBuffer queryBuffer = new StringBuffer();
 			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
-			queryBuffer.append(" WHERE ISLISTS='true' ORDER BY NAME");
+			queryBuffer.append(" WHERE ISLISTS=\"true\" ORDER BY NAME");
 			arrList = this.getQuery(queryBuffer.toString());
 			
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 		
@@ -242,11 +220,11 @@ public class ServletAbstractFactoryImpl extends
 			StringBuffer queryBuffer = new StringBuffer();
 			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE ");
-			queryBuffer.append("(NUMERICValue='true' or NUMERICRANGE='true')");
+			queryBuffer.append("(NUMERICValue=\"true\" or NUMERICRANGE=\"true\")");
 			arrList = this.getQuery(queryBuffer.toString());
 			
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 		
@@ -261,11 +239,11 @@ public class ServletAbstractFactoryImpl extends
 			
 			StringBuffer queryBuffer = new StringBuffer();
 			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
-			queryBuffer.append(" WHERE CATEGORICAL='true' ORDER BY NAME");
+			queryBuffer.append(" WHERE CATEGORICAL=\"true\" ORDER BY NAME");
 			arrList = this.getQuery(queryBuffer.toString());
 			
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 	
@@ -279,11 +257,11 @@ public class ServletAbstractFactoryImpl extends
 			
 			StringBuffer queryBuffer = new StringBuffer();
 			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
-			queryBuffer.append(" WHERE NARRATIVE='true' ORDER BY NAME");
+			queryBuffer.append(" WHERE NARRATIVE=\"true\" ORDER BY NAME");
 			arrList = this.getQuery(queryBuffer.toString());
 			
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 	
@@ -298,11 +276,11 @@ public class ServletAbstractFactoryImpl extends
 			
 			StringBuffer queryBuffer = new StringBuffer();
 			queryBuffer.append(this.getCommonQuery(displayName, datasourceName));
-			queryBuffer.append(" WHERE MEDIARESOURCE='true' ORDER BY NAME");
+			queryBuffer.append(" WHERE MEDIARESOURCE=\"true\" ORDER BY NAME");
 			arrList = this.getQuery(queryBuffer.toString());
 			
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 		
@@ -319,7 +297,7 @@ public class ServletAbstractFactoryImpl extends
 				arrList.add(queue);
 			}
 		} catch (Exception e) {
-			
+			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
 	}
@@ -330,68 +308,6 @@ public class ServletAbstractFactoryImpl extends
 		queryBuffer.append(getMetadataNameFromCache(displayName, datasourceName));
 		return queryBuffer.toString();
 	}
-
-
-
-
-	
-
-	
-	private String examineXSLCache(String displayName, 
-			String datasourceName, 
-			String fieldName){
-		String key = constructCacheKey(displayName,datasourceName,fieldName);
-		String xslName = null;
-		GeneralCacheAdministrator cacheAdmin = 
-			EFGContextListener.getCacheAdmin();//get cache
-		try {
-		  
-			xslName = (String)cacheAdmin.getFromCache(key,
-					CacheEntry.INDEFINITE_EXPIRY);
-			log.debug("Object obtained from cache ");
-		} catch (NeedsRefreshException nre) {
-		    try {
-		    	//do logic 
-		    	  // Get from the cache
-		    	
-		    	xslName= this.getXSLFileFromDB(displayName, 
-		    			datasourceName, 
-		    			fieldName);
-		    	String[] groups = new String[]{"xslNames"};
-		    	cacheAdmin.putInCache(key, xslName,groups);
-		    	log.debug("Object put in cache");
-		    } catch (Exception ex) {
-		        // We have the current content if we want fail-over.
-		    	xslName = (String)nre.getCacheContent();
-		    	log.debug("Object fail over obejct ");
-		        // It is essential that cancelUpdate is called if the
-		        // cached content is not rebuilt
-		    	cacheAdmin.cancelUpdate(key);
-		    }
-		}
-		return xslName;
-	}
-	private String getXSLFileFromDB(String displayName, 
-			String datasourceName, 
-			String fieldName) {
-		String query = "SELECT " + fieldName + " FROM ";
-		query = getRDBQuery(query,displayName,datasourceName);
-		String xslName = null;
-		List lists;
-		try {
-			lists = this.queryExecutor.executeQueryForList(
-					query,1);
-			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
-				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
-				xslName = queue.getObject(0);
-				break;
-			}
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
-		return xslName;
-	}
-
 	private String buildAllDataSourcesQuery(){
 		String efgRDBTable = EFGImportConstants.EFGProperties
 		.getProperty("ALL_EFG_RDB_TABLES");
@@ -422,7 +338,7 @@ public class ServletAbstractFactoryImpl extends
 			}
 			
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			//log.error(e.getMessage());
 			LoggerUtilsServlet.logErrors(e);
 		}
 		return objectLists;
@@ -448,9 +364,9 @@ public class ServletAbstractFactoryImpl extends
 		queryBuffer.append(efgRDBTable);
 		queryBuffer.append(" WHERE ");
 		queryBuffer.append(str2);
-		queryBuffer.append(" = '");
+		queryBuffer.append(" = \"");
 		queryBuffer.append(str3);
-		queryBuffer.append("'");
+		queryBuffer.append("\"");
 		return queryBuffer.toString();
 	}
 	private String constructCacheKey(String dplay, String ds, String bool){
@@ -483,7 +399,7 @@ public class ServletAbstractFactoryImpl extends
 		  
 			lists = (EFGDataObjectListInterface)cacheAdmin.getFromCache(key,
 					CacheEntry.INDEFINITE_EXPIRY);
-			log.debug("Object obtained from cache ");
+			//log.debug("Object obtained from cache ");
 		} catch (NeedsRefreshException nre) {
 		    try {
 		    	//do logic 
@@ -497,11 +413,11 @@ public class ServletAbstractFactoryImpl extends
 				}
 		    	String[] groups = new String[]{"prepareItems"};
 		    	cacheAdmin.putInCache(key, lists,groups);
-		    	log.debug("Object put in cache");
+		    	//log.debug("Object put in cache");
 		    } catch (Exception ex) {
 		        // We have the current content if we want fail-over.
 		    	lists = (EFGDataObjectListInterface)nre.getCacheContent();
-		    	log.debug("Object fail over obejct ");
+		    	//log.debug("Object fail over obejct ");
 		        // It is essential that cancelUpdate is called if the
 		        // cached content is not rebuilt
 		    	cacheAdmin.cancelUpdate(key);
@@ -520,24 +436,24 @@ public class ServletAbstractFactoryImpl extends
 		  
 			metaName = (String)cacheAdmin.getFromCache(key,
 					CacheEntry.INDEFINITE_EXPIRY);
-			log.debug("Object obtained from cache ");
+			//log.debug("Object obtained from cache ");
 		} catch (NeedsRefreshException nre) {
 		    try {
 		    	metaName = getMetadataName(displayName,datasourceName); 
 		    	String[] groups = new String[]{"metadataName"};
 		    	cacheAdmin.putInCache(key, metaName,groups);
-		    	log.debug("Object put in cache");
+		    	//log.debug("Object put in cache");
 		    } catch (Exception ex) {
 		        // We have the current content if we want fail-over.
 		    	metaName = (String)nre.getCacheContent();
-		    	log.debug("Object fail over obejct ");
+		    	//log.debug("Object fail over obejct ");
 		        // It is essential that cancelUpdate is called if the
 		        // cached content is not rebuilt
 		    	cacheAdmin.cancelUpdate(key);
 		    }
 		}
 		catch(Exception ee){
-			
+			LoggerUtilsServlet.logErrors(ee);
 		}
 		
 		return metaName;
@@ -560,7 +476,7 @@ public class ServletAbstractFactoryImpl extends
 		}
 		return metaName;
 	}
-
+	
 
 	
 

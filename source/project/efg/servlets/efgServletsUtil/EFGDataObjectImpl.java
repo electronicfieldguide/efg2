@@ -27,7 +27,7 @@
  */
 package project.efg.servlets.efgServletsUtil;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.efgDocument.EFGListsType;
 import project.efg.efgDocument.ItemsType;
@@ -48,13 +48,7 @@ public class EFGDataObjectImpl implements EFGDataObject {
 	private String legalName;
 	private int order = -1;
 	
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGDataObjectImpl.class);
-		} catch (Exception ee) {
-		}
-	}
+
 	public EFGDataObjectImpl(){
 		
 	}

@@ -26,6 +26,7 @@
  */
 package project.efg.servlets.efgServletsUtil;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
+
 
 
 /**
@@ -42,13 +43,8 @@ import org.apache.log4j.Logger;
  *
  */
 public class EFGParseObjectList {
-	static Logger log;
-	static {
-		try {
-			log = Logger.getLogger(EFGParseObjectList.class);
-		} catch (Exception ee) {
-		}
-	}
+	
+	
 	private List lists;
 	private Set stateSet;
 	private String name; //the name of the character
@@ -57,6 +53,7 @@ public class EFGParseObjectList {
 	public EFGParseObjectList(){
 		this.lists = new ArrayList();
 		this.stateSet = new TreeSet();
+		
 	}
 	public void setName(String name){
 		this.name = name;
@@ -102,14 +99,11 @@ public class EFGParseObjectList {
 	public EFGParseObject getEFGParseObject(int i){
 		return (EFGParseObject)this.lists.get(i);
 	}
+	
 	public boolean add(EFGParseObject obj){
-		if(!this.stateSet.contains(obj)){
-			log.debug("Adding: " + obj.toString());
+		if(!this.stateSet.contains(obj)){			
 			this.stateSet.add(obj);
 			return this.lists.add(obj);
-		}
-		else{
-			log.debug(obj.toString() + " has already been added!!");
 		}
 		return true;
 	}

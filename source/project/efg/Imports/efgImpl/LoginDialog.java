@@ -208,7 +208,7 @@ public class LoginDialog extends JDialog {
 				int index = catalina_home.lastIndexOf("\"");
 				if (index > -1) {
 					catalina_home = catalina_home.substring(0, index);
-					log.debug("Cat home after: " + catalina_home);
+					//log.debug("Cat home after: " + catalina_home);
 				}
 			} else {
 				log.error(usage_message);
@@ -220,12 +220,12 @@ public class LoginDialog extends JDialog {
 			}
 			if ((catalina_home != null) && (!catalina_home.trim().equals(""))) {
 				// construct from catalina home
-				log.debug("Cat home installer: " + catalina_home);
+				//log.debug("Cat home installer: " + catalina_home);
 				LoginDialog dlg = new LoginDialog(null);
 				dlg.show();
 				if (dlg.isSuccess()) {
 					String url = EFGImportConstants.EFGProperties.getProperty("dburl");
-					log.debug("url: " + url);
+					//log.debug("url: " + url);
 					
 					DBObject dbObject = new DBObject(url, dlg.getLoginName(),
 							dlg.getPassword());

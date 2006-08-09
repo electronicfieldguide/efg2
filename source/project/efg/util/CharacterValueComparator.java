@@ -27,8 +27,6 @@
 
 package project.efg.util;
 
-import org.apache.log4j.Logger;
-
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 
 /**
@@ -38,13 +36,7 @@ import project.efg.templates.taxonPageTemplates.CharacterValue;
  * 
  */
 public class CharacterValueComparator implements java.util.Comparator {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(CharacterValueComparator.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	/**
 	 * Compares its two arguments for order. Returns a negative integer, zero,
@@ -94,8 +86,8 @@ public class CharacterValueComparator implements java.util.Comparator {
 			int charRank1 = char1.getRank();
 			int charRank2 = char2.getRank();
 			
-			log.debug("rank1: " + charRank1);
-			log.debug("rank2: " + charRank2);
+			//log.debug("rank1: " + charRank1);
+			//log.debug("rank2: " + charRank2);
 			if (charRank1 != charRank2) {//different character ranks
 				returnValue =  (charRank1 - charRank2);
 			}
@@ -171,9 +163,9 @@ public class CharacterValueComparator implements java.util.Comparator {
 				}
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
-		log.debug("return value is from CharacterValueComaparator: " + returnValue);
+		//log.debug("return value is from CharacterValueComaparator: " + returnValue);
 		return returnValue; //same rank, same id
 	}
 	

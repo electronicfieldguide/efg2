@@ -85,11 +85,6 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 		SynopticKeyTreeInterface tree = (SynopticKeyTreeInterface) comp;
 		DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-		/*
-		 * java.util.ArrayList notAddedList = new java.util.ArrayList();
-		 * java.util.ArrayList addedList = new java.util.ArrayList();
-		 * java.util.ArrayList neutralList = new java.util.ArrayList();
-		 */
 
 		File f = null;
 		EFGDatasourceObjectInterface obj = null;
@@ -174,13 +169,13 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 	 * StringBuffer message = new StringBuffer(fileName); message.append(" ");
 	 * message.append(EFGImportConstants.EFGProperties.
 	 * getProperty("SynopticKeyTransferHandler.update.neutral"));
-	 * neutralList.add(message.toString()); log.debug(message.toString()); }
+	 * neutralList.add(message.toString()); //log.debug(message.toString()); }
 	 * private void handleFailure(java.util.ArrayList notAddedList, String
 	 * fileName){ StringBuffer failureMessage = new StringBuffer(fileName);
 	 * failureMessage.append(" ");
 	 * failureMessage.append(EFGImportConstants.EFGProperties.
 	 * getProperty("SynopticKeyTransferHandler.add.failure"));
-	 * notAddedList.add(failureMessage); log.error(failureMessage.toString()); }
+	 * notAddedList.add(failureMessage); //log.error(failureMessage.toString()); }
 	 * private boolean handleSuccess(java.util.ArrayList addedList,
 	 * EFGDatasourceObjectInterface obj, DefaultMutableTreeNode root, String
 	 * fileName){ boolean isFound = false; StringBuffer message = new
@@ -191,7 +186,7 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 	 * message.append(fileName); message.append(" ");
 	 * message.append(EFGImportConstants.EFGProperties.
 	 * getProperty("SynopticKeyTransferHandler.update.success"));
-	 * log.debug(message.toString()); addedList.add(message.toString()); break; } }
+	 * //log.debug(message.toString()); addedList.add(message.toString()); break; } }
 	 * return isFound;
 	 *  }
 	 */

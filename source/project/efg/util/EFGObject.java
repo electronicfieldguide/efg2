@@ -27,7 +27,6 @@
 
 package project.efg.util;
 
-import org.apache.log4j.Logger;
 
 
 
@@ -42,13 +41,7 @@ public class EFGObject implements java.lang.Comparable{
 	private String databaseName;
 	private String dataType;
 
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGObject.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	public EFGObject() {
 		
@@ -103,6 +96,9 @@ public class EFGObject implements java.lang.Comparable{
 	
 }
 // $Log$
+// Revision 1.1.2.3  2006/08/09 18:55:26  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.2  2006/06/20 13:34:11  kasiedu
 // Fixed errors in image uploader
 //

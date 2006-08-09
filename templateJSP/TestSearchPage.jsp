@@ -3,7 +3,15 @@
   <head>
   <%
 	String context = request.getContextPath();
-	String xslFileName = request.getParameter(EFGImportConstants.XSL_STRING);
+	String guid =  (String)request.getAttribute(EFGImportConstants.GUID);
+	String xslName = (String)request.getAttribute(EFGImportConstants.XSL_STRING);
+	String uniqueName	= (String)request.getAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME);
+	if(uniqueName == null){
+		uniqueName = request.getParameter(EFGImportConstants.TEMPLATE_UNIQUE_NAME);
+	} 
+	if(xslName == null){
+		xslName = request.getParameter(EFGImportConstants.XSL_STRING);
+	} 
 	String dsName = request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 	String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME);
    if((displayName == null) || (displayName.trim().equals(""))){
@@ -18,9 +26,13 @@
 	querySearch.append("/search?dataSourceName=");
 	querySearch.append(dsName);
 	querySearch.append("&");
+	querySearch.append(EFGImportConstants.GUID);
+	querySearch.append("=");
+	querySearch.append(guid);
+	querySearch.append("&");
 	querySearch.append(EFGImportConstants.XSL_STRING);
 	querySearch.append("=");
-	querySearch.append(xslFileName);
+	querySearch.append(xslName);
 	querySearch.append("&");
 	querySearch.append(EFGImportConstants.SEARCH_TYPE_STR);
 	querySearch.append("=");
@@ -33,13 +45,15 @@
 	querySearch.append(EFGImportConstants.MAX_DISPLAY);
 	querySearch.append("=100000");
 	
-	if(xslFileName != null){
+	if(guid != null){
 		String key = querySearch.toString();
 		TemplateObject templateObject = new TemplateObject();
 		EFGDisplayObject displayObject = new EFGDisplayObject();
 		displayObject.setDisplayName(displayName);
 		displayObject.setDatasourceName(dsName);
-		templateObject.setTemplateName(templateMatch);
+		
+		templateObject.setTemplateName(uniqueName);
+		templateObject.setGUID(guid);
 		templateObject.setDisplayObject(displayObject);
 		TemplateMapObjectHandler.add2TemplateMap(key,templateObject);
 	}

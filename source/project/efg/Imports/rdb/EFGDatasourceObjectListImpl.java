@@ -35,7 +35,7 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.support.DatabaseMetaDataCallback;
@@ -52,6 +52,7 @@ import project.efg.Imports.factory.DatabaseAbstractFactory;
 import project.efg.Imports.factory.EFGDataExtractorFactory;
 import project.efg.Imports.factory.EFGDatasourceObjectFactory;
 import project.efg.Imports.factory.EFGRowMapperFactory;
+import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.util.EFGImportConstants;
 
 public class EFGDatasourceObjectListImpl extends
@@ -63,16 +64,11 @@ public class EFGDatasourceObjectListImpl extends
 	
 	private EFGRowMapperInterface rowMapper;
 
-	static Logger log = null;
+	
 
 	private String efgRDBTable;
 
-	static {
-		try {
-			log = Logger.getLogger(EFGDatasourceObjectListImpl.class);
-		} catch (Exception ee) {
-		}
-	}
+
 
 	public EFGDatasourceObjectListImpl(DBObject dbObject) {
 		super(dbObject);
@@ -120,16 +116,16 @@ public class EFGDatasourceObjectListImpl extends
 	
 	
 		try {
-			log.debug("Delimiter: " + EFGImportConstants.EFGProperties.getProperty("delimiter"));
+			//log.debug("Delimiter: " + EFGImportConstants.EFGProperties.getProperty("delimiter"));
 			String delimiter =EFGImportConstants.EFGProperties.getProperty("delimiter").trim();
 			char[] delimArr = delimiter.toCharArray();
-			log.debug("After char delimiter");
+			//log.debug("After char delimiter");
 			EFGDataExtractorInterface extractor = 
 				EFGDataExtractorFactory.getDataExtractor(
 					datasource.getDataName(),
 					delimArr[0]
 					);
-			log.debug("after extractor");
+			//log.debug("after extractor");
 			//use abstract method call
 			CSV2DatabaseAbstract table = 
 				DatabaseAbstractFactory.getDatabaseObject(datasource,
@@ -137,7 +133,7 @@ public class EFGDatasourceObjectListImpl extends
 					dbObject,
 					isUpdate);
 			
-			log.debug("after csv2Database");
+			//log.debug("after csv2Database");
 			
 			boolean bool = table.import2Database();
 			if (bool) {
@@ -153,7 +149,7 @@ public class EFGDatasourceObjectListImpl extends
 				return true;
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 		}
 		datasource.setState(stateFactory.getFailureObject());
 		return false;
@@ -174,26 +170,26 @@ public class EFGDatasourceObjectListImpl extends
 
 			int index = this.findObjectIndex(oldDisplayName);
 			if (index > -1) {
-				log.debug("About to replace oldDisplayName: '" + oldDisplayName
-						+ "'");
-				log.debug("with new DisplayName: '" + freshDisplayName + "'");
+				//log.debug("About to replace oldDisplayName: '" + oldDisplayName
+				//		+ "'");
+				//log.debug("with new DisplayName: '" + freshDisplayName + "'");
 				EFGDatasourceObjectInterface obj = (EFGDatasourceObjectInterface) this.lists
 						.get(index);
 				
 				String query = "UPDATE " + this.efgRDBTable
-						+ " SET DISPLAY_NAME = '" + freshDisplayName + "' "
-						+ "WHERE DISPLAY_NAME = '" + oldDisplayName + "'";
+						+ " SET DISPLAY_NAME = \"" + freshDisplayName + "\" "
+						+ "WHERE DISPLAY_NAME = \"" + oldDisplayName + "\"";
 				// will hold the query
 				
 				this.executeStatement(query);
 				obj.setDisplayName(freshDisplayName);
 				return true;
 			} else {
-				log.debug("DisplayName: " + oldDisplayName + " not in lists");
+				//log.debug("DisplayName: " + oldDisplayName + " not in lists");
 			}
 
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 
 		}
 		return false;
@@ -225,7 +221,7 @@ public class EFGDatasourceObjectListImpl extends
 	
 	private JdbcTemplate getJDBCTemplate(DBObject dbObject) {
 		if (this.jdbcTemplate == null) {
-			log.debug("Creating new Template");
+			//log.debug("Creating new Template");
 			this.jdbcTemplate = EFGRDBImportUtils.getJDBCTemplate(dbObject);
 		}
 		return this.jdbcTemplate;
@@ -257,7 +253,7 @@ public class EFGDatasourceObjectListImpl extends
 				return true;
 			}
 		} catch (Exception ex) {
-			log.error(ex.getMessage());
+			LoggerUtilsServlet.logErrors(ex);
 		}
 		return false;
 	}
@@ -280,7 +276,7 @@ public class EFGDatasourceObjectListImpl extends
 					this.jdbcTemplate,query.toString(),3);
 					
 			
-			log.debug("Size of list on user interface: " + list.size());
+			//log.debug("Size of list on user interface: " + list.size());
 			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
 				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
 				String md_name=queue.getObject(0);
@@ -292,13 +288,13 @@ public class EFGDatasourceObjectListImpl extends
 				this.lists.add(doInterface);
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 		}
 	}
 
 	private boolean delete(String tableName) throws Exception {
 		if ((tableName == null) || (tableName.trim().equals(""))) {
-			log.error("Display name must not be null or the empty String");
+			//log.error("Display name must not be null or the empty String");
 			return false;
 		}
 		this.executeStatement("DROP TABLE IF EXISTS " + tableName);
@@ -315,7 +311,7 @@ public class EFGDatasourceObjectListImpl extends
 	 */
 	private boolean deleteTable(String displayName) {
 		if ((displayName == null) || (displayName.trim().equals(""))) {
-			log.error("Display name must not be null or the empty String");
+			//log.error("Display name must not be null or the empty String");
 			return false;
 		}
 
@@ -325,25 +321,25 @@ public class EFGDatasourceObjectListImpl extends
 			// get the row from the efgRDBTable if it exists
 			query = new StringBuffer("SELECT DS_DATA, DS_METADATA FROM ");
 			query.append(this.efgRDBTable);
-			query.append(" WHERE DISPLAY_NAME = '");
+			query.append(" WHERE DISPLAY_NAME = \"");
 			query.append(displayName);
-			query.append("'");
-			log.debug("About to execute query: " + query.toString());
+			query.append("\"");
+			//log.debug("About to execute query: " + query.toString());
 			
 			java.util.List list = this.executeQueryForList(query.toString(),
 					2);
 			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
 				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
 				String datafn = queue.getObject(0);
-				log.debug("Data table to be removed: " + datafn);
+				//log.debug("Data table to be removed: " + datafn);
 				String metadatafn = queue.getObject(1);
-				log.debug("MetaData table to be removed: " + metadatafn);
+				//log.debug("MetaData table to be removed: " + metadatafn);
 				this.delete(datafn);
 				this.delete(metadatafn);
 
 				// remove the row from the efgRDBTable
 				String qr = "DELETE FROM " + this.efgRDBTable
-						+ " WHERE DS_DATA = '" + datafn + "';";
+						+ " WHERE DS_DATA = \"" + datafn + "\";";
 				this.executeStatement(qr);
 
 				int index = this.findObjectIndex(displayName);
@@ -365,12 +361,12 @@ public class EFGDatasourceObjectListImpl extends
 					}
 				}
 				catch(Exception ee){
-					log.error(ee.getMessage());
+					LoggerUtilsServlet.logErrors(ee);
 				}
 				isDone = true;
 			}
 		} catch (Exception ex) {
-			log.error(ex.getMessage());
+			LoggerUtilsServlet.logErrors(ex);
 		}
 
 		return isDone;

@@ -29,7 +29,7 @@ package project.efg.servlets.factory;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
 import project.efg.efgDocument.EFGListsType;
@@ -47,13 +47,7 @@ import project.efg.util.EFGObject;
  * 
  */
 public class EFGDocumentTypesFactory {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGDocumentTypesFactory.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	private EFGParseObjectFactory parseFactory = CreateEFGParseObjectFactory
 			.getInstance();
@@ -77,7 +71,7 @@ public class EFGDocumentTypesFactory {
 	}
 
 	private EFGParseObjectList parseObject(List list, String separator,
-			EFGObject efgObject) {
+			EFGObject efgObject,boolean notRemoveParen) {
 		EFGParseObjectList oldList = new EFGParseObjectList();
 		oldList.setDatabaseName(efgObject.getDatabaseName());
 		oldList.setName(efgObject.getName());
@@ -88,7 +82,7 @@ public class EFGDocumentTypesFactory {
 			String states = queue.getObject(0);
 			if ((states != null) && (!states.trim().equals(""))) {
 				EFGParseObjectList lists1 = this.efgParseStates.parseStates(
-						separator, states);
+						separator, states,notRemoveParen);
 				oldList.addEFGParseObjectList(lists1);
 			}
 		}
@@ -99,7 +93,7 @@ public class EFGDocumentTypesFactory {
 		ItemsType items = null;
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.ORCOMMAPATTERN, efgObject);
+					EFGImportConstants.ORCOMMAPATTERN, efgObject,false);
 			if (oldList.getSize() > 0) {
 				items = parseFactory.createItems(oldList);
 				if (items != null) {
@@ -108,7 +102,7 @@ public class EFGDocumentTypesFactory {
 				}
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return items;
 	}
@@ -116,7 +110,7 @@ public class EFGDocumentTypesFactory {
 		ItemsType items = null;
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.NOPATTERN, efgObject);
+					EFGImportConstants.NOPATTERN, efgObject,true);
 			if (oldList.getSize() > 0) {
 				items = parseFactory.createItems(oldList);
 				if (items != null) {
@@ -125,7 +119,7 @@ public class EFGDocumentTypesFactory {
 				}
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return items;
 	}
@@ -135,7 +129,7 @@ public class EFGDocumentTypesFactory {
 
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.LISTSEP, efgObject);
+					EFGImportConstants.LISTSEP, efgObject,true);
 			if (oldList.getSize() > 0) {
 				media = parseFactory.createMediaResources(oldList);
 				if (media != null) {
@@ -144,7 +138,7 @@ public class EFGDocumentTypesFactory {
 				}
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return media;
 	}
@@ -153,7 +147,7 @@ public class EFGDocumentTypesFactory {
 		EFGListsType lists = null;
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.LISTSEP, efgObject);
+					EFGImportConstants.LISTSEP, efgObject,true);
 
 			if (oldList.getSize() > 0) {
 				lists = parseFactory.createEFGLists(oldList);
@@ -163,7 +157,7 @@ public class EFGDocumentTypesFactory {
 				}
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return lists;
 	}
@@ -174,7 +168,7 @@ public class EFGDocumentTypesFactory {
 
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.ORCOMMAPATTERN, efgObject);
+					EFGImportConstants.ORCOMMAPATTERN, efgObject,false);
 
 			if (oldList.getSize() > 0) {
 				stats = parseFactory.createStatisticalMeasures(oldList);
@@ -184,7 +178,7 @@ public class EFGDocumentTypesFactory {
 				}
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return stats;
 	}
@@ -224,7 +218,7 @@ public class EFGDocumentTypesFactory {
 			return createNarrative(list, efgObject);
 		}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			//log.error(e.getMessage());
 		}
 		return null;
 

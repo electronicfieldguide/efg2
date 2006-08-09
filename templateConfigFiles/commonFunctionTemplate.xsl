@@ -2,6 +2,21 @@
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1">
 	<!-- $Id$ -->
+	<xsl:template name="substring-after-last">
+		<xsl:param name="string"/>
+		<xsl:param name="delimiter"/>
+		<xsl:choose>
+			<xsl:when test="contains($string, $delimiter)">
+				<xsl:call-template name="substring-after-last">
+					<xsl:with-param name="string" select="substring-after($string, $delimiter)"/>
+					<xsl:with-param name="delimiter" select="$delimiter"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$string"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<xsl:template name="findColumnVariables">
 		<xsl:param name="items"/>
 		<xsl:param name="stats"/>
@@ -61,12 +76,10 @@
 	<xsl:template name="searchItems">
 		<xsl:param name="items"/>
 		<xsl:param name="fieldName"/>
-		<xsl:for-each select="$items">
-			<xsl:if test="@name=$fieldName">
-				<xsl:call-template name="getItem">
-					<xsl:with-param name="item" select="Item"/>
-				</xsl:call-template>
-			</xsl:if>
+		<xsl:for-each select="$items/Item">
+			<xsl:call-template name="getItem">
+				<xsl:with-param name="item" select="."/>
+			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="searchEFGLists">

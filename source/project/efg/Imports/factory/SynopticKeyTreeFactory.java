@@ -31,6 +31,8 @@
  */
 package project.efg.Imports.factory;
 
+import javax.swing.JFrame;
+
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgInterface.SynopticKeyTreeInterface;
 import project.efg.Imports.efgImpl.SynopticTreeInterfaceImpl;
@@ -46,7 +48,7 @@ public class SynopticKeyTreeFactory{
 	/* (non-Javadoc)
 	 * @see project.efg.Imports.efgInterface.SynopticKeyTreeFactoryInterface#getSynopticKeyTree(project.efg.Imports.efgImpl.DBObject)
 	 */
-	public static SynopticKeyTreeInterface getSynopticKeyTree(DBObject dbObject) {
-		return new SynopticTreeInterfaceImpl(dbObject);
+	public static SynopticKeyTreeInterface getSynopticKeyTree(DBObject dbObject,JFrame frame) {
+		return new SynopticTreeInterfaceImpl(dbObject,frame);
 	}
 }

@@ -27,7 +27,7 @@
  */
 package project.efg.servlets.factory;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.servlets.efgInterface.XSLTFactoryInterface;
 import project.efg.servlets.efgServletsUtil.XSLTObjectInterface;
@@ -39,13 +39,7 @@ import project.efg.util.EFGImportConstants;
  *
  */
 public class XSLTFactoryObject {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(XSLTFactoryObject.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	private static XSLTFactoryInterface xsltFactory = null;
 	/**
 	 * 
@@ -64,15 +58,15 @@ public class XSLTFactoryObject {
 				xsltFactory = new XSLTFactory();
 			}
 			if (taxonSize == 1) {
-				log.debug("Returning a Taxon Page");
+				//log.debug("Returning a Taxon Page");
 				return xsltFactory.createTaxonPage();
 			}
 			
 			if (EFGImportConstants.SEARCH_PLATES_TYPE.equalsIgnoreCase(searchType)) {
-					log.debug("Returning a Search Plates Page");
+					//log.debug("Returning a Search Plates Page");
 				return  xsltFactory.createSearchPlatesPage();
 			} else {
-				log.debug("Returning a Search List Page");
+				//log.debug("Returning a Search List Page");
 				return xsltFactory.createSearchListsPage();
 			}
 		

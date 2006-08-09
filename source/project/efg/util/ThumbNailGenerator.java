@@ -1,21 +1,12 @@
 package project.efg.util;
 
-import java.awt.Container;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.RenderingHints;
-import java.awt.Toolkit;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
 public class ThumbNailGenerator {
    
@@ -50,41 +41,23 @@ public class ThumbNailGenerator {
      *@param maxDim - The maximum length of the dimensions for the new Image 
     */
     public boolean generateThumbNail(String src,
-				     String destSrc,String fileName,
-				     int maxDim
-				     ){
-	BufferedOutputStream out = null;
-	boolean done = true;
-	
-	try{
-	  
-	    File orig_file = new File(src,fileName);  
-	    
-	    if(!orig_file.exists()){
-	    	return false;
-	    }
-	  
-	    if(orig_file.isDirectory()){
-	    	return false;
-	    }
-	    String newImageName = getNewFileName(destSrc,fileName);
-	    String originalImageName = orig_file.getAbsolutePath();
-	  
-	    int thumbWidth = 0;
+		     String destSrc,String fileName,
+		     int maxDim){
+   	
+   	String newImageName = getNewFileName(destSrc,fileName);
+	   
+   BufferedImage image = null;
+	try {
+		 int thumbWidth = 0;
 		int thumbHeight = 0;
-		int quality = 100;
-		
-		Image image = Toolkit.getDefaultToolkit().getImage(originalImageName);
-		MediaTracker mediaTracker = new MediaTracker(new Container());
-		mediaTracker.addImage(image, 0);
-		mediaTracker.waitForID(0);
-		
+		image = ImageIO.read(new File(src,fileName));
 		int imageWidth = image.getWidth(null);
 		int imageHeight = image.getHeight(null);
 		if((imageWidth <= 0) || (imageHeight <=0)){
 			log.error(src + File.separator + fileName + " is not a recognized image file");
 			return false;
 		}
+		
 		double aspectRatio = imageWidth/imageHeight;
 		boolean scaleByWidth= false;
 		if(aspectRatio > 0){
@@ -107,54 +80,17 @@ public class ThumbNailGenerator {
 		    thumbHeight = (int)(imageRatio * imageHeight);
 		    thumbWidth = (int)(imageRatio * imageWidth);
 		}
-		
-		//draw original image to thumbnail image object and
-		// scale it to the new size on-the-fly
-		BufferedImage thumbImage = new BufferedImage(thumbWidth, 
-							     thumbHeight, BufferedImage.TYPE_INT_RGB);
-		
-		Graphics2D graphics2D = thumbImage.createGraphics();
-		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-		graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
-		// save thumbnail image to OUTFILE
-	    
-		out = new BufferedOutputStream(new
-					       FileOutputStream(newImageName));
-		JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
-		JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(thumbImage);
-		
-		param.setQuality((float)quality/100.0f, false);
-		encoder.setJPEGEncodeParam(param);
-		encoder.encode(thumbImage);
-		out.flush();
-		out.close();
-		log.debug("Thumbnail : " + newImageName + "successfully created");
-		done = true;
-		
-		
-		graphics2D.dispose();
-		thumbImage.flush();
-		image.flush();
-		image = null;
-		thumbImage = null;
-		
-	    
+       BufferedImage scaled = new BufferedImage( thumbWidth, thumbHeight,
+      		 BufferedImage.TYPE_INT_RGB);
+      		             Graphics g = scaled.getGraphics();
+      		             g.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
+      		             g.dispose();
+      		             ImageIO.write(scaled, "jpg", new File(newImageName));
+      		            
+      		             return true;
+	} catch (Exception e) {
+		log.error(e.getMessage());
 	}
-	catch(Exception ee){
-	    done = false;
-	    log.error(ee.getMessage());
-	  
-	}
-	finally{
-	    try{
-		if(out != null){
-		    out.close();
-		}
-	    }catch(Exception e){
-	
-	    }
-	}
-	return done;
-    }
+   	return false;	             
+   }
 }

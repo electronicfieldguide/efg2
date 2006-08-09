@@ -25,7 +25,7 @@ package project.efg.Imports.factory;
 * Imports a csv file into a relational database
 * 
 */
-import org.apache.log4j.Logger;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -36,14 +36,7 @@ import java.util.Hashtable;
 
 public class SpringJdbcTemplateFactory {
 	
-	static Logger log = null;
-
-	static {
-		try {
-			log = Logger.getLogger(SpringJdbcTemplateFactory.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	private static Hashtable jdbcTemplateTable = new Hashtable();
 	private static Hashtable transactionManagerTable = new Hashtable();
 	private static Hashtable datasourceTable = new Hashtable();
@@ -68,11 +61,11 @@ public class SpringJdbcTemplateFactory {
 	}
 	private static DriverManagerDataSource getDatasource(DBObject dbObject){
 		if(dbObject == null){
-			log.error("DbObject is null");
+			//log.error("DbObject is null");
 			return null;
 		}
 		if(dbObject.getURL() == null){
-			log.error("DbObject.url is null");
+			//log.error("DbObject.url is null");
 			return null;
 		}
 		String url = dbObject.getURL().trim().toLowerCase();
@@ -109,7 +102,7 @@ public class SpringJdbcTemplateFactory {
 			dataSource.getConnection();	
 		}
 		catch(Exception sql){
-			log.error("Could not obtain a connection from Database server");
+			//log.error("Could not obtain a connection from Database server");
 			dataSource = null;
 		}
 		return dataSource;

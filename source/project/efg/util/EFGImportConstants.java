@@ -3,6 +3,7 @@ package project.efg.util;
 import java.io.File;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * $Id$
@@ -27,6 +28,13 @@ import java.util.Set;
  * USA
  */
 public interface EFGImportConstants {
+	String KEY_METADATA_HELP = "/help/metadataHelp.html";
+	String MAIN_DEPLOY_HELP="/help/mainDeployHelp.html";
+	String IMAGE_DEPLOY_HELP="/help/imagesDeployHelp.html";
+	String KEYTREE_DEPLOY_HELP="/help/keysDeployHelp.html";
+	String JSP_NAME = "jsp";
+	String TEMPLATE_UNIQUE_NAME="templateUniqueName";
+	String GUID="guid";
 	String TEMPLATE_MAP_NAME="templateMap.out";
 	String TEMPLATE_SUCCESS_PAGE = "/UploadSuccess.jsp";
 	String templateImagesDirectory ="templateImagesDirectory";
@@ -46,8 +54,58 @@ public interface EFGImportConstants {
 	String GROUP_LABEL = "gl";
 
 	String GROUP = "group";
+	String EFG_SEP = "_EFG_SEP_";
 
+	String EFG_COLON = "EFG_COLON";
+
+	String COMMASEP = ",";
+
+	String CAPTION = "caption";
+
+	String ORSEP = "OR";
+
+	String COLONSEP = ":";
+
+	String SEMICOLON = ";";
+
+	String PIPESEP = "\\|";
+	String PIPESEP_PARSE="|";
+	String DASHSEP = "-";
+
+	String LEFTPARENSEP = "\\(";
+	String LEFTPAREN="(";
+	String RIGHTPAREN=")";
+	String matchNumberStr = "\\d+$";
+	String RIGHTPARENSEP = "\\)";
+	String[] STR_2_REMOVE = {"\\(","\\)"};
+
+	String ORPATTERN = "\\sor\\s";
+	String ORCOMMAPATTERN="([,]|([ ]+(or)[ ]))";
+    String LISTSEP="#";
 	String COLON_SEPARATOR = ":";
+	String NOPATTERN ="----#----";
+	String matchNumbeAtEnd = "^\\d+$|^-\\d+$";
+	Pattern matchNumberPattern = Pattern.compile(matchNumbeAtEnd);
+	Pattern matchNumberAtEndPattern = Pattern.compile(matchNumberStr);
+	Pattern spacePattern = Pattern.compile("\\s");
+	Pattern equalsPattern = Pattern.compile("=");
+	Pattern colonPattern = Pattern.compile(COLON_SEPARATOR);
+	Pattern rightParenPattern = Pattern.compile(EFGImportConstants.RIGHTPARENSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern leftParenPattern = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern dashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEP, 
+			Pattern.CASE_INSENSITIVE);
+	String patternStr = "[A-Z]+";// remove everything that is an
+	
+	Pattern alphaPattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
+	//EFGImportConstants.PIPESEP
+	Pattern pipePattern = Pattern.compile(EFGImportConstants.PIPESEP, Pattern.CASE_INSENSITIVE);
+	Pattern catPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, Pattern.CASE_INSENSITIVE);
+	Pattern commaPattern = Pattern.compile(EFGImportConstants.COMMASEP, Pattern.CASE_INSENSITIVE);
+
+	Pattern noPattern = Pattern.compile(EFGImportConstants.NOPATTERN, Pattern.CASE_INSENSITIVE);
+	Pattern listSepPattern = Pattern.compile(EFGImportConstants.LISTSEP, Pattern.CASE_INSENSITIVE);
 
 	String CHARACTER_TEXT_LABEL = "ctl";
 
@@ -279,34 +337,7 @@ public interface EFGImportConstants {
 
 	String FORWARD_SLASH = "/";
 
-	String EFG_SEP = "_EFG_SEP_";
 
-	String EFG_COLON = "EFG_COLON";
-
-	String COMMASEP = ",";
-
-	String CAPTION = "caption";
-
-	String ORSEP = "OR";
-
-	String COLONSEP = ":";
-
-	String SEMICOLON = ";";
-
-	String PIPESEP = "\\|";
-	String PIPESEP_PARSE="|";
-	String DASHSEP = "-";
-
-	String LEFTPARENSEP = "\\(";
-	String LEFTPAREN="(";
-	String RIGHTPAREN=")";
-
-	String RIGHTPARENSEP = "\\)";
-	String[] STR_2_REMOVE = {"\\(","\\)"};
-
-	String ORPATTERN = "\\sor\\s";
-	String ORCOMMAPATTERN="([,]|([ ]+(or)[ ]))";
-    String LISTSEP="#";
 	String EXCELPATTERN = EXCEL_EXT;
 
 	String SERVICE_LINK = "serviceLink";
@@ -339,7 +370,7 @@ public interface EFGImportConstants {
 	String SEARCH_PAGE_STR = "search";
 
 	String WILDCARD_STR = "wildcard";
-	String NOPATTERN ="----#----";
+	
 	String NO_MATCH_ATTR="nomatch_attr";
 	
 	String WILDCARD = "*";

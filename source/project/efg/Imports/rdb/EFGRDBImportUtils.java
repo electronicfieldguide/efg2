@@ -36,13 +36,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
-
 
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.factory.EFGRowMapperFactory;
@@ -57,18 +55,13 @@ import project.efg.util.EFGImportConstants;
  */
 public class EFGRDBImportUtils implements EFGRDBConstants {
 
-	static Logger log = null;
+	
 
 	
 	private static Properties EFGProperties =null;
 	private static EFGRowMapperInterface rowMapper;
 	private static Set sqlKeywords;
-	static {
-		try {
-			log = Logger.getLogger(EFGRDBImportUtils.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	public static synchronized DataSourceTransactionManager
 	getTransactionManager(DBObject dbObject){
 		return project.efg.Imports.factory.SpringJdbcTemplateFactory.getTransactionManager(dbObject);
@@ -127,14 +120,16 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 			addSQLKeyWords();
 			} catch (Exception e) {
 		   	e.printStackTrace();
-			log.error(e.getMessage());
+		
 		}
 	}
 	private static void addSQLKeyWords(){
 		sqlKeywords = new HashSet();
 		String sql =  
 			EFGProperties.getProperty(EFGImportConstants.SQL_KEYWORD_KEY);
-		String[] csv = sql.split(EFGImportConstants.COMMASEP);
+		
+		//String[] csv = sql.split(EFGImportConstants.COMMASEP);
+		String[] csv = EFGImportConstants.commaPattern.split(sql);
 		for(int i=0; i < csv.length; i++){
 			sqlKeywords.add(csv[i].trim().toLowerCase());
 		}
@@ -162,13 +157,13 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 			if(!file.isDirectory()){
 				throw new Exception("Properties directory could not be found!!");
 			}
-			//log.debug("About to process file: " + file.getAbsolutePath());
+			
 			processFiles(file);
 			return true;
 		}
 		catch(Exception ee){
 			ee.printStackTrace();
-			log.error(ee.getMessage());
+		
 		}
 		return false;
 	}
@@ -190,7 +185,7 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 			}
 			else{
 				try {
-				//	log.debug("about to process file: " + newFile.getAbsolutePath());
+				//	//log.debug("about to process file: " + newFile.getAbsolutePath());
 					InputStream input = newFile.toURL().openStream();
 					EFGProperties = new Properties(EFGProperties);
 					EFGProperties.load(input);
@@ -198,10 +193,10 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 						input.close();
 					}
 				} catch (MalformedURLException e) {
-					log.error(e.getMessage());
+				
 					throw e;
 				} catch (IOException e) {
-					log.error(e.getMessage());
+				
 					throw e;
 				}
 			}
@@ -216,6 +211,9 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 }
 
 // $Log$
+// Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.2  2006/06/21 04:21:37  kasiedu
 // Fixed some errors that did not show up in eclipse in build file
 //

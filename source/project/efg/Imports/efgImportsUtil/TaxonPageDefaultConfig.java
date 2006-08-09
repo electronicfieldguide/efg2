@@ -31,15 +31,18 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import org.apache.log4j.Logger;
-
+import project.efg.servlets.efgImpl.EFGContextListener;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
-
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.templates.taxonPageTemplates.XslFileNamesType;
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.templates.taxonPageTemplates.XslPageType;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.EFGUniqueID;
+import project.efg.Imports.efgImportsUtil.LoggerUtils;
+
+import com.opensymphony.oscache.base.NeedsRefreshException;
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
  * This servlet receives input from author about configuration of a Taxon page
@@ -50,18 +53,10 @@ public class TaxonPageDefaultConfig {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static GeneralCacheAdministrator cacheAdmin = EFGContextListener.getCacheAdmin();
 
-	static Logger log = null;
 
-	static {
-		try {
-			log = Logger.getLogger(TaxonPageDefaultConfig.class);
-		} catch (Exception ee) {
-		}
-	}
-
-	// private String datasourceName;
-	// private String displayName;
+	
 
 	private String realPath;
 
@@ -85,13 +80,12 @@ public class TaxonPageDefaultConfig {
 	 */
 	public boolean processNew(String dsName, String displayName) {
 
-		log.debug("DatasourceName: " + dsName);
-
 		boolean isDone = false;
 		try {
-			isDone = createFile(dsName, displayName);
+			isDone = getFromCache(dsName);
+			
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtils.logErrors(ee);
 		}
 		return isDone;
 	}
@@ -99,48 +93,116 @@ public class TaxonPageDefaultConfig {
 	public boolean cloneOldFile(String oldDsName, String newDSName,
 			String displayName) {
 
-		log.debug("DatasourceName: " + newDSName);
-		log.debug("oldDatasourcename: " + oldDsName);
-
+		
 		boolean isDone = false;
 		try {
 			isDone = cloneFile(oldDsName, newDSName, displayName);
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtils.logErrors(ee);
 		}
 		return isDone;
 	}
-
+	
 	private boolean cloneFile(String oldDSName, String newDSName,
 			String displayName) {
 		String mute = "";
 		synchronized (mute) {
-			StringBuffer fileLocationBuffer = new StringBuffer();
-			fileLocationBuffer.append(realPath);
-			fileLocationBuffer.append(oldDSName.toLowerCase());
-			fileLocationBuffer.append(EFGImportConstants.XML_EXT);
-
+			String key = oldDSName.toLowerCase();
 			try {
-				FileReader reader = new FileReader(fileLocationBuffer
-						.toString());
-				this.tps = (TaxonPageTemplates) TaxonPageTemplates
-						.unmarshalTaxonPageTemplates(reader);
-
-				TaxonPageTemplateType tp = this.tps.getTaxonPageTemplate(0);
+				this.tps = 
+					(TaxonPageTemplates)cacheAdmin.getFromCache(key);
+			}
+			catch(Exception ee){
 				
-				tp.setDatasourceName(newDSName.toLowerCase());
-				log.debug("NewDSName: " + newDSName);
-				return this.writeToFile(newDSName.toLowerCase());
-			} catch (Exception ee) {
-				log.error(ee.getMessage());
+			}
+			
+			if(this.tps == null){
+				StringBuffer fileLocationBuffer = new StringBuffer();
+				fileLocationBuffer.append(realPath);
+				fileLocationBuffer.append(oldDSName.toLowerCase());
+				fileLocationBuffer.append(EFGImportConstants.XML_EXT);
+
+				try {
+					FileReader reader = new FileReader(fileLocationBuffer
+							.toString());
+					this.tps = (TaxonPageTemplates) TaxonPageTemplates
+							.unmarshalTaxonPageTemplates(reader);
+
+					TaxonPageTemplateType tp = this.tps.getTaxonPageTemplate(0);
+					tp.setDatasourceName(newDSName.toLowerCase());
+				
+				} catch (Exception ee) {
+					LoggerUtils.logErrors(ee);
+				}
+			}
+			if(this.tps != null){
+				if(this.writeToFile(newDSName.toLowerCase())){
+					reloadTps(newDSName);
+					
+				}
+			}
+			if(this.tps != null){
+				return true;
 			}
 			return false;
 		}
 
 	}
+	/**
+	 * @param newDSName
+	 */
+	private void reloadTps(String newDSName) {
+	try {
+			StringBuffer fileLocationBuffer = new StringBuffer();
+			fileLocationBuffer.append(realPath);
+			fileLocationBuffer.append(newDSName.toLowerCase());
+			fileLocationBuffer.append(EFGImportConstants.XML_EXT);
+			
+			FileReader reader = new FileReader(fileLocationBuffer
+					.toString());
+			this.tps = (TaxonPageTemplates) TaxonPageTemplates
+					.unmarshalTaxonPageTemplates(reader);
+			if(this.tps != null){
+	    		cacheAdmin.putInCache(newDSName.toLowerCase(),this.tps,EFGContextListener.templateFilesGroup);
 
+			}
+	}  catch (Exception e) {
+		}	
+	}
+
+	
+	private boolean getFromCache(String fileName){
+		boolean isDone = false;
+		if(fileName == null){
+			return isDone;
+		}
+		String key = fileName.toLowerCase();
+
+		try {
+			this.tps = 
+				(TaxonPageTemplates)cacheAdmin.getFromCache(key);
+			
+		} catch (Exception ee) {
+		    try {
+		    	
+		    	isDone = this.createFile(key);
+		    	if(isDone){
+		    		cacheAdmin.putInCache(key,this.tps,EFGContextListener.templateFilesGroup);
+		    		this.tps = 
+						(TaxonPageTemplates)cacheAdmin.getFromCache(key);
+		    	}
+		    } catch (NeedsRefreshException nre) {	        
+		    	this.tps =(TaxonPageTemplates)nre.getCacheContent();
+		    	cacheAdmin.cancelUpdate(key);
+		    }
+		}
+		if(this.tps != null){
+			return true;
+		}
+		return isDone;
+	}
 	private boolean writeToFile(String datasourceName) {
-		log.debug("Real Path: " + this.realPath);
+		//log.debug("Real Path: " + this.realPath);
 		StringBuffer fileLocationBuffer = new StringBuffer();
 		fileLocationBuffer.append(this.realPath);
 
@@ -148,7 +210,7 @@ public class TaxonPageDefaultConfig {
 		fileLocationBuffer.append(EFGImportConstants.XML_EXT);
 
 		String fileLocation = fileLocationBuffer.toString();
-		log.debug("xml template file: " + fileLocation);
+		//log.debug("xml template file: " + fileLocation);
 		// lock file to block this operation from happening
 		File file = new File(fileLocation);
 		String renamedFile = fileLocation + System.currentTimeMillis() + "_old";
@@ -164,12 +226,12 @@ public class TaxonPageDefaultConfig {
 				try {
 					success = file.renameTo(file2);
 				} catch (Exception eeer) {
-					log.debug(eeer.getMessage());
+					//log.debug(eeer.getMessage());
 				}
 			}
 			if (!success) {
 				isExists = false;
-				log.debug("File could not be renamed");
+				//log.debug("File could not be renamed");
 			}
 		}
 		FileWriter writer = null;
@@ -193,12 +255,12 @@ public class TaxonPageDefaultConfig {
 
 				} catch (Exception eee) {
 					done = false;
-					log.error(eee.getMessage());
+					LoggerUtils.logErrors(eee);
 				}
 			}
 		} catch (Exception ee) {
 			done = false;
-			log.error(ee.getMessage());
+			LoggerUtils.logErrors(ee);
 			try {
 				// rename file to a new one
 				if (writer != null) {
@@ -212,18 +274,19 @@ public class TaxonPageDefaultConfig {
 					}
 					if (!success) {
 						isExists = false;
-						log
-								.debug("File could not be renamed when exception occured");
+						//log
+							//	.debug("File could not be renamed when exception occured");
 					}
 				}
 			} catch (Exception ff) {
-				log.error(ff.getMessage());
+				LoggerUtils.logErrors(ff);
 			}
 		}
 
 		return done;
 	}
 
+	
 	/**
 	 * Get the HttpServletRequest parameters and return the value.
 	 * 
@@ -233,17 +296,13 @@ public class TaxonPageDefaultConfig {
 	 *            the name of the parameter of the HttpServletRequest
 	 * @return the value of the parameter to be used as a test query
 	 */
-	private boolean createFile(String dsName, String displayName) {
-		this.tps = new TaxonPageTemplates();
-		TaxonPageTemplateType tptype = createEFGTemplate(dsName, displayName);
-
-		this.tps.addTaxonPageTemplate(tptype);
-		return this.writeToFile(dsName.toLowerCase());
-
+	private boolean createFile(String dsName) {
+		
+		return createEFGTemplate(dsName);
 	}
 
-	private TaxonPageTemplateType createEFGTemplate(String dsName,
-			String displayName) {
+	private boolean createEFGTemplate(String dsName) {
+		this.tps = new TaxonPageTemplates();
 		// if it already exists add stuff to it..
 		TaxonPageTemplateType tp = new TaxonPageTemplateType();
 		tp.setDatasourceName(dsName.toLowerCase());
@@ -260,8 +319,8 @@ public class TaxonPageDefaultConfig {
 		xsls.setXslListPages(xslPageType);
 
 		tp.setXSLFileNames(xsls);
-
-		return tp;
+		this.tps.addTaxonPageTemplate(tp);
+		return this.writeToFile(dsName.toLowerCase());
 	}
 
 	private XslPageType getXSLPageType(String xslFile) {
@@ -269,12 +328,19 @@ public class TaxonPageDefaultConfig {
 		XslPage xslPage = new XslPage();
 		xslPage.setIsDefault(true);
 		xslPage.setFileName(xslFile);
+		xslPage.setDisplayName(xslFile);
+		xslPage.setGuid(EFGUniqueID.getID()+"");
+		//generate a guid
+	
 		xslPageType.addXslPage(xslPage);
 		return xslPageType;
 	}
 
 }
 // $Log$
+// Revision 1.1.2.2  2006/08/09 18:55:24  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.1  2006/07/11 21:46:12  kasiedu
 // "Added more configuration info"
 //

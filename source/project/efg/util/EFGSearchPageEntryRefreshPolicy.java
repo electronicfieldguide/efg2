@@ -3,7 +3,7 @@
  */
 package project.efg.util;
 
-import org.apache.log4j.Logger;
+
 
 import com.opensymphony.oscache.base.CacheEntry;
 import com.opensymphony.oscache.base.EntryRefreshPolicy;
@@ -13,7 +13,6 @@ import com.opensymphony.oscache.base.EntryRefreshPolicy;
  *
  */
 public class EFGSearchPageEntryRefreshPolicy implements EntryRefreshPolicy {
-	private static transient Logger log = Logger.getLogger(EFGSearchPageEntryRefreshPolicy.class);
 	
 	/**
 	 * 
@@ -32,7 +31,7 @@ public class EFGSearchPageEntryRefreshPolicy implements EntryRefreshPolicy {
 	 * @see com.opensymphony.oscache.base.EntryRefreshPolicy#needsRefresh(com.opensymphony.oscache.base.CacheEntry)
 	 */
 	public boolean needsRefresh(CacheEntry arg0) {
-		log.debug("");
+		//log.debug("");
 		return false;
 	}
 

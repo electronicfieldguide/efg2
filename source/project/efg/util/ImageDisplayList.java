@@ -30,19 +30,12 @@ package project.efg.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 
 
 
 
 public class ImageDisplayList {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(ImageDisplayList.class);
-		} catch (Exception ee) {
-		}
-	}
+
     private List imageList;
     public ImageDisplayList(){
     	this.imageList = new ArrayList();

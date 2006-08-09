@@ -22,6 +22,7 @@ import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
 import project.efg.Imports.factory.ComparatorFactory;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.EFGUniqueID;
 
 /**
  * CSV2Database.java
@@ -98,7 +99,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		this(datasource, dataExtractor, dbObject, false);
 
 	} // CSV2Database constructor
-
+	private boolean useOldTableColumns(){
+		return false;
+	}
 	/**
 	 * @return true if import was successful. false otherwise
 	 */
@@ -114,7 +117,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 		TransactionStatus status = this.txManager.getTransaction(def);
 		try {
-			// execute your business logic here
+		
 
 			if (isSuccess) {
 				log.debug("About to import: "
@@ -143,35 +146,30 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						// could not
 						// be
 						// generated
-						log
-								.error("Table name must not be null or the empty string!!!");
-						
+						log.error("Table name must not be null or the empty string!!!");
 						return false;
 					}
 					if ((this.getDisplayName() == null)
 							|| this.getDisplayName().trim().equals("")) {
 						this.datasource.setDisplayName(this.tableName);
 						log.debug("A new display name '"
-								+ this.getDisplayName()
+							+ this.getDisplayName()
 								+ " was created successfully");
 					}
 					log.debug("About to create Data table");
 					isSuccess = this.createDataTable();
 
 					if (isSuccess) {// data table created successfully
-						log
-								.debug("A Data table "
+						log.debug("A Data table "
 										+ this.tableName
 										+ " was created successfully out of the file: '"
 										+ this.datasource.getDataName()
 												.toString() + "'!!");
-
+													
 						this.metadataTableName = this.createMetadataTableName();
 						if (this.metadataTableName == null) {
-							log
-									.error("System could not create a metadata table for : "
-											+ this.datasource.getDataName()
-													.toString());
+							log.error("System could not create a metadata table for : "
+											+ this.datasource.getDataName().toString());
 							this.txManager.rollback(status);
 							return false;
 						}
@@ -199,8 +197,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							}
 							//create the default Template files for the current datasource 
 						} else {// use an old metadata table as template
-							log
-									.debug("About to clone an existing Metadata table");
+							log.debug("About to clone an existing Metadata table");
 							// find out if this metadata table exists. Quit if
 							// it does not
 
@@ -211,8 +208,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 								// metadata
 								// table does
 								// not exists
-								log
-										.error("System could not find the requested metadata table with display name: '"
+								log.error("System could not find the requested metadata table with display name: '"
 												+ this.datasource
 														.getTemplateDisplayName()
 												+ "' for the table '"
@@ -242,17 +238,15 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 									+ " was created successfully");
 							log.debug("About to create EFGTable");
 							isSuccess = this.createEFGTable();
-							log
-									.debug("EFGRDBTable was created/updated successfully");
+							log.debug("EFGRDBTable was created/updated successfully");
+									
 						} else {
-							log
-									.error("An error occurred while creating Metadata table '"
+							log.error("An error occurred while creating Metadata table '"
 											+ this.metadataTableName + "'!!!");
 							isSuccess = false;
 						}
 					} else {
-						log
-								.error("An error occurred while creating data table '"
+						log.error("An error occurred while creating data table '"
 										+ this.tableName + "'!!!");
 						isSuccess = false;
 					}
@@ -264,8 +258,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				log.error("The data contained in "
 						+ this.datasource.getDataName().toString()
 						+ " could not be imported successfully. \n");
-				log
-						.error("Please view the logs for more verbose error messages!!!");
+				log.error("Please view the logs for more verbose error messages!!!");
+				
 				return false;
 			}
 			
@@ -439,7 +433,6 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 									.getValueByFieldName(title);
 							if ((dataVal == null)
 									|| (dataVal.trim().equals(""))) {
-								// FIX ME SPRING
 								dataVal = EFGImportConstants.EFGProperties
 										.getProperty("dbBlank");
 								if ((dataVal == null)
@@ -452,7 +445,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							}
 							query.append(",");
 							query.append("\"");
-							query.append(dataVal.trim());
+							query.append(escapeQuotes(dataVal.trim()));
 							query.append("\"");
 						}
 						try {
@@ -488,6 +481,16 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		return isDone;
 	}
 
+	/**
+	 * @param string
+	 * @return
+	 */
+	private String escapeQuotes(String string) {
+		if(string == null){
+			return null;
+		}
+		return string.trim().replaceAll("\"","\\\\\"");
+	}
 	private int executeStatement(String query) throws Exception {
 
 		return this.jdbcTemplate.update(query);
@@ -543,7 +546,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							.hasNext();) {
 						queue = (EFGQueueObjectInterface) iter
 								.next();
-						//str = queue.getObject(0);
+						
 						break;//because only one row is required
 					}
 					if (queue == null) {
@@ -577,7 +580,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			query.append(this.getDisplayName());
 			query.append("\"");
 
-			log.debug("About to execute query: " + query.toString());
+			//log.debug("About to execute query: " + query.toString());
 			List list = this.executeQueryForList(query.toString(), 2);
 
 			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
@@ -590,8 +593,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				break;
 			}
 			if (this.metadataTableName == null) {
-				log
-						.error("A metadata table could not be found for the current data!!");
+				log.error("A metadata table could not be found for the current data!!");
 				return false;
 			}
 
@@ -603,8 +605,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			log.debug("legalNames size: " + this.getLegalNames().length);
 
 			if (list.size() != this.getLegalNames().length) {
-				log
-						.error("The number of columns in the MetadataTable to be used "
+				log.error("The number of columns in the MetadataTable to be used "
 								+ "for this update "
 								+ "does not match the number of field names in the data being "
 								+ "imported!!");
@@ -641,7 +642,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			if (checkEFGRDBTable()) {
 				StringBuffer query = new StringBuffer();
 				log.debug("About to create table: '" + this.efgRDBTable
-						+ "' if it does not exists");
+					+ "' if it does not exists");
 				//PUT IN PROPERTIES FILE
 				query.append("CREATE TABLE IF NOT EXISTS ");
 				query.append(this.efgRDBTable);
@@ -837,8 +838,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			isDone = false;
 		}
 		if (fieldNames == null) {
-			log.error("The file " + this.datasource.getDataName().toString()
-					+ " does not contain field names");
+			//log.error("The file " + this.datasource.getDataName().toString()
+				//	+ " does not contain field names");
 			isDone = false;
 		}
 		log.debug("Number of Field Names in current data is : "
@@ -850,11 +851,10 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			log.error("Import terminated");
 
 		} else {
-			log.error("Get metadata head");
+		
 			String[] metaHead = this.getMetadataTableHeaders();
 			if (metaHead == null) {
-				log
-						.error("System could not find metadata table header file.Import is terminating!!\n");
+				log.error("System could not find metadata table header file.Import is terminating!!\n");
 				isDone = false;
 			}
 			log.debug("Number of Field Names in system table csv file is : "
@@ -1024,6 +1024,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			}
 		} catch (Exception ee) {
 			isDone = false;
+			log.error(ee.getMessage());
+			ee.printStackTrace();
 			this.logMessage(ee);
 		}
 		return isDone;

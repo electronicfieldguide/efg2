@@ -170,9 +170,9 @@ public class TableSorterMain extends TableSorterMainInterface {
 			query.append(" FROM ");
 			query.append(EFGImportConstants.EFGProperties
 					.getProperty("ALL_EFG_RDB_TABLES"));
-			query.append(" WHERE DISPLAY_NAME = '");
+			query.append(" WHERE DISPLAY_NAME = \"");
 			query.append(ds.getDisplayName());
-			query.append("'");
+			query.append("\"");
 			java.util.List list = EFGRDBImportUtils.executeQueryForList(
 					this.jdbcTemplate, query.toString(), 1);
 			log.debug("After  lists size. " + list.size());

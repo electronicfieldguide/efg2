@@ -71,7 +71,7 @@ public class RunSetUp {
 		}
 		catch (Exception ee) {
 			log.error("Warning: user probably already exists");
-			//return false;
+			
 		}
 		try{
 			query = EFGImportConstants.EFGProperties.getProperty("grantcmd");
@@ -79,7 +79,7 @@ public class RunSetUp {
 		}
 		catch (Exception ee) {
 			log.error(ee.getMessage());
-			//return false;
+		
 		}
 			
 		
@@ -87,6 +87,9 @@ public class RunSetUp {
 	}
 }
 // $Log$
+// Revision 1.1.2.2  2006/08/09 18:55:24  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.1  2006/06/08 13:27:42  kasiedu
 // New files
 //

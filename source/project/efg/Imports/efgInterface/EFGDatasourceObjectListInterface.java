@@ -39,8 +39,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
-
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.factory.StateObjectFactory;
@@ -50,14 +48,7 @@ public abstract class EFGDatasourceObjectListInterface {
 	protected ArrayList lists;
 	protected DBObject dbObject;
 	protected String templateConfigHome;
-	static Logger log = null;
-
-	static {
-		try {
-			log = Logger.getLogger(EFGDatasourceObjectListInterface.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	protected StateObjectFactory stateFactory;
 	
 	public EFGDatasourceObjectListInterface(DBObject dbObject) {
@@ -183,5 +174,6 @@ public abstract class EFGDatasourceObjectListInterface {
 			EFGDatasourceObjectInterface datasource){
 		return this.addEFGDatasourceObject(datasource,false);
 	}
+	
 }// EFGDatasourceObjectInterfaceList
 

@@ -326,13 +326,11 @@ public class DiGIRProcessor {
      //If the list of DataSources is empty then get all the DataSources from our Database
      //otherwise use the DataSources from the request that exist in our DataBase
      if((requestedDataSources == null) || (requestedDataSources.size() == 0)){
-    	// EFGDataSourceHelperFactoryInterface dsHelperFactory = new EFGDataSourceHelperFactoryImpl();
          EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
          EFGDisplayObjectList lists = dsHelper.getDataSourceNames();
-         Iterator iter = lists.getIterator();
-         
+         Iterator iter = lists.getIterator();      
     	 requestedDataSources = new ArrayList();
-    	 
+    	
     	 while(iter.hasNext()){
     		 EFGDisplayObject datasource = (EFGDisplayObject)iter.next();
     		 String str = datasource.getDatasourceName();
@@ -353,8 +351,7 @@ public class DiGIRProcessor {
      } 
     } 
     catch(Exception e){
-	LoggerUtils.logErrors(e);
-	//System.err.println(e.getMessage());
+    	LoggerUtils.logErrors(e);
     }
     metadata.addContent(provider);
     content.addContent(metadata);

@@ -5,8 +5,6 @@ package project.efg.servlets.efgServletsUtil;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-
 import project.efg.efgDocument.EFGDocument;
 import project.efg.servlets.efgInterface.ResponseObject;
 import project.efg.util.EFGImportConstants;
@@ -16,13 +14,7 @@ import project.efg.util.EFGImportConstants;
  *
  */
 public class NoMatchResponseObject extends ResponseObject {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(NoMatchResponseObject.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	/**
 	 * @param req
 	 * @param efgDocument

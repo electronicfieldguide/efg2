@@ -5,8 +5,6 @@ package project.efg.util;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
-
 import com.opensymphony.oscache.base.Cache;
 import com.opensymphony.oscache.web.ServletCacheAdministrator;
 import com.opensymphony.oscache.web.filter.ICacheGroupsProvider;
@@ -16,13 +14,7 @@ import com.opensymphony.oscache.web.filter.ICacheGroupsProvider;
  *
  */
 public class EFGCacheGroup implements ICacheGroupsProvider {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGCacheGroup.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	/**
 	 * 
 	 */

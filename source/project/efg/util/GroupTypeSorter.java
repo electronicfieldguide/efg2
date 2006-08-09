@@ -36,21 +36,12 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 import project.efg.templates.taxonPageTemplates.GroupType;
 import project.efg.templates.taxonPageTemplates.GroupsType;
 import project.efg.templates.taxonPageTemplates.GroupsTypeItem;
 public class GroupTypeSorter{
  private Set sortedSet;
  private GroupsType groups;
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(GroupTypeSorter.class);
-		} catch (Exception ee) {
-		}
-	}
  	public GroupTypeSorter(){
  		this.groups = new GroupsType();
  	}
@@ -59,7 +50,7 @@ public class GroupTypeSorter{
 	 */
 	public GroupsType sort(GroupTypeComparator compare,GroupsType sorter) {
 		if(sorter == null){
-			log.error("Sorter is null");
+		
 			return null;
 		}
 		this.sortedSet = Collections.synchronizedSet(new TreeSet(compare));
@@ -74,9 +65,7 @@ public class GroupTypeSorter{
 			if(newGroupType != null){
 				this.sortedSet.add(newGroupType);
 			}
-			else{
-				log.error("Error occured for new Group type");
-			}
+			
 		}
 		return sortIt();
 	}

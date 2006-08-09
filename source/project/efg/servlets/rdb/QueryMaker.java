@@ -6,11 +6,10 @@ package project.efg.servlets.rdb;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.util.EFGImportConstants;
@@ -20,13 +19,7 @@ import project.efg.util.EFGImportConstants;
  *
  */
 public class QueryMaker {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(QueryMaker.class);
-		} catch (Exception ee) {
-		}
-	}
+
 	/**
 	 * 
 	 */
@@ -39,10 +32,11 @@ public class QueryMaker {
 	 * @return the EFGDocument object built from the query
 	 */
 	protected boolean matchNumber(String states) {
-		String patternStr = "\\d+$";
-		Pattern pattern = Pattern.compile(patternStr);
-		Matcher matcher = pattern.matcher(states);
+		//String patternStr = "\\d+$";
+		//Pattern pattern = Pattern.compile(patternStr);
+		//Matcher matcher = pattern.matcher(states);
 		try {
+			Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(states);
 			return matcher.find();
 		} catch (Exception vvv) {
 		}
@@ -70,28 +64,23 @@ public class QueryMaker {
 					maxDisplay = Integer.parseInt(maxDispStr);
 				}
 			} catch (Exception e) {
-				log.error(e.getMessage());
+				LoggerUtilsServlet.logErrors(e);
 			}
 		}
 		StringBuffer querySB = new StringBuffer();
 		Hashtable paramValuesTable = new Hashtable();
 		try {
-			//querySB.append("SELECT * FROM " + this.datasourceName);
+			
 			Enumeration paramEnum = req.getParameterNames();
 			int paramNo = 0;
 			
 			while (paramEnum.hasMoreElements()) {
 				String paramName = (String) paramEnum.nextElement();
-				log.debug("paramName: " + paramName);
-				/*if (specialParams.contains(paramName)
-						|| paramName.equals(EFGImportConstants.SEARCHSTR)) {
-					log.debug("Returning");
-					continue;
-				}*/
+				
 				String legalName = paramName;
-				log.debug("LegalName: " + legalName);
+			
 				if ((legalName == null) || ("".equals(legalName.trim()))) {
-					log.debug("skiping");
+				
 					continue;
 				}
 				if (paramName.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
@@ -99,7 +88,7 @@ public class QueryMaker {
 							EFGImportConstants.SERVICE_LINK_FILLER, " ");
 				}
 				String[] paramValues = req.getParameterValues(paramName);
-				log.debug("paramaValues length: " + paramValues.length);
+			
 				//iterate over it and add ors
 				String pVal = null;
 				StringBuffer orBuffer = new StringBuffer();
@@ -107,9 +96,9 @@ public class QueryMaker {
 				for (int jj = 0; jj < paramValues.length; jj++) {//add or query
 					
 					pVal = paramValues[jj];
-					log.debug("pVal: " + pVal);
+				
 					if (pVal == null) {
-						log.debug("skiping");
+
 						continue;
 					}
 					if (pVal.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
@@ -122,11 +111,11 @@ public class QueryMaker {
 					orBuffer.append(" ( ");
 					orBuffer.append(legalName);
 					orBuffer.append(" LIKE ");
-					orBuffer.append("'%");
+					orBuffer.append("\"%");
 					if ((this.matchNumber(pVal)) || ("".equals(pVal.trim()))) {//if there is a number
-						orBuffer.append("'");// value
+						orBuffer.append("\"");// value
 					} else {
-						orBuffer.append(pVal + "%'");
+						orBuffer.append(pVal + "%\"");
 					}
 					orBuffer.append(" ) ");
 					
@@ -143,7 +132,7 @@ public class QueryMaker {
 					++orCounter;
 				}
 				
-				//String legalName = (String)mapping.get(paramName);
+			
 				if (!orBuffer.toString().trim().equals("")) {
 					if (paramNo == 0) {
 						querySB.append(" where ");
@@ -168,10 +157,10 @@ public class QueryMaker {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+		
 			LoggerUtilsServlet.logErrors(e);
 		}
-		log.debug("Query: " + querySB.toString());
+	
 		return querySB.toString();
 	}
 }

@@ -43,8 +43,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-import org.apache.log4j.Logger;
 
+
+import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.efgDocument.EFGDocument;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 /**
@@ -52,13 +53,7 @@ import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
  *
  */
 public class ApplyXSLInterface {
-	static Logger log = null;
-	static{
-		try {
-			log = Logger.getLogger(ApplyXSLInterface.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	public  static ApplyXSLInterface createApplyXSLInterface() {
 		return new ApplyXSLInterface();
 	}
@@ -79,11 +74,10 @@ public class ApplyXSLInterface {
 		StringWriter writer = new StringWriter();
 	
 		if (filename == null) {
-			log.debug("retrieving xml source as jdom tree from request");
 			
 			EFGDocument	srcDoc = (EFGDocument) req.getAttribute("xml");
 			if (srcDoc == null) {
-				log.error("No xml source specified. Transformation failed");
+				EFGUtils.log("No xml source specified. Transformation failed");
 				return null;
 			}
 
@@ -93,7 +87,7 @@ public class ApplyXSLInterface {
 				Reader reader = new StringReader(writer.getBuffer().toString());			
 				return new StreamSource(reader);
 			} catch (Exception je) {
-				log.error("error on jdom to w3c dom conversion on xml source");
+				EFGUtils.log("error on jdom to w3c dom conversion on xml source");
 				LoggerUtilsServlet.logErrors(je);
 			}
 			return null;
@@ -104,11 +98,11 @@ public class ApplyXSLInterface {
 			try {
 				is = (new URL(filename)).openStream();
 			} catch (MalformedURLException mue) {
-				log.error("malformed url for xml source");
+				EFGUtils.log("malformed url for xml source");
 				LoggerUtilsServlet.logErrors(mue);
 				return null;
 			} catch (IOException ioe) {
-				log.error("error while trying to access xml via url");
+				EFGUtils.log("error while trying to access xml via url");
 				LoggerUtilsServlet.logErrors(ioe);
 				return null;
 			}
@@ -134,8 +128,8 @@ public class ApplyXSLInterface {
 			if (filename.indexOf(":") == -1) { 
 				xslURL = req.getScheme() + "://" + req.getServerName() + ":"
 						+ req.getServerPort() + filename;
-				log.debug("trying to get xsl from specified url " + xslURL);
-			} else { // A full path is being given (Added by J.Asiedu)
+			
+			} else { 
 				xslURL = filename;
 			}
 			return new javax.xml.transform.stream.StreamSource(xslURL);

@@ -34,9 +34,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+
 import org.xml.sax.InputSource;
 
 import project.efg.digir.DigirParserHandler;
@@ -52,15 +53,9 @@ import project.efg.util.EFGImportConstants;
  *
  */
 public class DiGIRQuery extends SQLQuery {
-	  static Logger log = null;
+	
 	  private ServletAbstractFactoryInterface servFactory;
-	  static{
-		try{
-		    log = Logger.getLogger(DiGIRQuery.class); 
-		}
-		catch(Exception ee){
-		}
-	   }
+	
 	/**
 	 * @param req
 	 */
@@ -81,11 +76,11 @@ public class DiGIRQuery extends SQLQuery {
 			this.initQueryParameters();
 		}
 		catch(Exception ee){
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 			LoggerUtilsServlet.logErrors(ee);
 		}
 		String digirRequest = req.getParameter(EFGImportConstants.DIGIR);
-		log.debug("Digir request: " + digirRequest);
+		//log.debug("Digir request: " + digirRequest);
 		
 		    InputSource source = new InputSource(new StringReader(digirRequest));
 		    DigirParserHandler dph = new DigirParserHandler(source);
@@ -132,7 +127,14 @@ public class DiGIRQuery extends SQLQuery {
 				return sqlString;
 		    }
 		    else {
-		       log.error("Error code is: " + dph.getErrorCode());
+		    	try{
+		    		ServletContext context = req.getSession().getServletContext();
+		    		 context.log("Error code is: " + dph.getErrorCode());
+		    	}
+		    	catch(Exception ee){
+		    		
+		    	}
+		     
 		    }
 		return null;
 	}
@@ -145,7 +147,7 @@ public class DiGIRQuery extends SQLQuery {
 	 * @return a String containing the DiGIR query
 	 */
 	private String processDigirRequest(DigirParserHandler dph) {
-		log.debug("Inside Digir request");
+		//log.debug("Inside Digir request");
 		Stack stack = dph.getStack();
 		StringBuffer buf = new StringBuffer();
 
@@ -155,7 +157,7 @@ public class DiGIRQuery extends SQLQuery {
 				buf.append(efg.toString());
 			}
 		}
-		//log.debug("Inside Digir request: " + buf.toString());
+		////log.debug("Inside Digir request: " + buf.toString());
 		return buf.toString();
 	}
 	protected String getSQLQuery(
@@ -166,8 +168,10 @@ public class DiGIRQuery extends SQLQuery {
 
 		
 		StringBuffer queryString = new StringBuffer();
-		Hashtable mapping = this.getNameMapping(metadataSource);
-		String arr[] = (digirQuery).split("\\s");
+		//Hashtable mapping = this.getNameMapping(metadataSource);
+		
+		//String arr[] = (digirQuery).split("\\s");
+		String arr[] = EFGImportConstants.spacePattern.split(digirQuery);
 		for (int i = 0; i < arr.length; i++) {
 			String keyword = (String) EFGContextListener.getKeyWordValue(arr[i]);
 			
@@ -180,15 +184,12 @@ public class DiGIRQuery extends SQLQuery {
 																			// lop
 					queryString.append(" " + keyword + " ");
 				} else { // it is a cop operator
-					String name = arr[i - 1];
-					if (name.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
-						name = name.replaceAll(
+					String legalName = arr[i - 1];
+					if (legalName.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
+						legalName = legalName.replaceAll(
 								EFGImportConstants.SERVICE_LINK_FILLER, " ");
 					}
-					String legalName = (String)mapping.get(name);
-					if ((legalName == null) || ("".equals(legalName.trim()))) {
-						continue;
-					}
+					
 
 					queryString.append("( " + legalName + " ");
 					if (set.contains(legalName.trim())) {
@@ -206,12 +207,12 @@ public class DiGIRQuery extends SQLQuery {
 								continue;
 							}
 							queryString.append(" LIKE ");
-							queryString.append("'%");
+							queryString.append("\"%");
 							if(this.matchNumber(pVal)){
-								queryString.append("')");// value
+								queryString.append("\")");// value
 							}
 							else{
-								queryString.append(pVal + "%')");
+								queryString.append(pVal + "%\")");
 							}
 							if(this.paramValuesTable.containsKey(legalName)){//could have parameter with multiple values
 								String oldVal = (String)paramValuesTable.get(legalName);
@@ -223,7 +224,7 @@ public class DiGIRQuery extends SQLQuery {
 							else{
 								this.paramValuesTable.put(legalName,pVal);
 							}
-							//queryString.append("'%')");// value
+							//queryString.append("\"%\")");// value
 						}
 					} else {
 						queryString.append(keyword.trim() + " ");
@@ -239,12 +240,12 @@ public class DiGIRQuery extends SQLQuery {
 							if ((pVal == null )|| ("".equals(pVal.trim()))) {
 								continue;
 							}
-							queryString.append("'%");
+							queryString.append("\"%");
 							if(this.matchNumber(pVal.trim())){
-								queryString.append("')");// value
+								queryString.append("\")");// value
 							}
 							else{
-								queryString.append(pVal.trim() + "%')");
+								queryString.append(pVal.trim() + "%\")");
 							}
 							if(this.paramValuesTable.containsKey(legalName)){//could have parameter with multiple values
 								String oldVal = (String)paramValuesTable.get(legalName);
@@ -256,7 +257,7 @@ public class DiGIRQuery extends SQLQuery {
 							else{
 								this.paramValuesTable.put(legalName,pVal);
 							}
-							//queryString.append("'" + pVal.trim() + "')");// value
+							//queryString.append("\"" + pVal.trim() + "\")");// value
 						}
 					}
 				}
@@ -281,7 +282,7 @@ public class DiGIRQuery extends SQLQuery {
 			insertB.append(" where ");
 			queryString.insert(0,insertB.toString());
 		}
-		log.debug("query: " + queryString.toString());
+		//log.debug("query: " + queryString.toString());
 		return queryString.toString();
 	}
 }

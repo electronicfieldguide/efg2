@@ -42,7 +42,7 @@ public abstract class SearchableInterface {
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(SearchableInterface.class);
+			//log = Logger.getLogger(SearchableInterface.class);
 		} catch (Exception ee) {
 		}
 	}

@@ -30,22 +30,16 @@ package project.efg.servlets.efgServletsUtil;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
+import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.EFGMediaResourceSearchableObject;
 
 /**
  * @author kasiedu
  *
  */
 public class TaxonPageHtml extends XSLTObjectInterface {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(TaxonPageHtml.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	/**
 	 * 
@@ -61,13 +55,14 @@ public class TaxonPageHtml extends XSLTObjectInterface {
 	public XSLProperties getXSLProperties(Map parameters, String realPath) {
 		String []xslFileNames = null;
 		String xslFileName = null;
+		String guid = null;
 		String datasourceName = null;
 		String displayName = null;
+		Properties properties = new Properties();
 		
 		try { 
-			if(parameters == null){
-				log.debug("Parameters is null");
-			}
+			
+			
 			String[] displayNames =(String[])parameters.get(EFGImportConstants.DISPLAY_NAME); 
 			String[] datasourceNames = (String[])parameters.get(EFGImportConstants.DATASOURCE_NAME);
 			
@@ -83,11 +78,15 @@ public class TaxonPageHtml extends XSLTObjectInterface {
 					(String[])parameters.get(EFGImportConstants.XSL_STRING);
 				
 				if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
-					xslFileName = this.getXSLFile(realPath,
+					XslPage currentPage = this.getXSLFile(
 							datasourceName, 
 							EFGImportConstants.TAXONPAGE_XSL);
-					if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
-					 throw new Exception("Cannot find xslFile..Use defaults..");
+					if(currentPage != null){
+						xslFileName = currentPage.getFileName();
+						guid = currentPage.getGuid();
+						if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
+							throw new Exception("Cannot find xslFile..Use defaults..");
+						}
 					}
 				}
 				else{
@@ -95,7 +94,7 @@ public class TaxonPageHtml extends XSLTObjectInterface {
 				}
 					
 					if(!this.isXSLFileExists(realPath,xslFileName)){
-						log.debug("Xsl file does not exists using defaults");
+						//log.debug("Xsl file does not exists using defaults");
 						 throw new Exception("Cannot find xslFile..Use defaults..");
 					}
 				
@@ -108,30 +107,29 @@ public class TaxonPageHtml extends XSLTObjectInterface {
 		}
 		catch (Exception ee) {
 			xslFileName = "defaultTaxonPageFile.xsl";
-			log.debug("An exception is thrown.using default!!");
-			
-			log.debug(ee.getMessage());
-			ee.printStackTrace();
+			LoggerUtilsServlet.logErrors(ee);
+		
 		}
 		try {
 			
-			Properties properties = new Properties();
-		
-				if(parameters == null){
-					log.error("Map parameters is null");
+				if(guid != null){
+					properties.setProperty(EFGImportConstants.GUID, guid);
 				}
-				
-				String fieldName =this.getFirstSearchableState(displayName,datasourceName);
-				if (fieldName != null) {
-					properties.setProperty("fieldName", fieldName);
+				EFGMediaResourceSearchableObject medSearch = 
+					this.getFirstField(displayName,datasourceName);
+				if(medSearch != null){
+					String fieldName =medSearch.getSearchableField();
+					if ((fieldName != null) && (!fieldName.trim().equals(""))){
+						properties.setProperty("fieldName", fieldName);
+					}
 				}
-		
+			
 			XSLProperties xslProps = new XSLProperties();
 			xslProps.setXSLFileName(xslFileName);
 			xslProps.setXSLParameters(properties);
 			return xslProps;
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			
 			LoggerUtilsServlet.logErrors(e);
 		}
 		return null;

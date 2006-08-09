@@ -30,22 +30,16 @@ package project.efg.servlets.efgServletsUtil;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
-
+import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.EFGMediaResourceSearchableObject;
 
 /**
  * @author kasiedu
  * 
  */
 public class SearchPageHtmlPlates extends XSLTObjectInterface {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(SearchPageHtmlPlates.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	
 	/**
 	 * 
@@ -63,9 +57,9 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 	 */
 	public XSLProperties getXSLProperties(Map parameters, String realPath) {
 		if (parameters == null) {
-			log.error("Map parameters is null");
+			//log.error("Map parameters is null");
 		}
-		
+		String guid = null;
 		String[] displayNames = (String[]) parameters
 		.get(EFGImportConstants.DISPLAY_NAME);
 		
@@ -90,9 +84,17 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 				(String[])parameters.get(EFGImportConstants.XSL_STRING);
 			
 			if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
-				xslFileName = this.getXSLFile(realPath,
+				XslPage currentPage = this.getXSLFile(
 						datasourceName, 
 						EFGImportConstants.SEARCHPAGE_PLATES_XSL);
+				if(currentPage != null){
+					xslFileName = currentPage.getFileName();
+					guid = currentPage.getGuid();
+					if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
+						throw new Exception("Cannot find xslFile..Use defaults..");
+					}
+				}
+				
 				if ((xslFileName == null) || (xslFileName.trim().equals(""))) {
 				 throw new Exception("Cannot find xslFile..Use defaults..");
 				}
@@ -102,7 +104,7 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 			}
 				
 				if(!this.isXSLFileExists(realPath,xslFileName)){
-					log.debug("Xsl file does not exists using defaults");
+					//log.debug("Xsl file does not exists using defaults");
 					 throw new Exception("Cannot find xslFile..Use defaults..");
 				}
 			
@@ -114,31 +116,31 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 		Properties properties = new Properties();
 		properties.setProperty(EFGImportConstants.SEARCH_PAGE_STR,
 				EFGImportConstants.SEARCHPAGE_PLATES_FILLER);
-		
-		
-			
+		if(guid != null){
+			properties.setProperty(EFGImportConstants.GUID, guid);
+		}
+		EFGMediaResourceSearchableObject firstField = this.getFirstField(displayName,datasourceName);
+			if(firstField != null){
 				try {
-					log.debug("using default stylesheet");
-					log.debug("Display Name: " + displayName);
-					log.debug("DatasourceName: " + datasourceName);
-					String imageField = this.getFirstImageField(displayName,
-							datasourceName);
-					log.debug("MediaResourceField: " + imageField);
-					if (imageField != null) {
+					//log.debug("using default stylesheet");
+					//log.debug("Display Name: " + displayName);
+					//log.debug("DatasourceName: " + datasourceName);
+					String imageField = firstField.getMediaResourceField();
+					//log.debug("MediaResourceField: " + imageField);
+					if ((imageField != null) && (!imageField.trim().equals(""))){
 						properties
 						.setProperty("mediaResourceField", imageField);
 					}
-					String fieldName = this.getFirstSearchableState(
-							displayName, datasourceName);
+					String fieldName = firstField.getSearchableField();
 					
-					if (fieldName != null) {
+					if ((fieldName != null) && (!fieldName.trim().equals(""))){
 						properties.setProperty("fieldName", fieldName);
 					}
 					
 				} catch (Exception eee) {
-					log.error(eee.getMessage());
+					LoggerUtilsServlet.logErrors(eee);
 				}
-			
+			}
 			
 		
 		
@@ -157,7 +159,7 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 			return xslProps;
 		} catch (Exception e) {
 			
-			log.error(e.getMessage());
+			//log.error(e.getMessage());
 			//e.printStackTrace();
 			LoggerUtilsServlet.logErrors(e);
 		}

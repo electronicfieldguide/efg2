@@ -27,7 +27,7 @@
 
 package project.efg.util;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.templates.taxonPageTemplates.GroupType;
 
@@ -38,13 +38,7 @@ import project.efg.templates.taxonPageTemplates.GroupType;
  * 
  */
 public class GroupTypeComparator implements java.util.Comparator {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(GroupTypeComparator.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	/**
 	 * Compares its two arguments for order. Returns a negative integer, zero,
@@ -90,34 +84,32 @@ public class GroupTypeComparator implements java.util.Comparator {
 		try {
 
 			if ((object1 == null) && (object2 == null)) {
-				log.debug("object1 and object2 are null");
+				//log.debug("object1 and object2 are null");
 			} else {
 				if (object2 == null) {
-					log.debug("object2 is null");
+					//log.debug("object2 is null");
 					returnValue = 1;
 				} else {
 
 					if (object1 == null) {
-						log.debug("object1 is null");
+						//log.debug("object1 is null");
 						returnValue = -1;
 					} else {
 						GroupType group1 = (GroupType) object1;
 						GroupType group2 = (GroupType) object2;
-						String id1 = group1.getId();
-						String id2 = group2.getId();
 						int groupID1 = Integer.parseInt(group1.getId());
 						int groupID2 = Integer.parseInt(group2.getId());
 
 						if (groupID1 != groupID2) {// id's not same
-							log.debug("ID1: " + id1);
-							log.debug("ID2: " + id2);
+							//log.debug("ID1: " + id1);
+							//log.debug("ID2: " + id2);
 							returnValue = (groupID1 - groupID2);
 
 						} else {
 							int groupRank1 = group1.getRank();
 							int groupRank2 = group2.getRank();
-							log.debug("rank1: " + groupRank1);
-							log.debug("rank2: " + groupRank2);
+							//log.debug("rank1: " + groupRank1);
+							//log.debug("rank2: " + groupRank2);
 
 							returnValue = (groupRank1 - groupRank2);
 
@@ -128,9 +120,9 @@ public class GroupTypeComparator implements java.util.Comparator {
 
 		} catch (Exception ee) {
 			ee.printStackTrace();
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
-		log.debug("Return Value from GroupTypeComparator : " + returnValue);
+		//log.debug("Return Value from GroupTypeComparator : " + returnValue);
 		return returnValue; // same rank, same id
 	}
 

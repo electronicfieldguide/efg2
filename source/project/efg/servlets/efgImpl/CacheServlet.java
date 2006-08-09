@@ -31,7 +31,7 @@ public class CacheServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		try {
-			log = Logger.getLogger(CacheServlet.class);
+			//log = Logger.getLogger(CacheServlet.class);
 			
 		} catch (Exception ee) {
 		}
@@ -72,12 +72,12 @@ public class CacheServlet extends HttpServlet {
 	 *            the servlet response object
 	 */
 	private void doInit(String url) {
-		log.debug("About to execute cache starter");
+		//log.debug("About to execute cache starter");
 		//String url = getServletURL(req);
 		CacheStarter cacheStarter = new CacheStarter();
-		//log.debug("url: " + url);
+		////log.debug("url: " + url);
 		//cacheStarter.executeCache(url);
-		log.debug("cache starter execution done");
+		//log.debug("cache starter execution done");
 	}
 	private static synchronized String getServletURL(HttpServletRequest request)
 		throws ServletException, IOException 

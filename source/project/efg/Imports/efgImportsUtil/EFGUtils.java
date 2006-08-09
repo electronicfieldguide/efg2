@@ -201,7 +201,7 @@ public class EFGUtils {
 			catalina_home = props.getProperty("CATALINA_HOME");
 		}
 		if (props == null) {
-			log.error("Catalina home environment variable isnot set!!");
+			log.error("Catalina home environment variable is not set!!");
 		}
 		return catalina_home;
 	}
@@ -263,6 +263,9 @@ public class EFGUtils {
 }
 
 // $Log$
+// Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.2  2006/07/11 21:46:12  kasiedu
 // "Added more configuration info"
 //

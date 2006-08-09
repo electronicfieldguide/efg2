@@ -53,7 +53,7 @@ public class UploadResources extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		try {
-			log = Logger.getLogger(UploadResources.class);
+			//log = Logger.getLogger(UploadResources.class);
 		} catch (Exception ee) {
 		}
 		realPath = getServletContext().getRealPath("/");
@@ -153,7 +153,7 @@ public class UploadResources extends HttpServlet {
 		try{
 			
 			items = upload.parseRequest(req);
-			log.debug("Request parsed successfully");
+			//log.debug("Request parsed successfully");
 //			 Process the uploaded items
 			Iterator iter = items.iterator();
 			
@@ -161,18 +161,18 @@ public class UploadResources extends HttpServlet {
 			   item = (FileItem) iter.next();
 
 			    if (!item.isFormField()) {
-			    	log.debug("It is a form upload");
+			    	//log.debug("It is a form upload");
 			      itemsToProcess.add(item);
 			    }
 			    else{
 			    	if((repository == null) || (repository.getAbsolutePath().trim().equals(""))){
 			    		String fieldName = item.getFieldName();
 			    		if(EFGImportConstants.ITEMTYPE.equalsIgnoreCase(fieldName)){
-			    			log.debug("FieldName: " + fieldName);
+			    			//log.debug("FieldName: " + fieldName);
 			    			String fieldValue = item.getString();
-			    			log.debug("FieldValue: " + fieldValue);
+			    			//log.debug("FieldValue: " + fieldValue);
 			    			repository  = EFGDiskItemFileFactory.getInstance(realPath,fieldValue);
-			    			log.debug("Repository found and it is: " + repository.getAbsolutePath());
+			    			//log.debug("Repository found and it is: " + repository.getAbsolutePath());
 			    		}
 			    	}
 			    	
@@ -190,7 +190,7 @@ public class UploadResources extends HttpServlet {
 				message = item.getName();
 			}
 			message= message+ " " + ee.getMessage();
-			log.error(message);
+			//log.error(message);
 			message = message  + "<br/>";
 			return message;
 		}
@@ -222,8 +222,8 @@ public class UploadResources extends HttpServlet {
 		
 		String message = "";
 		String itemName =item.getName();
-		log.debug("repos: " + repos);
-		log.debug("File path: " + itemName);
+		//log.debug("repos: " + repos);
+		//log.debug("File path: " + itemName);
 		try{
 			
 			if(itemName == null){
@@ -240,7 +240,7 @@ public class UploadResources extends HttpServlet {
 		catch(Exception ee){	
 			if(ee != null){
 				message= itemName + " " + ee.getMessage();
-				log.error(message);
+				//log.error(message);
 				message = message  + "<br/>";
 			}
 		}

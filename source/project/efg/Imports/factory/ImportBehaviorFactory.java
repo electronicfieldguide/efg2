@@ -69,8 +69,7 @@ public class ImportBehaviorFactory {
 		}
 		catch(Exception ee){
 			log.error(ee.getMessage());
-			log.error("Returning default!!");
-		
+			log.debug("Returning default!!");
 		}
 		
 		return new ImportBehaviorImplNew(lists,obj);

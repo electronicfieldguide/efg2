@@ -48,7 +48,7 @@ public class CaseInsensitiveComparatorImpl implements java.util.Comparator {
 			String s2 = o2.toString().toUpperCase();
 			return s1.compareToIgnoreCase(s2);
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return -1;
 	}

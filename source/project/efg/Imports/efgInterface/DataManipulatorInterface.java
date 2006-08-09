@@ -32,7 +32,7 @@
 package project.efg.Imports.efgInterface;
 
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -65,9 +65,10 @@ public abstract class DataManipulatorInterface {
 	}
 	private String getNumber(String str) {
 		String numeric = null;
-		String regEX = "\\d+$";
+		/*String regEX = "\\d+$";
 		Pattern p = Pattern.compile(regEX);
-		Matcher matcher = p.matcher(str);
+		Matcher matcher = p.matcher(str);*/
+		Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(str);
 		if (matcher.find()) {
 			numeric = matcher.group();
 		}
@@ -122,7 +123,7 @@ public abstract class DataManipulatorInterface {
 	protected void rootNodeUnEditable(String message) {
 
 	
-		log.info(message);
+		//log.info(message);
 		JOptionPane.showMessageDialog(null, message, "Warning Message",
 				JOptionPane.WARNING_MESSAGE);
 	}

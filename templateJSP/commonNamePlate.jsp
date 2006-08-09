@@ -11,12 +11,29 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 " %>
 <html>
 	<head>
+	<%@ include file="jspName.jsp" %>
 		<%
+            String guid =  (String)request.getAttribute(EFGImportConstants.GUID); 
+			String uniqueName = (String)request.getAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
+			String displayName = (String)request.getAttribute(EFGImportConstants.DISPLAY_NAME); 
+			String datasourceName =(String)request.getAttribute(EFGImportConstants.DATASOURCE_NAME);
+			if(datasourceName == null){
+				datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
+			
+			}
+			if(displayName == null){
+				displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME);
+			}
+			if(uniqueName == null){
+				uniqueName = request.getParameter(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
+			}
+			if(guid == null){
+				guid = request.getParameter(EFGImportConstants.GUID); 
+			}
+
 			 String templateMatch ="Plate Template1";
 			String context = request.getContextPath();
 			String realPath = getServletContext().getRealPath("/");
-			String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
-			String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 			String xslFileName = "nantucketCommonNameSearchPlate.xsl";
 			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
    
@@ -32,30 +49,76 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			boolean isOld = false;
 			String name = null;
 			int ii = 0;
-		TemplatePopulator tpop = new  TemplatePopulator();
-       StringBuffer fileName = new StringBuffer(realPath);
+			TemplatePopulator tpop = new  TemplatePopulator();
+			 StringBuffer fileName = new StringBuffer(realPath);
 			 fileName.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME); 
 			 fileName.append(File.separator);
 			 fileName.append(datasourceName.toLowerCase());
-			  fileName.append(EFGImportConstants.XML_EXT);
-			Hashtable groupTable = tpop.populateTable(fileName.toString(), xslFileName, EFGImportConstants.SEARCHPAGE_PLATES_XSL, datasourceName );
-	      String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory + "/nantucketstyleplates.css";
+			 fileName.append(EFGImportConstants.XML_EXT);
+			Hashtable groupTable = tpop.populateTable(fileName.toString(), guid, EFGImportConstants.SEARCHPAGE_PLATES_XSL, datasourceName );
+			if(groupTable == null){
+				groupTable = new Hashtable();
+			}
+			boolean isTableExists = false;	
+			boolean isImagesExists = false;	
+			if((table != null) && (table.size() > 0)){
+				isTableExists = true;	
+			}
+
+			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
+				isImagesExists = true;	
+			}
+		    File cssFiles = new File(realPath + File.separator +  EFGImportConstants.templateCSSDirectory);
+			File[] cssFileList = cssFiles.listFiles(); 
+			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
+			 String cssFile ="nantucketstyleplates.css";
 		%>
 		
 	<title>Nantucket Search Plate Template</title>
+			<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					cssLocation =cssLocation + cssFile;
+					fieldValue = cssFile;
+				}
+				else{
+					cssLocation =cssLocation + fieldValue;
+				}
+			%>	
 	<link rel="stylesheet" href="<%=cssLocation%>"/>
-			
 	</head>
 	<body>
 		<div id="numresults">Your search found <span class="num">xxx</span> results: </div>
 			<form method="post" action="<%=context%>/configTaxonPage">
-				<%
-					name =tp.getCharacter(isNew,isNew);
-					fieldValue = (String)groupTable.get(name);
-					if(fieldValue == null){
-						fieldValue ="";
-					}
-				%>
+			 <%
+				if(cssFileList.length > 0){
+				%>						
+						<select name="<%=name%>"  title="Select an image from List">
+							<%
+								for (ii=0; ii<cssFileList.length; ii++ ) {
+									File currentCSSFile = (File)cssFileList[ii];
+									fieldName = currentCSSFile.getName();
+									if(fieldName.equals(fieldValue)){
+									%>
+									<option selected="selected"><%=fieldName%></option>
+									<%
+									}
+									else{
+									%>
+										<option><%=fieldName%></option>
+									<%
+									}
+								}
+							%>
+						</select>
+			<%}
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+			%>
 				<table class="resultsdisplay">
 					<tr>
 						<td class="thumbnail">
@@ -203,6 +266,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.SEARCH_PAGE_STR%>"  value="<%=EFGImportConstants.SEARCH_PAGE_STR%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.SEARCH_TYPE_STR%>"  value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>"/>
+		<%if( guid != null){%>
+		<input type="hidden"   name="<%=EFGImportConstants.GUID%>"  value="<%=guid%>"/>
+		<%}%>
+				<input type="hidden"   name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>"  value="<%=uniqueName%>"/>
+				<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="<%=jspName%>"/>
+				
 				<input type="submit"  name="submit" value="Click to submit" align="middle" />	
 		</form>
 	</body>

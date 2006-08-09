@@ -39,7 +39,7 @@ EFGDisplayObject obj = null;
     		</select>
     		<br/><br/>
     		Select a Configuration type:
-    		<select name="<%=EFGImportConstants.CONFIG_TYPE%>" title""Select the type of Page to Configure">
+    		<select name="<%=EFGImportConstants.CONFIG_TYPE%>" title="Select the type of Page to Configure">
     			<option value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>">Plates</option>
     			<option value="<%=EFGImportConstants.SEARCH_LISTS_TYPE%>">Lists</option>
     			<option value="<%=EFGImportConstants.SEARCH_TAXON_TYPE%>">Taxon page</option>

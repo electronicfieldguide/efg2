@@ -11,13 +11,31 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 " %>
 <html>
 	<head>
+	<%@ include file="jspName.jsp" %>
 		<%
-			String templateMatch ="List Template1";
+            String guid =  (String)request.getAttribute(EFGImportConstants.GUID); 
+			String uniqueName = (String)request.getAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
+			String displayName = (String)request.getAttribute(EFGImportConstants.DISPLAY_NAME); 
+			String datasourceName =(String)request.getAttribute(EFGImportConstants.DATASOURCE_NAME);
+			if(datasourceName == null){
+				datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
+			
+			}
+			if(displayName == null){
+				displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME);
+			}
+			if(uniqueName == null){
+				uniqueName = request.getParameter(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
+			}
+			if(guid == null){
+				guid = request.getParameter(EFGImportConstants.GUID); 
+			}
+
 			String context = request.getContextPath();
 			String realPath = getServletContext().getRealPath("/");
-			String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
-			String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 			String xslFileName = "nantucketCommonNameSearchList.xsl";
+	
+            String templateMatch ="List Template2";
 			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
 			StringBuffer fileName = new StringBuffer(realPath);
 			 fileName.append(File.separator);
@@ -27,13 +45,20 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			  fileName.append(EFGImportConstants.XML_EXT);
 			String fieldName = null;
 			String fieldValue = null;
-    
+        	boolean isImagesExists = false;
+			boolean isTableExists = false;
+
+
 			Iterator it =null;
 			List table = dsHelper.getTaxonPageFields(displayName,datasourceName);
-			
+			List mediaResourceFields = dsHelper.getMediaResourceFields(displayName,datasourceName);
+
 			TemplatePopulator tpop = new  TemplatePopulator();
 
-			Hashtable groupTable = tpop.populateTable(fileName.toString(), xslFileName, EFGImportConstants.SEARCHPAGE_LISTS_XSL, datasourceName );
+			Hashtable groupTable = tpop.populateTable(fileName.toString(), guid, EFGImportConstants.SEARCHPAGE_LISTS_XSL, datasourceName );
+			if(groupTable == null){
+					groupTable = new Hashtable();
+			}
 
 			int tableSize = table.size();
 			TemplateProducer tp = new TemplateProducer();
@@ -41,29 +66,72 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			boolean isOld = false;
 			String name = null;
 			int ii = 0;
-			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory + "/nantucketstyle.css";
             File imageFiles = new File(realPath + File.separator +  EFGImportConstants.templateImagesDirectory);
 			 File[] imageFileList = imageFiles.listFiles(); 
 			String defaultInfo ="Click on a name to view more information about that Taxon."; 
+			if((table != null) && (table.size() > 0)){
+				isTableExists = true;	
+			}
+
+			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
+				isImagesExists = true;	
+			}
+
+		    File cssFiles = new File(realPath + File.separator +  EFGImportConstants.templateCSSDirectory);
+			File[] cssFileList = cssFiles.listFiles(); 
+			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
+			 String cssFile = "nantucketstyle.css";
+
 		//sort and iterate
 		%>
 		<title>Nantucket Search List Template</title>
+			<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					cssLocation =cssLocation + cssFile;
+					fieldValue = cssFile;
+				}
+				else{
+					cssLocation =cssLocation + fieldValue;
+				}
+			%>		
 		<link rel="stylesheet" href="<%=cssLocation%>"/>
 	</head>
 	<body alink="#660033" vlink="#660033" link="#6699FF" bgcolor="#ddeeff" text="#000000">
 	 <form method="post" action="<%=context%>/configTaxonPage">
-		<%
-		  
-		   name =tp.getGroupText(isNew,isNew);
-			fieldValue = (String)groupTable.get(name);
-			if(fieldValue == null){
-				fieldValue ="";
-			}
-		%>
+			<%if(cssFileList.length > 0){
+				%>						
+						<select name="<%=name%>"  title="Select an image from List">
+							<%
+								for (ii=0; ii<cssFileList.length; ii++ ) {
+									File currentCSSFile = (File)cssFileList[ii];
+									fieldName = currentCSSFile.getName();
+									if(fieldName.equals(fieldValue)){
+									%>
+									<option selected="selected"><%=fieldName%></option>
+									<%
+									}
+									else{
+									%>
+										<option><%=fieldName%></option>
+									<%
+									}
+								}
+							%>
+						</select>
+			<%}%>
 		<table class="header">
-		
 			<tr>
 				<td colspan="2" class="title">
+							<%
+								name =tp.getCharacter(isNew,isNew);
+								fieldValue = (String)groupTable.get(name);
+								if(fieldValue == null){
+									fieldValue ="";
+								}
+								if(isTableExists){
+							%>
 								<select name="<%=name%>"  title="Select an image from List">
 								<%
 									for (ii=0; ii<imageFileList.length; ii++ ) {
@@ -87,27 +155,31 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}
 								%>
 								</select>   
-				<%
-				   name =tp.getGroupText(isNew,isNew);
-				   fieldValue = (String)groupTable.get(name);
-				   if(fieldValue == null){
-					fieldValue ="";
-				   }
-				%>
+						<%
+							}
+							name =tp.getCharacter(isNew,isNew);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							if(isTableExists){
+						%>
 					<input type="text"  title="ENTER PAGE TITLE HERE" name="<%=name%>" value="<%=fieldValue%>"/> 
+					<%}%>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2" class="descrip">
-				<%
-				   name =tp.getGroupText(isNew,isNew);
-				   fieldValue = (String)groupTable.get(name);
-				   if(fieldValue == null){
-					fieldValue = defaultInfo;
-				   }
-					
-				%>
-					<input type="text"  title="ENTER HEADER INFO HERE"  size="100"   name="<%=name%>" value="<%=fieldValue%> "/> 
+						<%
+							name =tp.getCharacter(isNew,isNew);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							if(isTableExists){
+						%>
+								<input type="text"  title="ENTER HEADER INFO HERE"  size="100"   name="<%=name%>" value="<%=fieldValue%> "/> 
+						<%}%>
 				</td>
 			</tr>
 			<tr>
@@ -115,24 +187,28 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 					<table class="specieslist">
 						<tr>
 							<td class="commonheader">
-							<%
-							     name =tp.getGroupText(isNew,isNew);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								%>
+						<%
+							name =tp.getCharacter(isNew,isNew);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							if(isTableExists){
+						%>
 								<input type="text"  title="ENTER HEADER OF  LEFT COLUMN HERE" name="<%=name%>" value="<%=fieldValue%>"/> 
+							<%}%>
 							</td>
 							<td class="sciheader">
-							<%
-							 name =tp.getGroupText(isNew,isNew);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								%>
+						<%
+							name =tp.getCharacter(isNew,isNew);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							if(isTableExists){
+						%>
 								<input type="text"  title="ENTER HEADER OF  RIGHT COLUMN HERE" name="<%=name%>" value="<%=fieldValue%>"/> 
+							<%}%>
 							</td>
 						</tr>
 						<tr>
@@ -140,7 +216,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 							<td class="spacerheight"></td>
 						</tr>
 						<tr>
-								<td class="sciname">
+							<td class="commonname">
 								<%
 									name = tp.getCharacter(isNew,isNew);
 									fieldValue = (String)groupTable.get(name);
@@ -154,6 +230,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+									 if(isImagesExists) {
+										if(mediaResourceFields.contains(queueObject)){
+											continue;
+										}
+									}	
+
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -173,42 +255,9 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										ii++;
 									}
 								%>
-								</select> 
-									<%
-									name = tp.getCharacter(isOld,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
-								<select name="<%=name%>"  title="Select a column from the list">
-								<%
-									ii = 0;
-									it = table.iterator();
-									while (it.hasNext()) {
-										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-										fieldName = (String)queueObject.getObject(1);
-										if(ii==0){
-										%>
-										<option>
-										<%
-										}
-										if(fieldName.equals(fieldValue)){
-										%>
-										<option selected="selected"><%=fieldName%></option>
-										<%
-										}
-										else{
-										%>
-											<option><%=fieldName%></option>
-										<%
-										}
-										ii++;
-									}
-								%>
-								</select>     
+								</select>   
 							</td>
-							<td class="commonname">
+							<td class="sciname">
 								<%
 									name = tp.getCharacter(isOld,isNew);
 									fieldValue = (String)groupTable.get(name);
@@ -222,6 +271,51 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+									 if(isImagesExists) {
+										if(mediaResourceFields.contains(queueObject)){
+											continue;
+										}
+									}	
+
+										fieldName = (String)queueObject.getObject(1);
+										if(ii==0){
+										%>
+										<option>
+										<%
+										}
+										if(fieldName.equals(fieldValue)){
+										%>
+										<option selected="selected"><%=fieldName%></option>
+										<%
+										}
+										else{
+										%>
+											<option><%=fieldName%></option>
+										<%
+										}
+										ii++;
+									}
+								%>
+								</select>   
+								<%
+									name = tp.getCharacter(isOld,isNew);
+									fieldValue = (String)groupTable.get(name);
+									if(fieldValue == null){
+										fieldValue ="";
+									}
+								%>
+								<select name="<%=name%>"  title="Select a column from the list">
+								<%
+									ii = 0;
+									it = table.iterator();
+									while (it.hasNext()) {
+										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+									 if(isImagesExists) {
+										if(mediaResourceFields.contains(queueObject)){
+											continue;
+										}
+									}	
+
 										fieldName = (String)queueObject.getObject(1);
 										if(ii==0){
 										%>
@@ -277,7 +371,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 		<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
 		<input type="hidden"   name="<%=EFGImportConstants.SEARCH_PAGE_STR%>"  value="<%=EFGImportConstants.SEARCH_PAGE_STR%>"/>
 		<input type="hidden"   name="<%=EFGImportConstants.SEARCH_TYPE_STR%>"  value="<%=EFGImportConstants.SEARCH_LISTS_TYPE%>"/>
-
+		<%if( guid != null){%>
+		<input type="hidden"   name="<%=EFGImportConstants.GUID%>"  value="<%=guid%>"/>
+		<%}%>
+		<input type="hidden"   name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>"  value="<%=uniqueName%>"/>
+		<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="<%=jspName%>"/>
 
 	<input type="submit"  name="submit" value="Click to submit" align="middle" />	
 		</form>

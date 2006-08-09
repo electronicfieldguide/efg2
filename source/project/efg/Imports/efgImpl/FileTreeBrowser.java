@@ -81,7 +81,7 @@ public class FileTreeBrowser implements DropTargetListener,
 	protected boolean acceptableType; // Indicates whether data is acceptable
 
 	TreePath[] selections; // Initially selected rows
-	//private JProgressBar progressBar;
+	
 	TreePath leadSelection; // Initial lead selection
 	
 	boolean copyOverExistingFiles;

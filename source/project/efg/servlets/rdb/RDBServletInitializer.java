@@ -34,8 +34,6 @@ import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
-
 import project.efg.servlets.efgInterface.EFGServletInitializerInterface;
 
 /**
@@ -49,13 +47,7 @@ public class RDBServletInitializer implements EFGServletInitializerInterface {
 	private  Context env;
 	private String resourceName;
 	private  DataSource ds;
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(RDBServletInitializer.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	/**
 	 * Constructor.
 	 * 
@@ -67,16 +59,11 @@ public class RDBServletInitializer implements EFGServletInitializerInterface {
 		init();
 	}
 	private  synchronized void closeRDBContext() throws Exception {
-		log.debug("clean up " + ds.toString());
-		log.info("Cleaning up Context Resources");
+		this.servletContext.log("Cleaning up Context Resources");
 		Class cl = Class.forName("org.apache.commons.dbcp.BasicDataSource");
 		
 		if (cl.isInstance(ds)) {
-			log.debug("Found connection pool for " + ds.toString());
 			ds = null;
-			log.debug("Close All  connections ");
-		} else {
-			log.debug("Found connection pool for " + ds.toString());
 		}
 	}
 	/**
@@ -118,14 +105,9 @@ public class RDBServletInitializer implements EFGServletInitializerInterface {
 	public void init() {
 		try {
 			this.initRDBContext();
-			
-			servletContext
-					.log("initialization parameters read in EFGContextListener..");
+			servletContext.log("initialization parameters read in EFGContextListener..");
 		} catch (Exception e) { // log any errors that may have occured
-			servletContext
-					.log("Exception occured in EFGContextListener.contextInitialized:  "
-							+ e.getMessage());
-			e.printStackTrace();
+			servletContext.log(e.getMessage());
 		}
 	}
 
@@ -141,13 +123,16 @@ public class RDBServletInitializer implements EFGServletInitializerInterface {
 			servletContext
 					.log("Exception occured in EFGContextListener.contextDestroyed:  "
 							+ e.getMessage());
-			e.printStackTrace();
+		
 		}
 	}
 
 }
 
 // $Log$
+// Revision 1.1.2.2  2006/08/09 18:55:25  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.1  2006/06/08 13:27:44  kasiedu
 // New files
 //

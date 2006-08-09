@@ -30,7 +30,6 @@ package project.efg.Imports.rdb;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -62,7 +61,7 @@ public class EFGParserHandler extends DefaultHandler {
 
 	public static final String ATT_RESULT_FOUND = "FOUND";
 
-	private Locator _locator = null;
+	//private Locator _locator = null;
 
 	private String[] _header;
 
@@ -78,35 +77,26 @@ public class EFGParserHandler extends DefaultHandler {
 
 	private int _type = -1;
 
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGParserHandler.class);
-		} catch (Exception ee) {
-		}
-	}
-
+	
 	public void startDocument() throws SAXException {
-		log.debug("startDocument");
+		//log.debug("startDocument");
 	}
 
 	public void endDocument() throws SAXException {
-		log.debug("endDocument");
+		//log.debug("endDocument");
 	}
 
 	public void setDocumentLocator(Locator locator) {
-		_locator = locator;
+		//_locator = locator;
 	}
 
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 		if (_type == 0) {
 			_record[_recordIndex] += new String(ch, start, length);
-			log.debug("In char, index is " + _recordIndex + ", value is "
-					+ _record[_recordIndex]);
+		
 		}
-		String charString = new String(ch, start, length);
-		log.debug("characters: " + charString);
+	
 	}
 
 	public void startElement(String namespaceURI, String localName,
@@ -116,7 +106,7 @@ public class EFGParserHandler extends DefaultHandler {
 			_headerList = new LinkedList();
 		} else if (localName.toUpperCase().equals(ELE_FIELD)) {
 			String field = atts.getValue(ATT_FIELD_NAME);
-			log.debug("Adding: " + field);
+			//log.debug("Adding: " + field);
 			_headerList.add(field);
 		} else if (localName.toUpperCase().equals(ELE_RESULT)) {
 			_records = new LinkedList();
@@ -132,15 +122,11 @@ public class EFGParserHandler extends DefaultHandler {
 			_type = 0;
 		}
 
-		log.debug("startElement: \n\tnamespace: " + namespaceURI
-				+ "\n\tlocalName: " + localName);
-		log.debug("qualified name is " + qName);
+		//log.debug("startElement: \n\tnamespace: " + namespaceURI
+		//		+ "\n\tlocalName: " + localName);
+		//log.debug("qualified name is " + qName);
 
-		// list out the attributes and their values
-		for (int i = 0; i < atts.getLength(); i++) {
-			log.debug("Attribute: " + atts.getLocalName(i));
-			log.debug("\tValue: " + atts.getValue(i));
-		}
+	
 	}
 
 	public void endElement(String namespaceURI, String localName, String qName)
@@ -153,55 +139,55 @@ public class EFGParserHandler extends DefaultHandler {
 			}
 			_fieldNum = _header.length;
 		} else if (localName.toUpperCase().equals(ELE_ROW)) {
-			log.debug("Record size before: " + _records.size());
+			//log.debug("Record size before: " + _records.size());
 			_records.add(_record);
-			log.debug("Record size after: " + _records.size());
+			//log.debug("Record size after: " + _records.size());
 		} else if (localName.toUpperCase().equals(ELE_DATA)) {
 			_type = -1;
 		}
 
-		log.debug("endElement: \n\tnamespace: " + namespaceURI
-				+ "\n\tlocalName: " + localName);
+		//log.debug("endElement: \n\tnamespace: " + namespaceURI
+				//+ "\n\tlocalName: " + localName);
 	}
 
 	public void ignorableWhitespace(char[] ch, int start, int length)
 			throws SAXException {
-		log.debug(length + " characters of ignorable whitespace");
+		//log.debug(length + " characters of ignorable whitespace");
 	}
 
 	public void startPrefixMapping(String prefix, String uri)
 			throws SAXException {
-		log.debug("Begin namespace prefix: " + prefix);
+		//log.debug("Begin namespace prefix: " + prefix);
 	}
 
 	public void endPrefixMapping(String prefix) throws SAXException {
-		log.debug("End namespace prefix: " + prefix);
+		//log.debug("End namespace prefix: " + prefix);
 	}
 
 	public void processingInstruction(String instruction, String data)
 			throws SAXException {
-		log.debug("Instruction: " + instruction + ", data: " + data);
+		//log.debug("Instruction: " + instruction + ", data: " + data);
 	}
 
 	public void skippedEntity(String name) throws SAXException {
-		log.debug("Skipped entity: " + name);
+		//log.debug("Skipped entity: " + name);
 	}
 
 	public void error(SAXParseException e) throws SAXException {
-		log.debug("Recoverable error on line " + _locator.getLineNumber()
-				+ ", column " + _locator.getColumnNumber() + "\n\t"
-				+ e.getMessage());
+		//log.debug("Recoverable error on line " + _locator.getLineNumber()
+				//+ ", column " + _locator.getColumnNumber() + "\n\t"
+				//+ e.getMessage());
 	}
 
 	public void warning(SAXParseException e) throws SAXException {
-		log.debug("Warning on line " + _locator.getLineNumber() + ", column "
-				+ _locator.getColumnNumber() + "\n\t" + e.getMessage());
+		//log.debug("Warning on line " + _locator.getLineNumber() + ", column "
+			//	+ _locator.getColumnNumber() + "\n\t" + e.getMessage());
 	}
 
 	public void fatalError(SAXParseException e) throws SAXException {
-		log.error("Fatal error on line " + _locator.getLineNumber()
-				+ ", column " + _locator.getColumnNumber() + ":\n\t"
-				+ e.getMessage());
+		//log.error("Fatal error on line " + _locator.getLineNumber()
+			//	+ ", column " + _locator.getColumnNumber() + ":\n\t"
+				//+ e.getMessage());
 		throw e;
 	}
 
@@ -215,6 +201,9 @@ public class EFGParserHandler extends DefaultHandler {
 }
 
 // $Log$
+// Revision 1.1.2.2  2006/08/09 18:55:24  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.1  2006/06/08 13:27:42  kasiedu
 // New files
 //

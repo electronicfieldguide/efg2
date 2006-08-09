@@ -5,20 +5,14 @@ package project.efg.servlets.efgServletsUtil;
 
 import java.io.File;
 
-import org.apache.log4j.Logger;
+
 
 /**
  * @author kasiedu
  *
  */
 public class XSLTObjectHelper {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(XSLTObjectHelper.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	public XSLTObjectHelper(){}
 	/**
 	 * 
@@ -33,11 +27,11 @@ public class XSLTObjectHelper {
 		try {
 			 StringBuffer fileLocationBuffer = new StringBuffer();
 			 fileLocationBuffer.append(constructXSLFileName(realPath,xslFileName)); 
-			 log.debug("Full Path to xslFile: " +fileLocationBuffer.toString());
+			 //log.debug("Full Path to xslFile: " +fileLocationBuffer.toString());
 			 File file = new File(fileLocationBuffer.toString());
 			return file.exists();
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 		}
 		return false;
 	}

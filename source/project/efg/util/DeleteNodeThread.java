@@ -143,7 +143,7 @@ public class DeleteNodeThread extends SwingWorker{
 				try {
 					deleteFile(thumbsFile);
 				} catch (Exception ee) {
-					//log.error("Could not delete '" + thumbsName + "'");
+					log.error("Could not delete '" + thumbsName + "'");
 					return;
 				}
 			}
@@ -161,7 +161,7 @@ public class DeleteNodeThread extends SwingWorker{
 		private String replace(final String aInput, final String aOldPattern,
 				final String aNewPattern) {
 			if (aOldPattern.equals("")) {
-				//log.error("Old pattern must have content.");
+				log.error("Old pattern must have content.");
 			}
 			return aInput.replaceAll(aOldPattern, aNewPattern);
 		}

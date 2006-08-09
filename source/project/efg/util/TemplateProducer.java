@@ -1,20 +1,12 @@
 package project.efg.util;
 
-import org.apache.log4j.Logger;
 
 /**
  * @author kasiedu
  * 
  */
 public class TemplateProducer implements EFGImportConstants{
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(TemplateProducer.class);
-		} catch (Exception ee) {
-		}
-	}
-
+	
 	
 
 	int characterRankCounter = 0;

@@ -27,7 +27,7 @@
  */
 package project.efg.servlets.efgServletsUtil;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.efgDocument.StatisticalMeasureType;
 import project.efg.servlets.efgInterface.OperatorInterface;
@@ -37,13 +37,7 @@ import project.efg.servlets.efgInterface.OperatorInterface;
  *
  */
 public class StatisticalMeasureComparator {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(StatisticalMeasureComparator.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	public StatisticalMeasureComparator(){
 		
 	}
@@ -67,13 +61,13 @@ public class StatisticalMeasureComparator {
 			StatisticalMeasureType object1, 
 			StatisticalMeasureType object2
 			) throws Exception{
-		log.debug("Min val of object1: " + object1.getMin());
-		log.debug("Max val of object1: " + object1.getMax());
-		log.debug("Min val of object2: " + object2.getMin());
-		log.debug("Max val of object2: " + object2.getMax());
+		//log.debug("Min val of object1: " + object1.getMin());
+		//log.debug("Max val of object1: " + object1.getMax());
+		//log.debug("Min val of object2: " + object2.getMin());
+		//log.debug("Max val of object2: " + object2.getMax());
 		
-		log.debug("is object1 in the range of object2?");
-		log.debug("Operator is: " + operator.toString());
+		//log.debug("is object1 in the range of object2?");
+		//log.debug("Operator is: " + operator.toString());
 		if (operator instanceof GreaterThanOperator) {
 			return this.checkGreaterThan(object2,object1);
 		}
@@ -87,17 +81,17 @@ public class StatisticalMeasureComparator {
 			return this.checkLessThanOrEquals(object2,object1);
 		}
 		if(object2.getMax() == object2.getMin()){
-			log.debug(
+			/*log.debug(
 					"Since object2 has both min and max " + 
 					"equal we will check for direct equality "+ 
 					"between object1 and object2!!"
-					);
+					);*/
 			return this.checkEquals(object1,object2);
 			
 		}
 		else{
-			log.debug("Since object2 has both min and max not equal " +
-					"we will check for indirect range");
+			/*log.debug("Since object2 has both min and max not equal " +
+					"we will check for indirect range");*/
 			if(checkGreaterThan(object1,object2)){//means object1.getMax() > object2.getMax()
 				//so not in range
 				return false;

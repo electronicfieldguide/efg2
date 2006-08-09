@@ -55,9 +55,7 @@ public class OperatorFactory {
 			if(type.trim().startsWith("+")){
 				return new PlusOperator();
 			}
-			/*if(type.trim().startsWith("-")){
-				return new MinusOperator();
-			}*/
+
 			if(type.trim().startsWith("<=")){
 				return new LessThanOrEqualsOperator();
 			}

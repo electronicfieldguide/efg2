@@ -27,8 +27,6 @@
  */
 package project.efg.servlets.rdb;
 
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -39,7 +37,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
 
@@ -69,13 +66,7 @@ public class SQLQuery extends EFGHTTPQuery {
 
 	protected UnicodeToASCIIFilter filter;
 
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(SQLQuery.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	/**
 	 * Constructor.
@@ -115,7 +106,7 @@ public class SQLQuery extends EFGHTTPQuery {
 
 			while (paramEnum.hasMoreElements()) {
 				String legalName = (String) paramEnum.nextElement();
-				log.debug("paramName: " + legalName);
+				//log.debug("paramName: " + legalName);
 				if (isIgnoreParam(legalName)) {//ignore this parameter name
 					continue;
 				}
@@ -126,7 +117,7 @@ public class SQLQuery extends EFGHTTPQuery {
 				}
 				
 				String[] paramValues = req.getParameterValues(legalName);
-				log.debug("paramaValues length: " + paramValues.length);
+				//log.debug("paramaValues length: " + paramValues.length);
 
 				String orBuffer = this.getORQuery(paramValues, legalName);
 
@@ -154,10 +145,10 @@ public class SQLQuery extends EFGHTTPQuery {
 				}
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			//log.error(e.getMessage());
 			LoggerUtilsServlet.logErrors(e);
 		}
-		log.debug("Query: " + querySB.toString());
+		//log.debug("Query: " + querySB.toString());
 		return querySB.toString();
 	}
 
@@ -185,13 +176,13 @@ public class SQLQuery extends EFGHTTPQuery {
 
 		Hashtable typeTable = getDataTypes(this.metadatasourceName);
 		TaxonEntryItemBuilder itemBuilder = new TaxonEntryItemBuilder();
-		log.debug("Query: " + query);
+		//log.debug("Query: " + query);
 		SqlRowSet rowset = this.queryExecutor.executeQueryForRowSet(query);
 		SqlRowSetMetaData metadata = rowset.getMetaData(); // Get metadata
 
 		TaxonEntries taxonEntries = new TaxonEntries();// on
 		int tableSize = this.paramValuesTable.size();
-		log.debug("paramvaluesTable Size: " + tableSize);
+		//log.debug("paramvaluesTable Size: " + tableSize);
 
 		int w = 0;
 		while (rowset.next()) {
@@ -216,24 +207,27 @@ public class SQLQuery extends EFGHTTPQuery {
 						.toLowerCase());
 					boolean isFound = false;
 					if(paramVals == null){
-						log.debug("paramVals is null..skipping");
+						//log.debug("paramVals is null..skipping");
 						continue;//skip client request parameter
 					}
 					if (EFGImportConstants.UNIQUEID_STR.equalsIgnoreCase(legalName)) {
 						isFound = true;
 						isParamSkip = true;
-						log.debug("UniqueID field.Setting isParamSkip to true");
+						//log.debug("UniqueID field.Setting isParamSkip to true");
 					}
 					else if (paramVals.trim().equals("")) {//means match everything
 						isFound = true;
 						isParamSkip = true;
-						log.debug("paramVals.trim() is empty.Setting isParamSkip to true");
+						//log.debug("paramVals.trim() is empty.Setting isParamSkip to true");
 					}
 					else{
 						//parsing is done for the cases where a parameter has more than one 
 						//value separated by the pipe separator
-						log.debug("Before splitting: " + paramVals);
-						String[] params = paramVals.split(EFGImportConstants.PIPESEP);
+						//log.debug("Before splitting: " + paramVals);
+					
+						//String[] params = paramVals.split(EFGImportConstants.PIPESEP);
+						String[] params =EFGImportConstants.pipePattern.split(paramVals);
+						
 						isFound  = processStates(params, 
 								legalName,
 								rowset,
@@ -247,7 +241,7 @@ public class SQLQuery extends EFGHTTPQuery {
 						 *means that no match was found for some client 'and' request
 						 * We need to exit the loop;
 						 **/
-							log.debug("Breaking..Stop processing");
+							//log.debug("Breaking..Stop processing");
 							break; //out of inner while
 					}
 				}//end inner while
@@ -264,15 +258,18 @@ public class SQLQuery extends EFGHTTPQuery {
 			}
 			if(((this.addORListsToTaxonEntry(taxonEntry, orLists)) || (isParamSkip))){
 				try {
-					log.debug("About to add other items");
-					this.addOtherColumns(rowset, metadata, taxonEntry, typeTable,
-							itemBuilder);
+					//log.debug("About to add other items");
+					this.addOtherColumns(
+							rowset, metadata, 
+							taxonEntry, typeTable,
+							itemBuilder
+							);
 
 					if (taxonEntry.getTaxonEntryTypeItemCount() > 0) {
 						taxonEntries.addTaxonEntry(taxonEntry);
 					}
 				} catch (Exception eex) {
-					log.error(eex.getMessage());
+					//log.error(eex.getMessage());
 				}
 			}
 			else{//means empty orLists and we cannot skip the client parameter
@@ -310,25 +307,24 @@ public class SQLQuery extends EFGHTTPQuery {
 		Hashtable typeTable = new Hashtable();
 
 		StringBuffer buffer = new StringBuffer();
-		buffer
-				.append("Select name,legalName,isLists,NumericValue,NumericRange,MediaResource,Categorical,Narrative From ");
+		buffer.append("Select name,legalName,isLists,NumericValue,NumericRange,MediaResource,Categorical,Narrative From ");
 		buffer.append(metadatasourceName);
 
-		log.debug("Query: " + buffer.toString());
+		//log.debug("Query: " + buffer.toString());
 
 		SqlRowSet rowset = this.queryExecutor.executeQueryForRowSet(buffer
 				.toString());
 		SqlRowSetMetaData metadata = rowset.getMetaData(); // Get metadata
 		int numcols = metadata.getColumnCount(); // How many columns?
-		log.debug("Number of Columns: " + numcols);
+		//log.debug("Number of Columns: " + numcols);
 
 		while (rowset.next()) {
 			String dataType = null;
-			String legalName = rowset.getString("legalName");
-			String name = rowset.getString("name");
-			String state = rowset.getString("isLists");
+			String legalName = rowset.getString(EFGImportConstants.LEGALNAME);
+			String name = rowset.getString(EFGImportConstants.NAME);
+			String state = rowset.getString(EFGImportConstants.ISLISTS);
 			if (state.equalsIgnoreCase("true")) {//if it is a lists return it
-				dataType = "isLists";
+				dataType = EFGImportConstants.ISLISTS;
 				EFGObject efgObject = new EFGObject();
 				efgObject.setDatabaseName(legalName);
 				efgObject.setName(name);
@@ -337,15 +333,13 @@ public class SQLQuery extends EFGHTTPQuery {
 			} else {
 				for (int i = 1; i <= numcols; i++) {
 					String columnName = metadata.getColumnName(i);
-					if (columnName.equalsIgnoreCase("legalName")) {
+					if (columnName.equalsIgnoreCase(EFGImportConstants.LEGALNAME)) {
 						continue;
 					}
-					//log.debug("ColumnName: " + columnName);
+					////log.debug("ColumnName: " + columnName);
 					state = rowset.getString(columnName);
-					//log.debug("State: " + state);
+					////log.debug("State: " + state);
 					if (state.equalsIgnoreCase("true")) {
-						log.debug("Found datatype for legalName: " + legalName
-								+ " and it is '" + columnName + "'");
 						dataType = columnName;
 						EFGObject efgObject = new EFGObject();
 						efgObject.setDatabaseName(legalName);
@@ -357,11 +351,7 @@ public class SQLQuery extends EFGHTTPQuery {
 					}
 				}
 			}
-			if (dataType == null) {
-				log
-						.debug("Datatype for legalName: " + legalName
-								+ " not found");
-			}
+		
 		}
 		return typeTable;
 	}
@@ -398,16 +388,16 @@ public class SQLQuery extends EFGHTTPQuery {
 
 			if ((this.displayName != null)
 					&& (!this.displayName.trim().equals(""))) {
-				queryBuffer.append(" WHERE DISPLAY_NAME ='");
+				queryBuffer.append(" WHERE DISPLAY_NAME =\"");
 				queryBuffer.append(this.displayName);
-				queryBuffer.append("'");
+				queryBuffer.append("\"");
 			} else if ((this.datasourceName != null)
 					&& (!this.datasourceName.trim().equals(""))) {
-				queryBuffer.append(" WHERE DS_DATA ='");
+				queryBuffer.append(" WHERE DS_DATA =\"");
 				queryBuffer.append(this.datasourceName);
-				queryBuffer.append("'");
+				queryBuffer.append("\"");
 			}
-			log.debug("Query: " + queryBuffer.toString());
+			//log.debug("Query: " + queryBuffer.toString());
 			List lists = this.queryExecutor.executeQueryForList(queryBuffer
 					.toString(), 3);
 			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
@@ -420,17 +410,17 @@ public class SQLQuery extends EFGHTTPQuery {
 			}
 			return true;
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 			LoggerUtilsServlet.logErrors(ee);
 		}
 		return false;
 	}
 
-	protected Hashtable getNameMapping(String metadataSource) {
+	/*protected Hashtable getNameMapping(String metadataSource) {
 		Hashtable mapping = new Hashtable();
 
 		String metaQuery = "SELECT NAME,LEGALNAME FROM " + metadataSource;
-		log.debug("Query: " + metaQuery);
+		//log.debug("Query: " + metaQuery);
 		try {
 			List lists = this.queryExecutor.executeQueryForList(metaQuery, 2);
 			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
@@ -442,11 +432,11 @@ public class SQLQuery extends EFGHTTPQuery {
 			}
 
 		} catch (Exception mex) {
-			log.error(mex.getMessage());
+			//log.error(mex.getMessage());
 			LoggerUtilsServlet.logErrors(mex);
 		}
 		return mapping;
-	}
+	}*/
 
 	protected Set getCategorical(String metadataSource) {
 		Set set = new HashSet();
@@ -455,12 +445,12 @@ public class SQLQuery extends EFGHTTPQuery {
 		queryBuffer.append(metadataSource);
 		queryBuffer.append(" where ");
 		queryBuffer.append(EFGImportConstants.CATEGORICAL);
-		queryBuffer.append("='");
+		queryBuffer.append("=\"");
 		queryBuffer.append(EFGImportConstants.YES);
-		queryBuffer.append("')");
+		queryBuffer.append("\")");
 
 		try {
-			log.debug("Select query: " + queryBuffer.toString());
+			//log.debug("Select query: " + queryBuffer.toString());
 			List lists = this.queryExecutor.executeQueryForList(queryBuffer
 					.toString(), 1);
 			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
@@ -470,7 +460,7 @@ public class SQLQuery extends EFGHTTPQuery {
 				set.add(legalName.trim());
 			}
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			//log.error(e.getMessage());
 			LoggerUtilsServlet.logErrors(e);
 		}
 		return set;
@@ -484,7 +474,7 @@ public class SQLQuery extends EFGHTTPQuery {
 		EFGObject efgObject = (EFGObject)typeTable.get(legalName
 				.trim().toLowerCase());
 		if (efgObject == null) {
-			log.debug("EFGObject is null for : " + legalName);
+			//log.debug("EFGObject is null for : " + legalName);
 		}
 		boolean isFound = false;
 		for (int j = 0; j < params.length; j++) {
@@ -496,40 +486,24 @@ public class SQLQuery extends EFGHTTPQuery {
 			 */
 	
 			String paramValue = params[j];
-			log.debug("paramValue: " + paramValue);
-			log.debug("LegalName: " + legalName);
+			//log.debug("paramValue: " + paramValue);
+			//log.debug("LegalName: " + legalName);
 			String states = rowset.getString(legalName);
-			log.debug("States: " + states);
+			//log.debug("States: " + states);
 	
 			if (states != null) {
-				StringWriter writer = new StringWriter();
-				this.filter.filter(new StringReader(states),
-						writer);
-				states = writer.getBuffer().toString();
-				log
-						.debug("States after filteration: "
-								+ states);
-				log.debug("efgObject types: " + " DBNAME: "
-						+ efgObject.getDatabaseName()
-						+ " NAME: " + efgObject.getName()
-						+ " TYPE: " + efgObject.getDataType());
+			
+			
 				TaxonEntryTypeItem taxonEntryItem = itemBuilder
 						.buildTaxonEntryItem(paramValue,
 								states, efgObject);
 				if (taxonEntryItem != null) {
 					orLists.add(taxonEntryItem);
 					if (!isFound) {
-						log.debug("match found for state: "
-								+ paramValue
-								+ " and columnName: "
-								+ legalName);
+					
 						isFound = true;
 					}
-				} else {
-					log.debug("No match found for state: "
-							+ paramValue + " and columnName: "
-							+ legalName);
-				}
+				} 
 			}
 		}
 		return isFound;
@@ -542,18 +516,18 @@ public class SQLQuery extends EFGHTTPQuery {
 		for (int jj = 0; jj < paramValues.length; jj++) {//add or query
 
 			String pVal = paramValues[jj];
-			log.debug("pVal: " + pVal);
+			//log.debug("pVal: " + pVal);
 			if (pVal == null) {
-				log.debug("skiping");
+				//log.debug("skiping");
 				continue;
 			}
-
+			pVal = pVal.trim();
 			if (pVal.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
 				pVal = pVal.replaceAll(EFGImportConstants.SERVICE_LINK_FILLER,
 						" ");
 			}
 			if(pVal.indexOf(EFGImportConstants.EFG_ANY) > -1){
-				log.debug("Contains any will replace it with a wildcard");
+				//log.debug("Contains any will replace it with a wildcard");
 				pVal = pVal.replaceAll(EFGImportConstants.EFG_ANY,
 				" ");
 			}
@@ -563,16 +537,17 @@ public class SQLQuery extends EFGHTTPQuery {
 
 			orBuffer.append(" ( ");
 			orBuffer.append(legalName);
+			
 			if (EFGImportConstants.UNIQUEID_STR.equalsIgnoreCase(legalName)) {//handle uniqueid
 				orBuffer.append("=");
 				orBuffer.append(pVal);
 			} else {
 				orBuffer.append(" LIKE ");
-				orBuffer.append("'%");
+				orBuffer.append("\"%");
 				if ((this.matchNumber(pVal)) || ("".equals(pVal.trim()))) {//if there is a number or if it is blank
-					orBuffer.append("'");// match on 'any'
+					orBuffer.append("\"");// match on 'any'
 				} else {
-					orBuffer.append(pVal + "%'");
+					orBuffer.append(pVal + "%\"");
 				}
 			}
 			orBuffer.append(" ) ");
@@ -581,14 +556,15 @@ public class SQLQuery extends EFGHTTPQuery {
 					String oldVal = (String) paramValuesTable.get(legalName
 							.toLowerCase());
 					if (oldVal.indexOf(pVal) == -1) {//does not exists
-						log.debug("pval already exists in paramValuesTable: "
-								+ pVal);
+						/*log.debug("pval already exists in paramValuesTable: "
+								+ pVal);*/
 						pVal = oldVal + EFGImportConstants.PIPESEP_PARSE + pVal;
-						log.debug("pval in paramValuesTable is now: " + pVal);
+						//log.debug("pval in paramValuesTable is now: " + pVal);
 						this.paramValuesTable
 								.put(legalName.toLowerCase(), pVal);
 					}
 				} else {
+					//log.debug("About to add " + legalName + " with pVal " + pVal);
 					this.paramValuesTable.put(legalName.toLowerCase(), pVal);
 				}
 			}
@@ -601,7 +577,7 @@ public class SQLQuery extends EFGHTTPQuery {
 		if ((specialParams.contains(paramName))
 				|| (paramName.equals(EFGImportConstants.SEARCHSTR))
 				|| (paramName == null) || ("".equals(paramName.trim()))) {
-			log.debug("Skipping current paramName: " + paramName);
+			//log.debug("Skipping current paramName: " + paramName);
 			return true;
 		}
 		return false;
@@ -624,7 +600,7 @@ public class SQLQuery extends EFGHTTPQuery {
 					maxDisplay = Integer.parseInt(maxDispStr);
 				}
 			} catch (Exception e) {
-				log.error(e.getMessage());
+				LoggerUtilsServlet.logErrors(e);
 			}
 		}
 		return maxDisplay;
@@ -650,29 +626,22 @@ public class SQLQuery extends EFGHTTPQuery {
 				continue;
 			}
 			if (this.paramValuesTable.get(columnName.toLowerCase()) != null) {//already processed
-				log.debug("Skip column name: " + columnName);
+				//log.debug("Skip column name: " + columnName);
 				continue;
 			}
 		
 			EFGObject efgObject = (EFGObject) typeTable.get(columnName.trim()
 					.toLowerCase());
 			if (efgObject.getDataType() == null) {//if no column name information skip
-				log.debug("no column information for: " + columnName);
+				//log.debug("no column information for: " + columnName);
 				continue;
 			}
 			String paramValue = null;
 			if ((states == null) || ("".equals(states.trim()))) {
-				log.debug("Character: " + columnName
-						+ " has null or empty states for row: "
-						+ rowset.getRow() + " of results. Skip it!!");
+			
 				continue;
 			}
-			log
-					.debug("About to process states which aren't part of users request: "
-							+ states + " for columnName: " + columnName);
-			StringWriter writer = new StringWriter();
-			this.filter.filter(new StringReader(states), writer);
-			states = writer.getBuffer().toString();
+
 
 			TaxonEntryTypeItem taxonEntryItem = itemBuilder
 					.buildTaxonEntryItem(paramValue, states, efgObject);
@@ -696,6 +665,7 @@ public class SQLQuery extends EFGHTTPQuery {
 		specialParams.add(EFGImportConstants.SEARCHTYPE);
 		specialParams.add(EFGImportConstants.DISPLAY_NAME);
 		specialParams.add(EFGImportConstants.XSL_STRING);
+		specialParams.add(EFGImportConstants.GUID);
 	}
 
 }

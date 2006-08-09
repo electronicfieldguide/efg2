@@ -31,7 +31,7 @@
  */
 package project.efg.servlets.efgInterface;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,6 +42,7 @@ import project.efg.efgDocument.DatasourcesType;
 import project.efg.efgDocument.EFGDocument;
 import project.efg.efgDocument.TaxonEntries;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
+import project.efg.util.EFGImportConstants;
 
 /**
  * @author kasiedu
@@ -57,9 +58,9 @@ public abstract class EFGHTTPQuery {
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(EFGHTTPQuery.class);
+			//log = Logger.getLogger(EFGHTTPQuery.class);
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 			LoggerUtilsServlet.logErrors(ee);
 		}
 	}
@@ -68,7 +69,7 @@ public abstract class EFGHTTPQuery {
 		 //	call cache here
 		 
 		 this.efgDocument = new EFGDocument();
-		 log.debug("Query: " + query);
+		 //log.debug("Query: " + query);
 		 TaxonEntries entries = this.executeQuery(query);
 		
 		 if(entries != null){
@@ -95,10 +96,11 @@ public abstract class EFGHTTPQuery {
 	 * @return the EFGDocument object built from the query
 	 */
 	protected boolean matchNumber(String states) {
-		String patternStr = "\\d+$";
-		Pattern pattern = Pattern.compile(patternStr);
-		Matcher matcher = pattern.matcher(states);
+		//String patternStr = "\\d+$";
+		//Pattern pattern = Pattern.compile(patternStr);
+		//Matcher matcher = pattern.matcher(states);
 		try {
+			Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(states);
 			return matcher.find();
 		} catch (Exception vvv) {
 		}

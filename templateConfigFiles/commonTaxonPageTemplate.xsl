@@ -8,6 +8,7 @@
 	<xsl:param name="displayName"/>
 	<xsl:param name="search"/>
 	<xsl:param name="mediaResourceField"/>
+	<xsl:param name="guid"/>
 	<xsl:param name="templateConfigFile" select="concat('xml/',$dataSourceName,'.xml')"/>
 	<xsl:param name="template_css_dir" select="'/templateCSSDirectory/'"/>
 	<xsl:param name="template_images_dir" select="'/templateImagesDirectory/'"/>
@@ -15,10 +16,8 @@
 	<xsl:param name="template_images_home" select="concat($serverbase,$template_images_dir)"/>
 	<xsl:param name="fieldName"/>
 	<xsl:param name="xslName"/>
-	<!--
-	<xsl:param name="header"/>
-	<xsl:param name="templateConfigFile" select="concat($datasource,'_TaxonPage.xml')"/>
- -->
+	<xsl:param name="isTrue" select="'true'"/>
+	<xsl:param name="isFalse" select="'false'"/>
 	<xsl:param name="serviceLinkFiller" select="'_EFG_'"/>
 	<xsl:param name="imagebase" select="'EFGImages'"/>
 	<xsl:param name="imagebase_thumbs" select="'efgimagesthumbs'"/>
@@ -27,7 +26,6 @@
 	<xsl:param name="audiotype" select="'Audio'"/>
 	<xsl:param name="vidoetype" select="'Video'"/>
 	<xsl:param name="header"/>
-	<xsl:param name="serviceLinkConstant" select="'service'"/>
 	<xsl:variable name="colon">:</xsl:variable>
 	<xsl:variable name="searchTemplateConfig" select="concat($dataSourceName,$search)"/>
 	<xsl:param name="query" select="concat($serverbase,'/search?dataSourceName=',$dataSourceName,'&amp;')"/>
@@ -200,19 +198,86 @@
 	<xsl:template name="efgLists">
 		<xsl:param name="caption"/>
 		<xsl:param name="efgLists"/>
-			<xsl:variable name="href"><xsl:value-of select="concat(string($serverbase),'/search?displayFormat=html&amp;dataSourceName=',string($dataSourceName),'&amp;digir=',string($digirHeaders))"/><xsl:variable name="counter" select="count($efgLists/EFGList)"/><xsl:for-each select="$efgLists/EFGList"><xsl:variable name="serviceLink1"><xsl:choose><xsl:when test="@serviceLink"><xsl:value-of select="normalize-space(@serviceLink)"/></xsl:when><xsl:otherwise><xsl:value-of select="$serviceLinkConstant"/></xsl:otherwise></xsl:choose></xsl:variable><xsl:variable name="serviceLink"><xsl:call-template name="globalReplace"><xsl:with-param name="outputString" select="$serviceLink1"/><xsl:with-param name="target" select="' '"/><xsl:with-param name="replacement" select="$serviceLinkFiller"/></xsl:call-template></xsl:variable><xsl:variable name="character" select="."/><xsl:if test="$counter &gt; 1"><xsl:if test="position()=1"><xsl:value-of select="string($startDigirOR)"/></xsl:if></xsl:if><xsl:value-of select="string($startDigirEQUALS)"/><xsl:value-of select="concat('&lt;darwin:',string($serviceLink),'&gt;')"/><xsl:value-of select="string($character)"/><xsl:value-of select="concat('&lt;/darwin:',string($serviceLink),'&gt;')"/><xsl:value-of select="string($endDigirEQUALS)"/><xsl:if test="$counter &gt; 1"><xsl:if test="position()=last()"><xsl:value-of select="string($endDigirOR)"/></xsl:if></xsl:if><xsl:if test="position() mod 2 = 0"><xsl:if test="not(position()=last())"><xsl:value-of select="string($endDigirOR)"/><xsl:value-of select="string($startDigirOR)"/></xsl:if></xsl:if></xsl:for-each><xsl:value-of select="string($digirFooters)"/></xsl:variable>
-
-		<a href="{$href}">
-			<xsl:choose>
-				<xsl:when test="$caption">
-					<xsl:value-of select="$caption"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="$efgLists/@name"/>
-				</xsl:otherwise>
-			</xsl:choose>
-		</a>
-		<xsl:text>&#160;&#160;</xsl:text>
+		<xsl:param name="isLink"/>
+		<xsl:choose>
+			<xsl:when test="not(string($isLink))=''">
+				<xsl:variable name="counter" select="count($efgLists/EFGList)"/>
+				<xsl:variable name="hrefCurrent">
+					<xsl:for-each select="$efgLists/EFGList">
+						<xsl:if test="not(string(@resourceLink))=''">
+							<xsl:variable name="serviceLink1">
+								<xsl:if test="not(string(@resourceLink))=''">
+									<xsl:value-of select="normalize-space(@resourceLink)"/>
+								</xsl:if>
+							</xsl:variable>
+							<xsl:variable name="serviceLink">
+								<xsl:call-template name="globalReplace">
+									<xsl:with-param name="outputString" select="$serviceLink1"/>
+									<xsl:with-param name="target" select="' '"/>
+									<xsl:with-param name="replacement" select="$serviceLinkFiller"/>
+								</xsl:call-template>
+							</xsl:variable>
+							<xsl:variable name="character" select="."/>
+							<xsl:if test="$counter &gt; 1">
+								<xsl:if test="position()=1">
+									<xsl:value-of select="string($startDigirOR)"/>
+								</xsl:if>
+							</xsl:if>
+							<xsl:value-of select="string($startDigirEQUALS)"/>
+							<xsl:value-of select="concat('&lt;darwin:',string($serviceLink),'&gt;')"/>
+							<xsl:value-of select="string($character)"/>
+							<xsl:value-of select="concat('&lt;/darwin:',string($serviceLink),'&gt;')"/>
+							<xsl:value-of select="string($endDigirEQUALS)"/>
+							<xsl:if test="$counter &gt; 1">
+								<xsl:if test="position()=last()">
+									<xsl:value-of select="string($endDigirOR)"/>
+								</xsl:if>
+							</xsl:if>
+							<xsl:if test="position() mod 2 = 0">
+								<xsl:if test="not(position()=last())">
+									<xsl:value-of select="string($endDigirOR)"/>
+									<xsl:value-of select="string($startDigirOR)"/>
+								</xsl:if>
+							</xsl:if>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:variable name="href">
+					<xsl:if test="not(string($hrefCurrent))=''">
+						<xsl:value-of select="concat(string($serverbase),'/search?displayFormat=html&amp;dataSourceName=',string($dataSourceName),'&amp;digir=',string($digirHeaders),$hrefCurrent,string($digirFooters))"/>
+					</xsl:if>
+				</xsl:variable>
+				<xsl:variable name="captionText">
+					<xsl:choose>
+						<xsl:when test="not(string($caption))=''">
+							<xsl:value-of select="$caption"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="$efgLists/@name"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="not(string($href))=''">
+						<a href="{$href}">
+							<strong>
+								<xsl:value-of select="concat($captionText, ':')"/>
+							</strong>
+						</a>
+					</xsl:when>
+					<xsl:otherwise>
+						<strong>
+							<xsl:value-of select="concat($captionText, ':')"/>
+						</strong>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<strong>
+					<xsl:value-of select="concat($caption, ':')"/>
+				</strong>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="getMax">
 		<xsl:param name="charactervalues"/>

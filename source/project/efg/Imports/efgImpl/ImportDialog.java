@@ -59,11 +59,11 @@ import project.efg.util.EFGImportConstants;
 
 /*
  * DialogDemo.java is a 1.4 application that requires these files:
- *   CustomDialog.java
+ *   Customdialog.java
  *   images/middle.gif
  */
 /**
- * ImportDialog.java
+ * Importdialog.java
  * 
  * 
  * Created: Sat Mar 18 19:31:56 2006
@@ -216,7 +216,7 @@ public class ImportDialog extends JDialog {
 		// Create and set up the content pane.
 		ImportDialog newContentPane = new ImportDialog(null);
 		newContentPane.show();
-		//log.debug(newContentPane.getSelected() + "");
+		////log.debug(newContentPane.getSelected() + "");
 	}
 	public static void main(String[] args) {
 		createAndShowGUI();
@@ -228,7 +228,7 @@ public class ImportDialog extends JDialog {
 		}
 		public void actionPerformed(ActionEvent e) {
 				String command = group.getSelection().getActionCommand();
-				log.debug("Selected Command is: " + command);
+				//log.debug("Selected Command is: " + command);
 				//use strategy pattern here
 				if(command == null){
 					choiceCMD = null;
@@ -236,8 +236,8 @@ public class ImportDialog extends JDialog {
 				else{
 				choiceCMD = 
 					ImportCommandFactory.getImportCommand(command);
-				log.debug("Command created by Factory is: " +
-						choiceCMD.getClass().getName());
+				//log.debug("Command created by Factory is: " +
+					//	choiceCMD.getClass().getName());
 				}
 				this.dialog.dispose();
 			}

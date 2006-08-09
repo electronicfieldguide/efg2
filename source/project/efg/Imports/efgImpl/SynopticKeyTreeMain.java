@@ -37,14 +37,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 
 import org.apache.log4j.Logger;
 
@@ -84,6 +88,9 @@ public class SynopticKeyTreeMain extends JDialog  {
 
 	JFrame parentFrame;
 	private DBObject dbObject;
+
+	private JEditorPane htmlPane;
+	private URL helpURL;
 	static Logger log = null;
 	static {
 		try {
@@ -103,9 +110,10 @@ public class SynopticKeyTreeMain extends JDialog  {
 	public SynopticKeyTreeMain(JFrame frame, String title, boolean modal,
 			DBObject dbObject) {
 		super(frame, title, modal);
+
 		this.parentFrame = frame;
 
-		setSize(new Dimension(600, 400));
+		setSize(new Dimension(800, 800));
 	
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -116,11 +124,12 @@ public class SynopticKeyTreeMain extends JDialog  {
 		String message = "";
 		try {
 			
-			this.tree = SynopticKeyTreeFactory.getSynopticKeyTree(this.dbObject);
+			this.tree = SynopticKeyTreeFactory.getSynopticKeyTree(this.dbObject,frame);
 			this.tree
 					.setToolTipText(EFGImportConstants.EFGProperties.getProperty
 							("SynopticKeyTreeMain.tooltip")
 							);
+			this.tree.setRootVisible(false);
 		} catch (Exception ee) {
 			ee.printStackTrace();
 			message = ee.getMessage();
@@ -171,21 +180,54 @@ public class SynopticKeyTreeMain extends JDialog  {
 		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("SynopticKeyTreeMain.deleteBtn.tooltip"));
 		btnPanel.add(deleteBtn);
 
-		helpBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("SynopticKeyTreeMain.helpBtn.tooltip"));
+		/*helpBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("SynopticKeyTreeMain.helpBtn.tooltip"));
 		helpBtn.addActionListener(new HelpListener());
-		btnPanel.add(helpBtn);
+		btnPanel.add(helpBtn);*/
 
 		doneBtn.addActionListener(new DoneListener(this));
 		doneBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty(
 				"SynopticKeyTreeMain.doneBtn.tooltip"));
 		btnPanel.add(doneBtn);
-		JScrollPane pane = new JScrollPane(this.tree);
+		JScrollPane treePane = new JScrollPane(this.tree);
+		treePane.setColumnHeaderView(new JLabel("EFG2 Data Sources", JLabel.CENTER));
+		htmlPane = new JEditorPane();
+	    htmlPane.setEditable(false);
+	    initHelp();
+		
+		JScrollPane htmlViewPane = new JScrollPane(htmlPane);
 
-		panel.add(pane, BorderLayout.CENTER);
+	 
+	      
+		JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				treePane, htmlViewPane);
+		
+		
+		mainPane.setDividerLocation(300);
+		
+		panel.add(mainPane, BorderLayout.CENTER);
 		panel.add(btnPanel, BorderLayout.SOUTH);
 		return panel;
 	}
-
+	 private void initHelp() {
+			
+	        helpURL = this.getClass().getResource(EFGImportConstants.KEYTREE_DEPLOY_HELP);
+	        if (helpURL == null) {
+	            log.error("Couldn't open help file: " + EFGImportConstants.KEYTREE_DEPLOY_HELP);
+	            return;
+	        } 
+	        displayURL(helpURL);
+	    }
+	private void displayURL(URL url) {
+     try {
+         if (url != null) {
+             htmlPane.setPage(url);
+         } else { //null url
+         	htmlPane.setText("File Not Found");
+         }
+     } catch (Exception e) {
+         log.error("Attempted to read a bad URL: " + url);
+     }
+ }
 /**
  * 
  * @author kasiedu
@@ -199,7 +241,7 @@ public class SynopticKeyTreeMain extends JDialog  {
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-			
+				
 				this.manipulator.processNode();
 			
 		}

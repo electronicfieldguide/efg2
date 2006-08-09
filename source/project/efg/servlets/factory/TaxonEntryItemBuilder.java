@@ -29,7 +29,7 @@ package project.efg.servlets.factory;
 
 import java.util.Iterator;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.efgDocument.EFGListsType;
 import project.efg.efgDocument.ItemsType;
@@ -52,13 +52,7 @@ import project.efg.util.EFGObject;
 public class TaxonEntryItemBuilder {
 	private EFGParseObjectFactory parseFactory; 
 	private StatisticalMeasureComparator measureComparator;
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(TaxonEntryItemBuilder.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	private EFGParseStates efgParseStates;
 	
 		
@@ -84,10 +78,9 @@ public class TaxonEntryItemBuilder {
 		TaxonEntryTypeItem taxonItem = null;
 		EFGParseObjectList lists = null;
 		if (EFGImportConstants.ISLISTS.equalsIgnoreCase(efgObject.getDataType())) {
-			log.debug(paramValues + ": is a lists");
-			boolean flag = true;
+				boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states);
+				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states,true);
 		
 			if(paramValues != null){
 				if(!this.compareString(lists,paramValues)){
@@ -107,9 +100,8 @@ public class TaxonEntryItemBuilder {
 		else if (EFGImportConstants.NUMERICRANGE.equalsIgnoreCase(efgObject.getDataType()) ||
 			(EFGImportConstants.NUMERIC.equalsIgnoreCase(efgObject.getDataType()))) {
 			boolean flag = true;
-			log.debug(paramValues + ": is numeric");
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,states); 
+				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,states,false); 
 	
 				StatisticalMeasuresType dbStats = 
 					this.createStatisticalMeasure(lists);
@@ -117,7 +109,6 @@ public class TaxonEntryItemBuilder {
 					flag = false;
 				}
 				else if(paramValues != null){
-					log.debug("paramValues: " + paramValues);
 					EFGParseObject userInputStat =
 						this.efgParseStates.parseUserStats(EFGImportConstants.ORCOMMAPATTERN,paramValues); 
 					EFGParseObjectList userInputList = new EFGParseObjectList();
@@ -139,16 +130,12 @@ public class TaxonEntryItemBuilder {
 					dbStats.setDatabaseName(efgObject.getDatabaseName());
 					taxonItem.setStatisticalMeasures(dbStats);
 				}
-				else{
-					log.debug("Not in range..");
-				}
 			
 		}
 		else if (EFGImportConstants.MEDIARESOURCE.equalsIgnoreCase(efgObject.getDataType())) {
 			boolean flag = true;
-			log.debug(paramValues + ": is mediaresource");
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states); 
+				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states,true); 
 			if(paramValues != null){
 				if(!this.compareString(lists,paramValues)){
 					flag = false;
@@ -166,13 +153,11 @@ public class TaxonEntryItemBuilder {
 			}
 		}
 		else if (EFGImportConstants.CATEGORICAL.equals(efgObject.getDataType())) {
-			log.debug(paramValues + ": is categorical");
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,states); 
+				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,states,false); 
 		
 			if(paramValues != null){
-				log.debug("client State: " + paramValues + " DB states: " + states);
 				flag = this.compareString(lists,paramValues);
 			
 			}
@@ -184,19 +169,15 @@ public class TaxonEntryItemBuilder {
 					taxonItem = new TaxonEntryTypeItem();
 					taxonItem.setItems(items);
 				}
-				else{
-					log.debug("Items is null!!");
-				}
+
 			}
 		}
 		else{
-			log.debug(paramValues + ": is Narrative");
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.NOPATTERN,states);
+				this.efgParseStates.parseStates(EFGImportConstants.NOPATTERN,states,true);
 			
 			if(paramValues != null){
-				log.debug("Lists: " + lists.toString());
 				flag = this.compareString(lists,paramValues);
 			}
 			if(flag){
@@ -218,13 +199,10 @@ public class TaxonEntryItemBuilder {
 		Iterator iter = lists.iterator();
 		while(iter.hasNext()){
 			EFGParseObject obj = (EFGParseObject)iter.next();
-			log.debug("client State: " + userValue + " DB states: " + obj.getState());
 			if(obj.getState().equalsIgnoreCase(userValue)){
-				log.debug("returning true");
 				return true; //there is a match
 			}
 		}
-		log.debug("Returning false");
 		return false;//no match
 	}
 	private boolean compareStats(StatisticalMeasuresType dbStats,

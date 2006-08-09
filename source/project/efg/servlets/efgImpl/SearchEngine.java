@@ -72,7 +72,7 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		try {
-			log = Logger.getLogger(SearchEngine.class);
+			//log = Logger.getLogger(SearchEngine.class);
 		} catch (Exception ee) {
 		}
 		realPath = getServletContext().getRealPath("/");
@@ -109,16 +109,16 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			.getParameter(EFGImportConstants.DISPLAY_FORMAT);
 			
 			//TO DO: MERGE present and presentXML
-			log.debug("Get query instance");
+			//log.debug("Get query instance");
 			EFGHTTPQuery query = EFGHTTPQueryFactory.getQueryInstance(req);
-			log.debug("After get query instance");
+			//log.debug("After get query instance");
 			if (EFGImportConstants.XML.equalsIgnoreCase(displayFormat)) {
 				presentXML(req, res, query.getEFGDocument());
 			} else {	
 				present(req, res, query.getEFGDocument());
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 			LoggerUtilsServlet.logErrors(ee);
 			res.setContentType(EFGImportConstants.TEXT_HTML);
 			PrintWriter out = res.getWriter();
@@ -154,7 +154,7 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			EFGDocument xmlDoc) throws IOException {
 		
 		if (xmlDoc == null) {
-			log.error("xml document is null");
+			//log.error("xml document is null");
 			return;
 		}
 		try {
@@ -166,7 +166,7 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			.getRequestDispatcher("/presentXML.jsp");
 			rd.forward(req, res);
 		} catch (Exception ex) {
-			log.error(ex.getMessage());
+			//log.error(ex.getMessage());
 			LoggerUtilsServlet.logErrors(ex);
 			EFGContextListener.presentError(this.getClass().getName(), ex
 					.getMessage(), res);
@@ -195,7 +195,7 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 					efgDocument, realPath);
 			
 		} catch (Exception e) {//forward to error page
-			log.error(e.getMessage());
+			//log.error(e.getMessage());
 			efgDocument = null;
 			resObject = ResponseObjectFactory.getResponseObject(req,
 					efgDocument, realPath);
@@ -209,6 +209,9 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	}
 }
 //$Log$
+//Revision 1.1.2.4  2006/08/09 18:55:25  kasiedu
+//latest code confimrs to what exists on Panda
+//
 //Revision 1.1.2.3  2006/07/11 21:48:22  kasiedu
 //"Added more configuration info"
 //

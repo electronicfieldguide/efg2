@@ -4,7 +4,6 @@
 package project.efg.servlets.efgImpl;
 
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,8 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
+import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 import project.efg.templates.taxonPageTemplates.GroupType;
 import project.efg.templates.taxonPageTemplates.GroupTypeItem;
@@ -31,8 +29,12 @@ import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.templates.taxonPageTemplates.XslPageType;
 import project.efg.util.EFGFieldObject;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.EFGUniqueID;
 import project.efg.util.GroupTypeComparator;
 import project.efg.util.GroupTypeSorter;
+
+import com.opensymphony.oscache.base.NeedsRefreshException;
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
  * @author kasiedu
@@ -44,8 +46,9 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static GeneralCacheAdministrator cacheAdmin = EFGContextListener.getCacheAdmin();
 
-	static Logger log = null;
+	
 
 	private String realPath;
 
@@ -59,10 +62,6 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		try {
-			log = Logger.getLogger(TaxonPageTemplateConfig.class);
-		} catch (Exception ee) {
-		}
 		realPath = getServletContext().getRealPath("/");
 	}
 
@@ -103,13 +102,13 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 	 */
 	private void processParams(HttpServletRequest req, HttpServletResponse res) {
 		try {
-			log.debug("Inside processParams");
+		
 			String dsName = (String) req
 					.getParameter(EFGImportConstants.DATASOURCE_NAME);
-			log.debug("dsName: " + dsName);
+		
 			String displayName = (String) req
 					.getParameter(EFGImportConstants.DISPLAY_NAME);
-			log.debug("displayName: " + displayName);
+		
 			TaxonPageTemplates tps = this.getTaxonPageTemplateRoot(dsName);
 
 			if (tps == null) {
@@ -120,37 +119,36 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 			if (xslPage == null) {
 				throw new Exception("xslPage is null");
 			}
+			String guid = xslPage.getGuid();
+			if ((guid != null) && (!guid.trim().equals("")) ){
+				req.setAttribute(EFGImportConstants.GUID,guid);
+			}
+			String uniqueName = xslPage.getDisplayName();
+			if ((uniqueName != null) && (!uniqueName.trim().equals("")) ){
+				req.setAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME,uniqueName);
+			}
 			GroupsType groups = xslPage.getGroups();
 			if (groups == null) {
 				throw new Exception("Groups is null");
 			}
 
-		
 			req.setAttribute(EFGImportConstants.DATASOURCE_NAME, dsName);
 			req.setAttribute(EFGImportConstants.DISPLAY_NAME_COL, displayName);
 			EFGFieldObject field = this.add2Groups(req, xslPage);
-			
-		
+
 			boolean done = this.writeFile(dsName, tps);
-			log.debug("Done writing");
+			//log.debug("Done writing");
 			if (done) {
-				
 				if (field != null) {
-					log.debug("Field Name: " + field.getFieldName());
-					log.debug("FieldValue: " + field.getFieldValue());
 					req.setAttribute("fieldName", field.getFieldName());
 					req.setAttribute("fieldValue", field.getFieldValue());
 				}
-				log.debug("About to forward page, Error is set to false");
 				this.forwardPage(req, res, false);
 			} else {
-				log.debug("Error occured during saving of file");
 				throw new Exception("Error occured during saving of file");
 			}
 		} catch (Exception ee) {
 			try {
-				log.error(ee.getMessage());
-				log.debug("About to forward page, Error is set to true");
 				this.forwardPage(req, res, true);
 			} catch (Exception eef) {
 
@@ -165,7 +163,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 		GroupTypeSorter cvt = new GroupTypeSorter();
 		groupsType = cvt.sort(new GroupTypeComparator(), groupsType);
 		return groupsType;
-		
+
 	}
 
 	private XslPage getXSLPageParams(HttpServletRequest req,
@@ -175,84 +173,72 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 
 		String xslName = (String) req
 				.getParameter(EFGImportConstants.XSL_STRING);
-		log.debug("xslName: " + xslName);
+		//log.debug("xslName: " + xslName);
 		String searchPage = (String) req
 				.getParameter(EFGImportConstants.SEARCH_PAGE_STR);// "search"
 
 		String searchType = req
 				.getParameter(EFGImportConstants.SEARCH_TYPE_STR);
+		String uniqueName = req
+				.getParameter(EFGImportConstants.TEMPLATE_UNIQUE_NAME);
+		String guid = (String)req.getParameter(EFGImportConstants.GUID);
+	
+		String jspName = req.getParameter(EFGImportConstants.JSP_NAME);
 		String isDefault = req.getParameter(EFGImportConstants.ISDEFAULT_STR);
-		log.debug("ISDEFAULT: " + isDefault);
+		//log.debug("ISDEFAULT: " + isDefault);
 		return this.getXSLPageType(tps, dsName, searchPage, searchType,
-				xslName, isDefault);
+				xslName, uniqueName, guid,jspName, isDefault);
 
 	}
 
 	private EFGFieldObject add2Groups(HttpServletRequest req, XslPage xslPage) {
 		EFGFieldObject field = null;
-		
+
 		GroupsType groups = xslPage.getGroups();
 		for (Enumeration e = req.getParameterNames(); e.hasMoreElements();) {
 			String key = ((String) e.nextElement()).trim();
-			if (key.trim().equals(EFGImportConstants.XSL_STRING)
-					|| (key.equalsIgnoreCase(EFGImportConstants.DATASOURCE_NAME))
+			if (key.equalsIgnoreCase(EFGImportConstants.XSL_STRING)
+					|| (key
+							.equalsIgnoreCase(EFGImportConstants.DATASOURCE_NAME))
 					|| key.equalsIgnoreCase(EFGImportConstants.SUBMIT)
 					|| key.equalsIgnoreCase(EFGImportConstants.DISPLAY_NAME)
 					|| key.equalsIgnoreCase(EFGImportConstants.HTML)
-					|| key.equalsIgnoreCase(EFGImportConstants.XSL_STRING)) {
+					|| key.equalsIgnoreCase(EFGImportConstants.TEMPLATE_UNIQUE_NAME)
+					|| key.equalsIgnoreCase(EFGImportConstants.TEMPLATE_UNIQUE_NAME)
+					|| key.equalsIgnoreCase(EFGImportConstants.GUID)) {
 				continue;
 			}
 			String valuePair = req.getParameter(key);
-			log.debug("valuePair: " + valuePair);
-			log.debug("Key: " + key);
+			if(valuePair == null){
+				continue;
+			}
+			if("".equals(valuePair.trim())){
+				continue;
+			}
+			if(key.trim().indexOf(":") == -1){
+				continue;
+			}
 			String currentValue = createGroup(groups, key, valuePair);
-			log.debug("currentValue: " + currentValue);
+			if(currentValue != null){
+				currentValue = currentValue.trim();
+			}
+			
 			if (field == null) {
-				if (currentValue != null) {
-					if (!currentValue.trim().equals("")) {
-						field = new EFGFieldObject();
-						field.setFieldName(key);
-						field.setFieldValue(currentValue);
-					}
+				if (!currentValue.equals("") && (currentValue.indexOf(".") == -1)) {
+					field = new EFGFieldObject();
+					field.setFieldName(key);
+					field.setFieldValue(currentValue);
 				}
 			}
 		}
-		//this.marshalGroupsType(groups,dsName + "before");
+	
 		groups = this.sortGroups(groups);
 		xslPage.setGroups(groups);
-		//log.
-		//this.marshalGroupsType(groups,dsName + "after");
+		
 		return field;
-
 	}
-	/*private void marshalGroupsType(GroupsType groups,String name2Append){
-		
-		
-		FileWriter writer = null;
-		try {
-			String fileName = this.getFileLocation(name2Append);
-			writer = new FileWriter(fileName);
-			groups.marshal(writer);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally{
-			try{
-					if(writer != null){
-						writer.flush();
-						writer.close();
-					}
-			}
-			catch(Exception ee){
-				
-			}
-		}
-		
-		
-		
-	}*/
+
+
 	private String getFileLocation(String dsName) {
 		StringBuffer fileLocationBuffer = new StringBuffer();
 		fileLocationBuffer.append(realPath);
@@ -260,19 +246,18 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 		fileLocationBuffer.append(File.separator);
 		fileLocationBuffer.append(dsName.toLowerCase());
 		fileLocationBuffer.append(EFGImportConstants.XML_EXT);
-		log.debug("File Location: " + fileLocationBuffer.toString());
+		//log.debug("File Location: " + fileLocationBuffer.toString());
 		return fileLocationBuffer.toString();
 	}
 
-	private boolean marshal(FileWriter writer,
-			TaxonPageTemplates tps) {
+	private boolean marshal(FileWriter writer, TaxonPageTemplates tps) {
 		try {
 			String mutex = "";
 			synchronized (mutex) {
 				boolean done = false;
 
 				try {
-				
+
 					org.exolab.castor.xml.Marshaller marshaller = new org.exolab.castor.xml.Marshaller(
 							writer);
 					marshaller
@@ -288,7 +273,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 
 				} catch (Exception eee) {
 					done = false;
-					log.error(eee.getMessage());
+					LoggerUtilsServlet.logErrors(eee);
 				}
 				return done;
 			}
@@ -316,12 +301,12 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 				try {
 					success = file.renameTo(file2);
 				} catch (Exception eeer) {
-					log.debug(eeer.getMessage());
+					//log.debug(eeer.getMessage());
 				}
 			}
 			if (!success) {
 				isExists = false;
-				log.debug("File could not be renamed!!");
+				//log.debug("File could not be renamed!!");
 			}
 		}
 		FileWriter writer = null;
@@ -330,9 +315,8 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 			synchronized (mute) {
 				try {
 					writer = new FileWriter(fileLocation);
-					done = this.marshal(writer,  tps);
+					done = this.marshal(writer, tps);
 					writer.flush();
-					log.debug("Closing resource for writing!!!");
 					writer.close();
 				} catch (Exception eee) {
 					done = false;
@@ -345,72 +329,120 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 				// rename file to a new one
 				if (writer != null) {
 					writer.flush();
-					log.debug("Closing resource for writing!!!");
+					//log.debug("Closing resource for writing!!!");
 					writer.close();
 				}
 				if (isExists) {
 					String mute = "";
 					synchronized (mute) {
 						success = file2.renameTo(file);
-						
+
 					}
 					if (!success) {
 						isExists = false;
-						log
-								.debug("File could not be renamed when exception occured");
 					}
 				}
 			} catch (Exception ff) {
-				log.error(ff.getMessage());
+				LoggerUtilsServlet.logErrors(ff);
 				done = false;
 			}
 		}
 		return done;
 	}
 
+	
 	private TaxonPageTemplates getTaxonPageTemplateRoot(String dsName) {
-		String mute = "";
-		synchronized (mute) {
-			FileReader reader = null;
+		TaxonPageTemplates ts = null;
 			try {
-				String file2read = this.getFileLocation(dsName);
-				log.debug("File2Read: " + file2read);
-				reader = new FileReader(file2read);
-				TaxonPageTemplates tps = (TaxonPageTemplates) TaxonPageTemplates
-				.unmarshalTaxonPageTemplates(reader);
-				if(reader != null){
-					log.debug("Closing resource");
-					reader.close();
+				if(dsName == null){
+					return null;
 				}
-				return tps;
-						
-			} catch (Exception ee) {
-				if(reader != null){
-					try{
-					reader.close();
-					}
-					catch(Exception exe){
-						
-					}
+				String templateName = dsName.toLowerCase() + EFGImportConstants.XML_EXT;
+				System.out.println("Template Name: " + templateName);
+				if(templateName != null){
+					ts = (TaxonPageTemplates)cacheAdmin.getFromCache(templateName.toLowerCase());
 				}
-				log.error(ee.getMessage());
-			}
-			return null;
-		}
-	}
 
+			}  catch (NeedsRefreshException nre) {
+				System.err.println(nre.getMessage());
+				LoggerUtilsServlet.logErrors(nre);
+			}
+			if(ts == null){
+				System.out.println("ts is null!!");
+			}
+			return ts;
+		}
 	private XslPage getXSLPageType(TaxonPageTemplates tps, String dsName,
 			String searchPage, String searchType, String xslName,
-			String isDefault) {
+			String uniqueName, String guid, String jspName,String isDefault) {
+		String mute = "";
+		synchronized (mute) {
+			XslPageType xslPageType= getCurrentXSLPageType(tps, dsName, searchPage,
+					searchType);
+			XslPage page = null;
+			//log.debug("isDefault: " + isDefault);
+			Boolean bool = new Boolean(isDefault);
+			boolean defaultFile = bool.booleanValue();
+
+			for (int j = 0; j < xslPageType.getXslPageCount(); ++j) {// find
+				// out
+				// if
+				// it
+				// exists
+				XslPage currentPage = xslPageType.getXslPage(j);
+				String currentGUIDName = currentPage.getGuid();
+				String currentUniqueName =  currentPage.getDisplayName();
+				//log.debug("currentGUIDName : " + currentGUIDName);
+				
+				
+				if ((currentGUIDName.equalsIgnoreCase(guid)) || 
+				(currentUniqueName.equalsIgnoreCase(uniqueName))) {// if
+					// this
+					// file
+					// name
+					// already
+					// exists
+					//log.debug("currentGuid is found");
+					currentPage.setGroups(null);
+					currentPage.setIsDefault(defaultFile);
+					page = currentPage;
+				} else {
+					if (defaultFile) {
+						currentPage.setIsDefault(false);
+					} 
+				}
+			}
+			if (page == null) {
+				page = new XslPage();
+				page.setFileName(xslName);
+				page.setDisplayName(uniqueName);
+
+				if ((guid == null) || (guid.trim().equals("")) ){
+					guid= EFGUniqueID.getID() + "";		
+					
+				}				
+				page.setGuid(guid);
+				
+				if((jspName != null) && (!jspName.trim().equals(""))){
+					page.setJspName(jspName);
+				}
+				// generate a guid
+				page.setIsDefault(defaultFile);
+				xslPageType.addXslPage(page);
+			}
+			GroupsType groupsType = new GroupsType();
+			page.setGroups(groupsType);
+			return page;
+		}
+
+	}
+
+	private XslPageType getCurrentXSLPageType(TaxonPageTemplates tps, String dsName,
+			String searchPage, String searchType) {
 		String mute = "";
 		synchronized (mute) {
 
 			XslPageType xslPageType = null;
-			XslPage page = null;
-			log.debug("isDefault: " + isDefault);
-			Boolean bool = new Boolean(isDefault);
-			boolean defaultFile = bool.booleanValue();
-			log.debug("defaultFile: " + defaultFile);
 			try {
 
 				int counter = tps.getTaxonPageTemplateCount();
@@ -420,76 +452,32 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 					TaxonPageTemplateType tp = tps.getTaxonPageTemplate(i);
 					String ds = tp.getDatasourceName();
 					if (ds.equalsIgnoreCase(dsName.trim())) {
-						log.debug("Found datasource: " + ds);
+						//log.debug("Found datasource: " + ds);
 						XslFileNamesType xslFileNames = tp.getXSLFileNames();
-
-						if ((searchPage == null)
-								|| (searchPage.trim().equals(""))) {
-							log.debug("It is a taxon Page");
+						if (EFGImportConstants.SEARCH_TAXON_TYPE
+								.equalsIgnoreCase(searchType)) {
+							//log.debug("It is a taxon Page");
 							xslPageType = xslFileNames.getXslTaxonPages();
-						} else {
-
-							if (EFGImportConstants.SEARCH_PLATES_TYPE
-									.equalsIgnoreCase(searchType)) {
-								log.debug("It is a plate");
-								xslPageType = xslFileNames.getXslPlatePages();
-							} else {
-								log.debug("It is a list");
-								xslPageType = xslFileNames.getXslListPages();
-							}
+						} else if (EFGImportConstants.SEARCH_PLATES_TYPE
+								.equalsIgnoreCase(searchType)) {
+							//log.debug("It is a plate");
+							xslPageType = xslFileNames.getXslPlatePages();
+						} else if (EFGImportConstants.SEARCH_LISTS_TYPE
+								.equalsIgnoreCase(searchType)) {
+							//log.debug("It is a list");
+							xslPageType = xslFileNames.getXslListPages();
 						}
-
-						for (int j = 0; j < xslPageType.getXslPageCount(); ++j) {// find
-																					// out
-																					// if
-																					// it
-																					// exists
-							XslPage currentPage = xslPageType.getXslPage(j);
-							String currentXSLName = currentPage.getFileName();
-							log.debug("currentXSLName : " + currentXSLName);
-							if (currentXSLName.equalsIgnoreCase(xslName)) {// if
-																			// this
-																			// file
-																			// name
-																			// already
-																			// exists
-								log.debug("currentXSLName is found");
-								currentPage.setGroups(null);
-								currentPage.setIsDefault(defaultFile);
-								page = currentPage;
-							} else {
-								if (defaultFile) {
-									log
-											.debug("Selected xsl file is a default file..Set current to false");
-									currentPage.setIsDefault(false);
-								} else {
-									log.debug("Selected xsl file is not a default file");
-
-								}
-							}
+						else{
+							xslPageType = xslFileNames.getXslTaxonPages();
 						}
-					
 						break;
 					}
 				}
 			} catch (Exception ee) {
-				log.error(ee.getMessage());
-				log.error("Returning null because of previuos error!!");
+				LoggerUtilsServlet.logErrors(ee);
 				return null;
 			}
-			if (page == null) {
-				page = new XslPage();
-				page.setFileName(xslName);
-				page.setIsDefault(defaultFile);
-				xslPageType.addXslPage(page);
-				
-				log
-						.debug("Setting empty groups for current XslPage with xslName: "
-								+ xslName);
-			}
-			GroupsType groupsType = new GroupsType();
-			page.setGroups(groupsType);
-			return page;
+			return xslPageType;
 		}
 
 	}
@@ -504,12 +492,12 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 		try {
 			// forward to TestConfigPage.jsp
 			if (!isError) {
-				log.debug("No errors");
+				//log.debug("No errors");
 				String searchPage = (String) req
 						.getParameter(EFGImportConstants.SEARCH_PAGE_STR);// "search"
-
+					
 				if (searchPage != null) {// allow multiple xslNames
-					log.debug("Forward to Test Search page");
+					//log.debug("Forward to Test Search page");
 					String searchType = req
 							.getParameter(EFGImportConstants.SEARCH_TYPE_STR);
 					if (EFGImportConstants.SEARCH_PLATES_TYPE
@@ -524,18 +512,17 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 							EFGImportConstants.TEST_SEARCH_CONFIG_PAGE);
 
 				} else {
-					log.debug("Forward to Test taxon page");
+					//log.debug("Forward to Test taxon page");
 					dispatcher = getServletContext().getRequestDispatcher(
 							EFGImportConstants.TEST_TAXON_CONFIG_PAGE);
 				}
 			} else {
-				log.debug("Forward to error page1");
+				//log.debug("Forward to error page1");
 				dispatcher = getServletContext().getRequestDispatcher(
 						EFGImportConstants.TEMPLATE_ERROR_PAGE);
 			}
 		} catch (Exception ee) {
-			log.debug("Forward to error page2");
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 			dispatcher = getServletContext().getRequestDispatcher(
 					EFGImportConstants.TEMPLATE_ERROR_PAGE);
 		}
@@ -571,11 +558,11 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 			key.setGroup(gt);
 			groups.addGroupsTypeItem(key);
 		}
-		log.debug("ID: " + id);
+		//log.debug("ID: " + id);
 		if (gt == null) {
-			log.debug("Group Type is null");
+			//log.debug("Group Type is null");
 		} else {
-			log.debug("Group Type is not null");
+			//log.debug("Group Type is not null");
 		}
 		return gt;
 	}
@@ -622,33 +609,35 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 		String groupID = "";
 		String groupRank = "";
 		String characterRank = "";
-
-		String[] splits = key.split(":");
-		log.debug("Splits.length: " + splits.length);
+		//log.debug("Text: " + text);
+		//log.debug("key: " + key);
+		//String[] splits = key.split(":");
+		String[] splits = EFGImportConstants.colonPattern.split(key);
+		//log.debug("Splits.length: " + splits.length);
 		if (splits.length == 0) {
-			log.debug("Returning null because length is zero");
+			//log.debug("Returning null because length is zero");
 			return null;
 		}
 		identifier = splits[0];
 
 		if (splits.length > 1) {
 			groupID = splits[1];
-			log.debug("GroupID: " + groupID);
+			//log.debug("GroupID: " + groupID);
 		}
 		if (splits.length > 2) {
 			groupRank = splits[2];
-			log.debug("GroupRank: " + groupRank);
+			//log.debug("GroupRank: " + groupRank);
 		}
 		if (splits.length > 3) {
 			characterRank = splits[3];
-			log.debug("characterRank: " + characterRank);
+			//log.debug("characterRank: " + characterRank);
 		}
 		if ("".equals(groupID)) {
-			log.debug("GroupID is the empty string");
+			//log.debug("GroupID is the empty string");
 			return null;
 		}
 		if ("".equals(groupRank)) {
-			log.debug("GroupRank is the empty string");
+			//log.debug("GroupRank is the empty string");
 			return null;
 		}
 
@@ -657,81 +646,78 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 				.parseInt(groupRank));
 
 		if ((EFGImportConstants.GROUP_LABEL)
-				.equalsIgnoreCase(identifier.trim())) {// group label or groupText label
-			log.debug("Is a groupLabel with text: " + text);
+				.equalsIgnoreCase(identifier.trim())) {// group label or
+														// groupText label
+			//log.debug("Is a groupLabel with text: " + text);
 			if ((text != null) || (!text.trim().equals(""))) {
 				group.setLabel(text);
 			}
-		}
-		else if ((EFGImportConstants.GROUP_TEXT_LABEL)
-				.equalsIgnoreCase(identifier.trim())) {// group label or groupText label
-			log.debug("Is a groupText: " + text);
+		} else if ((EFGImportConstants.GROUP_TEXT_LABEL)
+				.equalsIgnoreCase(identifier.trim())) {// group label or
+														// groupText label
+			
 			if ((text != null) || (!text.trim().equals(""))) {
 				group.setText(text);
 			}
-		}
-		else {
+		} else {
 			if (("".equals(characterRank)) || (characterRank == null)) {
-				log.debug("characterRank is the empty string or null");
+				
 				return null;
 			}
 			if ((text == null) || (text.trim().equals(""))) {
-				log.debug("text is the empty string or null");
+				
 				return null;
 			}
 
-			 CharacterValue cv = 
-				 findCharacter(group, Integer.parseInt(characterRank));
+			CharacterValue cv = findCharacter(group, Integer
+					.parseInt(characterRank));
 
 			if (cv == null) {
-				log.debug("CharacterValue is  null");
+				
 				GroupTypeItem vGroupTypeItem = new GroupTypeItem();
 				cv = new CharacterValue();
 				cv.setRank(Integer.parseInt(characterRank));
 				vGroupTypeItem.setCharacterValue(cv);
-				
+
 				group.addGroupTypeItem(vGroupTypeItem);
-				log.debug("characterRank is: " + characterRank);
+			
 			}
 			if ((EFGImportConstants.CHARACTER_TEXT_LABEL)
-					.equalsIgnoreCase(identifier.trim())) {//handle character text labels
-				log.debug("Character text  label");
+					.equalsIgnoreCase(identifier.trim())) {// handle character
+															// text labels
+			
 				cv.setText(text);
-			}
-			else if ((EFGImportConstants.CHARACTER_LABEL)
+			} else if ((EFGImportConstants.CHARACTER_LABEL)
 					.equalsIgnoreCase(identifier.trim())
 					|| ((EFGImportConstants.GROUP_TEXT_LABEL)
 							.equalsIgnoreCase(identifier.trim()))) {
-				log.debug("CharacterValue is a label");
+			
 				if ((EFGImportConstants.CHARACTER_LABEL)
 						.equalsIgnoreCase(identifier.trim())) {// character
-					// label
-					log.debug("CharacterValue has label: " + text);
+				
 					cv.setLabel(text);
 				} else {
-					log.debug("CharacterValue has text: " + text);
+
 					cv.setText(text); // character text
 				}
 			} else if ((EFGImportConstants.GROUP).equalsIgnoreCase(identifier
 					.trim())) {// group
-				log.debug("CharacterValue is a group");
+
 				if (text != null) {
-					log.debug("CharacterValue text is not null");
+
 					if (!text.trim().equals("")) {
-						log.debug("CharacterValue text is not empty string");
+					
 						if (returnValue == null) {
-							log.debug("returnValue is null");
+
 							returnValue = text;
 						}
-						log.debug("CharacterValue text is set to: " + text);
+				
 						cv.setValue(text);
 					}
-				} else {
-					log.debug("CharacterValue text is null");
-				}
+				} 
 			}
 		}
-		log.debug("Return value is: " + returnValue);
+	
 		return returnValue;
 	}
 }

@@ -64,9 +64,9 @@ public class DataManipulatorFactory {
 		}
 		catch(Exception ee){
 			log.error(ee.getMessage());
-			log.error("Could not find '" + 
+			log.error("Could not find \"" + 
 					manipulatorType + 
-					"' on class path!!"
+					"\" on class path!!"
 					);
 		}	
 		return null;

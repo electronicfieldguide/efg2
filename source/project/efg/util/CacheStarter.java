@@ -3,7 +3,7 @@
  */
 package project.efg.util;
 
-import java.io.File;
+
 import java.io.InputStream;
 import java.util.Properties;
 
@@ -12,20 +12,14 @@ import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.params.HttpMethodParams;
-import org.apache.log4j.Logger;
+
 
 /**
  * @author kasiedu
  *
  */
 public class CacheStarter {
-    static Logger log = null;
-    static {
-		try {
-	    	log = Logger.getLogger(CacheStarter.class);
-		} 	catch (Exception ee) {
-		}
-    }
+ 
     /**
      * 
      */
@@ -35,7 +29,7 @@ public class CacheStarter {
 	HttpClient client = new HttpClient();
 	// Create a method instance.
 	for(int i = 0; i < urls.length;i++){
-	    System.out.println("About to execute: "  + urls[i]);
+	  
 	    GetMethod method = new GetMethod(urls[i]);
 	    
 	    // Provide custom retry handler is necessary
@@ -61,18 +55,17 @@ public class CacheStarter {
 		System.out.println("At end");
 		
 	    } catch (Exception e) {
-		System.out.println(e.getMessage());
+		
 	    } finally {
 		// Release the connection.
 		method.releaseConnection();
-		System.out.println("Done");
+		
 	    }  
 	}	
     }
     public static String[] getURLs(){
 	try{
-	    File file1 = new File(".");
-	    log.debug("Abs: " + file1.getAbsolutePath());
+	    
 	    InputStream input = 
 		project.efg.util.CacheStarter.class.getResourceAsStream("/properties/cachedURLS.properties");
 	    
@@ -87,7 +80,7 @@ public class CacheStarter {
 	}
 	catch(Exception ee){
 	    ee.printStackTrace();
-	    log.error(ee.getMessage());
+	   
 	}
 	return null;
     }
@@ -97,9 +90,7 @@ public class CacheStarter {
 	    if((urls != null) && (urls.length > 0)){
 		CacheStarter.executeCacheQueries(urls);
 	    }
-	    else{
-		System.out.println("Application could not read properties file holding urls");
-	    }
+	   
 	}
 	catch(Exception ee){
 	    System.err.println(ee.getMessage());

@@ -9,13 +9,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Vector;
 
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
 import javax.swing.JTree;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -26,7 +22,6 @@ import javax.swing.tree.ExpandVetoException;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Logger;
 
 /**
  * @version $Revision$
@@ -37,20 +32,12 @@ public class FileBrowser extends JTree {
 	/**
 	 * 
 	 */
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(FileBrowser.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	private static final long serialVersionUID = 1L;
 
 	public static final String DELETE_CMD = "delete";
 
 	private Frame frame = null;
-
-	private SimpleDateFormat formatter = null;
 
 	/**
 	 * Our TreeWillExpandListener
@@ -93,7 +80,7 @@ public class FileBrowser extends JTree {
 			if (command.equals("del")) {
 				deleteSelectedFiles();
 			} else if (command.equals("newfolder")) {
-				createNewFolder();
+				
 			}
 			setCursor(Cursor.DEFAULT_CURSOR);
 		}
@@ -129,6 +116,18 @@ public class FileBrowser extends JTree {
 			addMouseListener(mouseAdapter);
 		}
 
+	public static FileBrowser getFileBrowser(String rootname) {
+		FilenameFilter filter = new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return (name.charAt(0) != '.');
+			}
+		};
+		FileNode root = new FileNode("My Computer", filter);
+		FileBrowser browser = new FileBrowser(root);
+		root.initializeRootNode(browser);
+		return browser;
+	}
+
 	public void setCursor(int cursor) {
 		getFrame().setCursor(Cursor.getPredefinedCursor(cursor));
 	}
@@ -160,24 +159,14 @@ public class FileBrowser extends JTree {
 		return filteredPath;
 	}
 
-	protected void createNewFolder() {
-		/*
-		 * TreePath path = getSelectionPath(); FileNode node =
-		 * (FileNode)path.getLastPathComponent(); if (node.hasFile()) { File dir =
-		 * node.getFile(); if (dir.isDirectory()) { File newfolder = new
-		 * File(dir, "NewFolder"); int i = 0; while (newfolder.exists()) {
-		 * newfolder = new File(dir, "NewFolder"+(++i)); } if
-		 * (newfolder.mkdirs()) { FileNode newnode = new FileNode(this, node,
-		 * newfolder); addNode(node, newnode); } } }
-		 */
-	}
+	
 
 	protected void deleteSelectedFiles() {
 		//do in a new thread if children are more than 50
 		
 		TreePath path[] = removeDescendants(getSelectionPaths());
 		if (path != null) {
-			int result = JOptionPane.showConfirmDialog(this,
+			int result = JOptionPane.showConfirmDialog(this.getFrame(),
 					"Delete selected resource(s)?", "Delete Resource(s)",
 					JOptionPane.YES_NO_OPTION);
 			if (result == JOptionPane.YES_OPTION) {
@@ -187,71 +176,6 @@ public class FileBrowser extends JTree {
 			
 			}
 		}
-	}
-//
-	// Popup Menu
-
-	/**
-	 * Get the popup menu relative to the selected resource.
-	 * 
-	 * @param file
-	 *            the selected file
-	 * @return a JPopupMenu instance
-	 */
-	protected JPopupMenu getPopupMenu(FileNode node) {
-		JPopupMenu popupMenu = new JPopupMenu("Actions");
-		JMenuItem menuItem = null;
-
-		String name = node.getName();
-
-		if (getSelectionCount() > 1) {
-			menuItem = new JMenuItem("Delete files");
-			menuItem.addActionListener(pmal);
-			menuItem.setActionCommand("del");
-			popupMenu.add(menuItem);
-		} else {
-			File file = node.getFile();
-			if (file != null) {
-				Date date = new Date(file.lastModified());
-				StringBuffer descr = new StringBuffer(name);
-				descr.append(", ");
-				descr.append(getDateFormatter().format(date));
-
-				if (file.isFile()) {
-					long size = file.length();
-					String s = null;
-					if (size > 1023) {
-						s = " [" + (size / 1024) + " Kb]";
-					} else {
-						s = " [" + size + " bytes]";
-					}
-					descr.append(s);
-				}
-
-				menuItem = new JMenuItem(descr.toString());
-				menuItem.addActionListener(pmal);
-				menuItem.setActionCommand("info");
-				popupMenu.add(menuItem);
-
-				popupMenu.addSeparator();
-
-				if (file.isDirectory() && (getSelectionCount() == 1)) {
-					menuItem = new JMenuItem("New Folder");
-					menuItem.addActionListener(pmal);
-					menuItem.setActionCommand("newfolder");
-					popupMenu.add(menuItem);
-				}
-
-				menuItem = new JMenuItem("Delete " + name);
-				menuItem.addActionListener(pmal);
-				menuItem.setActionCommand("del");
-				popupMenu.add(menuItem);
-			} else {
-				menuItem = new JMenuItem(name);
-				popupMenu.add(menuItem);
-			}
-		}
-		return popupMenu;
 	}
 
 	//
@@ -276,42 +200,6 @@ public class FileBrowser extends JTree {
 					.getAncestorOfClass(Frame.class, this);
 		}
 		return frame;
-	}
-
-	
-
-	/**
-	 * Get a DateFormat compliant with RFC 822 updated by RFC 1123.
-	 * 
-	 * @return a SimpleDateFormat instance.
-	 */
-	private SimpleDateFormat getDateFormatter() {
-		if (formatter == null) {
-			formatter = new SimpleDateFormat("dd MMM yyyy HH:mm");
-		}
-		return formatter;
-	}
-
-	public static FileBrowser getFileBrowser(String rootname) {
-		FilenameFilter filter = new FilenameFilter() {
-			public boolean accept(File dir, String name) {
-				return (name.charAt(0) != '.');
-			}
-		};
-		FileNode root = new FileNode("My Computer", filter);
-		FileBrowser browser = new FileBrowser(root);
-		root.initializeRootNode(browser);
-		return browser;
-	}
-
-	public static void main(String args[]) {
-		/*
-		 * Utils.unBoldSpecificFonts(); JFrame frame = new JFrame("File
-		 * Browser"); JScrollPane scrollpane = new
-		 * JScrollPane(getFileBrowser("c:\\"));
-		 * frame.getContentPane().add(scrollpane, BorderLayout.CENTER);
-		 * frame.setSize(300, 600); frame.setVisible(true);
-		 */
 	}
 
 }

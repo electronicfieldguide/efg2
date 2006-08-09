@@ -34,12 +34,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-
-import org.apache.log4j.Logger;
-
-import project.efg.util.EFGImportConstants;
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
+import project.efg.util.EFGImportConstants;
 
 /**
  * TomcatUsers.java
@@ -59,13 +56,7 @@ public class TomcatUsers {
 
 	private String roleName;
 
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(TomcatUsers.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	/**
 	 * @param catalina_home -
@@ -89,7 +80,7 @@ public class TomcatUsers {
 	 */
 	public boolean editTomcatUsers() {
 		if (this.catalina_home == null) {
-			log.error("System could not find CATALINA_HOME");
+			//log.error("System could not find CATALINA_HOME");
 			return false;
 		}
 		try {
@@ -250,8 +241,8 @@ public class TomcatUsers {
 		}
 		TomcatUsers users = new TomcatUsers(catalina_home);
 		if (!users.editTomcatUsers()) {
-			log.debug("Could not write Tomcat users file to :" + catalina_home
-					+ EFGImportConstants.TOMCAT_USERS_FILE_LOCATION);
+			//log.debug("Could not write Tomcat users file to :" + catalina_home
+					//+ EFGImportConstants.TOMCAT_USERS_FILE_LOCATION);
 		}
 	}
 } // TomcatUsers

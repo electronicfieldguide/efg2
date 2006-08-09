@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
 
 import project.efg.efgDocument.EFGListsType;
 import project.efg.efgDocument.EFGType;
@@ -18,8 +15,6 @@ import project.efg.efgDocument.MediaResourceType;
 import project.efg.efgDocument.MediaResourcesType;
 import project.efg.efgDocument.StatisticalMeasureType;
 import project.efg.efgDocument.StatisticalMeasuresType;
-import project.efg.servlets.efgServletsUtil.EFGParseObject;
-import project.efg.servlets.efgServletsUtil.EFGParseObjectList;
 import project.efg.servlets.factory.EFGParseObjectFactory;
 import project.efg.util.EFGImportConstants;
 
@@ -29,13 +24,7 @@ import project.efg.util.EFGImportConstants;
  */
 public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 	
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGParseObjectFactoryImpl.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	
 	
 
@@ -92,14 +81,14 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 		
 		
 		if(!unChanged){
-			log.debug("Min: " + min);
-			log.debug("Max: " + max);
+			//log.debug("Min: " + min);
+			//log.debug("Max: " + max);
 			stats.setMax(max);
 			stats.setMin(min);
 			stats.setUnit(unit);
 		}
 		else{
-			log.debug("no changes to stats");
+			//log.debug("no changes to stats");
 		}
 		return stats;
 	}
@@ -222,37 +211,38 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 		return efgType;
 	}
 	private String[] parseStats(String inputStr){
-		log.debug("InputString: " + inputStr);
-		Pattern p = Pattern.compile(EFGImportConstants.RIGHTPARENSEP, 
-				Pattern.CASE_INSENSITIVE);
-		String[] fieldsR = p.split(inputStr);
+		//log.debug("InputString: " + inputStr);
+		
+		String[] fieldsR = EFGImportConstants.rightParenPattern.split(inputStr);
+		
 		ArrayList lists = new ArrayList();
 		for(int i = 0; i < fieldsR.length; i++){//right paren removed
 			
 			String fieldR = fieldsR[i].trim();
-			log.debug("fieldR: " + fieldR);
+			//log.debug("fieldR: " + fieldR);
 			if("".equals(fieldR)){//skip over empty strings
 				continue;
 			}
 			if(fieldR.equals(EFGImportConstants.DASHSEP)){//skip over '-' that exists alone
 				continue;
 			}
-			p = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
-					Pattern.CASE_INSENSITIVE);
-			String []fieldsL =  p.split(fieldR); 
+			
+			String []fieldsL =  EFGImportConstants.leftParenPattern.split(fieldR); 
 			
 			for(int j = 0; j < fieldsL.length; j++){//left paren removed
 				String fieldL = fieldsL[j].trim();
-				log.debug("fieldl: " + fieldL);
+				//log.debug("fieldl: " + fieldL);
 				if("".equals(fieldL)){//skip over empty string
 					continue;
 				}
 				if(fieldL.indexOf(EFGImportConstants.DASHSEP) > 0){//dash not the first item in string
-					String[] minVals = fieldL.split(EFGImportConstants.DASHSEP);
-					log.debug("FieLDL After split: " + minVals.length);
+					
+				//	String[] minVals = fieldL.split(EFGImportConstants.DASHSEP);
+					String[] minVals = EFGImportConstants.dashParenPattern.split(fieldL);
+					//log.debug("FieLDL After split: " + minVals.length);
 					for(int w=0; w < minVals.length; w++){
 						String minVal = minVals[w].trim();
-						log.debug("FieLDL After split value: " + minVal);
+						//log.debug("FieLDL After split value: " + minVal);
 						if((minVal != null) && (!minVal.trim().equals(""))){
 							lists.add(minVal);
 						}
@@ -284,12 +274,14 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 		return null;
 	}
 	private String[] preProcess(String inputStr){
-		String patternStr = "[A-Z]+";// remove everything that is an
+		//String patternStr = "[A-Z]+";// remove everything that is an
 		// alphabet
-		Pattern p = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
-		log.debug("About to parse: " + inputStr);
-		log.debug("With pattern: " + patternStr);
-		return p.split(inputStr);
+		//Pattern p = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
+		//log.debug("About to parse: " + inputStr);
+		//log.debug("With pattern: " + patternStr);
+		//return p.split(inputStr);
+		return EFGImportConstants.alphaPattern.split(inputStr);
+		
 	}
 	private String[] parseStatsMeasure(String inputStr1) {
 		
@@ -312,21 +304,23 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 			for (int j = 0; j < fields.length; j++) {
 				try {
 					String[] vals = parseStats(fields[j].trim());
-					log.debug("Size after split: " +vals.length);
+					//log.debug("Size after split: " +vals.length);
 					
 					for (int i = 0; i < vals.length; i++) {
 						try {
 							
 							String newStr = vals[i].trim();
-							String patternStr = "^\\d+$|^-\\d+$";
-							log.debug("New Pattern: " + patternStr);
-							log.debug("New State to parse: " + newStr);
+							//String patternStr = "^\\d+$|^-\\d+$";
+							//log.debug("New Pattern: " + patternStr);
+							//log.debug("New State to parse: " + newStr);
 							
-							Pattern p = Pattern.compile(patternStr);
+							//Pattern p = Pattern.compile(patternStr);
 							
-							Matcher matcher = p.matcher(newStr);// find strings
+							//Matcher matcher = p.matcher(newStr);// find strings
 																// with only
 																// digits
+							
+							Matcher matcher = EFGImportConstants.matchNumberAtEndPattern.matcher(newStr);
 							matcher.find();
 							String match = matcher.group();
 							if ((match != null) || (!match.trim().equals(""))) {
@@ -351,18 +345,17 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 								}
 							}
 						} catch (Exception ex) {
-							log.error(ex.getMessage());
-	
+							LoggerUtilsServlet.logErrors(ex);
 						}
 					}
 				} catch (Exception ex) {
-					log.error(ex.getMessage());
+					LoggerUtilsServlet.logErrors(ex);
 	
 				}
 			}
 	
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 	
 		}
 		if((minValD == null) || (maxValD == null)){
@@ -387,9 +380,11 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 	private String parseUnits(String inputStr) {
 		StringBuffer buffer = new StringBuffer();
 		try {
-			String patternStr = "[A-Z]+";
-			Pattern p = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
-			Matcher matcher = p.matcher(inputStr);
+			//String patternStr = "[A-Z]+";
+			//Pattern p = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
+			
+			//Matcher matcher = p.matcher(inputStr);
+			Matcher matcher = EFGImportConstants.alphaPattern.matcher(inputStr);
 			// boolean matchFound = false;
 			String match = null;
 			while (matcher.find()) {
@@ -400,11 +395,11 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 					}
 					buffer.append(match);
 				} catch (Exception ee) {
-					log.error(ee.getMessage());
+					LoggerUtilsServlet.logErrors(ee);
 				}
 			}
 		} catch (Exception vvv) {
-			log.error(vvv.getMessage());
+			LoggerUtilsServlet.logErrors(vvv);
 		}
 		return buffer.toString();
 	}
@@ -412,14 +407,14 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 			String state, 
 			String resourceLink, 
 			String annotation, String caption) {
-		log.debug("Processing: " + state);
+		//log.debug("Processing: " + state);
 		StatisticalMeasureType stats = null;
 		String[] measures = this.isInNumericRange(state);
 		if (measures == null) {
-			log.debug("measures is null");
+			//log.debug("measures is null");
 			return stats;
 		}
-		log.debug("Size of measures: " + measures.length);
+		//log.debug("Size of measures: " + measures.length);
 		stats = new StatisticalMeasureType();
 		
 		String units = this.parseUnits(state);
@@ -433,22 +428,22 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 		try{
 			boolean isError = false;
 			try{
-				log.debug("About to process measurese[0]: " +measures[0] );
+				//log.debug("About to process measurese[0]: " +measures[0] );
 				stats.setMin(Double.parseDouble(measures[0]));
 			}
 			catch(Exception emin){
-				log.debug("Error processing measurese[0]: " +measures[0] );
-				log.error(emin.getMessage());
+				//log.debug("Error processing measurese[0]: " +measures[0] );
+				LoggerUtilsServlet.logErrors(emin);
 				isError = true;
 			}
 			try{
-				log.debug("About to process measurese[1]: " +measures[1] );
+				//log.debug("About to process measurese[1]: " +measures[1] );
 				stats.setMax(Double.parseDouble(measures[1]));
 			}
 			catch(Exception emax){
 				isError = true;
-				log.debug("Error processing measurese[1]: " +measures[1] );
-				log.error(emax.getMessage());
+				//log.debug("Error processing measurese[1]: " +measures[1] );
+				LoggerUtilsServlet.logErrors(emax);
 			}
 			if(!isError){
 				if(stats.getMax() < stats.getMin()){
@@ -458,8 +453,8 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 			}
 		}
 		catch(Exception ee){
-			log.debug("Error processing : " + state );
-			log.error(ee.getMessage());
+			//log.debug("Error processing : " + state );
+			LoggerUtilsServlet.logErrors(ee);
 		}
 		return null;
 	}

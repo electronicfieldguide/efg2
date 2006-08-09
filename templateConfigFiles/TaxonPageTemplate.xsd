@@ -74,10 +74,6 @@
 				</xs:annotation>
 			</xs:field>
 		</xs:unique>
-		<xs:unique name="displayname_unique">
-			<xs:selector xpath="TaxonPageTemplate"/>
-			<xs:field xpath="@displayName"/>
-		</xs:unique>
 	</xs:element>
 	<xs:complexType name="rankLabelTextType">
 		<xs:attribute name="rank" type="xs:int" use="required">
@@ -108,8 +104,12 @@
 					<xs:documentation>Encapsulates one or more xsl files to be used to generate plates for each datasource.</xs:documentation>
 				</xs:annotation>
 				<xs:unique name="xslPlatesPage_unique">
-					<xs:selector xpath="XSLPage"/>
-					<xs:field xpath="@fileName"/>
+					<xs:selector xpath="xslPage"/>
+					<xs:field xpath="@displayName"/>
+				</xs:unique>
+				<xs:unique name="xslPlatesPageguid_unique">
+					<xs:selector xpath="xslPage"/>
+					<xs:field xpath="@guid"/>
 				</xs:unique>
 			</xs:element>
 			<xs:element name="xslListPages" type="xslPageType">
@@ -117,8 +117,12 @@
 					<xs:documentation>Encapsulates one or more xsl files to be used to generate lists for each datasource.</xs:documentation>
 				</xs:annotation>
 				<xs:unique name="xslListPage_unique">
-					<xs:selector xpath="XSLPage"/>
-					<xs:field xpath="@fileName"/>
+					<xs:selector xpath="xslPage"/>
+					<xs:field xpath="@displayName"/>
+				</xs:unique>
+				<xs:unique name="xslListPageguid_unique">
+					<xs:selector xpath="xslPage"/>
+					<xs:field xpath="@guid"/>
 				</xs:unique>
 			</xs:element>
 			<xs:element name="xslTaxonPages" type="xslPageType">
@@ -126,8 +130,12 @@
 					<xs:documentation>Encapsulates one or more xsl files to be used to generate taxon pages for each datasource.</xs:documentation>
 				</xs:annotation>
 				<xs:unique name="xslTaxonPage_unique">
-					<xs:selector xpath="XSLPage"/>
-					<xs:field xpath="@fileName"/>
+					<xs:selector xpath=".//XSLPage"/>
+					<xs:field xpath="@displayName"/>
+				</xs:unique>
+				<xs:unique name="xslTaxonPageguid_unique">
+					<xs:selector xpath=".//XSLPage"/>
+					<xs:field xpath="@guid"/>
 				</xs:unique>
 			</xs:element>
 		</xs:sequence>
@@ -156,6 +164,21 @@
 							</xs:restriction>
 						</xs:simpleType>
 					</xs:attribute>
+					<xs:attribute name="guid" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="displayName" use="required">
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:minLength value="1"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:attribute>
+					<xs:attribute name="jspName" type="xs:string"/>
 					<xs:attribute name="isDefault" type="xs:boolean" default="false"/>
 				</xs:complexType>
 			</xs:element>

@@ -28,7 +28,7 @@ public class XSLTResponseObject extends ResponseObject {
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(XSLTResponseObject.class);
+			//log = Logger.getLogger(XSLTResponseObject.class);
 		} catch (Exception ee) {
 		}
 	}
@@ -61,34 +61,38 @@ public class XSLTResponseObject extends ResponseObject {
 			if (dsName == null) {
 				try {
 					dsName = this.getDatasourceName(efgDocument);
-					log.debug("DatasourceName obtained from EFGDocument: " + dsName);
+					//log.debug("DatasourceName obtained from EFGDocument: " + dsName);
 					noDSName = true;
 				} catch (Exception ee) {
-					log.error(ee.getMessage());
+					//log.error(ee.getMessage());
 				}
+			}
+			String guid = req.getParameter(EFGImportConstants.GUID);
+			if((guid != null) && (!guid.trim().equals(""))){
+				req.setAttribute(EFGImportConstants.GUID,guid);
 			}
 			Map map = req.getParameterMap();
 			Map mapNew = null;
 			try{
-				log.debug("About to copy  map. Size is: " + map.size());
+				//log.debug("About to copy  map. Size is: " + map.size());
 				mapNew = copyMap(map);
-				log.debug("Done copying map . Size is: " + mapNew.size());
+				//log.debug("Done copying map . Size is: " + mapNew.size());
 			}
 			catch(Exception iii){
-				log.debug("Exception occured in copying map");
+				//log.debug("Exception occured in copying map");
 			}
 			if(dsName != null){
 				if(noDSName){
 					String[] aValue = new String[1];
 					aValue[0] = dsName;
-					log.debug("About to add to map. Size is: " + mapNew.size());
+					//log.debug("About to add to map. Size is: " + mapNew.size());
 					mapNew.put(EFGImportConstants.DATASOURCE_NAME,aValue);
-					log.debug("Done adding map . Size is: " + mapNew.size());
+					//log.debug("Done adding map . Size is: " + mapNew.size());
 				}
 				req.setAttribute(EFGImportConstants.DATASOURCE_NAME, dsName);
 			}
 			else{
-				log.debug("DatasourceName is null");
+				//log.debug("DatasourceName is null");
 			}
 			int taxonSize = this.getTaxonSize();
 			req.setAttribute(EFGImportConstants.XML, efgDocument);
@@ -99,9 +103,9 @@ public class XSLTResponseObject extends ResponseObject {
 				this.getXSLTObject();
 			String xslFileLocation = realPath + EFGImportConstants.TEMPLATES_FOLDER_NAME + File.separator;
 			
-			log.debug("call xslProps");
+			//log.debug("call xslProps");
 			XSLProperties xslProps = xslType.getXSLProperties(mapNew, xslFileLocation);
-			log.debug("Done xslProps");
+			//log.debug("Done xslProps");
 			if (xslProps == null) {
 				throw new Exception(
 						"Could not find xsl file for: " + 
@@ -111,13 +115,13 @@ public class XSLTResponseObject extends ResponseObject {
 			
 			
 			Properties props = xslProps.getXSLParameters();
-			log.debug("call props");
+			//log.debug("call props");
 			if (props != null) {
 				this.setRequests(req, props);
 			}
-			log.debug("Done props");
+			//log.debug("Done props");
 			String xslFileName = xslProps.getXSLFileName();
-			log.debug("call xslFileName: " + xslFileName);
+			//log.debug("call xslFileName: " + xslFileName);
 			req.setAttribute(EFGImportConstants.XSL_STRING, xslFileName);
 			// get xsl file name from the templateConfig file name
 			StringBuffer forwardStringBuffer = 
@@ -140,19 +144,19 @@ public class XSLTResponseObject extends ResponseObject {
 		}
 		catch(Exception ee){
 			ee.printStackTrace();
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 			//create fwd page and return its page
 		}
 	}
 	private Map copyMap(Map map){
-		log.debug("Inside copyMap");
+		//log.debug("Inside copyMap");
 		Map newmap = new HashMap(map.size());
 		    Iterator it = map.entrySet().iterator();
 		    while (it.hasNext()) {
 		        Map.Entry pairs = (Map.Entry)it.next();
 		        String key = (String)pairs.getKey();
 		        String[] val = (String[])pairs.getValue();
-		        log.debug("About to put: " +  key +  "  and   " + val[0] );
+		        //log.debug("About to put: " +  key +  "  and   " + val[0] );
 		        newmap.put(key,val);
 		    }
 		return newmap;
@@ -174,7 +178,7 @@ public class XSLTResponseObject extends ResponseObject {
 				throw new Exception("A datsourceName could not be found");
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 			//LoggerUtilsServlet.logErrors(ee);
 			//throw ee;
 		}

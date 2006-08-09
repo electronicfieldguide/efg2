@@ -76,7 +76,7 @@ public class ImportBehaviorImplUseExisting extends ImportBehavior {
 						JOptionPane.INFORMATION_MESSAGE, null, possibleValues,
 						possibleValues[0]);
 				if (selectedValue != null) {
-					log.debug("Selectedvalue: " + selectedValue.toString());
+					//log.debug("Selectedvalue: " + selectedValue.toString());
 					this.obj.setTemplateDisplayName(selectedValue.toString()
 							.trim());
 					boolean bool =  this.lists.addEFGDatasourceObject(this.obj,false);
@@ -86,7 +86,7 @@ public class ImportBehaviorImplUseExisting extends ImportBehavior {
 						String message = EFGImportConstants.EFGProperties
 						.getProperty("SynopticKeyTree.add.success");
 						this.responseMessage.append(message);
-						log.debug(this.responseMessage.toString());
+						//log.debug(this.responseMessage.toString());
 					}
 				}	
 				else{

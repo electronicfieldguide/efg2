@@ -84,7 +84,7 @@ public class ApplyXSL extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		try {
-			log = Logger.getLogger(ApplyXSL.class);
+			//log = Logger.getLogger(ApplyXSL.class);
 		} catch (Exception ee) {
 		}
 		digir = Namespace.getNamespace(EFGImportConstants.DIGIR_NAMESPACE);
@@ -120,7 +120,7 @@ public class ApplyXSL extends HttpServlet {
 		String dsName = (String) req.getAttribute(EFGImportConstants.DATASOURCE_NAME);
 		String displayName = (String) req.getAttribute(EFGImportConstants.DISPLAY_NAME);
 		String xslName  = (String)req.getAttribute(EFGImportConstants.XSL_STRING);
-
+        String guid = (String)req.getAttribute(EFGImportConstants.GUID);
 		ApplyXSLInterface applyXSL = ApplyXSLInterface
 				.createApplyXSLInterface();
 
@@ -131,65 +131,63 @@ public class ApplyXSL extends HttpServlet {
 			Transformer transformer = null;
 			try {
 				String header = getHeader(req);
-				log.debug("Setting transformer");
+			
 				transformer = tFactory.newTransformer(xsl);
-				log.debug("Setting transformer done");
+				
 				
 				String serverContext = req.getContextPath();
 				String server = req.getScheme() + "://" + req.getServerName()
 						+ ":" + req.getServerPort();
 				
 				transformer.setParameter(EFGImportConstants.XSL_STRING,xslName);
-				log.debug("xslName: " + xslName);
+				
+				
+				transformer.setParameter(EFGImportConstants.GUID,guid);
+				
 				
 				transformer.setParameter(EFGImportConstants.DATASOURCE_NAME, dsName.toLowerCase());
-				log.debug("Datasource: " + dsName);
+				
 				
 				transformer.setParameter(EFGImportConstants.DISPLAY_NAME, displayName);
-				log.debug("DisplayName: " + displayName);
+			
 				
 				transformer.setParameter("server", server);
-				log.debug("server: " + server);
+			
 				
 				transformer.setParameter("header", header);
-				log.debug("header: " + header);
+			
 				
 				transformer.setParameter("serverContext", serverContext);
-				log.debug("serverContext: " + serverContext);
+			
 				
 				String query = EFGImportConstants.SEARCH_STR + dsName
 						+ EFGImportConstants.AMP;
 				
 				transformer.setParameter("query", query);
-				log.debug("query: " + query);
+			
 				
 				transformer.setParameter("serverbase", server + serverContext);
 
 				String searchPage = (String) req
 						.getAttribute(EFGImportConstants.SEARCH_PAGE_STR);
 				if (searchPage != null) {
-					log.debug("Setting search type: "
-							+ EFGImportConstants.SEARCH_PAGE_STR);
-					log.debug("Setting search type: " + searchPage);
 					transformer.setParameter(
 							EFGImportConstants.SEARCH_PAGE_STR, searchPage);
 				}
 				if (req.getAttribute("mediaResourceField") != null) {
 					transformer.setParameter("mediaResourceField", (String) req
 							.getAttribute("mediaResourceField"));
-					log.debug("mediaresource field is set to: " +(String) req
-					.getAttribute("mediaResourceField") );
 				}
 				else{
-					log.debug("mediaresource field is null!!");
+					//log.debug("mediaresource field is null!!");
 				}
 				String fieldName = (String) req.getAttribute("fieldName");
 				if (fieldName != null) {
-					log.debug("FieldName: " + fieldName);
+	
 					transformer.setParameter("fieldName",fieldName);
 				}
 				else{
-					log.debug("fieldName is null!!");
+					//log.debug("fieldName is null!!");
 				}
 				// set more parameters
 				// if more than one means go to search results page
@@ -200,10 +198,7 @@ public class ApplyXSL extends HttpServlet {
 						.println("<H3>Error on Server side .Please consult systems administrator</H3>");
 				out.flush();
 				res.flushBuffer();
-				log
-						.error("Could not parse stylesheet (TransformerConfigurationException)");
 				LoggerUtilsServlet.logErrors(tce);
-				 //TransformerHandler thandler = tFactory.newTransformer();//newTransformerHandler
 				return;
 			} catch (Exception ex) {
 				PrintWriter out = res.getWriter();
@@ -212,8 +207,8 @@ public class ApplyXSL extends HttpServlet {
 						.println("<H3>Error on Server side .Please consult systems administrator</H3>");
 				out.flush();
 				res.flushBuffer();
-				log
-						.error("Could not parse stylesheet (TransformerConfigurationException)");
+				//log
+					//	.error("Could not parse stylesheet (TransformerConfigurationException)");
 				LoggerUtilsServlet.logErrors(ex);
 				return;
 			}
@@ -223,18 +218,13 @@ public class ApplyXSL extends HttpServlet {
 				transformer.transform(xml, new StreamResult(sw));
 			} catch (TransformerException te) {
 				LoggerUtilsServlet.logErrors(te);
-				//te.printStackTrace();
-				log
-						.error("Error while performing transformation (TransformerException)");
 				PrintWriter out = res.getWriter();
 				// Tell the Browser that I'm sending back HTML
 				out
 						.println("<H3>Error on Server side .Please consult systems administrator</H3>");
 				out.flush();
 				res.flushBuffer();
-				log
-						.error("Could not parse stylesheet (TransformerConfigurationException)");
-
+			
 				return;
 			} catch (Exception ee) {
 				LoggerUtilsServlet.logErrors(ee);
@@ -244,8 +234,6 @@ public class ApplyXSL extends HttpServlet {
 						.println("<H3>Error on Server side .Please consult systems administrator</H3>");
 				out.flush();
 				res.flushBuffer();
-				log
-						.error("Could not parse stylesheet (TransformerConfigurationException)");
 				return;
 			}
 			String result = sw.toString();
@@ -306,36 +294,13 @@ public class ApplyXSL extends HttpServlet {
 		XMLOutputter outputter = new XMLOutputter();
 		StringWriter sw = new StringWriter();
 		outputter.output(header, sw);
-
 		return sw.toString();
-
 	}
-
-	/**
-	 * Get the HttpServletRequest parameters and return the value.
-	 * 
-	 * @param req
-	 *            the servlet request object
-	 * @param name
-	 *            the name of the parameter of the HttpServletRequest
-	 * @return the value of the parameter as a string
-	 */
-/*	private String getParameter(HttpServletRequest req, String name) {
-		String value = null;
-
-		log.debug("Retrieving value for parameter '" + name + "'");
-		value = req.getParameter(name);
-		if (value == null) {
-			log.debug("not found in request, looking for init param");
-			value = getInitParameter(name);
-		}
-		if (value == null) {
-			log.error("Could not find value for parameter '" + name + "'");
-		}
-		return value;
-	}*/
 }
 // $Log$
+// Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.2  2006/07/11 21:48:22  kasiedu
 // "Added more configuration info"
 //

@@ -48,7 +48,7 @@ public class ChoiceCommandExistImpl extends ChoiceCommandAbstract {
 	static Logger log;
 	static {
 		try {
-			log = Logger.getLogger(ChoiceCommandExistImpl.class);
+		log = Logger.getLogger(ChoiceCommandExistImpl.class);
 		} catch (Exception ee) {
 		}
 	}
@@ -57,7 +57,6 @@ public class ChoiceCommandExistImpl extends ChoiceCommandAbstract {
 	 */
 	public ChoiceCommandExistImpl() {
 		super();
-		log.debug("Creating " + this.getClass().getName());
 	}
 	/* (non-Javadoc)
 	 * @see project.efg.Imports.efgInterface.ChoiceCommandAbstract#createImportBehavior(project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface, project.efg.Imports.efgInterface.EFGDatasourceObjectInterface, java.lang.String)

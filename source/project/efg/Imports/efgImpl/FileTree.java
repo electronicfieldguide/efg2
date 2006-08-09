@@ -69,7 +69,7 @@ public class FileTree extends JTree implements Autoscroll {
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(FileTree.class);
+			//log = Logger.getLogger(FileTree.class);
 		} catch (Exception ee) {
 		}
 	}
@@ -188,13 +188,13 @@ public class FileTree extends JTree implements Autoscroll {
 		}
 	}
 	public synchronized void showErrorMessage(String message) {
-		log.error(message);
+		//log.error(message);
 		JOptionPane.showMessageDialog(this, message, "Error Message",
 				JOptionPane.ERROR_MESSAGE);
 	}
 
 	public synchronized void showWarningMessage(String message) {
-		log.info(message);
+		//log.info(message);
 		JOptionPane.showMessageDialog(this, message, "Warning Message",
 				JOptionPane.WARNING_MESSAGE);
 	}
@@ -320,7 +320,7 @@ public class FileTree extends JTree implements Autoscroll {
 			try {
 				deleteFile(thumbsFile);
 			} catch (Exception ee) {
-				log.error("Could not delete '" + thumbsName + "'");
+				//log.error("Could not delete '" + thumbsName + "'");
 				return;
 			}
 		}
@@ -346,9 +346,9 @@ public class FileTree extends JTree implements Autoscroll {
 	     if ( aOldPattern.equals("") ) {
 	        throw new IllegalArgumentException("Old pattern must have content.");
 	     }
-	     log.debug("aInput: " + aInput);
-	     log.debug("aOldPattern: " + aOldPattern);
-	     log.debug("aNewPattern: " + aNewPattern);
+	     //log.debug("aInput: " + aInput);
+	     //log.debug("aOldPattern: " + aOldPattern);
+	     //log.debug("aNewPattern: " + aNewPattern);
 	     return aInput.replaceAll(aOldPattern,aNewPattern);
 	  }
 	  

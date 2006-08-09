@@ -30,41 +30,34 @@ package project.efg.servlets.factory;
 import javax.servlet.http.HttpServletRequest;
 
 import project.efg.servlets.efgInterface.EFGHTTPQuery;
-import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
+
 import project.efg.servlets.rdb.DiGIRQuery;
 import project.efg.servlets.rdb.SQLQuery;
 import project.efg.servlets.rdb.SearchStrQuery;
 import project.efg.util.EFGImportConstants;
-import org.apache.log4j.Logger;
+
 
 /**
  * @author kasiedu
  *
  */
 public class EFGRequestFactory {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGRequestFactory.class);
-		} catch (Exception ee) {
-			LoggerUtilsServlet.logErrors(ee);
-		}
-	}
+	
 	
 	public static synchronized EFGHTTPQuery getInstance(HttpServletRequest req){
 		String request = req.getParameter(EFGImportConstants.REQUEST_TYPE);
 		
 		if (EFGImportConstants.DIGIR.equalsIgnoreCase(request)) {//There is a DiGIR request
-			log.debug("Digir request: " + request);
+			//log.debug("Digir request: " + request);
 			return new DiGIRQuery(req);
 			
 		}
 		else if(EFGImportConstants.SEARCHSTR.equalsIgnoreCase(request)){
-			log.debug("Search str request: " + request);
+			//log.debug("Search str request: " + request);
 			return new SearchStrQuery(req);
 		}
 		else{
-			log.debug("Plain old query");
+			//log.debug("Plain old query");
 			return new SQLQuery(req);
 		}
 	}

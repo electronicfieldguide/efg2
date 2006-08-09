@@ -7,8 +7,9 @@
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
 	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:include href="commonJavaFunctions.xsl"/>
-	<xsl:variable name="xslPage" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$dataSourceName]/XSLFileNames/xslPlatePages/xslPage[@fileName=$xslName]"/>
-	<xsl:variable name="mediaResourceField">
+	<xsl:include href="xslPagePlate.xsl"/>
+
+		<xsl:variable name="cssFile">
 		<xsl:call-template name="getVariable">
 			<xsl:with-param name="groups" select="$xslPage/groups"/>
 			<xsl:with-param name="groupID" select="'1'"/>
@@ -16,7 +17,7 @@
 			<xsl:with-param name="characterRank" select="'1'"/>
 		</xsl:call-template>
 	</xsl:variable>
-	<xsl:variable name="caption1">
+	<xsl:variable name="mediaResourceField">
 		<xsl:call-template name="getVariable">
 			<xsl:with-param name="groups" select="$xslPage/groups"/>
 			<xsl:with-param name="groupID" select="'2'"/>
@@ -24,11 +25,19 @@
 			<xsl:with-param name="characterRank" select="'1'"/>
 		</xsl:call-template>
 	</xsl:variable>
+	<xsl:variable name="caption1">
+		<xsl:call-template name="getVariable">
+			<xsl:with-param name="groups" select="$xslPage/groups"/>
+			<xsl:with-param name="groupID" select="'3'"/>
+			<xsl:with-param name="groupRank" select="'3'"/>
+			<xsl:with-param name="characterRank" select="'1'"/>
+		</xsl:call-template>
+	</xsl:variable>
 	<xsl:variable name="caption2">
 		<xsl:call-template name="getVariable">
 			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'2'"/>
-			<xsl:with-param name="groupRank" select="'3'"/>
+			<xsl:with-param name="groupID" select="'3'"/>
+			<xsl:with-param name="groupRank" select="'4'"/>
 			<xsl:with-param name="characterRank" select="'1'"/>
 		</xsl:call-template>
 	</xsl:variable>
@@ -39,75 +48,12 @@
 		<xsl:variable name="mySorter" select="sorter:new($total_count)"/>
 		<html>
 			<head>
-				<style>
-body {
-	background-color: #DDEEFF;
-}
-#numresults {
-	font-family: arial, helvetica, sans;
-	color: #00008B;
-	padding-bottom: 10px;
-	border-bottom: 2px solid #00008B;
-	margin-bottom: 10px;
-}
-.num {
-	background-color: #00008B;
-	color: #fff;
-	padding: 2px;
-	font-weight: bold;
-}
-table.resultsdisplay {
-	border: 0px;
-	border-collapse: collapse;
-	margin: 0px;
-}
-td.thumbnail {
-	vertical-align: bottom;
-	padding-right: 10px;
-	padding-left: 10px;
-	padding-bottom: 0px;
-	padding-top: 3px;
-	padding-bottom: 2px;
-	text-align: center;
-	border-left: 16px solid #DDEEFF;
-	border-right: 16px solid #DDEEFF;
-}
-td.caption {
-	font-family: arial, helvetica, sans;
-	color: #00008B;
-	padding-right: 10px;
-	padding-left: 10px;
-	padding-bottom: 4px;
-	text-align: center;
-	margin-right: 0px;
-	font-size: 12px;
-	background-color: #fff;
-	border-left: 16px solid #DDEEFF;
-	border-right: 16px solid #DDEEFF;
-	border-bottom: 8px solid #DDEEFF;
-}
-img, a.thumbnail {
-	border: 0px;
-}
-a.thumbnail:hover {
-	border: 1px;
-}
-a.caption {
-	font-family: arial, helvetica, sans;
-	color: #00008B;
-	text-decoration: none;
-}
-a.caption:hover {
-	text-decoration: underline;
-}
-td.rowspacer {
-	height: 20px;
-}
-</style>
+			<xsl:variable name="css_loc" select="concat($css_home,$cssFile)"/>
+					<link rel="stylesheet" href="{$css_loc}"/>
 			</head>
 			<body>
 				<div id="numresults">Your search found <span class="num">
-						<xsl:value-of select="$total_count"/>
+						<xsl:value-of select="$total_count"/> 
 					</span> results: </div>
 				<table class="resultsdisplay">
 					<xsl:variable name="taxonEntries" select="//TaxonEntry"/>
@@ -268,7 +214,7 @@ td.rowspacer {
 				</xsl:variable>
 				<xsl:variable name="imageName">
 					<xsl:if test="not($mediaResourceField)=''">
-						<xsl:if test="MediaResources">
+						<xsl:if test="count(MediaResources) &gt; 0">
 							<xsl:choose>
 								<xsl:when test="string(MediaResources[@name=$mediaResourceField])=''">
 									<xsl:value-of select="MediaResources[@databaseName=$mediaResourceField]/MediaResource[1]"/>

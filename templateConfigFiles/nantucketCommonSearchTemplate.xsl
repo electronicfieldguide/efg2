@@ -1,32 +1,51 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<!-- Make it generic allow authors to specify different template names-->
-	<xsl:param name="css" select="'nantucketstyle.css'"/>
+	<xsl:include href="xslPageList.xsl"/>
+	<xsl:variable name="defaultcss" select="'nantucketstyle.css'"/>
+
+	<xsl:variable name="cssFile">
+		<xsl:call-template name="getVariable">
+			<xsl:with-param name="groups" select="$xslPage/groups"/>
+			<xsl:with-param name="groupID" select="'1'"/>
+			<xsl:with-param name="groupRank" select="'1'"/>
+			<xsl:with-param name="characterRank" select="'1'"/>
+		</xsl:call-template>
+	</xsl:variable>
+	<xsl:variable name="css">
+		<xsl:choose>
+			<xsl:when test="not(string($cssFile))=''">
+				<xsl:value-of select="$cssFile"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$defaultcss"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="hrefCommon" select="concat($serverbase,'/Redirect.jsp?displayFormat=html&amp;dataSourceName=',$dataSourceName,'&amp;uniqueID=')"/>
-	<xsl:variable name="xslPage" select="document($templateConfigFile)//TaxonPageTemplate[@datasourceName=$dataSourceName]/XSLFileNames/xslListPages/xslPage[@fileName=$xslName]"/>
-	<xsl:variable name="imagetitle" select="concat($template_images_home,$xslPage/groups/group[@id='1']/@text)"/>
-	<xsl:variable name="title" select="$xslPage/groups/group[@id='2']/@text"/>
-	<xsl:variable name="headLineText" select="$xslPage/groups/group[@id='3']/@text"/>
+	<xsl:variable name="imagetitle" select="concat($template_images_home,$xslPage/groups/group[@id='2']/characterValue[@rank='1']/@value)"/>
+	<xsl:variable name="title" select="$xslPage/groups/group[@id='3']/@text"/>
+	<xsl:variable name="headLineText" select="$xslPage/groups/group[@id='4']/characterValue[@rank='1']/@value"/>
 	<xsl:variable name="firstColumn">
 		<xsl:call-template name="getVariable">
 			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'6'"/>
-			<xsl:with-param name="groupRank" select="'6'"/>
+			<xsl:with-param name="groupID" select="'7'"/>
+			<xsl:with-param name="groupRank" select="'7'"/>
 			<xsl:with-param name="characterRank" select="'1'"/>
 		</xsl:call-template>
 	</xsl:variable>
 	<xsl:variable name="secondColumn">
 		<xsl:call-template name="getVariable">
 			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'6'"/>
-			<xsl:with-param name="groupRank" select="'7'"/>
+			<xsl:with-param name="groupID" select="'7'"/>
+			<xsl:with-param name="groupRank" select="'8'"/>
 			<xsl:with-param name="characterRank" select="'1'"/>
 		</xsl:call-template>
 	</xsl:variable>
 	<xsl:variable name="thirdColumn">
 		<xsl:call-template name="getVariable">
 			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'6'"/>
-			<xsl:with-param name="groupRank" select="'8'"/>
+			<xsl:with-param name="groupID" select="'7'"/>
+			<xsl:with-param name="groupRank" select="'9'"/>
 			<xsl:with-param name="characterRank" select="'1'"/>
 		</xsl:call-template>
 	</xsl:variable>
@@ -78,31 +97,30 @@
 	</xsl:template>
 	<xsl:template match="TaxonEntry">
 		<xsl:variable name="uniqueID" select="@recordID"/>
-		<xsl:variable name="items" select="Items"/>
 		<xsl:variable name="firstColumnVar">
 			<xsl:call-template name="findColumnVariables">
-				<xsl:with-param name="items" select="$items"/>
-				<xsl:with-param name="stats" select="StatisticalMeasures"/>
-				<xsl:with-param name="meds" select="MediaResources"/>
-				<xsl:with-param name="lists" select="EFGLists"/>
+				<xsl:with-param name="items" select="Items[@name=$firstColumn]"/>
+				<xsl:with-param name="stats" select="StatisticalMeasures[@name=$firstColumn]"/>
+				<xsl:with-param name="meds" select="MediaResources[@name=$firstColumn]"/>
+				<xsl:with-param name="lists" select="EFGLists[@name=$firstColumn]"/>
 				<xsl:with-param name="columnName" select="$firstColumn"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="secondColumnVar">
 			<xsl:call-template name="findColumnVariables">
-				<xsl:with-param name="items" select="$items"/>
-				<xsl:with-param name="stats" select="StatisticalMeasures"/>
-				<xsl:with-param name="meds" select="MediaResources"/>
-				<xsl:with-param name="lists" select="EFGLists"/>
+				<xsl:with-param name="items" select="Items[@name=$secondColumn]"/>
+				<xsl:with-param name="stats" select="StatisticalMeasures[@name=$secondColumn]"/>
+				<xsl:with-param name="meds" select="MediaResources[@name=$secondColumn]"/>
+				<xsl:with-param name="lists" select="EFGLists[@name=$secondColumn]"/>
 				<xsl:with-param name="columnName" select="$secondColumn"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="thirdColumnVar">
 			<xsl:call-template name="findColumnVariables">
-				<xsl:with-param name="items" select="$items"/>
-				<xsl:with-param name="stats" select="StatisticalMeasures"/>
-				<xsl:with-param name="meds" select="MediaResources"/>
-				<xsl:with-param name="lists" select="EFGLists"/>
+				<xsl:with-param name="items" select="Items[@name=$thirdColumn]"/>
+				<xsl:with-param name="stats" select="StatisticalMeasures[@name=$thirdColumn]"/>
+				<xsl:with-param name="meds" select="MediaResources[@name=$thirdColumn]"/>
+				<xsl:with-param name="lists" select="EFGLists[@name=$thirdColumn]"/>
 				<xsl:with-param name="columnName" select="$thirdColumn"/>
 			</xsl:call-template>
 		</xsl:variable>
@@ -122,7 +140,6 @@
 	<xsl:template name="outputCol">
 		<xsl:param name="uniqueID"/>
 		<xsl:param name="fieldValue"/>
-
 		<xsl:param name="tdClassname"/>
 		<xsl:param name="aClassname"/>
 		<xsl:variable name="hrefCurrent" select="concat($hrefCommon,$uniqueID)"/>
@@ -135,8 +152,8 @@
 	<xsl:template name="outputFirstTableRow">
 		<xsl:param name="groups"/>
 		<tr>
-			<xsl:variable name="header1" select="$groups/group[@id='4']/@text"/>
-			<xsl:variable name="header2" select="$groups/group[@id='5']/@text"/>
+			<xsl:variable name="header1" select="$groups/group[@id='5']/characterValue[@rank='1']/@value"/>
+			<xsl:variable name="header2" select="$groups/group[@id='6']/characterValue[@rank='1']/@value"/>
 			<xsl:call-template name="outputFirstTableData">
 				<xsl:with-param name="header1" select="$header1"/>
 				<xsl:with-param name="header2" select="$header2"/>

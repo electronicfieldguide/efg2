@@ -48,13 +48,13 @@ public class SynopticTreeInterfaceImpl extends SynopticKeyTreeInterface {
 
 	public SynopticTreeInterfaceImpl(DBObject dbObject, JFrame frame) {
 		super(dbObject, frame);
-		//this.init();
+	
 	}
 
 	public SynopticTreeInterfaceImpl(TreeModel newModel, DBObject dbObject,
 			JFrame frame) {
 		super(newModel, dbObject, frame);
-		//this.init();
+	
 	}
 
 	public SynopticTreeInterfaceImpl(TreeNode root, DBObject dbObject,
@@ -115,27 +115,10 @@ public class SynopticTreeInterfaceImpl extends SynopticKeyTreeInterface {
 			DefaultTreeModel model = (DefaultTreeModel) this.getModel();
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
 			state.handleState(obj,root);
-			//root.add(new DefaultMutableTreeNode(obj));
+		
 			this.model.reload();
 		}
-		
-		//((SynopticKeyTreeModelInterface)tree.getModel()).reload(parent);
-		
-		/*DefaultTreeModel model = (DefaultTreeModel) this.getModel();
-		root = (DefaultMutableTreeNode) model.getRoot();
-		while (iter.hasNext()) {
-			EFGDatasourceObjectInterface obj = (EFGDatasourceObjectInterface) iter
-					.next();
-			
-		}
-		log.debug("Reloading model!!");
-		*/
-		
-		
-		//model.reload(root);
 	
-		
-		
 		return obj;
 
 	}

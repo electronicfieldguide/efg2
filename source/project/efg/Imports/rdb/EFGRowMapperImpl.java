@@ -29,7 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -44,13 +44,7 @@ import project.efg.Imports.factory.EFGQueueObjectFactory;
  *
  */
 public class EFGRowMapperImpl implements EFGRowMapperInterface {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGRowMapperImpl.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	private List list; 
 	
 	public List mapRows(final JdbcTemplate jdbcTemplate,final String query, 

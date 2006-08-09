@@ -7,7 +7,7 @@ import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.efgDocument.EFGDocument;
 import project.efg.servlets.efgInterface.ResponseObject;
@@ -18,13 +18,7 @@ import project.efg.util.EFGImportConstants;
  *
  */
 public class ErrorResponseObject extends ResponseObject {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(ErrorResponseObject.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	/**
 	 * @param req
 	 * @param efgDocument
@@ -53,7 +47,8 @@ public class ErrorResponseObject extends ResponseObject {
 		}
 		errorBuffer.append("Client will be forwarded to error page");
 		errorBuffer.append("*****************************\n\n");
-		log.error(errorBuffer.toString());
+		LoggerUtilsServlet.logErrors(new Exception(errorBuffer.toString()));
+		//log.error(errorBuffer.toString());
 	}
 	/* (non-Javadoc)
 	 * @see project.efg.servlets.efgInterface.ResponseObject#createForwardPage()

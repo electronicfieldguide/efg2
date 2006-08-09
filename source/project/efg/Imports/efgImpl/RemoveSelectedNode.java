@@ -51,6 +51,10 @@ import project.efg.util.EFGImportConstants;
  * 
  */
 public class RemoveSelectedNode extends DataManipulatorInterface {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static Logger log;
 	static {
 		try {
@@ -80,6 +84,19 @@ public class RemoveSelectedNode extends DataManipulatorInterface {
 			this.selectDatasourceFirst();
 			return false;
 		}
+		EFGDatasourceObjectInterface ds = 
+			(EFGDatasourceObjectInterface)selNode.getUserObject();
+		
+			
+			int result = JOptionPane.showConfirmDialog(null,
+					"Do you really want to delete the data source: " + ds.getDisplayName() + "?", "Delete Data source?",
+					JOptionPane.YES_NO_OPTION);
+			if (result != JOptionPane.YES_OPTION) {
+				return false;
+			}
+			
+			//warn user
+		
 
 		// get the parent of the selected node
 		MutableTreeNode parent = (MutableTreeNode) (selNode.getParent());
@@ -107,8 +124,7 @@ public class RemoveSelectedNode extends DataManipulatorInterface {
 		TreePath path = new TreePath(nodes);
 		tree.scrollPathToVisible(path);
 		tree.setSelectionPath(path);
-		EFGDatasourceObjectInterface ds = 
-			(EFGDatasourceObjectInterface)selNode.getUserObject();
+		
 
 		if (tree.getLists().removeEFGDatasourceObject(ds.getDisplayName())) {// make
 			((DefaultTreeModel) tree.getModel()).removeNodeFromParent(selNode);

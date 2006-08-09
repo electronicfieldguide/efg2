@@ -27,27 +27,51 @@
  */
 package project.efg.servlets.efgServletsUtil;
 
-import org.apache.log4j.Logger;
+
+
+import java.util.regex.Pattern;
 
 import project.efg.servlets.efgInterface.OperatorInterface;
 import project.efg.servlets.factory.OperatorFactory;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.UnicodeToASCIIFilter;
 
 /**
  * @author kasiedu
  *
  */
 public class EFGParseStates {
-	static Logger log;
-	static {
-		try {
-			log = Logger.getLogger(EFGParseStates.class);
-		} catch (Exception ee) {
-		}
-	}
 
-	public String[] parse(String states, String patternStr) {
-		return states.split(patternStr, -1);
+	protected UnicodeToASCIIFilter filter = new UnicodeToASCIIFilter();
+	
+	private String[] parse(String patternStr,String states) {
+		Pattern p = null;
+		String[] arr = null;
+		boolean isDone = false;
+	
+		if(patternStr.equalsIgnoreCase(EFGImportConstants.NOPATTERN)){
+		
+			p = EFGImportConstants.noPattern;
+		}
+		else if(patternStr.equalsIgnoreCase(EFGImportConstants.LISTSEP)){
+			
+			p = EFGImportConstants.listSepPattern;
+		}
+		else if(patternStr.equalsIgnoreCase(EFGImportConstants.ORCOMMAPATTERN)){
+			
+			p = EFGImportConstants.catPattern;
+		}
+		else{
+			
+			arr = states.split(patternStr, -1);
+			isDone = true;
+		}
+		if(!isDone){
+			arr =  p.split(states,-1);
+		}
+		
+	
+		return arr;
 	}
 
 	private  String removeString(String state, String[] str2Remove) {
@@ -65,12 +89,10 @@ public class EFGParseStates {
 
 	public  EFGParseObject parseUserStats(
 			String separator, String states) {
-		log.debug("States: " + states);
-		log.debug("Separator: " + separator);
-		String[] fields = getFields( separator,states);
-		log.debug("Fields length: " + fields.length);
-		log.debug("field zero: " + fields[0]);
-		return checkForOperator(createEFGParseObject(fields[0]));
+		
+		String[] fields = parse( separator,states);
+		
+		return checkForOperator(createEFGParseObject(fields[0],false));
 	}
 
 	private  EFGParseObject checkForOperator(EFGParseObject parseObject){
@@ -81,21 +103,28 @@ public class EFGParseStates {
 			OperatorInterface operator = OperatorFactory.getInstance(parseObject.getState());
 			parseObject.setOperator(operator);
 			if(parseObject.getState() != null){
-				log.debug("State before: " + parseObject.getState());
+			
 				//remove the operator from the string if any
 				String[] fields = parseObject.getState().split(operator.toString());
 				if(fields.length> 1){
 					parseObject.setState(fields[1].trim());
 				}
-				log.debug("State after: " + parseObject.getState());
+			
 			}
 			return parseObject;
 		
 	}
-	private   EFGParseObject createEFGParseObject(String fields){
-		log.debug("Fields: " + fields);
+	/**
+	 * 
+	 * @param fields
+	 * @param notRemoveParen - true means do not remove parenthesis
+	 * @return
+	 */
+	private   EFGParseObject createEFGParseObject(String fields, boolean notRemoveParen){
+		//log.debug("Fields: " + fields);
 		String state = fields.trim();
-		String[] curStatePipe = parse(state, EFGImportConstants.PIPESEP);
+		//String[] curStatePipe = parse(state, EFGImportConstants.PIPESEP);
+		String[] curStatePipe =EFGImportConstants.pipePattern.split(state);// parse(state, EFGImportConstants.PIPESEP);
 		String resourceLink = "";
 		String annotation = "";
 
@@ -103,42 +132,52 @@ public class EFGParseStates {
 			resourceLink = curStatePipe[0];
 			state = curStatePipe[1];
 		}
-		String[] annotations = parse(state,EFGImportConstants.COLONSEP);
+		//String[] annotations = parse(state,EFGImportConstants.COLONSEP);
+		String[] annotations = EFGImportConstants.colonPattern.split(state);//,EFGImportConstants.COLONSEP);
 		if (annotations.length > 1) {
 			annotation = annotations[0];
 			state = annotations[1];
 		}
-		log.debug("State: " + state);
+	
 		if ((state != null) && (!state.trim().equals(""))) {
-			state = removeString(state, EFGImportConstants.STR_2_REMOVE);
-			log.debug("State2: " + state);
+			if(!notRemoveParen){
+				state = removeString(state, EFGImportConstants.STR_2_REMOVE);
+			}
+		
 			return new EFGParseObject(state,
 					resourceLink, annotation);
 		}
-		log.debug("returning null");
+	
 		return null;
 	}
-	private  String[] getFields(String separator,
+	/*private  String[] getFields(String separator,
 			String states){
+		
 		return parse(states, separator);
 		
+	}*/
+	private String unicode2Ascii(String states){
+	
+			return states;
 	}
 	public  EFGParseObjectList parseStates(String separator,
-			String states) {
-		log.debug("State to parse: " + states);
-		log.debug("Separator: " + separator);
+			String states,boolean isLists) {
+	
+	
+		states =this.unicode2Ascii(states);
+		
 		EFGParseObjectList lists = new EFGParseObjectList();
-		String[] fields = getFields(separator,states);
-		log.debug("Number of fields: " + fields.length);
+		String[] fields = parse(separator,states);
+	
 
 		for (int i = 0; i < fields.length; i++) {
-			log.debug("About to add Fields[" + i + "]=" + fields[i]);
-			EFGParseObject parseObject = createEFGParseObject(fields[i]);
+		
+			EFGParseObject parseObject = createEFGParseObject(fields[i],isLists);
 			if(parseObject != null){
 				lists.add(parseObject);
 			}
 		}
-		log.debug("Lists: " + lists.toString());
+	
 		return lists;
 
 	}

@@ -54,21 +54,20 @@
 			<xsl:for-each select="$efgLists/EFGList">
 				<xsl:variable name="character" select="."/>
 				<xsl:choose>
-					<xsl:when test="not(string(@serviceLink))=''">
-						<xsl:variable name="serviceLink" select="@serviceLink"/>
+					<xsl:when test="not(string(@resourceLink))=''">
+						<xsl:variable name="serviceLink" select="@resourceLink"/>
 						<xsl:variable name="url">
 							<xsl:choose>
 								<xsl:when test="contains(translate($serviceLink,'abcdefhijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'http;//')">
 									<xsl:value-of select="concat(string($serviceLink),'=',string($character))"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="concat(string($serverbase),'/search?dataSourceName=', $datasource,'&amp;',$serviceLink,'=',$character)"/>
+									<xsl:value-of select="concat(string($serverbase),'/search?dataSourceName=', $dataSourceName,'&amp;',$serviceLink,'=',$character)"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
 						<td>
 							<a href="{$url}">
-							
 								<xsl:value-of select="$character"/>
 							</a>
 							<xsl:text>&#160;&#160;</xsl:text>
@@ -128,6 +127,7 @@
 						<xsl:call-template name="efgLists">
 							<xsl:with-param name="caption" select="$caption"/>
 							<xsl:with-param name="efgLists" select="$lists"/>
+							<xsl:with-param name="isLink" select="'true'"/>
 						</xsl:call-template>
 					</td>
 					<td>

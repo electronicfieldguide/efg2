@@ -60,7 +60,7 @@ public class SearchStrQuery extends SQLQuery {
 			this.initQueryParameters();
 		}
 		catch(Exception ee){
-			log.error(ee.getMessage());
+			
 			LoggerUtilsServlet.logErrors(ee);
 		}
 		StringBuffer querySB = new StringBuffer("SELECT * FROM ");
@@ -88,7 +88,7 @@ public class SearchStrQuery extends SQLQuery {
 	 */
 	protected String getSearchStrParamsQuery(String searchStrValue) {
 		StringBuffer querySB = new StringBuffer();
-		Hashtable ht= this.getNameMapping(this.metadatasourceName);
+		
 		int paramNo = 0;
 		int paramCount = paramNo;
 		// starting to construct the taxon query from parameters like
@@ -124,7 +124,7 @@ public class SearchStrQuery extends SQLQuery {
 					}
 				}
 			} else {
-				String legalName = (String)ht.get(current);
+				String legalName = current;
 				if (legalName == null || "".equals(legalName.trim())){
 					return null;
 				}
@@ -138,12 +138,12 @@ public class SearchStrQuery extends SQLQuery {
 				}
 				//if current is a number or contains a number
 				//use %
-				querySB.append("'%");
+				querySB.append("\"%");
 				if(this.matchNumber(current)){
-					querySB.append("')");// value
+					querySB.append("\")");// value
 				}
 				else{
-					querySB.append(current.trim() + "%')");
+					querySB.append(current.trim() + "%\")");
 				}
 				if(this.paramValuesTable.containsKey(legalName)){//could have parameter with multiple values
 					String oldVal = (String)paramValuesTable.get(legalName);

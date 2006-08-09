@@ -26,7 +26,7 @@
  */
 
 package project.efg.Imports.efgImportsUtil;
-import org.apache.log4j.Logger;
+
 
 import project.efg.servlets.efgServletsUtil.EFGParseObject;
 
@@ -38,14 +38,7 @@ import project.efg.servlets.efgServletsUtil.EFGParseObject;
  * 
  */
 public class EFGParseObjectComparator implements java.util.Comparator {
-	 static Logger log = null;
-	    static{
-		try{
-		    log = Logger.getLogger(EFGParseObjectComparator.class); 
-		}
-		catch(Exception ee){
-		}
-	    }
+	
 	
 	  /**
      * Compares its two arguments for order.  Returns a negative integer,
@@ -86,12 +79,15 @@ public class EFGParseObjectComparator implements java.util.Comparator {
 		return dbean1.getState().compareTo(dbean2.getState());
 		}
 		catch(Exception ee){
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return -1;
 	}
 } // EFGDataObjectComparator
 // $Log$
+// Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.2  2006/07/20 02:19:51  kasiedu
 // no message
 //

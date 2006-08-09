@@ -49,6 +49,10 @@ import project.efg.util.EFGImportConstants;
  * 
  */
 public class EditMetadata extends DataManipulatorInterface {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static Logger log;
 	static {
 		try {
@@ -98,7 +102,7 @@ public class EditMetadata extends DataManipulatorInterface {
 				try{
 					TableSorterMainInterface newContentPane = 
 						new TableSorterMain(
-							tree.getDBObject(), ds,null);
+							tree.getDBObject(), ds,tree.frame);
 					
 					newContentPane.show();
 					Thread.sleep(5000);

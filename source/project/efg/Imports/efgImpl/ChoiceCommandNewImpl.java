@@ -70,7 +70,7 @@ public class ChoiceCommandNewImpl extends ChoiceCommandAbstract {
 		String behaviorType =
 			EFGImportConstants.EFGProperties.
 			getProperty("importOnlyBehavior");
-		log.debug("BehaviorType: " + behaviorType);
+			log.debug("BehaviorType: " + behaviorType);
 			return ImportBehaviorFactory.getImportBehavior(
 				lists,
 				obj, 

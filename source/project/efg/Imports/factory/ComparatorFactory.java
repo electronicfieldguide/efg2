@@ -32,9 +32,12 @@ package project.efg.Imports.factory;
  */
 import java.util.Comparator;
 
+
+
 import project.efg.Imports.efgImportsUtil.ComparatorImplDefault;
 
 public class ComparatorFactory  {
+	
 	/**
 	 * @param type - The type of Comparator to create
 	 * Introspection is used to create the class 
@@ -44,15 +47,20 @@ public class ComparatorFactory  {
 	 * @return a CaseInsensitive Comparator object
 	 */
 	public static Comparator getComparator(String type){
-		try{
-			Class cls =  Class.forName(type);
-			
-			return (java.util.Comparator)cls.newInstance(); 
-		}
-		catch(Exception ee){
-			
-		}
 		
-		return new ComparatorImplDefault();
+			String mutex ="";
+			synchronized (mutex) {
+				try{
+				//log.debug("Comparator Type: " + type);
+				
+				Class cls =  Class.forName(type);
+				//log.debug("Returning Comparator class: " + cls.getName());
+				return (java.util.Comparator)cls.newInstance(); 
+				}
+				catch(Exception ee){
+					//log.debug("Will return default");
+				}
+				return new ComparatorImplDefault();
+			}
 	}
 }

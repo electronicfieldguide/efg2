@@ -88,11 +88,11 @@ public class DigirParserHandler extends DefaultHandler
     static Logger log = null;
     static{
 	try{
-	    log = Logger.getLogger(DigirParserHandler.class); 
+	  log = Logger.getLogger(DigirParserHandler.class); 
 	}
 	catch(Exception ee){
 	}
-    }
+   }
     /**
      * Takes the xml document as an InputSource and begins parsing.
      * 
@@ -269,7 +269,7 @@ public class DigirParserHandler extends DefaultHandler
 	    _parser.parse(source, this);
 	}
 	catch(Exception e) {
-		log.error(e.getMessage());
+		//logerror(e.getMessage());
 	    LoggerUtilsServlet.logErrors(e);
 	}   
     }
@@ -490,7 +490,7 @@ public class DigirParserHandler extends DefaultHandler
 	    }
 	}
 	catch(Exception e){
-		log.error(e.getMessage());
+		//logerror(e.getMessage());
 	    LoggerUtilsServlet.logErrors(e);
 	}
     }
@@ -622,7 +622,7 @@ public class DigirParserHandler extends DefaultHandler
 	    }
 	}
 	catch(Exception e){
-		log.error(e.getMessage());
+		//logerror(e.getMessage());
 	    LoggerUtilsServlet.logErrors(e);
 	}
 	finally {
@@ -736,6 +736,9 @@ public class DigirParserHandler extends DefaultHandler
 }
 
 //$Log$
+//Revision 1.1.1.1.2.3  2006/08/09 18:55:24  kasiedu
+//latest code confimrs to what exists on Panda
+//
 //Revision 1.1.1.1.2.2  2006/07/11 21:44:19  kasiedu
 //"Added more configuration info"
 //

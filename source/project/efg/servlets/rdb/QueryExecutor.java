@@ -31,27 +31,18 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import project.efg.Imports.factory.EFGRowMapperFactory;
 import project.efg.Imports.rdb.EFGRowMapperInterface;
-import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 
 /**
  * @author kasiedu
  *
  */
 public class QueryExecutor {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(QueryExecutor.class);
-		} catch (Exception ee) {
-			LoggerUtilsServlet.logErrors(ee);
-		}
-	}
+	
 	private DataSource ds;
 	private JdbcTemplate jdbcTemplate;
 	/**
@@ -70,7 +61,7 @@ public class QueryExecutor {
 		if (this.ds == null) {
 			this.setDatasource();
 		}
-		log.debug("query: " + query);
+		//log.debug("query: " + query);
 		EFGRowMapperInterface rowMapper = EFGRowMapperFactory.getRowMapper();
 		return rowMapper.mapRows(this.jdbcTemplate, query, numberOfColumns);
 	}
@@ -80,7 +71,7 @@ public class QueryExecutor {
 		if (ds == null) {
 			this.setDatasource();
 		}
-		log.debug("query: " + query);
+		//log.debug("query: " + query);
 		EFGRowMapperInterface rowMapper = EFGRowMapperFactory.getRowMapper();
 		return rowMapper.mapRows(this.jdbcTemplate, query);
 	}

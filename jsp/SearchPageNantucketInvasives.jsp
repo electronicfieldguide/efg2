@@ -1,20 +1,27 @@
 <%@page import="java.util.Iterator,
-java.util.Set,
-java.util.TreeSet,
-project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface,
+project.efg.servlets.efgInterface.EFGDataObjectListInterface,
 project.efg.Imports.efgInterface.EFGDatasourceObjectInterface,
 project.efg.servlets.efgInterface.EFGDataSourceHelperInterface,
+project.efg.Imports.efgImportsUtil.EFGTypeComparator,
+project.efg.Imports.efgImportsUtil.MediaResourceTypeComparator,
 project.efg.efgDocument.EFGType,
 project.efg.efgDocument.ItemsType,
-project.efg.servlets.efgInterface.SearchableObject,
-project.efg.servlets.efgInterface.EFGDataObjectListInterface,
+project.efg.servlets.efgInterface.EFGDataObject,
 project.efg.efgDocument.MediaResourcesType,
 project.efg.efgDocument.MediaResourceType,
 project.efg.efgDocument.StatisticalMeasuresType,
 project.efg.efgDocument.StatisticalMeasureType,
 project.efg.efgDocument.EFGListsType,
-project.efg.Imports.efgImportsUtil.EFGTypeComparator,
-project.efg.util.EFGImportConstants" %>
+project.efg.util.EFGImportConstants,
+project.efg.util.EFGDocumentSorter,
+project.efg.util.EFGListTypeSorter,
+project.efg.util.EFGTypeSorter,
+project.efg.util.MediaResourceTypeSorter,
+project.efg.util.StatisticalMeasureTypeSorter,
+java.util.Set,
+java.util.TreeSet
+" %>
+
 <% 
    String displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME); 
    String datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
@@ -67,8 +74,8 @@ ItemsType flowerColorItems = null;
 ItemsType fruitColorItems = null;
 
 
-  for(int s = 0 ; s < searchables.getSearchleObjectsCount(); s++){
-	SearchableObject searchable = searchables.getSearchableObject(s);
+  for(int s = 0 ; s < searchables.getEFGDataObjectCount(); s++){
+	EFGDataObject searchable = searchables.getEFGDataObject(s);
 	   		
 	String fieldName =searchable.getName();
 	String legalName = searchable.getLegalName();
@@ -130,7 +137,7 @@ ItemsType fruitColorItems = null;
 <html>
   <head>
     <title>Search the Invasive Plants of Nantucket Database</title>
-    <link type="text/css" rel="stylesheet" href="searchpage.css">
+    <link type="text/css" rel="stylesheet" href="css/searchpage.css">
 <SCRIPT LANGUAGE="JavaScript">
 <!--    
 // -->

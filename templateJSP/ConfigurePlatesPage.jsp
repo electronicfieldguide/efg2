@@ -3,8 +3,18 @@ project.efg.util.EFGImportConstants
 " %>
 <% 
    String context = request.getContextPath();
-   String dsName = request.getParameter(EFGImportConstants.DATASOURCE_NAME);
-   String displayName = request.getParameter(dsName);
+   String dsName = (String)request.getAttribute(EFGImportConstants.DATASOURCE_NAME);
+   String displayName = (String)request.getAttribute(EFGImportConstants.DISPLAY_NAME);
+   String templateName = (String)request.getAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME);
+	if(dsName == null){
+		dsName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
+	}
+	if(displayName == null){
+		displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME);
+	}
+	if(templateName == null){
+		templateName = request.getParameter(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
+	}
 %>
 <html>
   <head>
@@ -22,6 +32,7 @@ project.efg.util.EFGImportConstants
     		</select>
     		<input type="hidden" name="<%=EFGImportConstants.DATASOURCE_NAME%>" value="<%=dsName%>"/>
     		<input type="hidden" name="<%=EFGImportConstants.DISPLAY_NAME%>" value="<%=displayName%>"/>
+    		<input type="hidden" name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>" value="<%=templateName%>"/>
     		<input type="submit" value="Submit"/>
     	</form>
     	<br/><br/>

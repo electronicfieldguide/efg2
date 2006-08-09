@@ -54,7 +54,7 @@ public class FederationParser extends DefaultHandler {
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(FederationParser.class);
+		log = Logger.getLogger(FederationParser.class);
 		} catch (Exception ee) {
 		}
 	}
@@ -162,9 +162,9 @@ public class FederationParser extends DefaultHandler {
 	}
 
 	public void fatalError(SAXParseException e) throws SAXException {
-		log.error(e.getMessage());
+		
 		LoggerUtilsServlet.logErrors(e);
-		System.err.println("Fatal error on line " + _locator.getLineNumber()
+		log.error("Fatal error on line " + _locator.getLineNumber()
 				+ ", column " + _locator.getColumnNumber() + ":\n\t"
 				+ e.getMessage());
 		throw e;

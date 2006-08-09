@@ -26,7 +26,7 @@
 */
 package project.efg.servlets.efgServletsUtil;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
@@ -37,14 +37,7 @@ import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
  *
  */
 public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
-	static Logger log = null;
 
-	static {
-		try {
-			log = Logger.getLogger(EFGDatasourcesList.class);
-		} catch (Exception ee) {
-		}
-	}
 	/**
 	 * 
 	 */
@@ -73,7 +66,7 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 				return true;
 			} 
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 		}
 		return false;
 	}
@@ -91,7 +84,7 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 			return this.lists.add(datasource);	
 			
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 		}
 		datasource.setState(this.stateFactory.getFailureObject());
 		return false;
@@ -112,7 +105,7 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 			 return true;
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 		}
 		return false;
 	}

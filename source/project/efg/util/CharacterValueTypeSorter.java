@@ -36,20 +36,12 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.log4j.Logger;
-
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 import project.efg.templates.taxonPageTemplates.GroupType;
 import project.efg.templates.taxonPageTemplates.GroupTypeItem;
 import project.efg.templates.taxonPageTemplates.GroupsType;
 public class CharacterValueTypeSorter{
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(CharacterValueTypeSorter.class);
-		} catch (Exception ee) {
-		}
-	}
+	
  private Set sortedSet;
 
  	private GroupType group;
@@ -62,7 +54,7 @@ public class CharacterValueTypeSorter{
 	 */
 	public GroupType sort(CharacterValueComparator compare,GroupType sorter) {
 		if(sorter == null){
-			log.debug("GroupType is null");
+			//log.debug("GroupType is null");
 			return null;
 		}
 		this.group.setContent(sorter.getContent());

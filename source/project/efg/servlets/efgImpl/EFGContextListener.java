@@ -32,6 +32,7 @@ import java.beans.Introspector;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Driver;
@@ -52,17 +53,16 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.Logger;
-
 import project.efg.Imports.efgImportsUtil.EFGUtils;
-import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.digir.FederationParser;
 import project.efg.servlets.efgInterface.EFGServletInitializerInterface;
 import project.efg.servlets.efgServletsUtil.EFGServletInitializerInstance;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
+import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.TemplateMapObjectHandler;
+import project.efg.util.XMLFileNameFilter;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
@@ -80,11 +80,11 @@ public class EFGContextListener implements ServletContextListener {
 	private EFGServletInitializerInterface sit;
 	
 	private static ServletContext servletContext;
-	
+	public static String[] templateFilesGroup = new String[]{"templateFiles"};
 	private static String metadataFileName;
 
 	private static String pathToResourceFiles;
-
+	
 	private static Hashtable configMap;
 
 	private static String path;
@@ -96,15 +96,9 @@ public class EFGContextListener implements ServletContextListener {
 
 	private static Map keyWordsMap= Collections.synchronizedMap(new HashMap());
 
-	public static Hashtable cacheTemplateInfo = new Hashtable();
+	//public static Hashtable cacheTemplateInfo = new Hashtable();
     private static GeneralCacheAdministrator cacheAdmin;
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGContextListener.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	public  static GeneralCacheAdministrator getCacheAdmin(){
 		return cacheAdmin;
 	}
@@ -126,6 +120,7 @@ public class EFGContextListener implements ServletContextListener {
 			this.setInitialAttribute(servletContext, paramName);
 		}
 		cacheAdmin = new GeneralCacheAdministrator();
+		populateCacheAdmin();
 		// DiGIR initialization stuff
 		String schemaNames = servletContext.getInitParameter("schemaNames");
 		String efgMetaDataFileName = servletContext
@@ -146,12 +141,106 @@ public class EFGContextListener implements ServletContextListener {
 		// Set an EFGServletInitializer instance which initializes the Database
 		// etc.
 		// We want to make sure it is a singleton
-	
 		addConfiguredDatasources();
 		createConfigFileMap();
 		EFGRDBImportUtils.init();
 		createTemplateObjectMap();
+	}
+	/**
+	 * 
+	 *
+	 */
+	private void populateCacheAdmin() {
 		
+		StringBuffer fileLocationBuffer = new StringBuffer();
+		fileLocationBuffer.append(servletContext.getRealPath("/"));
+		fileLocationBuffer.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
+	
+		
+		File dir = new File(fileLocationBuffer.toString());
+		String[] files = dir.list(new XMLFileNameFilter());
+		System.out.println("Number of files: " + files.length);
+		for(int i = 0 ; i < files.length; i++){
+			try{
+				System.out.println("File: " + files[i]);
+				File f = new File(fileLocationBuffer.toString(),files[i]);
+				FileReader reader = new FileReader(f);
+				TaxonPageTemplates tps = (TaxonPageTemplates)TaxonPageTemplates
+				.unmarshalTaxonPageTemplates(reader);
+				if(tps != null){
+					cacheAdmin.putInCache(files[i].toLowerCase(),tps,templateFilesGroup);
+				}
+			}
+			catch(Exception ee){
+				servletContext.log(ee.getMessage());
+			}
+		}
+		
+	}
+	private void writeTemplatesToDisk() {
+		StringBuffer fileLocationBuffer = new StringBuffer();
+		fileLocationBuffer.append(servletContext.getRealPath("/"));
+		fileLocationBuffer.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
+		fileLocationBuffer.append(File.separator);
+		
+		File dir = new File(fileLocationBuffer.toString());
+		String[] files = dir.list(new XMLFileNameFilter());
+		FileWriter writer = null;
+		for(int i = 0 ; i < files.length; i++){
+			try{
+				TaxonPageTemplates tps =(TaxonPageTemplates)cacheAdmin.getFromCache(files[i]);
+				writer = new FileWriter(new File(fileLocationBuffer.toString(),files[i]));
+				marshal(writer,tps);
+				writer.flush();
+				writer.close();
+			}
+			catch(Exception ee){
+				try{
+					if(writer != null){
+						writer.flush();
+						writer.close();
+					}
+				}
+				catch(Exception eee){
+					
+				}
+				servletContext.log(ee.getMessage());
+			}
+		}
+		
+	}
+	private boolean marshal(FileWriter writer, TaxonPageTemplates tps) {
+		try {
+			String mutex = "";
+			synchronized (mutex) {
+				boolean done = false;
+
+				try {
+
+					org.exolab.castor.xml.Marshaller marshaller = new org.exolab.castor.xml.Marshaller(
+							writer);
+					marshaller
+							.setNoNamespaceSchemaLocation(EFGImportConstants.TEMPLATE_SCHEMA_NAME);
+
+					marshaller.setNamespaceMapping("xsi",
+							org.exolab.castor.xml.Marshaller.XSI_NAMESPACE);
+					// suppress the printing of xsi:type
+					marshaller.setMarshalExtendedType(false);
+					marshaller.setSuppressXSIType(true);
+					marshaller.marshal(tps);
+					done = true;
+
+				} catch (Exception eee) {
+					done = false;
+					LoggerUtilsServlet.logErrors(eee);
+				}
+				return done;
+			}
+		} catch (Exception ee) {
+
+		}
+		return false;
+
 	}
 	/**
 	 * This method is called when the Context is destroyed. The Database is
@@ -165,18 +254,20 @@ public class EFGContextListener implements ServletContextListener {
 		System.out.println("Destroying driver manager!!");
 		destroyDriverManager();
 		try {
-			EFGUtils.log("Context is being destroyed");
+			servletContext.log("Context is being destroyed");
 			
-			EFGUtils.log("Writing TemplateObject Map");
+			servletContext.log("Writing TemplateObject Map");
 			writeTemplateObject();
-			EFGUtils.log("Clean up old xml files");
+			servletContext.log("Clean up old xml files");
 			clean();
-			EFGUtils.log("Destroy cache");
+			
 			//perhaps also serialize this
+			servletContext.log("Write Templates to disk");
+			writeTemplatesToDisk();
+			servletContext.log("Destroy cache");
 			cacheAdmin.destroy();
 			sit.contextDestroyed();
 		} catch (Exception e) {
-			System.out.println("Context is being destroyed threw an exception");
 			EFGUtils.log(e.getMessage());
 		}
 		EFGUtils.log("EFG context destroyed");
@@ -405,26 +496,13 @@ public class EFGContextListener implements ServletContextListener {
 	 *            The path to the schema file
 	 */
 	private void parseAndFillSet(String schemaNames, String path) {
-		String[] arr = schemaNames.split("\\s");
+		//String[] arr = schemaNames.split("\\s");
+		String[] arr = EFGImportConstants.spacePattern.split(schemaNames);
 		fillSet(arr, path);
 	}
 
 	private  void addConfiguredDatasources() {
 		
-		/*  try{ String templateFile =
-		  servletContext.getRealPath("/templateConFigFiles") + File.separator +
-		  EFGImportConstants.TEMPLATES_CONFIG_SRC; FileReader reader = new
-		  FileReader(new File(templateFile));
-		 project.efg.templates.searchPageConfig.EFGSearchPageConfig espc =
-		  (EFGSearchPageConfig)EFGSearchPageConfig.unmarshalEFGSearchPageConfig(reader);
-		  if(espc != null){ int dsCount = espc.getDatasourceCount(); for(int i =
-		  0; i < dsCount; i++){
-		  project.efg.templates.searchPageConfig.Datasource datasource =
-		  espc.getDatasource(i); String name = datasource.getName().trim();
-		  configuredDatasources.add(name.toLowerCase()); } } } catch(Exception
-		  ee){ if(log != null){ LoggerUtils.logErrors(ee); } else{
-		 LoggerUtilsServlet.logErrors(ee); } }
-		 */
 	}
 	private void clean() {
 		String fullPath = servletContext.getRealPath("/");
@@ -447,48 +525,29 @@ public class EFGContextListener implements ServletContextListener {
 			}
 		}
 	}
-	/*public synchronized String getQueryHandlerName() {
-			return (String) configMap.get("className");
-		}*/
-	//	 Deletes all files and subdirectories under dir.
-		// Returns true if all deletions were successful.
-		// If a deletion fails, the method stops attempting to delete and returns
-		// false.
-		private boolean deleteDir(File dir) {
-			if (dir.isDirectory()) {
-				String[] children = dir.list();
-				for (int i = 0; i < children.length; i++) {
-					boolean success = deleteDir(new File(dir, children[i]));
-					if (!success) {
-						return false;
-					}
+
+	/**
+	 * Deletes all files and subdirectories under dir.
+	 * Returns true if all deletions were successful.
+	 * If a deletion fails, the method stops attempting to delete and returns
+	 *false.
+	 */	
+	private boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				boolean success = deleteDir(new File(dir, children[i]));
+				if (!success) {
+					return false;
 				}
 			}
-			// The directory is now empty so delete it
-			return dir.delete();
 		}
+		return dir.delete();
+	}
 	/**
-	 * This method takes a String and returns an encoded version of the String
-	 * that can be used as a Java class name.
 	 * 
-	 * @param origString
-	 *            the pre-encoded string
-	 * @return the encoded string to be used as a java class name
+	 * @param fileName - The name of the file
 	 */
-	/*private static String encodeToJavaClassName(String origString) {
-		StringBuffer sb = new StringBuffer(origString);
-		int strLength = sb.length();
-	
-		if (strLength > 0 && !Character.isJavaIdentifierStart(sb.charAt(0)))
-			sb.setCharAt(0, '_');
-	
-		for (int i = 1; i < strLength; i++)
-			if (!Character.isJavaIdentifierPart(sb.charAt(i)))
-				sb.setCharAt(i, '_');
-	
-		return sb.toString();
-	}*/
-	
 	private void readConfigFile(String fileName) {
 		// get the path to properties file
 		if (path == null)
@@ -505,7 +564,8 @@ public class EFGContextListener implements ServletContextListener {
 			while ((word = propFile.readLine()) != null) {
 				if (!word.startsWith("#")) {// Strings that starts with the "#"
 											// sign are comments
-					String[] tokens = word.split("=");
+					//String[] tokens = word.split("=");
+					String[] tokens = EFGImportConstants.equalsPattern.split(word);
 					String temp1 = null;
 					String temp2 = null;
 					if (tokens.length == 2) {
@@ -516,18 +576,12 @@ public class EFGContextListener implements ServletContextListener {
 							temp2 = tokens[1].substring(0, index - 1);
 						}
 						configMap.put(temp1, temp2);
-					} else {
-						log.debug("property file content incorrect");
-					}
+					} 
 				}
 			}// end while
 		} catch (Exception e) {
-			if (log != null) {
-				log.error(e.getMessage());
-				LoggerUtils.logErrors(e);
-			} else {
 				LoggerUtilsServlet.logErrors(e);
-			}
+	
 		}
 	}
 	//	 Looks for a servlet context init parameter with a
@@ -563,8 +617,8 @@ public class EFGContextListener implements ServletContextListener {
 
 				if (!word.startsWith("#")) {// Strings that starts with the "#"
 											// sign are comments
-					String[] tokens = word.split("\\s");
-
+					//String[] tokens = word.split("\\s");
+					String[] tokens = EFGImportConstants.spacePattern.split(word);
 					if (tokens.length >= 2) {
 						StringBuffer buf = new StringBuffer();
 						int i = 1;
@@ -597,6 +651,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.1.2.4  2006/08/09 18:55:25  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.3  2006/07/15 13:42:09  kasiedu
 // no message
 //

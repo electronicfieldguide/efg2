@@ -31,15 +31,13 @@
  */
 package project.efg.servlets.efgServletsUtil;
 
-import java.io.File;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
 import project.efg.servlets.efgInterface.ServletAbstractFactoryInterface;
 import project.efg.servlets.factory.ServletAbstractFactoryCreator;
-import project.efg.util.EFGImportConstants;
+import project.efg.templates.taxonPageTemplates.XslPage;
+import project.efg.util.EFGMediaResourceSearchableObject;
 import project.efg.util.FindTemplate;
 
 /**
@@ -47,13 +45,7 @@ import project.efg.util.FindTemplate;
  *
  */
 public abstract class XSLTObjectInterface {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(XSLTObjectInterface.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	private ServletAbstractFactoryInterface servFactory;
 	private XSLTObjectHelper xsltHelper;
 	public  XSLTObjectInterface( ){
@@ -66,17 +58,12 @@ public abstract class XSLTObjectInterface {
 	 * @param xslType = must one of plates, lists or taxonPage
 	 * @return
 	 */
-	public String getXSLFile(String realPath,String datasourceName, 
-			String xslType) {
-		String xmlFile = realPath + File.separator + EFGImportConstants.XML;
-		
-		FindTemplate template = new FindTemplate(xmlFile,datasourceName,xslType);
+	public XslPage getXSLFile(String datasourceName, 
+			String xslType) {	
+		FindTemplate template = new FindTemplate(datasourceName,xslType);
 		return template.getXSLFileName();
 	}
-	/*public String getXSLFileName(String displayName, String datasourceName, String fieldName){
-		
-		return servFactory.getXSLFileName(displayName,datasourceName,fieldName);
-	}*/
+
 	public EFGDataObjectListInterface getSearchableLists(String displayName, String datasourceName){
 		return servFactory.getSearchableLists(displayName,datasourceName);
 	}
@@ -97,32 +84,21 @@ public abstract class XSLTObjectInterface {
 	public final boolean isXSLFileExists(
 			  String realPath, 
 			  String xslFileName){
-		log.debug("Real Path: " + realPath);
-		log.debug("FileName: " + xslFileName);
+		
 		
 		return this.xsltHelper.isXSLFileExists(realPath,xslFileName);
 	}
-	protected String getFirstImageField(String displayName, String datasourceName) {
-		String imageField = null;
+	protected EFGMediaResourceSearchableObject getFirstField(String displayName, 
+			String datasourceName) {
+		EFGMediaResourceSearchableObject medSearchField = null;
 		try{
-			imageField = servFactory.getFirstMediaResourceFieldName(displayName, datasourceName);
+			medSearchField = servFactory.getFirstField(displayName, datasourceName);
 		}
 		catch(Exception ee){
-			log.error(ee.getMessage());
+			LoggerUtilsServlet.logErrors(ee);
 		}
-		return imageField;
+		return medSearchField;
 	}
-	protected String getFirstSearchableState(String displayName, String datasourceName) {
-		String fieldName = null;
-		try{
-			
-			fieldName= servFactory.getFirstFieldName(displayName,datasourceName);
-			
-		}
-		catch(Exception ee){
-			log.error(ee.getMessage());
-		}
-		return fieldName;
-	}
+
 	
 }

@@ -29,7 +29,7 @@ package project.efg.servlets.factory;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.Logger;
+
 
 import project.efg.servlets.efgInterface.EFGHTTPQuery;
 import project.efg.servlets.rdb.DiGIRQuery;
@@ -42,13 +42,7 @@ import project.efg.util.EFGImportConstants;
  *
  */
 public class EFGHTTPQueryFactory {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGHTTPQueryFactory.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 	/**
 	 * 
 	 */
@@ -62,15 +56,15 @@ public class EFGHTTPQueryFactory {
 		.getParameter(EFGImportConstants.SEARCHSTR);
 
 		if(EFGImportConstants.DIGIR.equalsIgnoreCase(digirType)){
-			log.debug("Return a DiGIR query instance");
+			//log.debug("Return a DiGIR query instance");
 			return new DiGIRQuery(req);
 		}
 		else if(EFGImportConstants.SEARCHSTR.equalsIgnoreCase(searchStrType)){
-			log.debug("Return a Search String query instance");
+			//log.debug("Return a Search String query instance");
 			return new SearchStrQuery(req);
 		}
 		else{
-			log.debug("Return a SQL query query instance");
+			//log.debug("Return a SQL query query instance");
 			return new SQLQuery(req);
 		}
 	}

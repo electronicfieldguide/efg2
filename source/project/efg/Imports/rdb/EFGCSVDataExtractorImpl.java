@@ -35,8 +35,6 @@ import java.io.Reader;
 import java.net.URI;
 import java.util.ArrayList;
 
-import org.apache.log4j.Logger;
-
 import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.factory.CSVParserFactory;
 
@@ -48,17 +46,11 @@ import com.Ostermiller.util.LabeledCSVParser;
  */
 public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(EFGCSVDataExtractorImpl.class);
-		} catch (Exception ee) {
-		}
-	}
+	
 
 	private LabeledCSVParser lcsvp;
 	private String[] fieldNames;
-	//private CSVParse lcsvp;
+	
 	/**
 	 * Defaults to a comma separated delimiter if none is specified.
 	 * 
@@ -132,7 +124,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 			this.lcsvp =(LabeledCSVParser)CSVParserFactory.getCSVParser(csvFileName,
 					delimiter);
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 	}
 	/**
@@ -148,7 +140,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		try {
 			return this.lcsvp.getLabelIdx(label);
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return -1;
 	}
@@ -165,7 +157,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		try {
 			return this.lcsvp.getValueByLabel(label);
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return null;
 	}
@@ -174,14 +166,14 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		try {
 			return processFields(this.lcsvp.getLabels());
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return null;
 	}
 	private String[] processFields(String[] csvFields){
 		ArrayList lists = new ArrayList(csvFields.length);
 		int size = csvFields.length; 
-		log.debug("Field Size before trim: " + size);
+		//log.debug("Field Size before trim: " + size);
 		for(int i=0; i < csvFields.length; i++){
 			String field = csvFields[i];
 			if((field == null) || (field.trim().equals(""))){
@@ -194,7 +186,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		if(size < 1){
 			return null;
 		}
-		log.debug("Field Size after trim: " + size);
+		//log.debug("Field Size after trim: " + size);
 		String[] toReturn = new String[size];
 		for(int j=0; j < size; j++){
 			String field = (String)lists.get(j);
@@ -229,7 +221,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		try {
 			return this.lcsvp.getLine();
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return null;
 	}
@@ -243,7 +235,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		try {
 			return this.getFieldNames().length;
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
+			//log.error(ee.getMessage());
 		}
 		return 0;
 	}
@@ -280,8 +272,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		String csvFileName = "C:\\cvscheckout\\efg2\\lib\\data\\IpoTest.csv";
 		EFGCSVDataExtractorImpl extractor = new EFGCSVDataExtractorImpl(new URI(
 				csvFileName));
-		int cols = extractor.getNumberOfColumns();
-		log.debug("Number of columns: " + cols);
+		
 		String[] labels = extractor.getFieldNames();
 		printLine(labels);
 		printUnderScoreLine(labels);

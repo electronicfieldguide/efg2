@@ -27,20 +27,13 @@ package project.efg.util;
 
 import java.util.Arrays;
 
-import org.apache.log4j.Logger;
+
 
 
 
 
 public class SortedStringArray {
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(SortedStringArray.class);
-		} catch (Exception ee) {
-		}
-	}
-    private String[] commonNames;
+   private String[] commonNames;
     private int index = 0;
 
     public SortedStringArray(int size){
@@ -55,7 +48,7 @@ public class SortedStringArray {
     		
     	}
     	catch(Exception ee){
-    		log.error(ee.getMessage());
+    		ee.printStackTrace();
     	}
         return true;
     }
@@ -76,7 +69,7 @@ public class SortedStringArray {
     		item = commonNames[position]; 
      	}
     	catch(Exception ee){
-    		log.error(ee.getMessage());
+    		ee.printStackTrace();
     		item ="";
     	}
         return item;   
@@ -87,20 +80,6 @@ public class SortedStringArray {
 			commonNames[i] ="";
 		}
 	}
-	public static void main(String[] args){
-        SortedStringArray sortedArray = new SortedStringArray(3);
-        sortedArray.addName("cnabc");
-        sortedArray.addName ("cnaac");
-        sortedArray.addName("cnabb");
-
-        
-       
-        sortedArray.sort();
-
-        for(int i = 0; i < sortedArray.getArraySize(); ++i){
-            log.debug("arr1: " + sortedArray.getName(i));
-            
-        }
-    }
+	
 }
 

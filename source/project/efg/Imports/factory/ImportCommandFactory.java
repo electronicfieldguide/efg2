@@ -70,10 +70,7 @@ public class ImportCommandFactory {
 		} else {
 			log.debug("No command was selected");
 			return null;
-			/*selected = 
-				EFGImportConstants.EFGProperties.getProperty("importDefaultCommand");
-				*/
-		}
+			}
 		try{
 			Class cls =  Class.forName(selected);
 			return (ChoiceCommandAbstract)cls.newInstance();

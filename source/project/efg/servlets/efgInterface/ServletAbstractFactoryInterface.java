@@ -36,6 +36,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import project.efg.util.EFGDisplayObjectList;
+import project.efg.util.EFGMediaResourceSearchableObject;
 
 /**
  * @author kasiedu
@@ -46,7 +47,7 @@ public abstract class ServletAbstractFactoryInterface {
 
 	static {
 		try {
-			log = Logger.getLogger(ServletAbstractFactoryInterface.class);
+			//log = Logger.getLogger(ServletAbstractFactoryInterface.class);
 		} catch (Exception ee) {
 		}
 	}
@@ -132,25 +133,26 @@ public abstract class ServletAbstractFactoryInterface {
 	public List getTaxonPageFields(String displayName, String dataSourceName) {
 		return this.createTaxonPageFields(displayName, dataSourceName);
 	}
-
-	public String getFirstFieldName(String displayName, String datasourceName) {
-		return this.createFirstFieldName(displayName, datasourceName);
-	}
-
-	public String getFirstMediaResourceFieldName(String displayName,
-			String datasourceName) {
-		return this.createFirstMediaResourceFieldName(displayName,
+	/**
+	 * @param displayName
+	 * @param datasourceName
+	 * @return
+	 */
+	public EFGMediaResourceSearchableObject getFirstField(String displayName, String datasourceName) {
+		
+		return this.createFirstField(displayName,
 				datasourceName);
 	}
 
-	public String getXSLFileName(String displayName, String datasourceName,
+
+/*	public String getXSLFileName(String displayName, String datasourceName,
 			String fieldName) {
 		return this
 				.getXSLFileNameFromDB(displayName, datasourceName, fieldName);
-	}
+	}*/
 
-	protected abstract String getXSLFileNameFromDB(String displayName,
-			String datasourceName, String fieldName);
+	/*protected abstract String getXSLFileNameFromDB(String displayName,
+			String datasourceName, String fieldName);*/
 
 	protected abstract EFGDataObjectListInterface createMediaResourceLists(
 			String displayName, String datasourceName);
@@ -192,11 +194,11 @@ public abstract class ServletAbstractFactoryInterface {
 	protected abstract List createNarrativeItemFields(
 			String displayName, String datasourceName);
 	
-	protected abstract String createFirstFieldName(String displayName,
+	/*protected abstract String createFirstFieldName(String displayName,
 			String datasourceName);
 
 	protected abstract String createFirstMediaResourceFieldName(
-			String displayName, String datasourceName);
+			String displayName, String datasourceName);*/
 
 	protected abstract List createAllFields(String displayName,
 			String dataSourceName);
@@ -204,4 +206,13 @@ public abstract class ServletAbstractFactoryInterface {
 	protected abstract List createTaxonPageFields(String displayName,
 			String dataSourceName);
 
+	
+
+	/**
+	 * @param displayName
+	 * @param datasourceName
+	 * @return
+	 */
+	protected abstract EFGMediaResourceSearchableObject createFirstField(String displayName, String datasourceName);
+	
 }

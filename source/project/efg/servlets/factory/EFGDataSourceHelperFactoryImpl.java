@@ -28,7 +28,7 @@
 package project.efg.servlets.factory;
 
 import project.efg.servlets.efgInterface.EFGDataSourceHelperInterface;
-//import project.efg.servlets.rdb.RDBDataSourceHelperImpl;
+
 
 /**
  * Objects of this class can be directly accessed from a servlet, but it was
@@ -49,7 +49,7 @@ public class EFGDataSourceHelperFactoryImpl {//implements EFGDataSourceHelperFac
 	 * sources.
 	 */
 	public void setDataSourceHelper() {
-		//dsHelper = new RDBDataSourceHelperImpl();
+	
 	}
 
 	/**
@@ -64,6 +64,9 @@ public class EFGDataSourceHelperFactoryImpl {//implements EFGDataSourceHelperFac
 }
 
 // $Log$
+// Revision 1.1.2.2  2006/08/09 18:55:25  kasiedu
+// latest code confimrs to what exists on Panda
+//
 // Revision 1.1.2.1  2006/06/08 13:27:44  kasiedu
 // New files
 //

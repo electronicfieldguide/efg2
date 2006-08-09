@@ -76,12 +76,12 @@ public class LoggerUtilsServlet {
 		if (ex != null) {
 			logErrors(ex);
 		}
-		while (ex != null) {
+	/*	while (ex != null) {
 			log.error("SQLState: " + ex.getSQLState());
 			log.error("Message:  " + ex.getMessage());
 			log.error("Vendor:   " + ex.getErrorCode());
 			ex = ex.getNextException();
-			log.error("XXXX");
-		}
+			
+		}*/
 	}
 }

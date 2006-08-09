@@ -89,16 +89,16 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 			}
 			
 			String freshDisplayName = 
-				JOptionPane.showInputDialog(null,"New Display Name:");
+				JOptionPane.showInputDialog(tree.frame,"New Display Name:");
 			if (freshDisplayName == null) {
-				log.debug("user terminated request for change in display name.");
+				//log.debug("user terminated request for change in display name.");
 				return false;
 			} 
 			freshDisplayName = freshDisplayName.trim();
 			if (("").equals(freshDisplayName)) {
 				message = EFGImportConstants.EFGProperties
 						.getProperty("SynopticKeyTree.displayEmptyString");
-				JOptionPane.showMessageDialog(null, message, "Error Message",
+				JOptionPane.showMessageDialog(tree.frame, message, "Error Message",
 						JOptionPane.ERROR_MESSAGE);
 				return false;
 			}
@@ -126,7 +126,7 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 							message = message
 									+ EFGImportConstants.EFGProperties
 											.getProperty("SynopticKeyTree.renameErrorMessage");
-							JOptionPane.showMessageDialog(null, message,
+							JOptionPane.showMessageDialog(tree.frame, message,
 									"Error Message", JOptionPane.ERROR_MESSAGE);
 							return false;
 						}
@@ -138,7 +138,7 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 										.getProperty("SynopticKeyTree.renameMessage")
 								+ " " + freshDisplayName;
 
-						JOptionPane.showMessageDialog(null, message,
+						JOptionPane.showMessageDialog(tree.frame, message,
 								"Information Message",
 								JOptionPane.INFORMATION_MESSAGE);
 					}
@@ -160,15 +160,15 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 			tree.setSelectionPath(path);
 			String oldName = ds.getDisplayName();
 			// make a call to database too
-			log.debug("oldName: " + oldName);
-			log.debug("newName: " + freshDisplayName);
+			//log.debug("oldName: " + oldName);
+			//log.debug("newName: " + freshDisplayName);
 			boolean bool = tree.getLists().replaceDisplayName(oldName, freshDisplayName);
 			if (bool) {
 				ds.setDisplayName(freshDisplayName);
 			} else {
 				message = EFGImportConstants.EFGProperties
 						.getProperty("SynopticKeyTree.displayNotChange");
-				JOptionPane.showMessageDialog(null, message, "Error Message",
+				JOptionPane.showMessageDialog(tree.frame, message, "Error Message",
 						JOptionPane.ERROR_MESSAGE);
 				ds.setDisplayName(oldName);
 				log.error(message);

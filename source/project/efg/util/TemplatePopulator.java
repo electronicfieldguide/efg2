@@ -1,10 +1,13 @@
 package project.efg.util;
 
-import java.io.FileReader;
+
 import java.util.Hashtable;
 
-import org.apache.log4j.Logger;
+import com.opensymphony.oscache.base.NeedsRefreshException;
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
+import project.efg.servlets.efgImpl.EFGContextListener;
+import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 import project.efg.templates.taxonPageTemplates.GroupType;
 import project.efg.templates.taxonPageTemplates.GroupTypeItem;
@@ -21,30 +24,33 @@ import project.efg.templates.taxonPageTemplates.XslPageType;
  * 
  */
 public class TemplatePopulator implements EFGImportConstants{
-	static Logger log = null;
-	static {
-		try {
-			log = Logger.getLogger(TemplatePopulator.class);
-		} catch (Exception ee) {
-		}
-	}
+	private static GeneralCacheAdministrator cacheAdmin = EFGContextListener.getCacheAdmin();
+
 	private Hashtable tableStore = new Hashtable(); 
 	/**
 	 * 
 	 */
 	public TemplatePopulator() {
 	}
-	public Hashtable populateTable(String fileName, String xslName, String itemType, String dsName)
+	public Hashtable populateTable(String fileName, String guid, String itemType, String dsName)
 	{
 		String mutex="";
 		synchronized (mutex) {
-			String key = fileName + "_" + xslName + "_" + itemType + "_" + dsName;
-			log.debug("Key: " + key);
+			if(guid == null){
+				//log.debug("Guid is null");
+				return null;
+			}
+			else{
+				//log.debug("Guid is: " + guid);
+			}
+			String key = fileName + "_" + guid + "_" + itemType + "_" + dsName;
+			System.out.println("key: " + key);
+			//log.debug("Key: " + key);
 			Hashtable table = (Hashtable)tableStore.get(key);
 			
 			if(table == null){
-				log.debug("table is null");
-				table = getTable(fileName,xslName,itemType,dsName);
+				//log.debug("table is null");
+				table = getTable(guid,itemType,dsName);
 				tableStore.put(key,table);
 			}
 			return table;
@@ -57,16 +63,16 @@ public class TemplatePopulator implements EFGImportConstants{
 	 * @param itemType
 	 * @return
 	 */
-	private Hashtable getTable(String fileName, String xslName, String itemType, String dsName) {
+	private Hashtable getTable(String guid, String itemType, String dsName) {
 		
-		TaxonPageTemplates tps = getTaxonPageTemplate(fileName);
+		TaxonPageTemplates tps = getTaxonPageTemplate(dsName);
 		if(tps == null){
-			log.debug("tps is null");
+			//log.debug("tps is null");
 			return null;
 		}
-		XslPage xslPage = getXSL(tps,xslName,itemType,dsName);
+		XslPage xslPage = getXSLPage(tps,guid,itemType,dsName);
 		if(xslPage != null){
-			log.debug("xslPage is not null");
+			//log.debug("xslPage is not null");
 			return populateTable(xslPage);
 		}
 		return new Hashtable();
@@ -82,7 +88,7 @@ public class TemplatePopulator implements EFGImportConstants{
 		table.put(EFGImportConstants.ISDEFAULT_STR,isDefault+"");
 		
 		if(groups != null){
-			log.debug("groups is not null");
+			//log.debug("groups is not null");
 			this.handleGroups(groups,table);
 		}
 		return table;
@@ -150,7 +156,7 @@ public class TemplatePopulator implements EFGImportConstants{
 		}
 		
 	}
-	private XslPage getXSL(TaxonPageTemplates tps, String xslName, String xslType, String dsName) {
+	private XslPage getXSLPage(TaxonPageTemplates tps, String guid, String xslType, String dsName) {
 
 		
 		XslPage page = null;
@@ -165,20 +171,20 @@ public class TemplatePopulator implements EFGImportConstants{
 				TaxonPageTemplateType tp = tps.getTaxonPageTemplate(i);
 				String ds = tp.getDatasourceName();
 				if (ds.equalsIgnoreCase(dsName.trim())) {
-					log.debug("Found datasource: " + ds);
+					//log.debug("Found datasource: " + ds);
 					XslFileNamesType xslFileNames = tp.getXSLFileNames();
 
 					if (EFGImportConstants.TAXONPAGE_XSL
 							.equalsIgnoreCase(xslType)) {
-							log.debug("It is a taxon Page");
+							//log.debug("It is a taxon Page");
 						xslPageType = xslFileNames.getXslTaxonPages();
 
 					} else if (EFGImportConstants.SEARCHPAGE_PLATES_XSL
 							.equalsIgnoreCase(xslType)) {
-						log.debug("It is a plate");
+						//log.debug("It is a plate");
 						xslPageType = xslFileNames.getXslPlatePages();
 					} else{
-						log.debug("It is a list");
+						//log.debug("It is a list");
 						xslPageType = xslFileNames.getXslListPages();
 						
 					}
@@ -187,8 +193,8 @@ public class TemplatePopulator implements EFGImportConstants{
 					}
 					for (int j = 0; j < xslPageType.getXslPageCount(); ++j) {// find
 						XslPage currentPage = xslPageType.getXslPage(j);
-						String currentXSLFile = currentPage.getFileName();
-						if(currentXSLFile.equalsIgnoreCase(xslName)){
+						String currentGuid = currentPage.getGuid();
+						if(currentGuid.equalsIgnoreCase(guid)){
 							page = currentPage; 
 							break;
 						}
@@ -198,46 +204,31 @@ public class TemplatePopulator implements EFGImportConstants{
 				}
 			}
 		} catch (Exception ee) {
-			log.error(ee.getMessage());
-			log.error("Returning null because of previous error!!");
+			LoggerUtilsServlet.logErrors(ee);
 			return null;
 		}
 		
 		return page;
 	}
 
-	private TaxonPageTemplates getTaxonPageTemplate(String fileName) {
-		String mute = "";
-		synchronized (mute) {
-			FileReader reader = null;
-			try {
-				String file = fileName;
-
-				log.debug("File2Read: " + file);
-				reader = new FileReader(file);
-				TaxonPageTemplates tps = (TaxonPageTemplates) TaxonPageTemplates
-						.unmarshalTaxonPageTemplates(reader);
-				if (reader != null) {
-					log.debug("Closing resource");
-					reader.close();
-				}
-				return tps;
-
-			} catch (Exception ee) {
-				if (reader != null) {
-					try {
-						reader.close();
-					} catch (Exception exe) {
-
-					}
-				}
-				log.error(ee.getMessage());
+	private TaxonPageTemplates getTaxonPageTemplate(String dsName) {
+		TaxonPageTemplates ts = null;
+		try {
+			if(dsName == null){
+				return null;
 			}
-			return null;
-		}
-	}
-	public static void main(String[] args) {
-	
-	}
+			String templateName = dsName.toLowerCase() + EFGImportConstants.XML_EXT;
+			System.out.println("Template Name: " + templateName);
+			if(templateName != null){
+				ts = (TaxonPageTemplates)cacheAdmin.getFromCache(templateName.toLowerCase());
+			}
 
+		}  catch (NeedsRefreshException nre) {
+			System.err.println(nre.getMessage());
+			LoggerUtilsServlet.logErrors(nre);
+		}
+		return ts;
+	
+		}
+	
 }

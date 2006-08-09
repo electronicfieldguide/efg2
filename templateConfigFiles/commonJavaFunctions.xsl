@@ -17,19 +17,17 @@ xmlns:imageList="project.efg.util.ImageDisplayList"  extension-element-prefixes=
 		<xsl:param name="cap2"/>
 		<xsl:variable name="caption">
 			<xsl:choose>
-				<xsl:when test="string($cap2)=''">
-					<xsl:if test="not(string($cap1))=''">
-						<xsl:value-of select="$cap1"/>
-					</xsl:if>
+				<xsl:when test="not(string($cap2))=''">
+					<xsl:value-of select="concat($cap1,' ',$cap2)"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat($cap1,' ',$cap2)"/>
+						<xsl:value-of select="$cap1"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:value-of select="$caption"/>
 	</xsl:template>
-	<!--
+
 	<xsl:template name="populateMap">
 		<xsl:param name="taxonEntries"/>
 		<xsl:param name="mySorter"/>
@@ -53,7 +51,7 @@ xmlns:imageList="project.efg.util.ImageDisplayList"  extension-element-prefixes=
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
--->
+
 	<xsl:template name="populateImageList">
 		<xsl:param name="mediaresources"/>
 		<xsl:param name="myImageList"/>

@@ -29,7 +29,7 @@ package project.efg.Imports.efgInterface;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
@@ -60,7 +60,7 @@ public abstract class ImportBehavior {
 			EFGDatasourceObjectInterface obj) {
 		this.lists=lists;
 		this.obj = obj; 
-		//this.selectedValue = selectedValue;
+	
 		this.responseMessage = new StringBuffer();
 		this.stateFactory = new StateObjectFactory();
 	}
@@ -125,12 +125,18 @@ public abstract class ImportBehavior {
 	}
 private String getNumber(String str) {
 		String numeric = null;
+	
+		Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(str);
+		if (matcher.find()) {
+			numeric = matcher.group();
+		}
+		/*matcher.reset();
 		String regEX = "\\d+$";
 		Pattern p = Pattern.compile(regEX);
 		Matcher matcher = p.matcher(str);
 		if (matcher.find()) {
 			numeric = matcher.group();
-		}
+		}*/
 		matcher.reset();
 		return numeric;
 	}
