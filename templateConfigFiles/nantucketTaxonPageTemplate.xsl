@@ -260,6 +260,9 @@
 			<xsl:for-each select="$imagesGroup/characterValue">
 				<xsl:sort select="@rank" data-type="number"/>
 				<xsl:variable name="fieldName" select="@value"/>
+				<xsl:variable name="mediaresources" select="$taxonEntry/MediaResources[@name=$fieldName]"/>
+				
+		
 				<xsl:call-template name="populateImageList">
 					<xsl:with-param name="mediaresources" select="$taxonEntry/MediaResources[@name=$fieldName]"/>
 					<xsl:with-param name="myImageList" select="$myImageList"/>

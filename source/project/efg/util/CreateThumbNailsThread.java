@@ -14,7 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.SwingConstants;
+import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
 
@@ -38,70 +38,94 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	private boolean isDone = false;
 	String srcFile, destFile;
 	   JFrame frame;
+	   JPanel panel;
 	private JProgressBar progressBar;
-	 public CreateThumbNailsThread(File srcFile, File destFile) {
+	private FileNode destNode;
+	   private DnDFileBrowser browser;
+	 public CreateThumbNailsThread( DnDFileBrowser browser,File srcFile, File destFile) {
+		 this(browser,srcFile,destFile,null);
+	 }
 	    	
-	    	this.srcFile = srcFile.getAbsolutePath();
-	    	
-	    	this.destFile = this.replace(destFile.getAbsolutePath(), EFGIMAGES, EFGIMAGES_THUMBS);
-	    	
-	    	this.maxDim =DnDFileBrowserMain.getMaxDim();
-			log.debug("Max Dim: " + this.maxDim);
-			this.thm = new ThumbNailGenerator();
-	        this.progressBar = new JProgressBar();
-	        this.progressBar.setStringPainted(true);
-	        this.progressBar.setString("");  
-	        this.progressBar.setMinimum(0);
-	        //this.progressBar.setSize(350,350);
-	        //this.progressBar.setMinimumSize(new Dimension(200,200));
-	        JPanel panel = new JPanel(new BorderLayout());
-	        //panel.setSize(400,400);
-	        JLabel label = new JLabel("Please wait while application generates Thumbnails!!", 
-	        		SwingConstants.CENTER);
-	        panel.add(this.progressBar, BorderLayout.NORTH);
-	        panel.add(label,BorderLayout.CENTER);
-	     
-	        //Make sure we have nice window decorations.
-	        //JFrame.setDefaultLookAndFeelDecorated(true);
-	  
-	    
-	    //Create and set up the window.
-	    this.frame = new JFrame("Generating Thumbnails");
-	   
-	    this.frame.setSize(600,600);
-	   
-	    frame.addWindowListener(this);
-	    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	    //Create and set up the content pane.
-	   
-	    panel.setOpaque(true); //content panes must be opaque
-	    frame.getContentPane().add(panel);
-
-	    //Display the window.
-	    frame.pack();
-	    frame.setVisible(true);  
-	    }
 	
+
+	public CreateThumbNailsThread(DnDFileBrowser browser,File srcFile, File destFile, FileNode node) {
+    	this.srcFile = srcFile.getAbsolutePath();
+    	this.browser = browser;
+    	this.destNode = node;
+    	this.destFile = this.replace(destFile.getAbsolutePath(), EFGIMAGES, EFGIMAGES_THUMBS);
+    	
+    	this.maxDim =DnDFileBrowserMain.getMaxDim();
+		log.debug("Max Dim: " + this.maxDim);
+		this.thm = new ThumbNailGenerator();
+        this.progressBar = new JProgressBar();
+        JLabel label = new JLabel("Please wait while application generates Thumbnails");
+       label.setSize(300,300);
+        this.progressBar.setStringPainted(true);
+        this.progressBar.setString("");  
+        
+       
+        this.panel = new JPanel(new BorderLayout());
+        this.panel.setSize(400,400);
+        this.panel.add(label, BorderLayout.NORTH);
+        this.panel.add(this.progressBar, BorderLayout.CENTER);
+  
+  
+    
+    //Create and set up the window.
+    this.frame = new JFrame("Generating Thumbnails");
+   
+    this.frame.setSize(600,600);
+    this.frame.setLocationRelativeTo(this.browser);
+    frame.addWindowListener(this);
+    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    //Create and set up the content pane.
+   
+    panel.setOpaque(true); //content panes must be opaque
+    frame.getContentPane().add(panel);
+
+    //Display the window.
+    frame.pack();
+    frame.setVisible(true);  
+    }
+	
+
 
 	public Object construct() {
 		if (this.progressBar.isIndeterminate()) {
 			progressBar.setIndeterminate(false);
 			progressBar.setString(null); // display % string
 		}
-		progressBar.setString("Please wait while we generate thumbnails for uploaded images.....");
+		progressBar.setString("");
 		progressBar.setCursor(null);
+		progressBar.setIndeterminate(true);
 		this.generateThumbs(new File(this.srcFile),new File(this.destFile));
 		
 		Toolkit.getDefaultToolkit().beep();
 		this.progressBar.setValue(0);
 		this.isDone = true;
 		String message = "ThumbNail Generation done!!!";
-		this.progressBar.setString(message);
-		
-		JOptionPane.showMessageDialog(this.frame, message, "Done",
-				JOptionPane.INFORMATION_MESSAGE);
 		
 		this.frame.dispose();
+		JOptionPane.showMessageDialog(this.browser, message, "Done",
+				JOptionPane.INFORMATION_MESSAGE);
+		FileNode root = (FileNode)((DefaultTreeModel)this.browser.getModel()).getRoot();
+
+		if(this.destNode != null){
+			((DefaultTreeModel)this.browser.getModel()).reload(this.destNode);
+			int rowIndex = root.getIndex(this.destNode);
+			this.browser.expandRow(rowIndex);
+		}
+		else{
+			
+			if(root.getChildCount() > 0){
+				this.browser.expandRow(1);
+			}
+			else{
+				this.browser.expandRow(0);
+			}
+			((DefaultTreeModel)this.browser.getModel()).reload();
+		}
+		this.browser.setVisible(true);
 		return null;
 	}
 	private void generateThumbs(File srcFile, File destFile){
@@ -109,7 +133,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 		
 		try {
 			
-			 progressBar.setString("Please wait while  the application generates thumbnails...");
+			 progressBar.setString("");
 				
 				 if(srcFile.isDirectory()){	
 					// destFile.mkdirs();
@@ -132,7 +156,6 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 					 log.debug("destDir: " + destDir);
 					log.debug("FileName: " + fileName);
 					
-					 progressBar.setString("Generating thumbnails for : '" + srcFile.getAbsolutePath() + "'");
 					 boolean isTemp = false;
 					 try{
 						isTemp = this.generate(srcDir,destDir,fileName);
@@ -144,11 +167,9 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 					 }
 					
 					 if(isTemp){
-						progressBar.setString("Thumbnails for '" + srcFile.getAbsolutePath() + "' successfully done");
 					 }
 					 else{
-						 progressBar.setString("Could not generate thumbnails for '" + srcFile.getAbsolutePath() + "'");
-						log.error("Could not generate thumbnails for '" + srcFile.getAbsolutePath() + "'");
+							log.error("Could not generate thumbnails for '" + srcFile.getAbsolutePath() + "'");
 					 }
 				 }
 		}
@@ -206,7 +227,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
 	 */
 	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -215,7 +236,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
 	 */
 	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -235,7 +256,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
 	 */
 	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -244,7 +265,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
 	 */
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -253,7 +274,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
 	 */
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 
@@ -262,7 +283,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
 	 */
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 

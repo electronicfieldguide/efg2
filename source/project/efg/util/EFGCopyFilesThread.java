@@ -1,7 +1,6 @@
 package project.efg.util;
 
 import java.awt.BorderLayout;
-import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -12,6 +11,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
+import javax.swing.tree.DefaultTreeModel;
+
 
 /*
  * ProgressBarDemo.java is a 1.4 application that requires these files:
@@ -33,9 +34,16 @@ public class EFGCopyFilesThread extends SwingWorker implements WindowListener{
     boolean isDone = false;
    File srcFile, destFile;
    JFrame frame;
+
+
+
+private FileNode destNode;
   
     public EFGCopyFilesThread(DnDFileBrowser browser, File srcFile, File destFile, JProgressBar progressBar) {
-    	
+     this(browser,srcFile,destFile,progressBar,null);
+    }
+	public EFGCopyFilesThread(DnDFileBrowser browser, File srcFile, File destFile, JProgressBar progressBar, FileNode destNode) {
+		this.destNode = destNode;
     	this.srcFile = srcFile;
     	
     	this.destFile = destFile;
@@ -44,13 +52,12 @@ public class EFGCopyFilesThread extends SwingWorker implements WindowListener{
       
         JPanel panel = new JPanel(new BorderLayout());
         panel.setSize(550,500);
-        JLabel label = new JLabel("Please wait while application copies image files!!", 
-        		SwingConstants.CENTER);
-        label.setSize(300,300);
-        panel.add(this.progressBar, BorderLayout.NORTH);
-        panel.add(label,BorderLayout.CENTER);
-    //Make sure we have nice window decorations.
-     //   JFrame.setDefaultLookAndFeelDecorated(true);
+     JLabel label = new JLabel("Please wait while application copies image files!!", 
+       		SwingConstants.CENTER);
+      label.setSize(300,300);
+        panel.add(this.progressBar, BorderLayout.CENTER);
+      panel.add(label,BorderLayout.NORTH);
+  
         
     
     //Create and set up the window.
@@ -67,24 +74,28 @@ public class EFGCopyFilesThread extends SwingWorker implements WindowListener{
     //Display the window.
     this.frame.pack();
     this.frame.setVisible(true);  
-    }
+	}
 	public Object construct() {
-		progressBar.setString("Please wait while files are copied.....");
-		progressBar.setCursor(null);
+			progressBar.setCursor(null);
 		this.browser.copyFile(this.srcFile, this.destFile);
 		
-		Toolkit.getDefaultToolkit().beep();
+		//Toolkit.getDefaultToolkit().beep();
 		this.progressBar.setValue(0);
-		this.progressBar.setString("Copying done!!!");
-		//String message = "Copying done";
-		//JOptionPane.showMessageDialog(this.frame, message, "Copying Done",
-			//	JOptionPane.INFORMATION_MESSAGE);
 		
-		CreateThumbNailsThread thumbsThread = new CreateThumbNailsThread(srcFile,destFile);
+		CreateThumbNailsThread thumbsThread = new CreateThumbNailsThread(this.browser,srcFile,destFile,this.destNode);
 	    thumbsThread.start();
 	    isDone = true;
 		this.frame.dispose();
 		this.browser.setVisible(true);
+	/*	if(this.destNode != null){
+			((DefaultTreeModel)this.browser.getModel()).reload(this.destNode);
+			FileNode root = (FileNode)((DefaultTreeModel)this.browser.getModel()).getRoot();
+			int rowIndex = root.getIndex(this.destNode);
+			this.browser.expandRow(rowIndex);
+		}
+		else{
+			((DefaultTreeModel)this.browser.getModel()).reload();
+		}*/
 		return null;
 	}
 	
@@ -102,35 +113,35 @@ public class EFGCopyFilesThread extends SwingWorker implements WindowListener{
 	 * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
 	 */
 	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 	/* (non-Javadoc)
 	 * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
 	 */
 	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 	/* (non-Javadoc)
 	 * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
 	 */
 	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 	/* (non-Javadoc)
 	 * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
 	 */
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 	/* (non-Javadoc)
 	 * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
 	 */
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 	/* (non-Javadoc)

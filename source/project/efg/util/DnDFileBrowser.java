@@ -39,6 +39,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -82,12 +83,15 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	int max = 0;
 	int min = 0;
 	String message = "";
+	FileNode root;
+	FileNode destNode;
 	//
 	// Constructor
 	//
 	private JProgressBar progressBar;
 	public DnDFileBrowser(FileNode root,JProgressBar progressBar) {
 		super(root);
+		this.root = root;
 		this.progressBar = progressBar;
 		
 		this.progressBar.setMinimum(0);
@@ -95,10 +99,12 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 			progressBar.setIndeterminate(false);
 			progressBar.setString(null); // display % string
 		}
+		this.progressBar.setIndeterminate(true);
 		// DND
 		dragSource.createDefaultDragGestureRecognizer(this,
 				DnDConstants.ACTION_MOVE, this);
 		dropTarget = new DropTarget(this, this);
+		
 	}
 	
 	
@@ -182,6 +188,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 		
 		isDragging = false;
 		Transferable tr = dropTargetDropEvent.getTransferable();
+		
 		try {
 			//if the drop is on a file reject it..Drops must always be on a directory
 			if(!isDirectorySelected()){
@@ -197,7 +204,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				FileNode node = (FileNode) tr
 				.getTransferData(TransferableFileNode.FILENODE_FLAVOR);
 				TreePath path = getSelectionPath();
-				FileNode destNode = (FileNode)path.getLastPathComponent();
+				this.destNode = (FileNode)path.getLastPathComponent();
 				String nodeToMove = node.getFile().getAbsolutePath();
 				String destPath = destNode.getFile().getAbsolutePath();
 				if(nodeToMove.equalsIgnoreCase(destPath)){
@@ -250,6 +257,10 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 			log.error(ufe.getMessage());
 			dropTargetDropEvent.rejectDrop();
 		}
+		//((DefaultTreeModel)this.getModel()).reload(this.root);
+	
+		
+		
 	}
 
 	public void copyFile(File srcFile, File destFile) {
@@ -270,7 +281,6 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				 }
 			 }
 			 else{
-				 this.progressBar.setString("Copying " + srcFile.getAbsolutePath());
 				 sourceChannel = new
 				 FileInputStream(srcFile).getChannel();
 				
@@ -378,6 +388,37 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	 * @param dropTargetDropEvent
 	 *            the drop event
 	 */
+	protected void dropFile(FileNode srcNode , FileNode destNode,
+			boolean external, DropTargetDropEvent dropTargetDropEvent) {
+		
+		File srcFile = srcNode.getFile();
+		String srcFileName = srcFile.getName();
+		File destFile = destNode.getFile();
+		File newFile = null;
+		if (destFile.isDirectory()) {//it is a directory create it
+			newFile = new File(destFile, srcFileName);
+		}
+		else {//it is a file
+			newFile = destFile;
+		}	
+		dropFile(srcFile ,newFile,srcNode,
+				external,dropTargetDropEvent);
+	
+	}
+
+
+	/**
+	 * Drop a FileNode on another.
+	 * 
+	 * @param sourcenode
+	 *            the node dragged
+	 * @param destnode
+	 *            the node where the sourcenode was dropped.
+	 * @param external
+	 *            does the dragged node come from an external application?
+	 * @param dropTargetDropEvent
+	 *            the drop event
+	 */
 	protected void dropFile(File srcFile , File destFile,FileNode srcNode,
 			boolean external, DropTargetDropEvent dropTargetDropEvent) {
 	
@@ -450,7 +491,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 			}
 			
 			if(!isRename){//rename is not supported or it is a copy
-		       EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,srcFile,destFile,this.progressBar);
+		       EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,srcFile,destFile,this.progressBar,this.destNode);
 		       copyFiles.start();
 		       //this.copyFile(srcFile,destFile);
 		       return;
@@ -486,35 +527,6 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	protected FileNode findNode(File file) {
 		FileNode root = (FileNode) getModel().getRoot();
 		return root.findNode(file);
-	}
-	/**
-	 * Drop a FileNode on another.
-	 * 
-	 * @param sourcenode
-	 *            the node dragged
-	 * @param destnode
-	 *            the node where the sourcenode was dropped.
-	 * @param external
-	 *            does the dragged node come from an external application?
-	 * @param dropTargetDropEvent
-	 *            the drop event
-	 */
-	protected void dropFile(FileNode srcNode , FileNode destNode,
-			boolean external, DropTargetDropEvent dropTargetDropEvent) {
-		
-		File srcFile = srcNode.getFile();
-		String srcFileName = srcFile.getName();
-		File destFile = destNode.getFile();
-		File newFile = null;
-		if (destFile.isDirectory()) {//it is a directory create it
-			newFile = new File(destFile, srcFileName);
-		}
-		else {//it is a file
-			newFile = destFile;
-		}	
-		dropFile(srcFile ,newFile,srcNode,
-				external,dropTargetDropEvent);
-	
 	}
 	/**
 	 * Replace the last occurence of aOldPattern in aInput with aNewPattern

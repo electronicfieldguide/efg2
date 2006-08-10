@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.SwingConstants;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -40,21 +39,21 @@ public class DeleteNodeThread extends SwingWorker{
 	private DefaultTreeModel model;
 	 private JFrame dialog;
 	 private JProgressBar progressBar;
+	 private JPanel panel;
 	 public DeleteNodeThread(TreePath path[],DefaultTreeModel model) {
 		 this.model = model;
 		 this.path = path;
 	        this.progressBar = new JProgressBar();
+	       
 	        this.progressBar.setStringPainted(true);
 	        this.progressBar.setString("");  
 	        
-	       
-	        JPanel panel = new JPanel(new BorderLayout());
+	        JLabel label = new JLabel("Please wait while we delete the selected files");
+	        label.setSize(300,300);
+	        this.panel = new JPanel(new BorderLayout());
 	        panel.setSize(400,400);
-	        JLabel label = new JLabel("Please wait while selected files are deleted!!", 
-	        		SwingConstants.CENTER);
-	        panel.add(this.progressBar, BorderLayout.NORTH);
-	        panel.add(label,BorderLayout.CENTER);
-	     
+	        panel.add(this.progressBar, BorderLayout.CENTER);
+	        panel.add(label, BorderLayout.NORTH);
 	      
 	    //Create and set up the window.
 	    this.dialog = new JFrame("Delete Files");
@@ -78,15 +77,17 @@ public class DeleteNodeThread extends SwingWorker{
 			progressBar.setIndeterminate(false);
 			progressBar.setString(null); // display % string
 		}
-		progressBar.setString("Please wait while we delete the selected files.....");
-		//progressBar.setCursor(null);
+		progressBar.setString("");
+		progressBar.setCursor(null);
+		progressBar.setIndeterminate(true);
 	  this.deleteSelectedFiles();
 	  Toolkit.getDefaultToolkit().beep();
-		//this.progressBar.setValue(0);
+	  this.progressBar.setValue(0);
 		
 		String message = "All Files removed !!!";
-		this.progressBar.setString(message);
+	
 		
+		this.dialog.dispose();
 		JOptionPane.showMessageDialog(null, message, "Done",
 				JOptionPane.INFORMATION_MESSAGE);
 		
@@ -128,8 +129,6 @@ public class DeleteNodeThread extends SwingWorker{
 					deleteFile(files[i]);
 				}
 			}
-			//also delete from efgthumbnails directory
-			this.progressBar.setString(toDelete.getAbsolutePath() + " has been deleted!!!");
 			toDelete.delete();
 		}
 		private void deleteFromThumbNailsDir(File file){
