@@ -206,7 +206,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
 	 */
 	public void windowActivated(WindowEvent e) {
-		
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -215,7 +215,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
 	 */
 	public void windowClosed(WindowEvent e) {
-		
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -235,7 +235,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
 	 */
 	public void windowDeactivated(WindowEvent e) {
-		
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -244,7 +244,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
 	 */
 	public void windowDeiconified(WindowEvent e) {
-		
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -253,7 +253,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
 	 */
 	public void windowIconified(WindowEvent e) {
-	
+		// TODO Auto-generated method stub
 		
 	}
 
@@ -262,7 +262,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	 * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
 	 */
 	public void windowOpened(WindowEvent e) {
-	
+		// TODO Auto-generated method stub
 		
 	}
 

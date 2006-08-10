@@ -1,21 +1,17 @@
 package project.efg.util;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -23,7 +19,6 @@ import javax.swing.event.TreeSelectionListener;
 import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.EFGJLabel;
-
 
 
 
@@ -46,18 +41,10 @@ public class DnDFileBrowserMain extends  JDialog {
 		}
 	}
 	private static final long serialVersionUID = 1L;
-	final JButton deleteBtn = 
-		new JButton(EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.deleteBtn"));
-
-	final JButton doneBtn =
-		new JButton(EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.doneBtn"));
-
 	static int maxDim = 0;
 	JProgressBar progressBar = new JProgressBar();
 	JComponent imageView;
 	EFGJLabel imageLabel;
-	URL helpURL;
-	JEditorPane htmlPane;
 	public static String imageL = 
 		EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.imageL");
 
@@ -70,10 +57,16 @@ public class DnDFileBrowserMain extends  JDialog {
 		this(frame, "", modal, imagesDirectory);
 	}
 	
+	public DnDFileBrowserMain(String imagesDirectory, JFrame frame) {
+		this(frame, "", false, imagesDirectory);
+	}
+	public void close() {
+		this.dispose();
+	}
 	public DnDFileBrowserMain(JFrame frame, String title, boolean modal,
 			String imagesDirectory) {
 		
-		super(frame,modal);
+	
 		this.frame = frame;
 		this.setTitle("Drag and Drop Image Folders here");
 	
@@ -86,60 +79,41 @@ public class DnDFileBrowserMain extends  JDialog {
 		this.setModal(true);
 	
 		imageView = addImagePanel();
-		htmlPane = new JEditorPane();
-	    htmlPane.setEditable(false);
-	    initHelp();
 		this.browser = DnDFileBrowser.getFileBrowser(imagesDirectory,progressBar);
-		this.browser.setRootVisible(false);
 		ToolTipManager.sharedInstance().registerComponent(this.browser);
 		
 		this.browser.addTreeSelectionListener(new FileTreeSelectionListener(
 				this.browser));
+	
+		JScrollPane scrollpane = new JScrollPane(this.browser);
 		
-	
-		JScrollPane browserPane = new JScrollPane(this.browser);
-		JScrollPane imageViewPane = new JScrollPane(this.imageView);		
-		JScrollPane htmlViewPane = new JScrollPane(htmlPane);
-	
-	        //Add the scroll panes to a split pane.
-	        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-	        		imageViewPane,htmlViewPane);
-	        splitPane.setDividerLocation(200);
-	        JScrollPane otherPane = new JScrollPane(splitPane);
+		JScrollPane scrollpane2 = new JScrollPane(this.imageView);
 		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-			browserPane, otherPane);
+			scrollpane, scrollpane2);
 		
 		pane.setOneTouchExpandable(true);
 		pane.setDividerLocation(300);
 		this.getContentPane().add(pane, BorderLayout.CENTER);
-		this.getContentPane().add(addButtons(),BorderLayout.SOUTH);
-		
-		this.setSize(1100, 600);
-		
+		this.setSize(600, 600);
+	
 	}
-
-	public DnDFileBrowserMain(String imagesDirectory, JFrame frame) {
-		this(frame, "", false, imagesDirectory);
-	}
-	public void close() {
-		this.dispose();
-	}
+	
+	
 	public JComponent addImagePanel() {
 		// Create the HTML viewing pane.
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		
 	    this.progressBar.setStringPainted(true);
-	    this.progressBar.setString("");          //but don't paint it
+        this.progressBar.setString("");          //but don't paint it
 		this.imageLabel = new EFGJLabel(imageL);
-		//this.imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		//panel.add(this.imageLabel, BorderLayout.CENTER);
-		panel.add(this.imageLabel);
+		this.imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(this.imageLabel, BorderLayout.CENTER);
 		
 		return panel;
 	}
 
-	public static int getMaxDim(){
+  public static int getMaxDim(){
 		
 		if(maxDim <= 0){
 			String maxDimStr = 
@@ -167,46 +141,7 @@ public class DnDFileBrowserMain extends  JDialog {
 		
 		return maxDim;
 	}
-
-	private JPanel addButtons(){
-	
-
-		JPanel btnPanel = new JPanel();
-
-		deleteBtn.addActionListener(new DeleteListener(this.browser));
-		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.deleteBtn.tooltip"));
-		btnPanel.add(deleteBtn);
-
-
-		doneBtn.addActionListener(new DoneListener(this));
-		doneBtn.setToolTipText(
-				EFGImportConstants.EFGProperties.getProperty("FileTreeBrowserMain.doneBtn.tooltip")
-				);
-		btnPanel.add(doneBtn);
-		return btnPanel;
-		
-	}
-	 private void initHelp() {
-		
-	        helpURL = this.getClass().getResource(EFGImportConstants.IMAGE_DEPLOY_HELP);
-	        if (helpURL == null) {
-	            log.error("Couldn't open help file: " + EFGImportConstants.IMAGE_DEPLOY_HELP);
-	            return;
-	        } 
-	        displayURL(helpURL);
-	    }
-	private void displayURL(URL url) {
-        try {
-            if (url != null) {
-                htmlPane.setPage(url);
-            } else { //null url
-            	htmlPane.setText("File Not Found");
-            }
-        } catch (Exception e) {
-            log.error("Attempted to read a bad URL: " + url);
-        }
-    }
-	
+  
 	class FileTreeSelectionListener implements TreeSelectionListener {
 		private FileBrowser tree;
 		
@@ -236,30 +171,6 @@ public class DnDFileBrowserMain extends  JDialog {
 			catch(Exception ee){
 				imageLabel.setText("Image too large to draw");
 			}
-		}
-	}
-	class DeleteListener implements ActionListener {
-		private FileBrowser tree;
-
-		public DeleteListener(FileBrowser tree) {
-			this.tree = tree;
-		}
-
-		public void actionPerformed(ActionEvent evt) {
-			this.tree.deleteSelectedFiles();
-		}
-
-	}
-
-	class DoneListener implements ActionListener {
-		private DnDFileBrowserMain treeBrowser;
-
-		public DoneListener(DnDFileBrowserMain dndFile) {
-			this.treeBrowser = dndFile;
-		}
-
-		public void actionPerformed(ActionEvent evt) {
-			this.treeBrowser.close();
 		}
 	}
 }

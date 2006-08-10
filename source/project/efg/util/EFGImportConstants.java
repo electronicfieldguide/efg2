@@ -99,7 +99,7 @@ public interface EFGImportConstants {
 	String patternStr = "[A-Z]+";// remove everything that is an
 	
 	Pattern alphaPattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
-	//EFGImportConstants.PIPESEP
+	
 	Pattern pipePattern = Pattern.compile(EFGImportConstants.PIPESEP, Pattern.CASE_INSENSITIVE);
 	Pattern catPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, Pattern.CASE_INSENSITIVE);
 	Pattern commaPattern = Pattern.compile(EFGImportConstants.COMMASEP, Pattern.CASE_INSENSITIVE);
