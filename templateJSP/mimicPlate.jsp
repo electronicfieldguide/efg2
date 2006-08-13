@@ -72,6 +72,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
 				isImagesExists = true;	
 			}
+		    if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
 
 		%>
 		<title></title>

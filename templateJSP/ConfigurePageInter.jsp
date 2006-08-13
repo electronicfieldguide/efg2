@@ -6,21 +6,33 @@ project.efg.util.EFGDisplayObjectList,
 project.efg.util.EFGDisplayObject
 " %>
 <% 
-   String context = request.getContextPath();
+     String context = request.getContextPath();
    ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
    EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
    Iterator dsNameIter = null;
+   String forwardPage="NoDatasource.jsp";
    String displayName = "";
-  String datasourceName="";
-EFGDisplayObject obj = null;
+  	String datasourceName="";
+	EFGDisplayObject obj = null;
+	boolean isEmpty = true;
+	if(listInter != null){
+		if(listInter.getCount() < 1){
+		isEmpty = false;
+		}
+	}
+	else{
+		isEmpty = false;
+	}
+	
 %>
 <html>
   <head>
-    <title>Configure a Datasource</title>
+    <title>Configure a Datasource </title>
   </head>
   <body bgcolor="#ffffff">
     <h2 align="center">Configure a Datasource</h2>
   	<center>
+  	<%if(isEmpty){%>
   		<form name="configure" action="ConfigurePageResponseInter.jsp">
   			Select a Datasource:
       		<select name="<%=EFGImportConstants.DATASOURCE_NAME%>" title="Select a datasource from list below">
@@ -57,6 +69,10 @@ EFGDisplayObject obj = null;
 		 		%>
     		 <input type="submit" value="Submit"/>
     	</form>
+    	<%} else {
+    	RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+		dispatcher.forward(request, response);
+    	}%>
   	</center>
   </body>
 </html>

@@ -78,6 +78,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			}
 			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
 			 String cssFile = "nantucketstyle.css";
+		    if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
 
 		//sort and iterate
 		%>

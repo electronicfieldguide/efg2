@@ -35,7 +35,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			String templateMatch ="List Template1";
 			String context = request.getContextPath();
 			String realPath = getServletContext().getRealPath("/");
-				String xslFileName = "nantucketSciNameSearchList.xsl";
+			String xslFileName = "nantucketSciNameSearchList.xsl";
 			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
 			StringBuffer fileName = new StringBuffer(realPath);
 			 fileName.append(File.separator);
@@ -78,6 +78,13 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			}
 			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
 			 String cssFile = "nantucketstyle.css";
+			 
+			 if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
+			 
 		%>
 		<title>Nantucket Search List Template</title>
 			<%

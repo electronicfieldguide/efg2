@@ -1,0 +1,20 @@
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
+<!-- $Id$ -->
+<project name="Tests" default="compile" basedir=".">
+	<property name="jars.home" value="../lib"/>
+	<property name="args" value=""/>
+	<!--
+	<property name="junit.home" value="C:\junit3.8.1"/>
+	-->
+	<path id="compile.class.path">
+		<fileset dir="${jars.home}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<target name="generate" depends="clean">
+		
+	</target>
+	<target name="clean">
+	
+	</target>
+</project>

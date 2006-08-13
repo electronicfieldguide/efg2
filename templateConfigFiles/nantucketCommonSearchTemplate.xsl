@@ -163,7 +163,7 @@
 	<xsl:template name="outputCommonRows">
 		<tr>
 			<td colspan="2" class="title">
-				<img align="left" alt="{$title}" title="{$title}" border="0" height="83" width="467" src="{$imagetitle}"/>
+				<img align="left" alt="{$title}" title="{$title}" border="0" src="{$imagetitle}"/>
 			</td>
 		</tr>
 		<tr>

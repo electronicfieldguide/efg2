@@ -31,7 +31,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
-import project.efg.servlets.efgImpl.EFGContextListener;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.templates.taxonPageTemplates.XslFileNamesType;
@@ -39,10 +38,6 @@ import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.templates.taxonPageTemplates.XslPageType;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGUniqueID;
-import project.efg.Imports.efgImportsUtil.LoggerUtils;
-
-import com.opensymphony.oscache.base.NeedsRefreshException;
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
  * This servlet receives input from author about configuration of a Taxon page
@@ -53,8 +48,6 @@ public class TaxonPageDefaultConfig {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static GeneralCacheAdministrator cacheAdmin = EFGContextListener.getCacheAdmin();
-
 
 	
 
@@ -67,7 +60,6 @@ public class TaxonPageDefaultConfig {
 	 */
 	public TaxonPageDefaultConfig(String realPath) {
 		this.realPath = realPath;
-
 	}
 
 	/**
@@ -107,14 +99,6 @@ public class TaxonPageDefaultConfig {
 			String displayName) {
 		String mute = "";
 		synchronized (mute) {
-			String key = oldDSName.toLowerCase();
-			try {
-				this.tps = 
-					(TaxonPageTemplates)cacheAdmin.getFromCache(key);
-			}
-			catch(Exception ee){
-				
-			}
 			
 			if(this.tps == null){
 				StringBuffer fileLocationBuffer = new StringBuffer();
@@ -138,7 +122,6 @@ public class TaxonPageDefaultConfig {
 			if(this.tps != null){
 				if(this.writeToFile(newDSName.toLowerCase())){
 					reloadTps(newDSName);
-					
 				}
 			}
 			if(this.tps != null){
@@ -162,10 +145,6 @@ public class TaxonPageDefaultConfig {
 					.toString());
 			this.tps = (TaxonPageTemplates) TaxonPageTemplates
 					.unmarshalTaxonPageTemplates(reader);
-			if(this.tps != null){
-	    		cacheAdmin.putInCache(newDSName.toLowerCase(),this.tps,EFGContextListener.templateFilesGroup);
-
-			}
 	}  catch (Exception e) {
 		}	
 	}
@@ -177,29 +156,8 @@ public class TaxonPageDefaultConfig {
 			return isDone;
 		}
 		String key = fileName.toLowerCase();
-
-		try {
-			this.tps = 
-				(TaxonPageTemplates)cacheAdmin.getFromCache(key);
-			
-		} catch (Exception ee) {
-		    try {
-		    	
-		    	isDone = this.createFile(key);
-		    	if(isDone){
-		    		cacheAdmin.putInCache(key,this.tps,EFGContextListener.templateFilesGroup);
-		    		this.tps = 
-						(TaxonPageTemplates)cacheAdmin.getFromCache(key);
-		    	}
-		    } catch (NeedsRefreshException nre) {	        
-		    	this.tps =(TaxonPageTemplates)nre.getCacheContent();
-		    	cacheAdmin.cancelUpdate(key);
-		    }
-		}
-		if(this.tps != null){
-			return true;
-		}
-		return isDone;
+		return this.createFile(key);
+		
 	}
 	private boolean writeToFile(String datasourceName) {
 		//log.debug("Real Path: " + this.realPath);
@@ -338,6 +296,9 @@ public class TaxonPageDefaultConfig {
 
 }
 // $Log$
+// Revision 1.1.2.3  2006/08/13 23:53:16  kasiedu
+// *** empty log message ***
+//
 // Revision 1.1.2.2  2006/08/09 18:55:24  kasiedu
 // latest code confimrs to what exists on Panda
 //

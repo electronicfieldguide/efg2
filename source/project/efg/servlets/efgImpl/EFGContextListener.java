@@ -50,7 +50,6 @@ import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
 import project.efg.Imports.efgImportsUtil.EFGUtils;
@@ -141,7 +140,7 @@ public class EFGContextListener implements ServletContextListener {
 		// Set an EFGServletInitializer instance which initializes the Database
 		// etc.
 		// We want to make sure it is a singleton
-		addConfiguredDatasources();
+		
 		createConfigFileMap();
 		EFGRDBImportUtils.init();
 		createTemplateObjectMap();
@@ -256,8 +255,8 @@ public class EFGContextListener implements ServletContextListener {
 		try {
 			servletContext.log("Context is being destroyed");
 			
-			servletContext.log("Writing TemplateObject Map");
-			writeTemplateObject();
+		
+			
 			servletContext.log("Clean up old xml files");
 			clean();
 			
@@ -454,13 +453,7 @@ public class EFGContextListener implements ServletContextListener {
      */
   
 
-	private void writeTemplateObject(){
-		String mutex ="";
-		synchronized (mutex) {
-				String mapLocation  = servletContext.getRealPath("/WEB-INF") + File.separator + EFGImportConstants.TEMPLATE_MAP_NAME;	
-				TemplateMapObjectHandler.writeTemplateObject(mapLocation);	
-		}
-	}
+	
 	/**
 	 * 
 	 */
@@ -501,9 +494,7 @@ public class EFGContextListener implements ServletContextListener {
 		fillSet(arr, path);
 	}
 
-	private  void addConfiguredDatasources() {
-		
-	}
+
 	private void clean() {
 		String fullPath = servletContext.getRealPath("/");
 		
@@ -651,6 +642,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.1.2.5  2006/08/13 23:53:15  kasiedu
+// *** empty log message ***
+//
 // Revision 1.1.2.4  2006/08/09 18:55:25  kasiedu
 // latest code confimrs to what exists on Panda
 //

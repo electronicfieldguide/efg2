@@ -84,6 +84,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 		    String cssFile = "taxonpagetemplate3.css";
 			int numberofImages=4;
 			int numberofCharacters=7;
+			
+			if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
 
 		%>	
 		<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />

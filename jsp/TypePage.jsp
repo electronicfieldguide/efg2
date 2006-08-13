@@ -8,16 +8,22 @@ project.efg.util.EFGDisplayObject
 " %>
 					
 <% 
+ 	String forwardPage="NoDatasource.jsp";
    String context = request.getContextPath();
 	boolean found = false;
-      ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
+    ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
 	EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
-	Iterator dsNameIter = listInter.getIterator(); 
-    String searchPageStr = context + "/SearchPage.jsp?pageType=option&displayFormat=HTML&displayName=";
-    String searchLists = context + "/search?displayFormat=HTML&searchType=lists&displayName=";
-  String searchPlates =context + "/search?displayFormat=HTML&searchType=plates&displayName=";
-String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";
-%>
+	boolean isEmpty = false;
+	if(listInter != null){
+		if(listInter.getCount() < 1){
+		isEmpty = true;
+		}
+	}
+	else{
+		isEmpty = true;
+	}
+	
+  %>
 	
 <html>
   <head>
@@ -28,7 +34,15 @@ String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";
     <h2 align="center">Search/Browse EFG Datasources</h2>
   <center>
       <table>
-		  <% while (dsNameIter.hasNext()) { %>
+		  <% 
+		  if(!isEmpty){
+		    Iterator dsNameIter = listInter.getIterator(); 
+		    String searchPageStr = context + "/SearchPage.jsp?pageType=option&displayFormat=HTML&displayName=";
+    		String searchLists = context + "/search?displayFormat=HTML&searchType=lists&displayName=";
+  			String searchPlates =context + "/search?displayFormat=HTML&searchType=plates&displayName=";
+			String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
+		  	while (dsNameIter.hasNext()) { 
+		  	%>
 		  <tr>
 			 <td>
 				<% 
@@ -40,18 +54,19 @@ String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";
 					String newSearchPlates =searchPlates+ displayName +  dsName + datasourceName;
 					String newSearchLists = searchLists+ displayName +  dsName + datasourceName;
 				 %>
-					<%=displayName%>
-
+				<%=displayName%>
 			 </td>
 			 <td>
 			 	 <a  href="<%=newSearchStr%>"  title="search datasource">
 					search
 				 </a>
-				  </td> <td>
-					 <a  href="<%=newSearchLists%>" title="browse a list of taxon names">
+			 </td> 
+			 <td>
+				 <a  href="<%=newSearchLists%>" title="browse a list of taxon names">
 					browse lists
 				 </a>
-				  </td> <td>
+			  </td> 
+			  <td>
 				 <a  href="<%=newSearchPlates%>"  title="browse  plates">
 					browse plates
 				 </a>	 
@@ -59,10 +74,16 @@ String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";
 		</tr>
 		<br/><br/>
 		  <% 
-		}
-			if(!found){%>
+		}//end while
+		if(!found){%>
 			<h3> No datasources uploaded by author(s)</h3>
 		<%}
+		}//end outer if 
+		else{
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+		dispatcher.forward(request, response);
+   
+		}
 		 %>
       </table>
 

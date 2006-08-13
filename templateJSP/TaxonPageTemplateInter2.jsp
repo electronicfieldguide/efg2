@@ -81,6 +81,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 
 			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
 		    String cssFile = "taxonpagetemplate2.css";
+		     if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
 		%>
 
 		<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />

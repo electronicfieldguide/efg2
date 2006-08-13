@@ -83,7 +83,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 		    String cssFile ="nantuckettaxonpage.css";
 		    File cssFiles = new File(realPath + File.separator +  EFGImportConstants.templateCSSDirectory);
 			File[] cssFileList = cssFiles.listFiles(); 
-
+			if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
 		%>
 
 		<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>

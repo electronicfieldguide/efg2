@@ -14,12 +14,12 @@
   </head>
   <body bgcolor="#ffffff">
   	<center>
-			<h3>You can use the following links to get directly to configured Search result Pages</h3>
+			<h3>You can use the following links to get directly to configured Search result Pages.Right-click the mouse on the link to copy (Control-Click for Mac)</h3>
 			<%
 				if(it != null){ %>
 					<table border="1">
 						<tr>
-							<th>Datasource</th><th>Template Name</th><th>URL</th>
+							<th>Datasource</th><th>Template Name</th>
 						</tr>
 						<%
 							while (it.hasNext()) {
@@ -33,7 +33,7 @@
 								}//end if
 								if((displayName != null) && (templateName != null) && (key != null)){%>
 						<tr>
-							<td><%=displayName%></td><td><%=templateName%></td><td><%=serverName + key%></td>
+							<td><%=displayName%></td><td><a href="<%=serverName + key%>"><%=templateName%></a></td>
 						</tr>
 								<%	
 								}//end inner if

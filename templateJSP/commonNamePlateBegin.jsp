@@ -13,6 +13,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 	<head>
 	<%@ include file="jspName.jsp" %>
 		<%
+			String forwardPage="NoDatasource.jsp";
             String guid =  (String)request.getAttribute(EFGImportConstants.GUID); 
 			
 			String uniqueName = (String)request.getAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
@@ -71,7 +72,13 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
 				isImagesExists = true;	
 			}
+		    if(!isTableExists){    
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
+			
 		%>
+		
 		
 	<title>Nantucket Search Plate Template </title>
 			<%

@@ -84,6 +84,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			int numberofImages=5;
 			int numberofListCharacters=10;
 			int numberofCharacters=5;
+			if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+				dispatcher.forward(request, response);
+		    }
 		%>
 
 		<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>

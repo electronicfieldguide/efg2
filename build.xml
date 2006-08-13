@@ -92,46 +92,52 @@ to compile/deploy/clean with:
 		<copy file="efg2.war" todir="${webapps.home}"/>
 	</target>
 	<target name="deployResources">
-			<mkdir dir="${deploy.home}"/>
-			<mkdir dir="${deploy.home}/EFGImages"/>
-				<mkdir dir="${deploy.home}/html"/>
-				<mkdir dir="${deploy.home}/css"/>
-				<mkdir dir="${deploy.home}/templateCSSDirectory"/>
-				<mkdir dir="${deploy.home}/js"/>
-				<mkdir dir="${deploy.home}/templateJavascriptDirectory"/>
-				<mkdir dir="${deploy.home}/templateJSP"/>
-				<mkdir dir="${deploy.home}/templateImagesDirectory"/>
-				<mkdir dir="${deploy.home}/templateConfigFiles"/>
-				<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
+		<mkdir dir="${deploy.home}"/>
+		<mkdir dir="${deploy.home}/EFGImages"/>
+		<mkdir dir="${deploy.home}/html"/>
+		<mkdir dir="${deploy.home}/css"/>
+		<mkdir dir="${deploy.home}/templateCSSDirectory"/>
+		<mkdir dir="${deploy.home}/js"/>
+		<mkdir dir="${deploy.home}/templateJavascriptDirectory"/>
+		<mkdir dir="${deploy.home}/templateJSP"/>
+		<mkdir dir="${deploy.home}/templateImagesDirectory"/>
+		<mkdir dir="${deploy.home}/templateConfigFiles"/>
+		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
 		<copy todir="${deploy.home}/templateImagesDirectory">
-					<fileset dir="${efg2.templateimages.home}"/>
-				</copy>
-				<copy todir="${deploy.home}/css">
-					<fileset dir="${efg2.css.home}"/>
-				</copy>
-				<copy todir="${deploy.home}/templateCSSDirectory">
-					<fileset dir="${efg2.templatecss.home}"/>
-				</copy>
-				<copy todir="${deploy.home}/js">
-					<fileset dir="${efg2.javascript.home}"/>
-				</copy>
-				<copy todir="${deploy.home}/templateJavascriptDirectory">
-					<fileset dir="${efg2.templatejavascript.home}"/>
-				</copy>
-					<copy todir="${deploy.home}">
-					<fileset dir="${efg2.jsp.home}"/>
-				</copy>
-				<copy todir="${deploy.home}">
-					<fileset dir="${efg2.jsp.home}"/>
-				</copy>
-				<copy todir="${deploy.home}/templateJSP">
-						<fileset dir="${efg2.templatejsp.home}"/>
-				</copy>
-				<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
-				<copy file="efg2.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
-				<copy todir="${deploy.home}/templateConfigFiles">
-					<fileset dir="templateConfigFiles"/>
-				</copy>	
+			<fileset dir="${efg2.templateimages.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/css">
+			<fileset dir="${efg2.css.home}"/>
+		</copy>
+		<copy todir="${deploy.home}">
+				<fileset dir="${efg2.public_html.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/html">
+			<fileset dir="${efg2.public_html.home}/html"/>
+		</copy>
+		<copy todir="${deploy.home}/templateCSSDirectory">
+			<fileset dir="${efg2.templatecss.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/js">
+			<fileset dir="${efg2.javascript.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateJavascriptDirectory">
+			<fileset dir="${efg2.templatejavascript.home}"/>
+		</copy>
+		<copy todir="${deploy.home}">
+			<fileset dir="${efg2.jsp.home}"/>
+		</copy>
+		<copy todir="${deploy.home}">
+			<fileset dir="${efg2.jsp.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateJSP">
+			<fileset dir="${efg2.templatejsp.home}"/>
+		</copy>
+		<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
+		<copy file="efg2.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
+		<copy todir="${deploy.home}/templateConfigFiles">
+			<fileset dir="templateConfigFiles"/>
+		</copy>	
 	</target>	
 	<target name="prepareDeploy" depends="deployEFGIcons, deployResources">
 		
