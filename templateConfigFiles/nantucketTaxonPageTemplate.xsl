@@ -148,9 +148,7 @@
 		<xsl:if test="$index &lt; $listsize">
 			<xsl:variable name="imageName" select="imageList:getImageName($myImageList, number($index))"/>
 			<xsl:variable name="caption" select="imageList:getImageCaption($myImageList, number($index))"/>
-			<xsl:variable name="src">
-				<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
-			</xsl:variable>
+		
 			<xsl:variable name="src">
 				<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
 			</xsl:variable>

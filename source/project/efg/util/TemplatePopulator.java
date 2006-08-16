@@ -36,15 +36,9 @@ public class TemplatePopulator implements EFGImportConstants{
 	{
 		String mutex="";
 		synchronized (mutex) {
-			if(guid == null){
-				//log.debug("Guid is null");
-				return null;
-			}
-			else{
-				//log.debug("Guid is: " + guid);
-			}
+			
 			String key = fileName + "_" + guid + "_" + itemType + "_" + dsName;
-			System.out.println("key: " + key);
+			
 			
 			Hashtable table = (Hashtable)tableStore.get(key);
 			
@@ -67,12 +61,12 @@ public class TemplatePopulator implements EFGImportConstants{
 		
 		TaxonPageTemplates tps = getTaxonPageTemplate(dsName);
 		if(tps == null){
-			//log.debug("tps is null");
+			
 			return null;
 		}
 		XslPage xslPage = getXSLPage(tps,guid,itemType,dsName);
 		if(xslPage != null){
-			//log.debug("xslPage is not null");
+			
 			return populateTable(xslPage);
 		}
 		return new Hashtable();
@@ -88,7 +82,7 @@ public class TemplatePopulator implements EFGImportConstants{
 		table.put(EFGImportConstants.ISDEFAULT_STR,isDefault+"");
 		
 		if(groups != null){
-			//log.debug("groups is not null");
+			
 			this.handleGroups(groups,table);
 		}
 		return table;
@@ -114,14 +108,17 @@ public class TemplatePopulator implements EFGImportConstants{
 			int groupRank = group.getRank();			
 			String groupLabel = group.getLabel();
 			String groupText = group.getText();
+			
 			String key = null;
 			String constructor =EFGImportConstants.COLON_SEPARATOR+  groupID + EFGImportConstants.COLON_SEPARATOR + groupRank;
 			if((groupLabel != null)&&(!groupLabel.trim().equals(""))){
 				key = EFGImportConstants.GROUP_LABEL + constructor;
+					
 				table.put(key,groupLabel);
 			}
 			if((groupText != null)&&(!groupText.trim().equals(""))){
 				key = EFGImportConstants.GROUP_TEXT_LABEL + constructor;
+				
 				table.put(key,groupText);
 			}
 			
@@ -227,9 +224,7 @@ public class TemplatePopulator implements EFGImportConstants{
 			LoggerUtilsServlet.logErrors(nre);
 			nre.printStackTrace();
 		}
-		if(ts == null){
-			System.out.println("TS is null inside getTaxonPageTemplate");
-		}
+		
 		return ts;
 	}
 }

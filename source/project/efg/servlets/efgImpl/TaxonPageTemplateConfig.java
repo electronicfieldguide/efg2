@@ -222,14 +222,14 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 			}
 			String currentValue = createGroup(groups, key, valuePair);
 			if(currentValue != null){
-				currentValue = currentValue.trim();
-			}
-			
-			if (field == null) {
-				if (!currentValue.equals("") && (currentValue.indexOf(".") == -1)) {
-					field = new EFGFieldObject();
-					field.setFieldName(key);
-					field.setFieldValue(currentValue);
+				currentValue = currentValue.trim();			
+				if (field == null) {
+					
+					if (!currentValue.equals("") && (currentValue.indexOf(".") == -1)) {
+						field = new EFGFieldObject();
+						field.setFieldName(key);
+						field.setFieldValue(currentValue);
+					}
 				}
 			}
 		}
@@ -560,12 +560,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 			key.setGroup(gt);
 			groups.addGroupsTypeItem(key);
 		}
-		//log.debug("ID: " + id);
-		if (gt == null) {
-			//log.debug("Group Type is null");
-		} else {
-			//log.debug("Group Type is not null");
-		}
+		
 		return gt;
 	}
 
@@ -611,28 +606,23 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 		String groupID = "";
 		String groupRank = "";
 		String characterRank = "";
-		//log.debug("Text: " + text);
-		//log.debug("key: " + key);
-		//String[] splits = key.split(":");
 		String[] splits = EFGImportConstants.colonPattern.split(key);
-		//log.debug("Splits.length: " + splits.length);
+	
 		if (splits.length == 0) {
-			//log.debug("Returning null because length is zero");
+			
 			return null;
 		}
 		identifier = splits[0];
 
 		if (splits.length > 1) {
 			groupID = splits[1];
-			//log.debug("GroupID: " + groupID);
+			
 		}
 		if (splits.length > 2) {
 			groupRank = splits[2];
-			//log.debug("GroupRank: " + groupRank);
 		}
 		if (splits.length > 3) {
 			characterRank = splits[3];
-			//log.debug("characterRank: " + characterRank);
 		}
 		if ("".equals(groupID)) {
 			//log.debug("GroupID is the empty string");

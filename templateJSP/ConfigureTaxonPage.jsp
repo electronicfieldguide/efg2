@@ -30,6 +30,8 @@ project.efg.util.EFGImportConstants
 				<option value="TaxonPageTemplate2.jsp">Taxon Page Template2</option>
 				<option value="TaxonPageTemplate3.jsp">Taxon Page Template3</option>
 				<option value="TaxonPageTemplate4.jsp">Taxon Page Template4</option>
+				<option value="MarshasTemplate.jsp">Taxon Page Template5</option>
+
     		</select>
     		<input type="hidden" name="<%=EFGImportConstants.DATASOURCE_NAME%>" value="<%=dsName%>"/>
     		<input type="hidden" name="<%=EFGImportConstants.DISPLAY_NAME%>" value="<%=displayName%>"/>
@@ -52,6 +54,10 @@ project.efg.util.EFGImportConstants
     		  <tr>
     			<td><a href="TaxonPageTemplate4.html" target="tp4">Taxon Page Template4</td>
     		</tr>
+  		<tr>
+    			<td><a href="TaxonPageTemplate5.html" target="tp4">Taxon Page Template5</td>
+    		</tr>
+
 
     	</table>
   	</center>
