@@ -177,11 +177,7 @@ public class ImportMenu extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(4, 1));
 
-		/*JButton addNewDatasourceBtn = new JButton(
-				EFGImportConstants.EFGProperties.getProperty(
-						"ImportMenu.addNewDatasourceBtn"
-						)
-						);*/
+	
 		JLabel addNewDatasourceLabel = new JLabel(
 				EFGImportConstants.EFGProperties.getProperty(
 						"ImportMenu.addNewDatasourceBtn"
@@ -200,11 +196,7 @@ public class ImportMenu extends JFrame {
 		deployImagesLabel.addMouseListener(new DeployImagesListener(
 				webappsDirectory.getImagesDirectory(), this));
 
-/*		JLabel helpLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn"));
-		helpLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn.tooltip"));
-		helpLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		helpLabel.addActionListener(new HelpListener());
-*/
+
 		JLabel aboutLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn"));
 		aboutLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn.tooltip"));
 		aboutLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -219,7 +211,6 @@ public class ImportMenu extends JFrame {
 		
 		panel.add(addNewDatasourceLabel);
 		panel.add(deployImagesLabel);
-		//panel.add(helpLabel);
 		panel.add(aboutLabel);
 		panel.add(exitLabel);
 		panel.setSize(200,100);
@@ -233,7 +224,7 @@ public class ImportMenu extends JFrame {
 		initHelp();
 			
 		JScrollPane htmlViewPane = new JScrollPane(htmlPane);
-		//btnPane.setColumnHeaderView(new JLabel("Test Me"));
+	
 		JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 						     btnPane, htmlViewPane);
 			
@@ -241,30 +232,6 @@ public class ImportMenu extends JFrame {
 		mainPane.setDividerLocation(200);
 		return mainPane;
 		
-		
-	/*	JScrollPane labelPane = new JScrollPane(panel);
-		labelPane.setAutoscrolls(false);
-		labelPane.setToolTipText("Drag and drop key here");
-		htmlPane = new JEditorPane();
-	    htmlPane.setEditable(false);
-	    
-	    initHelp();
-		
-		JScrollPane htmlViewPane = new JScrollPane(htmlPane);
-
-	 
-	      
-		JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				labelPane, htmlViewPane);
-		
-		
-		mainPane.setDividerLocation(300);
-		JPanel panelReturn = new JPanel();
-		panelReturn.add(mainPane, BorderLayout.CENTER);
-		
-		
-		
-		return panelReturn;*/
 	}
 
 	public void close() {
