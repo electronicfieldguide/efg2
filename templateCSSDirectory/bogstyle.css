@@ -129,6 +129,19 @@ font-color: #000000;
 font-style: italic;
 padding-bottom: 45px;
 }
+.scinameintext {
+font-size: 12px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+font-style: italic;
+}
+.assochead {
+font-size: 12px;
+font-weight: bold;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+}
 .scinameauth {
 font-size: 16px;
 font-weight: normal;
@@ -143,6 +156,25 @@ font-weight: bold;
 font-family: arial, helvetica, verdana, sans-serif;
 font-color: #000000;
 vertical-align: bottom;
+}
+ul {
+margin-left: 0px;
+padding-left: 0px;
+list-style-type: none;
+}
+li {
+margin-left: 0px;
+padding-left: 0px;
+padding-bottom: 5px;
+}
+a.simspp {
+color: #6f0c1e;
+font-weight: bold;
+}
+a.simspp:hover {
+color: #6f0c1e;
+text-decoration: underline;
+font-weight: bold;
 }
 img {
 margin-right: 5px;
