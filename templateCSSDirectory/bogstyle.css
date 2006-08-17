@@ -136,11 +136,12 @@ font-family: arial, helvetica, verdana, sans-serif;
 font-color: #000000;
 font-style: italic;
 }
-.assochead {
+.descriptivetext {
 font-size: 12px;
-font-weight: bold;
+font-weight: normal;
 font-family: arial, helvetica, verdana, sans-serif;
 font-color: #000000;
+font-style: normal;
 }
 .scinameauth {
 font-size: 16px;
@@ -170,11 +171,13 @@ padding-bottom: 5px;
 a.simspp {
 color: #6f0c1e;
 font-weight: bold;
+font-size: 12px;
 }
 a.simspp:hover {
 color: #6f0c1e;
 text-decoration: underline;
 font-weight: bold;
+font-size: 12px;
 }
 img {
 margin-right: 5px;
@@ -189,4 +192,29 @@ font-size: 10px;
 font-style: italic;
 font-family: arial, helvetica, verdana, sans-serif;
 font-color: #000000;
+}
+td.assochead {
+font-size: 12px;
+font-weight: bold;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+vertical-align: top;
+padding-bottom: 15px;
+padding-right: 5px;
+margin-top: 0px;
+}
+td.simspptext {
+font-size: 12px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+vertical-align: top;
+padding-bottom: 15px;
+margin-top: 0px;
+}
+table.simspp {
+margin-top: 0px;
+}
+.itemlist {
+padding-bottom: 4px;
 }

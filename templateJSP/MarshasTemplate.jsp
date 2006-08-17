@@ -742,14 +742,6 @@ String groupKey = null;
 					if(groupValue == null){
 						groupValue ="";
 					}
-		
-			/*		groupText = tp.getCurrentGroupText(name);
-					groupValue = (String)groupTable.get(groupText );
-					if(groupValue == null){
-						groupValue ="";
-					}*/
-						
-
 			
 				groupLabel= tp.getCurrentGroupLabel(name);
 				groupLabelValue = (String)groupTable.get(groupLabel);
@@ -765,7 +757,23 @@ String groupKey = null;
 							<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>		   
 				   </td>
 				   <td class="data">		
-				   
+				   <table class="simspp">
+				
+				   <!--
+				   <tr>
+
+<td class="assochead">
+Shrubs:
+</td>
+<td class="simspptext">
+<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Leatherleaf">Leatherleaf</a><span class="scinameintext"> (Chamaedaphne calyculata)</span></div>
+<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Sheep Laurel">Sheep Laurel</a><span class="scinameintext"> (Kalmia angustifolia)</span></div>
+<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Swamp Azalea">Swamp Azalea</a><span class="scinameintext"> (Rhododendron viscosum)</span></div>
+<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Sweet Gale">Sweet Gale</a><span class="scinameintext"> (Myrica gale)</span>
+
+</td>
+</tr>
+-->
 				<%
 				
 					for(int zz2 = 0; zz2 < efgList.size(); zz2++){
@@ -788,9 +796,12 @@ String groupKey = null;
 						characterLabelValue ="list";
 					}
 
-				%>			
-						<input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/>
+				%>	
+				<tr>
+						<td class="assochead"><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></td>
 						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+					<td class="simspptext">
+<div class="itemlist">
 
 						<select name="<%=name%>"  title="Select A Field From List" style="width:140px;">              														
 						<%
@@ -818,12 +829,15 @@ String groupKey = null;
 							}//end while	
 						%>
 						</select> 
-				
+						</div>
+			</td>
+							</tr>		
 						<%}%>
-					
+						
+					</table>
 					</td>
 					<td class="images">
-					<%						name =tp.getCharacter(isOld,isOld);
+					<%	name =tp.getCharacter(isOld,isOld);
 						 if(isImagesExists) {
 							fieldValue = (String)groupTable.get(name);
 							if(fieldValue == null){

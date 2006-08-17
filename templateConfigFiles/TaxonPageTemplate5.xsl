@@ -181,7 +181,6 @@
 	</xsl:template>
 	<xsl:template name="listsGroup">
 		<xsl:param name="taxonEntry"/>
-		
 		<xsl:for-each select="$listsGroup">
 			<xsl:sort select="@id" data-type="number"/>
 			<xsl:variable name="list" select="characterValue[@label='list']"/>
@@ -197,24 +196,41 @@
 						</xsl:call-template>
 					</td>
 					<td class="data">
-						<ul>
+						<table class="simspp">
 							<xsl:for-each select="$list">
 								<xsl:sort select="@id" data-type="number"/>
 								<xsl:variable name="caption" select="@text"/>
-								<li>
-									<span class="assochead">
-										<xsl:if test="not(string($caption))=''">
-											<xsl:value-of select="concat($caption,': ')"/>
-										</xsl:if>
-									</span>
-									<xsl:call-template name="outputRowData">
-										<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
-										<xsl:with-param name="fieldName" select="@value"/>
-										<xsl:with-param name="fieldLabel" select="$caption"/>
-									</xsl:call-template>
-								</li>
+								<xsl:if test="count(@value) &gt; 0">
+									<xsl:variable name="isital">
+										<xsl:choose>
+											<xsl:when test="not(string($caption))=''">
+												<xsl:value-of select="'true'"/>
+											</xsl:when>
+											<xsl:otherwise><xsl:value-of select="''"/></xsl:otherwise>
+											
+										</xsl:choose>
+									</xsl:variable>
+									
+										<xsl:variable name="fname" select="@value"/>
+									
+									<tr>
+										<td class="assochead">
+											<xsl:if test="not(string($caption))=''">
+												<xsl:value-of select="concat($caption,': ')"/>
+											</xsl:if>
+										</td>
+										<td class="simspptext">
+											<xsl:if test="count($taxonEntry/EFGLists[@name=$fname]) &gt; 0">
+												<xsl:call-template name="outputresourcelist">
+													<xsl:with-param name="efglists" select="$taxonEntry/EFGLists[@name=$fname]"/>
+													<xsl:with-param name="isital" select="$isital"/>
+												</xsl:call-template>
+											</xsl:if>
+										</td>
+									</tr>
+								</xsl:if>
 							</xsl:for-each>
-						</ul>
+						</table>
 					</td>
 					<td class="images">
 						<xsl:for-each select="$image">
@@ -232,22 +248,18 @@
 	</xsl:template>
 	<xsl:template name="outputresourcelist">
 		<xsl:param name="efglists"/>
+		<xsl:param name="isital"/>
 		<xsl:for-each select="$efglists/EFGList">
 			<xsl:variable name="resourcelink">
 				<xsl:if test="not(string(@resourceLink))=''">
 					<xsl:value-of select="@resourceLink"/>
 				</xsl:if>
 			</xsl:variable>
-			<xsl:variable name="comma">
-				<xsl:if test="position() &gt; 1">
-					<xsl:value-of select="', '"/>
-				</xsl:if>
-			</xsl:variable>
 			<xsl:call-template name="outputList">
 				<xsl:with-param name="fieldValue" select="."/>
 				<xsl:with-param name="resourcelink" select="$resourcelink"/>
 				<xsl:with-param name="annotation" select="@annotation"/>
-				<xsl:with-param name="comma" select="$comma"/>
+				<xsl:with-param name="isital" select="$isital"/>
 			</xsl:call-template>
 		</xsl:for-each>
 	</xsl:template>
@@ -255,7 +267,10 @@
 		<xsl:param name="fieldValue"/>
 		<xsl:param name="resourcelink"/>
 		<xsl:param name="annotation"/>
-		<xsl:param name="comma"/>
+		<xsl:param name="isital"/>
+		<xsl:variable name="annot">
+			<xsl:value-of select="normalize-space($annotation)"/>
+		</xsl:variable>
 		<xsl:if test="not(string($fieldValue))=''">
 			<xsl:choose>
 				<xsl:when test="not(string($resourcelink))=''">
@@ -269,23 +284,31 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-					<xsl:value-of select="$comma"/>
-					<a href="{$url}" class="simspp">
-						<xsl:value-of select="$fieldValue"/>
-					</a>
+					<div class="itemlist">
+						<a href="{$url}" class="simspp">
+							<xsl:value-of select="$fieldValue"/>
+						</a>
+						<xsl:if test="not(string($annot))=''">
+							<xsl:choose>
+								<xsl:when test="not(string($isital))=''">
+									<span class="scinameintext">
+										<xsl:value-of select="concat(' ',$annot)"/>
+									</span>
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="concat(' ',$annot)"/>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:if>
+					</div>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat($comma,$fieldValue)"/>
+					<xsl:value-of select="$fieldValue"/>
+					<xsl:if test="not(string($annot))=''">
+						<xsl:value-of select="$annot"/>
+					</xsl:if>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:variable name="annot">
-				<xsl:value-of select="normalize-space($annotation)"/>
-			</xsl:variable>
-			<xsl:if test="not(string($annot))=''">
-				<span class="scinameintext">
-					<xsl:value-of select="concat(' ',$annot)"/>
-				</span>
-			</xsl:if>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template name="outputcharacter">
