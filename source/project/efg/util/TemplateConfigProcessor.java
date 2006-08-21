@@ -89,7 +89,7 @@ public class TemplateConfigProcessor {
 					return null;
 				}
 				String templateName = this.dsName + EFGImportConstants.XML_EXT;
-				System.out.println("Template Name: " + templateName);
+				//System.out.println("Template Name: " + templateName);
 				if(templateName != null){
 					ts = (TaxonPageTemplates)cacheAdmin.getFromCache(templateName.toLowerCase());
 				}

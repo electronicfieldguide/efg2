@@ -31,57 +31,50 @@
  */
 package project.efg.Imports.efgImpl;
 
-import javax.swing.tree.DefaultMutableTreeNode;
-
 import org.apache.log4j.Logger;
 
+import project.efg.Imports.efgInterface.ChoiceCommandAbstract;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
-import project.efg.Imports.efgInterface.EFGDatasourceObjectStateInterface;
+import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
+import project.efg.Imports.efgInterface.ImportBehavior;
+import project.efg.Imports.factory.ImportBehaviorFactory;
 import project.efg.util.EFGImportConstants;
 
 /**
  * @author kasiedu
  *
  */
-public class NeutralStateObject implements 
-EFGDatasourceObjectStateInterface {
-	static Logger log = null;
-
-	
+public class ChoiceCommandReplaceImpl extends ChoiceCommandAbstract {
+	static Logger log;
 	static {
 		try {
-			log = Logger.getLogger(NeutralStateObject.class);
+			log = Logger.getLogger(ChoiceCommandAbstract.class);
 		} catch (Exception ee) {
 		}
 	}
-
-	public NeutralStateObject(){
+	/**
+	 * 
+	 */
+	public ChoiceCommandReplaceImpl() {
+		super();
+		log.debug("Creating " + this.getClass().getName());
 		
 	}
 	/* (non-Javadoc)
-	 * @see project.efg.Imports.efgInterface.EFGDatasourceObjectStateInterface#handleState(project.efg.Imports.efgInterface.EFGDatasourceObjectInterface, javax.swing.tree.DefaultMutableTreeNode)
+	 * @see project.efg.Imports.efgInterface.ChoiceCommandAbstract#createImportBehavior(project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface, project.efg.Imports.efgInterface.EFGDatasourceObjectInterface, java.lang.String)
 	 */
-	public void handleState(EFGDatasourceObjectInterface obj,
-			DefaultMutableTreeNode root) {
-		StringBuffer message = new StringBuffer(obj.getDataName().toString());
-		message.append(" ");
-	message.append(EFGImportConstants.EFGProperties.
-				getProperty("SynopticKeyTransferHandler.update.neutral"));
-		log.debug(message.toString());
-	/*	JOptionPane.showMessageDialog(null, message.toString(),
-				EFGImportConstants.
-				EFGProperties.getProperty(
-				"SynopticKeyTransferHandler.add.neutral.title"),
-				JOptionPane.INFORMATION_MESSAGE);*/
-		//do joption stuff here
+	public ImportBehavior createImportBehavior(
+			EFGDatasourceObjectListInterface lists, 
+			EFGDatasourceObjectInterface obj 
+			) {
+		String behaviorType =
+			EFGImportConstants.EFGProperties.
+			getProperty("importReplaceBehavior");
+			log.debug("BehaviorType: " + behaviorType);
+			return ImportBehaviorFactory.getImportBehavior(
+				lists,
+				obj, 
+				behaviorType
+				);
 	}
-	/* (non-Javadoc)
-	 * @see project.efg.Imports.efgInterface.EFGDatasourceObjectStateInterface#isSuccess()
-	 */
-	public boolean isSuccess() {
-		
-		return true;
-	}
-	
-	
 }

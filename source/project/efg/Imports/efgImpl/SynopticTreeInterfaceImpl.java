@@ -26,7 +26,6 @@ import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectStateInterface;
 import project.efg.Imports.efgInterface.SynopticKeyTreeInterface;
 import project.efg.Imports.factory.EFGDatasourceObjectFactory;
-import project.efg.util.EFGImportConstants;
 
 /**
  * @author kasiedu
@@ -94,9 +93,9 @@ public class SynopticTreeInterfaceImpl extends SynopticKeyTreeInterface {
 		EFGDatasourceObjectStateInterface state = new NeutralStateObject();
 		if (choiceCMD == null) {
 			log.debug("Command chosen is null !!!");
-			JOptionPane.showMessageDialog(frame,
+			/*JOptionPane.showMessageDialog(frame,
 					EFGImportConstants.EFGProperties
-							.getProperty("SynopticKeyTree.terminateImport"));
+							.getProperty("SynopticKeyTree.terminateImport"));*/
 		} else {
 			log.debug("Command chosen: " + choiceCMD.getClass().getName());
 			state = choiceCMD.execute(this.lists, obj);

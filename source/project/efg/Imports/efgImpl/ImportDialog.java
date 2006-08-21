@@ -86,6 +86,8 @@ public class ImportDialog extends JDialog {
 		EFGImportConstants.EFGProperties.getProperty("ImportDialog.importUseMetadataCmd");
 	final String updateCommand =
 		EFGImportConstants.EFGProperties.getProperty("ImportDialog.updateCmd");
+	final String replaceCommand =
+		EFGImportConstants.EFGProperties.getProperty("ImportDialog.replaceCmd");
 	
 	final JButton closeButton = new JButton(
 			EFGImportConstants.EFGProperties.getProperty("ImportDialog.closeBtn")
@@ -96,7 +98,7 @@ public class ImportDialog extends JDialog {
 	
 	JFrame frame = null;
 	final ButtonGroup group = new ButtonGroup();
-	final int numButtons = 3;
+	final int numButtons = 4;
 	ChoiceCommandAbstract choiceCMD;
 	
 	public ImportDialog(JFrame frame) {
@@ -128,7 +130,7 @@ public class ImportDialog extends JDialog {
 
 		this.getContentPane().add(frequentPanel, BorderLayout.CENTER);
 		setLocationRelativeTo(frame);
-		setSize(400, 200);
+		setSize(500, 300);
 	}
 
 	/**
@@ -170,6 +172,12 @@ public class ImportDialog extends JDialog {
 		radioButtons[2]
 		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2.tooltip"));
 		radioButtons[2].setActionCommand(updateCommand);
+		
+		
+		radioButtons[3] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.3"));
+		radioButtons[3]
+		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.3.tooltip"));
+		radioButtons[3].setActionCommand(replaceCommand);
 
 		for (int i = 0; i < numButtons; i++) {
 			group.add(radioButtons[i]);
@@ -216,7 +224,7 @@ public class ImportDialog extends JDialog {
 		// Create and set up the content pane.
 		ImportDialog newContentPane = new ImportDialog(null);
 		newContentPane.show();
-		////log.debug(newContentPane.getSelected() + "");
+		
 	}
 	public static void main(String[] args) {
 		createAndShowGUI();
@@ -236,8 +244,7 @@ public class ImportDialog extends JDialog {
 				else{
 				choiceCMD = 
 					ImportCommandFactory.getImportCommand(command);
-				//log.debug("Command created by Factory is: " +
-					//	choiceCMD.getClass().getName());
+				
 				}
 				this.dialog.dispose();
 			}

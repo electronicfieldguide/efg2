@@ -49,6 +49,7 @@ import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
+import project.efg.Imports.efgInterface.ImportBehavior;
 import project.efg.Imports.factory.DatabaseAbstractFactory;
 import project.efg.Imports.factory.EFGDataExtractorFactory;
 import project.efg.Imports.factory.EFGDatasourceObjectFactory;
@@ -113,7 +114,7 @@ public class EFGDatasourceObjectListImpl extends
 	 * @return true if this datasource was successfully added, false otherwise
 	 */
 	public boolean addEFGDatasourceObject(
-			EFGDatasourceObjectInterface datasource, boolean isUpdate) {
+			EFGDatasourceObjectInterface datasource, ImportBehavior isUpdate) {
 
 		try {
 	

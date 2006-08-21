@@ -31,6 +31,7 @@ package project.efg.servlets.efgServletsUtil;
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
+import project.efg.Imports.efgInterface.ImportBehavior;
 
 /**
  * @author kasiedu
@@ -74,7 +75,7 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 	/* (non-Javadoc)
 	 * @see project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface#addEFGDatasourceObject(project.efg.Imports.efgInterface.EFGDatasourceObjectInterface, boolean)
 	 */
-	public boolean addEFGDatasourceObject(EFGDatasourceObjectInterface datasource, boolean isUpdate) {
+	public boolean addEFGDatasourceObject(EFGDatasourceObjectInterface datasource, ImportBehavior  isUpdate) {
 		try {
 			int find = this.findObjectIndex(datasource.getDisplayName());
 			if(find > -1){
@@ -109,4 +110,6 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 		}
 		return false;
 	}
+
+	
 }

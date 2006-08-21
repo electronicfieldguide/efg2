@@ -27,6 +27,8 @@
  */
 package project.efg.servlets.rdb;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -416,27 +418,7 @@ public class SQLQuery extends EFGHTTPQuery {
 		return false;
 	}
 
-	/*protected Hashtable getNameMapping(String metadataSource) {
-		Hashtable mapping = new Hashtable();
-
-		String metaQuery = "SELECT NAME,LEGALNAME FROM " + metadataSource;
-		//log.debug("Query: " + metaQuery);
-		try {
-			List lists = this.queryExecutor.executeQueryForList(metaQuery, 2);
-			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
-				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
-						.next();
-				String name = queue.getObject(0);
-				String legalName = queue.getObject(1);
-				mapping.put(name, legalName);
-			}
-
-		} catch (Exception mex) {
-			//log.error(mex.getMessage());
-			LoggerUtilsServlet.logErrors(mex);
-		}
-		return mapping;
-	}*/
+	
 
 	protected Set getCategorical(String metadataSource) {
 		Set set = new HashSet();
@@ -492,8 +474,11 @@ public class SQLQuery extends EFGHTTPQuery {
 			//log.debug("States: " + states);
 	
 			if (states != null) {
-			
-			
+				/*StringWriter writer = new StringWriter();
+				this.filter.filter(new StringReader(states),
+						writer);
+				states = writer.getBuffer().toString();
+			*/
 				TaxonEntryTypeItem taxonEntryItem = itemBuilder
 						.buildTaxonEntryItem(paramValue,
 								states, efgObject);

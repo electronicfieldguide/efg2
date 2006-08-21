@@ -180,9 +180,7 @@ public class SynopticKeyTreeMain extends JDialog  {
 		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("SynopticKeyTreeMain.deleteBtn.tooltip"));
 		btnPanel.add(deleteBtn);
 
-		/*helpBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("SynopticKeyTreeMain.helpBtn.tooltip"));
-		helpBtn.addActionListener(new HelpListener());
-		btnPanel.add(helpBtn);*/
+		
 
 		doneBtn.addActionListener(new DoneListener(this));
 		doneBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty(

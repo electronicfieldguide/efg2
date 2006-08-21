@@ -29,6 +29,7 @@ import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgInterface.CSV2DatabaseAbstract;
 import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
+import project.efg.Imports.efgInterface.ImportBehavior;
 import project.efg.Imports.rdb.CSV2Database;
 
 public class DatabaseAbstractFactory{
@@ -39,12 +40,7 @@ public class DatabaseAbstractFactory{
  * @param dbObject - The dbObject
  * @return CSV2DatabaseAbstract 
  */
-	public synchronized static CSV2DatabaseAbstract 
-	getDatabaseObject(EFGDatasourceObjectInterface datasource, 
-			EFGDataExtractorInterface dataExtractor,
-			DBObject dbObject) {
-		return getDatabaseObject(datasource,dataExtractor,dbObject,false);
-	}
+	
 /**
  * 
  * @param datasource
@@ -57,7 +53,7 @@ public class DatabaseAbstractFactory{
 	getDatabaseObject(EFGDatasourceObjectInterface datasource,
 			EFGDataExtractorInterface dataExtractor,
 			DBObject dbObject,
-			boolean isUpdate) {
+			ImportBehavior isUpdate) {
 		return new CSV2Database(datasource,dataExtractor,dbObject,isUpdate);
 	}
 

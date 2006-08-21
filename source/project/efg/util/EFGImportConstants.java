@@ -28,10 +28,13 @@ import java.util.regex.Pattern;
  * USA
  */
 public interface EFGImportConstants {
+	String DEFAULT_PLATES_DISPLAY = "Thumbnails";
+	String DEFAULT_LISTS_DISPLAY = "Text List";
 	String KEY_METADATA_HELP = "/help/metadataHelp.html";
 	String MAIN_DEPLOY_HELP="/help/mainDeployHelp.html";
 	String IMAGE_DEPLOY_HELP="/help/imagesDeployHelp.html";
 	String KEYTREE_DEPLOY_HELP="/help/keysDeployHelp.html";
+	String THUMBS_FILE_NAME = "properties/imagesproperties.dat";
 	String JSP_NAME = "jsp";
 	String TEMPLATE_UNIQUE_NAME="templateUniqueName";
 	String GUID="guid";
@@ -41,6 +44,7 @@ public interface EFGImportConstants {
 	String templateCSSDirectory="templateCSSDirectory";
 	String templateJavascriptDirectory="templateJavascriptDirectory";
 	String ITEMTYPE ="efgItemtype";
+	int NUMBER_OF_TAXON_ON_PAGE=100;
 	int TEMPLATE_IMAGES_DEFAULT_SIZE=1000000;
 	int TEMPLATE_CSS_DEFAULT_SIZE=1000000;
 	int TEMPLATE_JAVASCRIPT_DEFAULT_SIZE=1000000;

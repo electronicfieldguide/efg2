@@ -44,14 +44,11 @@ public abstract class CSV2DatabaseAbstract {
 	protected DBObject dbObject;
 	protected EFGDatasourceObjectInterface datasource;
 	protected EFGDataExtractorInterface dataExtractor;
-	protected boolean isUpdate = false;
+	protected ImportBehavior isUpdate;
 	
 	
 
-	public CSV2DatabaseAbstract(EFGDatasourceObjectInterface obj,
-			EFGDataExtractorInterface dataExtractor, DBObject dbObject) {
-		this(obj, dataExtractor,dbObject,false);
-	}
+	
 
 	/**
 	 * @param datasource -
@@ -102,7 +99,7 @@ public abstract class CSV2DatabaseAbstract {
 	 */
 	public CSV2DatabaseAbstract(EFGDatasourceObjectInterface datasource,
 			EFGDataExtractorInterface dataExtractor,DBObject dbObject,
-			boolean isUpdate) {
+			ImportBehavior isUpdate) {
 		this.dataExtractor = dataExtractor;
 		this.datasource = datasource;
 		this.isUpdate = isUpdate;
@@ -147,7 +144,7 @@ public abstract class CSV2DatabaseAbstract {
 				String title = headers[i];
 				
 				String newTitle = EFGUtils.encodeToJavaName(title);
-				meta[i] = newTitle.trim();
+				meta[i] = newTitle.trim().toLowerCase();
 			}
 			return meta;
 		} catch (Exception ee) {

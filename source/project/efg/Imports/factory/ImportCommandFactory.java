@@ -47,6 +47,8 @@ public class ImportCommandFactory {
 		EFGImportConstants.EFGProperties.getProperty("ImportDialog.importUseMetadataCmd");
 	final static String updateCommand =
 		EFGImportConstants.EFGProperties.getProperty("ImportDialog.updateCmd");
+	final static String replaceCommand =
+		EFGImportConstants.EFGProperties.getProperty("ImportDialog.replaceCmd");
 	
 	static Logger log;
 	static {
@@ -67,7 +69,10 @@ public class ImportCommandFactory {
 		} else if (updateCommand.equalsIgnoreCase(command)) {
 			selected =
 				EFGImportConstants.EFGProperties.getProperty("importUpdateCommand");
-		} else {
+		}  else if (replaceCommand.equalsIgnoreCase(command)) {
+			selected =
+				EFGImportConstants.EFGProperties.getProperty("importReplaceCommand");
+		}else {
 			log.debug("No command was selected");
 			return null;
 			}

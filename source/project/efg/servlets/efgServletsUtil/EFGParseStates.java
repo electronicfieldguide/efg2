@@ -29,6 +29,8 @@ package project.efg.servlets.efgServletsUtil;
 
 
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.regex.Pattern;
 
 import project.efg.servlets.efgInterface.OperatorInterface;
@@ -157,7 +159,16 @@ public class EFGParseStates {
 		
 	}*/
 	private String unicode2Ascii(String states){
-	
+		/*try{
+		
+		StringWriter writer = new StringWriter();
+		this.filter.filter(new StringReader(states),
+				writer);
+			states = writer.getBuffer().toString();
+		}
+		catch(Exception ee){
+			
+		}*/
 			return states;
 	}
 	public  EFGParseObjectList parseStates(String separator,

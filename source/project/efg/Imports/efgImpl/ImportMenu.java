@@ -84,10 +84,10 @@ public class ImportMenu extends JFrame {
 	private EFGWebAppsDirectoryInterface webappsDirectory;
 
 	final public static Hashtable imageCacheTable = new Hashtable();
-	 private static GeneralCacheAdministrator cacheAdmin;
+	private static GeneralCacheAdministrator cacheAdmin;
 		
-	 private JEditorPane htmlPane;
-		private URL helpURL;
+	private JEditorPane htmlPane;
+	private URL helpURL;
 	private DBObject dbObject;
 
 	static Logger log = null;
@@ -144,14 +144,11 @@ public class ImportMenu extends JFrame {
 		}
 	
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(600, 400);
+		this.setSize(650, 450);
 		this.setContentPane(this.addPanel());
 		this.setResizable(false);
 		this.setVisible(true);
-		/*JComponent newContentPane = this.addPanel();
-		
-		setContentPane(newContentPane);*/
-		
+	
 	} // ImportMenu constructor
 	 private void initHelp() {
 			
@@ -175,7 +172,7 @@ public class ImportMenu extends JFrame {
 }
 	private JSplitPane addPanel() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new GridLayout(4, 1));
+		panel.setLayout(new GridLayout(5, 1));
 
 	
 		JLabel addNewDatasourceLabel = new JLabel(
@@ -196,7 +193,7 @@ public class ImportMenu extends JFrame {
 		deployImagesLabel.addMouseListener(new DeployImagesListener(
 				webappsDirectory.getImagesDirectory(), this));
 
-
+	
 		JLabel aboutLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn"));
 		aboutLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn.tooltip"));
 		aboutLabel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -207,13 +204,14 @@ public class ImportMenu extends JFrame {
 		exitLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		exitLabel.addMouseListener(new ExitListener(this));
 		
-		//panel.setBackground(Color.lightGray);
+		
 		
 		panel.add(addNewDatasourceLabel);
 		panel.add(deployImagesLabel);
+		
 		panel.add(aboutLabel);
 		panel.add(exitLabel);
-		panel.setSize(200,100);
+		panel.setSize(270,200);
 		
 		JScrollPane btnPane = new JScrollPane(panel);
 		btnPane.setAutoscrolls(false);
@@ -229,7 +227,7 @@ public class ImportMenu extends JFrame {
 						     btnPane, htmlViewPane);
 			
 		
-		mainPane.setDividerLocation(200);
+		mainPane.setDividerLocation(250);
 		return mainPane;
 		
 	}
@@ -254,8 +252,7 @@ public class ImportMenu extends JFrame {
 		}
 		 public void mouseClicked(MouseEvent e) {
 			 this.handleInput();
-	           /* String text = ((JLabel)e.getComponent()).getText();
-	            System.out.println("You clicked " + text + "!");*/
+	         
 	        }
 
 		/**
@@ -318,8 +315,7 @@ public class ImportMenu extends JFrame {
 		
 		 public void mouseClicked(MouseEvent e) {
 			 this.handleInput();
-	           /* String text = ((JLabel)e.getComponent()).getText();
-	            System.out.println("You clicked " + text + "!");*/
+	        
 	        }
 	}
 
@@ -333,8 +329,7 @@ public class ImportMenu extends JFrame {
 	
 		 public void mouseClicked(MouseEvent e) {
 			 this.handleInput();
-	           /* String text = ((JLabel)e.getComponent()).getText();
-	            System.out.println("You clicked " + text + "!");*/
+	         
 	        }
 		/**
 		 * 
@@ -368,8 +363,7 @@ public class ImportMenu extends JFrame {
     
     	 public void mouseClicked(MouseEvent e) {
 			 this.handleInput();
-	           /* String text = ((JLabel)e.getComponent()).getText();
-	            System.out.println("You clicked " + text + "!");*/
+	         
 	        }
 
 		/**
@@ -380,6 +374,7 @@ public class ImportMenu extends JFrame {
     		about.show();		
 		}
     }
+    
 	public static void main(String[] args) {
 	String catHome = "C:\\Program Files\\Apache Software Foundation\\Tomcat 5.0";
 	LoggerUtils utils = new LoggerUtils();

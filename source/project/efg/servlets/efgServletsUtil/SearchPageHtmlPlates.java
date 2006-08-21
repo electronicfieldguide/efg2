@@ -141,6 +141,9 @@ public class SearchPageHtmlPlates extends XSLTObjectInterface {
 					LoggerUtilsServlet.logErrors(eee);
 				}
 			}
+			else{
+				//System.out.println("First Field is null");
+			}
 			
 		
 		

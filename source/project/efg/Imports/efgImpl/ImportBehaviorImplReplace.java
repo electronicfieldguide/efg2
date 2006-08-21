@@ -45,18 +45,18 @@ import project.efg.util.EFGImportConstants;
  * @author kasiedu
  *
  */
-public class ImportBehaviorImplUpdate extends ImportBehavior {
+public class ImportBehaviorImplReplace extends ImportBehavior {
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(ImportBehaviorImplUpdate.class);
+			log = Logger.getLogger(ImportBehaviorImplReplace.class);
 		} catch (Exception ee) {
 		}
 	}
 	/**
 	 * 
 	 */
-	public ImportBehaviorImplUpdate(EFGDatasourceObjectListInterface lists,
+	public ImportBehaviorImplReplace(EFGDatasourceObjectListInterface lists,
 			EFGDatasourceObjectInterface obj) {
 		super(lists, obj);
 		

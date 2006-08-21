@@ -87,7 +87,7 @@ public class ApplyXSLInterface {
 				Reader reader = new StringReader(writer.getBuffer().toString());			
 				return new StreamSource(reader);
 			} catch (Exception je) {
-				EFGUtils.log("error on jdom to w3c dom conversion on xml source");
+				//EFGUtils.log("error on jdom to w3c dom conversion on xml source");
 				LoggerUtilsServlet.logErrors(je);
 			}
 			return null;
