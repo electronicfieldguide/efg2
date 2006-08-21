@@ -1,6 +1,7 @@
 @echo off
 
 
+
 set LOG4J=log4j-1.2.8.jar
 set OSCACHE=oscache-2.3.jar
 set CASTOR=castor-0.9.5.2.jar
@@ -22,7 +23,8 @@ set cat=%CATALINA_HOME%
 
 echo %cat%
 
-java -classpath "%CLASSPATH%" project/efg/Imports/efgImpl/ImportMenu
+
+java -classpath "%CLASSPATH%" project/efg/tests/DBTests
 
 ECHO.
 
