@@ -26,10 +26,11 @@ project.efg.util.EFGImportConstants
   		<form name="configure" action="Redirect2Template.jsp">
   			Select a template to configure for your Datasource:
       		<select name="<%=EFGImportConstants.TEMPLATE_NAME%>" title="Select a template from list below">
-				<option value="TaxonPageTemplateBegin1.jsp">Taxon Page Template1</option>
-				<option value="TaxonPageTemplateBegin2.jsp">Taxon Page Template2</option>
-				<option value="TaxonPageTemplateBegin3.jsp">Taxon Page Template3</option>
-				<option value="TaxonPageTemplateBegin4.jsp">Taxon Page Template4</option>
+				<option value="TaxonPageTemplate1Begin.jsp">Taxon Page Template1</option>
+				<option value="TaxonPageTemplate2Begin.jsp">Taxon Page Template2</option>
+				<option value="TaxonPageTemplate3Begin.jsp">Taxon Page Template3</option>
+				<option value="TaxonPageTemplate4Begin.jsp">Taxon Page Template4</option>
+				<option value="MarshasTemplateBegin.jsp">Taxon Page Template5</option>
     		</select>
     		<input type="hidden" name="<%=EFGImportConstants.DATASOURCE_NAME%>" value="<%=dsName%>"/>
     		<input type="hidden" name="<%=EFGImportConstants.DISPLAY_NAME%>" value="<%=displayName%>"/>
@@ -51,6 +52,9 @@ project.efg.util.EFGImportConstants
     		</tr>
     		  <tr>
     			<td><a href="TaxonPageTemplate4.html" target="tp4">Taxon Page Template4</td>
+    		</tr>
+    		  <tr>
+    			<td><a href="TaxonPageTemplate5.html" target="tp5">Taxon Page Template5</td>
     		</tr>
 
     	</table>

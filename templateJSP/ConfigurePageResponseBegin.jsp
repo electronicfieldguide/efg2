@@ -35,7 +35,7 @@ java.util.Enumeration
 %>
 <html>
 	<head>
-	<title><%=list.size()%></title>
+	<title>Configure page for beginners</title>
 		<script type="text/javascript" language="JavaScript">
 			<!--
 			var fActiveMenu = false;

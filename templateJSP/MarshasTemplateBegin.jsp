@@ -48,6 +48,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			String fieldName = null;
 			String fieldValue = null;
 			
+		
         	boolean isImagesExists = false;
 			boolean isTableExists = false;
 			boolean isListsExists = false;
@@ -93,7 +94,20 @@ String groupKey = null;
 			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
 				isImagesExists = true;	
 			}
-
+	int numberOfLists = 3;
+	int numberOfInnerLists=4;
+int numberOfItems=12;
+if(efgList.size()  < numberOfLists){
+	numberOfLists = efgList.size();
+}
+if(efgList.size()  < numberOfInnerLists){
+	numberOfInnerLists = efgList.size();
+}
+if(table.size()  < numberOfItems){
+	numberOfItems = table.size();
+}
+		
+			
 		    File cssFiles = new File(realPath + File.separator +  EFGImportConstants.templateCSSDirectory);
 			File[] cssFileList = cssFiles.listFiles(); 
 			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
@@ -122,27 +136,7 @@ String groupKey = null;
 	</head>
 	<body>
 		 <form method="post" action="<%=context%>/configTaxonPage">
-			<%if(cssFileList.length > 0){
-				%>						
-				<select name="<%=name%>"  title="Select  a css file from list">
-					<%
-						for (ii=0; ii<cssFileList.length; ii++ ) {
-							File currentCSSFile = (File)cssFileList[ii];
-							fieldName = currentCSSFile.getName();
-							if(fieldName.equals(fieldValue)){
-							%>
-							<option selected="selected"><%=fieldName%></option>
-							<%
-							}
-							else{
-							%>
-								<option><%=fieldName%></option>
-							<%
-							}
-						}
-					%>
-				</select><br/>
-			<%}//end if css
+	<%
 			name =tp.getCharacter(isNew,isNew);
 			characterText = tp.getCurrentCharacterText(name);
 			characterValue = (String)groupTable.get(characterText);
@@ -572,22 +566,13 @@ String groupKey = null;
 							%>
 							</select> 
 							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>							
-	<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
+
 						<%}//end if images
 					%>
 					 </td>
 				</tr>
 				<%
-				for(int zz = 0; zz < table.size(); zz++){
+				for(int zz = 0; zz < numberOfItems; zz++){
 					EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)table.get(zz);
 					if(isImagesExists) {
 						if(mediaResourceFields.contains(queueObject1)){
@@ -720,23 +705,14 @@ String groupKey = null;
 							%>
 							</select> 
 							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
+
 						<%}//end if images
 					%>
 					</td>         
 				</tr>
 				<%}//end outer for 
 			
-				for(int zz = 0; zz < efgList.size(); zz++){
+				for(int zz = 0; zz < numberOfLists; zz++){
 					EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)efgList.get(zz);
 					
 
@@ -777,24 +753,9 @@ String groupKey = null;
 				   <td class="data">		
 				   <table class="simspp">
 				
-				   <!--
-				   <tr>
-
-<td class="assochead">
-Shrubs:
-</td>
-<td class="simspptext">
-<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Leatherleaf">Leatherleaf</a><span class="scinameintext"> (Chamaedaphne calyculata)</span></div>
-<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Sheep Laurel">Sheep Laurel</a><span class="scinameintext"> (Kalmia angustifolia)</span></div>
-<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Swamp Azalea">Swamp Azalea</a><span class="scinameintext"> (Rhododendron viscosum)</span></div>
-<div class="itemlist"><a class="simspp" href="http://antelope.cs.umb.edu:8080/efg2/search?dataSourceName=marshabogdatacvs_1155590061047&Common_Name=Sweet Gale">Sweet Gale</a><span class="scinameintext"> (Myrica gale)</span>
-
-</td>
-</tr>
--->
 				<%
 				
-					for(int zz2 = 0; zz2 < efgList.size(); zz2++){
+					for(int zz2 = 0; zz2 < numberOfInnerLists; zz2++){
 					queueObject1 = (EFGQueueObjectInterface)efgList.get(zz);
 				
 					name =tp.getCharacter(isOld,isOld);
@@ -897,16 +858,7 @@ Shrubs:
 							%>
 							</select> 
 							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-			<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
+
 						<%}//end if images
 					%>
 					</td>         

@@ -179,7 +179,7 @@ public class ApplyXSL extends HttpServlet {
 							.getAttribute("mediaResourceField"));
 				}
 				else{
-					//log.debug("mediaresource field is null!!");
+					//System.out.println("mediaresource field is null!!");
 				}
 				String fieldName = (String) req.getAttribute("fieldName");
 				if (fieldName != null) {
@@ -187,7 +187,7 @@ public class ApplyXSL extends HttpServlet {
 					transformer.setParameter("fieldName",fieldName);
 				}
 				else{
-					//log.debug("fieldName is null!!");
+					//System.out.println("fieldName is null!!");
 				}
 				// set more parameters
 				// if more than one means go to search results page
@@ -242,6 +242,16 @@ public class ApplyXSL extends HttpServlet {
 			PrintWriter out = new PrintWriter(res.getWriter());
 			out.print(result);
 			out.close();
+		}
+		else{
+			PrintWriter out = res.getWriter();
+			// Tell the Browser that I'm sending back HTML
+			out
+					.println("<H3>Datasource contains illegal XMLcharacters.Please consult systems administrator</H3>");
+			out.flush();
+			res.flushBuffer();
+		
+			return;
 		}
 	}
 
@@ -298,6 +308,9 @@ public class ApplyXSL extends HttpServlet {
 	}
 }
 // $Log$
+// Revision 1.1.2.4  2006/08/21 19:32:55  kasiedu
+// Updates to  files
+//
 // Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
 // latest code confimrs to what exists on Panda
 //

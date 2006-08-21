@@ -107,7 +107,7 @@ java.util.Enumeration
 			document.onmousedown = mouseSelect;
 		//-->
 		</script>
-		<title>Size <%=list.size()%></title>
+		<title>Configure Page for Advanced users</title>
 	</head>
 	<form action="RedirectResponse.jsp" method="post" name="myForm" onsubmit="return valid('templateUniqueName')">
 		<p>Enter a unique name for the template or select from list to edit:

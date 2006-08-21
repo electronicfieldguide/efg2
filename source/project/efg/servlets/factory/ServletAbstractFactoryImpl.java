@@ -104,14 +104,14 @@ public class ServletAbstractFactoryImpl extends
 					queryBuffer.toString(),3);
 			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
 				EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iter.next();
-				if(queue.getObject(2).equalsIgnoreCase("true")){
+				if(queue.getObject(1).equalsIgnoreCase("true")){//mediaresource
 					if(searchObj.getMediaResourceField().equals("")){
-						searchObj.setMediaResourceField(queue.getObject(2));
+						searchObj.setMediaResourceField(queue.getObject(0));
 					}					
 				}
-				else if(queue.getObject(1).equalsIgnoreCase("true")){
+				if(queue.getObject(2).equalsIgnoreCase("true")){
 					if(searchObj.getSearchableField().equals("")){
-						searchObj.setSearchableField(queue.getObject(1));
+						searchObj.setSearchableField(queue.getObject(0));
 					}
 				}
 				if((!searchObj.getMediaResourceField().equals("")) && 

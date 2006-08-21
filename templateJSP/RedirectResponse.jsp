@@ -22,9 +22,66 @@ project.efg.util.EFGImportConstants,java.util.Enumeration
 			request.setAttribute(EFGImportConstants.GUID,guid);
 
 			jspName = request.getParameter(guid);
+//find out if the jspName is the same as the templateName
+
+			
 			if((jspName != null) && (!jspName.trim().equals(""))){
-				dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + jspName);
-				dispatcher.forward(request, response);
+				if(jspName.toLowerCase().trim().endsWith("begin.jsp")){
+					 if(forwardPage.toLowerCase().trim().endsWith("begin.jsp")){
+						dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + jspName);
+						dispatcher.forward(request, response);
+					}
+					else{
+						int index = jspName.indexOf("Begin.jsp");
+						String newPage = null;
+						 if(forwardPage.toLowerCase().trim().endsWith("inter.jsp")){//forward to begin page
+								newPage = jspName.substring(0,index) + "Inter.jsp";
+						}
+						else{//forward to advanced page
+							newPage = jspName.substring(0,index) + ".jsp";
+						}
+						dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + newPage);
+						dispatcher.forward(request, response);
+					}
+				}
+				else if(jspName.toLowerCase().trim().endsWith("inter.jsp")){
+					 if(forwardPage.toLowerCase().trim().endsWith("inter.jsp")){
+						dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + jspName);
+						dispatcher.forward(request, response);
+					}
+					else{
+						int index = jspName.indexOf("Inter.jsp");
+						String newPage = null;
+						 if(forwardPage.toLowerCase().trim().endsWith("begin.jsp")){//forward to begin page
+								newPage = jspName.substring(0,index) + "Begin.jsp";
+						}
+						else{//forward to advanced page
+							newPage = jspName.substring(0,index) + ".jsp";
+						}
+						dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + newPage);
+						dispatcher.forward(request, response);
+					}
+				}
+				else{//advanced
+					  if((forwardPage.toLowerCase().trim().endsWith("inter.jsp")) || (forwardPage.toLowerCase().trim().endsWith("begin.jsp"))){
+						int index = jspName.indexOf(".jsp");
+						String newPage = null;
+						if(forwardPage.toLowerCase().trim().endsWith("inter.jsp")){
+								newPage = jspName.substring(0,index) + "Inter.jsp";
+						}
+						else{
+							newPage = jspName.substring(0,index) + "Begin.jsp";
+						}
+						
+
+						dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + newPage);
+						dispatcher.forward(request, response);
+					}
+					else{
+						dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + jspName);
+						dispatcher.forward(request, response);
+					}
+				}
 			}
 			else{
 				dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);

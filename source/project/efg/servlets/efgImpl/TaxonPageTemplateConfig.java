@@ -149,7 +149,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 			}
 		} catch (Exception ee) {
 			ee.printStackTrace();
-			System.out.println(ee.getMessage());
+			//System.out.println(ee.getMessage());
 			try {
 				this.forwardPage(req, res, true);
 			} catch (Exception eef) {
@@ -360,7 +360,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 					return null;
 				}
 				String templateName = dsName.toLowerCase() + EFGImportConstants.XML_EXT;
-				System.out.println("Template Name: " + templateName);
+				//System.out.println("Template Name: " + templateName);
 				if(templateName != null){
 					ts = (TaxonPageTemplates)cacheAdmin.getFromCache(templateName.toLowerCase());
 				}
@@ -370,7 +370,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 				LoggerUtilsServlet.logErrors(nre);
 			}
 			if(ts == null){
-				System.out.println("ts is null!!");
+				//System.out.println("ts is null!!");
 			}
 			return ts;
 		}

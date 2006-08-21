@@ -122,27 +122,8 @@ String groupKey = null;
 	</head>
 	<body>
 		 <form method="post" action="<%=context%>/configTaxonPage">
-			<%if(cssFileList.length > 0){
-				%>						
-				<select name="<%=name%>"  title="Select  a css file from list">
-					<%
-						for (ii=0; ii<cssFileList.length; ii++ ) {
-							File currentCSSFile = (File)cssFileList[ii];
-							fieldName = currentCSSFile.getName();
-							if(fieldName.equals(fieldValue)){
-							%>
-							<option selected="selected"><%=fieldName%></option>
-							<%
-							}
-							else{
-							%>
-								<option><%=fieldName%></option>
-							<%
-							}
-						}
-					%>
-				</select><br/>
-			<%}//end if css
+		
+			<%
 			name =tp.getCharacter(isNew,isNew);
 			characterText = tp.getCurrentCharacterText(name);
 			characterValue = (String)groupTable.get(characterText);
@@ -572,16 +553,7 @@ String groupKey = null;
 							%>
 							</select> 
 							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>							
-	<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
+
 						<%}//end if images
 					%>
 					 </td>
@@ -720,16 +692,7 @@ String groupKey = null;
 							%>
 							</select> 
 							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
+
 						<%}//end if images
 					%>
 					</td>         
@@ -897,16 +860,7 @@ Shrubs:
 							%>
 							</select> 
 							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-			<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
+
 						<%}//end if images
 					%>
 					</td>         

@@ -43,7 +43,7 @@
 	querySearch.append(EFGImportConstants.HTML);
 	querySearch.append("&");
 	querySearch.append(EFGImportConstants.MAX_DISPLAY);
-	querySearch.append("=100000");
+	querySearch.append("=10");
 	
 	if(guid != null){
 		String key = querySearch.toString();

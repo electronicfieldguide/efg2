@@ -95,32 +95,76 @@
 			</body>
 		</html>
 	</xsl:template>
+		<xsl:template name="findColumnVariables1">
+		<xsl:param name="item"/>
+		<xsl:param name="stat"/>
+		<xsl:param name="med"/>
+		<xsl:param name="list"/>
+		<xsl:param name="columnName"/>
+		<xsl:variable name="firstItem">
+			<xsl:value-of select="$item"/>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="string($firstItem)=''">
+				<!-- No item exist with the same @name as firstColumn -->
+				<xsl:variable name="firstStats">
+					<xsl:value-of select="$stat"/>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="string($firstStats)=''">
+						<!-- No StatisticalMeasure exist with the same @name as firstColumn -->
+						<xsl:variable name="firstLists">
+						<xsl:value-of select="$list"/>
+						</xsl:variable>
+						<xsl:choose>
+							<xsl:when test="string($firstLists)=''">
+								<!-- No EFGLists exist with the same @name as firstColumn. Check and output a media resource -->
+								<xsl:variable name="firstMedia">
+								<xsl:value-of select="$med"/>
+								</xsl:variable>
+								<xsl:value-of select="$firstMedia"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$firstLists"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$firstStats"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$firstItem"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 	<xsl:template match="TaxonEntry">
 		<xsl:variable name="uniqueID" select="@recordID"/>
 		<xsl:variable name="firstColumnVar">
-			<xsl:call-template name="findColumnVariables">
-				<xsl:with-param name="items" select="Items[@name=$firstColumn]"/>
-				<xsl:with-param name="stats" select="StatisticalMeasures[@name=$firstColumn]"/>
-				<xsl:with-param name="meds" select="MediaResources[@name=$firstColumn]"/>
-				<xsl:with-param name="lists" select="EFGLists[@name=$firstColumn]"/>
+			<xsl:call-template name="findColumnVariables1">
+				<xsl:with-param name="item" select="Items[@name=$firstColumn]/Item[1]"/>
+				<xsl:with-param name="stat" select="StatisticalMeasures[@name=$firstColumn]/StatisticalMeasure[1]"/>
+				<xsl:with-param name="med" select="MediaResources[@name=$firstColumn]/MediaResource[1]"/>
+				<xsl:with-param name="list" select="EFGLists[@name=$firstColumn]/EFGList[1]"/>
 				<xsl:with-param name="columnName" select="$firstColumn"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="secondColumnVar">
-			<xsl:call-template name="findColumnVariables">
-				<xsl:with-param name="items" select="Items[@name=$secondColumn]"/>
-				<xsl:with-param name="stats" select="StatisticalMeasures[@name=$secondColumn]"/>
-				<xsl:with-param name="meds" select="MediaResources[@name=$secondColumn]"/>
-				<xsl:with-param name="lists" select="EFGLists[@name=$secondColumn]"/>
+			<xsl:call-template name="findColumnVariables1">
+				<xsl:with-param name="item" select="Items[@name=$secondColumn]/Item[1]"/>
+				<xsl:with-param name="stat" select="StatisticalMeasures[@name=$secondColumn]/StatisticalMeasure[1]"/>
+				<xsl:with-param name="med" select="MediaResources[@name=$secondColumn]/MediaResource[1]"/>
+				<xsl:with-param name="list" select="EFGLists[@name=$secondColumn]"/>
 				<xsl:with-param name="columnName" select="$secondColumn"/>
 			</xsl:call-template>
 		</xsl:variable>
 		<xsl:variable name="thirdColumnVar">
-			<xsl:call-template name="findColumnVariables">
-				<xsl:with-param name="items" select="Items[@name=$thirdColumn]"/>
-				<xsl:with-param name="stats" select="StatisticalMeasures[@name=$thirdColumn]"/>
-				<xsl:with-param name="meds" select="MediaResources[@name=$thirdColumn]"/>
-				<xsl:with-param name="lists" select="EFGLists[@name=$thirdColumn]"/>
+			<xsl:call-template name="findColumnVariables1">
+				<xsl:with-param name="item" select="Items[@name=$thirdColumn]/Item[1]"/>
+				<xsl:with-param name="stat" select="StatisticalMeasures[@name=$thirdColumn]/StatisticalMeasure[1]"/>
+				<xsl:with-param name="med" select="MediaResources[@name=$thirdColumn]/MediaResource[1]"/>
+				<xsl:with-param name="list" select="EFGLists[@name=$thirdColumn]"/>
 				<xsl:with-param name="columnName" select="$thirdColumn"/>
 			</xsl:call-template>
 		</xsl:variable>

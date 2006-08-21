@@ -51,6 +51,7 @@
 	<xsl:template name="headerGroup">
 		<xsl:param name="taxonEntry"/>
 		<xsl:variable name="imageName" select="$headerGroup/characterValue[@label='image']/@value"/>
+		<xsl:variable name="imageCaption" select="$headerGroup/characterValue[@label='image']/@text"/>
 		<tr>
 			<td class="headingtop">
 				<xsl:value-of select="$headerGroup/@text"/>
@@ -123,6 +124,7 @@
 				<xsl:if test="not(string($imageName))=''">
 					<xsl:call-template name="outputImage">
 						<xsl:with-param name="mediaresource" select="$taxonEntry/MediaResources[@name=$imageName]"/>
+						<xsl:with-param name="caption" select="$imageCaption"/>
 					</xsl:call-template>
 				</xsl:if>
 			</td>
@@ -130,8 +132,10 @@
 	</xsl:template>
 	<xsl:template name="outputImage">
 		<xsl:param name="mediaresource"/>
+		<xsl:param name="caption"/>
 		<xsl:for-each select="$mediaresource/MediaResource">
 			<xsl:variable name="imageName" select="."/>
+			<xsl:variable name="captionName" select="@caption"/>
 			<xsl:variable name="src">
 				<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
 			</xsl:variable>
@@ -139,6 +143,21 @@
 			<a href="{$href}">
 				<img src="{$src}" border="0"/>
 			</a>
+			<xsl:variable name="cap">
+			<xsl:choose>
+				<xsl:when test="not(string($captionName))=''">
+					<xsl:value-of select="$captionName"/>
+				</xsl:when>
+				<xsl:otherwise>
+						<xsl:if test="not(string($caption))=''">
+							<xsl:value-of select="$caption"/>
+						</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
+			</xsl:variable>
+			<xsl:if test="not(string($cap))=''">
+				<br/><span class="imagecaption"><xsl:value-of select="$cap"/></span>			
+			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
 	<xsl:template name="outputdiv">
@@ -154,30 +173,63 @@
 			<xsl:variable name="fieldLabel" select="@text"/>
 			<xsl:variable name="mediaresourceValue" select="characterValue[@label='image']/@value"/>
 			<xsl:if test="count(characterValue/@value) &gt; 0 or count(characterValue/@text)  &gt; 0 or count(@text) &gt; 0 ">
-				<tr>
-					<td class="heading">
-						<xsl:call-template name="outputRowHeader">
-							<xsl:with-param name="fieldName" select="$fieldName"/>
-							<xsl:with-param name="fieldLabel" select="$fieldLabel"/>
-						</xsl:call-template>
-					</td>
-					<td class="data">
-						<xsl:call-template name="outputRowData">
-							<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
-							<xsl:with-param name="fieldName" select="$fieldName"/>
-							<xsl:with-param name="fieldLabel" select="$fieldLabel"/>
-						</xsl:call-template>
-					</td>
-					<td class="images">
-						<xsl:if test="not(string($mediaresourceValue))=''">
-							<xsl:call-template name="outputImage">
-								<xsl:with-param name="mediaresource" select="$taxonEntry/MediaResources[@name=$mediaresourceValue]"/>
+				<xsl:if test="count($taxonEntry/Items[@name=$fieldName]) &gt; 0 or count($taxonEntry/MediaResources[@name=$mediaresourceValue]) &gt; 0">
+					<tr>
+						<td class="heading">
+							<xsl:call-template name="outputRowHeader">
+								<xsl:with-param name="fieldName" select="$fieldName"/>
+								<xsl:with-param name="fieldLabel" select="$fieldLabel"/>
 							</xsl:call-template>
-						</xsl:if>
-					</td>
-				</tr>
+						</td>
+						<td class="data">
+							<xsl:call-template name="outputRowData">
+								<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+								<xsl:with-param name="fieldName" select="$fieldName"/>
+								<xsl:with-param name="fieldLabel" select="$fieldLabel"/>
+							</xsl:call-template>
+						</td>
+						<td class="images">
+							<xsl:if test="not(string($mediaresourceValue))=''">
+								<xsl:call-template name="outputImage">
+									<xsl:with-param name="mediaresource" select="$taxonEntry/MediaResources[@name=$mediaresourceValue]"/>
+										<xsl:with-param name="caption" select="characterValue[@label='image']/@text"/>
+								</xsl:call-template>
+								
+							</xsl:if>
+						</td>
+					</tr>
+				</xsl:if>
 			</xsl:if>
 		</xsl:for-each>
+	</xsl:template>
+	<xsl:template name="isExistsInLists">
+		<xsl:param name="taxonEntry"/>
+		<xsl:param name="list"/>
+		<xsl:param name="image"/>
+		<xsl:variable name="doesExists">
+			<xsl:for-each select="$list">
+				<xsl:variable name="fname" select="@value"/>
+				<xsl:if test="count($taxonEntry/EFGLists[@name=$fname]) &gt; 0">
+					<xsl:value-of select="'found'"/>
+				</xsl:if>
+			
+			</xsl:for-each>
+				<xsl:for-each select="$image">
+				<xsl:variable name="fname" select="@value"/>
+			
+				<xsl:if test="count($taxonEntry/MediaResources[@name=$fname]) &gt; 0">
+					<xsl:value-of select="'found'"/>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="not(string($doesExists))=''">
+				<xsl:value-of select="'true'"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="''"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="listsGroup">
 		<xsl:param name="taxonEntry"/>
@@ -188,61 +240,71 @@
 			<xsl:variable name="fieldName" select="''"/>
 			<xsl:variable name="fieldLabel" select="@text"/>
 			<xsl:if test="count(characterValue/@value) &gt; 0 or count(characterValue/@text)  &gt; 0 or count(@text) &gt; 0 ">
-				<tr>
-					<td class="heading">
-						<xsl:call-template name="outputRowHeader">
-							<xsl:with-param name="fieldName" select="$fieldName"/>
-							<xsl:with-param name="fieldLabel" select="$fieldLabel"/>
-						</xsl:call-template>
-					</td>
-					<td class="data">
-						<table class="simspp">
-							<xsl:for-each select="$list">
-								<xsl:sort select="@id" data-type="number"/>
-								<xsl:variable name="caption" select="@text"/>
-								<xsl:if test="count(@value) &gt; 0">
-									<xsl:variable name="isital">
-										<xsl:choose>
-											<xsl:when test="not(string($caption))=''">
-												<xsl:value-of select="'true'"/>
-											</xsl:when>
-											<xsl:otherwise><xsl:value-of select="''"/></xsl:otherwise>
-											
-										</xsl:choose>
-									</xsl:variable>
-									
+				<!-- for each list find if it exists in current-->
+				<xsl:variable name="isExists">
+					<xsl:call-template name="isExistsInLists">
+						<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+						<xsl:with-param name="list" select="$list"/>
+						<xsl:with-param name="image" select="$image"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:if test="not(string($isExists))=''">
+					<tr>
+						<td class="heading">
+							<xsl:call-template name="outputRowHeader">
+								<xsl:with-param name="fieldName" select="$fieldName"/>
+								<xsl:with-param name="fieldLabel" select="$fieldLabel"/>
+							</xsl:call-template>
+						</td>
+						<td class="data">
+							<table class="simspp">
+								<xsl:for-each select="$list">
+									<xsl:sort select="@id" data-type="number"/>
+									<xsl:variable name="caption" select="@text"/>
+									<xsl:if test="count(@value) &gt; 0">
+										<xsl:variable name="isital">
+											<xsl:choose>
+												<xsl:when test="not(string($caption))=''">
+													<xsl:value-of select="'true'"/>
+												</xsl:when>
+												<xsl:otherwise>
+													<xsl:value-of select="''"/>
+												</xsl:otherwise>
+											</xsl:choose>
+										</xsl:variable>
 										<xsl:variable name="fname" select="@value"/>
-									
-									<tr>
-										<td class="assochead">
-											<xsl:if test="not(string($caption))=''">
-												<xsl:value-of select="concat($caption,': ')"/>
-											</xsl:if>
-										</td>
-										<td class="simspptext">
-											<xsl:if test="count($taxonEntry/EFGLists[@name=$fname]) &gt; 0">
-												<xsl:call-template name="outputresourcelist">
-													<xsl:with-param name="efglists" select="$taxonEntry/EFGLists[@name=$fname]"/>
-													<xsl:with-param name="isital" select="$isital"/>
-												</xsl:call-template>
-											</xsl:if>
-										</td>
-									</tr>
+										<xsl:if test="count($taxonEntry/EFGLists[@name=$fname]) &gt; 0">
+											<tr>
+												<td class="assochead">
+													<xsl:if test="not(string($caption))=''">
+														<xsl:value-of select="concat($caption,': ')"/>
+													</xsl:if>
+												</td>
+												<td class="simspptext">
+													<xsl:call-template name="outputresourcelist">
+														<xsl:with-param name="efglists" select="$taxonEntry/EFGLists[@name=$fname]"/>
+														<xsl:with-param name="isital" select="$isital"/>
+													</xsl:call-template>
+												</td>
+											</tr>
+										</xsl:if>
+									</xsl:if>
+								</xsl:for-each>
+							</table>
+						</td>
+						<td class="images">
+							<xsl:for-each select="$image">
+								<xsl:variable name="imageName" select="@value"/>
+								<xsl:if test="not(string($imageName))=''">
+									<xsl:call-template name="outputImage">
+										<xsl:with-param name="mediaresource" select="$taxonEntry/MediaResources[@name=$imageName]"/>
+										<xsl:with-param name="caption" select="@text"/>
+									</xsl:call-template>
 								</xsl:if>
 							</xsl:for-each>
-						</table>
-					</td>
-					<td class="images">
-						<xsl:for-each select="$image">
-							<xsl:variable name="imageName" select="@value"/>
-							<xsl:if test="not(string($imageName))=''">
-								<xsl:call-template name="outputImage">
-									<xsl:with-param name="mediaresource" select="$taxonEntry/MediaResources[@name=$imageName]"/>
-								</xsl:call-template>
-							</xsl:if>
-						</xsl:for-each>
-					</td>
-				</tr>
+						</td>
+					</tr>
+				</xsl:if>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>

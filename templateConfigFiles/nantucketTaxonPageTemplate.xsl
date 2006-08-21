@@ -86,17 +86,62 @@
 		<td class="{$class}" colspan="2">
 			<xsl:if test="not(string($fieldName))=''">
 				<xsl:variable name="commonName">
-					<xsl:call-template name="findColumnVariables">
-						<xsl:with-param name="items" select="$taxonEntry/Items[@name=$fieldName]"/>
-						<xsl:with-param name="stats" select="$taxonEntry/StatisticalMeasures[@name=$fieldName]"/>
-						<xsl:with-param name="meds" select="$taxonEntry/MediaResources[@name=$fieldName]"/>
-						<xsl:with-param name="lists" select="$taxonEntry/EFGLists[@name=$fieldName]"/>
+					<xsl:call-template name="findColumnVariables1">
+						<xsl:with-param name="item" select="$taxonEntry/Items[@name=$fieldName]/Item[1]"/>
+						<xsl:with-param name="stat" select="$taxonEntry/StatisticalMeasures[@name=$fieldName]/StatisticalMeasure[1]"/>
+						<xsl:with-param name="med" select="$taxonEntry/MediaResources[@name=$fieldName]/MediaResource[1]"/>
+						<xsl:with-param name="list" select="$taxonEntry/EFGLists[@name=$fieldName]/EFGList[1]"/>
 						<xsl:with-param name="columnName" select="$fieldName"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:value-of select="$commonName"/>
 			</xsl:if>
 		</td>
+	</xsl:template>
+	
+			<xsl:template name="findColumnVariables1">
+		<xsl:param name="item"/>
+		<xsl:param name="stat"/>
+		<xsl:param name="med"/>
+		<xsl:param name="list"/>
+		<xsl:param name="columnName"/>
+		<xsl:variable name="firstItem">
+			<xsl:value-of select="$item"/>
+		</xsl:variable>
+		<xsl:choose>
+			<xsl:when test="string($firstItem)=''">
+				<!-- No item exist with the same @name as firstColumn -->
+				<xsl:variable name="firstStats">
+					<xsl:value-of select="$stat"/>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="string($firstStats)=''">
+						<!-- No StatisticalMeasure exist with the same @name as firstColumn -->
+						<xsl:variable name="firstLists">
+						<xsl:value-of select="$list"/>
+						</xsl:variable>
+						<xsl:choose>
+							<xsl:when test="string($firstLists)=''">
+								<!-- No EFGLists exist with the same @name as firstColumn. Check and output a media resource -->
+								<xsl:variable name="firstMedia">
+								<xsl:value-of select="$med"/>
+								</xsl:variable>
+								<xsl:value-of select="$firstMedia"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="$firstLists"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="$firstStats"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$firstItem"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="outputItalics">
 		<xsl:param name="characterValue1"/>
@@ -106,20 +151,20 @@
 		<td class="{$class}" colspan="2">
 			<xsl:if test="not(string($characterValue1)) = ''">
 				<xsl:variable name="fieldName1">
-					<xsl:call-template name="findColumnVariables">
-						<xsl:with-param name="items" select="$taxonEntry/Items[@name=$characterValue1]"/>
-						<xsl:with-param name="stats" select="$taxonEntry/StatisticalMeasures[@name=$characterValue1]"/>
-						<xsl:with-param name="meds" select="$taxonEntry/MediaResources[@name=$characterValue1]"/>
-						<xsl:with-param name="lists" select="$taxonEntry/EFGLists[@name=$characterValue1]"/>
+					<xsl:call-template name="findColumnVariables1">
+						<xsl:with-param name="item" select="$taxonEntry/Items[@name=$characterValue1]/Item[1]"/>
+						<xsl:with-param name="stat" select="$taxonEntry/StatisticalMeasures[@name=$characterValue1]/StatisticalMeasures[1]"/>
+						<xsl:with-param name="med" select="$taxonEntry/MediaResources[@name=$characterValue1]/MediaResource[1]"/>
+						<xsl:with-param name="list" select="$taxonEntry/EFGLists[@name=$characterValue1]/EFGList[1]"/>
 						<xsl:with-param name="columnName" select="$characterValue1"/>
 					</xsl:call-template>
 				</xsl:variable>
 				<xsl:variable name="fieldName2">
-					<xsl:call-template name="findColumnVariables">
-						<xsl:with-param name="items" select="$taxonEntry/Items[@name=$characterValue2]"/>
-						<xsl:with-param name="stats" select="$taxonEntry/StatisticalMeasures[@name=$characterValue2]"/>
-						<xsl:with-param name="meds" select="$taxonEntry/MediaResources[@name=$characterValue2]"/>
-						<xsl:with-param name="lists" select="$taxonEntry/EFGLists[@name=$characterValue2]"/>
+					<xsl:call-template name="findColumnVariables1">
+						<xsl:with-param name="item" select="$taxonEntry/Items[@name=$characterValue2]/Item[1]"/>
+						<xsl:with-param name="stat" select="$taxonEntry/StatisticalMeasures[@name=$characterValue2]/StatisticalMeasure[1]"/>
+						<xsl:with-param name="med" select="$taxonEntry/MediaResources[@name=$characterValue2]/MeddiaResource[1]"/>
+						<xsl:with-param name="list" select="$taxonEntry/EFGLists[@name=$characterValue2]/EFGlist[1]"/>
 						<xsl:with-param name="columnName" select="$characterValue2"/>
 					</xsl:call-template>
 				</xsl:variable>

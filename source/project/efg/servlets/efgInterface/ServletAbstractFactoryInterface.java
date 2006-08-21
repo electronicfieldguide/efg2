@@ -145,14 +145,6 @@ public abstract class ServletAbstractFactoryInterface {
 	}
 
 
-/*	public String getXSLFileName(String displayName, String datasourceName,
-			String fieldName) {
-		return this
-				.getXSLFileNameFromDB(displayName, datasourceName, fieldName);
-	}*/
-
-	/*protected abstract String getXSLFileNameFromDB(String displayName,
-			String datasourceName, String fieldName);*/
 
 	protected abstract EFGDataObjectListInterface createMediaResourceLists(
 			String displayName, String datasourceName);
