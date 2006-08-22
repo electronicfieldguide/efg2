@@ -19,7 +19,7 @@
 		</xsl:choose>
 	</xsl:variable>
 	<xsl:variable name="headerGroup" select="$xslPage/groups/group[@label='headers']"/>
-	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@id='images']"/>
+	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@label='images']"/>
 	<xsl:variable name="photosCreditGroup" select="$xslPage/groups/group[@label='photocred']"/>
 	<xsl:variable name="listsGroup" select="$xslPage/groups/group[@label='lists']"/>
 	<xsl:variable name="itemsGroup" select="$xslPage/groups/group[@label='items']"/>

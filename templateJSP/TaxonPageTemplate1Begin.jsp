@@ -369,7 +369,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 								<td>
 								<%
 									List labelList = new ArrayList();
-									for(int zz = 0; zz < numberofImages; zz++){
+									for(int zz = 0; zz < mediaResourceFields.size(); zz++){
 										if ( (zz % numberOfImagesPerRow )== 0){
 											if( zz != 0){
 												name =tp.getCharacter(isOld,isOld);
@@ -383,7 +383,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 					if(characterLabelValue == null){
 						characterLabelValue ="image";
 					}
-
+									if(zz < numberofImages){
 								%>
 									<table class="images">
 										<tr>
@@ -611,6 +611,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										</tr>
 									</table>
 									<%
+						}
 										}//end if for numberofimages mod zz
 									}//end outer for loop over mediaResourceTable
 									%>
@@ -649,7 +650,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 					}
 
 								if(isListsExists){
-									for(int zz = 0; zz <  numberofListCharacters; zz++){
+									for(int zz = 0; zz < efgList.size() ; zz++){
 											
 											if(zz!=0){
 												name =tp.getCharacter(isOld,isOld);
@@ -669,7 +670,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						characterLabelValue ="list";
 					}
 
-											
+									if(zz < numberofListCharacters){
 									%>
 									<p class="detail_text">
 										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
@@ -699,10 +700,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 														}//end while	
 													%>
 													</select> 
-																										<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+												<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
 
 									</p>
-								<%}//end for loop
+								<%}//end if
+								}//end for loop
 								}// end if isListsExists
 									
 										int ww = 0;
@@ -716,7 +718,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 
 <%
-										for(int zz = 0; zz <  numberofCharacters; zz++){
+										for(int zz = 0; zz < table.size() ; zz++){
 											EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)table.get(zz);
 											if(isImagesExists) {
 												if(mediaResourceFields.contains(queueObject1)){
@@ -746,6 +748,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											if(characterValue == null){
 												characterValue ="";
 											}
+											if(zz < numberofCharacters){
 									%>
 									<p class="detail_text">
 										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
@@ -789,7 +792,9 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 
 									</p>
 								<%
+								}//end if
 									ww++;
+								
 									}//end for loop isTableExists
 								%>																	
 								</td>
