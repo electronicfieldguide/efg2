@@ -36,6 +36,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			String context = request.getContextPath();
 			String realPath = getServletContext().getRealPath("/");
 			String xslFileName = "nantucketTaxonPageTemplate.xsl";
+           String groupLabel= null;
+			String groupLabelValue = null;
+			String characterLabelValue = null;
+			String characterLabel = null;
+
 			String fieldName = null;
 			String characterText = null;
 			String characterValue = null;
@@ -102,11 +107,18 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				else{
 					cssLocation =cssLocation + fieldValue;
 				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="styles";
+				}
 			%>		
 		<link rel="stylesheet" href="<%=cssLocation%>"/>		
 	</head>
 	<body>
 		<form method="post" action="<%=context%>/configTaxonPage">
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
 			<%if(cssFileList.length > 0){
 				%>						
 						<select name="<%=name%>"  title="Select an image from List">
@@ -133,12 +145,27 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				if(fieldValue == null){
 					fieldValue ="";
 				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="headers";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="header";
+					}
+			%>
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
+			<%
 				if(isTableExists){
 			%>
+
 			<table class="title">
 				<tr>
 					<td class="comname" colspan="2">
-						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+						<select name="<%=name%>"  title="Select A Field From List">             
 							<%
 								ii=0;
 								it = table.iterator();
@@ -169,6 +196,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 								}	
 							%>
 						</select>   
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 					</td>
 				</tr>
 				<tr>
@@ -179,6 +207,13 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						if(fieldValue == null){
 							fieldValue ="";
 						}
+
+					characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="header";
+					}
+
 					%>
 						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
 							<%
@@ -211,14 +246,20 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 								}	
 							%>
 						</select>   
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 					<%
 						name =tp.getCharacter(isOld,isOld);
 						fieldValue = (String)groupTable.get(name);
 						if(fieldValue == null){
 							fieldValue ="";
 						}
+					characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="header";
+					}
 					%>
-						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+						<select name="<%=name%>"  title="Select A Field From List">
 							<%
 								ii=0;
 								it = table.iterator();
@@ -248,7 +289,8 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									ii++;
 								}	
 							%>
-						</select>   
+						</select> 
+							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
 					</td>
 					<td class="famname">
 					<%
@@ -257,8 +299,13 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						if(fieldValue == null){
 							fieldValue ="";
 						}
+	characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="header";
+					}
 					%>
-						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+						<select name="<%=name%>"  title="Select A Field From List">
 							<%
 								ii=0;
 								it = table.iterator();
@@ -289,13 +336,23 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 								}	
 							%>
 						</select>   
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 					</td>
 				</tr>
 			</table>
 			<%}//end if isTableExists
 			name =tp.getCharacter(isNew,isNew);//guaranteed to be generated at least once
-			 if(isImagesExists) {
+			groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+					if(groupLabelValue == null){
+						groupLabelValue ="images";
+					}
 			%>
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+		<%	 if(isImagesExists) {
+			%>
+
 			<table class="outerimageframe">
 				<tr>
 					<td>
@@ -313,6 +370,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											if(fieldValue == null){
 												fieldValue ="";
 											}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
+					}
+
 								%>
 									<table class="images">
 										<tr>
@@ -346,6 +409,8 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 														}// end while	
 													%>
 													</select> 
+													<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 												</div>
 											</td>
 											<%if( (zz + 1) < mediaResourceFields.size()){
@@ -354,6 +419,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 													if(fieldValue == null){
 														fieldValue ="";
 													}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
+					}
+
 												%>
 											<td class="thumb">
 												<div class="thumb">
@@ -386,6 +457,8 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 														}//end while	
 													%>
 													</select> 
+													<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 												</div>
 											</td>
 											<%}//end if zz+1 < mediaResources.size()
@@ -395,10 +468,16 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 													if(fieldValue == null){
 														fieldValue ="";
 													}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
+					}
+
 											%>
 											<td class="thumb">
 												<div class="thumb">
-													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<select name="<%=name%>"  title="Select An Image Field From List">
 													<%
 														ii=0;
 														characterText = tp.getCurrentCharacterText(name);
@@ -427,6 +506,8 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 														}//end while	
 													%>
 													</select> 
+													<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 												</div>
 											</td>
 											<%}//end if zz+2 < mediaResources.size()
@@ -436,10 +517,16 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 													if(fieldValue == null){
 														fieldValue ="";
 													}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
+					}
+
 											%>
 											<td class="thumb">
 												<div class="thumb">
-													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<select name="<%=name%>"  title="Select An Image Field From List">
 													<%
 														ii=0;
 														it = mediaResourceFields.iterator();
@@ -468,6 +555,8 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 														}//end while	
 													%>
 													</select> 
+													<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 												</div>
 											</td>
 											<%}// if zz+ 3 < mediaResourceFields.size()
@@ -489,6 +578,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 												if(fieldValue == null){
 													fieldValue ="";
 												}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
+					}
+
 											%>
 											<td class="id_text"><input size="20" type="text"  title="ENTER IMAGE CAPTION HERE" name="<%=name%>" value="<%=fieldValue%>"/></td>
 											<%} //end if zz + 1
@@ -507,6 +602,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 												if(fieldValue == null){
 													fieldValue ="";
 												}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
+					}
+
 											%>
 											<td class="id_text"><input size="20" type="text"  title="ENTER IMAGE CAPTION HERE" name="<%=name%>" value="<%=fieldValue%>"/></td>
 											<%}//end if zz + 3%>
@@ -525,7 +626,15 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 							if(fieldValue == null){
 							fieldValue ="";
 							}				
+			groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+					if(groupLabelValue == null){
+						groupLabelValue ="photocred";
+					}
+			
 						%>
+								 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
 						<div class="photocred"><input size="80" type="text"  title="ENTER IMAGE CREDITS HERE" name="<%=name%>" value="<%=fieldValue%>"/></div>
 			<%
 			}//end if isImagesExists
@@ -535,105 +644,15 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 							<tr>
 								<td>
 								<!-- It is a lists -->
-									<%
-										name =tp.getCharacter(isNew,isNew);
-										fieldValue = (String)groupTable.get(name);
-										if(fieldValue == null){
-											fieldValue ="";
-										}	//end if fieldValue == null		
-										characterText = tp.getCurrentCharacterText(name);
-										characterValue = (String)groupTable.get(characterText);
-										if(characterValue == null){
-											characterValue ="";
-										}
-										if(isListsExists){
-									%>
-									<p class="detail_text">
-										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
-													<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
-													<%
-														ii=0;
-														it = efgList.iterator();
-														while (it.hasNext()) {
-															if(ii == 0){
-															%>
-																	<option>
-															<%
-															}//end if ii =0 
-															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-															fieldName = (String)queueObject.getObject(1);
-															if(fieldName.equals(fieldValue)){
-															%>
-																	<option selected="selected"><%=fieldName%></option>
-															<%
-															}//fieldName.equals(fieldValue)
-															else{
-															%>
-																<option><%=fieldName%></option>
-															<%
-															}//end else
-															ii++;
-														}//end while	
-													%>
-													</select> 
-									</p>
+<%								name =tp.getCharacter(isNew,isNew);
+			groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+					if(groupLabelValue == null){
+						groupLabelValue ="lists";
+					}
+								if(isListsExists){%>
+									<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 								<%
-								}// end if isListsExists
-								name =tp.getCharacter(isNew,isNew);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}	//end if fieldValue == null		
-								characterText = tp.getCurrentCharacterText(name);
-								characterValue = (String)groupTable.get(characterText);
-								if(characterValue == null){
-									characterValue ="";
-								}
-								if(isTableExists){
-								%>
-									<p class="detail_text">
-										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
-													<select name="<%=name%>"  title="Select A Field Categorical or Narrative Field">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
-													<%
-														ii=0;
-														it = table.iterator();
-														while (it.hasNext()) {
-															if(ii == 0){
-															%>
-																	<option>
-															<%
-															}//end if ii =0 
-															EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-															if(isImagesExists) {
-																if(mediaResourceFields.contains(queueObject)){
-																	continue;
-																}
-															}	
-															if(isListsExists) {
-																if(efgList.contains(queueObject)){
-																	continue;
-																}
-															}	
-															fieldName = (String)queueObject.getObject(1);
-															if(fieldName.equals(fieldValue)){
-															%>
-																	<option selected="selected"><%=fieldName%></option>
-															<%
-															}//fieldName.equals(fieldValue)
-															else{
-															%>
-																<option><%=fieldName%></option>
-															<%
-															}//end else
-															ii++;
-														}//end while	
-													%>
-													</select> 
-									</p>
-								<%
-								}// end if  isTableExists
-								name =tp.getCharacter(isNew,isNew);
-								if(isListsExists){
 									for(int zz = 0; zz < efgList.size(); zz++){
 											
 											if(zz!=0){
@@ -648,6 +667,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											if(characterValue == null){
 												characterValue ="";
 											}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="list";
+					}
 											
 									%>
 									<p class="detail_text">
@@ -678,13 +702,23 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 														}//end while	
 													%>
 													</select> 
+													<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 									</p>
 								<%}//end for loop
 								}// end if isListsExists
 									
 										int ww = 0;
 										name =tp.getCharacter(isNew,isNew);
+	groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+					if(groupLabelValue == null){
+						groupLabelValue ="items";
+					}
+%>
+									<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 
+<%
 										for(int zz = 0; zz < table.size(); zz++){
 											EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)table.get(zz);
 											if(isImagesExists) {
@@ -703,7 +737,12 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											fieldValue = (String)groupTable.get(name);
 											if(fieldValue == null){
 												fieldValue ="";
-											}//end if fieldValue == null				
+											}//end if fieldValue == null		
+									characterLabel= tp.getCurrentCharacterLabel(name);
+									characterLabelValue = (String)groupTable.get(characterLabel);
+									if(characterLabelValue == null){
+										characterLabelValue ="item";
+										}		
 											characterText = tp.getCurrentCharacterText(name);
 											characterValue = (String)groupTable.get(characterText);
 											if(characterValue == null){
@@ -748,6 +787,8 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 														}//end while	
 													%>
 													</select> 
+													<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 									</p>
 								<%
 									ww++;
@@ -770,9 +811,23 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											fieldValue = (String)groupTable.get(name);
 											if(fieldValue == null){
 											fieldValue ="";
-											}				
+											}	
+groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+					if(groupLabelValue == null){
+						groupLabelValue ="credits";
+					}			
+	characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="credit";
+					}		
 										%>
+																			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
 										<strong>Credits: </strong><input size="100" type="text"  title="ENTER CREDIT INFORMATION" name="<%=name%>" value="<%=fieldValue%>"/>
+																							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>  
+
 									</p>
 								</td>
 							</tr>
@@ -780,17 +835,16 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 					</td>
 				</tr>
 			</table>
-							<%
-									
-									fieldValue = (String)groupTable.get(EFGImportConstants.ISDEFAULT_STR);
-									if(fieldValue == null){
-										fieldValue = "false";
-									}
-									Boolean bool = new Boolean(fieldValue);
-								
-									
-					%>
-
+			<%
+					
+					fieldValue = (String)groupTable.get(EFGImportConstants.ISDEFAULT_STR);
+					if(fieldValue == null){
+						fieldValue = "false";
+					}
+					Boolean bool = new Boolean(fieldValue);
+				
+					
+	%>
 				<p>The following is not part of the template:
 			<select name="<%=EFGImportConstants.ISDEFAULT_STR%>"  title="Indicate whether this template should be the default for search results page">
 				<option value="false">Do not use as Default Template</option>
@@ -802,18 +856,16 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 					<%}%>
 			</select>
 			</p><br/><br/>
-
 				<input type="hidden"   name="<%=EFGImportConstants.DISPLAY_NAME%>"  value="<%=displayName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_NAME%>"  value="<%=datasourceName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.HTML_TEMPLATE_NAME%>"  value="<%=templateMatch%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
 		<%if( guid != null){%>
-		<input type="hidden"   name="<%=EFGImportConstants.GUID%>"  value="<%=guid%>"/>
+				<input type="hidden"   name="<%=EFGImportConstants.GUID%>"  value="<%=guid%>"/>
 		<%}%>
 				<input type="hidden"   name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>"  value="<%=uniqueName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="<%=jspName%>"/>
 				<input type="submit"  name="submit" value="Click to submit" align="middle" />	
-
 		</form>
 	</body>
 </html>

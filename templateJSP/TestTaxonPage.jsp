@@ -1,4 +1,4 @@
-<%@page import="project.efg.util.EFGImportConstants"%>
+<%@page import="project.efg.util.EFGImportConstants,project.efg.util.EFGMediaResourceSearchableObject,project.efg.servlets.factory.ServletAbstractFactoryImpl,project.efg.servlets.efgInterface.ServletAbstractFactoryInterface"%>
 <html>
   <head>
   <%
@@ -22,7 +22,16 @@
 	
 	String fieldName = (String)request.getAttribute("fieldName");
 	String fieldValue = (String)request.getAttribute("fieldValue");
-
+    ServletAbstractFactoryInterface servFact = new ServletAbstractFactoryImpl();
+     EFGMediaResourceSearchableObject  searchO = servFact.getFirstField(displayName, dsName) ;
+	String fieldToUse = null;
+	if(searchO != null){
+		fieldToUse  = searchO.getSearchableField();
+	}
+	 if((fieldToUse != null) && (!fieldToUse.trim().equals(""))){
+			 fieldValue=fieldToUse;
+	}
+		
 	StringBuffer querySearch = new StringBuffer();
 	querySearch.append(context);
 	querySearch.append("/search?dataSourceName=");

@@ -65,7 +65,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			if(groupTable == null){
 					groupTable = new Hashtable();
 			}
-String groupKey = null;
+			String groupKey = null;
            String groupLabel= null;
 			String groupLabelValue = null;
 			String characterLabelValue = null;
@@ -94,19 +94,32 @@ String groupKey = null;
 			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
 				isImagesExists = true;	
 			}
-	int numberOfLists = 3;
-	int numberOfInnerLists=4;
-int numberOfItems=12;
-if(efgList.size()  < numberOfLists){
-	numberOfLists = efgList.size();
-}
-if(efgList.size()  < numberOfInnerLists){
-	numberOfInnerLists = efgList.size();
-}
-if(table.size()  < numberOfItems){
-	numberOfItems = table.size();
-}
-		
+	int numberOfLists = 0;
+	int numberOfInnerLists=0;
+	int numberOfItems=0;
+	if(isListsExists ){
+		if(efgList.size()  < 3){
+			numberOfLists = efgList.size();
+		}
+		else{
+			numberOfLists = 3;
+		}
+		if(efgList.size()  < 4){
+			numberOfInnerLists = efgList.size();
+		}
+		else{
+			 numberOfInnerLists=4;
+		}
+	}
+	if(isTableExists){
+		if(table.size()  < 12){
+			numberOfItems = table.size();
+		}
+		else{
+		 numberOfItems=12;
+		}
+	}
+	
 			
 		    File cssFiles = new File(realPath + File.separator +  EFGImportConstants.templateCSSDirectory);
 			File[] cssFileList = cssFiles.listFiles(); 
@@ -572,7 +585,8 @@ if(table.size()  < numberOfItems){
 					 </td>
 				</tr>
 				<%
-				for(int zz = 0; zz < numberOfItems; zz++){
+				if(isTableExists){
+				for(int zz = 0; zz < table.size(); zz++){
 					EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)table.get(zz);
 					if(isImagesExists) {
 						if(mediaResourceFields.contains(queueObject1)){
@@ -617,6 +631,7 @@ if(table.size()  < numberOfItems){
 					if(characterLabelValue == null){
 						characterLabelValue ="item";
 					}
+					 if(zz < numberOfItems){
 				%>
 				<tr>
 				   <td class="heading"><input size="20" type="text"  title="" name="<%=groupText%>" value="<%=groupValue%>"/>
@@ -629,7 +644,7 @@ if(table.size()  < numberOfItems){
 							it = table.iterator();
 							while (it.hasNext()) {
 
-		EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+							EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
 								if(isImagesExists) {
 									if(mediaResourceFields.contains(queueObject)){
 										continue;
@@ -710,9 +725,12 @@ if(table.size()  < numberOfItems){
 					%>
 					</td>         
 				</tr>
-				<%}//end outer for 
-			
-				for(int zz = 0; zz < numberOfLists; zz++){
+				<%
+				}//end if
+				}//end outer for 
+			}//end if tableexist
+				if(isListsExists) {
+				for(int zz = 0; zz < efgList.size(); zz++){
 					EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)efgList.get(zz);
 					
 
@@ -744,7 +762,7 @@ if(table.size()  < numberOfItems){
 					}
 						
 
-					
+					if( zz <  numberOfLists){
 				%>
 				<tr>
 				   <td class="heading"><input size="20" type="text"  title="" name="<%=groupText%>" value="<%=groupValue%>"/>
@@ -755,7 +773,7 @@ if(table.size()  < numberOfItems){
 				
 				<%
 				
-					for(int zz2 = 0; zz2 < numberOfInnerLists; zz2++){
+					for(int zz2 = 0; zz2 < efgList.size(); zz2++){
 					queueObject1 = (EFGQueueObjectInterface)efgList.get(zz);
 				
 					name =tp.getCharacter(isOld,isOld);
@@ -774,14 +792,13 @@ if(table.size()  < numberOfItems){
 					if(characterLabelValue == null){
 						characterLabelValue ="list";
 					}
-
+					if(zz2 < numberOfInnerLists){
 				%>	
 				<tr>
 						<td class="assochead"><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></td>
 						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 					<td class="simspptext">
-<div class="itemlist">
-
+						<div class="itemlist">
 						<select name="<%=name%>"  title="Select A Field From List" style="width:140px;">              														
 						<%
 							int zii=0;
@@ -809,9 +826,11 @@ if(table.size()  < numberOfItems){
 						%>
 						</select> 
 						</div>
-			</td>
+						</td>
 							</tr>		
-						<%}%>
+						<%}
+						}//end inner for
+					%>
 						
 					</table>
 					</td>
@@ -863,8 +882,10 @@ if(table.size()  < numberOfItems){
 					%>
 					</td>         
 				</tr>
-				<%}//end outer for 
-				
+				<%
+				}//end if zz < numberoflists
+				}//end outer for 
+				}//end if is lists exists
 				%>
 			</table>
 			<%

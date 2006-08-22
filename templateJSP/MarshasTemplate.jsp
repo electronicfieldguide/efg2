@@ -897,7 +897,7 @@ Shrubs:
 							%>
 							</select> 
 							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-			<%	characterText = tp.getCurrentCharacterText(name);
+							<%	characterText = tp.getCurrentCharacterText(name);
 									characterValue = (String)groupTable.get(characterText);
 		
 									if(characterValue == null){

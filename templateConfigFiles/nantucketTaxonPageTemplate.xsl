@@ -7,14 +7,7 @@
 	<xsl:include href="commonJavaFunctions.xsl"/>
 	<xsl:include href="xslPageTaxon.xsl"/>
 	<xsl:variable name="defaultcss" select="'nantuckettaxonpage.css'"/>
-	<xsl:variable name="cssFile">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'1'"/>
-			<xsl:with-param name="groupRank" select="'1'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
+	<xsl:variable name="cssFile" select="$xslPage/groups/group[@label='styles']/characterValue[@value]"/>
 	<xsl:variable name="css">
 		<xsl:choose>
 			<xsl:when test="not(string($cssFile))=''">
@@ -25,14 +18,12 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="headerGroup" select="$xslPage/groups/group[@id='2']"/>
-	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@id='3']"/>
-	<xsl:variable name="photosCreditGroup" select="$xslPage/groups/group[@id='4']"/>
-	<xsl:variable name="firstListGroup" select="$xslPage/groups/group[@id='5']"/>
-	<xsl:variable name="firstCatNarGroup" select="$xslPage/groups/group[@id='6']"/>
-	<xsl:variable name="secondListGroup" select="$xslPage/groups/group[@id='7']"/>
-	<xsl:variable name="secondCatNarGroup" select="$xslPage/groups/group[@id='8']"/>
-	<xsl:variable name="copyrightText" select="$xslPage/groups/group[@id='9']"/>
+	<xsl:variable name="headerGroup" select="$xslPage/groups/group[@label='headers']"/>
+	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@id='images']"/>
+	<xsl:variable name="photosCreditGroup" select="$xslPage/groups/group[@label='photocred']"/>
+	<xsl:variable name="listsGroup" select="$xslPage/groups/group[@label='lists']"/>
+	<xsl:variable name="itemsGroup" select="$xslPage/groups/group[@label='items']"/>
+	<xsl:variable name="copyrightText" select="$xslPage/groups/group[@label='credits']"/>
 	<xsl:template name="headerGroup">
 		<xsl:param name="headerGroup"/>
 		<xsl:param name="taxonEntry"/>
@@ -98,8 +89,7 @@
 			</xsl:if>
 		</td>
 	</xsl:template>
-	
-			<xsl:template name="findColumnVariables1">
+	<xsl:template name="findColumnVariables1">
 		<xsl:param name="item"/>
 		<xsl:param name="stat"/>
 		<xsl:param name="med"/>
@@ -118,13 +108,13 @@
 					<xsl:when test="string($firstStats)=''">
 						<!-- No StatisticalMeasure exist with the same @name as firstColumn -->
 						<xsl:variable name="firstLists">
-						<xsl:value-of select="$list"/>
+							<xsl:value-of select="$list"/>
 						</xsl:variable>
 						<xsl:choose>
 							<xsl:when test="string($firstLists)=''">
 								<!-- No EFGLists exist with the same @name as firstColumn. Check and output a media resource -->
 								<xsl:variable name="firstMedia">
-								<xsl:value-of select="$med"/>
+									<xsl:value-of select="$med"/>
 								</xsl:variable>
 								<xsl:value-of select="$firstMedia"/>
 							</xsl:when>
@@ -177,7 +167,6 @@
 			</xsl:if>
 		</td>
 	</xsl:template>
-	
 	<xsl:template name="outputPhotocred">
 		<xsl:param name="photocred"/>
 		<xsl:if test="count($photocred/characterValue) &gt; 0">
@@ -193,7 +182,6 @@
 		<xsl:if test="$index &lt; $listsize">
 			<xsl:variable name="imageName" select="imageList:getImageName($myImageList, number($index))"/>
 			<xsl:variable name="caption" select="imageList:getImageCaption($myImageList, number($index))"/>
-		
 			<xsl:variable name="src">
 				<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
 			</xsl:variable>
@@ -304,8 +292,6 @@
 				<xsl:sort select="@rank" data-type="number"/>
 				<xsl:variable name="fieldName" select="@value"/>
 				<xsl:variable name="mediaresources" select="$taxonEntry/MediaResources[@name=$fieldName]"/>
-				
-		
 				<xsl:call-template name="populateImageList">
 					<xsl:with-param name="mediaresources" select="$taxonEntry/MediaResources[@name=$fieldName]"/>
 					<xsl:with-param name="myImageList" select="$myImageList"/>
@@ -535,40 +521,8 @@
 							<table bgcolor="white" width="100%" class="details">
 								<tr>
 									<td>
-										<xsl:if test="count($firstListGroup) &gt; 0">
-											<xsl:if test="count($firstListGroup/characterValue) &gt; 0">
-												<xsl:variable name="fieldName" select="$firstListGroup/characterValue[@rank='1']/@value"/>
-												<xsl:if test="count($taxonEntry/EFGLists[@name=$fieldName]) &gt; 0">
-													<xsl:call-template name="outputdetailist">
-														<xsl:with-param name="efglists" select="$taxonEntry/EFGLists[@name=$fieldName]"/>
-														<xsl:with-param name="caption" select="$firstListGroup/characterValue[@rank='1']/@text"/>
-														<xsl:with-param name="fieldName" select="$fieldName"/>
-													</xsl:call-template>
-												</xsl:if>
-											</xsl:if>
-										</xsl:if>
-										<xsl:if test="count($firstCatNarGroup) &gt; 0">
-											<xsl:if test="count($firstCatNarGroup/characterValue) &gt; 0">
-												<xsl:variable name="fieldName" select="$firstCatNarGroup/characterValue/@value"/>
-												<xsl:variable name="caption" select="$firstCatNarGroup/characterValue/@text"/>
-												<xsl:if test="count($taxonEntry/Items[@name=$fieldName]) &gt; 0">
-													<xsl:call-template name="outputcharacter">
-														<xsl:with-param name="items" select="$taxonEntry/Items[@name=$fieldName]"/>
-														<xsl:with-param name="caption" select="$caption"/>
-														<xsl:with-param name="fieldName" select="$fieldName"/>
-													</xsl:call-template>
-												</xsl:if>
-												<xsl:if test="count($taxonEntry/StatisticalMeasures[@name=$fieldName]) &gt; 0">
-													<xsl:call-template name="outputstats">
-														<xsl:with-param name="stats" select="$taxonEntry/StatisticalMeasures[@name=$fieldName]"/>
-														<xsl:with-param name="caption" select="$caption"/>
-														<xsl:with-param name="fieldName" select="$fieldName"/>
-													</xsl:call-template>
-												</xsl:if>
-											</xsl:if>
-										</xsl:if>
-										<xsl:if test="count($secondListGroup) &gt; 0">
-											<xsl:for-each select="$secondListGroup/characterValue">
+										<xsl:if test="count($listsGroup) &gt; 0">
+											<xsl:for-each select="$listsGroup/characterValue">
 												<xsl:sort select="@rank" data-type="number"/>
 												<xsl:variable name="fieldName" select="@value"/>
 												<xsl:variable name="caption" select="@text"/>
@@ -581,8 +535,8 @@
 												</xsl:if>
 											</xsl:for-each>
 										</xsl:if>
-										<xsl:if test="count($secondCatNarGroup)&gt; 0">
-											<xsl:for-each select="$secondCatNarGroup/characterValue">
+										<xsl:if test="count($itemsGroup)&gt; 0">
+											<xsl:for-each select="$itemsGroup/characterValue">
 												<xsl:sort select="@rank" data-type="number"/>
 												<xsl:variable name="fieldName" select="@value"/>
 												<xsl:variable name="caption" select="@text"/>
