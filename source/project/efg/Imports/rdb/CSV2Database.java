@@ -191,7 +191,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							this.txManager.rollback(status);
 							return false;
 						}
-						String[] fieldNames = this.lowerCaseHeaders(this.getDataTableHeaders());
+						String[] fieldNames = this.getDataTableHeaders();
 						String[] legalNames = this.lowerCaseHeaders(this.getLegalNames());
 
 						if ((this.datasource.getTemplateDisplayName() == null)
@@ -338,6 +338,22 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		return this.metadataTableName;
 	}
 
+	public int getCount(String metaName){
+		try{
+			String countQuery = "SELECT DISTINCT count(*) FROM " + metaName;
+			java.util.List listNew = this.executeQueryForList(
+					countQuery, 1);
+			String counter = ((EFGQueueObjectInterface) listNew.get(0))
+					.getObject(0);
+			
+			return Integer.parseInt(counter);
+		}
+		catch(Exception eex){
+			
+		}
+		return 0;
+		
+	}
 	private boolean copyClone(String clonedDataTableName) {
 
 		TaxonPageDefaultConfig taxonPageConfig = new TaxonPageDefaultConfig(
@@ -768,13 +784,17 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 																				// nclone2
 																				// not
 																				// in
-				
+				boolean toRemove = false;
 				if(oldTableLegalNamesClone1.size() > 0){
 					
 					this.removeFromMetadataTable(oldTableLegalNamesClone1);
+					toRemove = true;
 				}
 				if(newTableLegalNamesClone2.size() > 0){
 					int newList = getCount(this.metadataTableName);
+					if(!toRemove){
+						newList = newList + 1;
+					}
 					isDone = this.addToMetadataTable(newTableLegalNamesClone2,
 							newList);
 				}	
@@ -794,7 +814,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 */
 	private boolean addToMetadataTable(Set itemsToAdd, int numberOfRows) {
 
-		String[] fieldNames = this.lowerCaseHeaders(this.getDataTableHeaders());
+		String[] fieldNames = this.getDataTableHeaders();
 		String[] legalNames = this.lowerCaseHeaders(this.getLegalNames());
 		int counter = numberOfRows;
 		
@@ -859,7 +879,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					}
 					query.append(new Integer(counter));
 					++counter;
-					String stmtQuery = "INSERT INTO " + this.metadataTableName
+					
+					String stmtQuery = "INSERT INTO " + this.metadataTableName + " " +  this.getMetadataHeadQuery()
 							+ " VALUES(" + query.toString() + ")";
 					log.debug("Insert query: " + stmtQuery);
 					this.executeStatement(stmtQuery);
@@ -947,22 +968,6 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			}
 		}
 
-	}
-	public int getCount(String metaName){
-		try{
-			String countQuery = "SELECT DISTINCT count(*) FROM " + metaName;
-			java.util.List listNew = this.executeQueryForList(
-					countQuery, 1);
-			String counter = ((EFGQueueObjectInterface) listNew.get(0))
-					.getObject(0);
-			
-			return Integer.parseInt(counter);
-		}
-		catch(Exception eex){
-			
-		}
-		return 0;
-		
 	}
 	/**
 	 * Create EFGRDTable if it does not already exists
@@ -1264,7 +1269,36 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		}
 		return isDone;
 	}
+	private String getMetadataHeadQuery(){
+		
+		StringBuffer query = new StringBuffer("(");
+		query.append(EFGImportConstants.LEGALNAME);
+		query.append(",");
+		query.append(EFGImportConstants.NAME);
+		query.append(",");
+		query.append(EFGImportConstants.SEARCHABLE);
+		query.append(",");
+		query.append(EFGImportConstants.ISLISTS);
+		query.append(",");
 
+		query.append(EFGImportConstants.ONTAXONPAGE);
+		query.append(",");
+		query.append(EFGImportConstants.CATEGORICAL);
+		query.append(",");
+		query.append(EFGImportConstants.NARRATIVE);
+		query.append(",");
+		query.append(EFGImportConstants.NUMERIC);
+		query.append(",");
+		query.append(EFGImportConstants.NUMERICRANGE);
+		query.append(",");
+		query.append(EFGImportConstants.MEDIARESOURCE);
+		query.append(",");
+		query.append(EFGImportConstants.ORDER);
+		query.append(")");
+		
+		return query.toString();
+		
+	}
 	/**
 	 * 
 	 * @return an array of headers to be used for Metadata table REFACTOR USE
