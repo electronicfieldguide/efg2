@@ -76,7 +76,6 @@ to compile/deploy/clean with:
 	<target name="compileMain" depends="prepare">
 		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="generate"/>
 		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
-		<ant antfile="${efg2.home}/generateEFGField.xml" inheritAll="true" target="generate"/>
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
 		<copy todir="${src.temp.home}">
 			<fileset dir="${efg2.source.home}"/>
@@ -170,16 +169,11 @@ to compile/deploy/clean with:
 			<fileset dir="${deploy.home}/WEB-INF/lib" includes="rdbImport.jar,mysqldriver.jar,servlet-api.jar,junit.jar, *.fp5, *.bat"/>
 		</delete>
 		<copy file="${efg2.home}/lib/mysqldriver.jar" todir="${tomcat.home}/common/lib"/>
-		<!-- CREATE A PROPERTIES FILE ON SERVER AND COPY ALL PROPERTIES FILE THERE-->
-		<copy file="${efg2.properties.home}/log4j.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
-		<copy file="${efg2.properties.home}/log4j_rdb.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
+		<copy file="${efg2.properties.home}/log4j_server.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
+		<move file="${deploy.home}/WEB-INF/classes/project/efg/util/log4j_server.properties" tofile="${deploy.home}/WEB-INF/classes/project/efg/util/log4j.properties"/>
 	</target>
 	<target name="deploy" depends="compile, prepareDeploy">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
-		<!--<copy todir="${deploy.home}/WEB-INF/classes">
-			<fileset dir="compiled" includes="*.*"/>
-		</copy>
-		-->
 		<copy todir="${tomcat.home}/webapps/efg2/WEB-INF/classes/project">
 			<fileset dir="compiled/project"/>
 		</copy>
@@ -219,10 +213,8 @@ to compile/deploy/clean with:
 	<target name="cleanTomcatUsers">
 		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="clean"/>
 	</target>
-	<target name="cleanEFGField">
-		<ant antfile="${efg2.home}/generateEFGField.xml" inheritAll="true" target="clean"/>
-	</target>
-	<target name="cleanAll" depends="cleanSource,cleanTomcatUsers,cleanEFGField">
+
+	<target name="cleanAll" depends="cleanSource,cleanTomcatUsers">
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
 		<delete dir="	${efg2.lib.home.properties}" quiet="true"/>

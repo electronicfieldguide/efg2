@@ -10,7 +10,13 @@
 			<xsl:value-of select="$xslPage/groups/group[@label='htmltitles']/characterValue[1]/@value"/>
 		</xsl:if>
 	</xsl:variable>
+		<xsl:variable name="title1">
+		<xsl:if test="count($xslPage/groups/group[@label='htmltitles']/characterValue/@value) &gt; 0">
+			<xsl:value-of select="$xslPage/groups/group[@label='htmltitles']/characterValue[2]/@value"/>
+		</xsl:if>
+	</xsl:variable>
 	<xsl:variable name="imagetitle" select="concat($template_images_home,$xslPage/groups/group[@label='imageheaders']/characterValue[1]/@value)"/>
+
 	<xsl:variable name="address1" select="$xslPage/groups/group[@label='addresses']/characterValue[1]/@value"/>
 	<xsl:variable name="address2" select="$xslPage/groups/group[@label='addresses']/characterValue[2]/@value"/>
 	<xsl:variable name="address3" select="$xslPage/groups/group[@label='addresses']/characterValue[3]/@value"/>
@@ -45,7 +51,7 @@
 			<head>
 				<meta http-equiv="content-type" content="text/html;charset=iso-8859-1"/>
 				<title>
-					<xsl:value-of select="$checkListTitle"/>
+			<title><xsl:value-of select="concat($title,' ',$title1)"/></title>
 				</title>
 			</head>
 			<body bgcolor="#dcdcdc">
@@ -55,7 +61,8 @@
 						<td valign="top">
 							<h1>
 								<font color="#8b0000">
-									<xsl:value-of select="$title"/>
+									<xsl:value-of select="$title"/><br/>
+									<xsl:value-of select="$title1"/>
 								</font>
 							</h1>
 						</td>
@@ -340,7 +347,9 @@
 		<table border="0" cellspacing="2" cellpadding="4">
 			<tr>
 				<td>
-					<xsl:value-of select="concat($copyrightText,',')"/>
+						<xsl:if test="not(string($copyrightText))=''">
+						<xsl:value-of select="concat($copyrightText,', ')"/>
+						</xsl:if>
 					<font color="#006400" face="Palatino Linotype">
 						<a href="{$urlText}">
 							<xsl:value-of select="$urlText"/>

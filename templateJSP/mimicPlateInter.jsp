@@ -82,7 +82,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				dispatcher.forward(request, response);
 		    }
 		%>
-		<title></title>
+		<title>Plate 2 Configuration</title>
 	</head>
 	<body bgcolor="#dcdcdc">
 		<form method="post" action="<%=context%>/configTaxonPage">
@@ -110,8 +110,21 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 						<%	if(isTableExists){
 						%>
-						<h1><font color="#8b0000"><input size="100" type="text"  title="ENTER HTML PAGE TITLE HERE" name="<%=name%>" value="<%=fieldValue%>"/> </font></h1>
-						<%}%>
+									<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+									<h1><font color="#8b0000"><input size="100" type="text"  title="ENTER HTML PAGE TITLE HERE" name="<%=name%>" value="<%=fieldValue%>"/> </font>
+									<br/>
+									<%
+									name =tp.getCharacter(isOld,isOld);
+									characterLabel= tp.getCurrentCharacterLabel(name);
+									characterLabelValue = (String)groupTable.get(characterLabel);
+									if(characterLabelValue == null){
+										characterLabelValue ="htmltitle";
+									}
+								%>
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+								<input size="100" type="text"  title="ENTER PAGE TITLE CONTINUATION HERE" name="<%=name%>" value="<%=fieldValue%>"/>
+								<%}%>
+						</h1>
 					</td>
 					<td rowspan="3">
 						<%

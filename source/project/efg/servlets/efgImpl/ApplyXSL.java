@@ -247,7 +247,7 @@ public class ApplyXSL extends HttpServlet {
 			PrintWriter out = res.getWriter();
 			// Tell the Browser that I'm sending back HTML
 			out
-					.println("<H3>Datasource contains illegal XMLcharacters.Please consult systems administrator</H3>");
+					.println("<H3>Datasource contains illegal XMLcharacters.Please consult documentation on how to deal with it.</H3>");
 			out.flush();
 			res.flushBuffer();
 		
@@ -308,6 +308,9 @@ public class ApplyXSL extends HttpServlet {
 	}
 }
 // $Log$
+// Revision 1.1.2.5  2006/08/23 13:42:03  kasiedu
+// no message
+//
 // Revision 1.1.2.4  2006/08/21 19:32:55  kasiedu
 // Updates to  files
 //
