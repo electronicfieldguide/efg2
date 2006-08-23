@@ -2,22 +2,22 @@
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
 	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:include href="nantucketCommonSearchTemplate.xsl"/>
+	
 	<xsl:template name="outputRow">
 		<xsl:param name="uniqueID"/>
-		<xsl:param name="firstColumnVar"/>
-		<xsl:param name="secondColumnVar"/>
-		<xsl:param name="thirdColumnVar"/>
+		<xsl:param name="leftColumn"/>
+		<xsl:param name="rightColumn"/>
+		<xsl:param name="midColumn"/>
 		<xsl:variable name="fieldValue1">
 			<xsl:choose>
-				<xsl:when test="string($firstColumnVar)=''">
-					<xsl:value-of select="string($secondColumnVar)"/>
+				<xsl:when test="string($leftColumn)=''">
+					<xsl:value-of select="string($midColumn)"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat(string($firstColumnVar),' ',string($secondColumnVar))"/>
+					<xsl:value-of select="concat(string($leftColumn),' ',string($midColumn))"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-	
 		<tr>
 			<xsl:call-template name="outputCol">
 				<xsl:with-param name="uniqueID" select="$uniqueID"/>
@@ -27,7 +27,7 @@
 			</xsl:call-template>
 			<xsl:call-template name="outputCol">
 				<xsl:with-param name="uniqueID" select="$uniqueID"/>
-				<xsl:with-param name="fieldValue" select="$thirdColumnVar"/>
+				<xsl:with-param name="fieldValue" select="$rightColumn"/>
 				<xsl:with-param name="tdClassname" select="'commonname'"/>
 				<xsl:with-param name="aClassname" select="'commonname2nd'"/>
 			</xsl:call-template>

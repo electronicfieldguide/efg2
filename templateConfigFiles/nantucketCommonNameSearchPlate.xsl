@@ -8,39 +8,21 @@
 	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:include href="commonJavaFunctions.xsl"/>
 	<xsl:include href="xslPagePlate.xsl"/>
-
-		<xsl:variable name="cssFile">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'1'"/>
-			<xsl:with-param name="groupRank" select="'1'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
+	<xsl:variable name="defaultcss" select="'nantucketstyleplates.css'"/>
+	<xsl:variable name="cssFile" select="$xslPage/groups/group[@label='styles']/characterValue/@value"/>
+	<xsl:variable name="css">
+		<xsl:choose>
+			<xsl:when test="not(string($cssFile))=''">
+				<xsl:value-of select="$cssFile"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$defaultcss"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="mediaResourceField">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'2'"/>
-			<xsl:with-param name="groupRank" select="'2'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="caption1">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'3'"/>
-			<xsl:with-param name="groupRank" select="'3'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="caption2">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'3'"/>
-			<xsl:with-param name="groupRank" select="'4'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
+	<xsl:variable name="mediaResourceField" select="$xslPage/groups/group[@label='images']/characterValue[1]/@value"/>
+	<xsl:variable name="caption1" select="$xslPage/groups/group[@label='captions']/characterValue[1]/@value"/>
+	<xsl:variable name="caption2" select="$xslPage/groups/group[@label='captions']/characterValue[2]/@value"/>
 	<xsl:variable name="images-per-row" select="3"/>
 	<xsl:template match="/">
 		<xsl:variable name="dsname" select="$dataSourceName"/>
@@ -48,12 +30,12 @@
 		<xsl:variable name="mySorter" select="sorter:new($total_count)"/>
 		<html>
 			<head>
-			<xsl:variable name="css_loc" select="concat($css_home,$cssFile)"/>
-					<link rel="stylesheet" href="{$css_loc}"/>
+				<xsl:variable name="css_loc" select="concat($css_home,$cssFile)"/>
+				<link rel="stylesheet" href="{$css_loc}"/>
 			</head>
 			<body>
 				<div id="numresults">Your search found <span class="num">
-						<xsl:value-of select="$total_count"/> 
+						<xsl:value-of select="$total_count"/>
 					</span> results: </div>
 				<table class="resultsdisplay">
 					<xsl:variable name="taxonEntries" select="//TaxonEntry"/>
@@ -154,10 +136,10 @@
 		<xsl:variable name="currentname" select="sorter:getName($mySorter, string(number($pos)))"/>
 		<xsl:for-each select="$taxonEntries">
 			<xsl:variable name="cap1">
-				<xsl:value-of select="Items[@name=$caption1]/Item"/>
+				<xsl:value-of select="Items[@name=$caption1]/Item[1]"/>
 			</xsl:variable>
 			<xsl:variable name="cap2">
-				<xsl:value-of select="Items[@name=$caption2]/Item"/>
+				<xsl:value-of select="Items[@name=$caption2]/Item[1]"/>
 			</xsl:variable>
 			<xsl:variable name="caption">
 				<xsl:call-template name="outputCaption">
@@ -197,10 +179,10 @@
 		<xsl:variable name="currentname" select="sorter:getName($mySorter, string(number($pos)))"/>
 		<xsl:for-each select="$taxonEntries">
 			<xsl:variable name="cap1">
-				<xsl:value-of select="Items[@name=$caption1]/Item"/>
+				<xsl:value-of select="Items[@name=$caption1]/Item[1]"/>
 			</xsl:variable>
 			<xsl:variable name="cap2">
-				<xsl:value-of select="Items[@name=$caption2]/Item"/>
+				<xsl:value-of select="Items[@name=$caption2]/Item[1]"/>
 			</xsl:variable>
 			<xsl:variable name="caption">
 				<xsl:call-template name="outputCaption">
@@ -241,18 +223,6 @@
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:variable>
-				<!--
-				<xsl:variable name="linkURL">
-					<xsl:choose>
-						<xsl:when test="$datasource=''">
-							<xsl:value-of select="concat($serverbase, '/Redirect.jsp?uniqueID=',$uniqueID, '&amp;dataSourceName=',$dsname, '&amp;displayFormat=HTML')"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="concat($serverbase, '/Redirect.jsp?uniqueID=',$uniqueID,'&amp;displayName=', $datasource, '&amp;dataSourceName=',$dsname,'&amp;displayFormat=HTML')"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
--->
 				<td class="thumbnail">
 					<a class="thumbnail" href="{$linkURL}">
 						<xsl:choose>
@@ -261,7 +231,6 @@
 									<xsl:variable name="imageURL">
 										<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $altImage)"/>
 									</xsl:variable>
-									
 									<img src="{$imageURL}"/>
 								</xsl:if>
 							</xsl:when>
@@ -271,7 +240,6 @@
 										<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
 									</xsl:variable>
 									<img src="{$imageURL}"/>
-									
 								</xsl:if>
 							</xsl:otherwise>
 						</xsl:choose>
@@ -280,6 +248,4 @@
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
-	
-	
 </xsl:stylesheet>

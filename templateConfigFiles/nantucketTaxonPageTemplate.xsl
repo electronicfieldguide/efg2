@@ -7,7 +7,7 @@
 	<xsl:include href="commonJavaFunctions.xsl"/>
 	<xsl:include href="xslPageTaxon.xsl"/>
 	<xsl:variable name="defaultcss" select="'nantuckettaxonpage.css'"/>
-	<xsl:variable name="cssFile" select="$xslPage/groups/group[@label='styles']/characterValue[@value]"/>
+	<xsl:variable name="cssFile" select="$xslPage/groups/group[@label='styles']/characterValue/@value"/>
 	<xsl:variable name="css">
 		<xsl:choose>
 			<xsl:when test="not(string($cssFile))=''">

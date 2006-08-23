@@ -207,9 +207,11 @@
 						</xsl:variable>
 						<xsl:choose>
 							<xsl:when test="not(string($annot))=''">
-									<xsl:value-of select="concat($annot,': ',.)"/>
-							</xsl:when><xsl:otherwise><xsl:value-of select="."/></xsl:otherwise>
-							
+								<xsl:value-of select="concat($annot,': ',.)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="."/>
+							</xsl:otherwise>
 						</xsl:choose>
 						<br/>
 					</xsl:for-each>
@@ -230,10 +232,10 @@
 							<xsl:variable name="url">
 								<xsl:choose>
 									<xsl:when test="contains(translate($resourcelink,'abcdefhijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'http;//')">
-										<xsl:value-of select="concat(string($resourcelink),string($caption))"/>
+										<xsl:value-of select="concat(string($resourcelink),'=',string($caption))"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat(string($serverbase),'/search?dataSourceName=', $dataSourceName,'&amp;',$resourcelink,$caption)"/>
+										<xsl:value-of select="concat(string($serverbase),'/search?dataSourceName=', $dataSourceName,'&amp;',$resourcelink,'=',$caption)"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>

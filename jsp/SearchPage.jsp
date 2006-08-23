@@ -121,7 +121,7 @@ function toggleMax(field,idVar){
     </h2>
 	
   <center>
-      <form method="post" action="<%=context%>/search">
+      <form method="post" action="<%=context%>/Redirect.jsp">
 	
         <input type="hidden" name="<%=EFGImportConstants.DISPLAY_NAME%>" value="<%=displayName%>"/>
         <input type="hidden" name="<%=EFGImportConstants.DISPLAY_FORMAT%>" value="<%=EFGImportConstants.HTML%>"/>

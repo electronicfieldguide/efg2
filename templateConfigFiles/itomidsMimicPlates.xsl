@@ -4,112 +4,42 @@
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
 	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:include href="dateTemplate.xsl"/>
-		<xsl:include href="xslPagePlate.xsl"/>
-
+	<xsl:include href="xslPagePlate.xsl"/>
 	<xsl:variable name="title">
-		<xsl:if test="$xslPage/groups/group[@id='1']/characterValue">
-			<xsl:value-of select="$xslPage/groups/group[@id='1']/characterValue[@rank='1']/@value"/>
-		</xsl:if>	
+		<xsl:if test="count($xslPage/groups/group[@label='htmltitles']/characterValue/@value) &gt; 0">
+			<xsl:value-of select="$xslPage/groups/group[@label='htmltitles']/characterValue[1]/@value"/>
+		</xsl:if>
 	</xsl:variable>
-	<xsl:variable name="imagetitle" select="concat($template_images_home,$xslPage/groups/group[@id='2']/characterValue[@rank='1']/@value)"/>
-	<xsl:variable name="address1" select="$xslPage/groups/group[@id='3']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="address2" select="$xslPage/groups/group[@id='4']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="address3" select="$xslPage/groups/group[@id='5']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="checkListTitle" select="$xslPage/groups/group[@id='6']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="descriptionTextTitle" select="$xslPage/groups/group[@id='7']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="sciTextTitle" select="$xslPage/groups/group[@id='8']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="image1TextTitle" select="$xslPage/groups/group[@id='9']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="image2TextTitle" select="$xslPage/groups/group[@id='10']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="copyrightText" select="$xslPage/groups/group[@rank='22']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="urlText" select="$xslPage/groups/group[@rank='23']/characterValue[@rank='1']/@value"/>
-	<xsl:variable name="desc1">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'11'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc2">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'12'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc3">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'13'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc4">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'14'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc5">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'15'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc6">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'16'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc7">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'17'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc8">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'18'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="desc9">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'11'"/>
-			<xsl:with-param name="groupRank" select="'19'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="imagea1">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'12'"/>
-			<xsl:with-param name="groupRank" select="'20'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
-	<xsl:variable name="imagea2">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'12'"/>
-			<xsl:with-param name="groupRank" select="'21'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
+	<xsl:variable name="imagetitle" select="concat($template_images_home,$xslPage/groups/group[@label='imageheaders']/characterValue[1]/@value)"/>
+	<xsl:variable name="address1" select="$xslPage/groups/group[@label='addresses']/characterValue[1]/@value"/>
+	<xsl:variable name="address2" select="$xslPage/groups/group[@label='addresses']/characterValue[2]/@value"/>
+	<xsl:variable name="address3" select="$xslPage/groups/group[@label='addresses']/characterValue[3]/@value"/>
+	
+	<xsl:variable name="checkListTitle" select="$xslPage/groups/group[@label='titles']/characterValue[1]/@value"/>
+	<xsl:variable name="descriptionTextTitle" select="$xslPage/groups/group[@label='intros']/characterValue[1]/@value"/>
+	<xsl:variable name="sciTextTitle" select="$xslPage/groups/group[@label='headers']/characterValue[1]/@value"/>
+	<xsl:variable name="image1TextTitle" select="$xslPage/groups/group[@label='headers']/characterValue[2]/@value"/>
+	<xsl:variable name="image2TextTitle" select="$xslPage/groups/group[@label='headers']/characterValue[3]/@value"/>
+	<xsl:variable name="copyrightText" select="$xslPage/groups/group[@label='credits']/characterValue[1]/@value"/>
+	<xsl:variable name="urlText" select="$xslPage/groups/group[@label='credits']/characterValue[2]/@value"/>
+		<xsl:variable name="descriptionGroup" select="$xslPage/groups/group[@label='items']"/>
+		<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@label='images']"/>
+
+	<xsl:variable name="desc1" select="$descriptionGroup/characterValue[1]/@value"/>
+	<xsl:variable name="desc2" select="$descriptionGroup/characterValue[2]/@value"/>
+	<xsl:variable name="desc3" select="$descriptionGroup/characterValue[3]/@value"/>
+<xsl:variable name="desc4" select="$descriptionGroup/characterValue[4]/@value"/>
+<xsl:variable name="desc5" select="$descriptionGroup/characterValue[5]/@value"/>
+<xsl:variable name="desc6" select="$descriptionGroup/characterValue[6]/@value"/>
+<xsl:variable name="desc7" select="$descriptionGroup/characterValue[7]/@value"/>
+<xsl:variable name="desc8" select="$descriptionGroup/characterValue[8]/@value"/>
+<xsl:variable name="desc9" select="$descriptionGroup/characterValue[9]/@value"/>
+	
+
+	<xsl:variable name="imagea1" select="$imagesGroup/characterValue[1]/@value"/>
+	
+	<xsl:variable name="imagea2" select="$imagesGroup/characterValue[2]/@value"/>
+	
 	<xsl:template match="/">
 		<html>
 			<head>
@@ -200,17 +130,8 @@
 					</tr>
 					<xsl:apply-templates select="//TaxonEntry">
 						<xsl:sort select="Items[@name=$desc4]"/>
-						<xsl:sort select="StatisticalMesures[@name=string($desc4)]"/>
-						<xsl:sort select="MediaResources[@name=string($desc4)]"/>
-						<xsl:sort select="EFGLists[@name=string($desc4)]"/>
 						<xsl:sort select="Items[@name=$desc1]"/>
-						<xsl:sort select="StatisticalMesures[@name=string($desc1)]"/>
-						<xsl:sort select="MediaResources[@name=string($desc1)]"/>
-						<xsl:sort select="EFGLists[@name=string($desc1)]"/>
 						<xsl:sort select="Items[@name=$desc2]"/>
-						<xsl:sort select="StatisticalMesures[@name=string($desc2)]"/>
-						<xsl:sort select="MediaResources[@name=string($desc2)]"/>
-						<xsl:sort select="EFGLists[@name=string($desc2)]"/>
 					</xsl:apply-templates>
 				</table>
 				<xsl:call-template name="outputFooter"/>
@@ -359,7 +280,7 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
-						<img border="0" src="{$src}" alt="{$alt}"/>
+					<img border="0" src="{$src}" alt="{$alt}"/>
 				</a>
 			</xsl:if>
 		</td>

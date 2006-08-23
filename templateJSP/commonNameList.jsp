@@ -65,6 +65,10 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			boolean isNew = true;
 			boolean isOld = false;
 			String name = null;
+           String groupLabel= null;
+			String groupLabelValue = null;
+			String characterLabelValue = null;
+			String characterLabel = null;
 			int ii = 0;
             File imageFiles = new File(realPath + File.separator +  EFGImportConstants.templateImagesDirectory);
 			 File[] imageFileList = imageFiles.listFiles(); 
@@ -100,11 +104,17 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				else{
 					cssLocation =cssLocation + fieldValue;
 				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="styles";
+				}
 			%>		
-		<link rel="stylesheet" href="<%=cssLocation%>"/>
+		<link rel="stylesheet" href="<%=cssLocation%>"/>		
 	</head>
 	<body alink="#660033" vlink="#660033" link="#6699FF" bgcolor="#ddeeff" text="#000000">
 	 <form method="post" action="<%=context%>/configTaxonPage">
+	 				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 			<%if(cssFileList.length > 0){
 				%>						
 						<select name="<%=name%>"  title="Select an image from List">
@@ -125,16 +135,30 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 								}
 							%>
 						</select>
-			<%}%>
+			<%}
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="imageheaders";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="imageheader";
+					}
+			%>
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
+
 		<table class="header">
 			<tr>
 				<td colspan="2" class="title">
 							<%
-								name =tp.getCharacter(isNew,isNew);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
 								if(isTableExists){
 							%>
 								<select name="<%=name%>"  title="Select an image from List">
@@ -160,15 +184,31 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}
 								%>
 								</select>   
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 						<%
 							}
-							name =tp.getCharacter(isNew,isNew);
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
-							if(isTableExists){
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="titles";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="title";
+					}
+%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
+<%
+						if(isTableExists){
 						%>
+					<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 					<input type="text"  title="ENTER PAGE TITLE HERE" name="<%=name%>" value="<%=fieldValue%>"/> 
 					<%}%>
 				</td>
@@ -176,13 +216,27 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			<tr>
 				<td colspan="2" class="descrip">
 						<%
-							name =tp.getCharacter(isNew,isNew);
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="headersInfo";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="headerInfo";
+					}%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
+					<%
 							if(isTableExists){
 						%>
+											<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 								<input type="text"  title="ENTER HEADER INFO HERE"  size="100"   name="<%=name%>" value="<%=fieldValue%> "/> 
 						<%}%>
 				</td>
@@ -193,25 +247,53 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						<tr>
 							<td class="commonheader">
 						<%
-							name =tp.getCharacter(isNew,isNew);
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="headersLeft";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="headerLeft";
+					}%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
+					<%
 							if(isTableExists){
 						%>
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 								<input type="text"  title="ENTER HEADER OF  LEFT COLUMN HERE" name="<%=name%>" value="<%=fieldValue%>"/> 
 							<%}%>
 							</td>
 							<td class="sciheader">
 						<%
-							name =tp.getCharacter(isNew,isNew);
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="headersRight";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="headerRight";
+					}%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
+					<%
 							if(isTableExists){
 						%>
+							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 								<input type="text"  title="ENTER HEADER OF  RIGHT COLUMN HERE" name="<%=name%>" value="<%=fieldValue%>"/> 
 							<%}%>
 							</td>
@@ -222,13 +304,24 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						</tr>
 						<tr>
 							<td class="commonname">
-								<%
-									name = tp.getCharacter(isNew,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
+						<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="leftColumns";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="leftColumn";
+					}%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+
 								<select name="<%=name%>"  title="Select a column from the list">
 								<%
 									ii = 0;
@@ -260,16 +353,28 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										ii++;
 									}
 								%>
-								</select>   
+								</select>  
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+ 
 							</td>
 							<td class="sciname">
-								<%
-									name = tp.getCharacter(isOld,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
+						<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="rightColumns";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="rightColumn1";
+					}%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 								<select name="<%=name%>"  title="Select a column from the list">
 								<%
 									ii = 0;
@@ -302,13 +407,18 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}
 								%>
 								</select>   
-								<%
-									name = tp.getCharacter(isOld,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+					<%
+						name =tp.getCharacter(isOld,isOld);
+						fieldValue = (String)groupTable.get(name);
+						if(fieldValue == null){
+							fieldValue ="";
+						}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="rightColumn2";
+					}%>
 								<select name="<%=name%>"  title="Select a column from the list">
 								<%
 									ii = 0;
@@ -341,6 +451,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}
 								%>
 								</select>   
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 							</td>
 						</tr>
 					</table>

@@ -3,16 +3,8 @@
 	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:include href="xslPageTaxon.xsl"/>
 	<xsl:include href="commonMonteverdeTaxonPageTemplate.xsl"/>
-
-		<xsl:variable name="defaultcss" select="'taxonpagetemplate2.css'"/>
-	<xsl:variable name="cssFile">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'1'"/>
-			<xsl:with-param name="groupRank" select="'1'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
+	<xsl:variable name="defaultcss" select="'taxonpagetemplate2.css'"/>
+	<xsl:variable name="cssFile" select="$xslPage/groups/group[@label='styles']"/>
 	<xsl:variable name="css">
 		<xsl:choose>
 			<xsl:when test="not(string($cssFile))=''">
@@ -23,9 +15,9 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="headerGroup" select="$xslPage/groups/group[@id='2']"/>
-	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@id='3']"/>
-	<xsl:variable name="otherGroup" select="$xslPage/groups/group[@id='4']"/>
+	<xsl:variable name="headerGroup" select="$xslPage/groups/group[@label='headers']"/>
+	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@label='images']"/>
+	<xsl:variable name="otherGroup" select="$xslPage/groups/group[@label='itemsorlists']"/>
 	<xsl:template match="/">
 		<html>
 			<head>

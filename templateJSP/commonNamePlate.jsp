@@ -48,6 +48,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			boolean isNew = true;
 			boolean isOld = false;
 			String name = null;
+           String groupLabel= null;
+			String groupLabelValue = null;
+			String characterLabelValue = null;
+			String characterLabel = null;
+
 			int ii = 0;
 			TemplatePopulator tpop = new  TemplatePopulator();
 			 StringBuffer fileName = new StringBuffer(realPath);
@@ -79,7 +84,6 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 		    }
 			 
 		%>
-		
 	<title>Nantucket Search Plate Template</title>
 			<%
 				name =tp.getCharacter(isNew,isNew);
@@ -91,13 +95,19 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				else{
 					cssLocation =cssLocation + fieldValue;
 				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="styles";
+				}
 			%>	
 	<link rel="stylesheet" href="<%=cssLocation%>"/>
 	</head>
 	<body>
 		<div id="numresults">Your search found <span class="num">xxx</span> results: </div>
 			<form method="post" action="<%=context%>/configTaxonPage">
-			 <%
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+				 <%
 				if(cssFileList.length > 0){
 				%>						
 						<select name="<%=name%>"  title="Select an image from List">
@@ -124,7 +134,18 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				if(fieldValue == null){
 					fieldValue ="";
 				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="images";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
+					}
 			%>
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 				<table class="resultsdisplay">
 					<tr>
 						<td class="thumbnail">
@@ -154,19 +175,30 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										ii++;
 									}
 								%>
-								</select>   
+								</select> 
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>								  
 							<%}%>
 						</td>
 					</tr>
 					<tr>
 						<td class="caption">
-								<%
-									name =tp.getCharacter(isNew,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
+						<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="captions";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="caption";
+					}%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 								<select name="<%=name%>"  title="Select A Field To Be Used As Caption">
 								<%
 									ii=0;
@@ -198,13 +230,18 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}	
 								%>
 								</select>   
-								<%
-									name = tp.getCharacter(isOld,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>								  								
+					<%
+						name =tp.getCharacter(isOld,isOld);
+						fieldValue = (String)groupTable.get(name);
+						if(fieldValue == null){
+							fieldValue ="";
+						}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="caption";
+					}%>
 								<select name="<%=name%>"  title="Select A Field That Should be Appended To The Selected Field(on the left), To Be Used As Caption">
 								<%
 									ii=0;
@@ -236,6 +273,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}	
 								%>
 								</select>   
+							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>								  								
 						</td>
 					</tr>
 					<tr>

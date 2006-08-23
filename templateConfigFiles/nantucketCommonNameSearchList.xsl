@@ -5,24 +5,24 @@
 	<xsl:include href="nantucketCommonSearchTemplate.xsl"/>
 	<xsl:template name="outputRow">
 		<xsl:param name="uniqueID"/>
-		<xsl:param name="firstColumnVar"/>
-		<xsl:param name="secondColumnVar"/>
-		<xsl:param name="thirdColumnVar"/>
+		<xsl:param name="leftColumn"/>
+		<xsl:param name="rightColumn"/>
+		<xsl:param name="midColumn"/>
 	
 		<xsl:variable name="fieldValue2">
 			<xsl:choose>
-				<xsl:when test="string($secondColumnVar)=''">
-					<xsl:value-of select="string($thirdColumnVar)"/>
+				<xsl:when test="string($rightColumn)=''">
+					<xsl:value-of select="string($midColumn)"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="concat(string($secondColumnVar),' ',string($thirdColumnVar))"/>
+					<xsl:value-of select="concat(string($rightColumn),' ',string($midColumn))"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<tr>
 			<xsl:call-template name="outputCol">
 				<xsl:with-param name="uniqueID" select="$uniqueID"/>
-				<xsl:with-param name="fieldValue" select="$firstColumnVar"/>
+				<xsl:with-param name="fieldValue" select="$leftColumn"/>
 				
 				<xsl:with-param name="tdClassname" select="'commonname'"/>
 				<xsl:with-param name="aClassname" select="'commonname1st'"/>
@@ -30,7 +30,6 @@
 			<xsl:call-template name="outputCol">
 				<xsl:with-param name="uniqueID" select="$uniqueID"/>
 				<xsl:with-param name="fieldValue" select="$fieldValue2"/>
-			
 				<xsl:with-param name="tdClassname" select="'sciname'"/>
 				<xsl:with-param name="aClassname" select="'sciname2nd'"/>
 			</xsl:call-template>

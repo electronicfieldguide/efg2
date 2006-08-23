@@ -4,14 +4,7 @@
 	<xsl:include href="xslPageTaxon.xsl"/>
 	<xsl:include href="commonMonteverdeTaxonPageTemplate.xsl"/>
 	<xsl:variable name="defaultcss" select="'taxonpagetemplate3.css'"/>
-	<xsl:variable name="cssFile">
-		<xsl:call-template name="getVariable">
-			<xsl:with-param name="groups" select="$xslPage/groups"/>
-			<xsl:with-param name="groupID" select="'1'"/>
-			<xsl:with-param name="groupRank" select="'1'"/>
-			<xsl:with-param name="characterRank" select="'1'"/>
-		</xsl:call-template>
-	</xsl:variable>
+		<xsl:variable name="cssFile" select="$xslPage/groups/group[@label='styles']/characterValue/@value"/>
 	<xsl:variable name="css">
 		<xsl:choose>
 			<xsl:when test="not(string($cssFile))=''">
@@ -22,12 +15,13 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="headerGroup" select="$xslPage/groups/group[@id='2']"/>
-	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@id='3']"/>
-	<xsl:variable name="identificationGroup" select="$xslPage/groups/group[@id='4']"/>
-	<xsl:variable name="identificationTextGroup" select="$xslPage/groups/group[@id='5']"/>
-	<xsl:variable name="otherGroup" select="$xslPage/groups/group[@id='6']"/>
-	<xsl:variable name="copyrightGroup" select="$xslPage/groups/group[@id='7']"/>
+	
+	<xsl:variable name="headerGroup" select="$xslPage/groups/group[@label='headers']"/>
+	<xsl:variable name="imagesGroup" select="$xslPage/groups/group[@label='images']"/>
+	<xsl:variable name="identificationGroup" select="$xslPage/groups/group[@label='identifications']"/>
+	<xsl:variable name="identificationTextGroup" select="$xslPage/groups/group[@label='identificationsText']"/>
+	<xsl:variable name="otherGroup" select="$xslPage/groups/group[@label='itemsorlists']"/>
+	<xsl:variable name="copyrightGroup" select="$xslPage/groups/group[@label='credits']"/>
 	<xsl:template match="/">
 		<html>
 			<head>
@@ -40,10 +34,12 @@
 			</head>
 			<body>
 				<xsl:variable name="taxonEntry" select="//TaxonEntry[1]"/>
+				<xsl:if test="count($headerGroup/characterValue/@value) &gt; 0">
 				<xsl:call-template name="headerGroup">
 					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
 					<xsl:with-param name="headerGroup" select="$headerGroup"/>
 				</xsl:call-template>
+				</xsl:if>
 				<p/>
 				<table valign="top" width="600">
 					<tr>
@@ -51,7 +47,7 @@
 							<table align="center" border="1" cellspacing="15">
 								<tr>
 									<td>
-										<xsl:if test="count($imagesGroup) &gt; 0">
+										<xsl:if test="count($imagesGroup/characterValue/@value) &gt; 0">
 											<xsl:call-template name="handleMonteVerdeImages">
 												<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
 												<xsl:with-param name="imagesGroup" select="$imagesGroup"/>
@@ -59,7 +55,7 @@
 										</xsl:if>
 									</td>
 									<td class="identification_td" bgcolor="white" valign="top" width="150">
-										<xsl:if test="count($identificationGroup) &gt; 0">
+										<xsl:if test="count($identificationGroup/characterValue/@value) &gt; 0">
 											<xsl:for-each select="$identificationGroup/characterValue">
 												<xsl:sort select="@rank" data-type="number"/>
 												<xsl:variable name="fieldName" select="@value"/>
@@ -88,7 +84,7 @@
 												</xsl:if>
 											</xsl:for-each>
 										</xsl:if>
-										<xsl:if test="count($identificationTextGroup) &gt; 0">
+										<xsl:if test="count($identificationTextGroup/characterValue/@text) &gt; 0">
 											<p class="id_text">
 												<xsl:value-of select="$identificationTextGroup/characterValue/@text"/>
 											</p>
@@ -100,38 +96,37 @@
 							<table bgcolor="white" width="100%">
 								<tr>
 									<td>
-										<xsl:if test="count($otherGroup) &gt; 0">
+										<xsl:if test="count($otherGroup/characterValue/@value) &gt; 0">
 											<xsl:for-each select="$otherGroup/characterValue">
 												<xsl:sort select="@rank" data-type="number"/>
-												<xsl:variable name="fieldName" select="@value"/>
-												<xsl:variable name="caption" select="@text"/>
-												<xsl:if test="count($taxonEntry/Items[@name=$fieldName]) &gt; 0">
-													<xsl:call-template name="outputcharacter">
-														<xsl:with-param name="items" select="$taxonEntry/Items[@name=$fieldName]"/>
-														<xsl:with-param name="caption" select="$caption"/>
-														<xsl:with-param name="fieldName" select="$fieldName"/>
-													</xsl:call-template>
+												<xsl:if test="count(@value) &gt; 0">
+													<xsl:variable name="fieldName" select="@value"/>
+													<xsl:variable name="caption" select="@text"/>
+													<xsl:if test="count($taxonEntry/Items[@name=$fieldName]) &gt; 0">
+														<xsl:call-template name="outputcharacter">
+															<xsl:with-param name="items" select="$taxonEntry/Items[@name=$fieldName]"/>
+															<xsl:with-param name="caption" select="$caption"/>
+															<xsl:with-param name="fieldName" select="$fieldName"/>
+														</xsl:call-template>
+													</xsl:if>
+													<xsl:if test="count($taxonEntry/StatisticalMeasures[@name=$fieldName]) &gt; 0">
+														<xsl:call-template name="outputstats">
+															<xsl:with-param name="stats" select="$taxonEntry/StatisticalMeasures[@name=$fieldName]"/>
+															<xsl:with-param name="caption" select="$caption"/>
+															<xsl:with-param name="fieldName" select="$fieldName"/>
+														</xsl:call-template>
+													</xsl:if>
+													<xsl:if test="count($taxonEntry/EFGLists[@name=$fieldName]) &gt; 0">
+														<xsl:call-template name="outputdetailist">
+															<xsl:with-param name="efglists" select="$taxonEntry/EFGLists[@name=$fieldName]"/>
+															<xsl:with-param name="caption" select="$caption"/>
+															<xsl:with-param name="fieldName" select="$fieldName"/>
+															<xsl:with-param name="isLink" select="'true'"/>
+														</xsl:call-template>
 												</xsl:if>
-												<xsl:if test="count($taxonEntry/StatisticalMeasures[@name=$fieldName]) &gt; 0">
-													<xsl:call-template name="outputstats">
-														<xsl:with-param name="stats" select="$taxonEntry/StatisticalMeasures[@name=$fieldName]"/>
-														<xsl:with-param name="caption" select="$caption"/>
-														<xsl:with-param name="fieldName" select="$fieldName"/>
-													</xsl:call-template>
-												</xsl:if>
-												<xsl:if test="count($taxonEntry/EFGLists[@name=$fieldName]) &gt; 0">
-													<xsl:call-template name="outputdetailist">
-														<xsl:with-param name="efglists" select="$taxonEntry/EFGLists[@name=$fieldName]"/>
-														<xsl:with-param name="caption" select="$caption"/>
-														<xsl:with-param name="fieldName" select="$fieldName"/>
-														<xsl:with-param name="isLink" select="'true'"/>
-													</xsl:call-template>
 												</xsl:if>
 											</xsl:for-each>
 										</xsl:if>
-										<p class="detail_text">
-											<strong>Comments: </strong>
-										</p>
 									</td>
 								</tr>
 							</table>

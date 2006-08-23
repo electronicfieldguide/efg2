@@ -104,7 +104,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				numberofListCharacters =10;
 				}
 			}
-			int numberofCharacters=5;
+			int numberofCharacters=0;
 			if(isTableExists){    
 				if( table.size() < 5 ){
 					numberofCharacters = table.size();

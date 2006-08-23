@@ -165,7 +165,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			<table class="title">
 				<tr>
 					<td class="comname" colspan="2">
-						<select name="<%=name%>"  title="Select A Field From List">             
+						<select name="<%=name%>"  title="Select A Field From List" style="width:100px;">          
 							<%
 								ii=0;
 								it = table.iterator();
@@ -215,7 +215,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 					}
 
 					%>
-						<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+						<select name="<%=name%>"  title="Select A Field From List" style="width:100px;">
 							<%
 								ii=0;
 								it = table.iterator();
@@ -259,7 +259,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						characterLabelValue ="header";
 					}
 					%>
-						<select name="<%=name%>"  title="Select A Field From List">
+						<select name="<%=name%>"  title="Select A Field From List" style="width:100px;">
 							<%
 								ii=0;
 								it = table.iterator();
@@ -305,7 +305,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						characterLabelValue ="header";
 					}
 					%>
-						<select name="<%=name%>"  title="Select A Field From List">
+						<select name="<%=name%>"  title="Select A Field From List" style="width:100px;">
 							<%
 								ii=0;
 								it = table.iterator();
@@ -381,7 +381,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										<tr>
 											<td class="thumb">
 												<div class="thumb">
-													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<select name="<%=name%>"  title="Select An Image Field From List" style="width:100px;">
 													<%
 														ii=0;
 														it = mediaResourceFields.iterator();
@@ -419,16 +419,16 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 													if(fieldValue == null){
 														fieldValue ="";
 													}
-							characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="image";
-					}
+												characterLabel= tp.getCurrentCharacterLabel(name);
+										characterLabelValue = (String)groupTable.get(characterLabel);
+										if(characterLabelValue == null){
+											characterLabelValue ="image";
+										}
 
 												%>
 											<td class="thumb">
 												<div class="thumb">
-													<select name="<%=name%>"  title="Select An Image Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<select name="<%=name%>"  title="Select An Image Field From List" style="width:100px;">
 													<%
 														ii=0;
 														it = mediaResourceFields.iterator();
@@ -477,7 +477,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											%>
 											<td class="thumb">
 												<div class="thumb">
-													<select name="<%=name%>"  title="Select An Image Field From List">
+													<select name="<%=name%>"  title="Select An Image Field From List" style="width:100px;">
 													<%
 														ii=0;
 														characterText = tp.getCurrentCharacterText(name);
@@ -526,7 +526,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											%>
 											<td class="thumb">
 												<div class="thumb">
-													<select name="<%=name%>"  title="Select An Image Field From List">
+													<select name="<%=name%>"  title="Select An Image Field From List" style="width:100px;">
 													<%
 														ii=0;
 														it = mediaResourceFields.iterator();
@@ -676,7 +676,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									%>
 									<p class="detail_text">
 										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
-													<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<select name="<%=name%>"  title="Select A Field From List">
 													<%
 														ii=0;
 														it = efgList.iterator();
@@ -751,7 +751,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									%>
 									<p class="detail_text">
 										<strong><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></strong>
-													<select name="<%=name%>"  title="Select A Field From List">                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               ">
+													<select name="<%=name%>"  title="Select A Field From List">
 													<%
 														ii=0;
 														it = table.iterator();
@@ -812,16 +812,16 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 											if(fieldValue == null){
 											fieldValue ="";
 											}	
-groupLabel= tp.getCurrentGroupLabel(name);
-				groupLabelValue = (String)groupTable.get(groupLabel);
-					if(groupLabelValue == null){
-						groupLabelValue ="credits";
-					}			
-	characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="credit";
-					}		
+	groupLabel= tp.getCurrentGroupLabel(name);
+					groupLabelValue = (String)groupTable.get(groupLabel);
+						if(groupLabelValue == null){
+							groupLabelValue ="credits";
+						}			
+		characterLabel= tp.getCurrentCharacterLabel(name);
+						characterLabelValue = (String)groupTable.get(characterLabel);
+						if(characterLabelValue == null){
+							characterLabelValue ="credit";
+						}		
 										%>
 																			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 

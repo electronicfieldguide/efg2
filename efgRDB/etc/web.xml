@@ -65,7 +65,7 @@
 			<param-value>project.efg.util.EFGCacheGroup</param-value>
 		</init-param>
 	</filter>
-		<!--
+		<!---->
 	<filter>
 		<filter-name>CacheFilterStaticContent</filter-name>
 		<filter-class>com.opensymphony.oscache.web.filter.CacheFilter</filter-class>
@@ -75,26 +75,20 @@
 		</init-param>
 	</filter>
 
-	<filter>
-		<filter-name>Compress</filter-name>
-		<filter-class>com.jspbook.GZIPFilter</filter-class>
-	</filter>
+	
 
 	<filter-mapping>
 		<filter-name>CacheFilter</filter-name>
-		<url-pattern>*.jsp</url-pattern>
+		<servlet-name>Redirect</servlet-name>
+	
 	</filter-mapping>
--->
+<!--
 		<filter-mapping>
 		<filter-name>CacheFilter</filter-name>
 		<url-pattern>/search/*</url-pattern>
 	</filter-mapping>
-		<!--
-	<filter-mapping>
-		<filter-name>CacheFilterStaticContent</filter-name>
-		<url-pattern>*.jsp</url-pattern>
-	</filter-mapping>
 -->
+
 
 	<listener>
 		<listener-class>project.efg.servlets.efgImpl.EFGContextListener</listener-class>
@@ -176,6 +170,10 @@
 		<servlet-name>upload</servlet-name>
 		<servlet-class>project.efg.servlets.efgImpl.UploadResources</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>Redirect</servlet-name>
+		<jsp-file>/Redirect.jsp</jsp-file>
+	</servlet>
 	<!--
 		Define mappings that are used by the servlet container to
 		translate a particular request URI (context-relative) to a
@@ -220,6 +218,7 @@
 		<servlet-name>upload</servlet-name>
 		<url-pattern>/upload</url-pattern>
 	</servlet-mapping>
+
 <!--
 	<security-constraint>
 		<web-resource-collection>

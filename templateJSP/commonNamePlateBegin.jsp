@@ -13,9 +13,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 	<head>
 	<%@ include file="jspName.jsp" %>
 		<%
-			String forwardPage="NoDatasource.jsp";
             String guid =  (String)request.getAttribute(EFGImportConstants.GUID); 
-			
 			String uniqueName = (String)request.getAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
 			String displayName = (String)request.getAttribute(EFGImportConstants.DISPLAY_NAME); 
 			String datasourceName =(String)request.getAttribute(EFGImportConstants.DATASOURCE_NAME);
@@ -32,7 +30,6 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			if(guid == null){
 				guid = request.getParameter(EFGImportConstants.GUID); 
 			}
-
 
 			 String templateMatch ="Plate Template1";
 			String context = request.getContextPath();
@@ -51,36 +48,43 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 			boolean isNew = true;
 			boolean isOld = false;
 			String name = null;
+           String groupLabel= null;
+			String groupLabelValue = null;
+			String characterLabelValue = null;
+			String characterLabel = null;
+
 			int ii = 0;
 			TemplatePopulator tpop = new  TemplatePopulator();
-		    StringBuffer fileName = new StringBuffer(realPath);
-			fileName.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME); 
-			fileName.append(File.separator);
-			fileName.append(datasourceName.toLowerCase());
-			fileName.append(EFGImportConstants.XML_EXT);
+			 StringBuffer fileName = new StringBuffer(realPath);
+			 fileName.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME); 
+			 fileName.append(File.separator);
+			 fileName.append(datasourceName.toLowerCase());
+			 fileName.append(EFGImportConstants.XML_EXT);
 			Hashtable groupTable = tpop.populateTable(fileName.toString(), guid, EFGImportConstants.SEARCHPAGE_PLATES_XSL, datasourceName );
 			if(groupTable == null){
 				groupTable = new Hashtable();
 			}
-			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
-			 String cssFile ="nantucketstyleplates.css";
-			boolean isTableExists = false;
+			boolean isTableExists = false;	
+			boolean isImagesExists = false;	
 			if((table != null) && (table.size() > 0)){
 				isTableExists = true;	
 			}
-			boolean isImagesExists = false;	
+
 			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
 				isImagesExists = true;	
 			}
-		    if(!isTableExists){    
+		    File cssFiles = new File(realPath + File.separator +  EFGImportConstants.templateCSSDirectory);
+			File[] cssFileList = cssFiles.listFiles(); 
+			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
+			 String cssFile ="nantucketstyleplates.css";
+		    if(!isTableExists){    	
+	 			String forwardPage="NoDatasource.jsp";
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
 				dispatcher.forward(request, response);
 		    }
-			
+			 
 		%>
-		
-		
-	<title>Nantucket Search Plate Template </title>
+	<title>Nantucket Search Plate Template</title>
 			<%
 				name =tp.getCharacter(isNew,isNew);
 				fieldValue = (String)groupTable.get(name);
@@ -91,24 +95,41 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				else{
 					cssLocation =cssLocation + fieldValue;
 				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="styles";
+				}
 			%>	
-		<link rel="stylesheet" href="<%=cssLocation%>"/>
+	<link rel="stylesheet" href="<%=cssLocation%>"/>
 	</head>
 	<body>
 		<div id="numresults">Your search found <span class="num">xxx</span> results: </div>
 			<form method="post" action="<%=context%>/configTaxonPage">
-				<input type="hidden"  name="<%=name%>" value="<%=fieldValue%>"/> 
-				<%
-					name =tp.getCharacter(isNew,isNew);
-					fieldValue = (String)groupTable.get(name);
-					if(fieldValue == null){
-						fieldValue ="";
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+			
+			<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="images";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="image";
 					}
-				%>
+			%>
+				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 				<table class="resultsdisplay">
 					<tr>
 						<td class="thumbnail">
-							<% if(isImagesExists){%>
+							<% if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){%>
 								<select name="<%=name%>"  title="Select an  an Image Field From the List">
 								<%
 									ii=0;
@@ -134,26 +155,37 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 										ii++;
 									}
 								%>
-								</select>   
+								</select> 
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>								  
 							<%}%>
 						</td>
 					</tr>
 					<tr>
 						<td class="caption">
-								<%
-									name =tp.getCharacter(isNew,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
+						<%
+				name =tp.getCharacter(isNew,isNew);
+				fieldValue = (String)groupTable.get(name);
+				if(fieldValue == null){
+					fieldValue ="";
+				}
+				groupLabel= tp.getCurrentGroupLabel(name);
+				groupLabelValue = (String)groupTable.get(groupLabel);
+				if(groupLabelValue == null){
+					groupLabelValue ="captions";
+				}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="caption";
+					}%>
+									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 								<select name="<%=name%>"  title="Select A Field To Be Used As Caption">
 								<%
 									ii=0;
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-										 if(isImagesExists) {
+										 if(mediaResourceFields != null) {
 											if(mediaResourceFields.contains(queueObject)){
 												continue;
 											}
@@ -178,20 +210,25 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}	
 								%>
 								</select>   
-								<%
-									name = tp.getCharacter(isOld,isNew);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-								%>
+								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>								  								
+					<%
+						name =tp.getCharacter(isOld,isOld);
+						fieldValue = (String)groupTable.get(name);
+						if(fieldValue == null){
+							fieldValue ="";
+						}
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue ="caption";
+					}%>
 								<select name="<%=name%>"  title="Select A Field That Should be Appended To The Selected Field(on the left), To Be Used As Caption">
 								<%
 									ii=0;
 									it = table.iterator();
 									while (it.hasNext()) {
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-										 if(isImagesExists) {
+										 if(mediaResourceFields != null) {
 											if(mediaResourceFields.contains(queueObject)){
 												continue;
 											}
@@ -216,6 +253,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 									}	
 								%>
 								</select>   
+							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>								  								
 						</td>
 					</tr>
 					<tr>
@@ -252,11 +290,9 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.SEARCH_PAGE_STR%>"  value="<%=EFGImportConstants.SEARCH_PAGE_STR%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.SEARCH_TYPE_STR%>"  value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>"/>
-				<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="<%=jspName%>"/>
-
-				<%if( guid != null){%>
-				<input type="hidden"   name="<%=EFGImportConstants.GUID%>"  value="<%=guid%>"/>
-				<%}%>
+		<%if( guid != null){%>
+		<input type="hidden"   name="<%=EFGImportConstants.GUID%>"  value="<%=guid%>"/>
+		<%}%>
 				<input type="hidden"   name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>"  value="<%=uniqueName%>"/>
 				<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="<%=jspName%>"/>
 				
