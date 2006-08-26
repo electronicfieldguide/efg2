@@ -53,6 +53,29 @@ public class EFGTableModel extends AbstractTableModel {
 		this.data = sorterObject.getMyJRadioButtonLists();
 		
 	}
+	public Object getData(){
+		return this.data;
+	}
+	public void addData(int pos,Object mydata){
+		if(pos > data.size() - 1){
+			data.add(mydata);
+			return;
+		}
+		data.add(pos,mydata);
+	}
+	public void removeData(Object myData){
+		data.remove(myData);
+	}
+	public int indexOf(Object myData){
+		return data.indexOf(myData);
+	}
+	public void moveData(int oldpos, int newpos){
+		if(oldpos > data.size() - 1){
+			return;
+		}
+		Object obj = data.remove(oldpos);
+		addData(newpos,obj);
+	}
 	public void setSorter(TableSorter sorter){
 		this.sorter = sorter;
 	}
@@ -126,6 +149,22 @@ public class EFGTableModel extends AbstractTableModel {
 		dataArr[col] = value;
 		fireTableCellUpdated(row, col);
 
+	}
+	
+	/**
+	 * @param i
+	 * @return
+	 */
+	public Object getRow(int index) {
+		return data.get(index);
+	}
+	/**
+	 * @param rowIndex
+	 */
+	public void removeData(int rowIndex) {
+		Object obj = getRow(rowIndex);
+		this.data.remove(obj);
+		
 	}
 
 }

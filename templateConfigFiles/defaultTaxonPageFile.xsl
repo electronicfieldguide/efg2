@@ -2,7 +2,6 @@
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
-
 	<xsl:variable name="images-per-row" select="2"/>
 	<xsl:template match="/">
 		<html>
@@ -62,7 +61,14 @@
 									<xsl:value-of select="concat(string($serviceLink),'=',string($character))"/>
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:value-of select="concat(string($serverbase),'/search?dataSourceName=', $dataSourceName,'&amp;',$serviceLink,'=',$character)"/>
+									<xsl:choose>
+										<xsl:when test="contains($serviceLink,$dsNamePrefix)">
+											<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,'&amp;',$serviceLink,'=',$character,'&amp;displayFormat=html')"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,string($dsNamePrefix), $dataSourceName,'&amp;',$serviceLink,'=',$character,'&amp;displayFormat=html')"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:variable>
@@ -181,7 +187,6 @@
 			</xsl:variable>
 			<a href="{$imageURL_large}">
 				<img src="{$imageURL_thumb}"/>
-				
 			</a>
 			<br clear="all"/>
 		</xsl:if>

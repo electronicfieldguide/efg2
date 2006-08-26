@@ -96,17 +96,23 @@
 		</table>
 	</xsl:template>
 	<xsl:template match="/">
+		<xsl:variable name="taxonEntry" select="//TaxonEntry[1]"/>
 		<html>
 			<head>
 				<META http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
 				<title>
-					<xsl:value-of select="$datasource"/>
+					<xsl:call-template name="getTitle2">
+						<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+							<xsl:with-param name="titleText" select="$headerGroup/characterValue[1]/@value"/>
+						
+						
+					</xsl:call-template>
+				
 				</title>
-				<xsl:variable name="linkhref" select="concat($css_home,$css)"/>
+					<xsl:variable name="linkhref" select="concat($css_home,$css)"/>
 				<link rel="stylesheet" href="{$linkhref}"/>
 			</head>
 			<body>
-				<xsl:variable name="taxonEntry" select="//TaxonEntry[1]"/>
 				<xsl:if test="count($headerGroup/characterValue/@value) &gt; 0">
 					<xsl:call-template name="headerGroupTemplate4">
 						<xsl:with-param name="taxonEntry" select="$taxonEntry"/>

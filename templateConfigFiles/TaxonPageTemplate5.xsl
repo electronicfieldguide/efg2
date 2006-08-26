@@ -30,12 +30,7 @@
 	<xsl:variable name="itemsGroup" select="$xslPage/groups/group[@label='items']"/>
 	<xsl:variable name="listsGroup" select="$xslPage/groups/group[@label='lists']"/>
 	<xsl:variable name="copyright" select="$xslPage/groups/group[@label='copyright']/@text"/>
-	<xsl:template name="getTitle2">
-		<xsl:param name="taxonEntry"/>
-		<title>
-			<xsl:value-of select="concat('Taxon Page for : ',$taxonEntry/Items[@name=$titleText]/Item[1])"/>
-		</title>
-	</xsl:template>
+	
 	<xsl:template name="copyrightGroup">
 		<xsl:if test="not(string($copyright)) =''">
 			<span class="copyright">
@@ -312,7 +307,7 @@
 												</xsl:if>
 											</xsl:for-each>
 										</xsl:with-param>
-											<xsl:with-param name="idList2">
+										<xsl:with-param name="idList2">
 											<xsl:for-each select="characterValue[@label='image']/@text">
 												<xsl:sort select="@rank" data-type="number" order="descending"/>
 												<xsl:value-of select="generate-id()"/>
@@ -336,7 +331,6 @@
 		<xsl:param name="idList1"/>
 		<xsl:param name="idList2"/>
 		<xsl:variable name="PartIdlist1" select="substring-before($idList1,'|')"/>
-			
 		<xsl:if test="$PartIdlist1">
 			<tr>
 				<xsl:call-template name="animate">
@@ -345,7 +339,7 @@
 				</xsl:call-template>
 			</tr>
 			<tr>
-			<xsl:variable name="PartIdlist2" select="substring-before($idList2,'|')"/>
+				<xsl:variable name="PartIdlist2" select="substring-before($idList2,'|')"/>
 				<xsl:call-template name="animateText">
 					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
 					<xsl:with-param name="idList" select="$PartIdlist2"/>
@@ -354,11 +348,10 @@
 			<xsl:call-template name="group">
 				<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
 				<xsl:with-param name="idList1" select="substring-after($idList1,'|')"/>
-					<xsl:with-param name="idList2" select="substring-after($idList2,'|')"/>
+				<xsl:with-param name="idList2" select="substring-after($idList2,'|')"/>
 			</xsl:call-template>
 		</xsl:if>
 	</xsl:template>
-
 	<xsl:template name="animate">
 		<xsl:param name="taxonEntry"/>
 		<xsl:param name="idList"/>
@@ -396,14 +389,13 @@
 		<xsl:variable name="imageName" select="."/>
 		<xsl:variable name="caps" select="$taxonEntry/MediaResources[@name=$imageName]/MediaResource[1]"/>
 		<xsl:if test="not(string($caps))=''">
-		<xsl:variable name="src">
-			<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $caps)"/>
-		</xsl:variable>
-		<xsl:variable name="href" select="concat($imagebase_large,'/',$caps)"/>
-		
-		<a href="{$href}">
-			<img src="{$src}" border="0"/>
-		</a>
+			<xsl:variable name="src">
+				<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $caps)"/>
+			</xsl:variable>
+			<xsl:variable name="href" select="concat($imagebase_large,'/',$caps)"/>
+			<a href="{$href}">
+				<img src="{$src}" border="0"/>
+			</a>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="@text">
@@ -454,7 +446,14 @@
 								<xsl:value-of select="concat(string($resourcelink),string($fieldValue))"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:value-of select="concat(string($serverbase),'/search?dataSourceName=', $dataSourceName,'&amp;',translate($resourcelink,' ','_'),'=',$fieldValue)"/>
+								<xsl:choose>
+									<xsl:when test="contains($resourcelink,$dsNamePrefix)">
+										<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,'&amp;',$resourcelink,'=',$fieldValue,'&amp;displayFormat=html')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,string($dsNamePrefix), $dataSourceName,'&amp;',$resourcelink,'=',$fieldValue,'&amp;displayFormat=html')"/>
+									</xsl:otherwise>
+								</xsl:choose>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:variable>
@@ -575,10 +574,14 @@
 		<xsl:variable name="taxonEntry" select="//TaxonEntry[1]"/>
 		<html>
 			<head>
+			<title>
 				<xsl:call-template name="getTitle2">
 					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+					<xsl:with-param name="titleText" select="$titleText"/>
 				</xsl:call-template>
-				<xsl:variable name="linkhref" select="concat($css_home,$css)"/>
+			
+				</title>
+					<xsl:variable name="linkhref" select="concat($css_home,$css)"/>
 				<link rel="stylesheet" href="{$linkhref}"/>
 			</head>
 			<body>

@@ -30,6 +30,9 @@
 	<xsl:variable name="searchTemplateConfig" select="concat($dataSourceName,$search)"/>
 	<xsl:param name="query" select="concat($serverbase,'/search?dataSourceName=',$dataSourceName,'&amp;')"/>
 	<xsl:variable name="hrefCommon" select="concat($serverbase,'/Redirect.jsp?displayFormat=html&amp;dataSourceName=',$dataSourceName,'&amp;uniqueID=')"/>
+	<xsl:variable name="mapQueryServlet" select="'/mapQuery?'"/>
+	<xsl:variable name="searchServlet" select="'/search?dataSourceName='"/>
+	<xsl:variable name="dsNamePrefix" select="'dataSourceName='"/>
 	<!-- 
 	<xsl:variable name="header">
 		<xsl:text>&lt;header&gt;</xsl:text>
@@ -106,6 +109,14 @@
 	<xsl:variable name="digirFooters">
 		<xsl:value-of select="concat(string($endDigirFilter),string($records),string($endDigirSearch),string($endDigirRequest))"/>
 	</xsl:variable>
+	
+	<xsl:template name="getTitle2">
+		<xsl:param name="taxonEntry"/>
+			<xsl:param name="titleText"/>
+	
+			<xsl:value-of select="concat('Taxon Page for : ',$taxonEntry/Items[@name=$titleText]/Item[1])"/>
+		
+	</xsl:template>
 	<!---->
 	<!-- Outputs some text -->
 	<xsl:template name="outputText">
@@ -205,46 +216,26 @@
 				<xsl:variable name="hrefCurrent">
 					<xsl:for-each select="$efgLists/EFGList">
 						<xsl:if test="not(string(@resourceLink))=''">
-							<xsl:variable name="serviceLink1">
+							<xsl:variable name="serviceLink">
 								<xsl:if test="not(string(@resourceLink))=''">
 									<xsl:value-of select="normalize-space(@resourceLink)"/>
 								</xsl:if>
 							</xsl:variable>
-							<xsl:variable name="serviceLink">
-								<xsl:call-template name="globalReplace">
-									<xsl:with-param name="outputString" select="$serviceLink1"/>
-									<xsl:with-param name="target" select="' '"/>
-									<xsl:with-param name="replacement" select="$serviceLinkFiller"/>
-								</xsl:call-template>
-							</xsl:variable>
 							<xsl:variable name="character" select="."/>
-							<xsl:if test="$counter &gt; 1">
-								<xsl:if test="position()=1">
-									<xsl:value-of select="string($startDigirOR)"/>
-								</xsl:if>
-							</xsl:if>
-							<xsl:value-of select="string($startDigirEQUALS)"/>
-							<xsl:value-of select="concat('&lt;darwin:',string($serviceLink),'&gt;')"/>
-							<xsl:value-of select="string($character)"/>
-							<xsl:value-of select="concat('&lt;/darwin:',string($serviceLink),'&gt;')"/>
-							<xsl:value-of select="string($endDigirEQUALS)"/>
-							<xsl:if test="$counter &gt; 1">
-								<xsl:if test="position()=last()">
-									<xsl:value-of select="string($endDigirOR)"/>
-								</xsl:if>
-							</xsl:if>
-							<xsl:if test="position() mod 2 = 0">
-								<xsl:if test="not(position()=last())">
-									<xsl:value-of select="string($endDigirOR)"/>
-									<xsl:value-of select="string($startDigirOR)"/>
-								</xsl:if>
-							</xsl:if>
+							<xsl:value-of select="concat(string($serviceLink),'=',string($character),'&amp;')"/>
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:variable>
 				<xsl:variable name="href">
 					<xsl:if test="not(string($hrefCurrent))=''">
-						<xsl:value-of select="concat(string($serverbase),'/search?displayFormat=html&amp;dataSourceName=',string($dataSourceName),'&amp;digir=',string($digirHeaders),$hrefCurrent,string($digirFooters))"/>
+						<xsl:choose>
+							<xsl:when test="contains($hrefCurrent,$dsNamePrefix)">
+								<xsl:value-of select="concat(string($serverbase),string($mapQueryServlet),'&amp;',$hrefCurrent,'displayFormat=html')"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat(string($serverbase),string($mapQueryServlet),string($dsNamePrefix),string($dataSourceName),'&amp;',$hrefCurrent,'displayFormat=html')"/>
+							</xsl:otherwise>
+						</xsl:choose>
 					</xsl:if>
 				</xsl:variable>
 				<xsl:variable name="captionText">

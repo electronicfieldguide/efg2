@@ -28,8 +28,8 @@ import java.util.regex.Pattern;
  * USA
  */
 public interface EFGImportConstants {
-	String DEFAULT_PLATES_DISPLAY = "Thumbnails";
-	String DEFAULT_LISTS_DISPLAY = "Text List";
+	String DEFAULT_PLATES_DISPLAY = "Default Thumbnails";
+	String DEFAULT_LISTS_DISPLAY = "Default Text List";
 	String KEY_METADATA_HELP = "/help/metadataHelp.html";
 	String MAIN_DEPLOY_HELP="/help/mainDeployHelp.html";
 	String IMAGE_DEPLOY_HELP="/help/imagesDeployHelp.html";

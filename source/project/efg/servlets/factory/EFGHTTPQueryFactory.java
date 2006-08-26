@@ -55,11 +55,10 @@ public class EFGHTTPQueryFactory {
 		String searchStrType = req
 		.getParameter(EFGImportConstants.SEARCHSTR);
 
-		if(EFGImportConstants.DIGIR.equalsIgnoreCase(digirType)){
-			//log.debug("Return a DiGIR query instance");
+		if((digirType != null) && (!digirType.trim().equals(""))){
 			return new DiGIRQuery(req);
 		}
-		else if(EFGImportConstants.SEARCHSTR.equalsIgnoreCase(searchStrType)){
+		if((searchStrType != null) && (!searchStrType.trim().equals(""))){
 			//log.debug("Return a Search String query instance");
 			return new SearchStrQuery(req);
 		}

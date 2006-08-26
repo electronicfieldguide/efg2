@@ -27,15 +27,11 @@
  */
 package project.efg.servlets.rdb;
 
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,7 +58,7 @@ import project.efg.util.UnicodeToASCIIFilter;
 public class SQLQuery extends EFGHTTPQuery {
 	protected Hashtable paramValuesTable; //holds the parameter values of this query
 
-	private Collection specialParams;
+	protected Collection specialParams;
 
 	protected QueryExecutor queryExecutor;
 
@@ -111,11 +107,6 @@ public class SQLQuery extends EFGHTTPQuery {
 				//log.debug("paramName: " + legalName);
 				if (isIgnoreParam(legalName)) {//ignore this parameter name
 					continue;
-				}
-
-				if (legalName.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
-					legalName = legalName.replaceAll(
-							EFGImportConstants.SERVICE_LINK_FILLER, " ");
 				}
 				
 				String[] paramValues = req.getParameterValues(legalName);
@@ -420,7 +411,7 @@ public class SQLQuery extends EFGHTTPQuery {
 
 	
 
-	protected Set getCategorical(String metadataSource) {
+	/*protected Set getCategorical(String metadataSource) {
 		Set set = new HashSet();
 		StringBuffer queryBuffer = new StringBuffer();
 		queryBuffer.append("SELECT legalName FROM ");
@@ -446,9 +437,9 @@ public class SQLQuery extends EFGHTTPQuery {
 			LoggerUtilsServlet.logErrors(e);
 		}
 		return set;
-	}
+	}*/
 
-	private boolean processStates(String[] params, 
+	protected boolean processStates(String[] params, 
 			String legalName,
 			SqlRowSet rowset,
 			Hashtable typeTable,
@@ -474,11 +465,7 @@ public class SQLQuery extends EFGHTTPQuery {
 			//log.debug("States: " + states);
 	
 			if (states != null) {
-				/*StringWriter writer = new StringWriter();
-				this.filter.filter(new StringReader(states),
-						writer);
-				states = writer.getBuffer().toString();
-			*/
+
 				TaxonEntryTypeItem taxonEntryItem = itemBuilder
 						.buildTaxonEntryItem(paramValue,
 								states, efgObject);
@@ -494,7 +481,7 @@ public class SQLQuery extends EFGHTTPQuery {
 		return isFound;
 	}
 
-	private String getORQuery(String[] paramValues, String legalName) {
+	protected String getORQuery(String[] paramValues, String legalName) {
 		int orCounter = 0;
 		StringBuffer orBuffer = new StringBuffer();
 		//iterate over it and add ors where necessary
@@ -507,10 +494,7 @@ public class SQLQuery extends EFGHTTPQuery {
 				continue;
 			}
 			pVal = pVal.trim();
-			if (pVal.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
-				pVal = pVal.replaceAll(EFGImportConstants.SERVICE_LINK_FILLER,
-						" ");
-			}
+			
 			if(pVal.indexOf(EFGImportConstants.EFG_ANY) > -1){
 				//log.debug("Contains any will replace it with a wildcard");
 				pVal = pVal.replaceAll(EFGImportConstants.EFG_ANY,
@@ -558,24 +542,27 @@ public class SQLQuery extends EFGHTTPQuery {
 		return orBuffer.toString().trim();
 	}
 
-	private boolean isIgnoreParam(String paramName) {
-		if ((specialParams.contains(paramName))
-				|| (paramName.equals(EFGImportConstants.SEARCHSTR))
-				|| (paramName == null) || ("".equals(paramName.trim()))) {
+	protected boolean isIgnoreParam(String paramName) {
+		if(paramName == null){
+			return true;
+		}
+		if ((specialParams.contains(paramName.toLowerCase()))
+				|| (paramName.equalsIgnoreCase(EFGImportConstants.SEARCHSTR.toLowerCase()))
+				||  ("".equals(paramName.trim()))) {
 			//log.debug("Skipping current paramName: " + paramName);
 			return true;
 		}
 		return false;
 	}
 
-	private String getCommonQuery() {
+	protected String getCommonQuery() {
 		StringBuffer commonBuffer = new StringBuffer();
 		commonBuffer.append("SELECT * FROM ");
 		commonBuffer.append(this.datasourceName);
 		return commonBuffer.toString();
 	}
 	
-	private int getMaxDisplay(String maxDispStr) {
+	protected int getMaxDisplay(String maxDispStr) {
 		int maxDisplay = -1;
 		
 		if (maxDispStr != null) {
@@ -591,7 +578,7 @@ public class SQLQuery extends EFGHTTPQuery {
 		return maxDisplay;
 	}
 
-	private void addOtherColumns(SqlRowSet rowset, SqlRowSetMetaData metadata,
+	protected void addOtherColumns(SqlRowSet rowset, SqlRowSetMetaData metadata,
 			TaxonEntryType taxonEntry, Hashtable typeTable,
 			TaxonEntryItemBuilder itemBuilder) throws Exception {
 		/* 
@@ -640,17 +627,17 @@ public class SQLQuery extends EFGHTTPQuery {
 	 * Add special parameters to a list so that special parameters can be
 	 * excluded when building the query.
 	 */
-	private void addSpecialParams() {
+	protected void addSpecialParams() {
 		// Construct collection of special parameter names
 		specialParams = new ArrayList();
-		specialParams.add(EFGImportConstants.DATASOURCE_NAME);
-		specialParams.add(EFGImportConstants.MAX_DISPLAY);
-		specialParams.add(EFGImportConstants.DISPLAY_FORMAT);
-		specialParams.add(EFGImportConstants.SEARCHSTR);
-		specialParams.add(EFGImportConstants.SEARCHTYPE);
-		specialParams.add(EFGImportConstants.DISPLAY_NAME);
-		specialParams.add(EFGImportConstants.XSL_STRING);
-		specialParams.add(EFGImportConstants.GUID);
+		specialParams.add(EFGImportConstants.DATASOURCE_NAME.toLowerCase());
+		specialParams.add(EFGImportConstants.MAX_DISPLAY.toLowerCase());
+		specialParams.add(EFGImportConstants.DISPLAY_FORMAT.toLowerCase());
+		specialParams.add(EFGImportConstants.SEARCHSTR.toLowerCase());
+		specialParams.add(EFGImportConstants.SEARCHTYPE.toLowerCase());
+		specialParams.add(EFGImportConstants.DISPLAY_NAME.toLowerCase());
+		specialParams.add(EFGImportConstants.XSL_STRING.toLowerCase());
+		specialParams.add(EFGImportConstants.GUID.toLowerCase());
 	}
 
 }

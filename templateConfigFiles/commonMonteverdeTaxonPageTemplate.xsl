@@ -235,7 +235,15 @@
 										<xsl:value-of select="concat(string($resourcelink),'=',string($caption))"/>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:value-of select="concat(string($serverbase),'/search?dataSourceName=', $dataSourceName,'&amp;',$resourcelink,'=',$caption)"/>
+										<xsl:choose>
+									<xsl:when test="contains($resourcelink,$dsNamePrefix)">
+										<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,'&amp;',$resourcelink,'=',$caption,'&amp;displayFormat=html')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,string($dsNamePrefix), $dataSourceName,'&amp;',$resourcelink,'=',$caption,'&amp;displayFormat=html')"/>
+									</xsl:otherwise>
+								</xsl:choose>
+						
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:variable>

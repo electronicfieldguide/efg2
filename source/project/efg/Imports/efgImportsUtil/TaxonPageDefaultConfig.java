@@ -58,6 +58,10 @@ public class TaxonPageDefaultConfig {
 
 	private TaxonPageTemplates tps;
 
+
+
+	private String mapLocation;
+
 	/**
 	 * 
 	 */
@@ -123,20 +127,28 @@ public class TaxonPageDefaultConfig {
 		
 		templateObject.setTemplateName(uniqueName);
 		templateObject.setDisplayObject(displayObject);
-		TemplateMapObjectHandler.add2TemplateMap(key,templateObject);
+		TemplateMapObjectHandler.add2TemplateMap(key,templateObject,this.getMapLocation());
+	}
+	private String getMapLocation(){
+	
+			if((this.mapLocation == null) || (this.mapLocation.trim().equals(""))){
+			StringBuffer mapLocationBuffer = new StringBuffer(EFGUtils.getCatalinaHome());
+			mapLocationBuffer.append(File.separator);
+			mapLocationBuffer.append(EFGImportConstants.EFG_WEB_APPS);
+			mapLocationBuffer.append(File.separator);
+			mapLocationBuffer.append(EFGImportConstants.EFG_APPS);
+			mapLocationBuffer.append(File.separator);
+			mapLocationBuffer.append("WEB-INF");
+			mapLocationBuffer.append(File.separator);
+			mapLocationBuffer.append(EFGImportConstants.TEMPLATE_MAP_NAME);
+			this.mapLocation = mapLocationBuffer.toString();
+			}
+			return this.mapLocation;
 	}
 	private void writeToMapObject(String datafn,String displayName){
-		String mapLocation = EFGUtils.getCatalinaHome()
-				+ File.separator
-				+ EFGImportConstants.EFG_WEB_APPS
-				+ File.separator
-				+ EFGImportConstants.EFG_APPS
-				+ File.separator + "WEB-INF"
-				+ File.separator
-				+ EFGImportConstants.TEMPLATE_MAP_NAME;
+	
 		try {
-			TemplateMapObjectHandler
-					.createTemplateObjectMap(mapLocation);
+		
 		
 			String uniqueName = EFGImportConstants.DEFAULT_PLATES_DISPLAY;
 			
@@ -375,6 +387,9 @@ public class TaxonPageDefaultConfig {
 
 }
 // $Log$
+// Revision 1.1.2.5  2006/08/26 22:12:24  kasiedu
+// Updates to xsl files
+//
 // Revision 1.1.2.4  2006/08/21 19:26:37  kasiedu
 // no message
 //
