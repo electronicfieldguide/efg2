@@ -1,10 +1,15 @@
-<%@page import="java.util.Map,java.util.Iterator,project.efg.util.EFGImportConstants,project.efg.util.TemplateMapObjectHandler,project.efg.util.TemplateObject,project.efg.util.EFGDisplayObject, java.util.Collections,java.util.Set,java.util.HashSet,java.util.Iterator" %>
+<%@page import="java.util.Hashtable,java.io.File,java.util.Iterator,project.efg.util.EFGImportConstants,project.efg.util.TemplateMapObjectHandler,project.efg.util.TemplateObject,project.efg.util.EFGDisplayObject, java.util.Collections,java.util.Set,java.util.HashSet,java.util.Iterator" %>
 <html>
   <head>
   <%
-		
+			String realPath = getServletContext().getRealPath("/");
+  	StringBuffer mapLocationBuffer  = new StringBuffer(realPath);
+  	mapLocationBuffer.append(File.separator);
+	mapLocationBuffer.append("WEB-INF");
+	mapLocationBuffer.append(File.separator);
+	mapLocationBuffer.append(EFGImportConstants.TEMPLATE_MAP_NAME);
 		String serverName = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-		Map map = TemplateMapObjectHandler.getTemplateObjectMap();
+		Hashtable map = TemplateMapObjectHandler.getTemplateObjectMap(mapLocationBuffer.toString());
 		 Iterator it = null;
 		if(map != null){
 			 it = map.keySet().iterator();
@@ -59,14 +64,6 @@
 								buffer.append(ds);
 								buffer.append("&xslName=defaultSearchFile.xsl&displayFormat=HTML&maxDisplay=70&searchType=");
 						%>
-						<!--
-						<tr>
-							<td><%=ds%></td><td><a href="<%=buffer.toString() + plates%>">default Thumbnails</a></td>
-						</tr>
-							<tr>
-							<td><%=ds%></td><td><a href="<%=buffer.toString() + lists%>">default Text List</a></td>
-						</tr>
-					-->
 				<%
 				}//end 2nd while
 %>

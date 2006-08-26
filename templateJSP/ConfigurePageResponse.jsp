@@ -13,6 +13,7 @@ java.util.Enumeration
 	String dsName = request.getParameter(EFGImportConstants.DATASOURCE_NAME);
   
     String realPath = getServletContext().getRealPath("/");
+    //make me dynamic
 	TemplateConfigProcessor tcp = new TemplateConfigProcessor(dsName,configType);
 	List list = tcp.getTemplateList();
 

@@ -1,7 +1,14 @@
-<%@page import="project.efg.util.EFGImportConstants,project.efg.util.TemplateMapObjectHandler,project.efg.util.TemplateObject,project.efg.util.EFGDisplayObject" %>
+<%@page import="project.efg.util.EFGImportConstants,java.io.File,project.efg.util.TemplateMapObjectHandler,project.efg.util.TemplateObject,project.efg.util.EFGDisplayObject" %>
 <html>
   <head>
   <%
+  	String realPath = getServletContext().getRealPath("/");
+  	StringBuffer mapLocationBuffer  = new StringBuffer(realPath);
+  	mapLocationBuffer.append(File.separator);
+	mapLocationBuffer.append("WEB-INF");
+	mapLocationBuffer.append(File.separator);
+	mapLocationBuffer.append(EFGImportConstants.TEMPLATE_MAP_NAME);
+	
 	String context = request.getContextPath();
 	String guid =  (String)request.getAttribute(EFGImportConstants.GUID);
 	String xslName = (String)request.getAttribute(EFGImportConstants.XSL_STRING);
@@ -22,6 +29,10 @@
 	String searchType = (String)request.getAttribute(EFGImportConstants.SEARCH_TYPE_STR);
     String templateMatch = request.getParameter(EFGImportConstants.HTML_TEMPLATE_NAME);
 	StringBuffer querySearch = new StringBuffer();
+	String testDisp = "=10";
+	String maxDisp = "=100";
+	StringBuffer testString = new StringBuffer();
+	StringBuffer keyString = new StringBuffer();
 	querySearch.append(context);
 	querySearch.append("/search?dataSourceName=");
 	querySearch.append(dsName);
@@ -43,10 +54,12 @@
 	querySearch.append(EFGImportConstants.HTML);
 	querySearch.append("&");
 	querySearch.append(EFGImportConstants.MAX_DISPLAY);
-	querySearch.append("=10");
-	
+	testString.append(querySearch.toString());
+	testString.append(testDisp);
 	if(guid != null){
-		String key = querySearch.toString();
+		keyString.append(querySearch.toString());
+		keyString.append(maxDisp);
+		String key = keyString.toString();		
 		TemplateObject templateObject = new TemplateObject();
 		EFGDisplayObject displayObject = new EFGDisplayObject();
 		displayObject.setDisplayName(displayName);
@@ -55,7 +68,7 @@
 		templateObject.setTemplateName(uniqueName);
 		templateObject.setGUID(guid);
 		templateObject.setDisplayObject(displayObject);
-		TemplateMapObjectHandler.add2TemplateMap(key,templateObject);
+		TemplateMapObjectHandler.add2TemplateMap(key,templateObject,mapLocationBuffer.toString());
 	}
    %>
 	<title>Test Search Page Configuration</title>
@@ -65,7 +78,7 @@
 		
 			<h3>The Datasource "<%=displayName%>" has been configured successfully!!!.</h3>
 			<p align="center"><a href="javascript:history.back()">Go back to configuration Page<a></p><br/><br/>
-			<p align="center"> <a href="<%=querySearch.toString()%>"  target="TestWindow">Test Search Page<a></p><br/><br/>
+			<p align="center"> <a href="<%=testString.toString()%>"  target="TestWindow">Test Search Page<a></p><br/><br/>
   	</center>
   </body>
 </html>

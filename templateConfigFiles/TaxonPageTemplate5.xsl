@@ -2,6 +2,9 @@
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
 	<xsl:include href="commonFunctionTemplate.xsl"/>
 	<xsl:include href="xslPageTaxon.xsl"/>
+	<xsl:key name="xID" match="@value" use="generate-id()"/>
+	<xsl:key name="xID1" match="@text" use="generate-id()"/>
+	<xsl:variable name="groupSize" select="2"/>
 	<xsl:variable name="defaultcss" select="'bogstyle.css'"/>
 	<xsl:variable name="cssFile">
 		<xsl:call-template name="getVariable">
@@ -144,19 +147,22 @@
 				<img src="{$src}" border="0"/>
 			</a>
 			<xsl:variable name="cap">
-			<xsl:choose>
-				<xsl:when test="not(string($captionName))=''">
-					<xsl:value-of select="$captionName"/>
-				</xsl:when>
-				<xsl:otherwise>
+				<xsl:choose>
+					<xsl:when test="not(string($captionName))=''">
+						<xsl:value-of select="$captionName"/>
+					</xsl:when>
+					<xsl:otherwise>
 						<xsl:if test="not(string($caption))=''">
 							<xsl:value-of select="$caption"/>
 						</xsl:if>
-				</xsl:otherwise>
-			</xsl:choose>
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:variable>
 			<xsl:if test="not(string($cap))=''">
-				<br/><span class="imagecaption"><xsl:value-of select="$cap"/></span>			
+				<br/>
+				<span class="imagecaption">
+					<xsl:value-of select="$cap"/>
+				</span>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>
@@ -192,9 +198,8 @@
 							<xsl:if test="not(string($mediaresourceValue))=''">
 								<xsl:call-template name="outputImage">
 									<xsl:with-param name="mediaresource" select="$taxonEntry/MediaResources[@name=$mediaresourceValue]"/>
-										<xsl:with-param name="caption" select="characterValue[@label='image']/@text"/>
+									<xsl:with-param name="caption" select="characterValue[@label='image']/@text"/>
 								</xsl:call-template>
-								
 							</xsl:if>
 						</td>
 					</tr>
@@ -212,11 +217,9 @@
 				<xsl:if test="count($taxonEntry/EFGLists[@name=$fname]) &gt; 0">
 					<xsl:value-of select="'found'"/>
 				</xsl:if>
-			
 			</xsl:for-each>
-				<xsl:for-each select="$image">
+			<xsl:for-each select="$image">
 				<xsl:variable name="fname" select="@value"/>
-			
 				<xsl:if test="count($taxonEntry/MediaResources[@name=$fname]) &gt; 0">
 					<xsl:value-of select="'found'"/>
 				</xsl:if>
@@ -236,7 +239,7 @@
 		<xsl:for-each select="$listsGroup">
 			<xsl:sort select="@id" data-type="number"/>
 			<xsl:variable name="list" select="characterValue[@label='list']"/>
-			<xsl:variable name="image" select="characterValue[@label='image']"/>
+			<xsl:variable name="image" select="characterValue[@label='image']/@value"/>
 			<xsl:variable name="fieldName" select="''"/>
 			<xsl:variable name="fieldLabel" select="@text"/>
 			<xsl:if test="count(characterValue/@value) &gt; 0 or count(characterValue/@text)  &gt; 0 or count(@text) &gt; 0 ">
@@ -292,21 +295,130 @@
 								</xsl:for-each>
 							</table>
 						</td>
-						<td class="images">
-							<xsl:for-each select="$image">
-								<xsl:variable name="imageName" select="@value"/>
-								<xsl:if test="not(string($imageName))=''">
-									<xsl:call-template name="outputImage">
-										<xsl:with-param name="mediaresource" select="$taxonEntry/MediaResources[@name=$imageName]"/>
-										<xsl:with-param name="caption" select="@text"/>
+						<td class="image_capsule">
+							<table class="images">
+								<xsl:if test="count($image) &gt; 0">
+									<!-- Start recursion here -->
+									<!--call image group gere -->
+									<xsl:call-template name="group">
+										<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+										<xsl:with-param name="idList1">
+											<xsl:for-each select="characterValue[@label='image']/@value">
+												<xsl:sort select="@rank" data-type="number" order="descending"/>
+												<xsl:value-of select="generate-id()"/>
+												<xsl:text>-</xsl:text>
+												<xsl:if test="position() mod $groupSize=0 or position()=last()">
+													<xsl:text>|</xsl:text>
+												</xsl:if>
+											</xsl:for-each>
+										</xsl:with-param>
+											<xsl:with-param name="idList2">
+											<xsl:for-each select="characterValue[@label='image']/@text">
+												<xsl:sort select="@rank" data-type="number" order="descending"/>
+												<xsl:value-of select="generate-id()"/>
+												<xsl:text>-</xsl:text>
+												<xsl:if test="position() mod $groupSize=0 or position()=last()">
+													<xsl:text>|</xsl:text>
+												</xsl:if>
+											</xsl:for-each>
+										</xsl:with-param>
 									</xsl:call-template>
 								</xsl:if>
-							</xsl:for-each>
+							</table>
 						</td>
 					</tr>
 				</xsl:if>
 			</xsl:if>
 		</xsl:for-each>
+	</xsl:template>
+	<xsl:template name="group">
+		<xsl:param name="taxonEntry"/>
+		<xsl:param name="idList1"/>
+		<xsl:param name="idList2"/>
+		<xsl:variable name="PartIdlist1" select="substring-before($idList1,'|')"/>
+			
+		<xsl:if test="$PartIdlist1">
+			<tr>
+				<xsl:call-template name="animate">
+					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+					<xsl:with-param name="idList" select="$PartIdlist1"/>
+				</xsl:call-template>
+			</tr>
+			<tr>
+			<xsl:variable name="PartIdlist2" select="substring-before($idList2,'|')"/>
+				<xsl:call-template name="animateText">
+					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+					<xsl:with-param name="idList" select="$PartIdlist2"/>
+				</xsl:call-template>
+			</tr>
+			<xsl:call-template name="group">
+				<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+				<xsl:with-param name="idList1" select="substring-after($idList1,'|')"/>
+					<xsl:with-param name="idList2" select="substring-after($idList2,'|')"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template name="animate">
+		<xsl:param name="taxonEntry"/>
+		<xsl:param name="idList"/>
+		<xsl:variable name="id" select="substring-before($idList,'-')"/>
+		<xsl:if test="$id">
+			<td class="images_new">
+				<xsl:apply-templates select="key('xID',$id)">
+					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+				</xsl:apply-templates>
+			</td>
+			<xsl:call-template name="animate">
+				<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+				<xsl:with-param name="idList" select="substring-after($idList,'-')"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template name="animateText">
+		<xsl:param name="taxonEntry"/>
+		<xsl:param name="idList"/>
+		<xsl:variable name="id" select="substring-before($idList,'-')"/>
+		<xsl:if test="$id">
+			<td class="imagecaption">
+				<xsl:apply-templates select="key('xID1',$id)">
+					<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+				</xsl:apply-templates>
+			</td>
+			<xsl:call-template name="animateText">
+				<xsl:with-param name="taxonEntry" select="$taxonEntry"/>
+				<xsl:with-param name="idList" select="substring-after($idList,'-')"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="@value">
+		<xsl:param name="taxonEntry"/>
+		<xsl:variable name="imageName" select="."/>
+		<xsl:variable name="caps" select="$taxonEntry/MediaResources[@name=$imageName]/MediaResource[1]"/>
+		<xsl:if test="not(string($caps))=''">
+		<xsl:variable name="src">
+			<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $caps)"/>
+		</xsl:variable>
+		<xsl:variable name="href" select="concat($imagebase_large,'/',$caps)"/>
+		
+		<a href="{$href}">
+			<img src="{$src}" border="0"/>
+		</a>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="@text">
+		<xsl:param name="taxonEntry"/>
+		<xsl:variable name="imageName" select="parent/@value"/>
+		<xsl:variable name="imageText" select="."/>
+		<xsl:variable name="caps" select="$taxonEntry/MediaResources[@name=$imageName]/MediaResource[1]/@caption"/>
+		<xsl:choose>
+			<xsl:when test="not(string($caps))=''">
+				<xsl:value-of select="$caps"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$imageText"/>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="outputresourcelist">
 		<xsl:param name="efglists"/>

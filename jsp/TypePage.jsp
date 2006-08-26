@@ -38,8 +38,8 @@ project.efg.util.EFGDisplayObject
 		  if(!isEmpty){
 		    Iterator dsNameIter = listInter.getIterator(); 
 		    String searchPageStr = context + "/SearchPage.jsp?pageType=option&displayFormat=HTML&displayName=";
-    		String searchLists = context + "/search?displayFormat=HTML&searchType=lists&displayName=";
-  			String searchPlates =context + "/search?displayFormat=HTML&searchType=plates&displayName=";
+    		String searchLists = context + "/search?maxDisplay=100&displayFormat=HTML&searchType=lists&displayName=";
+  			String searchPlates =context + "/search?maxDisplay=100&displayFormat=HTML&searchType=plates&displayName=";
 			String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
 		  	while (dsNameIter.hasNext()) { 
 		  	%>

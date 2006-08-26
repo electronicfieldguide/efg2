@@ -218,3 +218,30 @@ margin-top: 0px;
 .itemlist {
 padding-bottom: 4px;
 }
+.imagecaption {
+font-family: arial, helvetica, verdana, sans-serif;
+font-size: 10px;
+font-weight: normal;
+padding-bottom: 5px;
+padding-top: 0px;
+margin-top: 0px;
+}
+td.image_capsule {
+vertical-align: top;
+background-color: #FFFFCC;
+border-bottom-style: groove;
+border-bottom-width: 2px;
+border-top-style: groove;
+border-top-width: 2px;
+}
+td.images_new {
+vertical-align: top;
+background-color: #FFFFCC;
+padding-top: 5px;
+padding-bottom: 0px;
+padding-left: 0px;
+padding-right: 0px;
+}
+table.images {
+margin-top: 0px;
+}
