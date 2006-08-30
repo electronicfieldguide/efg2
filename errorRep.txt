@@ -1,0 +1,23 @@
+Loaded successfully: IMG_1113_1.sized.jpg
+java.lang.OutOfMemoryError
+About to load: IMG_1113_1.thumb.jpg
+Loaded successfully: IMG_1113_1.thumb.jpg
+java.lang.OutOfMemoryError
+java.lang.OutOfMemoryError
+About to load: IMG_1116_1.thumb.jpg
+Loaded successfully: IMG_1116_1.thumb.jpg
+java.lang.OutOfMemoryError
+About to load: IMG_1140_1.jpg
+Loaded successfully: IMG_1140_1.jpg
+java.lang.OutOfMemoryError
+About to load: IMG_1143_1.jpg
+Loaded successfully: IMG_1143_1.jpg
+java.lang.OutOfMemoryError
+About to load: IMG_1160_1.thumb.jpg
+java.lang.OutOfMemoryErrorLoaded successfully: IMG_1160_1.thumb.jpg
+
+About to load: IMG_1161_1.sized.jpg
+Loaded successfully: IMG_1161_1.sized.jpg
+
+Exception occurred during event dispatching:java.lang.OutOfMemoryErrorjava.lang.OutOfMemoryErrorjava.lang.OutOfMemoryErrorjava.lang.OutOfMemoryError
+java.lang.OutOfMemoryError

@@ -1,0 +1,2 @@
+1.Use Ioc to separate cvs code from code that calls it.
+allows you to change the parsing implementation

@@ -1,0 +1,29 @@
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
+<!-- $Id$ -->
+<project name="generateSourcesForTomcatUsers" default="generate" basedir=".">
+	<property environment="myenv"/>
+	<property name="efg.home" value="."/>
+		<property name="jars.home" value="${efg.home}/lib"/>
+
+	<!--
+Templates generation
+-->
+	<!--  search page generation-->
+	<path id="generate.class.path">
+		<fileset dir="${jars.home}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+
+	<target name="generate" depends="clean">
+		<java fork="yes" classname="org.exolab.castor.builder.SourceGenerator">
+			<arg line="-verbose -i schema/tomcat-users.xsd -package project.efg.tomcatusers -dest temp -types j2 -f"/>
+			<classpath refid="generate.class.path"/>
+		</java>
+	</target>
+	<target name="clean">
+		<delete quiet="true">
+			<fileset dir="temp/project/efg/tomcatusers"/>
+		</delete>
+	</target>
+</project>
