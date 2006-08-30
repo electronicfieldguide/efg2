@@ -153,6 +153,26 @@
 			<param-value>MySQL</param-value>
 		</init-param>
 	</servlet>
+		<servlet>
+		<servlet-name>mapQuery</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.EFGMappingQuery</servlet-class>
+		<init-param>
+			<param-name>defaultMaxDisplay</param-name>
+			<param-value>20</param-value>
+		</init-param>
+		<init-param>
+			<param-name>applyXSLServlet</param-name>
+			<param-value>ApplyXSL</param-value>
+		</init-param>
+		<init-param>
+			<param-name>fopServlet</param-name>
+			<param-value>FopServlet</param-value>
+		</init-param>
+		<init-param>
+			<param-name>database</param-name>
+			<param-value>MySQL</param-value>
+		</init-param>
+	</servlet>
 	<servlet>
 		<servlet-name>ApplyXSL</servlet-name>
 		<servlet-class>project.efg.servlets.efgImpl.ApplyXSL</servlet-class>
@@ -200,6 +220,10 @@
 	<servlet-mapping>
 		<servlet-name>search</servlet-name>
 		<url-pattern>/search</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>mapQuery</servlet-name>
+		<url-pattern>/mapQuery</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>ApplyXSL</servlet-name>
