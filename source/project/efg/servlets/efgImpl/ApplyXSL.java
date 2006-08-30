@@ -178,17 +178,13 @@ public class ApplyXSL extends HttpServlet {
 					transformer.setParameter("mediaResourceField", (String) req
 							.getAttribute("mediaResourceField"));
 				}
-				else{
-					//System.out.println("mediaresource field is null!!");
-				}
+				
 				String fieldName = (String) req.getAttribute("fieldName");
 				if (fieldName != null) {
 	
 					transformer.setParameter("fieldName",fieldName);
 				}
-				else{
-					//System.out.println("fieldName is null!!");
-				}
+				
 				// set more parameters
 				// if more than one means go to search results page
 			} catch (TransformerConfigurationException tce) {
@@ -308,6 +304,9 @@ public class ApplyXSL extends HttpServlet {
 	}
 }
 // $Log$
+// Revision 1.1.2.6  2006/08/30 13:53:34  kasiedu
+// bug id 224-236
+//
 // Revision 1.1.2.5  2006/08/23 13:42:03  kasiedu
 // no message
 //

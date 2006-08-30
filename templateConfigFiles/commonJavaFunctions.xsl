@@ -17,7 +17,9 @@
 					<xsl:value-of select="concat($cap1,' ',$cap2)"/>
 				</xsl:when>
 				<xsl:otherwise>
+				<xsl:if test="not(string($cap1))=''">
 					<xsl:value-of select="$cap1"/>
+					</xsl:if>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
@@ -42,6 +44,7 @@
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:if test="not(string($caption))=''">
+			
 				<xsl:variable name="new-pop" select="sorter:addName($mySorter, string($caption))"/>
 			</xsl:if>
 		</xsl:for-each>

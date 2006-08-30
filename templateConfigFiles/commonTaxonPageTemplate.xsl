@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
 	<!-- $Id$ -->
 	<xsl:param name="serverbase"/>
@@ -33,22 +34,6 @@
 	<xsl:variable name="mapQueryServlet" select="'/mapQuery?'"/>
 	<xsl:variable name="searchServlet" select="'/search?dataSourceName='"/>
 	<xsl:variable name="dsNamePrefix" select="'dataSourceName='"/>
-	<!-- 
-	<xsl:variable name="header">
-		<xsl:text>&lt;header&gt;</xsl:text>
-		<xsl:text>&lt;version&gt;0.91</xsl:text>
-		<xsl:text>&lt;/version&gt;</xsl:text>
-		<xsl:text>&lt;sendTime&gt;1997-07-16T19:20:30.45+01:00</xsl:text>
-		<xsl:text>&lt;/sendTime&gt;</xsl:text>
-		<xsl:text>&lt;source&gt;128.32.214.123</xsl:text>
-		<xsl:text>&lt;/source&gt;</xsl:text>
-		<xsl:text>&lt;destination resource="SolaData"&gt;>http://128.32.214.123:80/DiGIRprov/ttuwww/DiGIR.php</xsl:text>
-		<xsl:text>&lt;/destination&gt;</xsl:text>
-		<xsl:text>&lt;type&gt;search</xsl:text>
-		<xsl:text>&lt;/type&gt;</xsl:text>
-		<xsl:text>&lt;/header&gt;</xsl:text>
-	</xsl:variable>
--->
 	<xsl:variable name="endDigirRequest">
 		<xsl:text>&lt;/request&gt;</xsl:text>
 	</xsl:variable>
@@ -109,13 +94,10 @@
 	<xsl:variable name="digirFooters">
 		<xsl:value-of select="concat(string($endDigirFilter),string($records),string($endDigirSearch),string($endDigirRequest))"/>
 	</xsl:variable>
-	
 	<xsl:template name="getTitle2">
 		<xsl:param name="taxonEntry"/>
-			<xsl:param name="titleText"/>
-	
-			<xsl:value-of select="concat('Taxon Page for : ',$taxonEntry/Items[@name=$titleText]/Item[1])"/>
-		
+		<xsl:param name="titleText"/>
+		<xsl:value-of select="concat('Taxon Page for : ',$taxonEntry/Items[@name=$titleText]/Item[1])"/>
 	</xsl:template>
 	<!---->
 	<!-- Outputs some text -->

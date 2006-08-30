@@ -48,8 +48,8 @@
 					<!-- Sort the list -->
 					<xsl:variable name="sortList" select="sorter:sort($mySorter)"/>
 					<xsl:variable name="maxCount" select="sorter:getArraySize($mySorter)"/>
-					<xsl:variable name="index" select="1"/>
-					<xsl:if test="$index &lt; $maxCount + 1">
+					<xsl:variable name="index" select="0"/>
+					<xsl:if test="$index &lt; $maxCount">
 						<xsl:call-template name="iterateOverSortedArray">
 							<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
 							<xsl:with-param name="mySorter" select="$mySorter"/>
@@ -66,21 +66,21 @@
 		<xsl:param name="mySorter"/>
 		<xsl:param name="index"/>
 		<xsl:param name="total_count"/>
-		<xsl:if test="$index mod $images-per-row = 1">
+		<xsl:if test="$index mod $images-per-row = 0">
 			<tr>
 				<xsl:call-template name="display-images">
-					<xsl:with-param name="index" select="$index "/>
+					<xsl:with-param name="index" select="$index"/>
 					<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
 					<xsl:with-param name="mySorter" select="$mySorter"/>
 				</xsl:call-template>
-				<xsl:if test="not($index = $total_count)">
+				<xsl:if test="not($index + 1= $total_count)">
 					<xsl:call-template name="display-images">
 						<xsl:with-param name="index" select="$index + 1"/>
 						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
 						<xsl:with-param name="mySorter" select="$mySorter"/>
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="not($index + 1 = $total_count)">
+				<xsl:if test="not($index + 2 = $total_count)">
 					<xsl:call-template name="display-images">
 						<xsl:with-param name="index" select="$index + 2"/>
 						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
@@ -88,20 +88,21 @@
 					</xsl:call-template>
 				</xsl:if>
 			</tr>
+			
 			<tr>
 				<xsl:call-template name="display-captions">
 					<xsl:with-param name="index" select="$index"/>
 					<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
 					<xsl:with-param name="mySorter" select="$mySorter"/>
 				</xsl:call-template>
-				<xsl:if test="not($index  = $total_count)">
+				<xsl:if test="not($index + 1 = $total_count)">
 					<xsl:call-template name="display-captions">
 						<xsl:with-param name="index" select="$index + 1"/>
 						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
 						<xsl:with-param name="mySorter" select="$mySorter"/>
 					</xsl:call-template>
 				</xsl:if>
-				<xsl:if test="not($index + 1 = $total_count)">
+				<xsl:if test="not($index + 2 = $total_count)">
 					<xsl:call-template name="display-captions">
 						<xsl:with-param name="index" select="$index + 2"/>
 						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
@@ -114,7 +115,7 @@
 			</tr>
 		</xsl:if>
 		<xsl:variable name="index2" select="number($index) + 3"/>
-		<xsl:if test="number($index2) &lt; number($total_count) + 1">
+		<xsl:if test="number($index2) &lt; number($total_count) ">
 			<xsl:call-template name="iterateOverSortedArray">
 				<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
 				<xsl:with-param name="mySorter" select="$mySorter"/>
@@ -132,8 +133,11 @@
 		<xsl:param name="index"/>
 		<xsl:param name="taxonEntries"/>
 		<xsl:param name="mySorter"/>
-		<xsl:variable name="pos" select="number($index)-1"/>
+		<xsl:variable name="pos" select="number($index)"/>
 		<xsl:variable name="currentname" select="sorter:getName($mySorter, string(number($pos)))"/>
+		<xsl:if test="not(string($currentname))=''">
+
+	
 		<xsl:for-each select="$taxonEntries">
 			<xsl:variable name="cap1">
 				<xsl:value-of select="Items[@name=$caption1]/Item[1]"/>
@@ -168,6 +172,7 @@
 				</td>
 			</xsl:if>
 		</xsl:for-each>
+			</xsl:if>
 		<!-- Fields are aggregated and that needs to be solved also output a generic page if transformation fails-->
 	</xsl:template>
 	<xsl:template name="display-images">
@@ -175,9 +180,10 @@
 		<xsl:param name="taxonEntries"/>
 		<xsl:param name="mySorter"/>
 		<xsl:param name="dsname"/>
-		<xsl:variable name="pos" select="number($index)-1"/>
+		<xsl:variable name="pos" select="number($index)"/>
 		<xsl:variable name="currentname" select="sorter:getName($mySorter, string(number($pos)))"/>
 		<xsl:for-each select="$taxonEntries">
+		<!-- -->
 			<xsl:variable name="cap1">
 				<xsl:value-of select="Items[@name=$caption1]/Item[1]"/>
 			</xsl:variable>
@@ -190,6 +196,8 @@
 					<xsl:with-param name="cap2" select="$cap2"/>
 				</xsl:call-template>
 			</xsl:variable>
+<xsl:if test="not(string($currentname))=''">
+<xsl:if test="not(string($caption))=''">
 			<xsl:if test="string($caption)=string($currentname)">
 				<xsl:variable name="uniqueID">
 					<xsl:value-of select="@recordID"/>
@@ -244,7 +252,10 @@
 							</xsl:otherwise>
 						</xsl:choose>
 					</a>
+		
 				</td>
+			</xsl:if>
+				</xsl:if>
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:template>

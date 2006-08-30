@@ -158,10 +158,10 @@ public class EFGContextListener implements ServletContextListener {
 		
 		File dir = new File(fileLocationBuffer.toString());
 		String[] files = dir.list(new XMLFileNameFilter());
-		//System.out.println("Number of files: " + files.length);
+		
 		for(int i = 0 ; i < files.length; i++){
 			try{
-			//	System.out.println("File: " + files[i]);
+			
 				File f = new File(fileLocationBuffer.toString(),files[i]);
 				FileReader reader = new FileReader(f);
 				TaxonPageTemplates tps = (TaxonPageTemplates)TaxonPageTemplates
@@ -252,7 +252,7 @@ public class EFGContextListener implements ServletContextListener {
 	 *            the ServletContextEvent object
 	 */
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		//System.out.println("Destroying driver manager!!");
+		
 		destroyDriverManager();
 		try {
 			servletContext.log("Context is being destroyed");
@@ -644,6 +644,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.1.2.8  2006/08/30 13:53:34  kasiedu
+// bug id 224-236
+//
 // Revision 1.1.2.7  2006/08/26 22:12:24  kasiedu
 // Updates to xsl files
 //
