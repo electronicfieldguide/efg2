@@ -68,8 +68,7 @@ public class TemplateMapObjectHandler {
 		String mutex = "";
 		synchronized (mutex) {
 			if (mapLocation == null) {
-				System.out.println("ERROR: Call createTemplateObjectMap(mapLocation) before youc all this method!!");
-				return false;
+					return false;
 			}
 			FileChannel channel = null;
 
@@ -80,7 +79,7 @@ public class TemplateMapObjectHandler {
 				Hashtable templateObjectMap = getTemplateObjectMap(mapLocation);
 
 				if (templateObjectMap == null) {
-					System.out.println("Template Map object is null");
+					
 					return false;
 				}
 				File file = new File(mapLocation);
@@ -96,13 +95,12 @@ public class TemplateMapObjectHandler {
 				while (mapIter.hasNext()) {
 					key = (String) mapIter.next();
 					if (key.toLowerCase().startsWith(tempKey)) {
-						System.out.println("key: " + key);
-						System.out.println("temp key: " + tempKey);
+						
 						keysToremove.add(key);
-						System.out.println("removed key: " + key);
+						
 					}
 				}
-				System.out.println("Size of keys: " + keysToremove.size() );
+				
 				for (int i = 0; i < keysToremove.size(); i++) {
 					templateObjectMap.remove((String) keysToremove.get(i));
 				}
@@ -185,7 +183,7 @@ public class TemplateMapObjectHandler {
 				Hashtable templateObjectMap = getTemplateObjectMap(mapLocation);
 
 				if (templateObjectMap == null) {
-					System.out.println("Template Map object is null");
+					
 					return false;
 				}
 				File file = new File(mapLocation);
@@ -314,7 +312,7 @@ public class TemplateMapObjectHandler {
 
 				// release lock
 			} catch (Exception ee) {
-				System.out.println(ee.getMessage());
+				
 				ee.printStackTrace();
 				if ((channel != null) && (channel.isOpen())) {
 					try {
@@ -344,14 +342,14 @@ public class TemplateMapObjectHandler {
 		String mutex = "";
 		synchronized (mutex) {
 			ObjectInputStream in = null;
-			System.out.println("File : " + mapLocation);
+			
 			
 			File file = new File(mapLocation);
 			if (!file.exists()) {
-				System.out.println("File : " + file.getAbsolutePath() + " does not exists!!");
+				
 				return null;
 			}
-			System.out.println("File : " + file.getAbsolutePath() + " exists!!");
+		
 			if (hasChanged(mapLocation)) {
 				// lock file
 				try {

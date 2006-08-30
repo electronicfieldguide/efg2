@@ -470,7 +470,8 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 								
 									
 					%>
-				<p>The following is not part of the template:
+				<p>
+
 			<select name="<%=EFGImportConstants.ISDEFAULT_STR%>"  title="Indicate whether this template should be the default for search results page">
 				<option value="false">Do not use as Default Template</option>
 				<%if(bool.booleanValue() ){

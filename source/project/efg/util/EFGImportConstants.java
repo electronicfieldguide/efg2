@@ -28,6 +28,22 @@ import java.util.regex.Pattern;
  * USA
  */
 public interface EFGImportConstants {
+	// The 4 ff constants are used are appended to datasource names to make
+	//html file for missing data. MediaResources will  have
+	// datasourcename + IMAGEAPPENDER
+	//lists will have
+	//datasourcename  + EFGLISTAPPENDER and so on.
+	
+	String IMAGEAPPENDER="_MediaResourceErrors";
+	String EFGLISTAPPENDER ="_EFGListErrors";
+	String CATAPPENDER="_CategoricalErrors";
+	String NUMERICSAPPENDER="_NumericErrors";
+	
+	//holds the error files 
+	String TEMPORARY_ERROR_FILE = "/tempError";
+	
+	String HTML_EXT = ".html";
+	
 	String DEFAULT_PLATES_DISPLAY = "Default Thumbnails";
 	String DEFAULT_LISTS_DISPLAY = "Default Text List";
 	String KEY_METADATA_HELP = "/help/metadataHelp.html";
@@ -255,38 +271,60 @@ public interface EFGImportConstants {
 	 * The standard columnnames for representing field attributes within an ODBC
 	 * source.
 	 */
+	/*Searchable
+	List
+	Taxon Page
+	Numeric Value
+	Numeric Range
+	Media Resource
+	Order*/
+	
+	String MEDIARESOURCE = "MediaResource";
+	String MEDIARESOURCE_DISPLAY = "Media Resource";
+	
 	String NAME = "Name";
+	String NAME_DISPLAY=NAME;
 
 	String LEGALNAME = "LegalName";
-
+	String LEGALNAME_DISPLAY = "LegalName";
+	
 	String SEARCHABLE = "IsSearchable";
-
+	String SEARCHABLE_DISPLAY = "Searchable";
+	
 	String ISLISTS = "IsLists";
-
+	String ISLISTS_DISPLAY = "List";
+	
 	String NUMERICRANGE = "NumericRange";
-
-	String ONTAXONPAGE = "OnTaxonPage";
-
-	String CATEGORICAL = "Categorical";
-
-	String NARRATIVE = "Narrative";
-
-	String ORDER = "OrderValue";
-
-	String ORDERED = "OrderValue";
+	String NUMERICRANGE_DISPLAY = "Numeric Range";
 
 	String NUMERIC = "NumericValue";
+	String NUMERIC_DISPLAY= "Numeric Value";
+	
+	String ONTAXONPAGE = "OnTaxonPage";
+	String ONTAXONPAGE_DISPLAY = "Taxon Page";
 
-	String MEDIARESOURCE = "MediaResource";
+	String CATEGORICAL = "Categorical";
+	String CATEGORICAL_DISPLAY = "Categorical";
+
+	String NARRATIVE = "Narrative";
+	String NARRATIVE_DISPLAY=NARRATIVE;
+
+	String ORDER = "OrderValue";
+	String ORDER_DISPLAY = "Order";
+
+	String ORDERED = ORDER;
+
+	
+	
+	
+
+	String IMPORT_TITLE = "EFG2 Import Application";
 
 	String WEIGHT = "weight";
 
 	String SPECIESPAGETA = "speciesPageta";
 
-	String HOLDSMULTIPLEVALUES = "holdsMultipleValues";
-
-	String HOLDSMULTIPLEVALUESYES = "holdsMultipleValuesYes";
-
+	
 	String MEDIARESOURCEFIELD = "mediaResourceField";
 
 	String JAVATYPE = "javaType";
@@ -325,11 +363,6 @@ public interface EFGImportConstants {
 
 	String DATA = "Data";
 
-	String FIELDELEMENT = "EFGField";
-
-	String TAXALIST = "TaxaList";
-
-	String COMMONPATH = "CommonPath";
 
 	String TAXONENTRY = "TaxonEntry";
 

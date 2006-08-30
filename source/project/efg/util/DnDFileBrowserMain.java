@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
@@ -15,14 +17,19 @@ import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
@@ -44,7 +51,8 @@ public class DnDFileBrowserMain extends JDialog {
 		} catch (Exception ee) {
 		}
 	}
-
+	final JPopupMenu popup = new JPopupMenu();
+	
 	private static final long serialVersionUID = 1L;
 	JLabel currentDimLabel; 
 	final JButton deleteBtn = new JButton(EFGImportConstants.EFGProperties
@@ -78,6 +86,7 @@ public class DnDFileBrowserMain extends JDialog {
 
 	private String currentSelection;
 	private EFGComboBox comboList;
+	
 	public DnDFileBrowserMain(JFrame frame, boolean modal,
 			String imagesDirectory) {
 		this(frame, "", modal, imagesDirectory);
@@ -96,7 +105,10 @@ public class DnDFileBrowserMain extends JDialog {
 
 		imageView = addImagePanel();
 		htmlPane = new JEditorPane();
+		ToolTipManager.sharedInstance().registerComponent(htmlPane);
+		htmlPane.setContentType("text/html");
 		htmlPane.setEditable(false);
+	
 		initHelp();
 		this.progressBar.setSize(300, 300);
 		this.browser = DnDFileBrowser.getFileBrowser(imagesDirectory,
@@ -106,18 +118,18 @@ public class DnDFileBrowserMain extends JDialog {
 
 		this.browser.addTreeSelectionListener(new FileTreeSelectionListener(
 				this.browser));
-
+		this.browser.addMouseListener(new EditMouseListener(this));
 		JScrollPane browserPane = new JScrollPane(this.browser);
 		JScrollPane imageViewPane = new JScrollPane(this.imageView);
-		JScrollPane htmlViewPane = new JScrollPane(htmlPane);
+	//	JScrollPane htmlViewPane = new JScrollPane(htmlPane);
 
 		// Add the scroll panes to a split pane.
-		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				imageViewPane, htmlViewPane);
-		splitPane.setDividerLocation(200);
-		JScrollPane otherPane = new JScrollPane(splitPane);
+		//JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+			//	imageViewPane, htmlViewPane);
+		//splitPane.setDividerLocation(200);
+		//JScrollPane otherPane = new JScrollPane(splitPane);
 		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				browserPane, otherPane);
+				browserPane, imageViewPane);
 
 		pane.setOneTouchExpandable(true);
 		pane.setDividerLocation(300);
@@ -128,16 +140,39 @@ public class DnDFileBrowserMain extends JDialog {
 				comboList.load(EFGImportConstants.THUMBS_FILE_NAME);
 				ComboBoxListener cl = new ComboBoxListener();
 				comboList.addActionListener(cl);
+		this.addMenus();	
+		this.createPopUp();
 		this.getContentPane().add(pane, BorderLayout.CENTER);
 		this.getContentPane().add(addButtons(), BorderLayout.SOUTH);
 
-		this.setSize(1100, 600);
+		this.setSize(700, 600);
 		
 		
 		addWindowListener(new WndCloser(this));
 
 	}
-
+	private void addMenus(){
+		JMenu fileMenu = new JMenu("File");
+		JMenu helpMenu = new JMenu("Help");
+		JMenuItem closeMenu = new JMenuItem("Close");
+		JMenuItem helpItem = new JMenuItem("Help Contents");
+		helpItem.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.IMAGE_DEPLOY_HELP));
+		helpMenu.add(helpItem);
+		
+		closeMenu.addActionListener(new DoneListener(this));
+		//sub menus
+		
+		
+		
+		fileMenu.add(closeMenu);
+		JMenuBar mBar = new JMenuBar();
+		mBar.add(fileMenu);
+		mBar.add(helpMenu);
+	
+	
+		this.setJMenuBar(mBar);
+		
+	}
 	public DnDFileBrowserMain(String imagesDirectory, JFrame frame) {
 		this(frame, "", false, imagesDirectory);
 	}
@@ -210,10 +245,7 @@ public class DnDFileBrowserMain extends JDialog {
 		JPanel btnPanel = new JPanel();
 		
 		btnPanel.add(this.currentDimLabel);
-		//JLabel fillerLabel = new JLabel();
-		//fillerLabel.setSize(50,50);
-		//fillerLabel.setVisible(false);
-		//btnPanel.add(fillerLabel);
+		
 		btnPanel.add(comboLabel1);
 		btnPanel.add(comboList);
 		
@@ -222,10 +254,10 @@ public class DnDFileBrowserMain extends JDialog {
 				.getProperty("FileTreeBrowserMain.deleteBtn.tooltip"));
 		btnPanel.add(deleteBtn);
 
-		doneBtn.addActionListener(new DoneListener(this));
-		doneBtn.setToolTipText(EFGImportConstants.EFGProperties
-				.getProperty("FileTreeBrowserMain.doneBtn.tooltip"));
-		btnPanel.add(doneBtn);
+		//doneBtn.addActionListener(new DoneListener(this));
+		//doneBtn.setToolTipText(EFGImportConstants.EFGProperties
+		//		.getProperty("FileTreeBrowserMain.doneBtn.tooltip"));
+		//btnPanel.add(doneBtn);
 		return btnPanel;
 
 	}
@@ -253,7 +285,12 @@ public class DnDFileBrowserMain extends JDialog {
 			log.error("Attempted to read a bad URL: " + url);
 		}
 	}
-	
+	public void createPopUp() {
+
+		JMenuItem menuItem = new JMenuItem(this.deleteBtn.getText());
+		menuItem.addActionListener(new DeleteListener(this.browser));
+		this.popup.add(menuItem);
+	}
 	class  WndCloser extends WindowAdapter{
 	/**
 	 * 
@@ -268,7 +305,40 @@ public class DnDFileBrowserMain extends JDialog {
 			
 		}
 	}
-	
+	class EditMouseListener extends MouseAdapter {
+
+		private DnDFileBrowserMain treeBrowser;
+
+		public EditMouseListener(DnDFileBrowserMain treeBrowser) {
+			this.treeBrowser = treeBrowser;
+		}
+
+		public void mousePressed(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				showPopUp(e);
+			}
+		}
+
+		private void showPopUp(MouseEvent e) {
+			TreePath path = browser.getPathForLocation(e.getX(), e.getY());
+
+			if (path != null) {
+
+				browser.getSelectionModel().setSelectionPath(path);
+				// TreeNode node = (TreeNode) path.getLastPathComponent();
+
+				popup.show(this.treeBrowser, e.getX(), e.getY());
+			}
+
+		}
+
+		public void mouseReleased(MouseEvent e) {
+			if (e.isPopupTrigger()) {
+				showPopUp(e);
+			}
+		}
+
+	}
 
 
 	/**

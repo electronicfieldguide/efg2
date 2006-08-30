@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,7 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
-import javax.swing.tree.DefaultTreeModel;
 
 
 /*
@@ -34,56 +35,75 @@ public class EFGCopyFilesThread extends SwingWorker implements WindowListener{
     boolean isDone = false;
    File srcFile, destFile;
    JFrame frame;
+   List objectsToDrop;
 
 
-
-private FileNode destNode;
-  
-    public EFGCopyFilesThread(DnDFileBrowser browser, File srcFile, File destFile, JProgressBar progressBar) {
+//private FileNode destNode;
+public EFGCopyFilesThread(DnDFileBrowser browser,List objectsToDrop, JProgressBar bar) {
+	this.objectsToDrop = objectsToDrop;
+	this.browser = browser;
+	this.progressBar = bar;
+	init();
+}
+    public EFGCopyFilesThread(DnDFileBrowser browser, File srcFile, 
+    		File destFile, JProgressBar progressBar) {
      this(browser,srcFile,destFile,progressBar,null);
     }
 	public EFGCopyFilesThread(DnDFileBrowser browser, File srcFile, File destFile, JProgressBar progressBar, FileNode destNode) {
-		this.destNode = destNode;
-    	this.srcFile = srcFile;
-    	
-    	this.destFile = destFile;
+		
+    	this.objectsToDrop = new ArrayList();
+    	DropFileObject drop = new DropFileObject(srcFile,destFile, destNode);
+    	this.objectsToDrop.add(drop);
         this.browser = browser;
         this.progressBar = progressBar;
-      
-        JPanel panel = new JPanel(new BorderLayout());
+        
+        this.init();
+  
+        
+    
+    
+	}
+	private void init(){
+	    JPanel panel = new JPanel(new BorderLayout());
         panel.setSize(550,500);
      JLabel label = new JLabel("Please wait while application copies image files!!", 
        		SwingConstants.CENTER);
       label.setSize(300,300);
         panel.add(this.progressBar, BorderLayout.CENTER);
       panel.add(label,BorderLayout.NORTH);
-  
-        
-    
-    //Create and set up the window.
-    this.frame = new JFrame("Copying Files");
-    this.frame.addWindowListener(this);
-    this.frame.setSize(600, 600);
-    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    this.frame.setLocationRelativeTo(this.browser);
-    //Create and set up the content pane.
-   
-    panel.setOpaque(true); //content panes must be opaque
-    this.frame.getContentPane().add(panel);
-  
-    //Display the window.
-    this.frame.pack();
-    this.frame.setVisible(true);  
+//		Create and set up the window.
+	    this.frame = new JFrame("Copying Files");
+	    this.frame.addWindowListener(this);
+	    this.frame.setSize(600, 600);
+	    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	    this.frame.setLocationRelativeTo(this.browser);
+	    //Create and set up the content pane.
+	   
+	    panel.setOpaque(true); //content panes must be opaque
+	    this.frame.getContentPane().add(panel);
+	  
+	    //Display the window.
+	    this.frame.pack();
+	    this.frame.setVisible(true);  
 	}
+	/**
+	 * @param objectsToDrop
+	 * @param bar
+	 */
+	
 	public Object construct() {
-			progressBar.setCursor(null);
-		this.browser.copyFile(this.srcFile, this.destFile);
-		
-		//Toolkit.getDefaultToolkit().beep();
+		progressBar.setCursor(null);
+		for(int i = 0; i < this.objectsToDrop.size();i++){
+			DropFileObject drop = (DropFileObject)this.objectsToDrop.get(i);
+			this.srcFile = drop.getSourceFile();
+			this.destFile = drop.getDestinationFile();
+			this.browser.copyFile(this.srcFile, this.destFile);
+		}
+			//Toolkit.getDefaultToolkit().beep();
 		this.progressBar.setValue(0);
+		CreateThumbNailsThread thumbsThread = new CreateThumbNailsThread(this.browser,this.objectsToDrop);
 		
-		CreateThumbNailsThread thumbsThread = new CreateThumbNailsThread(this.browser,srcFile,destFile,this.destNode);
-	    thumbsThread.start();
+			thumbsThread.start();
 	    isDone = true;
 		this.frame.dispose();
 		this.browser.setVisible(true);
