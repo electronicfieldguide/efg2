@@ -24,7 +24,7 @@
 				<xs:element name="TaxonEntries" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="TaxonEntry" type="TaxonEntryType" maxOccurs="unbounded">
+							<xs:element name="TaxonEntry" type="TaxonEntryType" minOccurs="0" maxOccurs="unbounded">
 								<xs:annotation>
 									<xs:documentation>A container that holds data(characters and states for e.g)  for a taxon.</xs:documentation>
 								</xs:annotation>
@@ -79,7 +79,7 @@
 		<xs:complexContent>
 			<xs:extension base="baseEFGAttributeType">
 				<xs:sequence>
-					<xs:element name="EFGList" type="EFGType" maxOccurs="unbounded"/>
+					<xs:element name="EFGList" type="EFGType" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 				<xs:attribute name="resourceLink">
 					<xs:simpleType>
@@ -93,7 +93,7 @@
 		<xs:complexContent>
 			<xs:extension base="baseEFGAttributeType">
 				<xs:sequence>
-					<xs:element name="Item" type="EFGType" maxOccurs="unbounded"/>
+					<xs:element name="Item" type="EFGType" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -113,7 +113,7 @@
 		<xs:complexContent>
 			<xs:extension base="baseEFGAttributeType">
 				<xs:sequence>
-					<xs:element name="MediaResource" type="MediaResourceType" maxOccurs="unbounded"/>
+					<xs:element name="MediaResource" type="MediaResourceType" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 			</xs:extension>
 		</xs:complexContent>
@@ -121,12 +121,12 @@
 	<xs:complexType name="StatisticalMeasureType">
 		<xs:complexContent>
 			<xs:extension base="EFGType">
-				<xs:attribute name="min" type="xs:double" use="required">
+				<xs:attribute name="min" type="xs:double">
 					<xs:annotation>
 						<xs:documentation>The minimum value for this statistical measure</xs:documentation>
 					</xs:annotation>
 				</xs:attribute>
-				<xs:attribute name="max" type="xs:double" use="required">
+				<xs:attribute name="max" type="xs:double">
 					<xs:annotation>
 						<xs:documentation>The maximum value of this statistical measure</xs:documentation>
 					</xs:annotation>
@@ -143,7 +143,7 @@
 		<xs:complexContent>
 			<xs:extension base="baseEFGAttributeType">
 				<xs:sequence>
-					<xs:element name="StatisticalMeasure" type="StatisticalMeasureType" maxOccurs="unbounded"/>
+					<xs:element name="StatisticalMeasure" type="StatisticalMeasureType" minOccurs="0" maxOccurs="unbounded"/>
 				</xs:sequence>
 				<xs:attribute name="min" type="xs:double">
 					<xs:annotation>
