@@ -48,8 +48,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
+import javax.swing.ToolTipManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
@@ -62,6 +62,7 @@ import project.efg.Imports.factory.EFGWebAppsDirectoryFactory;
 import project.efg.util.DnDFileBrowserMain;
 import project.efg.util.EFGImportConstants;
 
+import com.Ostermiller.util.Browser;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 
@@ -94,16 +95,17 @@ public class ImportMenu extends JFrame {
 	static {
 		try {
 			log = Logger.getLogger(ImportMenu.class);
+			Browser.init();
 		} catch (Exception ee) {
 		}
 	}
 
 	public ImportMenu(String title) {
-		this("Import Menu", null);
+		this(EFGImportConstants.IMPORT_TITLE, null);
 	}
 
 	public ImportMenu() {
-		this("Import Menu", null);
+		this(EFGImportConstants.IMPORT_TITLE, null);
 	}
 
 	public ImportMenu(String title, String catalina_home) {
@@ -144,7 +146,7 @@ public class ImportMenu extends JFrame {
 		}
 	
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(650, 450);
+		//this.setSize(650, 450);
 		this.setContentPane(this.addPanel());
 		this.setResizable(false);
 		this.setVisible(true);
@@ -170,7 +172,7 @@ public class ImportMenu extends JFrame {
       log.error("Attempted to read a bad URL: " + url);
   }
 }
-	private JSplitPane addPanel() {
+	private JPanel addPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 1));
 
@@ -188,11 +190,15 @@ public class ImportMenu extends JFrame {
 				this.dbObject, this));
 
 		JLabel deployImagesLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn"));
-		deployImagesLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn.tooltip"));
+		deployImagesLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn.tooltipText"));
 		deployImagesLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		deployImagesLabel.addMouseListener(new DeployImagesListener(
 				webappsDirectory.getImagesDirectory(), this));
 
+		JLabel helpLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn"));
+		helpLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn.tooltip"));
+		helpLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		helpLabel.addMouseListener(new HelpEFGListener());
 	
 		JLabel aboutLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn"));
 		aboutLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn.tooltip"));
@@ -208,7 +214,7 @@ public class ImportMenu extends JFrame {
 		
 		panel.add(addNewDatasourceLabel);
 		panel.add(deployImagesLabel);
-		
+		panel.add(helpLabel);
 		panel.add(aboutLabel);
 		panel.add(exitLabel);
 		panel.setSize(270,200);
@@ -217,18 +223,20 @@ public class ImportMenu extends JFrame {
 		btnPane.setAutoscrolls(false);
 		btnPane.setToolTipText("Drag and drop key here");
 		htmlPane = new JEditorPane();
+		ToolTipManager.sharedInstance().registerComponent(htmlPane);
+		htmlPane.setContentType("text/html");
 		htmlPane.setEditable(false);
 		
 		initHelp();
 			
-		JScrollPane htmlViewPane = new JScrollPane(htmlPane);
+		//JScrollPane htmlViewPane = new JScrollPane(htmlPane);
 	
-		JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-						     btnPane, htmlViewPane);
+		//JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+			//			     btnPane, htmlViewPane);
 			
 		
-		mainPane.setDividerLocation(250);
-		return mainPane;
+		//mainPane.setDividerLocation(250);
+		return panel;
 		
 	}
 
@@ -374,12 +382,40 @@ public class ImportMenu extends JFrame {
     		about.show();		
 		}
     }
+    class HelpEFGListener  extends RolloverListener{
+    	
+
+    	public HelpEFGListener() {
+    		
+    	}
+
     
+    	 public void mouseClicked(MouseEvent e) {
+			 this.handleInput();
+	         
+	        }
+
+		/**
+		 * 
+		 */
+		private void handleInput() {
+			try {
+				URL helpURL = this.getClass().getResource(EFGImportConstants.MAIN_DEPLOY_HELP);
+			        if (helpURL == null) {
+			            log.error("Couldn't open help file: " + EFGImportConstants.MAIN_DEPLOY_HELP);
+			            return;
+			        } 
+			        Browser.displayURL(helpURL.getFile(), "target");
+			} catch (Exception ee) {
+				log.error(ee.getMessage());
+			}
+		}
+    }
 	public static void main(String[] args) {
 	String catHome = "C:\\Program Files\\Apache Software Foundation\\Tomcat 5.0";
 	LoggerUtils utils = new LoggerUtils();
 	utils.toString();
-	ImportMenu menu = new ImportMenu("Import Menu",catHome,
+	ImportMenu menu = new ImportMenu(EFGImportConstants.IMPORT_TITLE,catHome,
 				null);
 		menu.show();
 	}

@@ -106,7 +106,7 @@ public class RemoveSelectedNode extends DataManipulatorInterface {
 		
 			
 			int result = JOptionPane.showConfirmDialog(null,
-					"Do you really want to delete the data source: " + ds.getDisplayName() + "?", "Delete Data source?",
+					"Do you really want to delete the data source:\n " + ds.getDisplayName() + "?", "Delete Data source?",
 					JOptionPane.YES_NO_OPTION);
 			if (result != JOptionPane.YES_OPTION) {
 				return false;

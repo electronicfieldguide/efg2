@@ -112,8 +112,9 @@ public class EFGTableModel extends AbstractTableModel {
 	public boolean isCellEditable(int row, int col) {
 		String colName = this.columnNames[col];
 
-		if ((colName.equalsIgnoreCase(EFGImportConstants.NAME))
-				|| (colName.equalsIgnoreCase(EFGImportConstants.LEGALNAME))) {
+		if ((colName.equalsIgnoreCase(EFGImportConstants.NAME_DISPLAY))
+				|| (colName.equalsIgnoreCase(EFGImportConstants.LEGALNAME_DISPLAY)) || 
+				(colName.equalsIgnoreCase(EFGImportConstants.ORDER_DISPLAY))) {
 			return false;
 		}
 		return true;

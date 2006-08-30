@@ -198,14 +198,7 @@ public class FileTreeBrowser implements DropTargetListener,
 							
 							if(dropSucceeded){
 								restoreTreeSelection();
-								dtde.dropComplete(dropSucceeded);
-								DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-								model.reload();
-								
-								
-								//CreateThumbNailsThread thumbsthread =
-								//new CreateThumbNailsThread(this.importedFiles,this.progressBar);
-								//thumbsthread.start();	
+					
 							}
 						
 						} catch (Exception e) {
@@ -218,8 +211,8 @@ public class FileTreeBrowser implements DropTargetListener,
 							// Restore the user's selections
 							restoreTreeSelection();
 							dtde.dropComplete(dropSucceeded);
-							DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
-							model.reload();
+							//DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
+							//model.reload();
 							
 						}
 					} else {
@@ -438,7 +431,7 @@ public class FileTreeBrowser implements DropTargetListener,
 				newFile.createNewFile();
 							} catch (IOException e) {
 				log.error(e.getMessage());
-				JOptionPane.showMessageDialog(tree,
+				JOptionPane.showMessageDialog(null,
 						"Failed to create new file\n  "
 						+ newFile.getAbsolutePath(),
 						"File Creation Failed", JOptionPane.ERROR_MESSAGE);
@@ -463,7 +456,7 @@ public class FileTreeBrowser implements DropTargetListener,
 
 		} catch (IOException e) {
 		    log.error(e.getMessage());
-		    JOptionPane.showMessageDialog(tree, 
+		    JOptionPane.showMessageDialog(null, 
 						  "Failed to copy file\n  " +
 						  name + "\nto directory\n  " +
 						  targetDirectory.getAbsolutePath(),
@@ -524,7 +517,7 @@ public class FileTreeBrowser implements DropTargetListener,
 			// Directory does not exist - create it
 			if (newDir.mkdir() == false) {
 				// Failed to create - abandon this directory
-				JOptionPane.showMessageDialog(tree,
+				JOptionPane.showMessageDialog(null,
 						"Failed to create target directory\n  "
 						+ newDir.getAbsolutePath(),
 						"Directory creation Failed", JOptionPane.ERROR_MESSAGE);

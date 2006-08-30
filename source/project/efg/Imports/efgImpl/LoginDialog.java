@@ -229,7 +229,7 @@ public class LoginDialog extends JDialog {
 					
 					DBObject dbObject = new DBObject(url, dlg.getLoginName(),
 							dlg.getPassword());
-					menu = new ImportMenu("Import Menu", catalina_home,
+					menu = new ImportMenu(EFGImportConstants.IMPORT_TITLE, catalina_home,
 							dbObject);
 					menu.show();
 				}
