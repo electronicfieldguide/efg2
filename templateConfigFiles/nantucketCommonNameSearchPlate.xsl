@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1" xmlns:xalan="http://xml.apache.org/xalan" xmlns:sorter="project.efg.util.SortedStringArray" extension-element-prefixes="sorter" exclude-result-prefixes="sorter">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1" xmlns:xalan="http://xml.apache.org/xalan" xmlns:sorter="project.efg.util.SortedStringArray" xmlns:displayList="project.efg.util.EFGPageDisplayList" extension-element-prefixes="sorter displayList" exclude-result-prefixes="sorter displayList">
 	<xalan:component prefix="sorter" functions="sort addName  getName  getArraySize">
 		<xalan:script lang="javaclass" src="xalan://project.efg.util.SortedStringArray"/>
+	</xalan:component>
+	<xalan:component prefix="displayList" functions="sort addDisplay  getItemName getImageCaption getImageName getSize getUniqueID">
+		<xalan:script lang="javaclass" src="xalan://project.efg.util.EFGPageDisplayList"/>
 	</xalan:component>
 	<xsl:include href="commonTaxonPageTemplate.xsl"/>
 	<xsl:include href="commonFunctionTemplate.xsl"/>
@@ -23,7 +26,18 @@
 	<xsl:variable name="mediaResourceField" select="$xslPage/groups/group[@label='images']/characterValue[1]/@value"/>
 	<xsl:variable name="caption1" select="$xslPage/groups/group[@label='captions']/characterValue[1]/@value"/>
 	<xsl:variable name="caption2" select="$xslPage/groups/group[@label='captions']/characterValue[2]/@value"/>
+	<xsl:variable name="item">
+		<xsl:choose>
+			<xsl:when test="not(string($caption1))=''">
+				<xsl:value-of select="$caption1"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$caption2"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 	<xsl:variable name="images-per-row" select="3"/>
+	<xsl:variable name="myDisplayList" select="displayList:new()"/>
 	<xsl:template match="/">
 		<xsl:variable name="dsname" select="$dataSourceName"/>
 		<xsl:variable name="total_count" select="count(//TaxonEntry)"/>
@@ -38,21 +52,18 @@
 						<xsl:value-of select="$total_count"/>
 					</span> results: </div>
 				<table class="resultsdisplay">
-					<xsl:variable name="taxonEntries" select="//TaxonEntry"/>
-					<xsl:call-template name="populateMap">
-						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-						<xsl:with-param name="mySorter" select="$mySorter"/>
-						<xsl:with-param name="caption1" select="$caption1"/>
-						<xsl:with-param name="caption2" select="$caption2"/>
-					</xsl:call-template>
+				
+					<xsl:apply-templates select="//TaxonEntry">
+						<xsl:sort data-type="text" order="ascending" select="Items[@name=$item]/Item[1]"/>
+						<xsl:sort data-type="text" order="ascending" select="Items[@name=$caption2]/Item[1]"/>
+					</xsl:apply-templates>
+					<xsl:variable name="sortDisplayList" select="displayList:sort($myDisplayList)"/>
 					<!-- Sort the list -->
-					<xsl:variable name="sortList" select="sorter:sort($mySorter)"/>
-					<xsl:variable name="maxCount" select="sorter:getArraySize($mySorter)"/>
+					<xsl:variable name="maxCount" select="displayList:getSize($myDisplayList)"/>
 					<xsl:variable name="index" select="0"/>
 					<xsl:if test="$index &lt; $maxCount">
 						<xsl:call-template name="iterateOverSortedArray">
-							<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-							<xsl:with-param name="mySorter" select="$mySorter"/>
+							<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 							<xsl:with-param name="index" select="$index"/>
 							<xsl:with-param name="total_count" select="$maxCount"/>
 						</xsl:call-template>
@@ -61,52 +72,68 @@
 			</body>
 		</html>
 	</xsl:template>
+	<xsl:template match="TaxonEntry">
+		<xsl:variable name="imageName" select="MediaResources[@name=$mediaResourceField]/MediaResource[1]"/>
+		<xsl:variable name="imageCaption" select="MediaResources[@name=$mediaResourceField]/MediaResource[1]/@caption"/>
+		<xsl:variable name="uniqueID" select="@recordID"/>
+		<xsl:variable name="cap1" select="Items[@name=$caption1]/Item[1]"/>
+		<xsl:variable name="cap2" select="Items[@name=$caption2]/Item[1]"/>
+		<xsl:variable name="itemName">
+			<xsl:call-template name="outputCaption">
+				<xsl:with-param name="cap1" select="$cap1"/>
+				<xsl:with-param name="cap2" select="$cap2"/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:if test="not(string($itemName))=''">
+		<xsl:call-template name="populateDisplayList">
+			<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
+			<xsl:with-param name="uniqueID" select="$uniqueID"/>
+			<xsl:with-param name="itemName" select="string($itemName)"/>
+			<xsl:with-param name="imageName" select="string($imageName)"/>
+			<xsl:with-param name="imageCaption" select="string($imageCaption)"/>
+		</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
 	<xsl:template name="iterateOverSortedArray">
-		<xsl:param name="taxonEntries"/>
-		<xsl:param name="mySorter"/>
+		<xsl:param name="myDisplayList"/>
 		<xsl:param name="index"/>
 		<xsl:param name="total_count"/>
 		<xsl:if test="$index mod $images-per-row = 0">
+		<!--
 			<tr>
 				<xsl:call-template name="display-images">
 					<xsl:with-param name="index" select="$index"/>
-					<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-					<xsl:with-param name="mySorter" select="$mySorter"/>
+					<xsl:with-param name="myDisplayLis" select="$myDisplayList"/>
 				</xsl:call-template>
 				<xsl:if test="not($index + 1= $total_count)">
 					<xsl:call-template name="display-images">
 						<xsl:with-param name="index" select="$index + 1"/>
-						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-						<xsl:with-param name="mySorter" select="$mySorter"/>
+						<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 					</xsl:call-template>
 				</xsl:if>
 				<xsl:if test="not($index + 2 = $total_count)">
 					<xsl:call-template name="display-images">
 						<xsl:with-param name="index" select="$index + 2"/>
-						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-						<xsl:with-param name="mySorter" select="$mySorter"/>
+						<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 					</xsl:call-template>
 				</xsl:if>
 			</tr>
-			
+-->
 			<tr>
 				<xsl:call-template name="display-captions">
 					<xsl:with-param name="index" select="$index"/>
-					<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-					<xsl:with-param name="mySorter" select="$mySorter"/>
+					<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 				</xsl:call-template>
 				<xsl:if test="not($index + 1 = $total_count)">
 					<xsl:call-template name="display-captions">
 						<xsl:with-param name="index" select="$index + 1"/>
-						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-						<xsl:with-param name="mySorter" select="$mySorter"/>
+						<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 					</xsl:call-template>
 				</xsl:if>
 				<xsl:if test="not($index + 2 = $total_count)">
 					<xsl:call-template name="display-captions">
 						<xsl:with-param name="index" select="$index + 2"/>
-						<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-						<xsl:with-param name="mySorter" select="$mySorter"/>
+						<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 					</xsl:call-template>
 				</xsl:if>
 			</tr>
@@ -117,8 +144,7 @@
 		<xsl:variable name="index2" select="number($index) + 3"/>
 		<xsl:if test="number($index2) &lt; number($total_count) ">
 			<xsl:call-template name="iterateOverSortedArray">
-				<xsl:with-param name="taxonEntries" select="$taxonEntries"/>
-				<xsl:with-param name="mySorter" select="$mySorter"/>
+				<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 				<xsl:with-param name="index" select="$index2"/>
 				<xsl:with-param name="total_count" select="$total_count"/>
 			</xsl:call-template>
@@ -131,132 +157,72 @@
 	</xsl:template>
 	<xsl:template name="display-captions">
 		<xsl:param name="index"/>
-		<xsl:param name="taxonEntries"/>
-		<xsl:param name="mySorter"/>
-		<xsl:variable name="pos" select="number($index)"/>
-		<xsl:variable name="currentname" select="sorter:getName($mySorter, string(number($pos)))"/>
-		<xsl:if test="not(string($currentname))=''">
-
-	
-		<xsl:for-each select="$taxonEntries">
-			<xsl:variable name="cap1">
-				<xsl:value-of select="Items[@name=$caption1]/Item[1]"/>
-			</xsl:variable>
-			<xsl:variable name="cap2">
-				<xsl:value-of select="Items[@name=$caption2]/Item[1]"/>
-			</xsl:variable>
-			<xsl:variable name="caption">
-				<xsl:call-template name="outputCaption">
-					<xsl:with-param name="cap1" select="$cap1"/>
-					<xsl:with-param name="cap2" select="$cap2"/>
-				</xsl:call-template>
-			</xsl:variable>
-			<xsl:if test="string($caption)=string($currentname)">
-				<xsl:variable name="uniqueID">
-					<xsl:value-of select="@recordID"/>
-				</xsl:variable>
-				<xsl:variable name="linkURL">
-					<xsl:choose>
-						<xsl:when test="$datasource=''">
-							<xsl:value-of select="concat($hrefCommon,$uniqueID)"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="concat($hrefCommon,$uniqueID,'&amp;displayName=', $datasource)"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<td class="caption">
-					<a class="caption" href="{$linkURL}">
-						<xsl:value-of select="$currentname"/>
-					</a>
-				</td>
-			</xsl:if>
-		</xsl:for-each>
-			</xsl:if>
+		<xsl:param name="myDisplayList"/>
+		<xsl:variable name="uniqueID" select="displayList:getUniqueID($myDisplayList,string($index))"/>
+		<xsl:variable name="itemname" select="displayList:getItemName($myDisplayList, string($index))"/>
+		<xsl:variable name="linkURL">
+			<xsl:choose>
+				<xsl:when test="$datasource=''">
+					<xsl:value-of select="concat($hrefCommon,$uniqueID)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat($hrefCommon,$uniqueID,'&amp;displayName=', $datasource)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<td class="caption">
+			<a class="caption" href="{$linkURL}">
+				<xsl:value-of select="$itemname"/>
+			</a>
+		</td>
 		<!-- Fields are aggregated and that needs to be solved also output a generic page if transformation fails-->
 	</xsl:template>
 	<xsl:template name="display-images">
 		<xsl:param name="index"/>
-		<xsl:param name="taxonEntries"/>
-		<xsl:param name="mySorter"/>
-		<xsl:param name="dsname"/>
+		<xsl:param name="myDisplayList"/>
 		<xsl:variable name="pos" select="number($index)"/>
-		<xsl:variable name="currentname" select="sorter:getName($mySorter, string(number($pos)))"/>
-		<xsl:for-each select="$taxonEntries">
-		<!-- -->
-			<xsl:variable name="cap1">
-				<xsl:value-of select="Items[@name=$caption1]/Item[1]"/>
-			</xsl:variable>
-			<xsl:variable name="cap2">
-				<xsl:value-of select="Items[@name=$caption2]/Item[1]"/>
-			</xsl:variable>
-			<xsl:variable name="caption">
-				<xsl:call-template name="outputCaption">
-					<xsl:with-param name="cap1" select="$cap1"/>
-					<xsl:with-param name="cap2" select="$cap2"/>
-				</xsl:call-template>
-			</xsl:variable>
-<xsl:if test="not(string($currentname))=''">
-<xsl:if test="not(string($caption))=''">
-			<xsl:if test="string($caption)=string($currentname)">
-				<xsl:variable name="uniqueID">
-					<xsl:value-of select="@recordID"/>
-				</xsl:variable>
-				<xsl:variable name="imageName">
-					<xsl:if test="not($mediaResourceField)=''">
-						<xsl:if test="count(MediaResources) &gt; 0">
-							<xsl:choose>
-								<xsl:when test="string(MediaResources[@name=$mediaResourceField])=''">
-									<xsl:value-of select="MediaResources[@databaseName=$mediaResourceField]/MediaResource[1]"/>
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="MediaResources[@name=$mediaResourceField]/MediaResource[1]"/>
-								</xsl:otherwise>
-							</xsl:choose>
+		<xsl:variable name="uniqueID" select="displayList:getUniqueID($myDisplayList, $pos)"/>
+		<xsl:variable name="imagename" select="displayList:getImageName($myDisplayList, $pos)"/>
+		<xsl:variable name="imagecaption" select="displayList:getImageCaption($myDisplayList,$pos)"/>
+		<xsl:variable name="altImage">
+			<xsl:choose>
+				<xsl:when test="not(string($imagecaption))=''">
+					<xsl:value-of select="$imagecaption"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$imagename"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="linkURL">
+			<xsl:choose>
+				<xsl:when test="$datasource=''">
+					<xsl:value-of select="concat($hrefCommon,$uniqueID)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="concat($hrefCommon,$uniqueID,'&amp;displayName=', $datasource)"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<td class="thumbnail">
+			<a class="thumbnail" href="{$linkURL}">
+				<xsl:choose>
+					<xsl:when test="not(string($imagename))=''">
+						<xsl:variable name="imageURL">
+							<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imagename)"/>
+						</xsl:variable>
+						<img src="{$imageURL}"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:if test="not(string($altImage))=''">
+							<xsl:variable name="imageURL">
+								<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $altImage)"/>
+							</xsl:variable>
+							<img src="{$imageURL}"/>
 						</xsl:if>
-					</xsl:if>
-				</xsl:variable>
-				<xsl:variable name="altImage">
-					<xsl:if test="MediaResources">
-						<xsl:value-of select="MediaResources[1]/MediaResource[1]"/>
-					</xsl:if>
-				</xsl:variable>
-				<xsl:variable name="linkURL">
-					<xsl:choose>
-						<xsl:when test="$datasource=''">
-							<xsl:value-of select="concat($hrefCommon,$uniqueID)"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="concat($hrefCommon,$uniqueID,'&amp;displayName=', $datasource)"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:variable>
-				<td class="thumbnail">
-					<a class="thumbnail" href="{$linkURL}">
-						<xsl:choose>
-							<xsl:when test="string($imageName)=''">
-								<xsl:if test="not(string($altImage))=''">
-									<xsl:variable name="imageURL">
-										<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $altImage)"/>
-									</xsl:variable>
-									<img src="{$imageURL}"/>
-								</xsl:if>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:if test="not(string($imageName))=''">
-									<xsl:variable name="imageURL">
-										<xsl:value-of select="concat($serverbase, '/', $imagebase_thumbs, '/', $imageName)"/>
-									</xsl:variable>
-									<img src="{$imageURL}"/>
-								</xsl:if>
-							</xsl:otherwise>
-						</xsl:choose>
-					</a>
-		
-				</td>
-			</xsl:if>
-				</xsl:if>
-			</xsl:if>
-		</xsl:for-each>
+					</xsl:otherwise>
+				</xsl:choose>
+			</a>
+		</td>
 	</xsl:template>
 </xsl:stylesheet>

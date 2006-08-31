@@ -124,6 +124,7 @@ public class EFGParseStates {
 		//log.debug("Fields: " + fields);
 		String state = fields.trim();
 		
+		
 		String[] curStatePipe =EFGImportConstants.pipePattern.split(state);
 		String resourceLink = "";
 		String annotation = "";

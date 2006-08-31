@@ -86,23 +86,32 @@ public interface EFGImportConstants {
 
 	//used for server name construction
 	String COLONSEP = ":";
+	String ESCAPECOLONSEP = "\\\\:";
 
 	String SEMICOLON = ";";
 
 	String PIPESEP = "\\|";
+	String ESCAPEPIPESEP = "\\\\\\|";
+	
 	String PIPESEP_PARSE="|";
 	String DASHSEP = "-";
-
+	String DASHSEPREG = "\\-";
+	String ESCAPEDASHSEPREG = "\\\\\\-";
 	String LEFTPARENSEP = "\\(";
+	String ESCAPELEFTPARENSEP = "\\\\\\(";
 	String LEFTPAREN="(";
 	String RIGHTPAREN=")";
 	String matchNumberStr = "\\d+$";
 	String RIGHTPARENSEP = "\\)";
+	String ESCAPERIGHTPARENSEP = "\\\\\\)";
 	String[] STR_2_REMOVE = {"\\(","\\)"};
 	String CARAT_SEPARATOR="\\^";
+	String ESCAPECARAT_SEPARATOR="\\\\\\^";
 	String ORPATTERN = "\\sor\\s";
 	String ORCOMMAPATTERN="([,]|([ ]+(or)[ ]))";
+	String ESCAPEORCOMMAPATTERN="\\\\([,]|([ ]+(or)[ ]))";
     String LISTSEP="#";
+    String ESCAPELISTSEP="\\\\#";
 	String COLON_SEPARATOR = COLONSEP;
 	String NOPATTERN ="----#----";
 	String matchNumbeAtEnd = "^\\d+$|^-\\d+$";
@@ -119,7 +128,7 @@ public interface EFGImportConstants {
 			Pattern.CASE_INSENSITIVE);
 	Pattern leftParenPattern = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
 			Pattern.CASE_INSENSITIVE);
-	Pattern dashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEP, 
+	Pattern dashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEPREG, 
 			Pattern.CASE_INSENSITIVE);
 	Pattern pipePattern = Pattern.compile(EFGImportConstants.PIPESEP, Pattern.CASE_INSENSITIVE);
 	Pattern catPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, Pattern.CASE_INSENSITIVE);
@@ -130,24 +139,24 @@ public interface EFGImportConstants {
 	
 
 	//ESCAPE PATTERNS
-	Pattern escapecolonPattern = Pattern.compile(COLON_SEPARATOR);
-	Pattern escapepipePattern = Pattern.compile(EFGImportConstants.PIPESEP,
+	Pattern escapecolonPattern = Pattern.compile(ESCAPECOLONSEP);
+	Pattern escapepipePattern = Pattern.compile(EFGImportConstants.ESCAPEPIPESEP,
 			Pattern.CASE_INSENSITIVE);
-	Pattern escapecatPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, 
+	Pattern escapecatPattern = Pattern.compile(EFGImportConstants.ESCAPEORCOMMAPATTERN, 
 			Pattern.CASE_INSENSITIVE);
 	Pattern escapecommaPattern = Pattern.compile(EFGImportConstants.COMMASEP, 
 			Pattern.CASE_INSENSITIVE);
 	Pattern escapenoPattern = Pattern.compile(EFGImportConstants.NOPATTERN, 
 			Pattern.CASE_INSENSITIVE);
-	Pattern escapelistSepPattern = Pattern.compile(EFGImportConstants.LISTSEP, 
+	Pattern escapelistSepPattern = Pattern.compile(EFGImportConstants.ESCAPELISTSEP, 
 			Pattern.CASE_INSENSITIVE);
-	Pattern escapedashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEP, 
+	Pattern escapedashParenPattern =  Pattern.compile(EFGImportConstants.ESCAPEDASHSEPREG, 
 			Pattern.CASE_INSENSITIVE);
-	Pattern escapeleftParenPattern = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
+	Pattern escapeleftParenPattern = Pattern.compile(EFGImportConstants.ESCAPELEFTPARENSEP, 
 			Pattern.CASE_INSENSITIVE);
-	Pattern escaperightParenPattern = Pattern.compile(EFGImportConstants.RIGHTPARENSEP, 
+	Pattern escaperightParenPattern = Pattern.compile(EFGImportConstants.ESCAPERIGHTPARENSEP, 
 			Pattern.CASE_INSENSITIVE);
-	Pattern escapecaratPattern = Pattern.compile(CARAT_SEPARATOR);
+	Pattern escapecaratPattern = Pattern.compile(ESCAPECARAT_SEPARATOR);
 	
 	
 	

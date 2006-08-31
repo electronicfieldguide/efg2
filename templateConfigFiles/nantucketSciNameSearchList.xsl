@@ -18,6 +18,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+			<xsl:if test="not(string($rightColumn))='' or not(string($fieldValue1))=''">
 		<tr>
 			<xsl:call-template name="outputCol">
 				<xsl:with-param name="uniqueID" select="$uniqueID"/>
@@ -32,6 +33,7 @@
 				<xsl:with-param name="aClassname" select="'commonname2nd'"/>
 			</xsl:call-template>
 		</tr>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template name="outputFirstTableData">
 		<xsl:param name="header1"/>
