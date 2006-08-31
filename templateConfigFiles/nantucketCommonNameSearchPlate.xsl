@@ -99,11 +99,11 @@
 		<xsl:param name="index"/>
 		<xsl:param name="total_count"/>
 		<xsl:if test="$index mod $images-per-row = 0">
-		<!--
+		<!---->
 			<tr>
 				<xsl:call-template name="display-images">
 					<xsl:with-param name="index" select="$index"/>
-					<xsl:with-param name="myDisplayLis" select="$myDisplayList"/>
+					<xsl:with-param name="myDisplayList" select="$myDisplayList"/>
 				</xsl:call-template>
 				<xsl:if test="not($index + 1= $total_count)">
 					<xsl:call-template name="display-images">
@@ -118,7 +118,7 @@
 					</xsl:call-template>
 				</xsl:if>
 			</tr>
--->
+
 			<tr>
 				<xsl:call-template name="display-captions">
 					<xsl:with-param name="index" select="$index"/>
@@ -180,10 +180,9 @@
 	<xsl:template name="display-images">
 		<xsl:param name="index"/>
 		<xsl:param name="myDisplayList"/>
-		<xsl:variable name="pos" select="number($index)"/>
-		<xsl:variable name="uniqueID" select="displayList:getUniqueID($myDisplayList, $pos)"/>
-		<xsl:variable name="imagename" select="displayList:getImageName($myDisplayList, $pos)"/>
-		<xsl:variable name="imagecaption" select="displayList:getImageCaption($myDisplayList,$pos)"/>
+		<xsl:variable name="uniqueID" select="displayList:getUniqueID($myDisplayList, string($index))"/>
+		<xsl:variable name="imagename" select="displayList:getImageName($myDisplayList, string($index))"/>
+		<xsl:variable name="imagecaption" select="displayList:getImageCaption($myDisplayList,string($index))"/>
 		<xsl:variable name="altImage">
 			<xsl:choose>
 				<xsl:when test="not(string($imagecaption))=''">
