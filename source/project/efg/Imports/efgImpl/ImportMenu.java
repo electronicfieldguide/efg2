@@ -30,6 +30,7 @@ package project.efg.Imports.efgImpl;
  * A temporary object used in some of the stack operations Should be extended to
  * implement equals and hashcode if it is used as part of a Collection.
  */
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -42,14 +43,13 @@ import java.io.File;
 import java.net.URL;
 import java.util.Hashtable;
 
-import javax.swing.JEditorPane;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.ToolTipManager;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 
@@ -87,10 +87,9 @@ public class ImportMenu extends JFrame {
 	final public static Hashtable imageCacheTable = new Hashtable();
 	private static GeneralCacheAdministrator cacheAdmin;
 		
-	private JEditorPane htmlPane;
-	private URL helpURL;
+	
 	private DBObject dbObject;
-
+  
 	static Logger log = null;
 	static {
 		try {
@@ -117,9 +116,7 @@ public class ImportMenu extends JFrame {
 			cacheAdmin = new GeneralCacheAdministrator();
 			cacheAdmin.setAlgorithmClass("com.opensymphony.oscache.base.algorithm.LRUCache");
 			cacheAdmin.setCacheCapacity(1000);
-			
 		}
-		
 		return cacheAdmin;
 	}
 	public ImportMenu(String title, String catalina_home, DBObject dbObject) {
@@ -127,7 +124,8 @@ public class ImportMenu extends JFrame {
 		this.catalina_home = catalina_home;
 		//set the catalina home 
 		EFGUtils.setCatalinaHome(this.catalina_home);
-		setSize(new Dimension(220, 150));
+		//setSize(new Dimension(220, 150));
+		setSize(new Dimension(400, 400));
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				close();
@@ -147,31 +145,77 @@ public class ImportMenu extends JFrame {
 	
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//this.setSize(650, 450);
-		this.setContentPane(this.addPanel());
+		//this.setContentPane(this.addPanel());
+		this.setContentPane(this.createContentPane());
 		this.setResizable(false);
 		this.setVisible(true);
 	
 	} // ImportMenu constructor
-	 private void initHelp() {
-			
-	        helpURL = this.getClass().getResource(EFGImportConstants.MAIN_DEPLOY_HELP);
-	        if (helpURL == null) {
-	            log.error("Couldn't open help file: " + EFGImportConstants.MAIN_DEPLOY_HELP);
-	            return;
-	        } 
-	        displayURL(helpURL);
-	    }
-	private void displayURL(URL url) {
-  try {
-      if (url != null) {
-          htmlPane.setPage(url);
-      } else { //null url
-      	htmlPane.setText("File Not Found");
-      }
-  } catch (Exception e) {
-      log.error("Attempted to read a bad URL: " + url);
-  }
-}
+	
+    private JPanel createContentPane() {
+    	JPanel content = new JPanel(new BorderLayout());
+    	JPanel top = new JPanel();
+    	JPanel bottom = new JPanel();
+    	JPanel left = new JPanel();
+    	JPanel right = new JPanel();
+    	JPanel selection = new JPanel(new GridLayout(0, 1, 0, 6));
+    	
+
+    	
+    	  JButton addNewDatasourceBtn = new JButton(
+    	    		EFGImportConstants.EFGProperties.getProperty(
+    				"ImportMenu.addNewDatasourceBtn"
+    		));
+    	addNewDatasourceBtn.setToolTipText(
+    			EFGImportConstants.EFGProperties.getProperty(
+    					"ImportMenu.addNewDatasourceBtn.tooltip"));
+    	addNewDatasourceBtn.addActionListener(new HandleDatasourceListener(
+				this.dbObject, this));
+
+
+    	JButton deployImagesBtn = new JButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn"));
+		deployImagesBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn.tooltipText"));
+		deployImagesBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		deployImagesBtn.addActionListener(new DeployImagesListener(
+				webappsDirectory.getImagesDirectory(), this));
+
+		JButton helpBtn = new JButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn"));
+		helpBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn.tooltip"));
+		helpBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		helpBtn.addActionListener(new HelpEFGListener());
+	
+		JButton aboutBtn = new JButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn"));
+		aboutBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn.tooltip"));
+		aboutBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		aboutBtn.addActionListener(new AboutEFGListener(this));
+
+		JButton exitBtn = new JButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.exitBtn"));
+		exitBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.exitBtn.tooltip"));
+		exitBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		exitBtn.addActionListener(new ExitListener(this));
+    	
+    	
+    	
+    	
+    	
+    	selection.add(addNewDatasourceBtn);
+    	selection.add(deployImagesBtn);
+    	selection.add(helpBtn);
+    	selection.add(aboutBtn);
+    	selection.add(exitBtn);
+
+    	content.setPreferredSize(new Dimension(300, 200));
+    	top.setPreferredSize(new Dimension(200, 30));
+    	bottom.setPreferredSize(new Dimension(200, 30));
+    	left.setPreferredSize(new Dimension(30, 200));
+    	right.setPreferredSize(new Dimension(30, 200));
+    	content.add(top, BorderLayout.NORTH);
+    	content.add(bottom, BorderLayout.SOUTH);
+    	content.add(left, BorderLayout.WEST);
+    	content.add(right, BorderLayout.EAST);
+    	content.add(selection, BorderLayout.CENTER);
+    	return content;
+        }
 	private JPanel addPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 1));
@@ -186,29 +230,29 @@ public class ImportMenu extends JFrame {
 				.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.addNewDatasourceBtn.tooltip"));
 		addNewDatasourceLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		addNewDatasourceLabel.addMouseListener(new HandleDatasourceListener(
-				this.dbObject, this));
+	//	addNewDatasourceLabel.addMouseListener(new HandleDatasourceListener(
+		//		this.dbObject, this));
 
 		JLabel deployImagesLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn"));
 		deployImagesLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn.tooltipText"));
 		deployImagesLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		deployImagesLabel.addMouseListener(new DeployImagesListener(
-				webappsDirectory.getImagesDirectory(), this));
+	//	deployImagesLabel.addMouseListener(new DeployImagesListener(
+		//		webappsDirectory.getImagesDirectory(), this));
 
 		JLabel helpLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn"));
 		helpLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn.tooltip"));
 		helpLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		helpLabel.addMouseListener(new HelpEFGListener());
+		//helpLabel.addMouseListener(new HelpEFGListener());
 	
 		JLabel aboutLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn"));
 		aboutLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.aboutBtn.tooltip"));
 		aboutLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		aboutLabel.addMouseListener(new AboutEFGListener(this));
+		//aboutLabel.addMouseListener(new AboutEFGListener(this));
 
 		JLabel exitLabel = new JLabel(EFGImportConstants.EFGProperties.getProperty("ImportMenu.exitBtn"));
 		exitLabel.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.exitBtn.tooltip"));
 		exitLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		exitLabel.addMouseListener(new ExitListener(this));
+		//exitLabel.addMouseListener(new ExitListener(this));
 		
 		
 		
@@ -222,22 +266,7 @@ public class ImportMenu extends JFrame {
 		JScrollPane btnPane = new JScrollPane(panel);
 		btnPane.setAutoscrolls(false);
 		btnPane.setToolTipText("Drag and drop key here");
-		htmlPane = new JEditorPane();
-		ToolTipManager.sharedInstance().registerComponent(htmlPane);
-		htmlPane.setContentType("text/html");
-		htmlPane.setEditable(false);
-		
-		initHelp();
-			
-		//JScrollPane htmlViewPane = new JScrollPane(htmlPane);
-	
-		//JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-			//			     btnPane, htmlViewPane);
-			
-		
-		//mainPane.setDividerLocation(250);
 		return panel;
-		
 	}
 
 	public void close() {
@@ -245,7 +274,7 @@ public class ImportMenu extends JFrame {
 		System.exit(0);
 	}
 
-	class DeployImagesListener extends RolloverListener implements ActionListener {
+	class DeployImagesListener implements ActionListener {
 		private String imagesDirectory;
 
 		private JFrame frame;
@@ -258,10 +287,7 @@ public class ImportMenu extends JFrame {
 		public void actionPerformed(ActionEvent evt) {
 			 this.handleInput();
 		}
-		 public void mouseClicked(MouseEvent e) {
-			 this.handleInput();
-	         
-	        }
+		
 
 		/**
 		 * 
@@ -284,7 +310,7 @@ public class ImportMenu extends JFrame {
 		}
 	}
 
-	class HandleDatasourceListener extends RolloverListener{
+	class HandleDatasourceListener implements ActionListener{
 		private DBObject dbObject;
 
 		private JFrame frame;
@@ -321,13 +347,18 @@ public class ImportMenu extends JFrame {
 			}
 		}
 		
-		 public void mouseClicked(MouseEvent e) {
+		
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
 			 this.handleInput();
-	        
-	        }
+			// TODO Auto-generated method stub
+			
+		}
 	}
 
-	class ExitListener extends RolloverListener {
+	class ExitListener implements ActionListener {
 		private ImportMenu iMenu;
 
 		public ExitListener(ImportMenu iMenu) {
@@ -336,7 +367,7 @@ public class ImportMenu extends JFrame {
 		
 	
 		 public void mouseClicked(MouseEvent e) {
-			 this.handleInput();
+			
 	         
 	        }
 		/**
@@ -345,6 +376,15 @@ public class ImportMenu extends JFrame {
 		private void handleInput() {
 			
 			this.iMenu.close();
+		}
+
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			 this.handleInput();
+			
 		}
 	}
 	 // Inner class to respond to mouse events for the "rollover" effect
@@ -361,18 +401,15 @@ public class ImportMenu extends JFrame {
 
        
     }
-    class AboutEFGListener  extends RolloverListener{
+
+    
+    class AboutEFGListener implements ActionListener{
     	private JFrame frame;
 
     	public AboutEFGListener(JFrame frame) {
     		this.frame = frame;
     	}
 
-    
-    	 public void mouseClicked(MouseEvent e) {
-			 this.handleInput();
-	         
-	        }
 
 		/**
 		 * 
@@ -381,19 +418,22 @@ public class ImportMenu extends JFrame {
 	   		AboutBox about = new AboutBox(this.frame);
     		about.show();		
 		}
+
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			this.handleInput();
+			
+		}
     }
-    class HelpEFGListener  extends RolloverListener{
+    class HelpEFGListener  implements ActionListener{
     	
 
     	public HelpEFGListener() {
     		
     	}
-
-    
-    	 public void mouseClicked(MouseEvent e) {
-			 this.handleInput();
-	         
-	        }
 
 		/**
 		 * 
@@ -409,6 +449,15 @@ public class ImportMenu extends JFrame {
 			} catch (Exception ee) {
 				log.error(ee.getMessage());
 			}
+		}
+
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			 this.handleInput();
+			
 		}
     }
 	public static void main(String[] args) {

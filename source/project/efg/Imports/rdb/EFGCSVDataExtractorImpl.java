@@ -242,27 +242,11 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 
 	private static void printLine(String[] labels) {
 
-		for (int j = 0; j < labels.length; j++) {
-			if (j > 0) {
-				System.out.print("\t");
-			}
-			System.out.print(labels[j]);
-		}
-		System.out.print("\n");
+		
 	}
 
 	private static void printUnderScoreLine(String[] labels) {
-		for (int j = 0; j < labels.length; j++) {
-
-			String print = labels[j];
-			if (j > 0) {
-				System.out.print("\t");
-			}
-			for (int i = 0; i < print.length(); i++) {
-				System.out.print("_");
-			}
-		}
-		System.out.print("\n\n");
+		
 	}
 
 	/**

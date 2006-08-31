@@ -249,8 +249,10 @@ public class SynopticKeyTreeMain extends JDialog {
 		doneBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("SynopticKeyTreeMain.doneBtn.tooltip"));
 		btnPanel.add(doneBtn);
+		
 		JScrollPane treePane = new JScrollPane(this.tree);
-		treePane.setColumnHeaderView(new JLabel("EFG2 Data Sources",
+		treePane.setColumnHeaderView(new JLabel(
+				EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.tableHeader"),
 				JLabel.CENTER));
 		htmlPane = new JEditorPane();
 		ToolTipManager.sharedInstance().registerComponent(htmlPane);

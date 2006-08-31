@@ -272,10 +272,10 @@ public class TemplateMapObjectHandler {
 			FileChannel channel = null;
 
 			// check date and reset then write to file
-			String message = "About to add key : " + key + " object: "
-					+ templateObject.toString();
+			//String message = "About to add key : " + key + " object: "
+				//	+ templateObject.toString();
 			// log.debug(message);
-			EFGUtils.log(message);
+			//EFGUtils.log(message);
 			// lock the file
 			
 			try {

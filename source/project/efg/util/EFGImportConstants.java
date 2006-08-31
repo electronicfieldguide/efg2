@@ -84,6 +84,7 @@ public interface EFGImportConstants {
 
 	String ORSEP = "OR";
 
+	//used for server name construction
 	String COLONSEP = ":";
 
 	String SEMICOLON = ";";
@@ -98,40 +99,60 @@ public interface EFGImportConstants {
 	String matchNumberStr = "\\d+$";
 	String RIGHTPARENSEP = "\\)";
 	String[] STR_2_REMOVE = {"\\(","\\)"};
-
+	String CARAT_SEPARATOR="\\^";
 	String ORPATTERN = "\\sor\\s";
 	String ORCOMMAPATTERN="([,]|([ ]+(or)[ ]))";
     String LISTSEP="#";
-	String COLON_SEPARATOR = ":";
+	String COLON_SEPARATOR = COLONSEP;
 	String NOPATTERN ="----#----";
 	String matchNumbeAtEnd = "^\\d+$|^-\\d+$";
+	String patternStr = "[A-Z]+";// remove everything that is an
+
+	//PATTERNS
 	Pattern matchNumberPattern = Pattern.compile(matchNumbeAtEnd);
 	Pattern matchNumberAtEndPattern = Pattern.compile(matchNumberStr);
 	Pattern spacePattern = Pattern.compile("\\s");
-	Pattern equalsPattern = Pattern.compile("=");
-	Pattern colonPattern = Pattern.compile(COLON_SEPARATOR);
+	Pattern equalsPattern = Pattern.compile("=");	
+	Pattern colonPattern = Pattern.compile(COLON_SEPARATOR);	
+	Pattern caratPattern = Pattern.compile(CARAT_SEPARATOR);
 	Pattern rightParenPattern = Pattern.compile(EFGImportConstants.RIGHTPARENSEP, 
 			Pattern.CASE_INSENSITIVE);
 	Pattern leftParenPattern = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
 			Pattern.CASE_INSENSITIVE);
 	Pattern dashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEP, 
 			Pattern.CASE_INSENSITIVE);
-	String patternStr = "[A-Z]+";// remove everything that is an
-	
-	Pattern alphaPattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
-	
 	Pattern pipePattern = Pattern.compile(EFGImportConstants.PIPESEP, Pattern.CASE_INSENSITIVE);
 	Pattern catPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, Pattern.CASE_INSENSITIVE);
 	Pattern commaPattern = Pattern.compile(EFGImportConstants.COMMASEP, Pattern.CASE_INSENSITIVE);
-
 	Pattern noPattern = Pattern.compile(EFGImportConstants.NOPATTERN, Pattern.CASE_INSENSITIVE);
 	Pattern listSepPattern = Pattern.compile(EFGImportConstants.LISTSEP, Pattern.CASE_INSENSITIVE);
+	Pattern alphaPattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
+	
 
+	//ESCAPE PATTERNS
+	Pattern escapecolonPattern = Pattern.compile(COLON_SEPARATOR);
+	Pattern escapepipePattern = Pattern.compile(EFGImportConstants.PIPESEP,
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapecatPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapecommaPattern = Pattern.compile(EFGImportConstants.COMMASEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapenoPattern = Pattern.compile(EFGImportConstants.NOPATTERN, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapelistSepPattern = Pattern.compile(EFGImportConstants.LISTSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapedashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapeleftParenPattern = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escaperightParenPattern = Pattern.compile(EFGImportConstants.RIGHTPARENSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapecaratPattern = Pattern.compile(CARAT_SEPARATOR);
+	
+	
+	
 	String CHARACTER_TEXT_LABEL = "ctl";
-
 	String CHARACTER_LABEL = "cl";
-	
-	
 	String XSL_SEARCH_GROUPS = "xslSearchAllGroups";
 	String SEARCH_GROUP = "searchPageGroups";
 	String IMAGES_MAX_DIM="imagemaxdim";
@@ -313,10 +334,6 @@ public interface EFGImportConstants {
 	String ORDER_DISPLAY = "Order";
 
 	String ORDERED = ORDER;
-
-	
-	
-	
 
 	String IMPORT_TITLE = "EFG2 Import Application";
 

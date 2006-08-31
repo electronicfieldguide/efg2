@@ -144,32 +144,74 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 		if(this.destNode != null){
 			
 			if(this.destNode.getParent() != null){
-				FileNode parent =(FileNode)this.destNode.getParent();
-			
-				((DefaultTreeModel)this.browser.getModel()).reload(parent);
-				int rowIndex = root.getIndex(parent);
-				this.browser.expandRow(rowIndex+1);
+				int rows[] = this.browser.getSelectionRows();
+				
+				((DefaultTreeModel)this.browser.getModel()).reload((FileNode)this.destNode.getParent());
+				
+				if(rows != null){
+					  this.browser.expandRow(rows[0]);
+				}
 			}
 			else{
 				((DefaultTreeModel)this.browser.getModel()).reload();//(root);
-			
 			}
 		}
 		else{
-			
 			if(root.getChildCount() > 0){
 				this.browser.expandRow(1);
-				
 			}
 			else{
 				this.browser.expandRow(0);
-				
 			}
 			((DefaultTreeModel)this.browser.getModel()).reload();
-		
 		}
 		this.browser.setVisible(true);
 		return this.destNode;
+	}
+	/**
+	 * Expands a given node in a JTree.
+	 *
+	 * @param tree      The JTree to expand.
+	 * @param model     The TreeModel for tree.     
+	 * @param node      The node within tree to expand.     
+	 * @param row       The displayed row in tree that represents
+	 *                  node.     
+	 * @param depth     The depth to which the tree should be expanded. 
+	 *                  Zero will just expand node, a negative
+	 *                  value will fully expand the tree, and a positive
+	 *                  value will recursively expand the tree to that
+	 *                  depth relative to node.
+	 */
+	public int expandJTreeNode (javax.swing.JTree tree,
+	                                   javax.swing.tree.TreeModel model,
+	                                   Object node, int row, int depth)
+	{
+		System.out.println("Row: " + row);
+		System.out.println("Depth: " + depth);
+	    if (node != null  &&  !model.isLeaf(node)) {
+	        tree.expandRow(row);
+	        if (depth != 0)
+	        {
+	            for (int index = 0;
+	                 row + 1 < tree.getRowCount()  &&  
+	                            index < model.getChildCount(node);
+	                 index++)
+	            {
+	                row++;
+	                Object child = model.getChild(node, index);
+	                if (child == null)
+	                    break;
+	                javax.swing.tree.TreePath path;
+	                while ((path = tree.getPathForRow(row)) != null  &&
+	                        path.getLastPathComponent() != child)
+	                    row++;
+	                if (path == null)
+	                    break;
+	                row = expandJTreeNode(tree, model, child, row, depth - 1);
+	            }
+	        }
+	    }
+	    return row;
 	}
 	private void generateThumbs(File srcFile, File destFile){
 		

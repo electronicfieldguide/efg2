@@ -29,8 +29,6 @@ package project.efg.servlets.efgServletsUtil;
 
 
 
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.regex.Pattern;
 
 import project.efg.servlets.efgInterface.OperatorInterface;
@@ -125,8 +123,8 @@ public class EFGParseStates {
 	private   EFGParseObject createEFGParseObject(String fields, boolean notRemoveParen){
 		//log.debug("Fields: " + fields);
 		String state = fields.trim();
-		//String[] curStatePipe = parse(state, EFGImportConstants.PIPESEP);
-		String[] curStatePipe =EFGImportConstants.pipePattern.split(state);// parse(state, EFGImportConstants.PIPESEP);
+		
+		String[] curStatePipe =EFGImportConstants.pipePattern.split(state);
 		String resourceLink = "";
 		String annotation = "";
 
@@ -134,8 +132,8 @@ public class EFGParseStates {
 			resourceLink = curStatePipe[0];
 			state = curStatePipe[1];
 		}
-		//String[] annotations = parse(state,EFGImportConstants.COLONSEP);
-		String[] annotations = EFGImportConstants.colonPattern.split(state);//,EFGImportConstants.COLONSEP);
+		
+		String[] annotations = EFGImportConstants.caratPattern.split(state);
 		if (annotations.length > 1) {
 			annotation = annotations[0];
 			state = annotations[1];

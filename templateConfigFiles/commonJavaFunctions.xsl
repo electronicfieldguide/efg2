@@ -44,7 +44,6 @@
 				</xsl:call-template>
 			</xsl:variable>
 			<xsl:if test="not(string($caption))=''">
-			
 				<xsl:variable name="new-pop" select="sorter:addName($mySorter, string($caption))"/>
 			</xsl:if>
 		</xsl:for-each>
@@ -75,7 +74,7 @@
 			<xsl:variable name="med">
 				<xsl:value-of select="."/>
 			</xsl:variable>
-			<xsl:if test="not(string($med))=''">
+			<xsl:if test="not(string($med))='' and not(string($caps))=''">
 				<xsl:variable name="new-pop" select="imageList:addImageDisplay($myImageList, string($med),string($caps))"/>
 			</xsl:if>
 		</xsl:for-each>

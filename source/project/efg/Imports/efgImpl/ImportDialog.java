@@ -98,7 +98,7 @@ public class ImportDialog extends JDialog {
 	
 	JFrame frame = null;
 	final ButtonGroup group = new ButtonGroup();
-	final int numButtons = 4;
+	final int numButtons = 3;
 	ChoiceCommandAbstract choiceCMD;
 	
 	public ImportDialog(JFrame frame) {
@@ -130,7 +130,7 @@ public class ImportDialog extends JDialog {
 
 		this.getContentPane().add(frequentPanel, BorderLayout.CENTER);
 		setLocationRelativeTo(frame);
-		setSize(500, 300);
+		setSize(350, 200);
 	}
 
 	/**
@@ -168,16 +168,16 @@ public class ImportDialog extends JDialog {
 		radioButtons[1]
 		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.1.tooltip"));
 
-		radioButtons[2] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2"));
+		//radioButtons[2] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2"));
+		//radioButtons[2]
+		  //           .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2.tooltip"));
+		//radioButtons[2].setActionCommand(updateCommand);
+		
+		
+		radioButtons[2] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.3"));
 		radioButtons[2]
-		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2.tooltip"));
-		radioButtons[2].setActionCommand(updateCommand);
-		
-		
-		radioButtons[3] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.3"));
-		radioButtons[3]
 		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.3.tooltip"));
-		radioButtons[3].setActionCommand(replaceCommand);
+		radioButtons[2].setActionCommand(replaceCommand);
 
 		for (int i = 0; i < numButtons; i++) {
 			group.add(radioButtons[i]);
