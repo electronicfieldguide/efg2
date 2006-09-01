@@ -40,11 +40,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.util.Hashtable;
 
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -56,6 +58,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -82,6 +85,11 @@ import project.efg.util.HelpEFG2ItemListener;
  *
  */
 public abstract class TableSorterMainInterface  extends JDialog{
+	/**
+	 * @author kasiedu
+	 *
+	 */
+
 	static final long serialVersionUID = 1;
 
 	static Logger log = null;
@@ -122,6 +130,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 	
 	private TableSorter sorter;
 	JCheckBox sortingCheck;
+	
 	private EFGDatasourceObjectInterface ds;
 	private DBObject dbObject;
 	private TableSorterObject sorterObject;
@@ -294,13 +303,31 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		doneBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("TableSorterMain.cancelbtn.tooltip"));
 	
-		this.sortingCheck = new JCheckBox("Sorting OFF");
+			String sortOn =EFGImportConstants.SORTING_ON;// "Sorting ON";
+		   JRadioButton onBtn = new JRadioButton(sortOn);
+		   onBtn.setMnemonic(KeyEvent.VK_O);
+		   onBtn.setActionCommand(sortOn);
+		   onBtn.setSelected(false);
+		   RadioButtonListener rbl = new RadioButtonListener(this.sorter);
+		   String sortOff =EFGImportConstants.SORTING_OFF;// "Sorting OFF";
+		    JRadioButton offBtn = new JRadioButton( sortOff);
+		    offBtn.setMnemonic(KeyEvent.VK_F);
+		    offBtn.setSelected(true);
+		    offBtn.setActionCommand(sortOff);
+		    offBtn.addActionListener(rbl);
+		    onBtn.addActionListener(rbl);
+		    ButtonGroup btnGroup = new ButtonGroup();
+		   btnGroup.add(onBtn);
+		   btnGroup.add(offBtn);
+		    
+		this.sortingCheck = new JCheckBox(EFGImportConstants.SORTING_OFF);
 		sortingCheck.setForeground(Color.BLUE);
 		sortingCheck.addItemListener(new CheckBoxListener(this.sorter));
 		pan.add(updateBtn);
 		pan.add(doneBtn);
-		pan.add(sortingCheck);
-	
+		//pan.add(sortingCheck);
+		pan.add(onBtn);
+		pan.add(offBtn);
 		panel.add(pan, BorderLayout.SOUTH);
 		this.tableWidth = tableD.width + 35;
 		this.tableHeight = tableD.height + 50;
@@ -441,6 +468,43 @@ public abstract class TableSorterMainInterface  extends JDialog{
 			this.sorterMain.sorter.setIsChanged(false);
 		}
 	}
+	class RadioButtonListener implements ActionListener {
+		private TableSorter sorter;
+		/**
+		 * 
+		 */
+		public RadioButtonListener(TableSorter sorter) {
+			this.sorter = sorter;
+		
+		}
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			String command = (String)e.getActionCommand(); 
+			if(command != null){
+				if(EFGImportConstants.SORTING_OFF.equalsIgnoreCase(command.trim())){
+					//sortingCheck.setText("Sorting OFF");
+			    	//sortingCheck.setForeground(Color.BLUE);
+			    	this.sorter.cancelSorting();
+			    	this.sorter.setSortingState(false);
+				}
+				else if(EFGImportConstants.SORTING_ON.equalsIgnoreCase(command.trim())){
+					//sortingCheck.setText("Sorting ON");
+			    //	sortingCheck.setForeground(Color.GREEN);
+			    	this.sorter.setSortingState(true);
+			    	this.sorter.synchronizeModelWithView();
+			    	  this.sorter.setSortingStatus(this.sorter.getLastSortingColumn(), 
+			    			  TableSorter.ASCENDING);
+				}
+				
+				
+			}
+			
+		}
+
+	}
+
 	class CheckBoxListener implements ItemListener  {
 	
 		private TableSorter sorter;

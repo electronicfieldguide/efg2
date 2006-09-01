@@ -487,4 +487,6 @@ public interface EFGImportConstants {
 	String SQL_KEYWORD_KEY="sqlkeywords";
 	Properties EFGProperties =project.efg.Imports.rdb.EFGRDBImportUtils.getProperties();
     Set SQL_KEY_WORDS = project.efg.Imports.rdb.EFGRDBImportUtils.getSQLKeyWords();
+	String SORTING_OFF = "Sorting OFF";
+	String SORTING_ON = "Sorting ON";
 }// EFGImportConstants
