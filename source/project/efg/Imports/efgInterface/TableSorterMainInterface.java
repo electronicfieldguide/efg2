@@ -41,9 +41,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 import java.util.Hashtable;
 
 import javax.swing.ButtonGroup;
@@ -51,7 +51,6 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -65,6 +64,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
@@ -95,9 +95,34 @@ public abstract class TableSorterMainInterface  extends JDialog{
 	static Logger log = null;
 	protected static Hashtable display2LegalMap;
 	protected static Hashtable legal2DisplayMap;
+	protected static Hashtable columnHeadersToolTips;
+	
 	static {
 		try {
+
 			log = Logger.getLogger(TableSorterMainInterface.class);
+			columnHeadersToolTips = new Hashtable();
+			columnHeadersToolTips.put(EFGImportConstants.NAME_DISPLAY,"");
+			columnHeadersToolTips.put(EFGImportConstants.MEDIARESOURCE_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.mediaresource.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.LEGALNAME_DISPLAY,"");
+			columnHeadersToolTips.put(EFGImportConstants.SEARCHABLE_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.searchable.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.ISLISTS_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.list.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.NUMERICRANGE_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.numericrange.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.NUMERIC_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.numericvalue.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.ONTAXONPAGE_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.taxonpage.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.CATEGORICAL_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.categorical.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.NARRATIVE_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.narrative.tooltip"));
+			columnHeadersToolTips.put(EFGImportConstants.ORDER_DISPLAY,
+					EFGImportConstants.EFGProperties.getProperty("TableSorterMain.order.tooltip"));
+			
 			display2LegalMap = new Hashtable();
 			display2LegalMap.put(EFGImportConstants.NAME_DISPLAY, EFGImportConstants.NAME);
 			display2LegalMap.put(EFGImportConstants.MEDIARESOURCE_DISPLAY,EFGImportConstants.MEDIARESOURCE);
@@ -134,11 +159,10 @@ public abstract class TableSorterMainInterface  extends JDialog{
 	private EFGDatasourceObjectInterface ds;
 	private DBObject dbObject;
 	private TableSorterObject sorterObject;
-	private URL helpURL;
-	private JEditorPane htmlPane;
+	
 	private int tableWidth = 0;
 	private int tableHeight = 0;
-
+	
 	//private JSplitPane spane;
 	public static DataFlavor listFlavor = new DataFlavor(
 			DataFlavor.javaJVMLocalObjectMimeType + ";class=java.util.List",
@@ -149,12 +173,17 @@ public abstract class TableSorterMainInterface  extends JDialog{
 	protected static TableDNDRecognizer dndRecognizer = new TableDNDRecognizer();
 
 	public static boolean isDragged;
+	
+	
 
 	public TableSorterMainInterface(DBObject dbObject, 
 			EFGDatasourceObjectInterface ds, 
 			JFrame frame) {
 		super(frame, ds.getDisplayName(), true);
+		ToolTipManager.sharedInstance().setInitialDelay(0);
+		ToolTipManager.sharedInstance().setDismissDelay(60000);
 		setLocationRelativeTo(frame);
+		
 		this.ds = ds;
 		this.dbObject = dbObject;
 		this.sorterObject = 
@@ -168,6 +197,8 @@ public abstract class TableSorterMainInterface  extends JDialog{
 			this.close();
 		}
 	}
+	
+
 	/* (non-Javadoc)
 	 * @see project.efg.Imports.efgImpl.TabelSorterMainInterface#getDBObject()
 	 */
@@ -218,26 +249,8 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		return this.sorterObject.getColumnNames();
 	}
 
-	private void displayURL(URL url) {
-	  try {
-	      if (url != null) {
-	          htmlPane.setPage(url);
-	      } else { //null url
-	      	htmlPane.setText("File Not Found");
-	      }
-	  } catch (Exception e) {
-	      log.error("Attempted to read a bad URL: " + url);
-	  }
-	}
-	private void initHelp() {
-		
-	    helpURL = this.getClass().getResource(EFGImportConstants.KEY_METADATA_HELP);
-	    if (helpURL == null) {
-	        log.error("Couldn't open help file: " + EFGImportConstants.KEY_METADATA_HELP);
-	        return;
-	    } 
-	    displayURL(helpURL);
-	}
+	
+
 	private JPanel addPanel(){
 	
 		JPanel panel = new JPanel(new BorderLayout());
@@ -259,6 +272,32 @@ public abstract class TableSorterMainInterface  extends JDialog{
 									extend);
 				}
 			}
+			  //Implement table cell tool tips.
+            public String getToolTipText(MouseEvent e) {
+                
+                java.awt.Point p = e.getPoint();
+               // int rowIndex = rowAtPoint(p);
+                int colIndex = columnAtPoint(p);
+                int realColumnIndex = convertColumnIndexToModel(colIndex);
+                
+               String colName = this.getColumnName(realColumnIndex);
+               return (String)columnHeadersToolTips.get(colName);
+            }
+			 //Implement table header tool tips.
+		    protected JTableHeader createDefaultTableHeader() {
+		        return new JTableHeader(columnModel) {
+		            public String getToolTipText(MouseEvent e) {
+		               
+		                java.awt.Point p = e.getPoint();
+		                int index = columnModel.getColumnIndexAtX(p.x);
+		                int realIndex = 
+		                        columnModel.getColumn(index).getModelIndex();
+		                String colName =table.getColumnName(realIndex);
+		                return (String)columnHeadersToolTips.get(colName);
+		                
+		            }
+		        };
+		    }
 		};
 		
 		sorter.setTableHeader(table.getTableHeader());
@@ -296,6 +335,12 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		updateBtn.addActionListener(new UpdateListener(this,this.sorter,this.ds));
 		updateBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("TableSorterMain.updatebtn.tooltip"));
+		
+		JButton helpBtn = new JButton(EFGImportConstants.EFGProperties
+				.getProperty("TableSorterMain.helpbtn"));
+		helpBtn.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.KEY_METADATA_HELP));
+		helpBtn.setToolTipText(EFGImportConstants.EFGProperties
+				.getProperty("TableSorterMain.helpbtn.tooltip"));
 	
 		JButton doneBtn = new JButton(EFGImportConstants.EFGProperties
 				.getProperty("TableSorterMain.cancelbtn"));
@@ -324,6 +369,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		sortingCheck.setForeground(Color.BLUE);
 		sortingCheck.addItemListener(new CheckBoxListener(this.sorter));
 		pan.add(updateBtn);
+		pan.add(helpBtn);
 		pan.add(doneBtn);
 		//pan.add(sortingCheck);
 		pan.add(onBtn);
@@ -333,19 +379,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		this.tableHeight = tableD.height + 50;
 		panel.setSize(new Dimension(this.tableWidth,this.tableHeight));
 		
-		htmlPane = new JEditorPane();
-		ToolTipManager.sharedInstance().registerComponent(htmlPane);
-		htmlPane.setContentType("text/html");
-	    htmlPane.setEditable(false);
-	    initHelp();
-		//JScrollPane htmlViewPane = new JScrollPane(htmlPane);
-		//JScrollPane panelPane = new JScrollPane(panel);
 	
-		//JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-			//	panelPane, htmlViewPane);
-		
-		//panelPane.setSize()
-		//mainPane.setDividerLocation(this.tableWidth);
 		return panel;
 	} 
 	private void addMenus(){
