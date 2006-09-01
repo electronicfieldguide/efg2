@@ -274,7 +274,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 				}
 			}
 			  //Implement table cell tool tips.
-            public String getToolTipText(MouseEvent e) {
+           /* public String getToolTipText(MouseEvent e) {
                 
                 java.awt.Point p = e.getPoint();
                // int rowIndex = rowAtPoint(p);
@@ -283,7 +283,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
                 
                String colName = this.getColumnName(realColumnIndex);
                return (String)columnHeadersToolTips.get(colName);
-            }
+            }*/
 			 //Implement table header tool tips.
 		    protected JTableHeader createDefaultTableHeader() {
 		        return new JTableHeader(columnModel) {
