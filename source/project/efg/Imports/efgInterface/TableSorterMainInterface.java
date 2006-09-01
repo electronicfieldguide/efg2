@@ -52,6 +52,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -420,7 +421,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		
 	}
 	private void init(){
-		
+		this.setLayout(new BorderLayout());
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -428,14 +429,16 @@ public abstract class TableSorterMainInterface  extends JDialog{
 			}
 		});
 		
-		//this.spane = addPanel();
-		//setSize(this.tableWidth + 400, this.tableHeight);
 		
-		//this.spane.setOneTouchExpandable(true);
 		this.addMenus();
 		JPanel panel = addPanel();
 		setSize(panel.getWidth(),600);
-		getContentPane().add(panel);
+		getContentPane().add(panel, BorderLayout.CENTER);
+		JLabel label = new JLabel(
+				EFGImportConstants.EFGProperties.getProperty("TableSorterMain.title"),
+				JLabel.CENTER);
+		getContentPane().add(label, BorderLayout.NORTH);
+		
 		
 	}
 	/*
