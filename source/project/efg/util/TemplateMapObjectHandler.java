@@ -264,11 +264,7 @@ public class TemplateMapObjectHandler {
 			if (templateObject == null) {
 				return;
 			}
-			if (mapLocation == null) {
-				EFGUtils
-						.log("ERROR: Call createTemplateObjectMap(mapLocation) before youc all this method!!");
-				return;
-			}
+		
 			FileChannel channel = null;
 
 			// check date and reset then write to file

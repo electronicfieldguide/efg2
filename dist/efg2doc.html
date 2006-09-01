@@ -60,7 +60,7 @@ padding-bottom: 10px;
 		<li>chkenv.bat (checks to make sure the system's environment variables are set correctly)</li>
 		<li>deployWebapps.bat (copies application files to the web server)</li>
 		<li>efg2Import.bat (invokes the GUI that starts the importation process)</li>
-		<li>resources (a directory) - Please Do Not view/edit/delete any files in this directory!</li>
+		<li>resource (a directory) - Please Do Not view/edit/delete any files in this directory!</li>
 	</ul>
 <li>Open a command window and cd to the directory containing the files listed above.</li>
 <li>Check the environment variables by running chkenv.bat. If chkenv.bat fails:
@@ -69,7 +69,8 @@ padding-bottom: 10px;
 		<li>Click on the "Advanced" tab and then click on "Environment Variables."</li>
 		<li>In the areas labeled "User Variables" and "System Variables," look for a variable named CATALINA_HOME. If the CATALINA_HOME variable already exists, click "Edit" and make sure that the Variable Value points to the location of your Tomcat server (for example: C:\Program Files\Apache Software Foundation\Tomcat 5.0).</li>
 		<li>If there is no CATALINA_HOME variable listed in either section, click on "New" under the "System Variables" section and fill in CATALINA_HOME for the Variable Name, and fill in the full path to your Tomcat server next to Variable Value (see item 3 for example path).</li>
-		<li>Follow steps 1-4 again for JAVA_HOME, except that its Variable Value should be the location where the JDK is installed (for example: C:\j2sdk1.4.2_10).</li>
+		<li>Run chkenv.bat again to verify you set the environment variable correctly. <i>Note: You must close the old command window and open a new one before you run chkenv.bat again.</i></li>
+		<li>Follow steps 1-5 again for JAVA_HOME, except that its Variable Value should be the location where the JDK is installed (for example: C:\j2sdk1.4.2_10).</li>
 	</ol>
 </li>
 <li>In the command window, type deployWebapps.bat. The script will verify that you have set the CATALINA_HOME environment variable correctly before it copies the application files.</li>
@@ -85,14 +86,15 @@ padding-bottom: 10px;
 		<ul>
 			<li>In FileMaker, save the data as a merge file (.mer). Note that while Filemaker will also let you choose .csv, .mer is better)
 			<li>In Excel, save the data as a .csv file.</li>
-			<li>For other apps, save in .csv or toher comma-separated format, as long as the tool used to generate the .csv file has column headers on the 1st row (consult the documentation of the application you wish to use for more information).</li>
+			<li>For other apps, save in .csv or other comma-separated format, as long as the tool used to generate the .csv file has column headers on the 1st row (consult the documentation of the application you wish to use for more information).</li>
 		</ul></li>
 	<li>Import Data
 	<ol>
 		<li>Open a command window to the directory containing deployWebapps.bat and efg2Import.bat.</li>
-		<li>Type efg2Import.bat and follow the instructions. Hints are available by placing your mouse pointer over most of the buttons and column headings. More detailed instructions are available from the help menu or from the documentation that comes with this distribution.</li>
-		<li>Restart Tomcat after you make your very first successful import. You do not need to restart Tomcat after you make subsequent imports.</li>
-		<li>Importation errors can be found in the 'logs' directory, which is located inside the 'resources' directory. You may e-mail it to us when you cannot interprete the error messages, which are generally technical.</li>
+		<li>Run efg2Import.bat. If you are not already logged into MySQL you will be required to do so. If you fail to login correctly to MySQL after enough attempts, MySQL quits and you must run efg2Import.bat again. <i>Note: MySQL will change the directory in the command window to 'resources" so you will have to type 'cd..' to return to the root directory to run efg2Import.bat.</i></li>
+		<li>Follow the instructions for the EFG2 Data Importer. Hints are available by placing your mouse pointer over most of the buttons and column headings. More detailed instructions are available from the help menu or from the documentation that comes with this distribution.</li>
+		<li>Restart Tomcat after you make your very first successful import and configuration. You do not need to restart Tomcat after you make subsequent imports.</li>
+		<li>Importation errors can be found in the 'logs' directory, which is located inside the 'resource' directory. You may e-mail it to us when you cannot interprete the error messages, which are generally technical.</li>
 	</ol></li>
 </ol>
 

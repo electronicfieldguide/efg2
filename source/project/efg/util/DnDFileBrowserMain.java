@@ -254,10 +254,10 @@ public class DnDFileBrowserMain extends JDialog {
 				.getProperty("FileTreeBrowserMain.deleteBtn.tooltip"));
 		btnPanel.add(deleteBtn);
 
-		//doneBtn.addActionListener(new DoneListener(this));
-		//doneBtn.setToolTipText(EFGImportConstants.EFGProperties
-		//		.getProperty("FileTreeBrowserMain.doneBtn.tooltip"));
-		//btnPanel.add(doneBtn);
+		doneBtn.addActionListener(new DoneListener(this));
+		doneBtn.setToolTipText(EFGImportConstants.EFGProperties
+				.getProperty("FileTreeBrowserMain.doneBtn.tooltip"));
+		btnPanel.add(doneBtn);
 		return btnPanel;
 
 	}
