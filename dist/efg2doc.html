@@ -1,0 +1,108 @@
+<HTML>
+
+<HEAD>
+<!-- $Id  -->
+<STYLE>
+ol.toc, ul.toc, p.header {
+font-weight: bold;
+}
+p.title {
+font-size: 1.3 em;
+font-weight: bold;
+}
+p.hint {
+font-style: italic;
+}
+</STYLE>
+</HEAD>
+
+<BODY>
+<p class="title">EFG2</p>
+
+<ul class="toc">
+<li><a href="#require">Installation Requirements</a></li>
+<li><a href="#install">Installation Procedure</a></li>
+<li><a href="#import">How to Import Your Data</a></li>
+<li><a href="#view">View Your Data</a></li>
+<li><a href="#configure">Configure EFG Templates</a></li>
+</ul>
+<hr>
+
+<p class="header"><a name="require"></a>EFG2 Installation Requirements</p>
+
+<p>The following programs must be installed:</p>
+
+<ol>
+<li>Tomcat 5.0</li>
+<li>MySQL 5.0</li>
+<li>Java Development Kit (JDK) 1.4</li>
+<li>Java Runtime environment(JRE) 1.4 or higher</li>
+</ol>
+
+<p>The following environment variables must be set:</p>
+
+<ol>
+<li>CATALINA_HOME</li>
+<li>JAVA_HOME</li>
+</ol>
+
+<p>To check environment variables:</p>
+<ul>
+<li>Run chkenv.bat</li>
+<li>If chkenv.bat fails:
+	<ol>
+		<li>Go to the "My Computer" icon on your desktop and right-click with your mouse. Choose "Properties" from the menu that pops up.</li>
+		<li>Click on the "Advanced" tab and then click on "Environment Variables."</li>
+		<li>In the areas labeled "User Variables" and "System Variables," look for a variable named CATALINA_HOME. If the CATALINA_HOME variable already exists, click "Edit" and make sure that the Variable Value points to the location of your Tomcat server (for example: C:\Program Files\Apache Software Foundation\Tomcat 5.0).</li>
+		<li>If there is no CATALINA_HOME variable listed in either section, click on "New" under the "System Variables" section and fill in CATALINA_HOME for the Variable Name, and fill in the full path to your Tomcat server next to Variable Value (see item 3 for example path).</li>
+		<li>Follow steps 1-4 again for JAVA_HOME, except that its Variable Value should be the location where the JDK is installed (for example: C:\j2sdk1.4.2_10).</li>
+	</ol>
+</li>
+</ul>
+<hr>
+<p class="header"><a name="install"></a>EFG2 Installation</p>
+
+<ol>
+<li>Unzip the zip file into a directory of your choice (preferably under the C: drive).</li>
+<li>You should see the following files and directories:</li>
+	<ul>
+		<li>deployWebapps.bat (copies application files to the web server)</li>
+		<li>efg2Import.bat (invokes the GUI that starts the importation process)</li> 
+		<li>resources (a directory) - Please Do Not view/edit/delete any files in this directory!</li>
+	</ul>
+<li>Open a command window and cd to the directory containing deployWebapps.bat and efg2Import.bat</li>
+<li>In that window, type deployWebapps.bat. The script will verify that you have set the CATALINA_HOME environment variable correctly before it copies the application files.</li>
+</ol>
+
+<hr>
+<p class="header"><a name="import"></a>Import a data source</p>
+
+<p class="hint">We recommend that you read the <a href="http://wiki.cs.umb.edu/twiki/bin/view/BDEI/SummaryOFEFG2DataRequirements">documentation about the EFG2 data types</a> before you import your first data source.</p>
+
+<ol>
+	<li>Save the data file in a comma-separated format.
+		<ul>
+			<li>In FileMaker, save the data as a merge file (.mer). Note that while Filemaker will also let you choose .csv, .mer is better)
+			<li>In Excel, save the data as a .csv file.</li>
+			<li>For other apps, save in .csv or toher comma-separated format, as long as the tool used to generate the .csv file has column headers on the 1st row (consult the documentation of the application you wish to use for more information).</li>
+		</ul></li>
+	<li>Import Data
+	<ol>
+		<li>Open a command window to the directory containing deployWebapps.bat and efg2Import.bat.</li>
+		<li>Type efg2Import.bat and follow the instructions. Hints are available by placing your mouse pointer over most of the buttons and column headings. More detailed instructions are available from the help menu or from the documentation that comes with this distribution.</li>
+		<li>Restart Tomcat after you make your very first successful import. You do not need to restart Tomcat after you make subsequent imports.</li>
+		<li>Importation errors can be found in the 'logs' directory, which is located inside the 'resources' directory. You may e-mail it to us when you cannot interprete the error messages, which are generally technical.</li>
+	</ol></li>
+</ol>
+
+<hr>
+
+<p class="header"><a name="view"></a>View Your Data</p>
+
+<hr>
+
+<p class="header"><a name="configure"></a>Configure EFG Templates</p>
+
+</BODY>
+
+</HTML>

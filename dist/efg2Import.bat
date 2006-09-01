@@ -1,0 +1,2 @@
+cd resource
+login.bat
