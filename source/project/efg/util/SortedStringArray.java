@@ -62,7 +62,7 @@ public class SortedStringArray {
     		if(value.trim().equals("")){
     			return false;
     		}
-    		System.out.println("Adding: " + value);
+    	
             commonNames.add(value);
           
             return true;

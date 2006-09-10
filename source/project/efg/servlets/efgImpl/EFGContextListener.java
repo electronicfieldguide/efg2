@@ -60,7 +60,6 @@ import project.efg.servlets.efgServletsUtil.EFGServletInitializerInstance;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.util.EFGImportConstants;
-//import project.efg.util.TemplateMapObjectHandler;
 import project.efg.util.XMLFileNameFilter;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
@@ -460,11 +459,7 @@ public class EFGContextListener implements ServletContextListener {
 	 * 
 	 */
 	private void createTemplateObjectMap() {
-		String mutex ="";
-		synchronized (mutex) {
-				//String mapLocation  = servletContext.getRealPath("/WEB-INF") + File.separator + EFGImportConstants.TEMPLATE_MAP_NAME;	
-				//TemplateMapObjectHandler.createTemplateObjectMap(mapLocation);	
-		}
+		
 	}
 	private void destroyDriverManager() { 
 	    try { 
@@ -644,6 +639,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.1.2.9  2006/09/10 12:03:23  kasiedu
+// no message
+//
 // Revision 1.1.2.8  2006/08/30 13:53:34  kasiedu
 // bug id 224-236
 //

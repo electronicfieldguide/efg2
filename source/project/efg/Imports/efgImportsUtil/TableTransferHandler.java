@@ -9,8 +9,7 @@ import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JTable;
-import javax.swing.TransferHandler; 
-import javax.swing.event.ListSelectionEvent;
+import javax.swing.TransferHandler;
 import javax.swing.table.DefaultTableModel;
 /**
  * @author kasiedu

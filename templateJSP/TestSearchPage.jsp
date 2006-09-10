@@ -2,13 +2,7 @@
 <html>
   <head>
   <%
-  	String realPath = getServletContext().getRealPath("/");
-  	StringBuffer mapLocationBuffer  = new StringBuffer(realPath);
-  	mapLocationBuffer.append(File.separator);
-	mapLocationBuffer.append("WEB-INF");
-	mapLocationBuffer.append(File.separator);
-	mapLocationBuffer.append(EFGImportConstants.TEMPLATE_MAP_NAME);
-	
+  	
 	String context = request.getContextPath();
 	String guid =  (String)request.getAttribute(EFGImportConstants.GUID);
 	String xslName = (String)request.getAttribute(EFGImportConstants.XSL_STRING);
@@ -68,7 +62,7 @@
 		templateObject.setTemplateName(uniqueName);
 		templateObject.setGUID(guid);
 		templateObject.setDisplayObject(displayObject);
-		TemplateMapObjectHandler.add2TemplateMap(key,templateObject,mapLocationBuffer.toString());
+		TemplateMapObjectHandler.add2TemplateMap(key,templateObject,null);
 	}
    %>
 	<title>Test Search Page Configuration</title>

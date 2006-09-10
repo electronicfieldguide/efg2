@@ -90,6 +90,16 @@ public class LoginListenerImpl implements LoginListenerInterface {
 						numberOfAttemptsMessage,
 						"Login Error", JOptionPane.ERROR_MESSAGE);
 				this.dialog.setSuccess(false);
+				File file= null;
+				try{
+					file = new File(EFGImportConstants.SETUP_FILE);
+					if(file.exists()){
+						file.delete();
+					}
+				}
+				catch(Exception ee){
+					
+				}
 				System.exit(1);
 			}
 			else{
@@ -109,6 +119,8 @@ public class LoginListenerImpl implements LoginListenerInterface {
 						setUpError_Message,
 						"Login Error", JOptionPane.ERROR_MESSAGE);
 				this.dialog.setSuccess(false);
+				//delete the .setup file
+				file.delete();
 				System.exit(1);
 			}
 			log.info("Set up run successfully");

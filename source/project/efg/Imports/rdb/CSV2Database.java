@@ -60,9 +60,8 @@ import project.efg.util.EFGUniqueID;
 public class CSV2Database extends CSV2DatabaseAbstract {
 
 	private JdbcTemplate jdbcTemplate;
-
 	private String templateConfigHome;
-
+	
 	private String[] dataHeaders;
 
 	private String metadataTableName; // metadata table to use
@@ -106,6 +105,16 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						.getProperty("caseinsensitive.compare"));
 		this.efgRDBTable = EFGImportConstants.EFGProperties
 				.getProperty("ALL_EFG_RDB_TABLES");
+	}
+	private String getTemplateConfig() {
+		if (this.templateConfigHome == null) {
+			this.templateConfigHome = this.getCatalinaHome() + File.separator
+					+ EFGImportConstants.EFG_WEB_APPS + File.separator
+					+ EFGImportConstants.EFG_APPS + File.separator
+					+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
+					+ File.separator;
+		}
+		return this.templateConfigHome;
 	}
 
 	/**
@@ -204,20 +213,20 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 									legalNames);
 							if (isSuccess) {// create a new Default template
 											// file
-								String tempConfigLocation = this
-										.getTemplateConfig();
-
+								
 								TaxonPageDefaultConfig taxonPageConfig = new TaxonPageDefaultConfig(
-										tempConfigLocation);
+										this.dbObject, this.getTemplateConfig());
 								boolean bool = taxonPageConfig.processNew(this
 										.getDataTableName(), this
 										.getDisplayName());
 								if (!bool) {
+									
 									log
 											.error("Could not create default templates for '"
 													+ this.getDisplayName()
 													+ "'");
 								}
+								
 							}
 							// create the default Template files for the current
 							// datasource
@@ -356,8 +365,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	}
 	private boolean copyClone(String clonedDataTableName) {
 
-		TaxonPageDefaultConfig taxonPageConfig = new TaxonPageDefaultConfig(
-				this.getTemplateConfig());
+		TaxonPageDefaultConfig taxonPageConfig = 
+			new TaxonPageDefaultConfig(this.dbObject, this.getTemplateConfig());
+		
 		boolean bool = taxonPageConfig.cloneOldFile(clonedDataTableName, this
 				.getDataTableName(), this.getDisplayName());
 		if (!bool) {
@@ -367,16 +377,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		return bool;
 	}
 
-	private String getTemplateConfig() {
-		if (this.templateConfigHome == null) {
-			this.templateConfigHome = this.getCatalinaHome() + File.separator
-					+ EFGImportConstants.EFG_WEB_APPS + File.separator
-					+ EFGImportConstants.EFG_APPS + File.separator
-					+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
-					+ File.separator;
-		}
-		return this.templateConfigHome;
-	}
+	
 
 	private DataSourceTransactionManager getTransactionManager(DBObject dbObject) {
 		return EFGRDBImportUtils.getTransactionManager(dbObject);

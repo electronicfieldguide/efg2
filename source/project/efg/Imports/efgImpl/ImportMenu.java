@@ -48,7 +48,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
@@ -216,7 +215,7 @@ public class ImportMenu extends JFrame {
     	content.add(selection, BorderLayout.CENTER);
     	return content;
         }
-	private JPanel addPanel() {
+	/*private JPanel addPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5, 1));
 
@@ -267,7 +266,7 @@ public class ImportMenu extends JFrame {
 		btnPane.setAutoscrolls(false);
 		btnPane.setToolTipText("Drag and drop key here");
 		return panel;
-	}
+	}*/
 
 	public void close() {
 		this.dispose();
@@ -353,7 +352,7 @@ public class ImportMenu extends JFrame {
 		 */
 		public void actionPerformed(ActionEvent e) {
 			 this.handleInput();
-			// TODO Auto-generated method stub
+			
 			
 		}
 	}

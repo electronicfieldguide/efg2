@@ -41,10 +41,6 @@ public class EFGRDBUtils {
 
 	
 	private static DataSource ds;
-	
-	
-	
-
 	public static synchronized void setDatasource(DataSource datasource){
 		ds = datasource;
 	}
@@ -59,6 +55,9 @@ public class EFGRDBUtils {
 }
 
 //$Log$
+//Revision 1.1.2.3  2006/09/10 12:03:23  kasiedu
+//no message
+//
 //Revision 1.1.2.2  2006/08/09 18:55:25  kasiedu
 //latest code confimrs to what exists on Panda
 //

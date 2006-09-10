@@ -29,6 +29,10 @@ import java.util.regex.Pattern;
  * USA
  */
 public interface EFGImportConstants {
+	String TEMPLATE_KEY = "EFGKey";
+	
+	
+	
 	// The 4 ff constants are used are appended to datasource names to make
 	//html file for missing data. MediaResources will  have
 	// datasourcename + IMAGEAPPENDER
@@ -481,13 +485,12 @@ public interface EFGImportConstants {
 
 	String TOMCAT_USERS_FILE_RENAME_EXT = "_EFG_old";
 	
-	/*String TOMCAT_USERS_PROPERTIES = "tomcatusers.properties";
-	String RDBPROPERTIES_FILE = "/RDBprops.properties";
-	String GUIPROPERTIES_FILE = "/GUI.properties";*/
+
 	String PROPERTIES_DIR="/properties";
 	String SQL_KEYWORD_KEY="sqlkeywords";
 	Properties EFGProperties =project.efg.Imports.rdb.EFGRDBImportUtils.getProperties();
     Set SQL_KEY_WORDS = project.efg.Imports.rdb.EFGRDBImportUtils.getSQLKeyWords();
 	String SORTING_OFF = "Sorting OFF";
 	String SORTING_ON = "Sorting ON";
+	String TEMPLATE_TABLE = "EFG_TEMPLATE_TABLES";
 }// EFGImportConstants

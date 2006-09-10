@@ -4,13 +4,17 @@
 package project.efg.util;
 
 import project.efg.servlets.efgImpl.EFGContextListener;
-import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
+import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
+import project.efg.servlets.efgInterface.SearchableInterface;
+import project.efg.servlets.rdb.SearchableImpl;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.templates.taxonPageTemplates.XslFileNamesType;
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.templates.taxonPageTemplates.XslPageType;
 
+import com.opensymphony.oscache.base.CacheEntry;
+import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
@@ -27,20 +31,32 @@ public class FindTemplate {
 	private TaxonPageTemplates tps;
 
 	private XslPage page;
-	private static GeneralCacheAdministrator cacheAdmin = EFGContextListener.getCacheAdmin();
+	private static GeneralCacheAdministrator cacheAdmin = 
+		EFGContextListener.getCacheAdmin();
 
 	public FindTemplate(String dsName, String xslType) {
 		this.dsName = dsName;
 		this.xslType = xslType;
+		
 		this.tps = this.getTaxonPageTemplate();
+		
 	}
 
 	public XslPage getXSLFileName() {
 		if (this.page == null) {
+		
 			if (this.tps != null) {
 				this.page = this.getXSL();
 			}
+			
 		}
+		
+		if(this.page == null){
+		
+			createXSLDefaultPage();
+			
+		}
+	
 		return this.page;
 	}
 
@@ -54,7 +70,8 @@ public class FindTemplate {
 			XslPage currentPage = null;
 			for (int i = 0; i < counter; i++) {
 
-				TaxonPageTemplateType tp = tps.getTaxonPageTemplate(i);
+				TaxonPageTemplateType tp = 
+					tps.getTaxonPageTemplate(i);
 				String ds = tp.getDatasourceName();
 				if (ds.equalsIgnoreCase(this.dsName.trim())) {
 					//log.debug("Found datasource: " + ds);
@@ -92,22 +109,54 @@ public class FindTemplate {
 				}
 			}
 		} catch (Exception ee) {
-			//log.error(ee.getMessage());
-			//log.error("Returning null because of previous error!!");
 			return null;
 		}
 		
 		return page;
 	}
 
-	private TaxonPageTemplates getTaxonPageTemplate() {
 	
-			try {
+	private TaxonPageTemplates getTaxonPageTemplate() {
+		TaxonPageTemplates tps = null;
+			
+				//if the file does not exists 
+				//get the defaults from database
+				//if that fails then return null;
 				String fileName = this.dsName.toLowerCase() + EFGImportConstants.XML_EXT;
-				return(TaxonPageTemplates)cacheAdmin.getFromCache(fileName.toLowerCase());
-			} catch (Exception ee) {
-				LoggerUtilsServlet.logErrors(ee);
-			}
-			return null;
+				try {
+					  
+					tps = (TaxonPageTemplates)cacheAdmin.getFromCache(fileName);
+					//log.debug("Object obtained from cache ");
+				} catch (NeedsRefreshException nre) {
+				    try {
+				    	//create and write the default file and load
+				    	cacheAdmin.putInCache(fileName.toLowerCase(),tps,EFGContextListener.templateFilesGroup);
+						//EFGContextListener.lastModifiedTemplateFileTable.put(fileName.toLowerCase(),new Long(f.lastModified()));
+				    	//cacheAdmin.putInCache(fileName.toLowerCase(), tps,EFGContextListener.templateFilesGroup);
+				    	//log.debug("Object put in cache");
+				    } catch (Exception ex) {
+				        // We have the current content if we want fail-over.
+				    	tps = (TaxonPageTemplates)nre.getCacheContent();
+				    	//log.debug("Object fail over obejct ");
+				        // It is essential that cancelUpdate is called if the
+				        // cached content is not rebuilt
+				    	cacheAdmin.cancelUpdate(fileName.toLowerCase());
+				    }
+				}
+				return tps;
+	}
+	/**
+	 * 
+	 */
+	private void createXSLDefaultPage() {
+		
+		this.page = new XslPage();
+		String xslName = EFGImportConstants.DEFAULT_SEARCH_FILE;
+		if (EFGImportConstants.TAXONPAGE_XSL
+				.equalsIgnoreCase(this.xslType)) {
+			xslName = EFGImportConstants.DEFAULT_TAXON_PAGE_FILE;
+		} 
+		this.page.setFileName(xslName);
+		this.page.setIsDefault(true);
 	}
 }

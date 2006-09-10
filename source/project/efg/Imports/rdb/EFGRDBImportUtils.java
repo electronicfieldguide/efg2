@@ -99,12 +99,6 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 	throws Exception {
 		return  getRowMapper().mapRows(jdbcTemplate,query,numberOfColumns);
 	}
-	private static  EFGRowMapperInterface getRowMapper(){
-		if(rowMapper == null){
-			rowMapper = EFGRowMapperFactory.getRowMapper();
-		}
-		return rowMapper;
-	}
 	/**
 	 * Initializes connection to Database, sets the driver etc Parameters are
 	 * read from a properties file (RDBProps.properties) in the same directory
@@ -118,10 +112,29 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 			EFGProperties = System.getProperties();
 			addPropertyFiles();
 			addSQLKeyWords();
+			
 			} catch (Exception e) {
 		   	e.printStackTrace();
 		
 		}
+	}
+	public static Set getSQLKeyWords(){
+		if(sqlKeywords == null){
+			addSQLKeyWords();
+		}
+		return sqlKeywords;
+	}
+	public static Properties getProperties(){
+		if(EFGProperties == null){
+			init();
+		}
+		return EFGProperties;
+	}
+	private static  EFGRowMapperInterface getRowMapper(){
+		if(rowMapper == null){
+			rowMapper = EFGRowMapperFactory.getRowMapper();
+		}
+		return rowMapper;
 	}
 	private static void addSQLKeyWords(){
 		sqlKeywords = new HashSet();
@@ -133,12 +146,6 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 		for(int i=0; i < csv.length; i++){
 			sqlKeywords.add(csv[i].trim().toLowerCase());
 		}
-	}
-	public static Set getSQLKeyWords(){
-		if(sqlKeywords == null){
-			addSQLKeyWords();
-		}
-		return sqlKeywords;
 	}
 	/**
 	 * Reads,loads an sets application wide properties file
@@ -202,17 +209,17 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 			}
 		}
 	}
-	public static Properties getProperties(){
-		if(EFGProperties == null){
-			init();
-		}
-		return EFGProperties;
-	}
+	
+	
+
 }
 
 // $Log$
+// Revision 1.1.2.4  2006/09/10 12:02:28  kasiedu
+// no message
+//
 // Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
-// latest code confimrs to what exists on Panda
+// latest code conforms to what exists on Panda
 //
 // Revision 1.1.2.2  2006/06/21 04:21:37  kasiedu
 // Fixed some errors that did not show up in eclipse in build file

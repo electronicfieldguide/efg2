@@ -66,7 +66,7 @@ public class EFGDatasourceObjectListImpl extends
 	private EFGRowMapperInterface rowMapper;
 
 	private String efgRDBTable;
-	private String mapLocation;
+	//private String mapLocation;
 	
 	public EFGDatasourceObjectListImpl(DBObject dbObject) {
 		super(dbObject);
@@ -191,7 +191,7 @@ public class EFGDatasourceObjectListImpl extends
 							oldDisplayName  + "' " + " to '" + freshDisplayName + "'");
 				}
 			
-				boolean bool = TemplateMapObjectHandler.changeDisplayNameTemplateMap(datafn,freshDisplayName,this.getMapLocation());
+				boolean bool = TemplateMapObjectHandler.changeDisplayName(datafn,freshDisplayName,this.dbObject);
 			
 				if(!bool){
 					throw new Exception("Could not change display Names for : '" + 
@@ -311,21 +311,7 @@ public class EFGDatasourceObjectListImpl extends
 
 		return true;
 	}
-	private String getMapLocation(){
-		if((this.mapLocation == null) || (this.mapLocation.trim().equals(""))){
-		StringBuffer mapLocationBuffer = new StringBuffer(this.getCatalinaHome());
-		mapLocationBuffer.append(File.separator);
-		mapLocationBuffer.append(EFGImportConstants.EFG_WEB_APPS);
-		mapLocationBuffer.append(File.separator);
-		mapLocationBuffer.append(EFGImportConstants.EFG_APPS);
-		mapLocationBuffer.append(File.separator);
-		mapLocationBuffer.append("WEB-INF");
-		mapLocationBuffer.append(File.separator);
-		mapLocationBuffer.append(EFGImportConstants.TEMPLATE_MAP_NAME);
-		this.mapLocation = mapLocationBuffer.toString();
-		}
-		return this.mapLocation;
-	}
+
 	
 	
 	/**
@@ -371,31 +357,35 @@ public class EFGDatasourceObjectListImpl extends
 					this.lists.remove(index);
 				}
 				// also delete the file if it exists
+				boolean bool = false;
 				try {
-					File templatesFiles = new File(this.getTemplateConfig()
-							.toLowerCase()
+					
+					File templatesFiles = 
+						new File(this.getTemplateConfig().toLowerCase()
 							+ datafn + EFGImportConstants.XML_EXT);
 					if (templatesFiles.exists()) {
-						boolean bool = templatesFiles.delete();
+						bool = templatesFiles.delete();
 						if (!bool) {
 							throw new Exception(
 									"Application could not delete the template "
 											+ templatesFiles.getAbsolutePath());
-						} else {// remove from map if it exists
-							// check serialized file too	
-						
-								bool = TemplateMapObjectHandler.removeFromTemplateMap(datafn,this.getMapLocation());
-							
-							if(!bool){
-								throw new Exception(
-										"Application could not delete the template configurations ");
-											
-							}
-						
-						}
+						} 
 					}
+					
 				} catch (Exception ee) {
 					LoggerUtilsServlet.logErrors(ee);
+				}
+				try{
+					bool = TemplateMapObjectHandler.removeFromTemplateMap(datafn,this.dbObject);
+					
+					if(!bool){
+						throw new Exception(
+								"Application could not delete the template configurations ");
+									
+					}
+				}
+				catch(Exception eex){
+					LoggerUtilsServlet.logErrors(eex);
 				}
 				isDone = true;
 			}

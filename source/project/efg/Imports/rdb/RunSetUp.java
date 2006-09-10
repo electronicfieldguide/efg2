@@ -53,8 +53,10 @@ public class RunSetUp {
 	 */
 	public synchronized static boolean runSetUp(DBObject dbObject) {
 		//create efg database, users etc in main database
+	
 		jdbcTemplate=
 			EFGRDBImportUtils.getJDBCTemplate(dbObject);
+	
 		
 		// read from properties file
 		String query = EFGImportConstants.EFGProperties.getProperty("createdatabasecmd");
@@ -63,6 +65,7 @@ public class RunSetUp {
 			
 		} catch (Exception ee) {
 			log.error(ee.getMessage());
+			
 			return false;
 		}
 		try{
@@ -81,12 +84,15 @@ public class RunSetUp {
 			log.error(ee.getMessage());
 		
 		}
-			
-		
+	
 		return true;
 	}
+
 }
 // $Log$
+// Revision 1.1.2.3  2006/09/10 12:02:28  kasiedu
+// no message
+//
 // Revision 1.1.2.2  2006/08/09 18:55:24  kasiedu
 // latest code confimrs to what exists on Panda
 //

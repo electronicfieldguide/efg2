@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import project.efg.Imports.efgImpl.DBObject;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.templates.taxonPageTemplates.XslFileNamesType;
@@ -51,21 +52,16 @@ public class TaxonPageDefaultConfig {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	
-
 	private String realPath;
-
 	private TaxonPageTemplates tps;
 
-
-
-	private String mapLocation;
+	private DBObject dbObject;
 
 	/**
 	 * 
 	 */
-	public TaxonPageDefaultConfig(String realPath) {
+	public TaxonPageDefaultConfig(DBObject dbObject, String realPath) {
+		this.dbObject= dbObject;
 		this.realPath = realPath;
 	}
 
@@ -91,6 +87,24 @@ public class TaxonPageDefaultConfig {
 		}
 		return isDone;
 	}
+	public boolean cloneOldFile(
+			String oldDsName, 
+			String newDSName,
+			String displayName
+			) {
+		
+		boolean isDone = false;
+		try {
+			isDone = cloneFile(oldDsName, newDSName, displayName);
+			if(isDone){
+				this.writeToMapObject(newDSName,displayName);
+			}
+		} catch (Exception ee) {
+			LoggerUtils.logErrors(ee);
+		}
+		return isDone;
+	}
+
 	private void add2TemplateObject(String datafn, 
 			String displayName,
 			String type, 
@@ -127,24 +141,9 @@ public class TaxonPageDefaultConfig {
 		
 		templateObject.setTemplateName(uniqueName);
 		templateObject.setDisplayObject(displayObject);
-		TemplateMapObjectHandler.add2TemplateMap(key,templateObject,this.getMapLocation());
+		TemplateMapObjectHandler.add2TemplateMap(key,templateObject,this.dbObject);
 	}
-	private String getMapLocation(){
 	
-			if((this.mapLocation == null) || (this.mapLocation.trim().equals(""))){
-			StringBuffer mapLocationBuffer = new StringBuffer(EFGUtils.getCatalinaHome());
-			mapLocationBuffer.append(File.separator);
-			mapLocationBuffer.append(EFGImportConstants.EFG_WEB_APPS);
-			mapLocationBuffer.append(File.separator);
-			mapLocationBuffer.append(EFGImportConstants.EFG_APPS);
-			mapLocationBuffer.append(File.separator);
-			mapLocationBuffer.append("WEB-INF");
-			mapLocationBuffer.append(File.separator);
-			mapLocationBuffer.append(EFGImportConstants.TEMPLATE_MAP_NAME);
-			this.mapLocation = mapLocationBuffer.toString();
-			}
-			return this.mapLocation;
-	}
 	private void writeToMapObject(String datafn,String displayName){
 	
 		try {
@@ -154,6 +153,7 @@ public class TaxonPageDefaultConfig {
 			
 			String plates = EFGImportConstants.SEARCH_PLATES_TYPE;
 			String lists = EFGImportConstants.SEARCH_LISTS_TYPE;
+			
 			this.add2TemplateObject(datafn, 
 					displayName,
 					plates, 
@@ -164,27 +164,11 @@ public class TaxonPageDefaultConfig {
 					displayName,
 					lists, 
 					uniqueName);
-			
+			//create the file here
 		} catch (Exception ee) {
 			return;
 		}
 	}
-	public boolean cloneOldFile(String oldDsName, String newDSName,
-			String displayName) {
-
-		
-		boolean isDone = false;
-		try {
-			isDone = cloneFile(oldDsName, newDSName, displayName);
-			if(isDone){
-				this.writeToMapObject(newDSName,displayName);
-			}
-		} catch (Exception ee) {
-			LoggerUtils.logErrors(ee);
-		}
-		return isDone;
-	}
-	
 	private boolean cloneFile(String oldDSName, String newDSName,
 			String displayName) {
 		String mute = "";
@@ -387,6 +371,9 @@ public class TaxonPageDefaultConfig {
 
 }
 // $Log$
+// Revision 1.1.2.6  2006/09/10 12:02:28  kasiedu
+// no message
+//
 // Revision 1.1.2.5  2006/08/26 22:12:24  kasiedu
 // Updates to xsl files
 //

@@ -186,8 +186,7 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	                                   javax.swing.tree.TreeModel model,
 	                                   Object node, int row, int depth)
 	{
-		System.out.println("Row: " + row);
-		System.out.println("Depth: " + depth);
+		
 	    if (node != null  &&  !model.isLeaf(node)) {
 	        tree.expandRow(row);
 	        if (depth != 0)

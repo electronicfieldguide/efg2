@@ -30,9 +30,6 @@ package project.efg.servlets.efgImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -46,9 +43,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.output.XMLOutputter;
 
 import project.efg.servlets.efgServletsUtil.ApplyXSLInterface;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
@@ -68,9 +62,9 @@ public class ApplyXSL extends HttpServlet {
 
 	private static TransformerFactory tFactory;
 
-	private static Namespace digir = null;
+	//private static Namespace digir = null;
 
-	private Format formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+	//private Format formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 
 	static Logger log = null;
 
@@ -87,7 +81,7 @@ public class ApplyXSL extends HttpServlet {
 			//log = Logger.getLogger(ApplyXSL.class);
 		} catch (Exception ee) {
 		}
-		digir = Namespace.getNamespace(EFGImportConstants.DIGIR_NAMESPACE);
+	//	digir = Namespace.getNamespace(EFGImportConstants.DIGIR_NAMESPACE);
 		realPath = getServletContext().getRealPath("/");
 		tFactory = TransformerFactory.newInstance();
 	}
@@ -130,7 +124,7 @@ public class ApplyXSL extends HttpServlet {
 		if ((xsl != null) && (xml != null)) {
 			Transformer transformer = null;
 			try {
-				String header = getHeader(req);
+				String header = null;//getHeader(req);
 			
 				transformer = tFactory.newTransformer(xsl);
 				
@@ -153,9 +147,10 @@ public class ApplyXSL extends HttpServlet {
 				
 				transformer.setParameter("server", server);
 			
+				if(header != null){
 				
 				transformer.setParameter("header", header);
-			
+				}
 				
 				transformer.setParameter("serverContext", serverContext);
 			
@@ -251,7 +246,7 @@ public class ApplyXSL extends HttpServlet {
 		}
 	}
 
-	private String getHeader(HttpServletRequest req) throws Exception {
+	/*private String getHeader(HttpServletRequest req) throws Exception {
 		
 		Element source = null;
 		String clientIPaddr = req.getRemoteAddr(); // 123.123.123.123
@@ -260,7 +255,7 @@ public class ApplyXSL extends HttpServlet {
 		String dsName = (String) req.getAttribute("dataSourceName");
 
 		// If the resource is null and there is an error send the
-		// defaultvresource shown below.
+		// default resource shown below.
 		StringBuffer buf1 = new StringBuffer();
 		buf1.append(req.getScheme()); // http
 		buf1.append("://");
@@ -271,7 +266,7 @@ public class ApplyXSL extends HttpServlet {
 		buf1.append(req.getServletPath()); // efg
 		String resource = buf1.toString();
 
-		Element header = new Element("header", digir);
+		/*Element header = new Element("header", digir);
 
 		// Read from servlet context or from a properties file
 		Element version = new Element("version", digir);
@@ -296,14 +291,18 @@ public class ApplyXSL extends HttpServlet {
 		Element type = new Element("type", digir);
 		type.setText("search");
 		header.addContent(type);
-
+		
 		XMLOutputter outputter = new XMLOutputter();
 		StringWriter sw = new StringWriter();
 		outputter.output(header, sw);
 		return sw.toString();
-	}
+		return "";
+	}*/
 }
 // $Log$
+// Revision 1.1.2.7  2006/09/10 12:03:23  kasiedu
+// no message
+//
 // Revision 1.1.2.6  2006/08/30 13:53:34  kasiedu
 // bug id 224-236
 //
