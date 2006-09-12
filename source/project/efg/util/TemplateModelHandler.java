@@ -288,6 +288,9 @@ public abstract class TemplateModelHandler{
 		buffer.append("/");
 		buffer.append("templateMap.out");
 		Hashtable table = this.getTemplateObjectMap(buffer.toString());
+		if(table == null){
+			return;
+		}
 		Iterator mapIter = table.keySet().iterator();
 		
 		while (mapIter.hasNext()) {
@@ -353,6 +356,15 @@ public abstract class TemplateModelHandler{
 		catch (Exception e) {
 			e.printStackTrace();
 		}
+		}
+		try{
+		File file = new File(buffer.toString());
+		if(file.exists()){
+			file.delete();
+		}
+		}
+		catch(Exception ee){
+			
 		}
 		
 		

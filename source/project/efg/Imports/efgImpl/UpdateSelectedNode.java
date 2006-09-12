@@ -78,7 +78,9 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 				this.selectDatasourceFirst();
 				return false;
 			}
-
+			EFGDatasourceObjectInterface ds = (EFGDatasourceObjectInterface) selNode
+			.getUserObject();
+			String oldName = ds.getDisplayName();
 			// get the parent of the selected node
 			MutableTreeNode parent = (MutableTreeNode)(selNode.getParent());
 			if (parent == null) {
@@ -89,7 +91,7 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 			}
 			
 			String freshDisplayName = 
-				JOptionPane.showInputDialog(tree.frame,"New Display Name:");
+				JOptionPane.showInputDialog(tree.frame,"New Display Name:",oldName);
 			if (freshDisplayName == null) {
 				//log.debug("user terminated request for change in display name.");
 				return false;
@@ -104,8 +106,7 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 			}
 			DefaultTreeModel model = (DefaultTreeModel)tree.getModel();
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-			EFGDatasourceObjectInterface ds = (EFGDatasourceObjectInterface) selNode
-					.getUserObject();
+			
 
 			int childCount = root.getChildCount();
 			for (int j = 0; j < childCount; j++) {
@@ -158,7 +159,7 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 			TreePath path = new TreePath(nodes);
 			tree.scrollPathToVisible(path);
 			tree.setSelectionPath(path);
-			String oldName = ds.getDisplayName();
+			
 			// make a call to database too
 			//log.debug("oldName: " + oldName);
 			//log.debug("newName: " + freshDisplayName);
