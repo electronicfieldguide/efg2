@@ -70,8 +70,11 @@ public class TemplateMapObjectHandler {
 				}
 				else{
 					tempHandler = TemplateModelFactory.createImportTemplateHandler(dbObject);
+					tempHandler.loadHashTable2DB();
 				}
+				
 				boolean bool = tempHandler.changeDisplayName(datasourceName,displayName);
+				
 				if(!bool){
 					throw new Exception("Template name could not be changed successfully");
 				}
@@ -99,6 +102,7 @@ public class TemplateMapObjectHandler {
 			String key,
 			TemplateObject templateObject, 
 			DBObject dbObject) {
+		
 		if (templateObject == null) {
 			return;
 		}

@@ -19,8 +19,8 @@ public class TemplateModelExport extends TemplateModelHandler{
 	 * 
 	 */
 	public int executeStatement(String query) throws Exception {
-		queryExecutor.executeQueryForList(query,1);
-		return -1;
+		return queryExecutor.executeUpdate(query);
+		
 	}
 	/**
 	 * 

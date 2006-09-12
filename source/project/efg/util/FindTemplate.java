@@ -4,16 +4,12 @@
 package project.efg.util;
 
 import project.efg.servlets.efgImpl.EFGContextListener;
-import project.efg.servlets.efgInterface.EFGDataObjectListInterface;
-import project.efg.servlets.efgInterface.SearchableInterface;
-import project.efg.servlets.rdb.SearchableImpl;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.templates.taxonPageTemplates.XslFileNamesType;
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.templates.taxonPageTemplates.XslPageType;
 
-import com.opensymphony.oscache.base.CacheEntry;
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 

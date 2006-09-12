@@ -3,10 +3,16 @@
  */
 package project.efg.util;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 
+import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
+import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 
 
 
@@ -112,8 +118,8 @@ public abstract class TemplateModelHandler{
 	}
 	private boolean createEFG2TemplatesTable() {
 		
-		if((templateName == null) || 
-				(templateName.trim().equals(""))){
+		if((this.templateName == null) || 
+				(this.templateName.trim().equals(""))){
 			
 			return false;
 		}
@@ -143,7 +149,7 @@ public abstract class TemplateModelHandler{
 			catch (Exception e) {
 				
 			}
-			return false;
+			return true;
 }
 	/**
 	 * Associate this key to this template in the database
@@ -194,7 +200,7 @@ public abstract class TemplateModelHandler{
 		query.append(")");
 		query.append(" VALUES(");
 		query.append("\"");
-		query.append(key.toLowerCase());
+		query.append(key);
 		query.append("\"");
 		query.append(",");
 		query.append("\"");
@@ -225,6 +231,133 @@ public abstract class TemplateModelHandler{
 		
 		
 	}
+	private Hashtable getTemplateObjectMap(String mapLocation) {
+		String mutex = "";
+		synchronized (mutex) {
+			ObjectInputStream in = null;
+			Hashtable currentMap = null;
+			
+			File file = new File(mapLocation);
+			if (!file.exists()) {
+				
+				return null;
+			}
+		
+		
+				// lock file
+				try {
+					in = new ObjectInputStream(new FileInputStream(file));
+					currentMap = (Hashtable) in.readObject();
+					in.close();
+					return currentMap;
+					
+				} catch (Exception ee) {
+					ee.printStackTrace();
+					LoggerUtilsServlet.logErrors(ee);
+				}
+				return null;
+
+			
+		}
+	}
+	/**
+	 * Associate this key to this template in the database
+	 *@param key  A unique key
+	 *@param templateObject - The object associated with this key
+	 *@return true if successful
+	 * @see project.efg.util.TemplateModelHandler#add2DB(java.lang.String, project.efg.util.TemplateObject)
+	 */
+	public void loadHashTable2DB() {
+		String key = null;
+		TemplateObject templateObject = null;
+		createEFG2TemplatesTable();
+		
+		String catHome = EFGUtils.getCatalinaHome();
+		if(catHome == null){
+			return;
+		}
+		createEFG2TemplatesTable();
+		StringBuffer buffer = new StringBuffer();
+		buffer.append(catHome);
+		buffer.append("/");
+		buffer.append(EFGImportConstants.EFG_WEB_APPS);
+		buffer.append("/");
+		buffer.append(EFGImportConstants.EFG_APPS);
+		buffer.append("/");
+		buffer.append("WEB-INF");
+		buffer.append("/");
+		buffer.append("templateMap.out");
+		Hashtable table = this.getTemplateObjectMap(buffer.toString());
+		Iterator mapIter = table.keySet().iterator();
+		
+		while (mapIter.hasNext()) {
+			key = (String) mapIter.next();
+			templateObject= (TemplateObject)table.get(key);
+		
+		//get the stuff and unserialize it
+		if(templateObject == null){
+			
+			continue;
+		}
+		
+		EFGDisplayObject displayObject = templateObject.getDisplayObject();
+		String datasourceName = displayObject.getDatasourceName();
+	
+		String guid = templateObject.getGUID();
+		if(guid == null){
+			guid = "";
+		}
+		String tempName = templateObject.getTemplateName();
+		if(tempName == null){
+			tempName = "";
+		}
+		
+		String displayName = displayObject.getDisplayName();
+		if(displayName == null){
+			displayName = "";
+		}
+		
+		StringBuffer query = new StringBuffer();
+		query.append("INSERT INTO ");
+		query.append(this.templateName); 
+		query.append(" "); 
+		query.append("( ");
+		query.append(getHeaderQuery());
+		query.append(")");
+		query.append(" VALUES(");
+		query.append("\"");
+		query.append(key);
+		query.append("\"");
+		query.append(",");
+		query.append("\"");
+		query.append(guid);
+		query.append("\"");
+		query.append(",");
+		query.append("\"");
+		query.append(displayName);
+		query.append("\"");
+		query.append(",");
+		query.append("\"");
+		query.append(datasourceName);
+		query.append("\"");
+		query.append(",");
+		query.append("\"");
+		query.append(tempName);
+		query.append("\"");
+		query.append(")");
+		
+		try{
+			this.executeStatement(query.toString());
+			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		}
+		
+		
+		
+	}
 	/**
 	 * Return all of the keys in the table
 	 * @return
@@ -236,13 +369,14 @@ public abstract class TemplateModelHandler{
 		query.append(getHeaderQuery());
 		query.append(" FROM ");
 		query.append(this.templateName);
+		query.append("order by displayName");
 		Hashtable table = new Hashtable();
 		try{
 			
 			List list =  this.executeQueryForList(query.toString(),5);
 			
 			for(int i = 0; i < list.size(); i ++){
-			//if(list.size() > 0){
+			
 				String key = 
 					((EFGQueueObjectInterface) list.get(i)).getObject(0);
 				String guid = 
@@ -263,7 +397,7 @@ public abstract class TemplateModelHandler{
 				dop.setDisplayName(displayName);
 				tempObject.setDisplayObject(dop);
 				table.put(key,tempObject);
-			//}
+		
 			}
 			return table;
 		}
@@ -329,7 +463,7 @@ public abstract class TemplateModelHandler{
 		query.append(EFGImportConstants.TEMPLATE_KEY);
 		query.append("=");
 		query.append("\"");
-		query.append(key.toLowerCase());
+		query.append(key);
 		query.append("\"");
 		
 		
