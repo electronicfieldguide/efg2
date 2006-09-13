@@ -234,20 +234,20 @@
 					<xsl:when test="not(string($href))=''">
 						<a href="{$href}">
 							<strong>
-								<xsl:value-of select="concat($captionText, ':')"/>
+								<xsl:value-of select="concat($captionText, '')"/>
 							</strong>
 						</a>
 					</xsl:when>
 					<xsl:otherwise>
 						<strong>
-							<xsl:value-of select="concat($captionText, ':')"/>
+							<xsl:value-of select="concat($captionText, '')"/>
 						</strong>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
 				<strong>
-					<xsl:value-of select="concat($caption, ':')"/>
+					<xsl:value-of select="concat($caption, '')"/>
 				</strong>
 			</xsl:otherwise>
 		</xsl:choose>
