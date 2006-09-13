@@ -53,6 +53,6 @@ public class AboutListener implements ActionListener {
 
 	public void actionPerformed(ActionEvent evt) {
 		AboutBox about = new AboutBox(this.frame);
-		about.show();
+		about.setVisible(true);
 	}
 }

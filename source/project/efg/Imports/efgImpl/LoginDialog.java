@@ -242,7 +242,7 @@ public class LoginDialog extends JDialog {
 				// construct from catalina home
 				//log.debug("Cat home installer: " + catalina_home);
 				LoginDialog dlg = new LoginDialog(null);
-				dlg.show();
+				dlg.setVisible(true);
 				if (dlg.isSuccess()) {
 					String url = EFGImportConstants.EFGProperties.getProperty("dburl");
 					//log.debug("url: " + url);
@@ -251,7 +251,7 @@ public class LoginDialog extends JDialog {
 							dlg.getPassword());
 					menu = new ImportMenu(EFGImportConstants.IMPORT_TITLE, catalina_home,
 							dbObject);
-					menu.show();
+					menu.setVisible(true);
 				}
 				else{
 					releaseLock(lock);

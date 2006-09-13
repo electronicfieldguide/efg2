@@ -223,7 +223,7 @@ public class ImportDialog extends JDialog {
 	private static void createAndShowGUI() {
 		// Create and set up the content pane.
 		ImportDialog newContentPane = new ImportDialog(null);
-		newContentPane.show();
+		newContentPane.setVisible(true);
 		
 	}
 	public static void main(String[] args) {

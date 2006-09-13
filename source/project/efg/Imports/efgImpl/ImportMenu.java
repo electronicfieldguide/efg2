@@ -463,7 +463,7 @@ public class ImportMenu extends JFrame {
 						true, 
 						imagesDirectory);
 			
-				ftb.show();
+				ftb.setVisible(true);
 			} catch (Exception ee) {
 				log.error(ee.getMessage());
 			}
@@ -499,7 +499,7 @@ public class ImportMenu extends JFrame {
 				SynopticKeyTreeMain ftb = new SynopticKeyTreeMain(this.frame,
 						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.title")	
 		, true, this.dbObject);
-				ftb.show();
+				ftb.setVisible(true);
 			} catch (Exception ee) {
 				log.error(ee.getMessage());
 				JOptionPane.showMessageDialog(null, ee.getMessage(),
@@ -577,7 +577,7 @@ public class ImportMenu extends JFrame {
 		 */
 		private void handleInput() {
 	   		AboutBox about = new AboutBox(this.frame);
-    		about.show();		
+    		about.setVisible(true);		
 		}
 
 
@@ -627,7 +627,7 @@ public class ImportMenu extends JFrame {
 	utils.toString();
 	ImportMenu menu = new ImportMenu(EFGImportConstants.IMPORT_TITLE,catHome,
 				null);
-		menu.show();
+		menu.setVisible(true);
 	}
 } // ImportMenu
 

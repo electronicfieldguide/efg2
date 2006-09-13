@@ -88,7 +88,7 @@ public class SynopticTreeInterfaceImpl extends SynopticKeyTreeInterface {
 		obj.setDataName(file);
 
 		ImportDialog newContentPane = new ImportDialog(this.frame);
-		newContentPane.show();
+		newContentPane.setVisible(true);
 		ChoiceCommandAbstract choiceCMD = newContentPane.getChoiceCommand();
 		EFGDatasourceObjectStateInterface state = new NeutralStateObject();
 		if (choiceCMD == null) {
