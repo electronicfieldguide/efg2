@@ -45,6 +45,4 @@ public class LoginModuleFactory {
 		return new project.efg.Imports.rdb.LoginModule();
 	}
 
-	
-
 }

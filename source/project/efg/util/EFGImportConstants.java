@@ -29,7 +29,16 @@ import java.util.regex.Pattern;
  * USA
  */
 public interface EFGImportConstants {
+	
+	
+	String SAMPLE_MEDIA_RESOURCE_FIELD = "SampleMediaResourceFields";
+	String SAMPLE_SEARCHABLE_FIELD = "SampleSearchableFields";
+	String SAMPLE_NEW_DISPLAY_NAME = "EFG2SampleDisplayName";
+	String SAMPLE_LISTS_FIELD = "SampleListFields";
+	String SAMPLE_DATA_LOCATION = "SampleDataLocation";
+	
 	String TEMPLATE_KEY = "EFGKey";
+	
 	
 	
 	
@@ -493,4 +502,8 @@ public interface EFGImportConstants {
 	String SORTING_OFF = "Sorting OFF";
 	String SORTING_ON = "Sorting ON";
 	String TEMPLATE_TABLE = "EFG_TEMPLATE_TABLES";
+	
+	
+	
+	
 }// EFGImportConstants

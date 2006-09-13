@@ -381,7 +381,8 @@ public abstract class TemplateModelHandler{
 		query.append(getHeaderQuery());
 		query.append(" FROM ");
 		query.append(this.templateName);
-		query.append("order by displayName");
+		query.append(" ORDER BY ");
+		query.append(EFGImportConstants.DISPLAY_NAME);
 		Hashtable table = new Hashtable();
 		try{
 			
