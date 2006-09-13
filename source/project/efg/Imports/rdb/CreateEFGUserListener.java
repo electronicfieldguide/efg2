@@ -33,92 +33,67 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import project.efg.Imports.efgImpl.DBObject;
-import project.efg.Imports.efgImpl.LoginDialog;
+import project.efg.Imports.efgImpl.CreateEFGUserDialog;
 import project.efg.Imports.efgInterface.LoginAbstractModule;
 import project.efg.Imports.efgInterface.LoginListenerInterface;
-import project.efg.Imports.factory.LoginModuleFactory;
-import project.efg.util.EFGImportConstants;
 
 
 
-public class LoginListenerImpl implements LoginListenerInterface {
+public class CreateEFGUserListener implements LoginListenerInterface{
 	
-	private LoginDialog dialog;
-	private project.efg.Imports.efgInterface.LoginAbstractModule myLogin;
+	private CreateEFGUserDialog dialog;
+	
 	private int errorCounter = 0;
-	
-	protected static String setUpError_Message =
-		EFGImportConstants.EFGProperties.getProperty("LoginListener.SetUpError_Message");
-
 	static Logger log = null;
 	static {
 		try {
-			log = Logger.getLogger(project.efg.Imports.rdb.LoginListenerImpl.class);
+			log = Logger.getLogger(project.efg.Imports.rdb.CreateEFGUserListener.class);
 		} catch (Exception ee) {
 		}
 	}
 
-	public LoginListenerImpl(LoginDialog dialog) {
+	public CreateEFGUserListener(CreateEFGUserDialog dialog) {
+		
 		this.dialog = dialog;
 		
-		this.myLogin =
-			LoginModuleFactory.getLoginModule();
+		
 			
 	}
-
+	private boolean comparePasswords() {
+		return new String(this.dialog.getPassword()).equals(new String(this.dialog.getConfirmPassword()));
+	}
+	
 	public void actionPerformed(ActionEvent evt) {
-		String m_loginName = this.dialog.getLoginName();	
-		String m_password = new String(this.dialog.getPassword());
-		String url = EFGImportConstants.EFGProperties.getProperty("urltodb");
+		String pwd = new String(this.dialog.getPassword().trim());
+		String cpwd = new String(this.dialog.getConfirmPassword().trim());
 		
-		//factory ?
-		project.efg.Imports.efgImpl.DBObject dbObject = 
-			new DBObject(url, m_loginName,m_password);
-		
-		
-		if(!this.myLogin.login(dbObject)){
+		if((pwd == null) || (pwd.equals("")) ||(cpwd == null)|| (cpwd.equals("")) || (!this.comparePasswords())){
 			if(++this.errorCounter >= LoginAbstractModule.MAX_LOGIN_ATTEMPTS){
 				JOptionPane.showMessageDialog(null, 
 						numberOfAttemptsMessage,
 						"Login Error", JOptionPane.ERROR_MESSAGE);
 				this.dialog.setSuccess(false);
+			
 				
-				
-				System.exit(1);
+				this.dialog.dispose();
 			}
 			else{
 				this.dialog.setPassword("");
-				//this.dialog.setLoginName("");
+				this.dialog.setConfirmPassword("");
+				
 			}
-			
 			JOptionPane.showMessageDialog(null, 
-					loginFailureMessage,
+					createuserFailureMessage,
 					"Login Error", 
 					JOptionPane.ERROR_MESSAGE);
+			this.dialog.setSuccess(false);
 			return;//try again
-		}
-			//		invoke the other
-			if (!runSetUp(dbObject)) {
-				JOptionPane.showMessageDialog(null,
-						setUpError_Message,
-						"Login Error", JOptionPane.ERROR_MESSAGE);
-				this.dialog.setSuccess(false);
 			
-				
-				System.exit(1);
-			}
-			log.info("Set up run successfully");
-		
+		}
+	
 		this.dialog.setSuccess(true);
 		this.dialog.dispose();
 	}
-
-	private boolean runSetUp(DBObject dbObject) {
-		boolean isRun = true;
-		if (!RunSetUp.runSetUp(dbObject)) {
-			isRun = false;
-		} 
-		return isRun;
-	}
+	
+	
 } // LoginListener

@@ -26,10 +26,16 @@
  */
 
 package project.efg.Imports.rdb;
+import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import project.efg.Imports.efgImpl.CreateEFGUserDialog;
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.util.EFGImportConstants;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.apache.log4j.Logger;
 
 
 /**
@@ -46,20 +52,214 @@ public class RunSetUp {
 		}
 	}
 	private static JdbcTemplate jdbcTemplate;
+	
+	private static boolean checkDB(DBObject dbObject) {
+		
+		Object[] obj = getEFGUsers(dbObject);
+		if((obj == null) || (obj.length == 0)){
+			return false;
+		}
+		
+		
+		return true;
+	}
+
+	public static boolean createSuperUser(DBObject db,DBObject superuserInfo){
+		if(superuserInfo == null){
+			return true;
+		}
+		Object[] obj = getEFGUsers(db);
+		checkSuperUser(db,superuserInfo,obj);
+		return true;
+	} 
+	
+	private static boolean createASuperUser(DBObject db, DBObject superuserInfo){
+		if(superuserInfo == null){
+			return true;
+		}
+		
+		StringBuffer queryBuffer = null;
+		try {
+			queryBuffer = new StringBuffer();
+			queryBuffer.append("CREATE USER ");
+			queryBuffer.append(superuserInfo.getUserName());
+			queryBuffer.append(" IDENTIFIED BY '");
+			queryBuffer.append(superuserInfo.getPassword());
+			queryBuffer.append("'");
+			if(jdbcTemplate == null){
+				jdbcTemplate=
+					EFGRDBImportUtils.getJDBCTemplate(db);
+			}
+			jdbcTemplate.execute(queryBuffer.toString());
+			
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+			
+			return false;
+		}
+		
+		try{
+			queryBuffer = new StringBuffer();
+			
+			queryBuffer.append(EFGImportConstants.EFGProperties.getProperty("grantsuperusermysqlcmd"));
+			queryBuffer.append( " " );
+			queryBuffer.append(superuserInfo.getUserName());
+			if(jdbcTemplate == null){
+				jdbcTemplate=
+					EFGRDBImportUtils.getJDBCTemplate(db);
+			}
+			jdbcTemplate.execute(queryBuffer.toString());
+			
+			queryBuffer = new StringBuffer();
+			queryBuffer.append(EFGImportConstants.EFGProperties.getProperty("grantsuperusercmd"));
+			queryBuffer.append( " " );
+			queryBuffer.append(superuserInfo.getUserName());
+			queryBuffer.append(" WITH GRANT OPTION ");
+			
+			if(jdbcTemplate == null){
+				jdbcTemplate=
+					EFGRDBImportUtils.getJDBCTemplate(db);
+			}
+			jdbcTemplate.execute(queryBuffer.toString());
+		}
+		catch (Exception ee) {
+			log.error(ee.getMessage());
+			return false;
+		
+		}
+		return true;
+	} 
+	
+	public  static Object[] getEFGUsers(DBObject db) {
+		try{
+			
+			
+			if(jdbcTemplate == null){
+				jdbcTemplate=
+					EFGRDBImportUtils.getJDBCTemplate(db);
+			}
+			StringBuffer queryBuffer = new StringBuffer();
+			
+			queryBuffer.append("SELECT User FROM MYSQL.DB WHERE DB='efg'");
+			 
+			List list = jdbcTemplate.queryForList(queryBuffer.toString(), String.class);
+			if(list != null){
+				list.remove("efg");
+				list.remove("root");
+				return list.toArray();
+			}
+		}
+		catch (Exception ee) {
+			log.error(ee.getMessage());
+			
+			JOptionPane.showMessageDialog(null, ee.getMessage(), "Error Message",
+			JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
+	}
+	public  static void deleteSuperUser(DBObject db, String userName) {
+		try{
+			
+			if(jdbcTemplate == null){
+				jdbcTemplate=
+					EFGRDBImportUtils.getJDBCTemplate(db);
+			}
+			StringBuffer queryBuffer = new StringBuffer();
+			
+			queryBuffer.append("DROP USER '");
+			queryBuffer.append(userName);
+			queryBuffer.append( "'");
+			jdbcTemplate.execute(queryBuffer.toString());
+			String message = "The user : '" + userName + 
+			"' \n successfully deleted from system!!";
+			JOptionPane.showMessageDialog(null, message, "Success Message",
+			JOptionPane.INFORMATION_MESSAGE);
+			
+		}
+		catch (Exception ee) {
+			log.error(ee.getMessage());
+			String message = "The user : '" + userName + 
+			"' \n could not be deleted due to an error. Consult log file for error message";
+			JOptionPane.showMessageDialog(null, message, "Error Message",
+			JOptionPane.ERROR_MESSAGE);
+		}
+	}
+private static DBObject getSuperUser() {
+		
+		CreateEFGUserDialog dialog = new CreateEFGUserDialog(null);
+		dialog.setVisible(true);
+		
+		
+		if(dialog.isSuccess()){
+			DBObject db = dialog.getDbObject();
+			dialog.dispose();
+			return db;
+		}
+		
+		
+		return null;
+	}
+	private static void checkSuperUser(DBObject dbObject,DBObject superuserInfo,Object[] obj) {
+		
+		if(superuserInfo == null){
+		 superuserInfo = getSuperUser();
+		}
+		
+		
+		if(superuserInfo != null){
+			if(obj != null && obj.length > 0){
+				int i = 0;
+				boolean found = false;
+				while(i < obj.length){
+					String str = (String)obj[i];
+					if(str.equalsIgnoreCase(superuserInfo.getUserName())){
+						found = true;
+						break;
+					}
+					++i;
+				}
+				if(found){
+					JOptionPane.showMessageDialog(null,
+							"User name already existss. Please create a new one", 
+							"User already Exists",
+						    JOptionPane.WARNING_MESSAGE);
+					checkSuperUser(dbObject,null,obj);
+				}
+				else{
+					createASuperUser(dbObject,superuserInfo);
+				}
+			}
+			else{
+				createASuperUser(dbObject,superuserInfo);
+			}
+		}
+	
+	}
 	/**
 	 * 
 	 * @param dbObject - contains enough information to connect to database
 	 * @return true if connection to database was successfully made, false otherwise
+	 * Run setup only if there is no user called efg
 	 */
 	public synchronized static boolean runSetUp(DBObject dbObject) {
 		//create efg database, users etc in main database
-	
+	if(checkDB(dbObject)){
+		return true;
+	}
+	if(jdbcTemplate == null){
 		jdbcTemplate=
 			EFGRDBImportUtils.getJDBCTemplate(dbObject);
-	
+	}
+		//invoke the other login
+		// if user chooses cancel warn user and ask if they will like to return
+		//if no continue with null
+		//if yes show it again
 		
+		
+		//create a super user command
+		String query = null;
 		// read from properties file
-		String query = EFGImportConstants.EFGProperties.getProperty("createdatabasecmd");
+		query = EFGImportConstants.EFGProperties.getProperty("createdatabasecmd");
 		try {
 			jdbcTemplate.execute(query);
 			
@@ -68,6 +268,17 @@ public class RunSetUp {
 			
 			return false;
 		}
+		//load sample data
+		LoadSampleData sampleData = new LoadSampleData(dbObject);
+		sampleData.loadData();
+		if(sampleData.isError()){
+			JOptionPane.showMessageDialog(null, "Error in Loading Sample Data. View logs for more details", "Error in Loading Sample Data",
+					JOptionPane.ERROR_MESSAGE);
+		}
+		
+	
+		Object[] obj = getEFGUsers(dbObject);
+		checkSuperUser(dbObject,null,obj);
 		try{
 			query = EFGImportConstants.EFGProperties.getProperty("createusercmd");
 			jdbcTemplate.execute(query);
@@ -84,12 +295,15 @@ public class RunSetUp {
 			log.error(ee.getMessage());
 		
 		}
-	
+		
 		return true;
 	}
 
 }
 // $Log$
+// Revision 1.1.2.4  2006/09/13 17:11:11  kasiedu
+// no message
+//
 // Revision 1.1.2.3  2006/09/10 12:02:28  kasiedu
 // no message
 //

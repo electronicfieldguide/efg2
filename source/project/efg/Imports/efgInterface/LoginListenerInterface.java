@@ -28,6 +28,8 @@ package project.efg.Imports.efgInterface;
 
 import java.awt.event.ActionListener;
 
+import project.efg.util.EFGImportConstants;
+
 /**
  * LoginAbstractListener.java $Id: LoginAbstractListener.java,v 1.1 2006/02/25
  * 13:16:20 kasiedu Exp $
@@ -41,5 +43,13 @@ import java.awt.event.ActionListener;
  * Implemented classes should override actionPerformed
  */
 public interface LoginListenerInterface extends ActionListener {
+	String loginFailureMessage =
+		EFGImportConstants.EFGProperties.getProperty("LoginListener.LoginFailure_Message");
 	
+	String createuserFailureMessage =
+		EFGImportConstants.EFGProperties.getProperty("CreateUserListener.LoginFailure_Message");
+	
+	String numberOfAttemptsMessage = 
+		EFGImportConstants.EFGProperties.getProperty("LoginListener.NumberOfAttemptsMessage");
+
 }

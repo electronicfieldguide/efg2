@@ -58,6 +58,7 @@ import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.efgInterface.EFGWebAppsDirectoryInterface;
 import project.efg.Imports.factory.EFGWebAppsDirectoryFactory;
+import project.efg.Imports.rdb.RunSetUp;
 import project.efg.util.DnDFileBrowserMain;
 import project.efg.util.EFGImportConstants;
 
@@ -110,6 +111,11 @@ public class ImportMenu extends JFrame {
 		this(title, catalina_home, null);
 
 	}
+	public void close() {
+		this.dispose();
+		System.exit(0);
+	}
+
 	public  static GeneralCacheAdministrator getCacheAdmin(){
 		if(cacheAdmin == null){
 			cacheAdmin = new GeneralCacheAdministrator();
@@ -178,6 +184,20 @@ public class ImportMenu extends JFrame {
 		deployImagesBtn.addActionListener(new DeployImagesListener(
 				webappsDirectory.getImagesDirectory(), this));
 
+		JButton efgUserBtn =
+			new JButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.efgUserBtn"));
+		efgUserBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.efgUserBtn.tooltipText"));
+		efgUserBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		efgUserBtn.addActionListener(new CreateUserListener(
+				this.dbObject, this));
+		
+		JButton deleteEfgUserBtn =
+			new JButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deleteEFGUserBtn"));
+		deleteEfgUserBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.deleteEFGUserBtn.tooltipText"));
+		deleteEfgUserBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		deleteEfgUserBtn.addActionListener(new DeleteUserListener(
+				this.dbObject, this));
+		
 		JButton helpBtn = new JButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn"));
 		helpBtn.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn.tooltip"));
 		helpBtn.setHorizontalAlignment(SwingConstants.CENTER);
@@ -199,6 +219,8 @@ public class ImportMenu extends JFrame {
     	
     	selection.add(addNewDatasourceBtn);
     	selection.add(deployImagesBtn);
+    	selection.add(efgUserBtn);
+    	selection.add(deleteEfgUserBtn);
     	selection.add(helpBtn);
     	selection.add(aboutBtn);
     	selection.add(exitBtn);
@@ -268,11 +290,151 @@ public class ImportMenu extends JFrame {
 		return panel;
 	}*/
 
-	public void close() {
-		this.dispose();
-		System.exit(0);
-	}
+	/**
+	 * @author kasiedu
+	 *
+	 */
+	public class CreateUserListener implements ActionListener {
+	
+		private DBObject dbObject;
+		private JFrame frame;
 
+
+		/**
+		 * 
+		 */
+		public CreateUserListener(DBObject dbObject, 
+				JFrame frame) {
+			this.dbObject = dbObject;
+			this.frame = frame;
+		}
+		private void handleInput(){
+			try {
+				if (this.dbObject == null) {
+					StringBuffer buffer = new StringBuffer(
+						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
+						"\n");
+					buffer
+							.append(EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
+							"\n");
+					JOptionPane.showMessageDialog(null, buffer.toString(),
+							"Error Message", JOptionPane.ERROR_MESSAGE);
+					log.error(buffer.toString());
+					return;
+				}
+				
+				DBObject superuserInfo = null;
+				CreateEFGUserDialog dialog = new CreateEFGUserDialog(this.frame);
+				dialog.setVisible(true);
+				
+				
+				if(dialog.isSuccess()){
+					superuserInfo = dialog.getDbObject();
+						
+				}
+				dialog.dispose();
+				if(superuserInfo != null){
+					RunSetUp.createSuperUser(dbObject,superuserInfo);
+				}
+			
+			} catch (Exception ee) {
+				log.error(ee.getMessage());
+				JOptionPane.showMessageDialog(null, ee.getMessage(),
+						"Error Message", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
+		
+		
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			 this.handleInput();
+			
+			
+		}
+	
+	}
+	public class DeleteUserListener implements ActionListener {
+		
+		private DBObject dbObject;
+		private JFrame frame;
+
+
+		/**
+		 * 
+		 */
+		public DeleteUserListener(DBObject dbObject, 
+				JFrame frame) {
+			this.dbObject = dbObject;
+			this.frame = frame;
+		}
+		private void handleInput(){
+			try {
+				if (this.dbObject == null) {
+					StringBuffer buffer = new StringBuffer(
+						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
+						"\n");
+					buffer
+							.append(EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
+							"\n");
+					JOptionPane.showMessageDialog(this.frame, buffer.toString(),
+							"Error Message", JOptionPane.ERROR_MESSAGE);
+					log.error(buffer.toString());
+					return;
+				}
+				
+				deleteUser();
+			
+			} catch (Exception ee) {
+				log.error(ee.getMessage());
+				JOptionPane.showMessageDialog(this.frame, ee.getMessage(),
+						"Error Message", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+		}
+		
+		
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			 this.handleInput();
+			
+			
+		}
+		private void deleteUser(){
+			
+			Object[] possibilities = getUsers();
+			String userName = null;
+			if((possibilities == null) || (possibilities.length == 0)){
+				JOptionPane.showMessageDialog(this.frame, "No EFG users exists", "Message",
+						JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
+			
+			userName = (String)JOptionPane.showInputDialog(
+                    this.frame,
+                    "Select User Name To Delete:",
+                    "Delete a User",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    possibilities,
+                    possibilities[0].toString());
+			if ((userName!= null) && (userName.trim().length() > 0)) {
+			  RunSetUp.deleteSuperUser(this.dbObject,userName);
+			}
+			return ;
+		}
+		/**
+		 * @return
+		 */
+		private Object[] getUsers() {
+			return RunSetUp.getEFGUsers(this.dbObject);
+		}
+	}
 	class DeployImagesListener implements ActionListener {
 		private String imagesDirectory;
 

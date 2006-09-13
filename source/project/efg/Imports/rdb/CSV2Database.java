@@ -171,6 +171,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						// generated
 						log
 								.error("Table name must not be null or the empty string!!!");
+						this.dataExtractor.close(); 
 						return false;
 					}
 					if ((this.getDisplayName() == null)
@@ -198,6 +199,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 											+ this.datasource.getDataName()
 													.toString());
 							this.txManager.rollback(status);
+							this.dataExtractor.close(); 
 							return false;
 						}
 						String[] fieldNames = this.getDataTableHeaders();
@@ -320,15 +322,17 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						+ " could not be imported successfully. \n");
 				log
 						.error("Please view the logs for more verbose error messages!!!");
-
+				this.dataExtractor.close(); 
 				return false;
 			}
 
 		} catch (Exception ex) {
 			txManager.rollback(status);
+			this.dataExtractor.close(); 
 			return false;
 		}
 		txManager.commit(status);
+		this.dataExtractor.close(); 
 		return isSuccess;
 	}
 

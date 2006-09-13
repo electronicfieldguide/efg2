@@ -123,6 +123,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 			//use a factory?
 			this.lcsvp =(LabeledCSVParser)CSVParserFactory.getCSVParser(csvFileName,
 					delimiter);
+			
 		} catch (Exception ee) {
 			//log.error(ee.getMessage());
 		}
@@ -265,6 +266,22 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		while (currentValues != null) {
 			printLine(currentValues);
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see project.efg.Imports.efgInterface.EFGDataExtractorInterface#close()
+	 */
+	public void close() {
+		try{
+			if(this.lcsvp != null){
+			
+				this.lcsvp.close();
+			}
+		}
+		catch(Exception ee){
+			
+		}
+		
 	}
 
 }

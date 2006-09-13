@@ -82,4 +82,6 @@ public interface EFGDataExtractorInterface {
 	 * @return the number of coumns in this object
 	 */
 	public int getNumberOfColumns(); 
+	
+	public void close();
 }

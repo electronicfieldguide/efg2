@@ -17,13 +17,11 @@
 package project.efg.Imports.efgImpl;
 
 import java.awt.BorderLayout;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileChannel;
@@ -32,6 +30,7 @@ import java.nio.channels.FileLock;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -44,11 +43,10 @@ import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
 
-import project.efg.Imports.efgInterface.LoginListenerInterface;
-import project.efg.util.EFGImportConstants;
-
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
+import project.efg.Imports.efgInterface.LoginListenerInterface;
 import project.efg.Imports.factory.LoginListenerFactory;
+import project.efg.util.EFGImportConstants;
 
 /**
  * Dialog to login to the system.
@@ -56,11 +54,11 @@ import project.efg.Imports.factory.LoginListenerFactory;
 public class LoginDialog extends JDialog {
 	static final long serialVersionUID = 1;
 
-	private JTextField m_loginNameBox;
+	protected JTextField m_loginNameBox;
 
-	private JPasswordField m_passwordBox;
+	protected JPasswordField m_passwordBox;
 
-	private boolean isSuccess = false;
+	protected boolean isSuccess = false;
 
 	static Logger log = null;
 	static String instance_Message =null;
@@ -82,18 +80,32 @@ public class LoginDialog extends JDialog {
 		} catch (Exception ee) {
 		}
 	}
-
+	public LoginDialog(JFrame parent,String title, boolean bool) {
+		super(parent, "Login", true);
+		
+	}
 	/**
 	 * Constructor.
 	 */
-	public LoginDialog(Frame parent) {
+	public LoginDialog(JFrame parent) {
 		super(parent, "Login", true);
-		// setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				dispose();
-			}
-		});
+		
+		
+		
+		getContentPane().add(addPanel(), BorderLayout.CENTER);
+		pack();
+		setResizable(false);
+		setLocationRelativeTo(parent);
+	}
+	public JPanel addPanel(){
+		this.setDefaultCloseOperation(
+			    JDialog.DO_NOTHING_ON_CLOSE);
+			this.addWindowListener(new WindowAdapter() {
+			    public void windowClosing(WindowEvent we) {
+			       closeDialog();
+			    }
+			});
+		
 		JPanel pp = new JPanel(new EFGDialogLayout());
 		pp.setBorder(new CompoundBorder(new EtchedBorder(EtchedBorder.RAISED),
 				new EmptyBorder(5, 5, 5, 5)));
@@ -123,7 +135,7 @@ public class LoginDialog extends JDialog {
 
 		ActionListener lst = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				dispose();
+				closeDialog();
 			}
 		};
 		cancelButton.addActionListener(lst);
@@ -131,13 +143,11 @@ public class LoginDialog extends JDialog {
 				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0),
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
 		p.add(cancelButton);
-
-		getContentPane().add(p, BorderLayout.CENTER);
-		pack();
-		setResizable(false);
-		setLocationRelativeTo(parent);
+		return p;
 	}
-
+	public final void closeDialog(){
+		this.dispose();
+	}
 	public String getLoginName() {
 		return m_loginNameBox.getText();
 	}
@@ -145,9 +155,19 @@ public class LoginDialog extends JDialog {
 		this.m_loginNameBox.setText(login);
 	}
 	public String getPassword() {
+		if(m_passwordBox.getPassword() == null){
+			return null;
+		}
 		return new String(m_passwordBox.getPassword());
 	}
 	public void setPassword(String password){
+		if(password == null){
+			log.error("password cannot be null");
+			JOptionPane.showMessageDialog(null, 
+					"Password cannot be null",
+					"Login Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		this.m_passwordBox.setText(password);
 	}
 
