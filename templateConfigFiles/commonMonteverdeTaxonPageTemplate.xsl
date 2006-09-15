@@ -13,11 +13,20 @@
 			<xsl:for-each select="$imagesGroup/characterValue">
 				<xsl:sort select="@rank" data-type="number"/>
 				<xsl:variable name="fieldName" select="@value"/>
+					<xsl:variable name="caption">
+					<xsl:choose>
+						<xsl:when test="not(@text)=''">
+						<xsl:value-of select="@text"/>
+						
+						</xsl:when><xsl:otherwise><xsl:value-of select="$fieldName"/></xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
 				<xsl:call-template name="populateImageList">
 					<xsl:with-param name="mediaresources" select="$taxonEntry/MediaResources[@name=$fieldName]"/>
 					<xsl:with-param name="myImageList" select="$myImageList"/>
-					<xsl:with-param name="caption" select="@text"/>
+					<xsl:with-param name="caption" select="$caption"/>
 				</xsl:call-template>
+			
 			</xsl:for-each>
 			<table border="0" cellspacing="5">
 				<xsl:variable name="index" select="number('0')"/>
