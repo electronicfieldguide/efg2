@@ -24,7 +24,8 @@ import org.apache.log4j.Logger;
  * @author kasiedu
  *
  */
-public class CreateThumbNailsThread extends SwingWorker implements EFGImportConstants,WindowListener{
+public class CreateThumbNailsThread extends SwingWorker 
+implements EFGImportConstants,WindowListener{
 	static Logger log;
 	static {
 		try {
@@ -141,22 +142,24 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 				JOptionPane.INFORMATION_MESSAGE);
 		FileNode root = (FileNode)((DefaultTreeModel)this.browser.getModel()).getRoot();
 
-		if(this.destNode != null){
+		if(this.destNode != null){	
 			
 			if(this.destNode.getParent() != null){
+			
+				
 				int rows[] = this.browser.getSelectionRows();
-				
-				((DefaultTreeModel)this.browser.getModel()).reload((FileNode)this.destNode.getParent());
-				
-				if(rows != null){
-					  this.browser.expandRow(rows[0]);
-				}
+				int row = rows[0];
+				FileNode selPath = (FileNode)this.browser.getSelectionPath().getLastPathComponent();
+				((DefaultTreeModel)this.browser.getModel()).reload(selPath.getParent());
+				this.browser.expandRow(row);
 			}
 			else{
+				
 				((DefaultTreeModel)this.browser.getModel()).reload();//(root);
 			}
 		}
 		else{
+			
 			if(root.getChildCount() > 0){
 				this.browser.expandRow(1);
 			}

@@ -101,21 +101,13 @@ public EFGCopyFilesThread(DnDFileBrowser browser,List objectsToDrop, JProgressBa
 		}
 			//Toolkit.getDefaultToolkit().beep();
 		this.progressBar.setValue(0);
-		CreateThumbNailsThread thumbsThread = new CreateThumbNailsThread(this.browser,this.objectsToDrop);
-		
-			thumbsThread.start();
+		CreateThumbNailsThread thumbsThread = 
+			new CreateThumbNailsThread(this.browser,this.objectsToDrop);
+		thumbsThread.start();
 	    isDone = true;
 		this.frame.dispose();
 		this.browser.setVisible(true);
-	/*	if(this.destNode != null){
-			((DefaultTreeModel)this.browser.getModel()).reload(this.destNode);
-			FileNode root = (FileNode)((DefaultTreeModel)this.browser.getModel()).getRoot();
-			int rowIndex = root.getIndex(this.destNode);
-			this.browser.expandRow(rowIndex);
-		}
-		else{
-			((DefaultTreeModel)this.browser.getModel()).reload();
-		}*/
+
 		return null;
 	}
 	

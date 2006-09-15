@@ -240,6 +240,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				if(objectsToDrop.size() > 0){
 				    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
 				      copyFiles.start();
+				      copyOverExistingFiles = false;
 					}
 					
 			} else if (tr.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
@@ -264,6 +265,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				if(objectsToDrop.size() > 0){
 			    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
 			      copyFiles.start();
+			      copyOverExistingFiles = false;
 				}
 				
 
@@ -460,22 +462,27 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 			
 				return null;
 			} else if (newFile.exists()) {//if the new file already exists ask before overwriting it
+				if (!copyOverExistingFiles) {
 				int res = overWrite(srcFileName,destFile);
 				boolean isReturn = true;
-				if (!copyOverExistingFiles) {
+				
 					switch (res) {
 					case 1: // Yes to all
 						copyOverExistingFiles = true;
+					
 						isReturn = false;
 						break;
 					case 0: // Yes
 						copyOverExistingFiles = false;
+						
 						isReturn = false;
 						break;
 					case 2: // No
 						copyOverExistingFiles = false;
+						
 						break;
 					default: // Cancel
+						
 						copyOverExistingFiles = false;
 						break;
 					}

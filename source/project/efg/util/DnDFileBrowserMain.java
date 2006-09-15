@@ -26,7 +26,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.ToolTipManager;
+//import javax.swing.ToolTipManager;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -100,12 +100,12 @@ public class DnDFileBrowserMain extends JDialog {
 		this.setTitle("Drag and Drop Image Folders here");
 	
 		
-		ToolTipManager.sharedInstance().setInitialDelay(0);
+		//ToolTipManager.sharedInstance().setInitialDelay(0);
 		this.setModal(true);
 
 		imageView = addImagePanel();
 		htmlPane = new JEditorPane();
-		ToolTipManager.sharedInstance().registerComponent(htmlPane);
+		//ToolTipManager.sharedInstance().registerComponent(htmlPane);
 		htmlPane.setContentType("text/html");
 		htmlPane.setEditable(false);
 	
@@ -114,7 +114,7 @@ public class DnDFileBrowserMain extends JDialog {
 		this.browser = DnDFileBrowser.getFileBrowser(imagesDirectory,
 				progressBar);
 		this.browser.setRootVisible(false);
-		ToolTipManager.sharedInstance().registerComponent(this.browser);
+		//ToolTipManager.sharedInstance().registerComponent(this.browser);
 
 		this.browser.addTreeSelectionListener(new FileTreeSelectionListener(
 				this.browser));

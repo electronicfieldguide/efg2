@@ -502,6 +502,9 @@ public interface EFGImportConstants {
 	String SORTING_OFF = "Sorting OFF";
 	String SORTING_ON = "Sorting ON";
 	String TEMPLATE_TABLE = "EFG_TEMPLATE_TABLES";
+	String WEB_APPS = "webapps";
+	String ILLEGALCHARACTER_STRING = "illegalCharacters";
+	String ILLEGAL_CHAR_APPENDER ="illegalCharacters";
 	
 	
 	
