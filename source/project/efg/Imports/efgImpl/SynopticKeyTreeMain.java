@@ -60,6 +60,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
+import project.efg.Imports.efgInterface.CheckListener;
 import project.efg.Imports.efgInterface.DataManipulatorInterface;
 import project.efg.Imports.efgInterface.SynopticKeyTreeInterface;
 import project.efg.Imports.factory.DataManipulatorFactory;
@@ -132,6 +133,36 @@ public class SynopticKeyTreeMain extends JDialog {
 	private void addMenus(){
 		JMenu fileMenu = new JMenu("File");
 		JMenu helpMenu = new JMenu("Help");
+		
+		
+		JMenu checkMenu = new JMenu("Check Data For Errors");
+		//sub menus
+		JMenuItem checkMediaMenu = new JMenuItem("Check Images");
+		checkMediaMenu.setToolTipText("Check if images in data exists on server");
+		checkMediaMenu.addActionListener(
+				new CheckListener(
+				this.dbObject,
+				this.tree, 
+				EFGImportConstants.MEDIARESOURCE));
+		
+		
+		checkMenu.add(checkMediaMenu);
+		JMenuItem checkIllegalCharactersMenu = new JMenuItem("Check IllegalCharacters");
+		checkIllegalCharactersMenu.setToolTipText("Check if illegal characters exists in data");
+		checkIllegalCharactersMenu.addActionListener(
+				new CheckListener(
+				this.dbObject,
+				this.tree, 
+				EFGImportConstants.ILLEGALCHARACTER_STRING));
+		//checkMenu.add(checkIllegalCharactersMenu);
+		
+		fileMenu.add(checkMenu);
+		
+		
+	
+		
+		
+		
 		JMenuItem closeMenu = new JMenuItem("Close");
 		JMenuItem helpItem = new JMenuItem("Help Contents");
 		helpItem.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.KEYTREE_DEPLOY_HELP));
@@ -346,6 +377,7 @@ public class SynopticKeyTreeMain extends JDialog {
 
 		public DoneListener(SynopticKeyTreeMain treeBrowser) {
 			this.treeBrowser = treeBrowser;
+			
 		}
 
 		public void actionPerformed(ActionEvent evt) {

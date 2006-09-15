@@ -17,9 +17,7 @@ project.efg.util.EFGDocumentSorter,
 project.efg.util.EFGListTypeSorter,
 project.efg.util.EFGTypeSorter,
 project.efg.util.MediaResourceTypeSorter,
-project.efg.util.StatisticalMeasureTypeSorter,
-java.util.Set,
-java.util.TreeSet
+project.efg.util.StatisticalMeasureTypeSorter
 " %>
 
 <% 
@@ -29,11 +27,13 @@ java.util.TreeSet
    String context = request.getContextPath();
   
    EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
-   EFGDataObjectListInterface searchables = dsHelper.getSearchable(displayName,datasourceName);	
+   EFGDataObjectListInterface doSearches = dsHelper.getSearchable(displayName,datasourceName);	
    if(datasourceName == null){
-	datasourceName=searchables.getDatasourceName();		
+	datasourceName=doSearches.getDatasourceName();		
    }
-
+EFGDocumentSorter sorter = null;
+	Iterator itemsIter = null;
+EFGType item = null;
 //taxonomy  
 String genus=null;
 ItemsType genusItems = null;
@@ -73,13 +73,16 @@ ItemsType flowerColorItems = null;
    String fruitColor = null;
 ItemsType fruitColorItems = null;
 
-
-  for(int s = 0 ; s < searchables.getEFGDataObjectCount(); s++){
-	EFGDataObject searchable = searchables.getEFGDataObject(s);
+for(int s = 0 ; s < doSearches.getEFGDataObjectCount(); s++){
+			EFGDataObject searchable = doSearches.getEFGDataObject(s);
 	   		
-	String fieldName =searchable.getName();
-	String legalName = searchable.getLegalName();
-	ItemsType items = searchable.getStates();
+		 	String fieldName =searchable.getName();
+			String legalName = searchable.getLegalName();
+			
+		
+			ItemsType items = searchable.getStates();
+		
+
 
 	if(fieldName.equalsIgnoreCase("Genus")){
 		genus = legalName;
@@ -132,7 +135,10 @@ ItemsType fruitColorItems = null;
 	
 
 }
-
+//1) Growth Form and Flowers
+//2) Leaves
+//3) Taxonomy
+//4) Degree of Invasiveness
 %>
 <html>
   <head>
@@ -237,7 +243,7 @@ function toggleMax(field,idVar){
 					</select>
 				</span>
 				<span class="matches">Maximum Matches:
-					<input type="text" size="4" id="firstMatch" name="maxDisplay" value="20" 
+					<input type="text" size="4" id="firstMatch" name="maxDisplay" value="70" 
 						onchange="toggleMax(this,'lastMatch');" 
 						onkeyup="toggleMax(this,'lastMatch');"/>
 				</span>
@@ -251,235 +257,6 @@ function toggleMax(field,idVar){
 		</tr>
 	 </table>
        <table>
-		<tr>
-			<th>
-		  		Taxonomy
-		  	</th>
-		 </tr>
-		 <tr>
-		  	<td class="paddertopleft"></td>
-		  	<td class="paddertopright"></td>
-		  </tr>
-          	<tr>
-            	<td class="sectionleft" align="right">Genus:</td>
-            	<td class="sectionright">
-              		<select multiple name="<%=genus%>" size="5" onchange="evalAnySelectedValue(this);">
-                			<option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                			<% EFGType item =null;
-						Set set = new TreeSet(new EFGTypeComparator());
-			 for (int i=0; i < genusItems.getItemCount(); i++ ) {
- 				item = genusItems.getItem(i); 
-				set.add(item);
-			  }
-			  Iterator iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-              </select>
-            </td>
-          </tr>
-          <tr class="section">
-            <td class="sectionleft" align="right">Family:</td>
-            <td class="sectionright">
-              <select multiple name="<%=family%>" size="5" onchange="evalAnySelectedValue(this);">
-                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%
-			set = new TreeSet(new EFGTypeComparator()); 
-			 item =null;
-
-			 for (int i=0; i < familyItems.getItemCount(); i++ ) {
- 				item = familyItems.getItem(i); 
-		      set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-              </select>
-            </td>
-          </tr>
-          
-          <tr class="section">
-            <td class="sectionleft" align="right">Common Name:</td>
-            <td class="sectionright">
-              <select multiple name="<%=commonName%>" size="5" onchange="evalAnySelectedValue(this);">
-                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-			 item =null;
-			 for (int i=0; i < commonNameItems.getItemCount(); i++ ) {
- 				item = commonNameItems.getItem(i); 
-		       	set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-              </select>
-            </td>
-          </tr>
- 	    <tr class="section">
-            <td class="sectionleft" align="right">Origin:</td>
-            <td class="sectionright">
-              <select multiple name="<%=origin%>" size="5" onchange="evalAnySelectedValue(this);">
-                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-			   item = null;
-			 for (int i=0; i < originItems.getItemCount(); i++ ) {
- 				item = originItems.getItem(i); 
-		       set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-              </select>
-            </td>
-          </tr>
-
-		  <tr>
-		  <td class="padderbottomleft"></td>
-		  <td class="padderbottomright"></td>
-		  </tr>
-		  <tr>
-		  <td class="spacer"></td>
-		  </tr>
-		  <tr>
-		  <th>
-		  Degree of Invasiveness
-		  </th>
-		  </tr>
-		  <tr>
-		  <td class="paddertopleft"></td>
-		  <td class="paddertopright"></td>
-		  </tr>
-          <tr>
-            <td class="sectionleft" align="right">On Nantucket:</td>
-            <td class="sectionright">
-             <select multiple name="<%=degInvNan%>" size="4" onchange="evalAnySelectedValue(this);">
-                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-				 item =null;
-			 for (int i=0; i < degInvNanItems.getItemCount(); i++ ) {
- 				item = degInvNanItems.getItem(i); 
-		            set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-              </select>
-
-            </td>
-          </tr>
-          <tr>
-            <td class="sectionleft" align="right">In Massachusetts:</td>
-            <td class="sectionright">
-              <select multiple name="<%=degInvMass%>" size="4" onchange="evalAnySelectedValue(this);">
-                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-			   item = null;
-
-			 for (int i=0; i < degInvMassItems.getItemCount(); i++ ) {
- 				item = degInvMassItems.getItem(i); 
-		       	set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-
-              </select>
-
-            </td>
-          </tr>
-  		<tr>
-            <td class="sectionleft" align="right">Dispersal Vectors:</td>
-            <td class="sectionright">
-              <select multiple name="<%=dispersal%>" size="4" onchange="evalAnySelectedValue(this);">
-                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-				 item = null;
-
-			 for (int i=0; i < dispersalItems.getItemCount(); i++ ) {
- 				item = dispersalItems.getItem(i); 
-		      	set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-              </select>
-
-            </td>
-          </tr>
-		<tr>
-            <td class="sectionleft" align="right">Type of Reproduction:</td>
-            <td class="sectionright">
-              <select multiple name="<%=reproduction%>" size="4" onchange="evalAnySelectedValue(this);">
-                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                <%  set = new TreeSet(new EFGTypeComparator());
-			 item = null;
-			 for (int i=0; i < reproductionItems.getItemCount(); i++ ) {
- 				 item = reproductionItems.getItem(i); 
-		     set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
-		        %>
-                    <option><%=item.getContent()%>
-                   <% 
-			} 
-			%>
-
-
-              </select>
-
-            </td>
-          </tr>
-
-		  <tr>
-		  <td class="padderbottomleft"></td>
-		  <td class="padderbottomright"></td>
-		  </tr>
-		  <tr>
-		  <td class="spacer"></td>
-		  </tr>
 		  <tr>
 		  <th>
 		  Growth Form and Flowers
@@ -494,16 +271,15 @@ function toggleMax(field,idVar){
             <td class="sectionright">
               <select multiple name="<%=growthForm%>" size="4" onchange="evalAnySelectedValue(this);">
                 <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-			   item = null;
 
-			  for (int i=0; i < growthFormItems.getItemCount(); i++ ) {
- 				item = growthFormItems.getItem(i); 
-		      	set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),growthFormItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
 		        %>
                     <option><%=item.getContent()%>
                    <% 
@@ -519,22 +295,21 @@ function toggleMax(field,idVar){
             <td class="sectionright">
               <select multiple name="<%=flowerColor%>" size="4" onchange="evalAnySelectedValue(this);">
                 <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-			 item = null;
+ 
 
-			 for (int i=0; i < flowerColorItems.getItemCount(); i++ ) {
- 				item = flowerColorItems.getItem(i); 
-		      	set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),flowerColorItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
 		        %>
                     <option><%=item.getContent()%>
                    <% 
 			} 
 			%>
-
 
               </select>
             </td>
@@ -544,22 +319,20 @@ function toggleMax(field,idVar){
             <td class="sectionright">
               <select multiple name="<%=petalNumber%>" size="4" onchange="evalAnySelectedValue(this);">
                 <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
-                 <%  set = new TreeSet(new EFGTypeComparator());
-			 item = null;
 
-			 for (int i=0; i < petalNumberItems.getItemCount(); i++ ) {
- 				item = petalNumberItems.getItem(i); 
-		      	set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),petalNumberItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
 		        %>
                     <option><%=item.getContent()%>
                    <% 
 			} 
 			%>
-
 
               </select>
             </td>
@@ -570,15 +343,15 @@ function toggleMax(field,idVar){
               <select multiple name="<%=fruitColor%>" size="4" onchange="evalAnySelectedValue(this);">
                 <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
               
-                 <%  set = new TreeSet(new EFGTypeComparator());
-				 item = null;
-			 for (int i=0; i < fruitColorItems.getItemCount(); i++ ) {
- 				 item = fruitColorItems.getItem(i); 
-		       set.add(item);
-			  }
-			   iter = set.iterator();
-			  while(iter.hasNext()){
-                      item = (EFGType)iter.next();
+
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),fruitColorItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
 		        %>
                     <option><%=item.getContent()%>
                    <% 
@@ -850,6 +623,225 @@ function toggleMax(field,idVar){
 		  </tr>
             </td>
           </tr>
+          		<tr>
+			<th>
+		  		Taxonomy
+		  	</th>
+		 </tr>
+		 <tr>
+		  	<td class="paddertopleft"></td>
+		  	<td class="paddertopright"></td>
+		  </tr>
+          	<tr>
+            	<td class="sectionleft" align="right">Genus:</td>
+            	<td class="sectionright">
+              		<select multiple name="<%=genus%>" size="5" onchange="evalAnySelectedValue(this);">
+                			<option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+                			<% item =null;
+							sorter = new EFGTypeSorter();
+							sorter.sort(new EFGTypeComparator(),genusItems);		
+							itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+
+              </select>
+            </td>
+          </tr>
+          <tr class="section">
+            <td class="sectionleft" align="right">Family:</td>
+            <td class="sectionright">
+              <select multiple name="<%=family%>" size="5" onchange="evalAnySelectedValue(this);">
+                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+                 <%
+			
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),familyItems);		
+		itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+
+              </select>
+            </td>
+          </tr>
+          
+          <tr class="section">
+            <td class="sectionleft" align="right">Common Name:</td>
+            <td class="sectionright">
+              <select multiple name="<%=commonName%>" size="5" onchange="evalAnySelectedValue(this);">
+                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),commonNameItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+              </select>
+            </td>
+          </tr>
+ 	    <tr class="section">
+            <td class="sectionleft" align="right">Origin:</td>
+            <td class="sectionright">
+              <select multiple name="<%=origin%>" size="5" onchange="evalAnySelectedValue(this);">
+                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),originItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+
+              </select>
+            </td>
+          </tr>
+
+		  <tr>
+		  <td class="padderbottomleft"></td>
+		  <td class="padderbottomright"></td>
+		  </tr>
+		  <tr>
+		  <td class="spacer"></td>
+		  </tr>
+		  <tr>
+		  <th>
+		  Degree of Invasiveness
+		  </th>
+		  </tr>
+		  <tr>
+		  <td class="paddertopleft"></td>
+		  <td class="paddertopright"></td>
+		  </tr>
+          <tr>
+            <td class="sectionleft" align="right">On Nantucket:</td>
+            <td class="sectionright">
+             <select multiple name="<%=degInvNan%>" size="4" onchange="evalAnySelectedValue(this);">
+                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),degInvNanItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+
+              </select>
+
+            </td>
+          </tr>
+          <tr>
+            <td class="sectionleft" align="right">In Massachusetts:</td>
+            <td class="sectionright">
+              <select multiple name="<%=degInvMass%>" size="4" onchange="evalAnySelectedValue(this);">
+                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+        
+
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),degInvMassItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+              </select>
+
+            </td>
+          </tr>
+  		<tr>
+            <td class="sectionleft" align="right">Dispersal Vectors:</td>
+            <td class="sectionright">
+              <select multiple name="<%=dispersal%>" size="4" onchange="evalAnySelectedValue(this);">
+                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+ 
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),dispersalItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+
+              </select>
+
+            </td>
+          </tr>
+		<tr>
+            <td class="sectionleft" align="right">Type of Reproduction:</td>
+            <td class="sectionright">
+              <select multiple name="<%=reproduction%>" size="4" onchange="evalAnySelectedValue(this);">
+                <option selected value="<%=EFGImportConstants.EFG_ANY%>">any</option>
+
+		<%
+			 item =null;
+			sorter = new EFGTypeSorter();
+			sorter.sort(new EFGTypeComparator(),reproductionItems);		
+			itemsIter = sorter.getIterator();		 
+					
+				while (itemsIter.hasNext()) {
+ 				item =(EFGType)itemsIter.next(); 
+		        %>
+                    <option><%=item.getContent()%>
+                   <% 
+			} 
+			%>
+
+
+              </select>
+
+            </td>
+          </tr>
+
+		  <tr>
+		  <td class="padderbottomleft"></td>
+		  <td class="padderbottomright"></td>
+		  </tr>
+		  <tr>
+		  <td class="spacer"></td>
+		  </tr>
+
 	</table>
 	<table class="search">		  
 		<tr>
@@ -863,7 +855,7 @@ function toggleMax(field,idVar){
 					</select>
 				</span>
 				<span class="matches">Maximum Matches:
-					<input type="text" id="lastMatch" size="4" name="maxDisplay" value="20" 
+					<input type="text" id="lastMatch" size="4" name="maxDisplay" value="70" 
 						onchange="toggleMax(this,'firstMatch');"  
 						onkeyup="toggleMax(this,'firstMatch');"/>
 				</span>

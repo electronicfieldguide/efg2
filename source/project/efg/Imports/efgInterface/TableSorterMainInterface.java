@@ -75,7 +75,6 @@ import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgImpl.EFGTableModel;
 import project.efg.Imports.efgImpl.TableSorter;
 import project.efg.Imports.efgImpl.TableSorterObject;
-import project.efg.Imports.efgImportsUtil.DataCheckerCaller;
 import project.efg.Imports.efgImportsUtil.DataObjectTransferHandler;
 import project.efg.Imports.efgImportsUtil.TableDNDRecognizer;
 import project.efg.util.EFGImportConstants;
@@ -396,7 +395,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		//sub menus
 		JMenuItem checkMediaMenu = new JMenuItem("Check Images");
 		checkMediaMenu.setToolTipText("Check if images in data exists on server");
-		checkMediaMenu.addActionListener(new CheckListener(this.getDBObject(),this.ds));
+		//checkMediaMenu.addActionListener(new CheckListener(this.getDBObject(),this.ds));
 		JMenuItem checkCategoricalMenu = new JMenuItem("Check Categorical Characters");
 		checkCategoricalMenu.setVisible(false);
 		checkCategoricalMenu.setToolTipText("Not yet avaliable");
@@ -411,7 +410,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		checkMenu.add(checkListMenu);
 		checkMenu.add(checkCategoricalMenu);
 		
-		fileMenu.add(checkMenu);
+		//fileMenu.add(checkMenu);
 		fileMenu.add(closeMenu);
 		JMenuBar mBar = new JMenuBar();
 		mBar.add(fileMenu);
@@ -572,30 +571,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		  
 		}
 	}
-	class CheckListener implements ActionListener {
-		private DBObject dbObject;
-		
-		private EFGDatasourceObjectInterface ds;
-		
-		
-		public CheckListener(DBObject dbObject,
-				EFGDatasourceObjectInterface ds) {
-		
-			this.dbObject = dbObject;
-			
-			this.ds = ds;
-			
-			
-		}
-		
-		public void actionPerformed(ActionEvent evt) {
-			DataCheckerCaller dCaller = new DataCheckerCaller(this.dbObject, this.ds);
 	
-			dCaller.start();
-		
-		}
-
-	}
 	
 	class DoneListener implements ActionListener {
 		private TableSorterMainInterface sorterMain;
