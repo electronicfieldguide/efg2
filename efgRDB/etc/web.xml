@@ -243,34 +243,30 @@
 		<url-pattern>/upload</url-pattern>
 	</servlet-mapping>
 
-<!--
+<!--  -->
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/ConfigureSearchPage.jsp</url-pattern>
+			<url-pattern>/templateJSP/*</url-pattern>
 		</web-resource-collection>
-		<web-resource-collection>
+			<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/ConfigureTaxonPage.jsp</url-pattern>
+			<url-pattern>/DirectURLs2SearchResultsPages.jsp</url-pattern>
 		</web-resource-collection>
-		<web-resource-collection>
+	<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/TaxonPageTemplate.jsp</url-pattern>
+			<url-pattern>/imageUpload.jsp</url-pattern>
 		</web-resource-collection>
-		<web-resource-collection>
+	<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/SearchPageConfig.jsp</url-pattern>
+			<url-pattern>/cssUpload.jsp</url-pattern>
 		</web-resource-collection>
-		<web-resource-collection>
+	<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/configTaxonPage</url-pattern>
-		</web-resource-collection>
-		<web-resource-collection>
-			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/mainConfigurePage.html</url-pattern>
-		</web-resource-collection>
+			<url-pattern>/javascriptUpload.jsp</url-pattern>
+		</web-resource-collection>	
 		<auth-constraint>
-			<role-name>role1</role-name>
+			<role-name>efg</role-name>
 		</auth-constraint>
 	</security-constraint>
 	<login-config>
@@ -280,8 +276,12 @@
 			<form-error-page>/login-error.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
-	 30 minute session timeout -->
+	<security-role>
+        <description>efg roles</description>
+        <role-name>efg</role-name>
+</security-role>
 	<!-- 
+ 30 minute session timeout
         <session-config> 
 		<session-timeout>30</session-timeout>
 	</session-config>

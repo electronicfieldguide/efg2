@@ -23,6 +23,7 @@ public class TableDNDRecognizer extends MouseAdapter implements MouseMotionListe
 	 
 	    public void mouseDragged(MouseEvent e) {
 	        Point p = e.getPoint();
+	        
 	        if (!recognized && e.isAltDown() &&
 	            ((Math.abs(pressedPoint.x - p.x) > 5) ||
 	             (Math.abs(pressedPoint.y - p.y) > 5))) {

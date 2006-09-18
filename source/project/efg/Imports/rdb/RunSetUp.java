@@ -145,7 +145,7 @@ public class RunSetUp {
 			List list = jdbcTemplate.queryForList(queryBuffer.toString(), String.class);
 			if(list != null){
 				list.remove("efg");
-				list.remove("root");
+				list.remove(db.getUserName().toLowerCase());
 				return list.toArray();
 			}
 		}
@@ -235,6 +235,61 @@ private static DBObject getSuperUser() {
 		}
 	
 	}
+	private static void createUserTables(DBObject dbObject) {
+		if(dbObject == null){
+			return;
+		}
+		
+		try{
+		DBObject newDb = dbObject.clone(
+				EFGImportConstants.EFGProperties.getProperty("dburl"));
+		
+		JdbcTemplate newjdbcTemplate=
+			EFGRDBImportUtils.getJDBCTemplate(newDb);	
+	
+		// read from properties file
+		 StringBuffer query = new StringBuffer("CREATE TABLE ");
+		 query.append(" IF NOT EXISTS ");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("users_table"));
+		 query.append(" ( user_name varchar(15) not null primary key, user_pass varchar(15) not null)");
+		
+		 newjdbcTemplate.execute(query.toString());
+		 
+		 query = new StringBuffer("CREATE TABLE ");
+		 query.append(" IF NOT EXISTS ");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("role_table"));
+		 query.append(" (");
+		 query.append("user_name  varchar(15) not null, role_name varchar(15) not null, ");
+		 query.append("primary key (user_name, role_name) ");
+		 query.append(")");
+		 newjdbcTemplate.execute(query.toString());
+		 
+		 query = new StringBuffer("INSERT INTO ");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("role_table"));
+		 query.append(" VALUES('");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("dbusername"));
+		 query.append("','");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("dbpassword"));
+		 query.append("')");	
+		 newjdbcTemplate.execute(query.toString());
+		 
+		 
+		 query = new StringBuffer("INSERT INTO ");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("users_table"));
+		 query.append(" VALUES('");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("dbusername"));
+		 query.append("','");
+		 query.append(EFGImportConstants.EFGProperties.getProperty("db_role"));
+		 query.append("')");	
+		 newjdbcTemplate.execute(query.toString());
+		
+		}
+		catch (Exception e) {
+			
+		}
+		
+		
+	}
 	/**
 	 * 
 	 * @param dbObject - contains enough information to connect to database
@@ -262,8 +317,12 @@ private static DBObject getSuperUser() {
 		query = EFGImportConstants.EFGProperties.getProperty("createdatabasecmd");
 		try {
 			jdbcTemplate.execute(query);
+			createUserTables(dbObject);
 			
 		} catch (Exception ee) {
+			createUserTables(dbObject);
+			//createusertables
+			//create the tables if they do not exists
 			log.error(ee.getMessage());
 			
 			return false;
@@ -301,6 +360,9 @@ private static DBObject getSuperUser() {
 
 }
 // $Log$
+// Revision 1.1.2.5  2006/09/18 18:15:26  kasiedu
+// no message
+//
 // Revision 1.1.2.4  2006/09/13 17:11:11  kasiedu
 // no message
 //

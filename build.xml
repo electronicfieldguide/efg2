@@ -74,7 +74,9 @@ to compile/deploy/clean with:
 	</target>
 	<!-- Compile main sources-->
 	<target name="compileMain" depends="prepare">
+		<!--
 		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="generate"/>
+	-->
 		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
 		<copy todir="${src.temp.home}">
@@ -132,8 +134,11 @@ to compile/deploy/clean with:
 		<copy todir="${deploy.home}/templateJSP">
 			<fileset dir="${efg2.templatejsp.home}"/>
 		</copy>
+		<!--
 		<copy file="tomcat-users.xml" todir="${tomcat.home}/conf"/>
+		-->
 		<copy file="efg2.xml" todir="${tomcat.home}/conf/Catalina/localhost"/>
+		<copy file="${efg2.home}/efgRDB/etc/web.xml" todir="${deploy.home}/WEB-INF"/>
 		<copy todir="${deploy.home}/templateConfigFiles">
 			<fileset dir="templateConfigFiles"/>
 		</copy>	
@@ -210,11 +215,15 @@ to compile/deploy/clean with:
 	<target name="cleanSource">
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="clean"/>
 	</target>
+	<!--
 	<target name="cleanTomcatUsers">
 		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="clean"/>
 	</target>
-
+	
 	<target name="cleanAll" depends="cleanSource,cleanTomcatUsers">
+	-->
+	<target name="cleanAll" depends="cleanSource">
+			
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
 		<delete dir="	${efg2.lib.home.properties}" quiet="true"/>
