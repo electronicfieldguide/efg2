@@ -49,7 +49,7 @@ public int compareTo(Object object1) {
 	if(this.getDisplayObject().compareTo(obj1.getDisplayObject()) == 0){
 	    if(this.getTemplateName().compareTo(obj1.getTemplateName()) == 0){
 		if((this.getGUID() != null ) && (obj1.getGUID() != null)){
-		    return this.getTemplateName().compareTo(obj1.getTemplateName());
+		    return this.getGUID().compareTo(obj1.getGUID());
 		}
 		else{
 		    return this.toString().compareTo(obj1.toString());
