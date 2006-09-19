@@ -31,7 +31,6 @@
  */
 package project.efg.Imports.efgImpl;
 
-import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.apache.log4j.Logger;
@@ -69,11 +68,11 @@ EFGDatasourceObjectStateInterface {
 	message.append(EFGImportConstants.EFGProperties.
 				getProperty("SynopticKeyTransferHandler.update.neutral"));
 		log.debug(message.toString());
-		JOptionPane.showMessageDialog(null, message.toString(),
+	/*	JOptionPane.showMessageDialog(null, message.toString(),
 				EFGImportConstants.
 				EFGProperties.getProperty(
 				"SynopticKeyTransferHandler.add.neutral.title"),
-				JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.INFORMATION_MESSAGE);*/
 		//do joption stuff here
 	}
 	/* (non-Javadoc)

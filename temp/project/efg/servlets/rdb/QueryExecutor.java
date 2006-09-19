@@ -56,6 +56,10 @@ public class QueryExecutor {
 		this.ds = EFGRDBUtils.getDatasource();
 		this.jdbcTemplate = new JdbcTemplate(this.ds);
 	}
+	public int executeUpdate(String query){
+		return this.jdbcTemplate.update(query);
+		
+	}
 	public List executeQueryForList(String query,
 			int numberOfColumns) throws Exception {
 		if (this.ds == null) {

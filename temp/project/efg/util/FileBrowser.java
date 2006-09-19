@@ -108,7 +108,7 @@ public class FileBrowser extends JTree {
 			setEditable(false);
 			setLargeModel(true);
 			setToolTipText("Drag and Drop one or more Image(s) Folder into this Window.");
-			//System.out.println(this.getToolTipText());
+			
 			setScrollsOnExpand(true);
 			addTreeWillExpandListener(twel);
 			KeyStroke delK = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);

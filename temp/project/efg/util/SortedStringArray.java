@@ -25,7 +25,9 @@
  */
 package project.efg.util;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 
@@ -33,18 +35,18 @@ import java.util.Arrays;
 
 
 public class SortedStringArray {
-   private String[] commonNames;
-    private int index = 0;
+   private List commonNames;
+  
 
     public SortedStringArray(int size){
       
-        commonNames = new String[size];
-        this.initArray();
+        commonNames = new ArrayList();
+       
         
     }
     public boolean sort(){
     	try{
-    		Arrays.sort(this.commonNames);
+    		Collections.sort(this.commonNames);
     		
     	}
     	catch(Exception ee){
@@ -53,33 +55,38 @@ public class SortedStringArray {
         return true;
     }
     public boolean addName(String value) {
-    		
-            commonNames[index]=value;
-            ++this.index;
+    	
+    		if(value == null){
+    			return false;
+    		}
+    		if(value.trim().equals("")){
+    			return false;
+    		}
+    	
+            commonNames.add(value);
+          
             return true;
     }
   
     public int getArraySize(){
-	
-	    return commonNames.length;
+    	
+	    return this.commonNames.size();
 	}
 	public String getName(int position) {
-    	String item = null;
+    	String item = "";
     	try{
-    		item = commonNames[position]; 
+    		item = (String)commonNames.get(position); 
      	}
     	catch(Exception ee){
-    		ee.printStackTrace();
+    		
+    		item ="";
+    	}
+    	if(item == null){
     		item ="";
     	}
         return item;   
     }
-   
-    private void initArray(){
-		for(int i=0; i < commonNames.length; i++){
-			commonNames[i] ="";
-		}
-	}
+
 	
 }
 

@@ -96,9 +96,6 @@ public abstract class EFGHTTPQuery {
 	 * @return the EFGDocument object built from the query
 	 */
 	protected boolean matchNumber(String states) {
-		//String patternStr = "\\d+$";
-		//Pattern pattern = Pattern.compile(patternStr);
-		//Matcher matcher = pattern.matcher(states);
 		try {
 			Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(states);
 			return matcher.find();

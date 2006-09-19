@@ -60,6 +60,7 @@ public abstract class XSLTObjectInterface {
 	 */
 	public XslPage getXSLFile(String datasourceName, 
 			String xslType) {	
+		
 		FindTemplate template = new FindTemplate(datasourceName,xslType);
 		return template.getXSLFileName();
 	}

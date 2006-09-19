@@ -207,17 +207,7 @@ public class TemplateProducer implements EFGImportConstants{
 	}
 
 	public static void main(String[] args) {
-		/*TemplateProducer tp = new TemplateProducer();
-		boolean isNewID = true;
-		boolean isNewRank = true;
-		System.out.println("Group Text: "
-				+ tp.getGrouptText(isNewID, isNewRank));
-		System.out.println("Group Label: "
-				+ tp.getGroupLabel(isNewID, isNewRank));
-		System.out.println("Group: " + tp.getGroup(isNewID, isNewRank));
-		System.out.println("CharacterLabel: "
-				+ tp.getCharacterLabel(isNewID, isNewRank));
-		System.out.println("Character: " + tp.getCharacter(isNewID, isNewRank));*/
+	
 	}
 
 }

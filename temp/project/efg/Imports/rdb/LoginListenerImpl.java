@@ -28,8 +28,6 @@ package project.efg.Imports.rdb;
 */
  
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.JOptionPane;
 
@@ -37,9 +35,9 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgImpl.LoginDialog;
-import project.efg.Imports.factory.LoginModuleFactory;
 import project.efg.Imports.efgInterface.LoginAbstractModule;
 import project.efg.Imports.efgInterface.LoginListenerInterface;
+import project.efg.Imports.factory.LoginModuleFactory;
 import project.efg.util.EFGImportConstants;
 
 
@@ -49,13 +47,8 @@ public class LoginListenerImpl implements LoginListenerInterface {
 	private LoginDialog dialog;
 	private project.efg.Imports.efgInterface.LoginAbstractModule myLogin;
 	private int errorCounter = 0;
-	private static String loginFailureMessage =
-		EFGImportConstants.EFGProperties.getProperty("LoginListener.LoginFailure_Message");
 	
-	private static String numberOfAttemptsMessage = 
-		EFGImportConstants.EFGProperties.getProperty("LoginListener.NumberOfAttemptsMessage");
-
-	private static String setUpError_Message =
+	protected static String setUpError_Message =
 		EFGImportConstants.EFGProperties.getProperty("LoginListener.SetUpError_Message");
 
 	static Logger log = null;
@@ -90,29 +83,33 @@ public class LoginListenerImpl implements LoginListenerInterface {
 						numberOfAttemptsMessage,
 						"Login Error", JOptionPane.ERROR_MESSAGE);
 				this.dialog.setSuccess(false);
+				
+				
 				System.exit(1);
 			}
 			else{
 				this.dialog.setPassword("");
 				//this.dialog.setLoginName("");
 			}
+			
 			JOptionPane.showMessageDialog(null, 
 					loginFailureMessage,
 					"Login Error", 
 					JOptionPane.ERROR_MESSAGE);
 			return;//try again
 		}
-		File file = new File(EFGImportConstants.SETUP_FILE);
-		if (!file.exists()) {// so run setup
+			//		invoke the other
 			if (!runSetUp(dbObject)) {
 				JOptionPane.showMessageDialog(null,
 						setUpError_Message,
 						"Login Error", JOptionPane.ERROR_MESSAGE);
 				this.dialog.setSuccess(false);
+			
+				
 				System.exit(1);
 			}
 			log.info("Set up run successfully");
-		}
+		
 		this.dialog.setSuccess(true);
 		this.dialog.dispose();
 	}
@@ -120,20 +117,8 @@ public class LoginListenerImpl implements LoginListenerInterface {
 	private boolean runSetUp(DBObject dbObject) {
 		boolean isRun = true;
 		if (!RunSetUp.runSetUp(dbObject)) {
-			
 			isRun = false;
-			File file = new File(EFGImportConstants.SETUP_FILE);
-			if (file.exists()) {
-				file.delete();
-			}
-		} else {
-			try {
-				File file = new File(EFGImportConstants.SETUP_FILE);
-				file.createNewFile();
-			} catch (IOException ee) {
-
-			}
-		}
+		} 
 		return isRun;
 	}
 } // LoginListener

@@ -31,13 +31,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+import project.efg.Imports.efgImpl.DBObject;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.templates.taxonPageTemplates.XslFileNamesType;
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.templates.taxonPageTemplates.XslPageType;
+import project.efg.util.EFGDisplayObject;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGUniqueID;
+import project.efg.util.TemplateMapObjectHandler;
+import project.efg.util.TemplateObject;
 
 /**
  * This servlet receives input from author about configuration of a Taxon page
@@ -48,17 +52,16 @@ public class TaxonPageDefaultConfig {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
-	
-
 	private String realPath;
-
 	private TaxonPageTemplates tps;
+
+	private DBObject dbObject;
 
 	/**
 	 * 
 	 */
-	public TaxonPageDefaultConfig(String realPath) {
+	public TaxonPageDefaultConfig(DBObject dbObject, String realPath) {
+		this.dbObject= dbObject;
 		this.realPath = realPath;
 	}
 
@@ -74,27 +77,98 @@ public class TaxonPageDefaultConfig {
 
 		boolean isDone = false;
 		try {
-			isDone = getFromCache(dsName);
+			isDone = initFile(dsName);
+			if(isDone){
+				this.writeToMapObject(dsName,displayName);
+			}
 			
 		} catch (Exception ee) {
 			LoggerUtils.logErrors(ee);
 		}
 		return isDone;
 	}
-
-	public boolean cloneOldFile(String oldDsName, String newDSName,
-			String displayName) {
-
+	public boolean cloneOldFile(
+			String oldDsName, 
+			String newDSName,
+			String displayName
+			) {
 		
 		boolean isDone = false;
 		try {
 			isDone = cloneFile(oldDsName, newDSName, displayName);
+			if(isDone){
+				this.writeToMapObject(newDSName,displayName);
+			}
 		} catch (Exception ee) {
 			LoggerUtils.logErrors(ee);
 		}
 		return isDone;
 	}
+
+	private void add2TemplateObject(String datafn, 
+			String displayName,
+			String type, 
+			String uniqueName){
+		
+		String xslName = EFGImportConstants.DEFAULT_SEARCH_FILE;
+		
+		StringBuffer querySearch = new StringBuffer("/");
+		querySearch.append(EFGImportConstants.EFG_APPS);
+		querySearch.append("/search?dataSourceName=");
+		querySearch.append(datafn);
+		querySearch.append("&");
+		querySearch.append(EFGImportConstants.XSL_STRING);
+		querySearch.append("=");
+		querySearch.append(xslName);
+		querySearch.append("&");
+		querySearch.append(EFGImportConstants.SEARCH_TYPE_STR);
+		querySearch.append("=");
+		querySearch.append(type);
+		querySearch.append("&");
+		querySearch.append(EFGImportConstants.DISPLAY_FORMAT);
+		querySearch.append("=");
+		querySearch.append(EFGImportConstants.HTML);
+		querySearch.append("&");
+		querySearch.append(EFGImportConstants.MAX_DISPLAY);
+		querySearch.append("=");
+		querySearch.append(EFGImportConstants.NUMBER_OF_TAXON_ON_PAGE+"");
+		String key = querySearch.toString();
+		
+		TemplateObject templateObject = new TemplateObject();
+		EFGDisplayObject displayObject = new EFGDisplayObject();
+		displayObject.setDisplayName(displayName);
+		displayObject.setDatasourceName(datafn);
+		
+		templateObject.setTemplateName(uniqueName);
+		templateObject.setDisplayObject(displayObject);
+		TemplateMapObjectHandler.add2TemplateMap(key,templateObject,this.dbObject);
+	}
 	
+	private void writeToMapObject(String datafn,String displayName){
+	
+		try {
+		
+		
+			String uniqueName = EFGImportConstants.DEFAULT_PLATES_DISPLAY;
+			
+			String plates = EFGImportConstants.SEARCH_PLATES_TYPE;
+			String lists = EFGImportConstants.SEARCH_LISTS_TYPE;
+			
+			this.add2TemplateObject(datafn, 
+					displayName,
+					plates, 
+					uniqueName);
+			
+			uniqueName = EFGImportConstants.DEFAULT_LISTS_DISPLAY;
+			this.add2TemplateObject(datafn, 
+					displayName,
+					lists, 
+					uniqueName);
+			//create the file here
+		} catch (Exception ee) {
+			return;
+		}
+	}
 	private boolean cloneFile(String oldDSName, String newDSName,
 			String displayName) {
 		String mute = "";
@@ -150,7 +224,7 @@ public class TaxonPageDefaultConfig {
 	}
 
 	
-	private boolean getFromCache(String fileName){
+	private boolean initFile(String fileName){
 		boolean isDone = false;
 		if(fileName == null){
 			return isDone;
@@ -269,6 +343,7 @@ public class TaxonPageDefaultConfig {
 
 		XslPageType xslPageType = getXSLPageType(EFGImportConstants.DEFAULT_TAXON_PAGE_FILE);
 		xsls.setXslTaxonPages(xslPageType);
+		//write to templateObject
 
 		xslPageType = getXSLPageType(EFGImportConstants.DEFAULT_SEARCH_FILE);
 		xsls.setXslPlatePages(xslPageType);
@@ -296,7 +371,19 @@ public class TaxonPageDefaultConfig {
 
 }
 // $Log$
-// Revision 1.1.2.1  2006/08/13 23:53:12  kasiedu
+// Revision 1.1.2.2  2006/09/19 22:36:38  kasiedu
+// no message
+//
+// Revision 1.1.2.6  2006/09/10 12:02:28  kasiedu
+// no message
+//
+// Revision 1.1.2.5  2006/08/26 22:12:24  kasiedu
+// Updates to xsl files
+//
+// Revision 1.1.2.4  2006/08/21 19:26:37  kasiedu
+// no message
+//
+// Revision 1.1.2.3  2006/08/13 23:53:16  kasiedu
 // *** empty log message ***
 //
 // Revision 1.1.2.2  2006/08/09 18:55:24  kasiedu

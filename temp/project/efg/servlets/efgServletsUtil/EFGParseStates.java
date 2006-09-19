@@ -123,8 +123,9 @@ public class EFGParseStates {
 	private   EFGParseObject createEFGParseObject(String fields, boolean notRemoveParen){
 		//log.debug("Fields: " + fields);
 		String state = fields.trim();
-		//String[] curStatePipe = parse(state, EFGImportConstants.PIPESEP);
-		String[] curStatePipe =EFGImportConstants.pipePattern.split(state);// parse(state, EFGImportConstants.PIPESEP);
+		
+		
+		String[] curStatePipe =EFGImportConstants.pipePattern.split(state);
 		String resourceLink = "";
 		String annotation = "";
 
@@ -132,8 +133,8 @@ public class EFGParseStates {
 			resourceLink = curStatePipe[0];
 			state = curStatePipe[1];
 		}
-		//String[] annotations = parse(state,EFGImportConstants.COLONSEP);
-		String[] annotations = EFGImportConstants.colonPattern.split(state);//,EFGImportConstants.COLONSEP);
+		
+		String[] annotations = EFGImportConstants.caratPattern.split(state);
 		if (annotations.length > 1) {
 			annotation = annotations[0];
 			state = annotations[1];
@@ -157,7 +158,16 @@ public class EFGParseStates {
 		
 	}*/
 	private String unicode2Ascii(String states){
-	
+		/*try{
+		
+		StringWriter writer = new StringWriter();
+		this.filter.filter(new StringReader(states),
+				writer);
+			states = writer.getBuffer().toString();
+		}
+		catch(Exception ee){
+			
+		}*/
 			return states;
 	}
 	public  EFGParseObjectList parseStates(String separator,

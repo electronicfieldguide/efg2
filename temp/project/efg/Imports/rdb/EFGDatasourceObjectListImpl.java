@@ -33,9 +33,7 @@ import java.io.File;
 import java.net.URI;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -49,6 +47,7 @@ import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectListInterface;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
+import project.efg.Imports.efgInterface.ImportBehavior;
 import project.efg.Imports.factory.DatabaseAbstractFactory;
 import project.efg.Imports.factory.EFGDataExtractorFactory;
 import project.efg.Imports.factory.EFGDatasourceObjectFactory;
@@ -67,7 +66,8 @@ public class EFGDatasourceObjectListImpl extends
 	private EFGRowMapperInterface rowMapper;
 
 	private String efgRDBTable;
-
+	//private String mapLocation;
+	
 	public EFGDatasourceObjectListImpl(DBObject dbObject) {
 		super(dbObject);
 		this.efgRDBTable = EFGImportConstants.EFGProperties
@@ -113,7 +113,7 @@ public class EFGDatasourceObjectListImpl extends
 	 * @return true if this datasource was successfully added, false otherwise
 	 */
 	public boolean addEFGDatasourceObject(
-			EFGDatasourceObjectInterface datasource, boolean isUpdate) {
+			EFGDatasourceObjectInterface datasource, ImportBehavior isUpdate) {
 
 		try {
 	
@@ -164,14 +164,39 @@ public class EFGDatasourceObjectListImpl extends
 			if (index > -1) {
 				EFGDatasourceObjectInterface obj = (EFGDatasourceObjectInterface) this.lists
 						.get(index);
-
+				StringBuffer queryBuffer = new StringBuffer("SELECT DS_DATA FROM ");
+				queryBuffer.append(this.efgRDBTable);
+				queryBuffer.append(" WHERE DISPLAY_NAME = \"");
+				queryBuffer.append(oldDisplayName);
+				queryBuffer.append("\"");
+				java.util.List list = this.executeQueryForList(queryBuffer.toString(), 1);
+				String datafn = null;
+				for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
+					EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
+							.next();
+					datafn = queue.getObject(0);
+				}
+				
 				String query = "UPDATE " + this.efgRDBTable
 						+ " SET DISPLAY_NAME = \"" + freshDisplayName + "\" "
 						+ "WHERE DISPLAY_NAME = \"" + oldDisplayName + "\"";
 				// will hold the query
-
+				
 				this.executeStatement(query);
 				obj.setDisplayName(freshDisplayName);
+//				 get the row from the efgRDBTable if it exists
+				
+				if(datafn == null){
+					throw new Exception("Could not change display Names for : '" + 
+							oldDisplayName  + "' " + " to '" + freshDisplayName + "'");
+				}
+			
+				boolean bool = TemplateMapObjectHandler.changeDisplayName(datafn,freshDisplayName,this.dbObject);
+			
+				if(!bool){
+					throw new Exception("Could not change display Names for : '" + 
+							oldDisplayName  + "' " + " to '" + freshDisplayName + "'");
+				}
 				return true;
 			} 
 
@@ -287,6 +312,8 @@ public class EFGDatasourceObjectListImpl extends
 		return true;
 	}
 
+	
+	
 	/**
 	 * 
 	 * @param datafn
@@ -330,67 +357,35 @@ public class EFGDatasourceObjectListImpl extends
 					this.lists.remove(index);
 				}
 				// also delete the file if it exists
+				boolean bool = false;
 				try {
-					File templatesFiles = new File(this.getTemplateConfig()
-							.toLowerCase()
+					
+					File templatesFiles = 
+						new File(this.getTemplateConfig().toLowerCase()
 							+ datafn + EFGImportConstants.XML_EXT);
 					if (templatesFiles.exists()) {
-						boolean bool = templatesFiles.delete();
+						bool = templatesFiles.delete();
 						if (!bool) {
 							throw new Exception(
 									"Application could not delete the template "
 											+ templatesFiles.getAbsolutePath());
-						} else {// remove from map if it exists
-							// check serialized file too
-							Map map = null;
-							
-							String mapLocation = this.getCatalinaHome()
-									+ File.separator
-									+ EFGImportConstants.EFG_WEB_APPS
-									+ File.separator
-									+ EFGImportConstants.EFG_APPS
-									+ File.separator + "WEB-INF"
-									+ File.separator
-									+ EFGImportConstants.TEMPLATE_MAP_NAME;
-							try {
-								TemplateMapObjectHandler
-										.createTemplateObjectMap(mapLocation);
-								map = TemplateMapObjectHandler
-										.getTemplateObjectMap();
-							} catch (Exception ee) {
-
-							}
-
-							if (map != null) {
-								String key = null;
-								StringBuffer querySearch = new StringBuffer("/");
-								querySearch.append(EFGImportConstants.EFG_APPS);
-								querySearch.append("/search?dataSourceName=");
-								querySearch.append(datafn);
-								querySearch.append("&");
-								querySearch.append(EFGImportConstants.GUID);
-								querySearch.append("=");
-								String tempKey = querySearch.toString()
-										.toLowerCase();
-								// iterate over map and remove key if found
-								Iterator mapIter = map.keySet().iterator();
-								boolean found = false;
-								while (mapIter.hasNext()) {
-									key = (String) mapIter.next();
-									if (key.toLowerCase().startsWith(tempKey)) {
-										found = true;
-										break;
-									}
-								}
-								if (found) {
-									TemplateMapObjectHandler
-											.removeFromTemplateMap(key);
-								}
-							}
-						}
+						} 
 					}
+					
 				} catch (Exception ee) {
 					LoggerUtilsServlet.logErrors(ee);
+				}
+				try{
+					bool = TemplateMapObjectHandler.removeFromTemplateMap(datafn,this.dbObject);
+					
+					if(!bool){
+						throw new Exception(
+								"Application could not delete the template configurations ");
+									
+					}
+				}
+				catch(Exception eex){
+					LoggerUtilsServlet.logErrors(eex);
 				}
 				isDone = true;
 			}

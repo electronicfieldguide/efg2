@@ -4,7 +4,10 @@ import java.io.File;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,12 +17,17 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import project.efg.Imports.efgImpl.DBObject;
+import project.efg.Imports.efgImpl.ImportBehaviorImplNew;
+import project.efg.Imports.efgImpl.ImportBehaviorImplReplace;
+import project.efg.Imports.efgImpl.ImportBehaviorImplUpdate;
+import project.efg.Imports.efgImpl.ImportBehaviorImplUseExisting;
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.TaxonPageDefaultConfig;
 import project.efg.Imports.efgInterface.CSV2DatabaseAbstract;
 import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
+import project.efg.Imports.efgInterface.ImportBehavior;
 import project.efg.Imports.factory.ComparatorFactory;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGUniqueID;
@@ -30,37 +38,34 @@ import project.efg.util.EFGUniqueID;
  * $Id$
  * 
  * Created: Tue Feb 28 13:14:19 2006
+ * 
  * @author <a href="mailto:kasiedu@cs.umb.edu">Jacob K Asiedu</a>
- *
- * This file is part of the UMB Electronic Field Guide.
- * UMB Electronic Field Guide is free software; you can redistribute it
- * and/or modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2, or
- * (at your option) any later version.
- *
- * UMB Electronic Field Guide is distributed in the hope that it will be
- * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with the UMB Electronic Field Guide; see the file COPYING.
- * If not, write to:
- * Free Software Foundation, Inc.
- * 59 Temple Place, Suite 330
- * Boston, MA 02111-1307
- * USA
- * Imports a csv file into a relational database
+ * 
+ * This file is part of the UMB Electronic Field Guide. UMB Electronic Field
+ * Guide is free software; you can redistribute it and/or modify it under the
+ * terms of the GNU General Public License as published by the Free Software
+ * Foundation; either version 2, or (at your option) any later version.
+ * 
+ * UMB Electronic Field Guide is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
+ * Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with
+ * the UMB Electronic Field Guide; see the file COPYING. If not, write to: Free
+ * Software Foundation, Inc. 59 Temple Place, Suite 330 Boston, MA 02111-1307
+ * USA Imports a csv file into a relational database
  * 
  */
 public class CSV2Database extends CSV2DatabaseAbstract {
 
 	private JdbcTemplate jdbcTemplate;
 	private String templateConfigHome;
+	
 	private String[] dataHeaders;
 
 	private String metadataTableName; // metadata table to use
-	
+
 	private String tableName;
 
 	private Comparator compare;
@@ -77,29 +82,41 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		} catch (Exception ee) {
 		}
 	}
-
+	private String[] lowerCaseHeaders(String[] lists){
+		String[] lowercaseHeaders = new String[lists.length];
+		
+		for(int i = 0;i < lists.length; i++){
+			lowercaseHeaders[i] = lists[i].trim().toLowerCase();
+		}
+		return lowercaseHeaders;
+	}
 	public CSV2Database(EFGDatasourceObjectInterface datasource,
 			EFGDataExtractorInterface dataExtractor, DBObject dbObject,
-			boolean isUpdate) {
+			ImportBehavior isUpdate) {
 		super(datasource, dataExtractor, dbObject, isUpdate);
-		
+
 		this.dataHeaders = this.dataExtractor.getFieldNames();
 		log.debug("After get header");
 		this.txManager = this.getTransactionManager(this.dbObject);
 		this.jdbcTemplate = this.getJDBCTemplate(this.dbObject);
-		//READ FROM PROPERTIES FILE
+		// READ FROM PROPERTIES FILE
 		this.compare = ComparatorFactory
 				.getComparator(EFGImportConstants.EFGProperties
 						.getProperty("caseinsensitive.compare"));
 		this.efgRDBTable = EFGImportConstants.EFGProperties
 				.getProperty("ALL_EFG_RDB_TABLES");
 	}
-	public CSV2Database(EFGDatasourceObjectInterface datasource,
-			EFGDataExtractorInterface dataExtractor, DBObject dbObject) {
-		this(datasource, dataExtractor, dbObject, false);
+	private String getTemplateConfig() {
+		if (this.templateConfigHome == null) {
+			this.templateConfigHome = this.getCatalinaHome() + File.separator
+					+ EFGImportConstants.EFG_WEB_APPS + File.separator
+					+ EFGImportConstants.EFG_APPS + File.separator
+					+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
+					+ File.separator;
+		}
+		return this.templateConfigHome;
+	}
 
-	} // CSV2Database constructor
-	
 	/**
 	 * @return true if import was successful. false otherwise
 	 */
@@ -109,31 +126,39 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 		boolean isSuccess = true;
 		this.format2efg();
-		
+
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 
 		TransactionStatus status = this.txManager.getTransaction(def);
 		try {
-		
 
 			if (isSuccess) {
 				log.debug("About to import: "
 						+ this.datasource.getDataName().toString());
 
-				if (this.isUpdate) {// we are doing updates
+				if (this.isUpdate instanceof ImportBehaviorImplUpdate)
+						 {// we
+																						// are
+																						// doing
+																						// updates
 					log.debug("About to run an update");
 
 					isSuccess = this.createOrUpdateEFGTable();
-					
+
 					if (isSuccess) {// replace table
 						isSuccess = this.createDataTable();
-						if(isSuccess){
+						if (isSuccess) {
 							log.debug("Updates run successfully");
-							//do nothing
+							// do nothing
 						}
 					}
-				} else {// we are not doing updates
+				} else if ((this.isUpdate instanceof ImportBehaviorImplNew) || 
+						(this.isUpdate instanceof ImportBehaviorImplUseExisting)){// we
+																			// are
+																			// not
+																			// doing
+																			// updates
 					this.tableName = this.generateTableName(this.datasource
 							.getDataName());
 					if ((this.tableName == null)
@@ -144,35 +169,41 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						// could not
 						// be
 						// generated
-						log.error("Table name must not be null or the empty string!!!");
+						log
+								.error("Table name must not be null or the empty string!!!");
+						this.dataExtractor.close(); 
 						return false;
 					}
 					if ((this.getDisplayName() == null)
 							|| this.getDisplayName().trim().equals("")) {
 						this.datasource.setDisplayName(this.tableName);
 						log.debug("A new display name '"
-							+ this.getDisplayName()
+								+ this.getDisplayName()
 								+ " was created successfully");
 					}
 					log.debug("About to create Data table");
 					isSuccess = this.createDataTable();
 
 					if (isSuccess) {// data table created successfully
-						log.debug("A Data table "
+						log
+								.debug("A Data table "
 										+ this.tableName
 										+ " was created successfully out of the file: '"
 										+ this.datasource.getDataName()
 												.toString() + "'!!");
-													
+
 						this.metadataTableName = this.createMetadataTableName();
 						if (this.metadataTableName == null) {
-							log.error("System could not create a metadata table for : "
-											+ this.datasource.getDataName().toString());
+							log
+									.error("System could not create a metadata table for : "
+											+ this.datasource.getDataName()
+													.toString());
 							this.txManager.rollback(status);
+							this.dataExtractor.close(); 
 							return false;
 						}
 						String[] fieldNames = this.getDataTableHeaders();
-						String[] legalNames = this.getLegalNames();
+						String[] legalNames = this.lowerCaseHeaders(this.getLegalNames());
 
 						if ((this.datasource.getTemplateDisplayName() == null)
 								|| (this.datasource.getTemplateDisplayName()
@@ -182,31 +213,41 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							log.debug("About to create new Metadata table");
 							isSuccess = this.createMetadataTable(fieldNames,
 									legalNames);
-							if(isSuccess){//create a new Default template file
-								String tempConfigLocation = this.getTemplateConfig();
+							if (isSuccess) {// create a new Default template
+											// file
 								
-								
-								TaxonPageDefaultConfig taxonPageConfig =
-									new TaxonPageDefaultConfig(tempConfigLocation);
-								boolean bool = taxonPageConfig.processNew(this.getDataTableName(),this.getDisplayName());
-								if(!bool){
-									log.error("Could not create default templates for '" + this.getDisplayName() + "'");
+								TaxonPageDefaultConfig taxonPageConfig = new TaxonPageDefaultConfig(
+										this.dbObject, this.getTemplateConfig());
+								boolean bool = taxonPageConfig.processNew(this
+										.getDataTableName(), this
+										.getDisplayName());
+								if (!bool) {
+									
+									log
+											.error("Could not create default templates for '"
+													+ this.getDisplayName()
+													+ "'");
 								}
+								
 							}
-							//create the default Template files for the current datasource 
+							// create the default Template files for the current
+							// datasource
 						} else {// use an old metadata table as template
-							log.debug("About to clone an existing Metadata table");
+							log
+									.debug("About to clone an existing Metadata table");
 							// find out if this metadata table exists. Quit if
 							// it does not
 
-							EFGQueueObjectInterface metadataTableToClone =
-								this.findMetadataTable(this.datasource.getTemplateDisplayName());
+							EFGQueueObjectInterface metadataTableToClone = this
+									.findMetadataTable(this.datasource
+											.getTemplateDisplayName());
 
 							if (metadataTableToClone == null) {// specified
 								// metadata
 								// table does
 								// not exists
-								log.error("System could not find the requested metadata table with display name: '"
+								log
+										.error("System could not find the requested metadata table with display name: '"
 												+ this.datasource
 														.getTemplateDisplayName()
 												+ "' for the table '"
@@ -215,18 +256,25 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 								isSuccess = false;
 							} else {// specified metadata table exists. copy it
 								isSuccess = this.cloneMetadataTable(
-										metadataTableToClone.getObject(0), fieldNames,
-										legalNames);
-								if(isSuccess){//get the template file and clone it for the current datasource
-									String dataTableAssociateWithClonedMetadataTable =
-										metadataTableToClone.getObject(1);
-									boolean bool = this.copyClone(dataTableAssociateWithClonedMetadataTable);
-									
-									if(!bool){
-										log.error("Could not create default templates for '" + this.getDisplayName() + "'");
+										metadataTableToClone.getObject(0),
+										fieldNames, legalNames);
+								if (isSuccess) {// get the template file and
+												// clone it for the current
+												// datasource
+									String dataTableAssociateWithClonedMetadataTable = metadataTableToClone
+											.getObject(1);
+									boolean bool = this
+											.copyClone(dataTableAssociateWithClonedMetadataTable);
+
+									if (!bool) {
+										log
+												.error("Could not create default templates for '"
+														+ this.getDisplayName()
+														+ "'");
 									}
 								}
-								//if isSuccess clone the template files for this stuff
+								// if isSuccess clone the template files for
+								// this stuff
 							}
 						}
 
@@ -236,18 +284,34 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 									+ " was created successfully");
 							log.debug("About to create EFGTable");
 							isSuccess = this.createEFGTable();
-							log.debug("EFGRDBTable was created/updated successfully");
-									
+							log
+									.debug("EFGRDBTable was created/updated successfully");
+
 						} else {
-							log.error("An error occurred while creating Metadata table '"
+							log
+									.error("An error occurred while creating Metadata table '"
 											+ this.metadataTableName + "'!!!");
 							isSuccess = false;
 						}
 					} else {
-						log.error("An error occurred while creating data table '"
+						log
+								.error("An error occurred while creating data table '"
 										+ this.tableName + "'!!!");
 						isSuccess = false;
 					}
+				} else if (this.isUpdate instanceof ImportBehaviorImplReplace) {
+					isSuccess = this.updateMetadataEFGTable();
+					if (isSuccess) {// replace table
+						isSuccess = this.createDataTable();
+						if (isSuccess) {
+							log.debug("Updates run successfully");
+						}
+					}
+
+				}
+				else{
+					isSuccess = false;
+					log.error("command not understood!!");
 				}
 			}
 
@@ -256,18 +320,22 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				log.error("The data contained in "
 						+ this.datasource.getDataName().toString()
 						+ " could not be imported successfully. \n");
-				log.error("Please view the logs for more verbose error messages!!!");
-				
+				log
+						.error("Please view the logs for more verbose error messages!!!");
+				this.dataExtractor.close(); 
 				return false;
 			}
-			
+
 		} catch (Exception ex) {
 			txManager.rollback(status);
+			this.dataExtractor.close(); 
 			return false;
 		}
 		txManager.commit(status);
+		this.dataExtractor.close(); 
 		return isSuccess;
 	}
+
 	/**
 	 * @return the name of the database table created for the current data
 	 */
@@ -283,35 +351,46 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		return this.metadataTableName;
 	}
 
-	private boolean copyClone(String clonedDataTableName){
+	public int getCount(String metaName){
+		try{
+			String countQuery = "SELECT DISTINCT count(*) FROM " + metaName;
+			java.util.List listNew = this.executeQueryForList(
+					countQuery, 1);
+			String counter = ((EFGQueueObjectInterface) listNew.get(0))
+					.getObject(0);
+			
+			return Integer.parseInt(counter);
+		}
+		catch(Exception eex){
+			
+		}
+		return 0;
 		
+	}
+	private boolean copyClone(String clonedDataTableName) {
+
+		TaxonPageDefaultConfig taxonPageConfig = 
+			new TaxonPageDefaultConfig(this.dbObject, this.getTemplateConfig());
 		
-		TaxonPageDefaultConfig taxonPageConfig =
-			new TaxonPageDefaultConfig(this.getTemplateConfig());
-		boolean bool = taxonPageConfig.cloneOldFile(clonedDataTableName, this.getDataTableName(),this.getDisplayName());
-		if(!bool){
-			log.error("Could not create  templates for '" + this.getDisplayName() + "'");
+		boolean bool = taxonPageConfig.cloneOldFile(clonedDataTableName, this
+				.getDataTableName(), this.getDisplayName());
+		if (!bool) {
+			log.error("Could not create  templates for '"
+					+ this.getDisplayName() + "'");
 		}
 		return bool;
 	}
-	private String getTemplateConfig(){
-		if(this.templateConfigHome == null){
-			this.templateConfigHome = this.getCatalinaHome() + File.separator
-			+ EFGImportConstants.EFG_WEB_APPS
-			+ File.separator + EFGImportConstants.EFG_APPS + 
-			File.separator + EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
-			+ File.separator ;
-		}
-		return this.templateConfigHome;
-	}
-	private DataSourceTransactionManager getTransactionManager(DBObject dbObject){
+
+	
+
+	private DataSourceTransactionManager getTransactionManager(DBObject dbObject) {
 		return EFGRDBImportUtils.getTransactionManager(dbObject);
 	}
+
 	private JdbcTemplate getJDBCTemplate(DBObject dbObject) {
 		if (this.jdbcTemplate == null) {
 
-			this.jdbcTemplate = EFGRDBImportUtils
-					.getJDBCTemplate(dbObject);
+			this.jdbcTemplate = EFGRDBImportUtils.getJDBCTemplate(dbObject);
 		}
 		return this.jdbcTemplate;
 	}
@@ -323,7 +402,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		try {
 			log.debug(this.compare.getClass().getName());
 			this.legalNames = this.translateHeaders(this.dataHeaders);
-			
+
 		} catch (Exception ee) {
 
 			log.error(" An error occured during importation of : "
@@ -331,11 +410,13 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 		}
 	}
-	private String[] getSortedLegalNames(){
+
+	private String[] getSortedLegalNames() {
 		String[] sortedLegalNames = this.translateHeaders(this.dataHeaders);
 		java.util.Arrays.sort(sortedLegalNames, this.compare);
 		return sortedLegalNames;
 	}
+
 	/**
 	 * 
 	 * @param name
@@ -402,7 +483,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					query.append(", `");
 					query.append(th);
 					query.append("` ");
-					//READ FROM PROPERTIES FILE
+					// READ FROM PROPERTIES FILE
 					query.append("TEXT");
 				}
 				if (isDone) {
@@ -423,7 +504,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						query.append("\"");
 						query.append(EFGUniqueID.getID() + "");
 						query.append("\"");
-						boolean exists = false;//means that the line is not blank
+						boolean exists = false;// means that the line is not
+												// blank
 						for (int i = 0; i < this.dataHeaders.length; i++) {
 							String title = this.dataHeaders[i];
 
@@ -437,9 +519,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 										|| (dataVal.trim().equals(""))) {
 									dataVal = "";
 								}
-							}
-							else{
-								exists = true;//there is at least one variable
+							} else {
+								exists = true;// there is at least one
+												// variable
 							}
 							query.append(",");
 							query.append("\"");
@@ -448,21 +530,20 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						}
 						try {
 							if (query.length() > 0) {
-								if(exists){
+								if (exists) {
 									String stmtQuery = "INSERT INTO "
-										+ this.tableName + " VALUES("
-										+ query.toString() + ")";
+											+ this.tableName + " VALUES("
+											+ query.toString() + ")";
 									log.debug("Insert query: " + stmtQuery);
 									this.executeStatement(stmtQuery);
-								}
-								else{
+								} else {
 									log.debug("Empty line.Do not insert!!!");
 								}
 							}
 						} catch (Exception eex) {
 							eex.printStackTrace();
 							isDone = false;
-							
+
 							this.logMessage(eex);
 							break;
 						}
@@ -484,11 +565,12 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 * @return
 	 */
 	private String escapeQuotes(String string) {
-		if(string == null){
+		if (string == null) {
 			return null;
 		}
-		return string.trim().replaceAll("\"","\\\\\"");
+		return string.trim().replaceAll("\"", "\\\\\"");
 	}
+
 	private int executeStatement(String query) throws Exception {
 
 		return this.jdbcTemplate.update(query);
@@ -523,7 +605,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		EFGQueueObjectInterface queue = null;
 
 		if ((displayName == null) || (displayName.trim().equals(""))) {
-			
+
 			log.error("Specified display name: '" + displayName
 					+ "' was null or the empty string.");
 		} else {
@@ -542,16 +624,15 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							2);
 					for (java.util.Iterator iter = list.iterator(); iter
 							.hasNext();) {
-						queue = (EFGQueueObjectInterface) iter
-								.next();
-						
-						break;//because only one row is required
+						queue = (EFGQueueObjectInterface) iter.next();
+
+						break;// because only one row is required
 					}
 					if (queue == null) {
 						log
 								.error("A metadataTable could not be found with display name:  "
 										+ displayName);
-						
+
 					}
 				} catch (Exception ee) {
 					this.logMessage(ee);
@@ -578,7 +659,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			query.append(this.getDisplayName());
 			query.append("\"");
 
-			//log.debug("About to execute query: " + query.toString());
+			// log.debug("About to execute query: " + query.toString());
 			List list = this.executeQueryForList(query.toString(), 2);
 
 			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
@@ -591,7 +672,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				break;
 			}
 			if (this.metadataTableName == null) {
-				log.error("A metadata table could not be found for the current data!!");
+				log
+						.error("A metadata table could not be found for the current data!!");
 				return false;
 			}
 
@@ -603,7 +685,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			log.debug("legalNames size: " + this.getLegalNames().length);
 
 			if (list.size() != this.getLegalNames().length) {
-				log.error("The number of columns in the MetadataTable to be used "
+				log
+						.error("The number of columns in the MetadataTable to be used "
 								+ "for this update "
 								+ "does not match the number of field names in the data being "
 								+ "imported!!");
@@ -614,14 +697,16 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
 						.next();
 				String legalname = queue.getObject(0);
-				if (Arrays.binarySearch(this.getSortedLegalNames(), legalname.trim(),
-						this.compare) < 0) {
+				if (Arrays.binarySearch(this.getSortedLegalNames(), legalname
+						.trim(), this.compare) < 0) {
 					log.error("The column named: '" + legalname
 							+ "' does not exists in the table '"
 							+ this.metadataTableName + "'");
+					// remove from table
 					return false;
 				}
 			}
+			// do other compare and add those absent to table
 		} catch (Exception ee) {
 			this.logMessage(ee);
 			return false;
@@ -630,6 +715,265 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		return true;
 	}
 
+	/**
+	 * Remove columns that do not exists in table to be used as replacement.
+	 * Then add columns that exists in table as replacement with default values.
+	 * 
+	 * @return true if the table was successfully updated.
+	 */
+	private boolean updateMetadataEFGTable() {
+		StringBuffer query = null;
+		if (!checkEFGRDBTable()) {
+			return false;
+		}
+		try {
+
+			query = new StringBuffer("SELECT DS_METADATA,DS_DATA FROM ");
+			query.append(this.efgRDBTable);
+			query.append(" WHERE DISPLAY_NAME=");
+			query.append("\"");
+			query.append(this.getDisplayName());
+			query.append("\"");
+
+			// log.debug("About to execute query: " + query.toString());
+			List list = this.executeQueryForList(query.toString(), 2);
+
+			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
+				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
+						.next();
+				this.metadataTableName = queue.getObject(0);
+				log.debug("MetadaTable to use: " + this.metadataTableName);
+				this.tableName = queue.getObject(1);
+				log.debug("Table to use: " + this.tableName);
+				break;
+			}
+			if (this.metadataTableName == null) {
+				log
+						.error("A metadata table could not be found for the current data!!");
+				return false;
+			}
+
+			query = new StringBuffer("SELECT LEGALNAME FROM ");
+			query.append(this.metadataTableName);
+			list = this.executeQueryForList(query.toString(), 1);
+
+			boolean isDone = true;
+			Set newTableLegalNamesClone1 = new HashSet(Arrays.asList(this
+					.getSortedLegalNames()));
+			Set newTableLegalNamesClone2 = new HashSet(Arrays.asList(this
+					.getSortedLegalNames()));
+			Set oldTableLegalNamesClone1 = new HashSet(list.size());
+			Set oldTableLegalNamesClone2 = new HashSet(list.size());
+
+			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
+				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
+						.next();
+				String legalname = queue.getObject(0);
+
+				oldTableLegalNamesClone1.add(legalname);
+				oldTableLegalNamesClone2.add(legalname);
+			}
+			
+			if ((oldTableLegalNamesClone1.size() != 0)
+					&& (oldTableLegalNamesClone1.size() != 0)) {
+
+				oldTableLegalNamesClone1.removeAll(newTableLegalNamesClone1);// things
+																				// in
+																				// oclone1
+																				// not
+																				// in
+																				// nclone1
+			
+				newTableLegalNamesClone2.removeAll(oldTableLegalNamesClone2);// things
+																				// in
+																				// nclone2
+																				// not
+																				// in
+				boolean toRemove = false;
+				if(oldTableLegalNamesClone1.size() > 0){
+					
+					this.removeFromMetadataTable(oldTableLegalNamesClone1);
+					toRemove = true;
+				}
+				if(newTableLegalNamesClone2.size() > 0){
+					int newList = getCount(this.metadataTableName);
+					if(!toRemove){
+						newList = newList + 1;
+					}
+					isDone = this.addToMetadataTable(newTableLegalNamesClone2,
+							newList);
+				}	
+
+			}
+			return isDone;
+		
+		} catch (Exception ee) {
+			this.logMessage(ee);
+
+		}
+		return false;
+	}
+
+	/**
+	 * @param newTableLegalNamesClone2
+	 */
+	private boolean addToMetadataTable(Set itemsToAdd, int numberOfRows) {
+
+		String[] fieldNames = this.getDataTableHeaders();
+		String[] legalNames = this.lowerCaseHeaders(this.getLegalNames());
+		int counter = numberOfRows;
+		
+		try {
+
+			for (int ii = 0; ii < legalNames.length; ii++) {
+				String legalName = legalNames[ii].trim();
+
+				if (itemsToAdd.contains(legalName)) {
+					StringBuffer query = new StringBuffer();
+					query.append("\"");
+					query.append(legalName);
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append(fieldNames[ii].trim());
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("false");
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("false");
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("true");
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("false");
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("true");
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("false");
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("false");
+					query.append("\"");
+					query.append(",");
+
+					query.append("\"");
+					query.append("false");
+					query.append("\"");
+					query.append(",");
+					if(counter < 1){
+						++counter;
+					}
+					query.append(new Integer(counter));
+					++counter;
+					
+					String stmtQuery = "INSERT INTO " + this.metadataTableName + " " +  this.getMetadataHeadQuery()
+							+ " VALUES(" + query.toString() + ")";
+					log.debug("Insert query: " + stmtQuery);
+					this.executeStatement(stmtQuery);
+				}
+			}
+			return true;
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+			ee.printStackTrace();
+		}
+		return false;
+	}
+
+	/**
+	 * @param oldTableLegalNamesClone1
+	 */
+	private void removeFromMetadataTable(Set itemsToRemove) {
+		StringBuffer deleteQuery = new StringBuffer();
+		StringBuffer selectQuery = new StringBuffer();
+		
+		
+		selectQuery.append("SELECT OrderValue FROM ");
+		selectQuery.append(this.metadataTableName);
+		selectQuery.append(" WHERE ");
+	
+		deleteQuery.append("DELETE FROM ");
+		deleteQuery.append(this.metadataTableName);
+		deleteQuery.append(" WHERE ");
+		
+		Iterator iter = itemsToRemove.iterator();
+		int i = 0;
+		while (iter.hasNext()) {
+			StringBuffer queryBuffer = new StringBuffer();
+			String legalname = (String) iter.next();
+			queryBuffer.append(EFGImportConstants.LEGALNAME);
+			queryBuffer.append("=");
+			queryBuffer.append("\"");
+			queryBuffer.append(legalname);
+			queryBuffer.append("\"");
+			if (i < (itemsToRemove.size() - 1)) {
+				queryBuffer.append(" OR ");
+			}
+			selectQuery.append(queryBuffer);
+			deleteQuery.append(queryBuffer);
+			++i;
+		}
+		log.debug("Select query: " + selectQuery.toString());
+		log.debug("Delete query: " + deleteQuery.toString());
+		try {
+			List list = this.executeQueryForList(selectQuery.toString(), 1);
+			 this.executeStatement(deleteQuery.toString());
+			
+			this.updateMetadataTable(list,this.metadataTableName);
+			
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		
+		// execute the query here
+	}
+	private void updateMetadataTable(List list, String metaName){
+		
+		
+		for(int listCounter =  list.size()-1; listCounter >= 0 ;listCounter-- ){
+			EFGQueueObjectInterface queue = 
+				(EFGQueueObjectInterface)list.get(listCounter);
+			if(queue != null){
+				int weight = Integer.parseInt(queue.getObject(0));	
+				
+				
+				StringBuffer query = new StringBuffer();
+				query.append("UPDATE ");
+				query.append(metaName);
+				query.append(" SET OrderValue = (OrderValue - 1) ");
+				query.append( " WHERE ");
+				query.append("OrderValue > ");
+				query.append(weight);
+				
+				try {
+					this.executeStatement(query.toString());
+				
+				} catch (Exception e) {
+					//System.err.println("Error: " + e.getMessage());
+				}
+			}
+		}
+
+	}
 	/**
 	 * Create EFGRDTable if it does not already exists
 	 * 
@@ -640,8 +984,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			if (checkEFGRDBTable()) {
 				StringBuffer query = new StringBuffer();
 				log.debug("About to create table: '" + this.efgRDBTable
-					+ "' if it does not exists");
-				//PUT IN PROPERTIES FILE
+						+ "' if it does not exists");
+				// PUT IN PROPERTIES FILE
 				query.append("CREATE TABLE IF NOT EXISTS ");
 				query.append(this.efgRDBTable);
 				query.append("( DS_DATA VARCHAR(255) not null,"
@@ -732,7 +1076,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					query.append("\"");
 					query.append(EFGUtils.parse240(this.getDisplayName()));
 					query.append("\"");
-					//place holders for xslfile, css file and javascript
+					// place holders for xslfile, css file and javascript
 					query.append(",");
 					query.append("\"");
 					query.append("\"");
@@ -836,8 +1180,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			isDone = false;
 		}
 		if (fieldNames == null) {
-			//log.error("The file " + this.datasource.getDataName().toString()
-				//	+ " does not contain field names");
+			// log.error("The file " + this.datasource.getDataName().toString()
+			// + " does not contain field names");
 			isDone = false;
 		}
 		log.debug("Number of Field Names in current data is : "
@@ -849,10 +1193,11 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			log.error("Import terminated");
 
 		} else {
-		
+
 			String[] metaHead = this.getMetadataTableHeaders();
 			if (metaHead == null) {
-				log.error("System could not find metadata table header file.Import is terminating!!\n");
+				log
+						.error("System could not find metadata table header file.Import is terminating!!\n");
 				isDone = false;
 			}
 			log.debug("Number of Field Names in system table csv file is : "
@@ -929,7 +1274,36 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		}
 		return isDone;
 	}
+	private String getMetadataHeadQuery(){
+		
+		StringBuffer query = new StringBuffer("(");
+		query.append(EFGImportConstants.LEGALNAME);
+		query.append(",");
+		query.append(EFGImportConstants.NAME);
+		query.append(",");
+		query.append(EFGImportConstants.SEARCHABLE);
+		query.append(",");
+		query.append(EFGImportConstants.ISLISTS);
+		query.append(",");
 
+		query.append(EFGImportConstants.ONTAXONPAGE);
+		query.append(",");
+		query.append(EFGImportConstants.CATEGORICAL);
+		query.append(",");
+		query.append(EFGImportConstants.NARRATIVE);
+		query.append(",");
+		query.append(EFGImportConstants.NUMERIC);
+		query.append(",");
+		query.append(EFGImportConstants.NUMERICRANGE);
+		query.append(",");
+		query.append(EFGImportConstants.MEDIARESOURCE);
+		query.append(",");
+		query.append(EFGImportConstants.ORDER);
+		query.append(")");
+		
+		return query.toString();
+		
+	}
 	/**
 	 * 
 	 * @return an array of headers to be used for Metadata table REFACTOR USE

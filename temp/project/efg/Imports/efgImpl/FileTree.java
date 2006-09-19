@@ -139,7 +139,7 @@ public class FileTree extends JTree implements Autoscroll {
 			if (parent != null) {
 				if(file.isDirectory()){
 					if (JOptionPane.showConfirmDialog(this,
-							"Do you want to delete the directory '" + file.getName()+ "' ?",
+							"Do you want to delete the directory\n '" + file.getName()+ "' ?",
 							"Delete Directory?", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 				
 						return;

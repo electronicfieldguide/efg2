@@ -69,7 +69,7 @@ public class ImportBehaviorImplNew extends ImportBehavior {
 			this.stateFactory.getFailureObject();
 		if(this.checkLists()){
 			log.debug("CheckLists returns true");
-			boolean bool = this.lists.addEFGDatasourceObject(this.obj,false);
+			boolean bool = this.lists.addEFGDatasourceObject(this.obj,this);
 			if(bool){//factory
 				state = this.stateFactory.getSuccessObject();
 				

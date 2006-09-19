@@ -60,7 +60,6 @@ import project.efg.servlets.efgServletsUtil.EFGServletInitializerInstance;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.util.EFGImportConstants;
-import project.efg.util.TemplateMapObjectHandler;
 import project.efg.util.XMLFileNameFilter;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
@@ -89,7 +88,7 @@ public class EFGContextListener implements ServletContextListener {
 	private static String path;
 
 	private static Set set;
-	
+	public static Hashtable lastModifiedTemplateFileTable = new Hashtable();
 	public static Set configuredDatasources = Collections
 			.synchronizedSet(new HashSet(20));
 
@@ -158,16 +157,17 @@ public class EFGContextListener implements ServletContextListener {
 		
 		File dir = new File(fileLocationBuffer.toString());
 		String[] files = dir.list(new XMLFileNameFilter());
-		System.out.println("Number of files: " + files.length);
+		
 		for(int i = 0 ; i < files.length; i++){
 			try{
-				System.out.println("File: " + files[i]);
+			
 				File f = new File(fileLocationBuffer.toString(),files[i]);
 				FileReader reader = new FileReader(f);
 				TaxonPageTemplates tps = (TaxonPageTemplates)TaxonPageTemplates
 				.unmarshalTaxonPageTemplates(reader);
 				if(tps != null){
 					cacheAdmin.putInCache(files[i].toLowerCase(),tps,templateFilesGroup);
+					lastModifiedTemplateFileTable.put(files[i].toLowerCase(),new Long(f.lastModified()));
 				}
 			}
 			catch(Exception ee){
@@ -187,7 +187,8 @@ public class EFGContextListener implements ServletContextListener {
 		FileWriter writer = null;
 		for(int i = 0 ; i < files.length; i++){
 			try{
-				TaxonPageTemplates tps =(TaxonPageTemplates)cacheAdmin.getFromCache(files[i]);
+				
+				TaxonPageTemplates tps =(TaxonPageTemplates)cacheAdmin.getFromCache(files[i].toLowerCase());
 				writer = new FileWriter(new File(fileLocationBuffer.toString(),files[i]));
 				marshal(writer,tps);
 				writer.flush();
@@ -250,7 +251,7 @@ public class EFGContextListener implements ServletContextListener {
 	 *            the ServletContextEvent object
 	 */
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		System.out.println("Destroying driver manager!!");
+		
 		destroyDriverManager();
 		try {
 			servletContext.log("Context is being destroyed");
@@ -458,11 +459,7 @@ public class EFGContextListener implements ServletContextListener {
 	 * 
 	 */
 	private void createTemplateObjectMap() {
-		String mutex ="";
-		synchronized (mutex) {
-				String mapLocation  = servletContext.getRealPath("/WEB-INF") + File.separator + EFGImportConstants.TEMPLATE_MAP_NAME;	
-				TemplateMapObjectHandler.createTemplateObjectMap(mapLocation);	
-		}
+		
 	}
 	private void destroyDriverManager() { 
 	    try { 
@@ -642,7 +639,22 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
-// Revision 1.1.2.1  2006/08/13 23:53:10  kasiedu
+// Revision 1.1.2.2  2006/09/19 22:36:40  kasiedu
+// no message
+//
+// Revision 1.1.2.9  2006/09/10 12:03:23  kasiedu
+// no message
+//
+// Revision 1.1.2.8  2006/08/30 13:53:34  kasiedu
+// bug id 224-236
+//
+// Revision 1.1.2.7  2006/08/26 22:12:24  kasiedu
+// Updates to xsl files
+//
+// Revision 1.1.2.6  2006/08/21 19:32:55  kasiedu
+// Updates to  files
+//
+// Revision 1.1.2.5  2006/08/13 23:53:15  kasiedu
 // *** empty log message ***
 //
 // Revision 1.1.2.4  2006/08/09 18:55:25  kasiedu

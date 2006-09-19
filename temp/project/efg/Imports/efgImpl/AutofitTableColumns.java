@@ -17,6 +17,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableCellRenderer;
  
  
+
 public class AutofitTableColumns
 {
  
@@ -80,9 +81,10 @@ public class AutofitTableColumns
             dim = new Dimension();
             int rowHeight = aTable.getRowHeight();
  
-            if ( rowHeight == 0 )
+            if ( rowHeight == 0 ){
                  rowHeight = 16;    // default rowheight
- 
+            }
+           
            // System.out.println ("Row Height : " + rowHeight );
  
             dim.height = headerDim.height + ( ( rowHeight + interCellSpacing.height ) * aTable.getRowCount() );
@@ -99,6 +101,7 @@ public class AutofitTableColumns
                 tableColumn = tableColumnModel.getColumn ( i );
  
                 tableColumn.setPreferredWidth ( columnWidth[i] );
+               
             }
  
             aTable.invalidate();

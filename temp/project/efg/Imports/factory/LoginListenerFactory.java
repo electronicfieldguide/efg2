@@ -31,6 +31,7 @@
  */
 package project.efg.Imports.factory;
 
+import project.efg.Imports.efgImpl.CreateEFGUserDialog;
 import project.efg.Imports.efgImpl.LoginDialog;
 import project.efg.Imports.efgInterface.LoginListenerInterface;
 
@@ -46,4 +47,8 @@ public class LoginListenerFactory  {
 	public static LoginListenerInterface getLoginListener(LoginDialog login) {
 		return new project.efg.Imports.rdb.LoginListenerImpl(login);
 	}
+	public static LoginListenerInterface getEFGCreateUserListener(CreateEFGUserDialog login) {
+		return new project.efg.Imports.rdb.CreateEFGUserListener(login);
+	}
+	
 }

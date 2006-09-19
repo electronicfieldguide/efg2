@@ -1,5 +1,6 @@
 package project.efg.util;
 
+
 import java.io.File;
 import java.util.Properties;
 import java.util.Set;
@@ -28,10 +29,42 @@ import java.util.regex.Pattern;
  * USA
  */
 public interface EFGImportConstants {
+	
+	
+	String SAMPLE_MEDIA_RESOURCE_FIELD = "SampleMediaResourceFields";
+	String SAMPLE_SEARCHABLE_FIELD = "SampleSearchableFields";
+	String SAMPLE_NEW_DISPLAY_NAME = "EFG2SampleDisplayName";
+	String SAMPLE_LISTS_FIELD = "SampleListFields";
+	String SAMPLE_DATA_LOCATION = "SampleDataLocation";
+	
+	String TEMPLATE_KEY = "EFGKey";
+	
+	
+	
+	
+	// The 4 ff constants are used are appended to datasource names to make
+	//html file for missing data. MediaResources will  have
+	// datasourcename + IMAGEAPPENDER
+	//lists will have
+	//datasourcename  + EFGLISTAPPENDER and so on.
+	
+	String IMAGEAPPENDER="_MediaResourceErrors";
+	String EFGLISTAPPENDER ="_EFGListErrors";
+	String CATAPPENDER="_CategoricalErrors";
+	String NUMERICSAPPENDER="_NumericErrors";
+	
+	//holds the error files 
+	String TEMPORARY_ERROR_FILE = "/tempError";
+	
+	String HTML_EXT = ".html";
+	
+	String DEFAULT_PLATES_DISPLAY = "Default Thumbnails";
+	String DEFAULT_LISTS_DISPLAY = "Default Text List";
 	String KEY_METADATA_HELP = "/help/metadataHelp.html";
 	String MAIN_DEPLOY_HELP="/help/mainDeployHelp.html";
 	String IMAGE_DEPLOY_HELP="/help/imagesDeployHelp.html";
 	String KEYTREE_DEPLOY_HELP="/help/keysDeployHelp.html";
+	String THUMBS_FILE_NAME = "properties/imagesproperties.dat";
 	String JSP_NAME = "jsp";
 	String TEMPLATE_UNIQUE_NAME="templateUniqueName";
 	String GUID="guid";
@@ -41,6 +74,7 @@ public interface EFGImportConstants {
 	String templateCSSDirectory="templateCSSDirectory";
 	String templateJavascriptDirectory="templateJavascriptDirectory";
 	String ITEMTYPE ="efgItemtype";
+	int NUMBER_OF_TAXON_ON_PAGE=100;
 	int TEMPLATE_IMAGES_DEFAULT_SIZE=1000000;
 	int TEMPLATE_CSS_DEFAULT_SIZE=1000000;
 	int TEMPLATE_JAVASCRIPT_DEFAULT_SIZE=1000000;
@@ -64,54 +98,84 @@ public interface EFGImportConstants {
 
 	String ORSEP = "OR";
 
+	//used for server name construction
 	String COLONSEP = ":";
+	String ESCAPECOLONSEP = "\\\\:";
 
 	String SEMICOLON = ";";
 
 	String PIPESEP = "\\|";
+	String ESCAPEPIPESEP = "\\\\\\|";
+	
 	String PIPESEP_PARSE="|";
 	String DASHSEP = "-";
-
+	String DASHSEPREG = "\\-";
+	String ESCAPEDASHSEPREG = "\\\\\\-";
 	String LEFTPARENSEP = "\\(";
+	String ESCAPELEFTPARENSEP = "\\\\\\(";
 	String LEFTPAREN="(";
 	String RIGHTPAREN=")";
 	String matchNumberStr = "\\d+$";
 	String RIGHTPARENSEP = "\\)";
+	String ESCAPERIGHTPARENSEP = "\\\\\\)";
 	String[] STR_2_REMOVE = {"\\(","\\)"};
-
+	String CARAT_SEPARATOR="\\^";
+	String ESCAPECARAT_SEPARATOR="\\\\\\^";
 	String ORPATTERN = "\\sor\\s";
 	String ORCOMMAPATTERN="([,]|([ ]+(or)[ ]))";
+	String ESCAPEORCOMMAPATTERN="\\\\([,]|([ ]+(or)[ ]))";
     String LISTSEP="#";
-	String COLON_SEPARATOR = ":";
+    String ESCAPELISTSEP="\\\\#";
+	String COLON_SEPARATOR = COLONSEP;
 	String NOPATTERN ="----#----";
 	String matchNumbeAtEnd = "^\\d+$|^-\\d+$";
+	String patternStr = "[A-Z]+";// remove everything that is an
+
+	//PATTERNS
 	Pattern matchNumberPattern = Pattern.compile(matchNumbeAtEnd);
 	Pattern matchNumberAtEndPattern = Pattern.compile(matchNumberStr);
 	Pattern spacePattern = Pattern.compile("\\s");
-	Pattern equalsPattern = Pattern.compile("=");
-	Pattern colonPattern = Pattern.compile(COLON_SEPARATOR);
+	Pattern equalsPattern = Pattern.compile("=");	
+	Pattern colonPattern = Pattern.compile(COLON_SEPARATOR);	
+	Pattern caratPattern = Pattern.compile(CARAT_SEPARATOR);
 	Pattern rightParenPattern = Pattern.compile(EFGImportConstants.RIGHTPARENSEP, 
 			Pattern.CASE_INSENSITIVE);
 	Pattern leftParenPattern = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
 			Pattern.CASE_INSENSITIVE);
-	Pattern dashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEP, 
+	Pattern dashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEPREG, 
 			Pattern.CASE_INSENSITIVE);
-	String patternStr = "[A-Z]+";// remove everything that is an
-	
-	Pattern alphaPattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
-	
 	Pattern pipePattern = Pattern.compile(EFGImportConstants.PIPESEP, Pattern.CASE_INSENSITIVE);
 	Pattern catPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, Pattern.CASE_INSENSITIVE);
 	Pattern commaPattern = Pattern.compile(EFGImportConstants.COMMASEP, Pattern.CASE_INSENSITIVE);
-
 	Pattern noPattern = Pattern.compile(EFGImportConstants.NOPATTERN, Pattern.CASE_INSENSITIVE);
 	Pattern listSepPattern = Pattern.compile(EFGImportConstants.LISTSEP, Pattern.CASE_INSENSITIVE);
+	Pattern alphaPattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
+	
 
+	//ESCAPE PATTERNS
+	Pattern escapecolonPattern = Pattern.compile(ESCAPECOLONSEP);
+	Pattern escapepipePattern = Pattern.compile(EFGImportConstants.ESCAPEPIPESEP,
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapecatPattern = Pattern.compile(EFGImportConstants.ESCAPEORCOMMAPATTERN, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapecommaPattern = Pattern.compile(EFGImportConstants.COMMASEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapenoPattern = Pattern.compile(EFGImportConstants.NOPATTERN, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapelistSepPattern = Pattern.compile(EFGImportConstants.ESCAPELISTSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapedashParenPattern =  Pattern.compile(EFGImportConstants.ESCAPEDASHSEPREG, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapeleftParenPattern = Pattern.compile(EFGImportConstants.ESCAPELEFTPARENSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escaperightParenPattern = Pattern.compile(EFGImportConstants.ESCAPERIGHTPARENSEP, 
+			Pattern.CASE_INSENSITIVE);
+	Pattern escapecaratPattern = Pattern.compile(ESCAPECARAT_SEPARATOR);
+	
+	
+	
 	String CHARACTER_TEXT_LABEL = "ctl";
-
 	String CHARACTER_LABEL = "cl";
-	
-	
 	String XSL_SEARCH_GROUPS = "xslSearchAllGroups";
 	String SEARCH_GROUP = "searchPageGroups";
 	String IMAGES_MAX_DIM="imagemaxdim";
@@ -251,38 +315,56 @@ public interface EFGImportConstants {
 	 * The standard columnnames for representing field attributes within an ODBC
 	 * source.
 	 */
+	/*Searchable
+	List
+	Taxon Page
+	Numeric Value
+	Numeric Range
+	Media Resource
+	Order*/
+	
+	String MEDIARESOURCE = "MediaResource";
+	String MEDIARESOURCE_DISPLAY = "Media Resource";
+	
 	String NAME = "Name";
+	String NAME_DISPLAY=NAME;
 
 	String LEGALNAME = "LegalName";
-
+	String LEGALNAME_DISPLAY = "LegalName";
+	
 	String SEARCHABLE = "IsSearchable";
-
+	String SEARCHABLE_DISPLAY = "Searchable";
+	
 	String ISLISTS = "IsLists";
-
+	String ISLISTS_DISPLAY = "List";
+	
 	String NUMERICRANGE = "NumericRange";
-
-	String ONTAXONPAGE = "OnTaxonPage";
-
-	String CATEGORICAL = "Categorical";
-
-	String NARRATIVE = "Narrative";
-
-	String ORDER = "OrderValue";
-
-	String ORDERED = "OrderValue";
+	String NUMERICRANGE_DISPLAY = "Numeric Range";
 
 	String NUMERIC = "NumericValue";
+	String NUMERIC_DISPLAY= "Numeric Value";
+	
+	String ONTAXONPAGE = "OnTaxonPage";
+	String ONTAXONPAGE_DISPLAY = "Taxon Page";
 
-	String MEDIARESOURCE = "MediaResource";
+	String CATEGORICAL = "Categorical";
+	String CATEGORICAL_DISPLAY = "Categorical";
+
+	String NARRATIVE = "Narrative";
+	String NARRATIVE_DISPLAY=NARRATIVE;
+
+	String ORDER = "OrderValue";
+	String ORDER_DISPLAY = "Order";
+
+	String ORDERED = ORDER;
+
+	String IMPORT_TITLE = "EFG2 Import Application";
 
 	String WEIGHT = "weight";
 
 	String SPECIESPAGETA = "speciesPageta";
 
-	String HOLDSMULTIPLEVALUES = "holdsMultipleValues";
-
-	String HOLDSMULTIPLEVALUESYES = "holdsMultipleValuesYes";
-
+	
 	String MEDIARESOURCEFIELD = "mediaResourceField";
 
 	String JAVATYPE = "javaType";
@@ -321,11 +403,6 @@ public interface EFGImportConstants {
 
 	String DATA = "Data";
 
-	String FIELDELEMENT = "EFGField";
-
-	String TAXALIST = "TaxaList";
-
-	String COMMONPATH = "CommonPath";
 
 	String TAXONENTRY = "TaxonEntry";
 
@@ -417,11 +494,19 @@ public interface EFGImportConstants {
 
 	String TOMCAT_USERS_FILE_RENAME_EXT = "_EFG_old";
 	
-	/*String TOMCAT_USERS_PROPERTIES = "tomcatusers.properties";
-	String RDBPROPERTIES_FILE = "/RDBprops.properties";
-	String GUIPROPERTIES_FILE = "/GUI.properties";*/
+
 	String PROPERTIES_DIR="/properties";
 	String SQL_KEYWORD_KEY="sqlkeywords";
 	Properties EFGProperties =project.efg.Imports.rdb.EFGRDBImportUtils.getProperties();
     Set SQL_KEY_WORDS = project.efg.Imports.rdb.EFGRDBImportUtils.getSQLKeyWords();
+	String SORTING_OFF = "Sorting OFF";
+	String SORTING_ON = "Sorting ON";
+	String TEMPLATE_TABLE = "EFG_TEMPLATE_TABLES";
+	String WEB_APPS = "webapps";
+	String ILLEGALCHARACTER_STRING = "illegalCharacters";
+	String ILLEGAL_CHAR_APPENDER ="illegalCharacters";
+	
+	
+	
+	
 }// EFGImportConstants

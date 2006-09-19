@@ -69,7 +69,7 @@ public abstract class ImportBehavior {
 	 * @return the state of the EFGDatasourceObjectInterface
 	 * that was imported
 	 */
-		public abstract EFGDatasourceObjectStateInterface importIntoDatabase();
+	public abstract EFGDatasourceObjectStateInterface importIntoDatabase();
 	public String getResponseMessage(){
 		return this.responseMessage.toString();
 	}

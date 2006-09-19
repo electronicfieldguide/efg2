@@ -26,6 +26,7 @@
 */
 package project.efg.Imports.rdb;
 
+
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
@@ -90,17 +91,17 @@ public class TableSorterMain extends TableSorterMainInterface {
 			}
 			ArrayList buttonTable = new ArrayList();
 			StringBuffer query = new StringBuffer();
-			query.append("SELECT * FROM " + tableName);
+			query.append("SELECT * FROM " + tableName + " ORDER BY " + EFGImportConstants.ORDER);
 
 			org.springframework.jdbc.support.rowset.SqlRowSet rowset = 
 				this.jdbcTemplate
 					.queryForRowSet(query.toString());
-
+			
 			SqlRowSetMetaData metadata = rowset.getMetaData(); // Get metadata
 																// on
 			// them
 			int numcols = metadata.getColumnCount(); // How many columns?
-
+			
 			int cols = numcols + 1;
 
 			// ignore legal names so reduce number of columns by 1
@@ -112,6 +113,7 @@ public class TableSorterMain extends TableSorterMainInterface {
 				Object[] dataRow = new Object[numcols - 1];
 				ButtonGroup button = new ButtonGroup();
 				int w = 0;
+				int currentOrder = -1;
 				for (int i = 1; i < cols; i++) {
 					String colName = metadata.getColumnName(i);
 					// if the column name is the legal name skip it
@@ -119,7 +121,8 @@ public class TableSorterMain extends TableSorterMainInterface {
 						continue;
 					}
 					if (j == 0) {// iterating over headers
-						columnNames[w] = colName;
+						columnNames[w] = 
+							(String)TableSorterMainInterface.legal2DisplayMap.get(colName);
 					}
 
 					if (colName.equalsIgnoreCase(EFGImportConstants.NAME)) {
@@ -127,9 +130,9 @@ public class TableSorterMain extends TableSorterMainInterface {
 						dataRow[w] = str.trim();
 					} else if (colName
 							.equalsIgnoreCase(EFGImportConstants.ORDER)) {
-						int ii = rowset.getInt(colName);
+						 currentOrder = rowset.getInt(colName);
 
-						dataRow[w] = new Integer(ii);
+						dataRow[w] = new Integer(currentOrder);
 					} else if ((colName
 							.equalsIgnoreCase(EFGImportConstants.ONTAXONPAGE))
 							|| (colName
@@ -148,10 +151,12 @@ public class TableSorterMain extends TableSorterMainInterface {
 					}
 					++w;
 				}
+				//j = currentOrder + 1;
 				data.add(j, dataRow);
 				buttonTable.add(button);
 				++j;
 			}
+			
 			tableObject = new TableSorterObject(data,columnNames);
 		} catch (Exception rr) {
 			rr.printStackTrace();
@@ -175,12 +180,12 @@ public class TableSorterMain extends TableSorterMainInterface {
 			query.append("\"");
 			java.util.List list = EFGRDBImportUtils.executeQueryForList(
 					this.jdbcTemplate, query.toString(), 1);
-			log.debug("After  lists size. " + list.size());
+			
 			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
 				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
 						.next();
 				tableName = queue.getObject(0);
-				log.debug("Table Name: " + tableName);
+				
 				break;
 			}
 		} catch (Exception rr) {
@@ -214,19 +219,21 @@ public class TableSorterMain extends TableSorterMainInterface {
 		try {
 			for (int row = 0; row < sorter.getRowCount(); row++) {
 				StringBuffer query = new StringBuffer(startQuery.toString());
-				StringBuffer nameEndQuery = new StringBuffer(" WHERE NAME=");
+				StringBuffer nameEndQuery = new StringBuffer(" WHERE ");
+				nameEndQuery.append(EFGImportConstants.NAME);
+				nameEndQuery.append("=");
 			
 				for (int col = 0; col < sorter.getColumnCount(); col++) {
 					String colName = sorter.getColumnName(col);
 					String val = sorter.getValueAt(row, col).toString();
-					if (colName.equalsIgnoreCase(EFGImportConstants.NAME)) {
+					if (colName.equalsIgnoreCase(EFGImportConstants.NAME_DISPLAY)) {
 						nameEndQuery.append("\"");
 						nameEndQuery.append(val);
 						nameEndQuery.append("\"");
 					} else {
-						query.append(colName);
+						query.append((String)TableSorterMainInterface.display2LegalMap.get(colName));
 						query.append(" = ");
-						if (colName.equalsIgnoreCase(EFGImportConstants.ORDER)) {
+						if (colName.equalsIgnoreCase(EFGImportConstants.ORDER_DISPLAY)) {
 							query.append(val);
 						} else {
 							query.append("\"");
@@ -253,7 +260,7 @@ public class TableSorterMain extends TableSorterMainInterface {
 			isDone = false;
 			message = ee.getMessage();
 			log.error(message);
-			JOptionPane.showMessageDialog(null, message, "Error Message",
+			JOptionPane.showMessageDialog(null, "An error occured during the processing of query", "Error Message",
 					JOptionPane.ERROR_MESSAGE);
 			return;
 		}

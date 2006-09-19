@@ -30,9 +30,6 @@ package project.efg.servlets.efgImpl;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -46,9 +43,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.log4j.Logger;
-import org.jdom.Element;
-import org.jdom.Namespace;
-import org.jdom.output.XMLOutputter;
 
 import project.efg.servlets.efgServletsUtil.ApplyXSLInterface;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
@@ -68,9 +62,9 @@ public class ApplyXSL extends HttpServlet {
 
 	private static TransformerFactory tFactory;
 
-	private static Namespace digir = null;
+	//private static Namespace digir = null;
 
-	private Format formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
+	//private Format formatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss");
 
 	static Logger log = null;
 
@@ -87,7 +81,7 @@ public class ApplyXSL extends HttpServlet {
 			//log = Logger.getLogger(ApplyXSL.class);
 		} catch (Exception ee) {
 		}
-		digir = Namespace.getNamespace(EFGImportConstants.DIGIR_NAMESPACE);
+	//	digir = Namespace.getNamespace(EFGImportConstants.DIGIR_NAMESPACE);
 		realPath = getServletContext().getRealPath("/");
 		tFactory = TransformerFactory.newInstance();
 	}
@@ -130,7 +124,7 @@ public class ApplyXSL extends HttpServlet {
 		if ((xsl != null) && (xml != null)) {
 			Transformer transformer = null;
 			try {
-				String header = getHeader(req);
+				String header = null;//getHeader(req);
 			
 				transformer = tFactory.newTransformer(xsl);
 				
@@ -153,9 +147,10 @@ public class ApplyXSL extends HttpServlet {
 				
 				transformer.setParameter("server", server);
 			
+				if(header != null){
 				
 				transformer.setParameter("header", header);
-			
+				}
 				
 				transformer.setParameter("serverContext", serverContext);
 			
@@ -178,17 +173,13 @@ public class ApplyXSL extends HttpServlet {
 					transformer.setParameter("mediaResourceField", (String) req
 							.getAttribute("mediaResourceField"));
 				}
-				else{
-					//log.debug("mediaresource field is null!!");
-				}
+				
 				String fieldName = (String) req.getAttribute("fieldName");
 				if (fieldName != null) {
 	
 					transformer.setParameter("fieldName",fieldName);
 				}
-				else{
-					//log.debug("fieldName is null!!");
-				}
+				
 				// set more parameters
 				// if more than one means go to search results page
 			} catch (TransformerConfigurationException tce) {
@@ -243,9 +234,19 @@ public class ApplyXSL extends HttpServlet {
 			out.print(result);
 			out.close();
 		}
+		else{
+			PrintWriter out = res.getWriter();
+			// Tell the Browser that I'm sending back HTML
+			out
+					.println("<H3>Datasource contains illegal XMLcharacters.Please consult documentation on how to deal with it.</H3>");
+			out.flush();
+			res.flushBuffer();
+		
+			return;
+		}
 	}
 
-	private String getHeader(HttpServletRequest req) throws Exception {
+	/*private String getHeader(HttpServletRequest req) throws Exception {
 		
 		Element source = null;
 		String clientIPaddr = req.getRemoteAddr(); // 123.123.123.123
@@ -254,7 +255,7 @@ public class ApplyXSL extends HttpServlet {
 		String dsName = (String) req.getAttribute("dataSourceName");
 
 		// If the resource is null and there is an error send the
-		// defaultvresource shown below.
+		// default resource shown below.
 		StringBuffer buf1 = new StringBuffer();
 		buf1.append(req.getScheme()); // http
 		buf1.append("://");
@@ -265,7 +266,7 @@ public class ApplyXSL extends HttpServlet {
 		buf1.append(req.getServletPath()); // efg
 		String resource = buf1.toString();
 
-		Element header = new Element("header", digir);
+		/*Element header = new Element("header", digir);
 
 		// Read from servlet context or from a properties file
 		Element version = new Element("version", digir);
@@ -290,16 +291,29 @@ public class ApplyXSL extends HttpServlet {
 		Element type = new Element("type", digir);
 		type.setText("search");
 		header.addContent(type);
-
+		
 		XMLOutputter outputter = new XMLOutputter();
 		StringWriter sw = new StringWriter();
 		outputter.output(header, sw);
 		return sw.toString();
-	}
+		return "";
+	}*/
 }
 // $Log$
-// Revision 1.1.2.1  2006/08/13 23:53:10  kasiedu
-// *** empty log message ***
+// Revision 1.1.2.2  2006/09/19 22:36:39  kasiedu
+// no message
+//
+// Revision 1.1.2.7  2006/09/10 12:03:23  kasiedu
+// no message
+//
+// Revision 1.1.2.6  2006/08/30 13:53:34  kasiedu
+// bug id 224-236
+//
+// Revision 1.1.2.5  2006/08/23 13:42:03  kasiedu
+// no message
+//
+// Revision 1.1.2.4  2006/08/21 19:32:55  kasiedu
+// Updates to  files
 //
 // Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
 // latest code confimrs to what exists on Panda

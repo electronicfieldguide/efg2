@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +24,8 @@ import org.apache.log4j.Logger;
  * @author kasiedu
  *
  */
-public class CreateThumbNailsThread extends SwingWorker implements EFGImportConstants,WindowListener{
+public class CreateThumbNailsThread extends SwingWorker 
+implements EFGImportConstants,WindowListener{
 	static Logger log;
 	static {
 		try {
@@ -37,11 +40,12 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	private ThumbNailGenerator thm;
 	private boolean isDone = false;
 	String srcFile, destFile;
-	   JFrame frame;
+	JFrame frame;
 	   JPanel panel;
 	private JProgressBar progressBar;
 	private FileNode destNode;
 	   private DnDFileBrowser browser;
+	private List objectsToDrop;
 	 public CreateThumbNailsThread( DnDFileBrowser browser,File srcFile, File destFile) {
 		 this(browser,srcFile,destFile,null);
 	 }
@@ -49,17 +53,30 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 	
 
 	public CreateThumbNailsThread(DnDFileBrowser browser,File srcFile, File destFile, FileNode node) {
-    	this.srcFile = srcFile.getAbsolutePath();
-    	this.browser = browser;
-    	this.destNode = node;
-    	this.destFile = this.replace(destFile.getAbsolutePath(), EFGIMAGES, EFGIMAGES_THUMBS);
-    	
-    	this.maxDim =DnDFileBrowserMain.getMaxDim();
-		log.debug("Max Dim: " + this.maxDim);
+    		
+		this.objectsToDrop = new ArrayList();
+    	DropFileObject drop = new DropFileObject(srcFile,destFile, destNode);
+    	this.objectsToDrop.add(drop);
+        this.browser = browser;
+     
+        this.init();
+    }
+	/**
+	 * @param browser2
+	 * @param list
+	 */
+	public CreateThumbNailsThread(DnDFileBrowser browser2, List list) {
+		this.browser = browser2;
+		this.objectsToDrop = list;
+		this.init();
+	}
+	private void init(){
+		this.maxDim =DnDFileBrowserMain.getMaxDim();
+		
 		this.thm = new ThumbNailGenerator();
         this.progressBar = new JProgressBar();
         JLabel label = new JLabel("Please wait while application generates Thumbnails");
-       label.setSize(300,300);
+        label.setSize(300,300);
         this.progressBar.setStringPainted(true);
         this.progressBar.setString("");  
         
@@ -86,8 +103,11 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
     //Display the window.
     frame.pack();
     frame.setVisible(true);  
-    }
+	}
+
+
 	
+
 
 
 	public Object construct() {
@@ -98,22 +118,45 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 		progressBar.setString("");
 		progressBar.setCursor(null);
 		progressBar.setIndeterminate(true);
-		this.generateThumbs(new File(this.srcFile),new File(this.destFile));
+
+		for(int i = 0; i < this.objectsToDrop.size();i++){
+			DropFileObject drop = (DropFileObject)this.objectsToDrop.get(i);
+			if(this.destNode == null){
+				
+				this.destNode = drop.getDestinationNode();
+			
+			}
 		
+			this.srcFile = drop.getSourceFile().getAbsolutePath();
+			File destFile1 = drop.getDestinationFile();
+			this.destFile = this.replace(destFile1.getAbsolutePath(), EFGIMAGES, EFGIMAGES_THUMBS);
+			this.generateThumbs(new File(this.srcFile),new File(this.destFile));
+		}
 		Toolkit.getDefaultToolkit().beep();
 		this.progressBar.setValue(0);
 		this.isDone = true;
 		String message = "ThumbNail Generation done!!!";
 		
 		this.frame.dispose();
-		JOptionPane.showMessageDialog(this.browser, message, "Done",
+		JOptionPane.showMessageDialog(null, message, "Done",
 				JOptionPane.INFORMATION_MESSAGE);
 		FileNode root = (FileNode)((DefaultTreeModel)this.browser.getModel()).getRoot();
 
-		if(this.destNode != null){
-			((DefaultTreeModel)this.browser.getModel()).reload(this.destNode);
-			int rowIndex = root.getIndex(this.destNode);
-			this.browser.expandRow(rowIndex);
+		if(this.destNode != null){	
+			
+			if(this.destNode.getParent() != null){
+			
+				
+				int rows[] = this.browser.getSelectionRows();
+				int row = rows[0];
+				FileNode selPath = (FileNode)this.browser.getSelectionPath().getLastPathComponent();
+				((DefaultTreeModel)this.browser.getModel()).reload(selPath.getParent());
+				this.browser.expandRow(row);
+			}
+			else{
+				
+				((DefaultTreeModel)this.browser.getModel()).reload();//(root);
+			}
 		}
 		else{
 			
@@ -126,7 +169,51 @@ public class CreateThumbNailsThread extends SwingWorker implements EFGImportCons
 			((DefaultTreeModel)this.browser.getModel()).reload();
 		}
 		this.browser.setVisible(true);
-		return null;
+		return this.destNode;
+	}
+	/**
+	 * Expands a given node in a JTree.
+	 *
+	 * @param tree      The JTree to expand.
+	 * @param model     The TreeModel for tree.     
+	 * @param node      The node within tree to expand.     
+	 * @param row       The displayed row in tree that represents
+	 *                  node.     
+	 * @param depth     The depth to which the tree should be expanded. 
+	 *                  Zero will just expand node, a negative
+	 *                  value will fully expand the tree, and a positive
+	 *                  value will recursively expand the tree to that
+	 *                  depth relative to node.
+	 */
+	public int expandJTreeNode (javax.swing.JTree tree,
+	                                   javax.swing.tree.TreeModel model,
+	                                   Object node, int row, int depth)
+	{
+		
+	    if (node != null  &&  !model.isLeaf(node)) {
+	        tree.expandRow(row);
+	        if (depth != 0)
+	        {
+	            for (int index = 0;
+	                 row + 1 < tree.getRowCount()  &&  
+	                            index < model.getChildCount(node);
+	                 index++)
+	            {
+	                row++;
+	                Object child = model.getChild(node, index);
+	                if (child == null)
+	                    break;
+	                javax.swing.tree.TreePath path;
+	                while ((path = tree.getPathForRow(row)) != null  &&
+	                        path.getLastPathComponent() != child)
+	                    row++;
+	                if (path == null)
+	                    break;
+	                row = expandJTreeNode(tree, model, child, row, depth - 1);
+	            }
+	        }
+	    }
+	    return row;
 	}
 	private void generateThumbs(File srcFile, File destFile){
 		

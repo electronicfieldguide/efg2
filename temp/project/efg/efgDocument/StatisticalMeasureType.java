@@ -75,6 +75,22 @@ implements java.io.Serializable
     //-----------/
 
     /**
+     * Method deleteMax
+     */
+    public void deleteMax()
+    {
+        this._has_max= false;
+    } //-- void deleteMax() 
+
+    /**
+     * Method deleteMin
+     */
+    public void deleteMin()
+    {
+        this._has_min= false;
+    } //-- void deleteMin() 
+
+    /**
      * Returns the value of field 'max'. The field 'max' has the
      * following description: The maximum value of this statistical
      * measure

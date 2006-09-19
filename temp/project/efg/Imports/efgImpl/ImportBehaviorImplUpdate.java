@@ -82,7 +82,7 @@ public class ImportBehaviorImplUpdate extends ImportBehavior {
 				log.debug("DisplayName is: " + this.obj.getDisplayName());
 				this.obj.setDisplayName(selectedValue.toString()
 						.trim());
-				boolean bool = this.lists.addEFGDatasourceObject(this.obj, true);
+				boolean bool = this.lists.addEFGDatasourceObject(this.obj, this);
 				if(bool){
 					state = this.stateFactory.getSuccessObject(); 
 					this.responseMessage.append(this.obj.getDisplayName() + " ");

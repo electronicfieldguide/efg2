@@ -86,6 +86,8 @@ public class ImportDialog extends JDialog {
 		EFGImportConstants.EFGProperties.getProperty("ImportDialog.importUseMetadataCmd");
 	final String updateCommand =
 		EFGImportConstants.EFGProperties.getProperty("ImportDialog.updateCmd");
+	final String replaceCommand =
+		EFGImportConstants.EFGProperties.getProperty("ImportDialog.replaceCmd");
 	
 	final JButton closeButton = new JButton(
 			EFGImportConstants.EFGProperties.getProperty("ImportDialog.closeBtn")
@@ -128,7 +130,7 @@ public class ImportDialog extends JDialog {
 
 		this.getContentPane().add(frequentPanel, BorderLayout.CENTER);
 		setLocationRelativeTo(frame);
-		setSize(400, 200);
+		setSize(350, 200);
 	}
 
 	/**
@@ -166,10 +168,16 @@ public class ImportDialog extends JDialog {
 		radioButtons[1]
 		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.1.tooltip"));
 
-		radioButtons[2] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2"));
+		//radioButtons[2] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2"));
+		//radioButtons[2]
+		  //           .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2.tooltip"));
+		//radioButtons[2].setActionCommand(updateCommand);
+		
+		
+		radioButtons[2] = new JRadioButton(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.3"));
 		radioButtons[2]
-		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.2.tooltip"));
-		radioButtons[2].setActionCommand(updateCommand);
+		             .setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.radioBtn.3.tooltip"));
+		radioButtons[2].setActionCommand(replaceCommand);
 
 		for (int i = 0; i < numButtons; i++) {
 			group.add(radioButtons[i]);
@@ -215,8 +223,8 @@ public class ImportDialog extends JDialog {
 	private static void createAndShowGUI() {
 		// Create and set up the content pane.
 		ImportDialog newContentPane = new ImportDialog(null);
-		newContentPane.show();
-		////log.debug(newContentPane.getSelected() + "");
+		newContentPane.setVisible(true);
+		
 	}
 	public static void main(String[] args) {
 		createAndShowGUI();
@@ -236,8 +244,7 @@ public class ImportDialog extends JDialog {
 				else{
 				choiceCMD = 
 					ImportCommandFactory.getImportCommand(command);
-				//log.debug("Command created by Factory is: " +
-					//	choiceCMD.getClass().getName());
+				
 				}
 				this.dialog.dispose();
 			}

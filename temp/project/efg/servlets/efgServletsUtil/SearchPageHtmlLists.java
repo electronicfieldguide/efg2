@@ -58,9 +58,11 @@ public class SearchPageHtmlLists extends XSLTObjectInterface {
 			String realPath
 			) {	
 		
-		String[] displayNames =(String[])parameters.get(EFGImportConstants.DISPLAY_NAME); 
+		String[] displayNames =
+			(String[])parameters.get(EFGImportConstants.DISPLAY_NAME); 
 		//log.debug("Got display names1");
-		String[] datasourceNames = (String[])parameters.get(EFGImportConstants.DATASOURCE_NAME);
+		String[] datasourceNames = 
+			(String[])parameters.get(EFGImportConstants.DATASOURCE_NAME);
 		//log.debug("Got datasource names1");
 		String datasourceName = null;
 		String displayName = null;
@@ -80,7 +82,8 @@ public class SearchPageHtmlLists extends XSLTObjectInterface {
 				(String[])parameters.get(EFGImportConstants.XSL_STRING);
 			
 			//log.debug("Got xsl  names");
-			if ((xslFileNames == null) || (xslFileNames[0].trim().equals(""))) {
+			if ((xslFileNames == null) || 
+					(xslFileNames[0].trim().equals(""))) {
 				XslPage currentPage = this.getXSLFile(
 						datasourceName, 
 						EFGImportConstants.SEARCHPAGE_LISTS_XSL);

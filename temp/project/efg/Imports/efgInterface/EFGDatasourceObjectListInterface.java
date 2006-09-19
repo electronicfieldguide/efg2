@@ -160,20 +160,8 @@ public abstract class EFGDatasourceObjectListInterface {
 	 * @return true if this datasource was successfully added, false otherwise
 	 */
 	public abstract boolean addEFGDatasourceObject(
-			EFGDatasourceObjectInterface datasource, boolean isUpdate); 
-	/**
-	 * Add an object to the database
-	 * 
-	 * @param datasource -
-	 *            The datasource object to add
-	 * @param isUpdate -
-	 *            true,If there is an update to a data table.
-	 * @return true if this datasource was successfully added, false otherwise
-	 */
-	public  boolean addEFGDatasourceObject(
-			EFGDatasourceObjectInterface datasource){
-		return this.addEFGDatasourceObject(datasource,false);
-	}
+			EFGDatasourceObjectInterface datasource, ImportBehavior isUpdate); 
+
 	
 }// EFGDatasourceObjectInterfaceList
 

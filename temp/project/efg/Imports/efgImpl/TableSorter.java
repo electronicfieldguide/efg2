@@ -107,9 +107,18 @@ public class TableSorter extends AbstractTableModel {
 
 	private boolean isChanged = false;
 
+	private int lastSortingColumn =-1;
+	private boolean isSortingState = false;
+
 	public TableSorter() {
 		this.mouseListener = new MouseHandler();
 		this.tableModelListener = new TableModelHandler(this);
+	}
+	public void setSortingState(boolean bool){
+		this.isSortingState = bool;
+	}
+	public boolean isSortingState(){
+		return this.isSortingState;
 	}
 	public boolean isChanged(){
 		return this.isChanged;
@@ -126,11 +135,6 @@ public class TableSorter extends AbstractTableModel {
 		this();
 		setTableHeader(tableHeader);
 		setTableModel(tableModel);
-	}
-
-	private void clearSortingState() {
-		viewToModel = null;
-		modelToView = null;
 	}
 
 	public TableModel getTableModel() {
@@ -156,8 +160,11 @@ public class TableSorter extends AbstractTableModel {
 	}
 
 	public void setTableHeader(JTableHeader tableHeader) {
+		
+	
 		if (this.tableHeader != null) {
 			this.tableHeader.removeMouseListener(mouseListener);
+			this.tableHeader = tableHeader;
 			TableCellRenderer defaultRenderer = this.tableHeader
 					.getDefaultRenderer();
 			if (defaultRenderer instanceof SortableHeaderRenderer) {
@@ -170,6 +177,7 @@ public class TableSorter extends AbstractTableModel {
 			this.tableHeader.addMouseListener(mouseListener);
 			this.tableHeader.setDefaultRenderer(new SortableHeaderRenderer(
 					this.tableHeader.getDefaultRenderer()));
+			
 		}
 	}
 
@@ -177,29 +185,14 @@ public class TableSorter extends AbstractTableModel {
 		return sortingColumns.size() != 0;
 	}
 
-	private Directive getDirective(int column) {
-		for (int i = 0; i < sortingColumns.size(); i++) {
-			Directive directive = (Directive) sortingColumns.get(i);
-			if (directive.column == column) {
-				return directive;
-			}
-		}
-		return EMPTY_DIRECTIVE;
-	}
-
 	public int getSortingStatus(int column) {
 		return getDirective(column).direction;
 	}
 
-	private void sortingStatusChanged() {
-		clearSortingState();
-		fireTableDataChanged();
-		if (tableHeader != null) {
-			tableHeader.repaint();
-		}
-	}
-
 	public void setSortingStatus(int column, int status) {
+		if(!this.isSortingState()){
+			return;
+		}
 		Directive directive = getDirective(column);
 		if (directive != EMPTY_DIRECTIVE) {
 			sortingColumns.remove(directive);
@@ -207,19 +200,17 @@ public class TableSorter extends AbstractTableModel {
 		if (status != NOT_SORTED) {
 			sortingColumns.add(new Directive(column, status));
 		}
+		if(column != -1){
+			this.lastSortingColumn = column;
+		}
+		else{//defaults to last column
+			this.lastSortingColumn = this.getColumnCount() - 1;
+		}
+		
 		sortingStatusChanged();
 	}
 
-	protected Icon getHeaderRendererIcon(int column, int size) {
-		Directive directive = getDirective(column);
-		if (directive == EMPTY_DIRECTIVE) {
-			return null;
-		}
-		return new Arrow(directive.direction == DESCENDING, size,
-				sortingColumns.indexOf(directive));
-	}
-
-	private void cancelSorting() {
+	public void cancelSorting() {
 		sortingColumns.clear();
 		sortingStatusChanged();
 	}
@@ -234,52 +225,9 @@ public class TableSorter extends AbstractTableModel {
 		}
 	}
 
-	protected Comparator getComparator(int column) {
-		Class columnType = tableModel.getColumnClass(column);
-		Comparator comparator = (Comparator)columnComparators.get(columnType);
-		if (comparator != null) {
-			
-			return comparator;
-		}
-		if (Comparable.class.isAssignableFrom(columnType)) {
-		
-			return COMPARABLE_COMAPRATOR;
-		}
-		
-		return LEXICAL_COMPARATOR;
-	}
-
-	private Row[] getViewToModel() {
-		if (viewToModel == null) {
-			int tableModelRowCount = tableModel.getRowCount();
-			viewToModel = new Row[tableModelRowCount];
-			for (int row = 0; row < tableModelRowCount; row++) {
-				viewToModel[row] = new Row(row);
-			}
-
-			if (isSorting()) {
-				Arrays.sort(viewToModel);
-			}
-		}
-		return viewToModel;
-	}
-
 	public int modelIndex(int viewIndex) {
 		return getViewToModel()[viewIndex].modelIndex;
 	}
-
-	private int[] getModelToView() {
-		if (modelToView == null) {
-			int n = getViewToModel().length;
-			modelToView = new int[n];
-			for (int i = 0; i < n; i++) {
-				modelToView[modelIndex(i)] = i;
-			}
-		}
-		return modelToView;
-	}
-
-	// TableModel interface methods
 
 	public int getRowCount() {
 		return (tableModel == null) ? 0 : tableModel.getRowCount();
@@ -298,13 +246,87 @@ public class TableSorter extends AbstractTableModel {
 	}
 
 	public boolean isCellEditable(int row, int column) {
+		if(this.isSortingState()){
+			return false;
+		}
 		return tableModel.isCellEditable(modelIndex(row), column);
 	}
 
 	public Object getValueAt(int row, int column) {
 		return tableModel.getValueAt(modelIndex(row), column);
 	}
-
+	protected Icon getHeaderRendererIcon(int column, int size) {
+		Directive directive = getDirective(column);
+		if (directive == EMPTY_DIRECTIVE) {
+			return null;
+		}
+		return new Arrow(directive.direction == DESCENDING, size,
+				sortingColumns.indexOf(directive));
+	}
+	protected Comparator getComparator(int column) {
+		Class columnType = tableModel.getColumnClass(column);
+		Comparator comparator = (Comparator)columnComparators.get(columnType);
+		if (comparator != null) {
+			
+			return comparator;
+		}
+		if (Comparable.class.isAssignableFrom(columnType)) {
+			
+			return COMPARABLE_COMAPRATOR;
+		}
+		
+		return LEXICAL_COMPARATOR;
+	}
+	private void clearSortingState() {
+		viewToModel = null;
+		modelToView = null;
+	}
+	public int getLastSortingColumn(){
+		return this.lastSortingColumn;
+	}
+	private void sortingStatusChanged() {
+		clearSortingState();
+		fireTableDataChanged();
+		if (tableHeader != null) {
+			tableHeader.repaint();
+		}
+	}
+	private Directive getDirective(int column) {
+		for (int i = 0; i < sortingColumns.size(); i++) {
+			Directive directive = (Directive) sortingColumns.get(i);
+			if (directive.column == column) {
+				return directive;
+			}
+		}
+		return EMPTY_DIRECTIVE;
+	}
+	private int[] getModelToView() {
+		if (modelToView == null) {
+			int n = getViewToModel().length;
+			modelToView = new int[n];
+			for (int i = 0; i < n; i++) {
+				modelToView[modelIndex(i)] = i;
+			}
+		}
+		return modelToView;
+	}
+	private Row[] getViewToModel() {
+		if (viewToModel == null) {
+			int tableModelRowCount = tableModel.getRowCount();
+			viewToModel = new Row[tableModelRowCount];
+			for (int row = 0; row < tableModelRowCount; row++) {
+				viewToModel[row] = new Row(row);
+			}
+	
+			if (isSorting()) {
+				try{
+				Arrays.sort(viewToModel);
+				}
+				catch(Exception ee){}
+			}
+		}
+		return viewToModel;
+	}
 	public void setValueAt(Object aValue, int row, int column) {
 		tableModel.setValueAt(aValue, modelIndex(row), column);
 	}
@@ -317,7 +339,9 @@ public class TableSorter extends AbstractTableModel {
 		public Row(int index) {
 			this.modelIndex = index;
 		}
-
+		public String toString(){
+			return this.modelIndex + "";
+		}
 		public int compareTo(Object o) {
 			int row1 = modelIndex;
 			int row2 = ((Row) o).modelIndex;
@@ -413,10 +437,25 @@ public class TableSorter extends AbstractTableModel {
 			return;
 		}
 	}
-
+	/**
+	 * 
+	 */
+	public void synchronizeModelWithView() {
+		Row[] row1= getViewToModel();
+		
+		
+		if(row1 != null){
+			int[] row2 =new  int[row1.length];
+			for(int i = 0; i < row1.length;i++){
+				row2[i]= row1[i].modelIndex;
+			}
+			modelToView = row2;
+		}
+		
+	}
 	private class MouseHandler extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
-			System.out.println("Mouse clicked");
+			synchronizeModelWithView();
 			JTableHeader h = (JTableHeader) e.getSource();
 			TableColumnModel columnModel = h.getColumnModel();
 			int viewColumn = columnModel.getColumnIndexAtX(e.getX());
@@ -436,6 +475,8 @@ public class TableSorter extends AbstractTableModel {
 				setSortingStatus(column, status);
 			}
 		}
+
+	
 	}
 
 	private static class Arrow implements Icon {
@@ -495,7 +536,33 @@ public class TableSorter extends AbstractTableModel {
 
 	private class SortableHeaderRenderer implements TableCellRenderer {
 		private TableCellRenderer tableCellRenderer;
+		/*public MultiLineHeaderRenderer() {
+			setOpaque(true);
+			setForeground(UIManager.getColor("TableHeader.foreground"));
+			setBackground(UIManager.getColor("TableHeader.background"));
+			setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+			ListCellRenderer renderer = getCellRenderer();
+			((JLabel)renderer).setHorizontalAlignment(JLabel.CENTER);
+			setCellRenderer(renderer);
+		  }
 
+		  public Component getTableCellRendererComponent(JTable table, Object value,
+				       boolean isSelected, boolean hasFocus, int row, int column) {
+			setFont(table.getFont());
+			String str = (value == null) ? "" : value.toString();
+			BufferedReader br = new BufferedReader(new StringReader(str));
+			String line;
+			Vector v = new Vector();
+			try {
+			  while ((line = br.readLine()) != null) {
+			    v.addElement(line);
+			  }
+			} catch (IOException ex) {
+			  ex.printStackTrace();
+			}
+			setListData(v);
+			return this;
+		  }*/
 		public SortableHeaderRenderer(TableCellRenderer tableCellRenderer) {
 			this.tableCellRenderer = tableCellRenderer;
 		}

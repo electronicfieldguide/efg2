@@ -3,6 +3,8 @@
  */
 package project.efg.util;
 
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +37,43 @@ public class TemplateConfigProcessor {
 		this.searchType = searchType;
 		
 	}
+	private String getFile(){
+		StringBuffer fileLocationBuffer = new StringBuffer();
+		fileLocationBuffer.append(EFGContextListener.getPathToServlet());
+		fileLocationBuffer.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
+		fileLocationBuffer.append(File.separator);
+		fileLocationBuffer.append(this.dsName.toLowerCase());
+		fileLocationBuffer.append(EFGImportConstants.XML_EXT);
+		fileLocationBuffer.toString();
+		return fileLocationBuffer.toString();
+	
+	}
+	private void reLoad() {
+		
+			try{
+				String file = this.getFile();
+				File f = new File(file);
+				if(!f.exists()){
+					return;
+				}
+				FileReader reader = new FileReader(f);
+				this.tps = (TaxonPageTemplates)TaxonPageTemplates
+				.unmarshalTaxonPageTemplates(reader);
+				String templateName = this.dsName + EFGImportConstants.XML_EXT;
+				if(tps != null){
+					try{
+						cacheAdmin.removeEntry(templateName.toLowerCase());
+					}
+					catch(Exception ee){
+					}
+					cacheAdmin.putInCache(templateName.toLowerCase(),tps,EFGContextListener.templateFilesGroup);
+					EFGContextListener.lastModifiedTemplateFileTable.put(templateName.toLowerCase(),new Long(f.lastModified()));
+				}
+			}
+			catch(Exception ee){
+				
+			}
+		}
 
 	/**
 	 * Get the HttpServletRequest parameters and return the value.
@@ -48,7 +87,21 @@ public class TemplateConfigProcessor {
 	public List getTemplateList() {
 		List list = new ArrayList();
 		try {
-
+			//if i have changed reload me
+			String file = this.getFile();
+			String templateName = this.dsName + EFGImportConstants.XML_EXT;
+			Long lastMod =(Long)EFGContextListener.lastModifiedTemplateFileTable.get(templateName.toLowerCase());
+			if( lastMod == null){//it has not been seen at all
+				this.reLoad();
+			}
+			File f = new File(file);
+			if(f.exists()){
+				long currentLastMod = f.lastModified();
+				if(currentLastMod > lastMod.longValue()){//if the file has changed
+					this.reLoad();
+					EFGContextListener.lastModifiedTemplateFileTable.put(templateName.toLowerCase(),new Long(currentLastMod));
+				}
+			}
 			if (this.tps == null) {
 				//log.debug("Creating new tps");
 				this.tps = this.getTaxonPageTemplateRoot();
@@ -79,9 +132,6 @@ public class TemplateConfigProcessor {
 		}
 		return list;
 	}
-
-
-
 	private TaxonPageTemplates getTaxonPageTemplateRoot() {
 		TaxonPageTemplates ts = null;
 			try {
@@ -89,7 +139,7 @@ public class TemplateConfigProcessor {
 					return null;
 				}
 				String templateName = this.dsName + EFGImportConstants.XML_EXT;
-				System.out.println("Template Name: " + templateName);
+				
 				if(templateName != null){
 					ts = (TaxonPageTemplates)cacheAdmin.getFromCache(templateName.toLowerCase());
 				}

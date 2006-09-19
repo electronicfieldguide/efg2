@@ -136,24 +136,6 @@ public class EFGUtils {
 		return metadataTableHeaders;
 	}
 
-	private static String[] readMetadataTableHeaders() {
-		try {
-			InputStream stream = project.efg.Imports.efgImportsUtil.EFGUtils.class
-					.getResourceAsStream(project.efg.util.EFGImportConstants.CSV_METADATA_HEADERS);
-
-			LabeledCSVParser lcsvp = new LabeledCSVParser(new ExcelCSVParser(
-					stream));
-			if (lcsvp != null) {
-				return lcsvp.getLabels();
-			}
-		} catch (Exception ee) {
-			log.error(" An error occured during importation of : "
-					+ project.efg.util.EFGImportConstants.CSV_METADATA_HEADERS + "\n");
-			log.error(ee.getMessage());
-		}
-		return null;
-	}
-
 	public static Properties getEnvVars() {
 		Process p = null;
 		Properties envVars = new Properties();
@@ -260,11 +242,32 @@ public class EFGUtils {
 		return sb.toString();
 	}
 
+	private static String[] readMetadataTableHeaders() {
+		try {
+			InputStream stream = project.efg.Imports.efgImportsUtil.EFGUtils.class
+					.getResourceAsStream(project.efg.util.EFGImportConstants.CSV_METADATA_HEADERS);
+	
+			LabeledCSVParser lcsvp = new LabeledCSVParser(new ExcelCSVParser(
+					stream));
+			if (lcsvp != null) {
+				return lcsvp.getLabels();
+			}
+		} catch (Exception ee) {
+			log.error(" An error occured during importation of : "
+					+ project.efg.util.EFGImportConstants.CSV_METADATA_HEADERS + "\n");
+			log.error(ee.getMessage());
+		}
+		return null;
+	}
+
 }
 
 // $Log$
-// Revision 1.1.2.1  2006/08/13 23:53:12  kasiedu
-// *** empty log message ***
+// Revision 1.1.2.2  2006/09/19 22:36:38  kasiedu
+// no message
+//
+// Revision 1.1.2.4  2006/08/26 22:12:24  kasiedu
+// Updates to xsl files
 //
 // Revision 1.1.2.3  2006/08/09 18:55:24  kasiedu
 // latest code confimrs to what exists on Panda

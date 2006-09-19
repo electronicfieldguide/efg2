@@ -31,6 +31,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +40,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -211,8 +211,9 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 					dropTargetDropEvent.rejectDrop();
 					return;
 				}
-				int result = JOptionPane.showConfirmDialog(this,
-						"Do you really want to move the file: " + nodeToMove + " to " + destPath + "?", "Move Resource(s)",
+				int result = JOptionPane.showConfirmDialog(null,
+						"Do you really want to move the file: " + node.getFile().getName() + " to " +
+						destNode.getFile().getName() + "?", "Move Resource(s)",
 						JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
 					dropTargetDropEvent.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
@@ -230,7 +231,18 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				dropTargetDropEvent.acceptDrop(DnDConstants.ACTION_COPY);
 				String path = (String) tr
 						.getTransferData(DataFlavor.stringFlavor);
-				dropFile(path, dropTargetDropEvent);
+				List objectsToDrop = new ArrayList();
+				DropFileObject dropObject = dropFile(path,
+						dropTargetDropEvent);
+				if(dropObject != null){
+					objectsToDrop.add(dropObject);
+				}
+				if(objectsToDrop.size() > 0){
+				    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
+				      copyFiles.start();
+				      copyOverExistingFiles = false;
+					}
+					
 			} else if (tr.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				//
 				// Order is important!!! acceptDrop before getTransferData
@@ -240,12 +252,22 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 						.getTransferData(DataFlavor.javaFileListFlavor);
 				//do in a new thread
 				Iterator iter = list.iterator();
+				List objectsToDrop = new ArrayList();
 				while (iter.hasNext()) {
 					File file = (File)iter.next();
 				    String path = file.getAbsolutePath();
-					dropFile(path,
+					DropFileObject dropObject = dropFile(path,
 							dropTargetDropEvent);
+					if(dropObject != null){
+						objectsToDrop.add(dropObject);
+					}
 				}
+				if(objectsToDrop.size() > 0){
+			    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
+			      copyFiles.start();
+			      copyOverExistingFiles = false;
+				}
+				
 
 			} else {
 				dropTargetDropEvent.rejectDrop();
@@ -256,11 +278,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 		} catch (UnsupportedFlavorException ufe) {
 			log.error(ufe.getMessage());
 			dropTargetDropEvent.rejectDrop();
-		}
-		//((DefaultTreeModel)this.getModel()).reload(this.root);
-	
-		
-		
+		}	
 	}
 
 	public void copyFile(File srcFile, File destFile) {
@@ -353,12 +371,12 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	 * @param dropTargetDropEvent
 	 *            the drop event
 	 */
-	protected void dropFile(String path, DropTargetDropEvent dropTargetDropEvent) {
+	protected DropFileObject dropFile(String path, DropTargetDropEvent dropTargetDropEvent) {
 		TreePath tpath = getSelectionPath();
 		FileNode destNode = (FileNode)tpath.getLastPathComponent();
 		File destFile =  destNode.getFile();
 		File srcFile = new File(path);
-		this.dropFile(srcFile ,destFile,null,
+		return this.dropFile(srcFile ,destFile,null,
 		true, dropTargetDropEvent);
 	}
 
@@ -370,11 +388,11 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	 * @param dropTargetDropEvent
 	 *            the drop event
 	 */
-	protected void dropFile(FileNode srcNode,
+	protected DropFileObject dropFile(FileNode srcNode,
 			DropTargetDropEvent dropTargetDropEvent) {
 		TreePath path = getSelectionPath();
 		FileNode destNode = (FileNode) path.getLastPathComponent();
-		dropFile(srcNode, destNode, false, dropTargetDropEvent);
+		return dropFile(srcNode, destNode, false, dropTargetDropEvent);
 	}
 	/**
 	 * Drop a FileNode on another.
@@ -388,7 +406,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	 * @param dropTargetDropEvent
 	 *            the drop event
 	 */
-	protected void dropFile(FileNode srcNode , FileNode destNode,
+	protected DropFileObject dropFile(FileNode srcNode , FileNode destNode,
 			boolean external, DropTargetDropEvent dropTargetDropEvent) {
 		
 		File srcFile = srcNode.getFile();
@@ -401,7 +419,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 		else {//it is a file
 			newFile = destFile;
 		}	
-		dropFile(srcFile ,newFile,srcNode,
+		return dropFile(srcFile ,newFile,srcNode,
 				external,dropTargetDropEvent);
 	
 	}
@@ -419,7 +437,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	 * @param dropTargetDropEvent
 	 *            the drop event
 	 */
-	protected void dropFile(File srcFile , File destFile,FileNode srcNode,
+	protected DropFileObject dropFile(File srcFile , File destFile,FileNode srcNode,
 			boolean external, DropTargetDropEvent dropTargetDropEvent) {
 	
 		
@@ -442,24 +460,29 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 						+ srcFileName + " are identical";
 				this.dropError(msg,dropTargetDropEvent);
 			
-				return;
+				return null;
 			} else if (newFile.exists()) {//if the new file already exists ask before overwriting it
+				if (!copyOverExistingFiles) {
 				int res = overWrite(srcFileName,destFile);
 				boolean isReturn = true;
-				if (!copyOverExistingFiles) {
+				
 					switch (res) {
 					case 1: // Yes to all
 						copyOverExistingFiles = true;
+					
 						isReturn = false;
 						break;
 					case 0: // Yes
 						copyOverExistingFiles = false;
+						
 						isReturn = false;
 						break;
 					case 2: // No
 						copyOverExistingFiles = false;
+						
 						break;
 					default: // Cancel
+						
 						copyOverExistingFiles = false;
 						break;
 					}
@@ -467,7 +490,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 						dropTargetDropEvent.dropComplete(false);
 						String msg = "File " + newFile.getName() + " exists";
 						JOptionPane.showMessageDialog(this, msg);
-						return;
+						return null;
 					}
 				}	
 			}
@@ -491,10 +514,11 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 			}
 			
 			if(!isRename){//rename is not supported or it is a copy
-		       EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,srcFile,destFile,this.progressBar,this.destNode);
-		       copyFiles.start();
-		       //this.copyFile(srcFile,destFile);
-		       return;
+		    
+				if(destNode == null){
+					destNode = getSelectedDirectory();
+				}
+		       return new DropFileObject(srcFile, destFile,destNode);
 				
 			}
 			if(isRename){//file successfully copied or moved
@@ -507,13 +531,14 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				//physically copy files
 				//String msg = "An error occured while copying or moving files";
 				//this.dropError(msg,dropTargetDropEvent);
-				return;
+				return null;
 			}
 		} else {
 			String msg = "Cannot move " + fileType + ", " + srcFileName + " and " + srcFileName
 			+ " are identical";
 			this.dropError(msg,dropTargetDropEvent);
 		}
+		return null;
 	}
 
 
@@ -587,12 +612,15 @@ private boolean isDirectorySelected(){
 	File f = destNode.getFile();
 	return f.isDirectory();
 }
-
+private FileNode getSelectedDirectory(){
+	TreePath path = getSelectionPath();
+	return (FileNode) path.getLastPathComponent();
+}
 
 private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 	   dropTargetDropEvent.dropComplete(false);
 		
-		JOptionPane.showMessageDialog(this, message, "Error",
+		JOptionPane.showMessageDialog(null, message, "Error",
 				JOptionPane.ERROR_MESSAGE); 
    }
 	private void startDrag(DragGestureEvent dragGestureEvent) {
@@ -639,7 +667,7 @@ private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 	 * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
 	 */
 	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -684,7 +712,7 @@ private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 	 * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
 	 */
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -693,7 +721,7 @@ private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 	 * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
 	 */
 	public void windowOpened(WindowEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 }

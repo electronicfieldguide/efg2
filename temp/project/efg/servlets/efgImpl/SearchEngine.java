@@ -49,9 +49,6 @@ import project.efg.servlets.factory.EFGHTTPQueryFactory;
 import project.efg.servlets.factory.ResponseObjectFactory;
 import project.efg.util.EFGImportConstants;
 
-//import org.apache.log4j.PropertyConfigurator;
-//import project.efg.templates.taxonPageTemplates.*;
-//import project.efg.templates.util.*;
 
 /**
  * This servlet handles requests to display a list of taxa with attribute values
@@ -60,7 +57,7 @@ import project.efg.util.EFGImportConstants;
 public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	static final long serialVersionUID = 1;
 	
-	private String realPath;
+	protected String realPath;
 	
 	static Logger log = null;
 	
@@ -209,8 +206,11 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	}
 }
 //$Log$
-//Revision 1.1.2.1  2006/08/13 23:53:10  kasiedu
-//*** empty log message ***
+//Revision 1.1.2.2  2006/09/19 22:36:40  kasiedu
+//no message
+//
+//Revision 1.1.2.5  2006/08/26 22:12:24  kasiedu
+//Updates to xsl files
 //
 //Revision 1.1.2.4  2006/08/09 18:55:25  kasiedu
 //latest code confimrs to what exists on Panda

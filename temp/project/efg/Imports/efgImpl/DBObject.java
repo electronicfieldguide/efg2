@@ -39,7 +39,7 @@ package project.efg.Imports.efgImpl;
  * @author <a href="mailto:kasiedu@cs.umb.edu">Jacob K Asiedu</a>
  * @version 1.0
  */
-public class DBObject {
+public class DBObject{
 	protected String userName;
 
 	protected String password;
@@ -67,4 +67,8 @@ public class DBObject {
 	public String getURL(){
 		return this.url;
 	}
+	public DBObject clone(String newurl){
+		return new DBObject(newurl,this.getUserName(), this.getPassword());
+	}
+	
 } // DBObject

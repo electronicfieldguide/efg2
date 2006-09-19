@@ -44,7 +44,7 @@ public class UnicodeToASCIIFilter {
 	 * 
 	 */
 	public UnicodeToASCIIFilter() {
-	
+		//read illegal characters from a properties file
 	}
 	  /**
      * Read characters from the reader, one at a time (using a BufferedReader
@@ -54,13 +54,16 @@ public class UnicodeToASCIIFilter {
     public void filter(Reader r, Writer w) throws IOException {
       BufferedReader in = new BufferedReader(r);
       PrintWriter out = new PrintWriter(new BufferedWriter(w));
+      boolean bool = false;
       int c;
       while((c = in.read()) != -1) {
+    	  
         // Just output ASCII characters
         if (((c >= ' ') && (c <= '~')) || (c=='\t') || (c=='\n') || (c=='\r'))
           out.write(c);
         // And encode the others
         else {
+        	System.out.println("C is: " + c);
           String hex = Integer.toHexString(c);
           switch (hex.length()) { 
             case 1:  out.print("\\u000" + hex); break;
@@ -71,5 +74,32 @@ public class UnicodeToASCIIFilter {
         }
       }
       out.flush();  // flush the output buffer we create
+    }
+    
+    /**
+     * Read characters from the reader, one at a time (using a BufferedReader
+     * for efficiency).  Output printable ASCII characters unfiltered.  For
+     * other characters, output the \U Unicode encoding.
+     **/
+    public boolean filter(Reader r) throws IOException {
+      BufferedReader in = new BufferedReader(r);
+     
+      boolean bool = false;
+      int c;
+      while((c = in.read()) != -1) {
+    	  
+        // Just output ASCII characters
+    	 if(c == 127){
+    		 bool = true;
+    	 }
+    	 if ((c=='\t') || (c=='\n') || (c=='\r') || (c > 31)){
+        	
+        }
+        else {
+        	bool = true;
+        }
+      }
+     
+      return bool;
     }
 }
