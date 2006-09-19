@@ -170,11 +170,13 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:if test="not(string($itemname))=''">
 		<td class="caption">
 			<a class="caption" href="{$linkURL}">
 				<xsl:value-of select="$itemname"/>
 			</a>
 		</td>
+		</xsl:if>
 		<!-- Fields are aggregated and that needs to be solved also output a generic page if transformation fails-->
 	</xsl:template>
 	<xsl:template name="display-images">
