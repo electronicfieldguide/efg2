@@ -41,7 +41,7 @@ java.util.Iterator" %>
 				while (it.hasNext()) {
 					TemplateObject templateObject  = (TemplateObject)it.next();
 					//String key = (String)it.next();
-					String key = (String)map.get(templateObject);
+					String key = (String)sortedMap.get(templateObject);
 					EFGDisplayObject displayObject = templateObject.getDisplayObject();
 					String templateName = templateObject.getTemplateName();
 					String displayName = displayObject.getDisplayName();

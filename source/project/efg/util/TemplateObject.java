@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author kasiedu
  *
  */
-public class TemplateObject implements Serializable, java.util.Comparator{
+public class TemplateObject implements Serializable, java.lang.Comparable{
  /**
 	 * 
 	 */
@@ -44,22 +44,39 @@ private EFGDisplayObject displayObject;
 /* (non-Javadoc)
  * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
  */
-public int compare(Object object1, Object object2) {
+public int compareTo(Object object1) {
 	TemplateObject obj1 = (TemplateObject)object1;
-	TemplateObject obj2 = (TemplateObject)object2;
+	if(this.getDisplayObject().compareTo(obj1.getDisplayObject()) == 0){
+	    if(this.getTemplateName().compareTo(obj1.getTemplateName()) == 0){
+		if((this.getGUID() != null ) && (obj1.getGUID() != null)){
+		    return this.getTemplateName().compareTo(obj1.getTemplateName());
+		}
+		else{
+		    return this.toString().compareTo(obj1.toString());
+		}
+	    }
+	    else{
+		return this.getTemplateName().compareTo(obj1.getTemplateName());
+	    }
+	}
+	return this.getDisplayObject().compareTo(obj1.getDisplayObject());
 	
-	
-	return obj1.getDisplayObject().compareTo(obj2.getDisplayObject());
 }
 
 public boolean equals(Object obj){
 	TemplateObject obj1 = (TemplateObject)obj;
+	if(this.getGUID() != null){
+	    return this.getGUID().equals(obj1.getGUID());
+	}
 	if(this.getDisplayObject().equals(obj1.getDisplayObject())){
-		return this.getTemplateName().equals(obj1.getTemplateName());
+	    return this.getTemplateName().equals(obj1.getTemplateName());
 	}
 	return this.getDisplayObject().equals(obj1.getDisplayObject());
 }
-public int hashCode(){
+    public int hashCode(){
+	if(this.getGUID() != null){
+	    return this.getGUID().hashCode();
+	}
 	return this.getDisplayObject().hashCode() * this.getTemplateName().hashCode();
-}
+    }
 }
