@@ -11,10 +11,10 @@ project.efg.util.EFGDisplayObject
  	String forwardPage="NoDatasource.jsp";
    String context = request.getContextPath();
 	boolean found = false;
-    ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
+ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
 	EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
 	boolean isEmpty = false;
-	if(listInter != null){
+if(listInter != null){
 		if(listInter.getCount() < 1){
 		isEmpty = true;
 		}
@@ -22,71 +22,133 @@ project.efg.util.EFGDisplayObject
 	else{
 		isEmpty = true;
 	}
-	
+
   %>
 	
 <html>
   <head>
-    <title>Search/Browse EFG Datasources</title>
+    	<title>The EFG Project - Electronic Field Guides</title>
+		<link rel="stylesheet" href="efg2web.css" TYPE="text/css"/>
   </head>
 
-  <body bgcolor="#ffffff">
-    <h2 align="center">Search/Browse EFG Datasources</h2>
-  <center>
-      <table>
-		  <% 
-		  if(!isEmpty){
-		    Iterator dsNameIter = listInter.getIterator(); 
-		    String searchPageStr = context + "/SearchPage.jsp?pageType=option&displayFormat=HTML&displayName=";
-    		String searchLists = context + "/search?maxDisplay=100&displayFormat=HTML&searchType=lists&displayName=";
-  			String searchPlates =context + "/search?maxDisplay=100&displayFormat=HTML&searchType=plates&displayName=";
-			String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
-		  	while (dsNameIter.hasNext()) { 
-		  	%>
-		  <tr>
-			 <td>
-				<% 
-					EFGDisplayObject obj = (EFGDisplayObject)dsNameIter.next();
-					String displayName = obj.getDisplayName();
-					String datasourceName = obj.getDatasourceName();
-					found = true;
-					String newSearchStr =searchPageStr + displayName +  dsName + datasourceName;
-					String newSearchPlates =searchPlates+ displayName +  dsName + datasourceName;
-					String newSearchLists = searchLists+ displayName +  dsName + datasourceName;
-				 %>
-				<%=displayName%>
-			 </td>
-			 <td>
-			 	 <a  href="<%=newSearchStr%>"  title="search datasource">
-					search
-				 </a>
-			 </td> 
-			 <td>
-				 <a  href="<%=newSearchLists%>" title="browse a list of taxon names">
-					browse lists
-				 </a>
-			  </td> 
-			  <td>
-				 <a  href="<%=newSearchPlates%>"  title="browse  plates">
-					browse plates
-				 </a>	 
-			 </td>
-		</tr>
-		<br/><br/>
-		  <% 
-		}//end while
-		if(!found){%>
-			<h3> No datasources uploaded by author(s)</h3>
-		<%}
-		}//end outer if 
-		else{
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
-		dispatcher.forward(request, response);
-   
-		}
-		 %>
-      </table>
-
-  </center>
-  </body>
+  <body>
+	<table class="header">
+			<tr>
+				<td class="minilogo">
+					<a href="index.html"><img src="efgpagelogomini.jpg" width="410" height="38" border="0" alt="The Electronic Field Guide Project" title="The Electronic Field Guide Project" align="left" /></a>
+				</td>
+				<td>
+					<table class="iconbar">
+						<tr>
+							<td class="iconbar">
+								<a href="TypePage.jsp">
+									<img src="viewiconmini.jpg" width="41" border="0" alt="View Sample EFGs" title="View Sample EFGs" />
+								</a>
+							</td>
+							<td class="iconbar">
+								<a href="Links.html">
+									<img src="configiconmini.jpg" width="41" border="0" alt="Configure Your EFG" title="Configure Your EFG - Login Required" />
+								</a>
+							</td>
+							<td class="iconbar">
+								<a href="">
+									<img src="downloadiconmini.jpg" width="41" border="0" alt="Download the EFG Software" title="Download the EFG Software" />
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td class="icontext">View</td>
+							<td class="icontext">Config</td>
+							<td class="icontext">Download</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	<table class="frame">
+			<tr>
+				<td>
+					<table class="main">
+						 <% 
+						  if(!isEmpty){
+						%>
+						<tr>
+							<td colspan="5" class="title">Search/Browse EFG Datasources</td>
+						</tr>
+						<%
+						Iterator dsNameIter = listInter.getIterator(); 
+						String searchPageStr = context + "/SearchPage.jsp?pageType=option&displayFormat=HTML&displayName=";
+						String searchLists = context + "/search?maxDisplay=100&displayFormat=HTML&searchType=lists&displayName=";
+						String searchPlates =context + "/search?maxDisplay=100&displayFormat=HTML&searchType=plates&displayName=";
+						String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
+						while (dsNameIter.hasNext()) { 
+							EFGDisplayObject obj = (EFGDisplayObject)dsNameIter.next();
+							String displayName = obj.getDisplayName();
+							String datasourceName = obj.getDatasourceName();
+							found = true;
+							String newSearchStr =searchPageStr + displayName +  dsName + datasourceName;
+							String newSearchPlates =searchPlates+ displayName +  dsName + datasourceName;
+							String newSearchLists = searchLists+ displayName +  dsName + datasourceName;
+						%>
+						<tr>
+							<td colspan="5">
+								<table>
+									<tr>
+										<td class="efglisttitle"><%=displayName%></td>
+										<td class="efglistlinks">
+											<a class="efglist" href="<%=newSearchStr%>" title="search datasource">search</a> | 
+											<a class="efglist" href="<%=newSearchLists%>" title="browse a list of taxon names">browse lists</a> | 
+											<a class="efglist" href="<%=newSearchPlates%>" title="browse  plates">browse plates</a>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<% 
+						}//end while
+						if(!found){%>
+							<h3> No datasources uploaded by author(s)</h3>
+						<%}
+						}//end outer if 
+						else{
+							RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
+							dispatcher.forward(request, response);
+						}
+						 %>
+						<tr>
+							<td class="" />
+							<td class="horizspacer" />
+							<td class="" />
+							<td class="horizspacer" />
+							<td class="logos">
+								<a href="http://efg.cs.umb.edu">
+									<img src="efglogo.gif" width="52" height="56" border="0" alt="EFG Home Page" title="EFG Home Page" />
+								</a>
+								<a href="http://www.umb.edu">
+									<img src="umblogo.gif" width="54" height="58" border="0" alt="UMass Boston Home Page" title="UMass Boston Home Page" />
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td class="copyright" colspan="5">&copy; 2006 EFG Group and UMass Boston. This research is supported in part by the NSF.
+							</td>
+						</tr>
+						<tr>
+							<td class="credits" colspan="5">Icon photos via Flickr, from left to right: urtica, Myownbiggestfan, Auntie_P.
+							</td>
+						</tr>
+						<tr>
+							<td class="timestamp" colspan="5">
+								<script language="JavaScript" type="text/javascript">
+									<!--
+									 document.write("Last Modified " + document.lastModified)
+									// -->
+								</script>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
 </html>
