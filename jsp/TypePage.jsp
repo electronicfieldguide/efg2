@@ -51,7 +51,7 @@ if(listInter != null){
 								</a>
 							</td>
 							<td class="iconbar">
-								<a href="">
+								<a href="http://efg.cs.umb.edu/EFGsoftware">
 									<img src="downloadiconmini.jpg" width="41" border="0" alt="Download the EFG Software" title="Download the EFG Software" />
 								</a>
 							</td>
