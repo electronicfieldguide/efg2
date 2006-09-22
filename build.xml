@@ -9,6 +9,9 @@ to compile/deploy/clean with:
 <project name="Electronic Field Guide" default="compile" basedir=".">
 	<property environment="myenv"/>
 	<property name="app.name" value="efg2"/>
+	
+
+	
 	<property name="tomcat.home" value="${myenv.CATALINA_HOME}"/>
 	<property name="efg2.home" value="."/>
 	<property name="rdb.src.home" value="${efg2.home}/efgRDB"/>
@@ -17,22 +20,19 @@ to compile/deploy/clean with:
 	<property name="dist.war" value="${app.name}.war"/>
 	<property name="efg2.public_html.home" value="${efg2.home}/public_html"/>
 	<property name="efg2.lib.home" value="${efg2.home}/lib"/>
-	
 	<property name="efg2.css.home" value="${efg2.home}/css"/>
 	<property name="efg2.templatecss.home" value="${efg2.home}/templateCSSDirectory"/>
-	
 	<property name="efg2.javascript.home" value="${efg2.home}/js"/>
 	<property name="efg2.templatejavascript.home" value="${efg2.home}/templateJavascriptDirectory"/>
-		<property name="efg2.templateimages.home" value="${efg2.home}/templateImagesDirectory"/>
-
+	<property name="efg2.templateimages.home" value="${efg2.home}/templateImagesDirectory"/>
 	<property name="efg2.jsp.home" value="${efg2.home}/jsp"/>
 	<property name="efg2.templatejsp.home" value="${efg2.home}/templateJSP"/>
-	
 	<property name="efg2.lib.home.properties" value="${efg2.lib.home}/properties"/>
 	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
 	<property name="efg2.images.home" value="${efg2.home}/../EFGImages"/>
 	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
+		<property name="efg2.website.home" value="${efg2.home}/../efg2_website"/>
 	<property name="dist.src" value="${app.name}.jar"/>
 	<property name="efg2.fedSchema.home" value="fedSchema"/>
 	<property name="efg2.metadata.home" value="metadata"/>
@@ -78,16 +78,17 @@ to compile/deploy/clean with:
 		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="generate"/>
 	-->
 		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
+		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
 		<copy todir="${src.temp.home}">
 			<fileset dir="${efg2.source.home}"/>
 		</copy>
 	</target>
 	<target name="war">
-	<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
-	  <fileset dir="${deploy.home}"/>
-	</war>
-	</target>	
+		<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
+			<fileset dir="${deploy.home}"/>
+		</war>
+	</target>
 	<!-- Make preparations for deployment-->
 	<target name="deployWar">
 		<copy file="efg2.war" todir="${webapps.home}"/>
@@ -111,7 +112,7 @@ to compile/deploy/clean with:
 			<fileset dir="${efg2.css.home}"/>
 		</copy>
 		<copy todir="${deploy.home}">
-				<fileset dir="${efg2.public_html.home}"/>
+			<fileset dir="${efg2.public_html.home}"/>
 		</copy>
 		<copy todir="${deploy.home}/html">
 			<fileset dir="${efg2.public_html.home}/html"/>
@@ -131,6 +132,7 @@ to compile/deploy/clean with:
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.jsp.home}"/>
 		</copy>
+
 		<copy todir="${deploy.home}/templateJSP">
 			<fileset dir="${efg2.templatejsp.home}"/>
 		</copy>
@@ -141,20 +143,18 @@ to compile/deploy/clean with:
 		<copy file="${efg2.home}/efgRDB/etc/web.xml" todir="${deploy.home}/WEB-INF"/>
 		<copy todir="${deploy.home}/templateConfigFiles">
 			<fileset dir="templateConfigFiles"/>
-		</copy>	
-	</target>	
+		</copy>
+				<copy todir="${deploy.home}">
+			<fileset dir="${efg2.website.home}" excludes="*.jsp,*.xcf, indexEFGConfig.html,Myownbiggestfan_Flickr_Wrench.jpg, TypePage.*"/>
+		</copy>
+	</target>
 	<target name="prepareDeploy" depends="deployEFGIcons, deployResources">
-		
 		<mkdir dir="${deploy.home}/WEB-INF"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes/properties"/>
 		<mkdir dir="${deploy.home}/WEB-INF/fedSchema"/>
 		<mkdir dir="${deploy.home}/WEB-INF/metadata"/>
 		<mkdir dir="${deploy.home}/WEB-INF/lib"/>
-		
-		
-		
-		
 		<copy todir="${deploy.home}/WEB-INF/fedSchema">
 			<fileset dir="${efg2.fedSchema.home}"/>
 		</copy>
@@ -223,7 +223,6 @@ to compile/deploy/clean with:
 	<target name="cleanAll" depends="cleanSource,cleanTomcatUsers">
 	-->
 	<target name="cleanAll" depends="cleanSource">
-			
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
 		<delete dir="	${efg2.lib.home.properties}" quiet="true"/>
