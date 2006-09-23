@@ -146,7 +146,7 @@ padding-bottom: 10px;
 					<li>If the template you select has the option of adding javascript files, you will see a pulldown menu where the default javascript file is displayed (filename.js). Use the pulldown menu to select the file you uploaded and proceed with the template configuration.</li>
 				</ul>
 			</li>
-			
+</ul>			
 <hr>
 
 <p class="header"><a name="view"></a>5. View Your Data</p>
@@ -154,6 +154,9 @@ padding-bottom: 10px;
 <ul>
 	<li><b>Front Page to Search</b> - Search or browse all imported data sources using the Type Page, which is located at http://URL_TO_TOMCAT:PORT_NUMBER/efg2/TypePage.jsp (for example, http://localhost:8080/efg2/TypePage.jsp if the web server is on the computer you are currently in front of, or http://panda.cs.umb.edu/efg2/TypePage.jsp as an example of accessing the page from a different location).</li>
 	<li><b>View URLs for all EFGs</b> - A Table listing all of the views (list, plate and search) for every data source that has imported. Note that this page may start out identical to the type page. This is the page to go to if you create, for example, multiple list views of a single  datasource (the type page only shows the default for each view).</li>
+    <li><b>Linking to your EFG pages:</b>You can get URLs to use as links to your EFG pages from either the "Front page to Search" or "View URLs for all EFGs" page. While the text list and thumbnail views of the taxa may look like static pages, they are actually search results, where the search was done with no restrictions, thus returning all records. For example:<br><u>http://panda.cs.umb.edu/efg2/search?dataSourceName=LifeOnThePurpleLoosestrifeFlickr08012006_1156949797187&guid=1156881710078&xslName=nantucketCommonNameSearchList.xsl&searchType=lists&displayFormat=HTML&maxDisplay=100</u><br>
+The URL above will return a maximum of 100 hits (&maxDisplay=100). If you wish to display more than 100 records in your list views, change this number. However, if you increase it too much there will likely be performance issues, and if you try to view all 5000 records of a database in a single text list, the software will likely hang. 
+</li>
 	<li><i>Note: At least one of the fields of your data source must have been configured as "Categorical" in order for the Search page, Plate View and List View to work correctly.</i></li>
 	<li>If you view the data without having configured any templates, the data will appear in the default, generic template that has virtually no formatting.</li>
 </ul>
