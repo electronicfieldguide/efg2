@@ -264,7 +264,11 @@
 	<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
 			<url-pattern>/javascriptUpload.jsp</url-pattern>
-		</web-resource-collection>	
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/Links.html</url-pattern>
+		</web-resource-collection>		
 		<auth-constraint>
 			<role-name>efg</role-name>
 		</auth-constraint>
