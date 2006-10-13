@@ -49,21 +49,24 @@
 	<xsl:template name="efgListsLocal">
 		<xsl:param name="caption"/>
 		<xsl:param name="efgLists"/>
+			
 		<tr>
 			<xsl:for-each select="$efgLists/EFGList">
 				<xsl:variable name="character" select="."/>
 				<xsl:choose>
 					<xsl:when test="not(string(@resourceLink))=''">
 						<xsl:variable name="serviceLink" select="@resourceLink"/>
+						<xsl:variable name="toUpperCase" select="translate($serviceLink,'http://','HTTP://')"/>
+					
 						<xsl:variable name="url">
 							<xsl:choose>
-								<xsl:when test="contains(translate($serviceLink,'abcdefhijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'http;//')">
+								<xsl:when test="contains($toUpperCase,'HTTP://')">
 									<xsl:value-of select="concat(string($serviceLink),'=',string($character))"/>
 								</xsl:when>
 								<xsl:otherwise>
 									<xsl:choose>
 										<xsl:when test="contains($serviceLink,$dsNamePrefix)">
-											<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,'&amp;',$serviceLink,'=',$character,'&amp;displayFormat=html')"/>
+										<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,'&amp;',$serviceLink,'=',$character,'&amp;displayFormat=html')"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:value-of select="concat(string($serverbase),$mapQueryServlet,string($dsNamePrefix), $dataSourceName,'&amp;',$serviceLink,'=',$character,'&amp;displayFormat=html')"/>

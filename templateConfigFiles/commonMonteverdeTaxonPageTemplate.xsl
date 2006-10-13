@@ -229,9 +229,10 @@
 				<td class="simfam">
 					<xsl:choose>
 						<xsl:when test="not(string($resourcelink))=''">
+							<xsl:variable name="toUpperCase" select="translate($resourcelink,'http://','HTTP://')"/>
 							<xsl:variable name="url">
 								<xsl:choose>
-									<xsl:when test="contains(translate($resourcelink,'abcdefhijklmnopqrstuvwxyz','ABCDEFGHIJKLMNOPQRSTUVWXYZ'),'http;//')">
+									<xsl:when test="contains($toUpperCase,'HTTP://')">
 										<xsl:value-of select="concat(string($resourcelink),'=',string($caption))"/>
 									</xsl:when>
 									<xsl:otherwise>
