@@ -32,6 +32,7 @@ package project.efg.Imports.efgImpl;
  * implement equals and hashcode if it is used as part of a Collection.
  */
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -243,9 +244,40 @@ public class SynopticKeyTreeMain extends JDialog {
 					JOptionPane.ERROR_MESSAGE);
 		}
 		this.addMenus();
-		JComponent newContentPane = addPanel();
-		this.createPopUp();
-		setContentPane(newContentPane);
+JPanel btnPanel = new JPanel();
+		btnPanel.setLayout(new GridLayout(0, 2));
+
+		editMetadataBtn.addActionListener(new DataManipulatorListener(this,
+				this.getEditManipulator()));
+		editMetadataBtn.setToolTipText(EFGImportConstants.EFGProperties
+				.getProperty("SynopticKeyTreeMain.editMetadataBtn.tooltip"));
+		btnPanel.add(editMetadataBtn);
+
+		updateBtn.addActionListener(new DataManipulatorListener(this, this
+				.getUpdateManipulator()));
+		updateBtn.setToolTipText(EFGImportConstants.EFGProperties
+				.getProperty("SynopticKeyTreeMain.updateBtn.tooltip"));
+		btnPanel.add(updateBtn);
+
+		deleteBtn.addActionListener(new DataManipulatorListener(this, this
+				.getDeleteManipulator()));
+		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties
+				.getProperty("SynopticKeyTreeMain.deleteBtn.tooltip"));
+		btnPanel.add(deleteBtn);
+
+		doneBtn.addActionListener(new DoneListener(this));
+		doneBtn.setToolTipText(EFGImportConstants.EFGProperties
+				.getProperty("SynopticKeyTreeMain.doneBtn.tooltip"));
+		btnPanel.add(doneBtn);
+		JPanel jp = addPanel();
+		JScrollPane treePane = new JScrollPane();
+		(treePane.getViewport()).setOpaque(false);
+		treePane.getViewport().setView(jp);
+		//this.createPopUp();
+		this.getContentPane().setLayout(new BorderLayout());
+		this.getContentPane().add(treePane, BorderLayout.CENTER);
+		this.getContentPane().add(btnPanel, BorderLayout.SOUTH);
+		//setContentPane(newContentPane);
 	} // SynoptcKeyTreeMain constructor
 
 	public void close() {
@@ -281,26 +313,31 @@ public class SynopticKeyTreeMain extends JDialog {
 				.getProperty("SynopticKeyTreeMain.doneBtn.tooltip"));
 		btnPanel.add(doneBtn);
 		
-		JScrollPane treePane = new JScrollPane(this.tree);
-		treePane.setColumnHeaderView(new JLabel(
-				EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.tableHeader"),
-				JLabel.CENTER));
-		htmlPane = new JEditorPane();
-		ToolTipManager.sharedInstance().registerComponent(htmlPane);
-		htmlPane.setContentType("text/html");
-		htmlPane.setEditable(false);
-		initHelp();
+		//JScrollPane treePane = new JScrollPane();
+		//(treePane.getViewport()).setOpaque(false);
+		//treePane.setColumnHeaderView(new JLabel(
+		//		EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.tableHeader"),
+		//		JLabel.CENTER));
+		//htmlPane = new JEditorPane();
+		//ToolTipManager.sharedInstance().registerComponent(htmlPane);
+		//htmlPane.setContentType("text/html");
+		//htmlPane.setEditable(false);
+		//initHelp();
 
-		//JScrollPane htmlViewPane = new JScrollPane(htmlPane);
+		
+		ImagePanel iPanel = new ImagePanel();
+		iPanel.setLayout(new BorderLayout());
+		iPanel.add(this.tree,BorderLayout.CENTER);
+		iPanel.setBackground(Color.white);
+		//treePane.getViewport().setView(iPanel);
+		
+		this.tree.setOpaque(false);
+		iPanel.setOpaque(true);
+		//iPanel.add(treePane, BorderLayout.CENTER);
+		//iPanel.add(btnPanel, BorderLayout.SOUTH);
 
-	//	JSplitPane mainPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-		//		treePane, htmlViewPane);
-
-		//mainPane.setDividerLocation(300);
-
-		panel.add(treePane, BorderLayout.CENTER);
-		panel.add(btnPanel, BorderLayout.SOUTH);
-		return panel;
+		
+		return iPanel;
 	}
 
 	private void initHelp() {
