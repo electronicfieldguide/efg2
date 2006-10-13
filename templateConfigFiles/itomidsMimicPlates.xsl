@@ -239,6 +239,7 @@
 				<xsl:with-param name="desca7" select="$desca7"/>
 				<xsl:with-param name="desca8" select="$desca8"/>
 				<xsl:with-param name="desca9" select="$desca9"/>
+				<xsl:with-param name="uniqueID" select="$uniqueID"/>
 			</xsl:call-template>
 			<xsl:call-template name="handleImages">
 				<xsl:with-param name="image1" select="MediaResources[@name=$imagea1]/MediaResource[1]"/>
@@ -302,11 +303,30 @@
 		<xsl:param name="desca7"/>
 		<xsl:param name="desca8"/>
 		<xsl:param name="desca9"/>
+		<xsl:param name="uniqueID"/>
+		
+		
+				<xsl:variable name="linkURL">
+					<xsl:choose>
+						<xsl:when test="$datasource=''">
+							<xsl:value-of select="concat($hrefCommon,$uniqueID)"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="concat($hrefCommon,$uniqueID,'&amp;displayName=', $datasource)"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:variable>
+			
+			
+		
 		<td valign="top">
-			<b>
-				<i>
+			<b>			
+					<a href="{$linkURL}">
+					<i>	
 					<xsl:value-of select="concat($desca1,' ',$desca2)"/>
 				</i>
+				</a>
+				
 			</b>
 			<br/>
 			<xsl:value-of select="$desca3"/>
