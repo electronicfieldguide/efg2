@@ -5,7 +5,6 @@ package project.efg.tests;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -18,7 +17,7 @@ import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
 import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.efgDocument.EFGDocument;
-import project.efg.efgDocument.EFGType;
+import project.efg.efgDocument.Item;
 import project.efg.efgDocument.ItemsType;
 import project.efg.efgDocument.TaxonEntries;
 import project.efg.efgDocument.TaxonEntryType;
@@ -85,7 +84,7 @@ public class DBTests {
 		TaxonEntryType taxonEntry = new TaxonEntryType();
 		TaxonEntryTypeItem taxonEntryItem = new TaxonEntryTypeItem();
 		ItemsType items = new ItemsType();
-		EFGType item = new EFGType();
+		Item item = new Item();
 		item.setContent(state);
 		items.addItem(item);
 		items.setName("xxx");

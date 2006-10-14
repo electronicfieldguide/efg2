@@ -78,9 +78,11 @@ public class StatisticalMeasureTypeDescriptor extends project.efg.efgDocument.EF
             {
                 try {
                     StatisticalMeasureType target = (StatisticalMeasureType) object;
-                    // ignore null values for non optional primitives
-                    if (value == null) return;
-                    
+                    // if null, use delete method for optional primitives 
+                    if (value == null) {
+                        target.deleteMin();
+                        return;
+                    }
                     target.setMin( ((Double)value).doubleValue());
                 }
                 catch (java.lang.Exception ex) {
@@ -92,12 +94,10 @@ public class StatisticalMeasureTypeDescriptor extends project.efg.efgDocument.EF
             }
         } );
         desc.setHandler(handler);
-        desc.setRequired(true);
         addFieldDescriptor(desc);
         
         //-- validation code for: _min
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
         { //-- local scope
             DoubleValidator typeValidator = new DoubleValidator();
             fieldValidator.setValidator(typeValidator);
@@ -119,9 +119,11 @@ public class StatisticalMeasureTypeDescriptor extends project.efg.efgDocument.EF
             {
                 try {
                     StatisticalMeasureType target = (StatisticalMeasureType) object;
-                    // ignore null values for non optional primitives
-                    if (value == null) return;
-                    
+                    // if null, use delete method for optional primitives 
+                    if (value == null) {
+                        target.deleteMax();
+                        return;
+                    }
                     target.setMax( ((Double)value).doubleValue());
                 }
                 catch (java.lang.Exception ex) {
@@ -133,12 +135,10 @@ public class StatisticalMeasureTypeDescriptor extends project.efg.efgDocument.EF
             }
         } );
         desc.setHandler(handler);
-        desc.setRequired(true);
         addFieldDescriptor(desc);
         
         //-- validation code for: _max
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
         { //-- local scope
             DoubleValidator typeValidator = new DoubleValidator();
             fieldValidator.setValidator(typeValidator);

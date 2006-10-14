@@ -65,10 +65,43 @@ public class ItemsTypeDescriptor extends project.efg.efgDocument.BaseEFGAttribut
         org.exolab.castor.xml.FieldValidator               fieldValidator = null;
         //-- initialize attribute descriptors
         
+        //-- _itemType
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(project.efg.efgDocument.types.ItemTypeEnum.class, "_itemType", "itemType", org.exolab.castor.xml.NodeType.Attribute);
+        handler = (new org.exolab.castor.xml.XMLFieldHandler() {
+            public java.lang.Object getValue( java.lang.Object object ) 
+                throws IllegalStateException
+            {
+                ItemsType target = (ItemsType) object;
+                return target.getItemType();
+            }
+            public void setValue( java.lang.Object object, java.lang.Object value) 
+                throws IllegalStateException, IllegalArgumentException
+            {
+                try {
+                    ItemsType target = (ItemsType) object;
+                    target.setItemType( (project.efg.efgDocument.types.ItemTypeEnum) value);
+                }
+                catch (java.lang.Exception ex) {
+                    throw new IllegalStateException(ex.toString());
+                }
+            }
+            public java.lang.Object newInstance( java.lang.Object parent ) {
+                return null;
+            }
+        } );
+        desc.setHandler( new org.exolab.castor.xml.handlers.EnumFieldHandler(project.efg.efgDocument.types.ItemTypeEnum.class, handler));
+        desc.setImmutable(true);
+        addFieldDescriptor(desc);
+        
+        //-- validation code for: _itemType
+        fieldValidator = new org.exolab.castor.xml.FieldValidator();
+        { //-- local scope
+        }
+        desc.setValidator(fieldValidator);
         //-- initialize element descriptors
         
         //-- _itemList
-        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(project.efg.efgDocument.EFGType.class, "_itemList", "Item", org.exolab.castor.xml.NodeType.Element);
+        desc = new org.exolab.castor.xml.util.XMLFieldDescriptorImpl(project.efg.efgDocument.Item.class, "_itemList", "Item", org.exolab.castor.xml.NodeType.Element);
         handler = (new org.exolab.castor.xml.XMLFieldHandler() {
             public java.lang.Object getValue( java.lang.Object object ) 
                 throws IllegalStateException
@@ -81,24 +114,23 @@ public class ItemsTypeDescriptor extends project.efg.efgDocument.BaseEFGAttribut
             {
                 try {
                     ItemsType target = (ItemsType) object;
-                    target.addItem( (project.efg.efgDocument.EFGType) value);
+                    target.addItem( (project.efg.efgDocument.Item) value);
                 }
                 catch (java.lang.Exception ex) {
                     throw new IllegalStateException(ex.toString());
                 }
             }
             public java.lang.Object newInstance( java.lang.Object parent ) {
-                return new project.efg.efgDocument.EFGType();
+                return new project.efg.efgDocument.Item();
             }
         } );
         desc.setHandler(handler);
-        desc.setRequired(true);
         desc.setMultivalued(true);
         addFieldDescriptor(desc);
         
         //-- validation code for: _itemList
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
+        fieldValidator.setMinOccurs(0);
         { //-- local scope
         }
         desc.setValidator(fieldValidator);

@@ -10,11 +10,13 @@ import java.util.regex.Matcher;
 
 import project.efg.efgDocument.EFGListsType;
 import project.efg.efgDocument.EFGType;
+import project.efg.efgDocument.Item;
 import project.efg.efgDocument.ItemsType;
 import project.efg.efgDocument.MediaResourceType;
 import project.efg.efgDocument.MediaResourcesType;
 import project.efg.efgDocument.StatisticalMeasureType;
 import project.efg.efgDocument.StatisticalMeasuresType;
+import project.efg.efgDocument.types.ItemTypeEnum;
 import project.efg.servlets.factory.EFGParseObjectFactory;
 import project.efg.util.EFGImportConstants;
 
@@ -107,14 +109,18 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 				items = new ItemsType();//IOC
 				items.setDatabaseName(lists.getDatabaseName());
 				items.setName(lists.getName());
+				ItemTypeEnum itType = ItemTypeEnum.CATEGORICAL;
+				items.setItemType(itType);
 			}
-			EFGType item = createEFGType(
+			Item  item = createItem(
 					obj.getState(), 
 					obj.getResourceLink(),
 					obj.getAnnotation(),
 					obj.getAnnotation()
 					);
+			
 			if(item != null){
+				
 				items.addItem(item);
 			}
 		}
@@ -125,9 +131,11 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 	 */
 	public ItemsType createItemsNoParse(String states, String name, String dbName){
 		ItemsType items = new ItemsType();//IOC
+		items.setItemType(ItemTypeEnum.NARRATIVE);
 		items.setDatabaseName(dbName);
 		items.setName(name);
-		EFGType item = createEFGType(states,"","","");
+		Item item = createItem(states,"","","");
+		
 		if(item != null){
 			items.addItem(item);
 		}
@@ -196,6 +204,24 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 			String resourceLink, 
 			String annotation, String caption) {
 		EFGType efgType = new EFGType();
+		
+		efgType.setCaption("");
+		efgType.setContent(state.trim());
+		if (resourceLink == null) {
+			resourceLink = "";
+		}
+		if(annotation == null){
+			annotation = "";
+		}
+		efgType.setAnnotation(annotation.trim());
+		efgType.setResourceLink(resourceLink.trim());
+		efgType.setEfgKeyRef(1);
+		return efgType;
+	}
+	private Item createItem(String state, 
+			String resourceLink, 
+			String annotation, String caption) {
+		Item efgType = new Item();
 		
 		efgType.setCaption("");
 		efgType.setContent(state.trim());

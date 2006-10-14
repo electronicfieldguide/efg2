@@ -11,6 +11,9 @@ package project.efg.efgDocument;
  //- Imported classes and packages -/
 //---------------------------------/
 
+import java.io.Serializable;
+import org.exolab.castor.xml.Marshaller;
+import org.exolab.castor.xml.Unmarshaller;
 
 /**
  * Class TaxonEntryTypeItem.

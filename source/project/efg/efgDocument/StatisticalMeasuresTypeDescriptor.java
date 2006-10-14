@@ -210,13 +210,12 @@ public class StatisticalMeasuresTypeDescriptor extends project.efg.efgDocument.B
             }
         } );
         desc.setHandler(handler);
-        desc.setRequired(true);
         desc.setMultivalued(true);
         addFieldDescriptor(desc);
         
         //-- validation code for: _statisticalMeasureList
         fieldValidator = new org.exolab.castor.xml.FieldValidator();
-        fieldValidator.setMinOccurs(1);
+        fieldValidator.setMinOccurs(0);
         { //-- local scope
         }
         desc.setValidator(fieldValidator);

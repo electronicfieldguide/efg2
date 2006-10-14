@@ -22,6 +22,7 @@ import org.exolab.castor.xml.Marshaller;
 import org.exolab.castor.xml.Unmarshaller;
 import org.exolab.castor.xml.ValidationException;
 import org.xml.sax.ContentHandler;
+import project.efg.efgDocument.types.ItemTypeEnum;
 
 /**
  * Class ItemsType.
@@ -38,6 +39,11 @@ implements java.io.Serializable
     //--------------------------/
 
     /**
+     * Field _itemType
+     */
+    private project.efg.efgDocument.types.ItemTypeEnum _itemType = project.efg.efgDocument.types.ItemTypeEnum.valueOf("narrative");
+
+    /**
      * Field _itemList
      */
     private java.util.ArrayList _itemList;
@@ -49,6 +55,7 @@ implements java.io.Serializable
 
     public ItemsType() {
         super();
+        setItemType(project.efg.efgDocument.types.ItemTypeEnum.valueOf("narrative"));
         _itemList = new ArrayList();
     } //-- project.efg.efgDocument.ItemsType()
 
@@ -62,11 +69,11 @@ implements java.io.Serializable
      * 
      * @param vItem
      */
-    public void addItem(project.efg.efgDocument.EFGType vItem)
+    public void addItem(project.efg.efgDocument.Item vItem)
         throws java.lang.IndexOutOfBoundsException
     {
         _itemList.add(vItem);
-    } //-- void addItem(project.efg.efgDocument.EFGType) 
+    } //-- void addItem(project.efg.efgDocument.Item) 
 
     /**
      * Method addItem
@@ -74,11 +81,11 @@ implements java.io.Serializable
      * @param index
      * @param vItem
      */
-    public void addItem(int index, project.efg.efgDocument.EFGType vItem)
+    public void addItem(int index, project.efg.efgDocument.Item vItem)
         throws java.lang.IndexOutOfBoundsException
     {
         _itemList.add(index, vItem);
-    } //-- void addItem(int, project.efg.efgDocument.EFGType) 
+    } //-- void addItem(int, project.efg.efgDocument.Item) 
 
     /**
      * Method clearItem
@@ -101,7 +108,7 @@ implements java.io.Serializable
      * 
      * @param index
      */
-    public project.efg.efgDocument.EFGType getItem(int index)
+    public project.efg.efgDocument.Item getItem(int index)
         throws java.lang.IndexOutOfBoundsException
     {
         //-- check bounds for index
@@ -109,21 +116,21 @@ implements java.io.Serializable
             throw new IndexOutOfBoundsException();
         }
         
-        return (project.efg.efgDocument.EFGType) _itemList.get(index);
-    } //-- project.efg.efgDocument.EFGType getItem(int) 
+        return (project.efg.efgDocument.Item) _itemList.get(index);
+    } //-- project.efg.efgDocument.Item getItem(int) 
 
     /**
      * Method getItem
      */
-    public project.efg.efgDocument.EFGType[] getItem()
+    public project.efg.efgDocument.Item[] getItem()
     {
         int size = _itemList.size();
-        project.efg.efgDocument.EFGType[] mArray = new project.efg.efgDocument.EFGType[size];
+        project.efg.efgDocument.Item[] mArray = new project.efg.efgDocument.Item[size];
         for (int index = 0; index < size; index++) {
-            mArray[index] = (project.efg.efgDocument.EFGType) _itemList.get(index);
+            mArray[index] = (project.efg.efgDocument.Item) _itemList.get(index);
         }
         return mArray;
-    } //-- project.efg.efgDocument.EFGType[] getItem() 
+    } //-- project.efg.efgDocument.Item[] getItem() 
 
     /**
      * Method getItemCount
@@ -132,6 +139,16 @@ implements java.io.Serializable
     {
         return _itemList.size();
     } //-- int getItemCount() 
+
+    /**
+     * Returns the value of field 'itemType'.
+     * 
+     * @return the value of field 'itemType'.
+     */
+    public project.efg.efgDocument.types.ItemTypeEnum getItemType()
+    {
+        return this._itemType;
+    } //-- project.efg.efgDocument.types.ItemTypeEnum getItemType() 
 
     /**
      * Method isValid
@@ -176,11 +193,11 @@ implements java.io.Serializable
      * 
      * @param vItem
      */
-    public boolean removeItem(project.efg.efgDocument.EFGType vItem)
+    public boolean removeItem(project.efg.efgDocument.Item vItem)
     {
         boolean removed = _itemList.remove(vItem);
         return removed;
-    } //-- boolean removeItem(project.efg.efgDocument.EFGType) 
+    } //-- boolean removeItem(project.efg.efgDocument.Item) 
 
     /**
      * Method setItem
@@ -188,7 +205,7 @@ implements java.io.Serializable
      * @param index
      * @param vItem
      */
-    public void setItem(int index, project.efg.efgDocument.EFGType vItem)
+    public void setItem(int index, project.efg.efgDocument.Item vItem)
         throws java.lang.IndexOutOfBoundsException
     {
         //-- check bounds for index
@@ -196,21 +213,31 @@ implements java.io.Serializable
             throw new IndexOutOfBoundsException();
         }
         _itemList.set(index, vItem);
-    } //-- void setItem(int, project.efg.efgDocument.EFGType) 
+    } //-- void setItem(int, project.efg.efgDocument.Item) 
 
     /**
      * Method setItem
      * 
      * @param itemArray
      */
-    public void setItem(project.efg.efgDocument.EFGType[] itemArray)
+    public void setItem(project.efg.efgDocument.Item[] itemArray)
     {
         //-- copy array
         _itemList.clear();
         for (int i = 0; i < itemArray.length; i++) {
             _itemList.add(itemArray[i]);
         }
-    } //-- void setItem(project.efg.efgDocument.EFGType) 
+    } //-- void setItem(project.efg.efgDocument.Item) 
+
+    /**
+     * Sets the value of field 'itemType'.
+     * 
+     * @param itemType the value of field 'itemType'.
+     */
+    public void setItemType(project.efg.efgDocument.types.ItemTypeEnum itemType)
+    {
+        this._itemType = itemType;
+    } //-- void setItemType(project.efg.efgDocument.types.ItemTypeEnum) 
 
     /**
      * Method unmarshalItemsType
