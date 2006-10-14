@@ -505,6 +505,7 @@ public interface EFGImportConstants {
 	String WEB_APPS = "webapps";
 	String ILLEGALCHARACTER_STRING = "illegalCharacters";
 	String ILLEGAL_CHAR_APPENDER ="illegalCharacters";
+	String BACKGROUND_IMAGE = "/icons/draganddropmsg.gif";
 	
 	
 	
