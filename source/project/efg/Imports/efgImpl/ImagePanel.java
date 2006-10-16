@@ -19,6 +19,10 @@ import project.efg.util.EFGImportConstants;
  *
  */
 public class ImagePanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Image image = null;
 	private int iWidth2;
 	private int iHeight2;
@@ -37,7 +41,7 @@ public class ImagePanel extends JPanel {
 			this.image = new ImageIcon(url).getImage();
 			this.iWidth2 = image.getWidth(this)/2;
 			this.iHeight2 = image.getHeight(this)/2;
-			System.out.println("Image found");
+			
 		} catch (Exception ee) {
 		  ee.printStackTrace();
 		}

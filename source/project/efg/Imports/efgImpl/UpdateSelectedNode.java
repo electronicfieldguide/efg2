@@ -75,7 +75,8 @@ public class UpdateSelectedNode extends DataManipulatorInterface {
 			DefaultMutableTreeNode selNode = (DefaultMutableTreeNode) tree
 					.getLastSelectedPathComponent();
 			if (selNode == null) {
-				this.selectDatasourceFirst();
+				//System.out.println("Here");
+				//this.selectDatasourceFirst();
 				return false;
 			}
 			EFGDatasourceObjectInterface ds = (EFGDatasourceObjectInterface) selNode

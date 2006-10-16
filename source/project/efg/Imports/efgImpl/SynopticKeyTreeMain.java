@@ -41,14 +41,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.net.URL;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -56,7 +52,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.ToolTipManager;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -68,7 +63,6 @@ import project.efg.Imports.factory.DataManipulatorFactory;
 import project.efg.Imports.factory.SynopticKeyTreeFactory;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.HelpEFG2ItemListener;
-//import project.efg.util.DnDFileBrowserMain.DoneListener;
 
 /**
  * SynopticKeyTreeMain.java
@@ -111,10 +105,6 @@ public class SynopticKeyTreeMain extends JDialog {
 	JFrame parentFrame;
 
 	private DBObject dbObject;
-
-	private JEditorPane htmlPane;
-
-	private URL helpURL;
 
 	static Logger log = null;
 	static {
@@ -247,7 +237,7 @@ public class SynopticKeyTreeMain extends JDialog {
 JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new GridLayout(0, 2));
 
-		editMetadataBtn.addActionListener(new DataManipulatorListener(this,
+		/*editMetadataBtn.addActionListener(new DataManipulatorListener(this,
 				this.getEditManipulator()));
 		editMetadataBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("SynopticKeyTreeMain.editMetadataBtn.tooltip"));
@@ -268,7 +258,7 @@ JPanel btnPanel = new JPanel();
 		doneBtn.addActionListener(new DoneListener(this));
 		doneBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("SynopticKeyTreeMain.doneBtn.tooltip"));
-		btnPanel.add(doneBtn);
+		btnPanel.add(doneBtn);*/
 		JPanel jp = addPanel();
 		JScrollPane treePane = new JScrollPane();
 		(treePane.getViewport()).setOpaque(false);
@@ -286,7 +276,7 @@ JPanel btnPanel = new JPanel();
 	}
 
 	private JPanel addPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
+		//JPanel panel = new JPanel(new BorderLayout());
 		JPanel btnPanel = new JPanel();
 		btnPanel.setLayout(new GridLayout(0, 2));
 
@@ -334,35 +324,14 @@ JPanel btnPanel = new JPanel();
 		this.tree.setOpaque(false);
 		iPanel.setOpaque(true);
 		//iPanel.add(treePane, BorderLayout.CENTER);
-		//iPanel.add(btnPanel, BorderLayout.SOUTH);
+		iPanel.add(btnPanel, BorderLayout.SOUTH);
 
 		
 		return iPanel;
 	}
 
-	private void initHelp() {
 
-		helpURL = this.getClass().getResource(
-				EFGImportConstants.KEYTREE_DEPLOY_HELP);
-		if (helpURL == null) {
-			log.error("Couldn't open help file: "
-					+ EFGImportConstants.KEYTREE_DEPLOY_HELP);
-			return;
-		}
-		displayURL(helpURL);
-	}
 
-	private void displayURL(URL url) {
-		try {
-			if (url != null) {
-				htmlPane.setPage(url);
-			} else { // null url
-				htmlPane.setText("File Not Found");
-			}
-		} catch (Exception e) {
-			log.error("Attempted to read a bad URL: " + url);
-		}
-	}
 
 	public void createPopUp() {
 
@@ -396,10 +365,11 @@ JPanel btnPanel = new JPanel();
 				DataManipulatorInterface manipulator) {
 			this.treeBrowser = treeBrowser;
 			this.manipulator = manipulator;
+			
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-
+			
 			this.treeBrowser.processNode(this.manipulator);
 
 		}
@@ -439,6 +409,7 @@ JPanel btnPanel = new JPanel();
 
 			if (selRow != -1) {
 				if (e.getClickCount() == 2) {
+					
 					this.treeBrowser.processNode(this.manipulator);
 				}
 			}
