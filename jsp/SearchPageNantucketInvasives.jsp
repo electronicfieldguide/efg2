@@ -5,6 +5,7 @@ project.efg.servlets.efgInterface.EFGDataSourceHelperInterface,
 project.efg.Imports.efgImportsUtil.EFGTypeComparator,
 project.efg.Imports.efgImportsUtil.MediaResourceTypeComparator,
 project.efg.efgDocument.EFGType,
+project.efg.efgDocument.Item,
 project.efg.efgDocument.ItemsType,
 project.efg.servlets.efgInterface.EFGDataObject,
 project.efg.efgDocument.MediaResourcesType,
@@ -279,7 +280,7 @@ function toggleMax(field,idVar){
 			itemsIter = sorter.getIterator();		 
 					
 				while (itemsIter.hasNext()) {
- 				item =(EFGType)itemsIter.next(); 
+ 				item =(Item)itemsIter.next(); 
 		        %>
                     <option><%=item.getContent()%>
                    <% 

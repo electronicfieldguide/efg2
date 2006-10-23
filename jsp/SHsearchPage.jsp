@@ -61,7 +61,7 @@ function toggleMax(field,idVar){
    var other = document.getElementById(idVar);
    other.value = text;
 }
- function evalOtherCheckBoxes(field)
+function evalOtherCheckBoxes(field)
 {
 
     if(isFieldChecked(field)){
@@ -117,6 +117,7 @@ function evalAnySelectedValue(field)
 	field.options[0].selected  = true;
     }
    }
+ 
 </script>
   </head>
 
@@ -126,7 +127,7 @@ function evalAnySelectedValue(field)
     </h2>
 	
   <center>
-      <form method="post" action="<%=context%>/Redirect.jsp">
+      <form method="post" action="<%=context%>/Redirect.jsp" name="myform">
 	
         <input type="hidden" name="<%=EFGImportConstants.DISPLAY_NAME%>" value="<%=displayName%>"/>
         <input type="hidden" name="<%=EFGImportConstants.DISPLAY_FORMAT%>" value="<%=EFGImportConstants.HTML%>"/>
@@ -165,7 +166,54 @@ function evalAnySelectedValue(field)
 		 	EFGListsType  listsType = searchable.getEFGLists();
              		StatisticalMeasuresType stats = searchable.getStatisticalMeasures();
 			EFGDocumentSorter sorter = null;
+
+			if(fieldName.equalsIgnoreCase("Coronet_index")){
+			
+			%>
+			<tr>
+				<td align="right"><b><%=fieldName%>:</b>
+					<tr>		
+						<td align="right">
+                					<input type="checkbox" select name="Coronet_index" value="<%=EFGImportConstants.EFG_ANY%>" checked
+								onclick="evalAnyCheckBox(document.myform.Coronet_index);">any
+							</input>
+          					</td>
+						<td align="right">
+							<a href="EFGImages/mc/CI_1.jpg">
+
+							<img src="efgimagesthumbs/mc/CI_1.jpg"  border="0" alt="1"/></a><br/>
+                					<input type="checkbox" name="Coronet_index" value="1"
+								onclick="evalOtherCheckBoxes(document.myform.Coronet_index);">1
+							</input>
+          					</td>
+						<td align="right"><a href="EFGImages/mc/CI_2.jpg">
+							<img src="efgimagesthumbs/mc/CI_2.jpg"  border="0" alt="2"/></a><br/>
+                					<input type="checkbox" name="Coronet_index" value="egg-shaped"
+								onclick="evalOtherCheckBoxes(document.myform.Coronet_index);">2
+							</input>
+          					</td>
+					
+						<td align="right"><a href="EFGImages/mc/CI_3.jpg">
+							<img src="efgimagesthumbs/mc/CI_3.jpg"  border="0" alt="3"/></a><br/>
+					                <input type="checkbox" name="Coronet_index" value="elliptic"
+									onclick="evalOtherCheckBoxes(document.myform.Coronet_index);">3
+							    </input>
+          					</td>
+						<td align="right"><a href="EFGImages/mc/CI_4.jpg">
+							<img src="efgimagesthumbs/mc/CI_4.jpg"  border="0" alt="4"/></a><br/>
+                					<input type="checkbox" name="Coronet_index" value="finely divided"
+								onclick="evalOtherCheckBoxes(document.myform.Coronet_index);">4
+							</input>
+          					</td>
+					</tr>
+				</td>
+			
+			</tr>
+			<%}else{
+
 	     		%>
+			
+
 	     		<tr>
                  		<td align="right"><b><%=fieldName%>:</b></td>
 	           		<td>	
@@ -173,7 +221,8 @@ function evalAnySelectedValue(field)
 						if((items != null)&&(items.getItemCount() > 0)){
 							sorter = new EFGTypeSorter();
 							sorter.sort(new EFGTypeComparator(),items);		
-							itemsIter = sorter.getIterator();		 
+							itemsIter = sorter.getIterator();
+		 
 					%>
 			 				<select name="<%=legalName%>" size="4"  multiple="multiple" onchange="evalAnySelectedValue(this);">
                 						<option selected="selected" value="<%=EFGImportConstants.EFG_ANY%>">any</option>
@@ -246,6 +295,7 @@ function evalAnySelectedValue(field)
               		 </td>
            		</tr>
           	<%
+		}
 		}
 		%>
         </table>
