@@ -517,7 +517,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
 		public void actionPerformed(ActionEvent e) {
-			String command = (String)e.getActionCommand(); 
+			String command = e.getActionCommand(); 
 			if(command != null){
 				if(EFGImportConstants.SORTING_OFF.equalsIgnoreCase(command.trim())){
 					//sortingCheck.setText("Sorting OFF");

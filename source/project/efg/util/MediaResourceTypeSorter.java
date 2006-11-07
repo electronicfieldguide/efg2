@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import project.efg.efgDocument.MediaResourceType;
 import project.efg.efgDocument.MediaResourcesType;
 
 public class MediaResourceTypeSorter implements EFGDocumentSorter{
@@ -55,7 +54,7 @@ public class MediaResourceTypeSorter implements EFGDocumentSorter{
 		this.sortedSet = Collections.synchronizedSet(new TreeSet(compare));
 		Enumeration enums = this.efgType.enumerateMediaResource();
 		while(enums.hasMoreElements()){
-			this.sortedSet.add((MediaResourceType)enums.nextElement());
+			this.sortedSet.add(enums.nextElement());
 		}
 	}
 	/* (non-Javadoc)

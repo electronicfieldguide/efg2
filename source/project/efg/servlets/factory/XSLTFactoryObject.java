@@ -65,10 +65,9 @@ public class XSLTFactoryObject {
 			if (EFGImportConstants.SEARCH_PLATES_TYPE.equalsIgnoreCase(searchType)) {
 					//log.debug("Returning a Search Plates Page");
 				return  xsltFactory.createSearchPlatesPage();
-			} else {
-				//log.debug("Returning a Search List Page");
-				return xsltFactory.createSearchListsPage();
 			}
+			//log.debug("Returning a Search List Page");
+			return xsltFactory.createSearchListsPage();
 		
 	}
 }

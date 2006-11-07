@@ -365,8 +365,7 @@ public class EFGContextListener implements ServletContextListener {
 	public static String getEFGMetaDataFileName() throws Exception {
 		if (metadataFileName != null)
 			return metadataFileName;
-		else
-			throw new Exception("Metadata File Name is not set..");
+		throw new Exception("Metadata File Name is not set..");
 	}
 
 
@@ -379,8 +378,7 @@ public class EFGContextListener implements ServletContextListener {
 	public static String getPathToResourceFiles() throws Exception {
 		if (pathToResourceFiles != null)
 			return pathToResourceFiles;
-		else
-			throw new Exception("pathToResourceFiles is not set..");
+		throw new Exception("pathToResourceFiles is not set..");
 	}
 
 	/**
@@ -617,10 +615,9 @@ public class EFGContextListener implements ServletContextListener {
 							if (index != -1) {
 								buf.append(temp.substring(0, index - 1));
 								break;
-							} else {
-								if (!"".equals(temp.trim())) {
-									buf.append(temp + " ");
-								}
+							}
+							if (!"".equals(temp.trim())) {
+								buf.append(temp + " ");
 							}
 							i++;
 						}
@@ -639,6 +636,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.1.2.10  2006/11/07 14:38:18  kasiedu
+// no message
+//
 // Revision 1.1.2.9  2006/09/10 12:03:23  kasiedu
 // no message
 //

@@ -62,10 +62,8 @@ public class EFGHTTPQueryFactory {
 			//log.debug("Return a Search String query instance");
 			return new SearchStrQuery(req);
 		}
-		else{
-			//log.debug("Return a SQL query query instance");
-			return new SQLQuery(req);
-		}
+		//log.debug("Return a SQL query query instance");
+		return new SQLQuery(req);
 	}
 
 }

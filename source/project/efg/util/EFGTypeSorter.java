@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import project.efg.efgDocument.EFGType;
 import project.efg.efgDocument.ItemsType;
 
 public class EFGTypeSorter implements EFGDocumentSorter{
@@ -55,7 +54,7 @@ public class EFGTypeSorter implements EFGDocumentSorter{
 		this.sortedSet = Collections.synchronizedSet(new TreeSet(compare));
 		Enumeration enums = this.efgType.enumerateItem();
 		while(enums.hasMoreElements()){
-			this.sortedSet.add((EFGType)enums.nextElement());
+			this.sortedSet.add(enums.nextElement());
 		}
 	}
 	/* (non-Javadoc)

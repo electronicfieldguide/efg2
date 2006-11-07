@@ -123,9 +123,7 @@ public class EFGQueueObject implements EFGQueueObjectInterface{
 				}
 				return 0;
 			}
-			else{
-				return (obj1.getSize() - obj2.getSize());
-			}
+			return (obj1.getSize() - obj2.getSize());
 		}
 		catch(Exception ee){
 			
@@ -148,7 +146,7 @@ public class EFGQueueObject implements EFGQueueObjectInterface{
 	public String toString(){
 		StringBuffer buffer = new StringBuffer();
 		for(int i=0; i < this.list.size(); i++){
-			String obj1 = (String)this.getObject(i);
+			String obj1 = this.getObject(i);
 			if((obj1 != null) && (!obj1.trim().equals(""))){
 				buffer.append(" " + obj1.toLowerCase());
 			}

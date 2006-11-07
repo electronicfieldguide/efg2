@@ -51,13 +51,9 @@ public int compareTo(Object object1) {
 		if((this.getGUID() != null ) && (obj1.getGUID() != null)){
 		    return this.getGUID().compareTo(obj1.getGUID());
 		}
-		else{
-		    return this.toString().compareTo(obj1.toString());
-		}
+		return this.toString().compareTo(obj1.toString());
 	    }
-	    else{
 		return this.getTemplateName().compareTo(obj1.getTemplateName());
-	    }
 	}
 	return this.getDisplayObject().compareTo(obj1.getDisplayObject());
 	

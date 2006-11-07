@@ -132,6 +132,8 @@ public class SQLQuery extends EFGHTTPQuery {
 			if (maxDisplay > 0) {
 				String database = EFGImportConstants.EFGProperties
 						.getProperty("database");
+				//find equivalents in other databases
+				//TODO
 				if (EFGImportConstants.MYSQL.equalsIgnoreCase(database)) {
 					querySB.append(" limit ");
 					querySB.append(maxDisplay + "");
@@ -409,41 +411,23 @@ public class SQLQuery extends EFGHTTPQuery {
 		return false;
 	}
 
-	
-
-	/*protected Set getCategorical(String metadataSource) {
-		Set set = new HashSet();
-		StringBuffer queryBuffer = new StringBuffer();
-		queryBuffer.append("SELECT legalName FROM ");
-		queryBuffer.append(metadataSource);
-		queryBuffer.append(" where ");
-		queryBuffer.append(EFGImportConstants.CATEGORICAL);
-		queryBuffer.append("=\"");
-		queryBuffer.append(EFGImportConstants.YES);
-		queryBuffer.append("\")");
-
-		try {
-			//log.debug("Select query: " + queryBuffer.toString());
-			List lists = this.queryExecutor.executeQueryForList(queryBuffer
-					.toString(), 1);
-			for (java.util.Iterator iter = lists.iterator(); iter.hasNext();) {
-				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
-						.next();
-				String legalName = queue.getObject(0);
-				set.add(legalName.trim());
-			}
-		} catch (Exception e) {
-			//log.error(e.getMessage());
-			LoggerUtilsServlet.logErrors(e);
-		}
-		return set;
-	}*/
-
+	/**
+	 * 
+	 * @param params
+	 * @param legalName
+	 * @param rowset
+	 * @param typeTable
+	 * @param itemBuilder
+	 * @param orLists
+	 * @return
+	 * @throws Exception
+	 */
 	protected boolean processStates(String[] params, 
 			String legalName,
 			SqlRowSet rowset,
 			Hashtable typeTable,
-			TaxonEntryItemBuilder itemBuilder,List orLists) throws Exception{
+			TaxonEntryItemBuilder itemBuilder,
+			List orLists) throws Exception{
 		EFGObject efgObject = (EFGObject)typeTable.get(legalName
 				.trim().toLowerCase());
 		if (efgObject == null) {

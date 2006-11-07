@@ -23,9 +23,8 @@ public class ListTransferable implements Transferable {
             IOException {
         if (isDataFlavorSupported(flavor)) {
             return data;
-        } else {
-            throw new UnsupportedFlavorException(flavor);
         }
+		throw new UnsupportedFlavorException(flavor);
     }
  
     public DataFlavor[] getTransferDataFlavors() {

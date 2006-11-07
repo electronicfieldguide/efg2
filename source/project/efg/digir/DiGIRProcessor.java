@@ -372,13 +372,13 @@ public class DiGIRProcessor {
     if(dph.getErrorCode() == - 1){
       diagnostic.setAttribute("code","fatal error");
       diagnostic.setAttribute("severity","fatal");
-      diagnostic.setText((String)(dph.getStack().pop()).toString());
+      diagnostic.setText((dph.getStack().pop()).toString());
       diagnostics.addContent(diagnostic);
     }
     else if(dph.getDataSourceErrorCode() == -1){
       diagnostic.setAttribute("code","error");
       diagnostic.setAttribute("severity","error");
-      diagnostic.setText((String)(dph.getStack().pop()).toString());
+      diagnostic.setText((dph.getStack().pop()).toString());
       diagnostics.addContent(diagnostic);
     }
     else if(unKnownError){

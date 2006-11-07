@@ -127,7 +127,7 @@ public class DataObjectTransferHandler extends TransferHandler {
 	                    }
 	 
 	                    for (int i = 0; i < list.size(); i++) {
-	                        efg.addData(insertRow + i, (Object[]) list.get(i));
+	                        efg.addData(insertRow + i, list.get(i));
 	                    }
 	                    efg.fireTableDataChanged();
 	                    sorter.fireTableDataChanged();

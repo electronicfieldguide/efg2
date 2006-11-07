@@ -141,14 +141,12 @@ public class RemoveSelectedNode extends DataManipulatorInterface {
 			//look for all caches
 			
 			return true;
-		} else {
-			message = EFGImportConstants.EFGProperties
-					.getProperty("SynopticKeyTree.dbremovemessage");
-			log.error(message);
-			JOptionPane.showMessageDialog(null, message, "Error Message",
-					JOptionPane.ERROR_MESSAGE);
-
 		}
+		message = EFGImportConstants.EFGProperties
+				.getProperty("SynopticKeyTree.dbremovemessage");
+		log.error(message);
+		JOptionPane.showMessageDialog(null, message, "Error Message",
+				JOptionPane.ERROR_MESSAGE);
 		return false;
 	}
 

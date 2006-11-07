@@ -104,9 +104,7 @@ public class EFGPageDisplay implements Comparable {
 					(this.getItemName().trim().equalsIgnoreCase(""))){
 				return this.getImageName().compareTo(obj1.getImageName());
 			}
-			else{
-				return this.getItemName().compareTo(obj1.getItemName());
-			}
+			return this.getItemName().compareTo(obj1.getItemName());
 		}
 		return this.getImageCaption().compareTo(obj1.getImageCaption());
 		

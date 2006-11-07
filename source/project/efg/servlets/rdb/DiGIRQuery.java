@@ -118,16 +118,13 @@ public class DiGIRQuery extends SQLQuery {
 				}
 				return sqlString;
 		    }
-		    else {
-		    	try{
-		    		ServletContext context = req.getSession().getServletContext();
-		    		 context.log("Error code is: " + dph.getErrorCode());
-		    	}
-		    	catch(Exception ee){
-		    		
-		    	}
-		     
-		    }
+			try{
+				ServletContext context = req.getSession().getServletContext();
+				 context.log("Error code is: " + dph.getErrorCode());
+			}
+			catch(Exception ee){
+				
+			}
 		return null;
 	}
 

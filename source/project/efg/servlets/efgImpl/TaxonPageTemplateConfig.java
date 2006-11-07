@@ -103,10 +103,10 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 	private void processParams(HttpServletRequest req, HttpServletResponse res) {
 		try {
 		
-			String dsName = (String) req
+			String dsName = req
 					.getParameter(EFGImportConstants.DATASOURCE_NAME);
 		
-			String displayName = (String) req
+			String displayName = req
 					.getParameter(EFGImportConstants.DISPLAY_NAME);
 		
 			TaxonPageTemplates tps = this.getTaxonPageTemplateRoot(dsName);
@@ -170,20 +170,20 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 
 	private XslPage getXSLPageParams(HttpServletRequest req,
 			TaxonPageTemplates tps) {
-		String dsName = (String) req
+		String dsName = req
 				.getParameter(EFGImportConstants.DATASOURCE_NAME);
 
-		String xslName = (String) req
+		String xslName = req
 				.getParameter(EFGImportConstants.XSL_STRING);
 		//log.debug("xslName: " + xslName);
-		String searchPage = (String) req
+		String searchPage = req
 				.getParameter(EFGImportConstants.SEARCH_PAGE_STR);// "search"
 
 		String searchType = req
 				.getParameter(EFGImportConstants.SEARCH_TYPE_STR);
 		String uniqueName = req
 				.getParameter(EFGImportConstants.TEMPLATE_UNIQUE_NAME);
-		String guid = (String)req.getParameter(EFGImportConstants.GUID);
+		String guid = req.getParameter(EFGImportConstants.GUID);
 	
 		String jspName = req.getParameter(EFGImportConstants.JSP_NAME);
 		String isDefault = req.getParameter(EFGImportConstants.ISDEFAULT_STR);
@@ -493,7 +493,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 			// forward to TestConfigPage.jsp
 			if (!isError) {
 				//log.debug("No errors");
-				String searchPage = (String) req
+				String searchPage = req
 						.getParameter(EFGImportConstants.SEARCH_PAGE_STR);// "search"
 					
 				if (searchPage != null) {// allow multiple xslNames

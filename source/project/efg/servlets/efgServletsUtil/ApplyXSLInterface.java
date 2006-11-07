@@ -92,22 +92,19 @@ public class ApplyXSLInterface {
 			}
 			return null;
 		}
-
-		else {
-			InputStream is = null;
-			try {
-				is = (new URL(filename)).openStream();
-			} catch (MalformedURLException mue) {
-				EFGUtils.log("malformed url for xml source");
-				LoggerUtilsServlet.logErrors(mue);
-				return null;
-			} catch (IOException ioe) {
-				EFGUtils.log("error while trying to access xml via url");
-				LoggerUtilsServlet.logErrors(ioe);
-				return null;
-			}
-			return new javax.xml.transform.stream.StreamSource(is);
+		InputStream is = null;
+		try {
+			is = (new URL(filename)).openStream();
+		} catch (MalformedURLException mue) {
+			EFGUtils.log("malformed url for xml source");
+			LoggerUtilsServlet.logErrors(mue);
+			return null;
+		} catch (IOException ioe) {
+			EFGUtils.log("error while trying to access xml via url");
+			LoggerUtilsServlet.logErrors(ioe);
+			return null;
 		}
+		return new javax.xml.transform.stream.StreamSource(is);
 	}
 
 	/**
@@ -124,16 +121,14 @@ public class ApplyXSLInterface {
 		if (filename == null){
 			return buildXSL(req);
 		}
-		else {
-			if (filename.indexOf(":") == -1) { 
-				xslURL = req.getScheme() + "://" + req.getServerName() + ":"
-						+ req.getServerPort() + filename;
-			
-			} else { 
-				xslURL = filename;
-			}
-			return new javax.xml.transform.stream.StreamSource(xslURL);
+		if (filename.indexOf(":") == -1) { 
+			xslURL = req.getScheme() + "://" + req.getServerName() + ":"
+					+ req.getServerPort() + filename;
+		
+		} else { 
+			xslURL = filename;
 		}
+		return new javax.xml.transform.stream.StreamSource(xslURL);
 	}
 	/**
 	 * Build the xsl file from the parameters in HttpServletRequest object and

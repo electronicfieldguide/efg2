@@ -559,8 +559,8 @@ public class DigirParserHandler extends DefaultHandler {
 				} else {
 					pop2 = inStack.pop();
 					TempObject obj = (TempObject) pop2;
-					String name = (String) obj.getName();
-					String value = (String) obj.getValue();
+					String name = obj.getName();
+					String value = obj.getValue();
 
 					inList
 							.add(new EFGString(name + " " + "EFG:EQUALS "
@@ -588,8 +588,8 @@ public class DigirParserHandler extends DefaultHandler {
 						pop2 = stack2.pop();
 						if (pop2 instanceof TempObject) {
 							TempObject obj = (TempObject) pop2;
-							String name = (String) obj.getName();
-							String value = (String) obj.getValue();
+							String name = obj.getName();
+							String value = obj.getValue();
 
 							stack.push(new EFGString(name + " " + "EFG:"
 									+ localName.toUpperCase() + " " + value));
@@ -616,11 +616,11 @@ public class DigirParserHandler extends DefaultHandler {
 							int i = 0;
 							StringBuffer inBuff = new StringBuffer();
 							inBuff.append(" ( ");
-							inBuff.append((String) (list1.get(i)).toString());
+							inBuff.append((list1.get(i)).toString());
 							i++;
 							while (i < list1.size()) {
 								inBuff.append(" EFG:OR" + " "
-										+ (String) (list1.get(i)).toString());
+										+ (list1.get(i)).toString());
 								i++;
 							}
 							inBuff.append(" ) ");
@@ -636,11 +636,11 @@ public class DigirParserHandler extends DefaultHandler {
 							int i = 0;
 							StringBuffer inBuff = new StringBuffer();
 							inBuff.append(" ( ");
-							inBuff.append((String) (list1.get(i)).toString());
+							inBuff.append((list1.get(i)).toString());
 							i++;
 							while (i < list1.size()) {
 								inBuff.append(" EFG:OR" + " "
-										+ (String) (list1.get(i)).toString());
+										+ (list1.get(i)).toString());
 								i++;
 							}
 							inBuff.append(" ) ");
@@ -774,6 +774,9 @@ public class DigirParserHandler extends DefaultHandler {
 }
 
 // $Log$
+// Revision 1.1.1.1.2.5  2006/11/07 14:37:22  kasiedu
+// no message
+//
 // Revision 1.1.1.1.2.4  2006/08/26 22:12:24  kasiedu
 // Updates to xsl files
 //

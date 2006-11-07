@@ -170,7 +170,7 @@ public class ApplyXSL extends HttpServlet {
 							EFGImportConstants.SEARCH_PAGE_STR, searchPage);
 				}
 				if (req.getAttribute("mediaResourceField") != null) {
-					transformer.setParameter("mediaResourceField", (String) req
+					transformer.setParameter("mediaResourceField", req
 							.getAttribute("mediaResourceField"));
 				}
 				
@@ -300,6 +300,9 @@ public class ApplyXSL extends HttpServlet {
 	}*/
 }
 // $Log$
+// Revision 1.1.2.8  2006/11/07 14:38:18  kasiedu
+// no message
+//
 // Revision 1.1.2.7  2006/09/10 12:03:23  kasiedu
 // no message
 //

@@ -73,31 +73,29 @@ public abstract class DataChecker {
 			log.error("Specified display name: '" + displayName
 					+ "' was null or the empty string.");
 			return false;
-		} else {
+		}
+		StringBuffer query = new StringBuffer(
+				"SELECT DS_METADATA, DS_DATA FROM ");
+		query.append(this.efgRDBTable);
+		query.append(" WHERE DISPLAY_NAME=");
+		query.append("\"");
+		query.append(this.displayName.trim());
+		query.append("\"");
 
-			StringBuffer query = new StringBuffer(
-					"SELECT DS_METADATA, DS_DATA FROM ");
-			query.append(this.efgRDBTable);
-			query.append(" WHERE DISPLAY_NAME=");
-			query.append("\"");
-			query.append(this.displayName.trim());
-			query.append("\"");
-
-			try {
-				java.util.List list = EFGRDBImportUtils.executeQueryForList(
-						this.jdbcTemplate, query.toString(), 2);
-				for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
-					EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
-							.next();
-					this.metadatasourceName = queue.getObject(0);
-					this.datasourceName = queue.getObject(1);
-					break;// because only one row is required
-				}
-				return true;
-			} catch (Exception ee) {
-				log.error(ee.getMessage());
-				return false;
+		try {
+			java.util.List list = EFGRDBImportUtils.executeQueryForList(
+					this.jdbcTemplate, query.toString(), 2);
+			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
+				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
+						.next();
+				this.metadatasourceName = queue.getObject(0);
+				this.datasourceName = queue.getObject(1);
+				break;// because only one row is required
 			}
+			return true;
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+			return false;
 		}
 
 	}

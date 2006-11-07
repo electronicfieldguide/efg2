@@ -282,11 +282,11 @@ public class FileTree extends JTree implements Autoscroll {
 	 */
 	protected MutableTreeNode getSibling(DefaultMutableTreeNode selNode) {
 		// get previous sibling
-		MutableTreeNode sibling = (MutableTreeNode) selNode
+		MutableTreeNode sibling = selNode
 				.getPreviousSibling();
 		if (sibling == null) {
 			// if previous sibling is null, get the next sibling
-			sibling = (MutableTreeNode) selNode.getNextSibling();
+			sibling = selNode.getNextSibling();
 		}
 		return sibling;
 	}

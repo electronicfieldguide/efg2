@@ -89,19 +89,15 @@ public class StatisticalMeasureComparator {
 			return this.checkEquals(object1,object2);
 			
 		}
-		else{
-			/*log.debug("Since object2 has both min and max not equal " +
-					"we will check for indirect range");*/
-			if(checkGreaterThan(object1,object2)){//means object1.getMax() > object2.getMax()
-				//so not in range
-				return false;
-				
-			}
-			else{
-				if(checkLessThan(object1,object2)){//means object1.getMin() < object2.getMin()
-				 return false;	
-				}
-			}
+		/*log.debug("Since object2 has both min and max not equal " +
+				"we will check for indirect range");*/
+		if(checkGreaterThan(object1,object2)){//means object1.getMax() > object2.getMax()
+			//so not in range
+			return false;
+			
+		}
+		if(checkLessThan(object1,object2)){//means object1.getMin() < object2.getMin()
+		 return false;	
 		}
 		return true;
 	}

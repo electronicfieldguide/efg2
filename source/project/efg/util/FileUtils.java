@@ -37,10 +37,7 @@ public class FileUtils {
 	    {
 	      return getFileExtension(f.getName());
 	    }
-	    else
-	    {
-	      return null;
-	    }
+		return null;
 	  }
 
 	  public static String getFileExtension(String name)
@@ -56,10 +53,7 @@ public class FileUtils {
 
 	      return name.substring(index+1);
 	    }
-	    else
-	    {
-	      return null;
-	    }
+		return null;
 	  }
 
 	  /**

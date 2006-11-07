@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import project.efg.efgDocument.StatisticalMeasureType;
 import project.efg.efgDocument.StatisticalMeasuresType;
 
 public class StatisticalMeasureTypeSorter implements EFGDocumentSorter{
@@ -55,7 +54,7 @@ public class StatisticalMeasureTypeSorter implements EFGDocumentSorter{
 		this.sortedSet = Collections.synchronizedSet(new TreeSet(compare));
 		Enumeration enums = this.statsType.enumerateStatisticalMeasure();
 		while(enums.hasMoreElements()){
-			this.sortedSet.add((StatisticalMeasureType)enums.nextElement());
+			this.sortedSet.add(enums.nextElement());
 		}
 	}
 	/* (non-Javadoc)
