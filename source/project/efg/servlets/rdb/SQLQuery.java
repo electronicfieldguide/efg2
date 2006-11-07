@@ -57,7 +57,7 @@ import project.efg.util.UnicodeToASCIIFilter;
  */
 public class SQLQuery extends EFGHTTPQuery {
 	protected Hashtable paramValuesTable; //holds the parameter values of this query
-
+	protected Hashtable wildCardTable;
 	protected Collection specialParams;
 
 	protected QueryExecutor queryExecutor;
@@ -104,12 +104,22 @@ public class SQLQuery extends EFGHTTPQuery {
 
 			while (paramEnum.hasMoreElements()) {
 				String legalName = (String) paramEnum.nextElement();
+			
+				
 				//log.debug("paramName: " + legalName);
 				if (isIgnoreParam(legalName)) {//ignore this parameter name
 					continue;
 				}
-				
 				String[] paramValues = req.getParameterValues(legalName);
+				int index = legalName.indexOf(EFGImportConstants.EFG_WILDCARD);
+				if(index > -1){
+					//remove the WildCard string from the legal name
+					//and put in wildcard table
+					legalName = legalName.substring(0,index);
+					this.wildCardTable.put(legalName.toLowerCase(), legalName.toLowerCase());
+				}
+				//put in wilcard table
+				
 				//log.debug("paramaValues length: " + paramValues.length);
 
 				String orBuffer = this.getORQuery(paramValues, legalName);
@@ -133,7 +143,7 @@ public class SQLQuery extends EFGHTTPQuery {
 				String database = EFGImportConstants.EFGProperties
 						.getProperty("database");
 				//find equivalents in other databases
-				//TODO
+				//TODO use a factory to instantiate other databases
 				if (EFGImportConstants.MYSQL.equalsIgnoreCase(database)) {
 					querySB.append(" limit ");
 					querySB.append(maxDisplay + "");
@@ -375,6 +385,8 @@ public class SQLQuery extends EFGHTTPQuery {
 			this.queryExecutor = new QueryExecutor();
 			this.filter = new UnicodeToASCIIFilter();
 			this.paramValuesTable = new Hashtable();
+			this.wildCardTable = new Hashtable();
+			
 			String efgRDBTable = EFGImportConstants.EFGProperties
 					.getProperty("ALL_EFG_RDB_TABLES");
 			StringBuffer queryBuffer = new StringBuffer();
@@ -449,14 +461,18 @@ public class SQLQuery extends EFGHTTPQuery {
 			//log.debug("States: " + states);
 	
 			if (states != null) {
-
+				
+				boolean isLike = false;
+				//if this legalName is in the wildcard table then treat query as a wildcard query
+				if(this.wildCardTable.containsKey(legalName.toLowerCase())) {
+					isLike =true;
+				}
 				TaxonEntryTypeItem taxonEntryItem = itemBuilder
 						.buildTaxonEntryItem(paramValue,
-								states, efgObject);
+								states, efgObject, isLike);
 				if (taxonEntryItem != null) {
 					orLists.add(taxonEntryItem);
 					if (!isFound) {
-					
 						isFound = true;
 					}
 				} 
@@ -505,6 +521,7 @@ public class SQLQuery extends EFGHTTPQuery {
 			}
 			orBuffer.append(" ) ");
 			if (!"".equals(pVal.trim())) {
+			
 				if (this.paramValuesTable.containsKey(legalName.toLowerCase())) {//could have parameter with multiple values
 					String oldVal = (String) paramValuesTable.get(legalName
 							.toLowerCase());
@@ -585,7 +602,7 @@ public class SQLQuery extends EFGHTTPQuery {
 				//log.debug("Skip column name: " + columnName);
 				continue;
 			}
-		
+
 			EFGObject efgObject = (EFGObject) typeTable.get(columnName.trim()
 					.toLowerCase());
 			if (efgObject.getDataType() == null) {//if no column name information skip
@@ -598,9 +615,9 @@ public class SQLQuery extends EFGHTTPQuery {
 				continue;
 			}
 
-
+			
 			TaxonEntryTypeItem taxonEntryItem = itemBuilder
-					.buildTaxonEntryItem(paramValue, states, efgObject);
+					.buildTaxonEntryItem(paramValue, states, efgObject, false);
 			if (taxonEntryItem != null) {
 				taxonEntry.addTaxonEntryTypeItem(taxonEntryItem);
 			}

@@ -121,7 +121,7 @@ public class MapQuery extends SQLQuery {
 				if (isIgnoreParam(legalName.toLowerCase())) {// ignore this parameter name
 					continue;
 				}
-
+				
 				String[] paramValues = req.getParameterValues(legalName);
 				// log.debug("paramaValues length: " + paramValues.length);
 				legalName = EFGUtils.encodeToJavaName(legalName);

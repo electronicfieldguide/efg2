@@ -506,6 +506,7 @@ public interface EFGImportConstants {
 	String ILLEGALCHARACTER_STRING = "illegalCharacters";
 	String ILLEGAL_CHAR_APPENDER ="illegalCharacters";
 	String BACKGROUND_IMAGE = "/icons/draganddropmsg.gif";
+	String EFG_WILDCARD = "_EFG_WILDCARD";
 	
 	
 	

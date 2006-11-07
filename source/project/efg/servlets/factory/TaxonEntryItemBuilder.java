@@ -69,12 +69,13 @@ public class TaxonEntryItemBuilder {
 	 * @param paramValues - if null no parsing will be done. Elements will be created with the
 	 * data in the states variable
 	 * @param states - If paramvalues is not null then there must be a match with some of the data in states.
-	  * @param efgObject - Contains the name, the datatype and the database name
+	 * @param efgObject - Contains the name, the datatype and the database name
+	 * @param isLike TODO
 	 * @return null if paramValues is not null and it does not match exactly anything in the states
 	 */
 	public TaxonEntryTypeItem buildTaxonEntryItem(String paramValues,
 			String states, 
-			EFGObject efgObject) {
+			EFGObject efgObject, boolean isLike) {
 		TaxonEntryTypeItem taxonItem = null;
 		EFGParseObjectList lists = null;
 		if (EFGImportConstants.ISLISTS.equalsIgnoreCase(efgObject.getDataType())) {
@@ -83,7 +84,7 @@ public class TaxonEntryItemBuilder {
 				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states,true);
 		
 			if(paramValues != null){
-				if(!this.compareString(lists,paramValues)){
+				if(!this.compareString(lists,paramValues, isLike)){
 					flag = false;
 				}
 			}
@@ -137,7 +138,7 @@ public class TaxonEntryItemBuilder {
 			lists =
 				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states,true); 
 			if(paramValues != null){
-				if(!this.compareString(lists,paramValues)){
+				if(!this.compareString(lists,paramValues, isLike)){
 					flag = false;
 				}
 			}
@@ -158,7 +159,7 @@ public class TaxonEntryItemBuilder {
 				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,states,false); 
 		
 			if(paramValues != null){
-				flag = this.compareString(lists,paramValues);
+				flag = this.compareString(lists,paramValues, isLike);
 			
 			}
 			if(flag){
@@ -178,7 +179,7 @@ public class TaxonEntryItemBuilder {
 				this.efgParseStates.parseStates(EFGImportConstants.NOPATTERN,states,true);
 			
 			if(paramValues != null){
-				flag = this.compareString(lists,paramValues);
+				flag = this.compareString(lists,paramValues, isLike);
 			}
 			if(flag){
 				lists.setDatabaseName(efgObject.getDatabaseName());
@@ -195,11 +196,19 @@ public class TaxonEntryItemBuilder {
 	}
 
 
-	private boolean compareString(EFGParseObjectList lists,String userValue){
+	private boolean compareString(EFGParseObjectList lists,String userValue, boolean isLike){
 		Iterator iter = lists.iterator();
 		while(iter.hasNext()){
 			EFGParseObject obj = (EFGParseObject)iter.next();
-			if(obj.getState().equalsIgnoreCase(userValue)){
+			String dbState = obj.getState().toLowerCase();
+			String userState = userValue.toLowerCase();
+			
+			if(isLike) {
+				if(dbState.indexOf(userState) > -1 ){
+					return true;
+				}
+			}
+			else if(dbState.equals(userState)){
 				return true; //there is a match
 			}
 		}

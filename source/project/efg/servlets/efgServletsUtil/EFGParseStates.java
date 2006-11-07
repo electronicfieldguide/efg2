@@ -99,7 +99,7 @@ public class EFGParseStates {
 		if(parseObject == null){
 			return null;
 		}
-		
+			//do ranges
 			OperatorInterface operator = OperatorFactory.getInstance(parseObject.getState());
 			parseObject.setOperator(operator);
 			if(parseObject.getState() != null){
