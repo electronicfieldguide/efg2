@@ -30,14 +30,36 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URI;
 
+import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
-import project.efg.Imports.rdb.EFGCSVDataExtractorImpl;
 
 public class EFGDataExtractorFactory {
-
+	static Logger log = null;
+	static {
+		try {
+			log = Logger.getLogger(EFGDataExtractorFactory.class);
+		} catch (Exception ee) {
+		}
+	}
+	private static EFGDataExtractorInterface getType() {
+		try {
+			ApplicationContext    context = 
+				new ClassPathXmlApplicationContext("springconfig.xml");
+			return (EFGDataExtractorInterface)context.getBean("csvProcessor");
+			}
+			catch(Exception ee) {
+				log.error(ee.getMessage());
+			}
+			return null;
+	}
 	
 	public synchronized static  EFGDataExtractorInterface getDataExtractor(URI csvFileName) throws Exception {
-		return new EFGCSVDataExtractorImpl(csvFileName);
+		EFGDataExtractorInterface efg = getType();
+		efg.setFile(csvFileName);
+		return efg;
 	}
 
 	/**
@@ -51,7 +73,9 @@ public class EFGDataExtractorFactory {
 	 */
 	public synchronized static EFGDataExtractorInterface getDataExtractor(URI csvFileName, char delimiter)
 			throws Exception {
-		return new EFGCSVDataExtractorImpl(new FileReader(new File(csvFileName)), delimiter);
+		EFGDataExtractorInterface efg = getType();
+		efg.setFile(new FileReader(new File(csvFileName)),delimiter);
+		return efg;
 	}
 
 	/**
@@ -59,9 +83,12 @@ public class EFGDataExtractorFactory {
 	 * 
 	 * @param in -
 	 *            A stream containing data to be imported
+	 * @throws Exception 
 	 */
-	public  synchronized static EFGDataExtractorInterface getDataExtractor(InputStream in) {
-		return new EFGCSVDataExtractorImpl(new InputStreamReader(in));
+	public  synchronized static EFGDataExtractorInterface getDataExtractor(InputStream in) throws Exception {
+		EFGDataExtractorInterface efg = getType();
+		efg.setFile(new InputStreamReader(in));
+		return efg;
 	}
 
 	/**
@@ -70,9 +97,12 @@ public class EFGDataExtractorFactory {
 	 *            A stream containing data to be imported
 	 * @param delimiter -
 	 *            The delimiter to use in parsing stream
+	 * @throws Exception 
 	 */
-	public synchronized static EFGDataExtractorInterface getDataExtractor(InputStream in, char delimiter) {
-		return new EFGCSVDataExtractorImpl(in, delimiter);
+	public synchronized static EFGDataExtractorInterface getDataExtractor(InputStream in, char delimiter) throws Exception {
+		EFGDataExtractorInterface efg = getType();
+		efg.setFile(in, delimiter);
+		return efg;
 	}
 
 	/**
@@ -80,9 +110,12 @@ public class EFGDataExtractorFactory {
 	 * 
 	 * @param in -
 	 *            A Reader object containing data to be imported
+	 * @throws Exception 
 	 */
-	public synchronized static EFGDataExtractorInterface getDataExtractor(Reader in) {
-		return new EFGCSVDataExtractorImpl(in, ',');
+	public synchronized static EFGDataExtractorInterface getDataExtractor(Reader in) throws Exception {
+		EFGDataExtractorInterface efg = getType();
+		efg.setFile(in, ',');
+		return efg;
 	}
 	
 

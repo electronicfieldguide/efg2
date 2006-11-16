@@ -118,6 +118,7 @@ public class SQLQuery extends EFGHTTPQuery {
 					legalName = legalName.substring(0,index);
 					this.wildCardTable.put(legalName.toLowerCase(), legalName.toLowerCase());
 				}
+				
 				//put in wilcard table
 				
 				//log.debug("paramaValues length: " + paramValues.length);
@@ -447,9 +448,9 @@ public class SQLQuery extends EFGHTTPQuery {
 		}
 		boolean isFound = false;
 		for (int j = 0; j < params.length; j++) {
-			/* iterate over all of the 'or' requests 
-			 * If  any of them return true add 
-			 * begin processing of the row
+			/* iterate over all of the 'or' requests. 
+			 * If  any of them return true
+			 * process the row.
 			 * You need to check that all of the and's also return true
 			 * before you create an xml document for that row
 			 */
@@ -505,6 +506,11 @@ public class SQLQuery extends EFGHTTPQuery {
 			}
 
 			orBuffer.append(" ( ");
+			int index = legalName.indexOf(EFGImportConstants.EFG_NUMERIC);
+			if(index > -1){
+				legalName = legalName.substring(0,index);
+				
+			}
 			orBuffer.append(legalName);
 			
 			if (EFGImportConstants.UNIQUEID_STR.equalsIgnoreCase(legalName)) {//handle uniqueid
@@ -513,7 +519,17 @@ public class SQLQuery extends EFGHTTPQuery {
 			} else {
 				orBuffer.append(" LIKE ");
 				orBuffer.append("\"%");
-				if ((this.matchNumber(pVal)) || ("".equals(pVal.trim()))) {//if there is a number or if it is blank
+			
+				/*if ((this.matchNumber(pVal)) || ("".equals(pVal.trim()))) {//if there is a number or if it is blank
+					orBuffer.append("\"");// match on 'any'
+				} else {
+					orBuffer.append(pVal + "%\"");
+				}*/
+				if(index > -1){
+					
+					orBuffer.append("\"");
+				}
+				else if ("".equals(pVal.trim())) {//if there is a number or if it is blank
 					orBuffer.append("\"");// match on 'any'
 				} else {
 					orBuffer.append(pVal + "%\"");

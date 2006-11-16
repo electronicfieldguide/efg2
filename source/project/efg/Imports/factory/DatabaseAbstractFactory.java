@@ -25,24 +25,27 @@ package project.efg.Imports.factory;
  * USA
  * 
  */
+import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgInterface.CSV2DatabaseAbstract;
 import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
 import project.efg.Imports.efgInterface.ImportBehavior;
-import project.efg.Imports.rdb.CSV2Database;
 
 public class DatabaseAbstractFactory{
-/**
- * Factory method for making 
- * @param datasource - The datasource
- * @param dataExtractor - The extractor
- * @param dbObject - The dbObject
- * @return CSV2DatabaseAbstract 
- */
+	static Logger log = null;
+	static {
+		try {
+			log = Logger.getLogger(DatabaseAbstractFactory.class);
+		} catch (Exception ee) {
+		}
+	}
 	
 /**
- * 
+ * Factory method for making 
  * @param datasource
  * @param dataExtractor
  * @param dbObject
@@ -54,7 +57,22 @@ public class DatabaseAbstractFactory{
 			EFGDataExtractorInterface dataExtractor,
 			DBObject dbObject,
 			ImportBehavior isUpdate) {
-		return new CSV2Database(datasource,dataExtractor,dbObject,isUpdate);
+		CSV2DatabaseAbstract csv = getType();
+		csv.setDatasource(datasource);
+		csv.setDBObject(dbObject);
+		csv.setDataExtractor(dataExtractor);
+		csv.setISUpdate(isUpdate);
+		return csv;
 	}
-
+	private static CSV2DatabaseAbstract getType() {
+		try {
+			ApplicationContext    context = 
+				new ClassPathXmlApplicationContext("springconfig.xml");
+			return (CSV2DatabaseAbstract)context.getBean("csvImporter");
+			}
+			catch(Exception ee) {
+				log.error(ee.getMessage());
+			}
+			return null;
+	}
 }

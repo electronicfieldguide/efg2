@@ -90,15 +90,39 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		}
 		return lowercaseHeaders;
 	}
-	public CSV2Database(EFGDatasourceObjectInterface datasource,
-			EFGDataExtractorInterface dataExtractor, DBObject dbObject,
-			ImportBehavior isUpdate) {
-		super(datasource, dataExtractor, dbObject, isUpdate);
-
-		this.dataHeaders = this.dataExtractor.getFieldNames();
-		log.debug("After get header");
+	public  void setDatasource(EFGDatasourceObjectInterface datasource) {
+		super.setDatasource(datasource);
+	}
+	public  void setDataExtractor(EFGDataExtractorInterface dataExtractor) {
+		super.setDataExtractor(dataExtractor);
+		try {
+			this.dataHeaders = this.dataExtractor.getFieldNames();
+		} catch (Exception e) {
+			
+			log.error(e.getMessage());
+		}
+		
+	}
+	public  void setDBObject(DBObject dbObject) {
+		super.setDBObject(dbObject);
 		this.txManager = this.getTransactionManager(this.dbObject);
 		this.jdbcTemplate = this.getJDBCTemplate(this.dbObject);
+	}
+	public  void setISUpdate(ImportBehavior isUpdate) {
+		super.setISUpdate(isUpdate);
+	}
+	public CSV2Database() {
+	
+
+		try {
+			//this.dataHeaders = this.dataExtractor.getFieldNames();
+		} catch (Exception e) {
+			
+			log.error(e.getMessage());
+		}
+		log.debug("After get header");
+		//this.txManager = this.getTransactionManager(this.dbObject);
+	//	this.jdbcTemplate = this.getJDBCTemplate(this.dbObject);
 		// READ FROM PROPERTIES FILE
 		this.compare = ComparatorFactory
 				.getComparator(EFGImportConstants.EFGProperties
@@ -328,11 +352,19 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 		} catch (Exception ex) {
 			txManager.rollback(status);
-			this.dataExtractor.close(); 
+			try {
+				this.dataExtractor.close();
+			} catch (Exception e) {
+			
+			} 
 			return false;
 		}
 		txManager.commit(status);
-		this.dataExtractor.close(); 
+		try {
+			this.dataExtractor.close();
+		} catch (Exception e) {
+			
+		} 
 		return isSuccess;
 	}
 

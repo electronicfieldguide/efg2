@@ -35,6 +35,7 @@ import project.efg.servlets.efgServletsUtil.GreaterThanOrEqualsOperator;
 import project.efg.servlets.efgServletsUtil.LessThanOperator;
 import project.efg.servlets.efgServletsUtil.LessThanOrEqualsOperator;
 import project.efg.servlets.efgServletsUtil.PlusOperator;
+import project.efg.util.EFGImportConstants;
 
 /**
  * @author kasiedu
@@ -52,23 +53,23 @@ public class OperatorFactory {
 			if(type == null){
 				return new DefaultOperator();
 			}
-			if(type.trim().startsWith("+")){
+			if(type.trim().startsWith(EFGImportConstants.PLUS_SYMBOL)){
 				return new PlusOperator();
 			}
 
-			if(type.trim().startsWith("<=")){
+			if(type.trim().startsWith(EFGImportConstants.LESSTHANEQUAL_SYMBOL)){
 				return new LessThanOrEqualsOperator();
 			}
-			if(type.trim().startsWith(">=")){
+			if(type.trim().startsWith(EFGImportConstants.GREATERTHANEQUAL_SYMBOL)){
 				return new GreaterThanOrEqualsOperator();
 			}
-			if(type.trim().startsWith("=")){
+			if(type.trim().startsWith(EFGImportConstants.EQUAL_SYMBOL)){
 				return new EqualsOperator();
 			}
-			if(type.trim().startsWith("<")){
+			if(type.trim().startsWith(EFGImportConstants.LESSTHAN_SYMBOL)){
 				return new LessThanOperator();
 			}
-			if(type.trim().startsWith(">")){
+			if(type.trim().startsWith(EFGImportConstants.GREATERTHAN_SYMBOL)){
 				return new GreaterThanOperator();
 			}
 			return new DefaultOperator();

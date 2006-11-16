@@ -65,7 +65,7 @@ public class EFGParseObject implements Comparable  {
 	}
 	/**
 	 * A mathematical operator
-	 * one of '+', '-','>','<','>=', '<='
+	 * one of '+', '-','>','<','>=', '<=', a-b
 	 * defaults to the empty string
 	 * @return
 	 */

@@ -26,6 +26,10 @@
 */
 package project.efg.Imports.efgInterface;
 
+import java.io.InputStream;
+import java.io.Reader;
+import java.net.URI;
+
 /**
  * All EFG data importers must implement this interface
  * Used to parse extract data to be imported into 
@@ -36,7 +40,59 @@ package project.efg.Imports.efgInterface;
  */
 
 public interface EFGDataExtractorInterface {
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param csvFileName -
+	 *            The full URI to the file to be parsed
+	 * @throws Exception
+	 */
+	public void setFile(URI csvFileName) throws Exception;
 
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param csvFileName-
+	 *            The full URI to the file to be parsed
+	 * @param delimiter -
+	 *            The delimiter to use in parsing file
+	 * @throws Exception
+	 */
+	public void setFile(URI csvFileName, char delimiter)
+			throws Exception ;
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param in -
+	 *            A stream containing data to be imported
+	 */
+	public void setFile(InputStream in)throws Exception;
+
+	/**
+	 * 
+	 * @param in -
+	 *            A stream containing data to be imported
+	 * @param delimiter -
+	 *            The delimiter to use in parsing stream
+	 */
+	public void setFile(InputStream in, char delimiter)throws Exception;
+
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param in -
+	 *            A Reader object containing data to be imported
+	 */
+	public void setFile(Reader in)throws Exception;
+
+	/**
+	 * 
+	 * @param in -
+	 *            A Reader object containing data to be imported
+	 * @param delimiter -
+	 *            The delimiter to use in parsing reader
+	 */
+	public void setFile(Reader in, char delimiter) throws Exception;
 	/**
 	 * Get the index of the column having the given label. The first field has
 	 * the index 0.
@@ -46,7 +102,7 @@ public interface EFGDataExtractorInterface {
 	 * @return The index of the field name, or -1 if the field name does not
 	 *         exist.
 	 */
-	public int getFieldNameIndex(String label); 
+	public int getFieldNameIndex(String label)throws Exception;
 
 	/**
 	 * Given the label for the column, get the column from the current row. If
@@ -56,7 +112,7 @@ public interface EFGDataExtractorInterface {
 	 *            The field name.
 	 * @return the value from the column or null if there is no such value
 	 */
-	public String getValueByFieldName(String label);
+	public String getValueByFieldName(String label)throws Exception;
 
 	/**
 	 * A string array of field names to be used to create a database table. The
@@ -65,7 +121,7 @@ public interface EFGDataExtractorInterface {
 	 * 
 	 * @return a string array of field names
 	 */
-	public String[] getFieldNames(); 
+	public String[] getFieldNames()throws Exception;
 
 	/**
 	 * Return the values of the next row, much like the next() method in
@@ -74,14 +130,14 @@ public interface EFGDataExtractorInterface {
 	 * @return a string array of data values
 	 * null if there are no more values to return
 	 */
-	public String[] nextValue(); 
+	public String[] nextValue()throws Exception;
 
 	/**
 	 * The maximum number of columns in this object
 	 * 
 	 * @return the number of coumns in this object
 	 */
-	public int getNumberOfColumns(); 
+	public int getNumberOfColumns()throws Exception;
 	
-	public void close();
+	public void close()throws Exception;
 }

@@ -29,18 +29,17 @@ package project.efg.servlets.factory;
 
 import java.util.Iterator;
 
-
-
 import project.efg.efgDocument.EFGListsType;
 import project.efg.efgDocument.ItemsType;
 import project.efg.efgDocument.MediaResourcesType;
-import project.efg.efgDocument.StatisticalMeasureType;
 import project.efg.efgDocument.StatisticalMeasuresType;
 import project.efg.efgDocument.TaxonEntryTypeItem;
-import project.efg.servlets.efgInterface.OperatorInterface;
+import project.efg.servlets.efgInterface.HandleStatInputAbstract;
+import project.efg.servlets.efgInterface.StatisticalMesureComparatorInterface;
 import project.efg.servlets.efgServletsUtil.EFGParseObject;
 import project.efg.servlets.efgServletsUtil.EFGParseObjectList;
 import project.efg.servlets.efgServletsUtil.EFGParseStates;
+import project.efg.servlets.efgServletsUtil.HandleStatInput;
 import project.efg.servlets.efgServletsUtil.StatisticalMeasureComparator;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGObject;
@@ -51,40 +50,42 @@ import project.efg.util.EFGObject;
  */
 public class TaxonEntryItemBuilder {
 	private EFGParseObjectFactory parseFactory; 
-	private StatisticalMeasureComparator measureComparator;
 	
 	private EFGParseStates efgParseStates;
-	
+	private HandleStatInputAbstract handleStats;
 		
 	public TaxonEntryItemBuilder(){
-		this.measureComparator = new StatisticalMeasureComparator();
 		this.parseFactory = CreateEFGParseObjectFactory
-		.getInstance();
-		this.efgParseStates = new EFGParseStates();
+		.getInstance();//use Spring
+		this.efgParseStates = new EFGParseStates();//use Spring
+		StatisticalMesureComparatorInterface stats = new StatisticalMeasureComparator();
+		this.handleStats = new HandleStatInput(stats);//use Spring
 	}
 
-	
+	private void initSpring() {
+		
+	}
 	/**
 	 * 
-	 * @param paramValues - if null no parsing will be done. Elements will be created with the
+	 * @param userValues - if null no parsing will be done. Elements will be created with the
 	 * data in the states variable
-	 * @param states - If paramvalues is not null then there must be a match with some of the data in states.
+	 * @param databaseValues - If paramvalues is not null then there must be a match with some of the data in states.
 	 * @param efgObject - Contains the name, the datatype and the database name
-	 * @param isLike TODO
+	 * @param isLike - true to indicate that 'contains' should be used to match strings instead of equals
 	 * @return null if paramValues is not null and it does not match exactly anything in the states
 	 */
-	public TaxonEntryTypeItem buildTaxonEntryItem(String paramValues,
-			String states, 
+	public TaxonEntryTypeItem buildTaxonEntryItem(String userValues,
+			String databaseValues, 
 			EFGObject efgObject, boolean isLike) {
 		TaxonEntryTypeItem taxonItem = null;
 		EFGParseObjectList lists = null;
 		if (EFGImportConstants.ISLISTS.equalsIgnoreCase(efgObject.getDataType())) {
 				boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states,true);
+				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,databaseValues,true);
 		
-			if(paramValues != null){
-				if(!this.compareString(lists,paramValues, isLike)){
+			if(userValues != null){
+				if(!this.compareString(lists,userValues, isLike)){
 					flag = false;
 				}
 			}
@@ -98,47 +99,34 @@ public class TaxonEntryItemBuilder {
 				}
 			}
 		}
-		else if (EFGImportConstants.NUMERICRANGE.equalsIgnoreCase(efgObject.getDataType()) ||
-			(EFGImportConstants.NUMERIC.equalsIgnoreCase(efgObject.getDataType()))) {
+		else if(EFGImportConstants.NUMERIC.equalsIgnoreCase(efgObject.getDataType())
+			||(EFGImportConstants.NUMERICRANGE.equalsIgnoreCase(efgObject.getDataType()))){
 			boolean flag = true;
-			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,states,false); 
-	
-				StatisticalMeasuresType dbStats = 
-					this.createStatisticalMeasure(lists);
-				if(dbStats == null){
-					flag = false;
-				}
-				else if(paramValues != null){
-					EFGParseObject userInputStat =
-						this.efgParseStates.parseUserStats(EFGImportConstants.ORCOMMAPATTERN,paramValues); 
-					EFGParseObjectList userInputList = new EFGParseObjectList();
-					userInputList.add(userInputStat);
-					
-						StatisticalMeasuresType userInputStats = 
-							this.createStatisticalMeasure(userInputList);
-						
-						if ( userInputStats == null) {
-							flag = false;
-						}
-						else{
-							flag = compareStats(dbStats,userInputStats,userInputStat.getOperator());
-						}
-				}
-				if(flag){
-					taxonItem = new TaxonEntryTypeItem();
-					dbStats.setName(efgObject.getName());
-					dbStats.setDatabaseName(efgObject.getDatabaseName());
-					taxonItem.setStatisticalMeasures(dbStats);
-				}
-			
-		}
+				lists =
+					this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,databaseValues,false); 
+		
+					StatisticalMeasuresType dbStats = 
+						this.createStatisticalMeasure(lists);
+					if(dbStats == null){
+						flag = false;
+					}
+					else if(userValues != null && !userValues.trim().equals("")){
+						flag = this.handleStats.isInRange(dbStats, userValues);
+					}
+					if(flag){
+						taxonItem = new TaxonEntryTypeItem();
+						dbStats.setName(efgObject.getName());
+						dbStats.setDatabaseName(efgObject.getDatabaseName());
+						taxonItem.setStatisticalMeasures(dbStats);
+					}
+				
+			}
 		else if (EFGImportConstants.MEDIARESOURCE.equalsIgnoreCase(efgObject.getDataType())) {
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states,true); 
-			if(paramValues != null){
-				if(!this.compareString(lists,paramValues, isLike)){
+				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,databaseValues,true); 
+			if(userValues != null){
+				if(!this.compareString(lists,userValues, isLike)){
 					flag = false;
 				}
 			}
@@ -156,10 +144,10 @@ public class TaxonEntryItemBuilder {
 		else if (EFGImportConstants.CATEGORICAL.equals(efgObject.getDataType())) {
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,states,false); 
+				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,databaseValues,false); 
 		
-			if(paramValues != null){
-				flag = this.compareString(lists,paramValues, isLike);
+			if(userValues != null){
+				flag = this.compareString(lists,userValues, isLike);
 			
 			}
 			if(flag){
@@ -176,15 +164,15 @@ public class TaxonEntryItemBuilder {
 		else{
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.NOPATTERN,states,true);
+				this.efgParseStates.parseStates(EFGImportConstants.NOPATTERN,databaseValues,true);
 			
-			if(paramValues != null){
-				flag = this.compareString(lists,paramValues, isLike);
+			if(userValues != null){
+				flag = this.compareString(lists,userValues, isLike);
 			}
 			if(flag){
 				lists.setDatabaseName(efgObject.getDatabaseName());
 				lists.setName(efgObject.getName());
-				ItemsType items = this.createNarrative(states,efgObject);
+				ItemsType items = this.createNarrative(databaseValues,efgObject);
 				if (items != null) {
 					taxonItem = new TaxonEntryTypeItem();
 					taxonItem.setItems(items);
@@ -213,32 +201,6 @@ public class TaxonEntryItemBuilder {
 			}
 		}
 		return false;//no match
-	}
-	private boolean compareStats(StatisticalMeasuresType dbStats,
-			StatisticalMeasuresType userValues,OperatorInterface operator){
-		
-		for(int i = 0; i < userValues.getStatisticalMeasureCount(); i++){
-			StatisticalMeasureType userValue = userValues.getStatisticalMeasure(i);
-			for(int j = 0; j < dbStats.getStatisticalMeasureCount();j++){
-				StatisticalMeasureType databaseValue = dbStats.getStatisticalMeasure(i);
-				//is userValue in the range of the value in the database?
-				try{
-					if(databaseValue.getUnits() == null){
-						databaseValue.setUnits("");
-					}
-					if(userValue.getUnits() == null){
-						userValue.setUnits("");
-					}
-					if(this.measureComparator.isInRange(operator,userValue,databaseValue)){
-						return true;
-					}
-				}
-				catch(Exception ee){
-					
-				}
-			}
-		}
-		return false;
 	}
 	private MediaResourcesType createMediaResources(EFGParseObjectList lists) {
 		return parseFactory.createMediaResources(lists);

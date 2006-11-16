@@ -189,9 +189,10 @@ function evalAnySelectedValue(field)
 		    				<% 
 						}  
               	  		  		else if((stats != null)&&(stats.getStatisticalMeasureCount() > 0)){
-								
+								String currentStatsName = legalName + EFGImportConstants.EFG_NUMERIC;
 						%>
-							<input type="text" name="<%=legalName%>" maxlength="20"/>
+								
+							<input type="text" name="<%=currentStatsName%>" maxlength="20"/>
 							<% String str ="";
  							   String units = stats.getUnit();
  							   if(units == null){

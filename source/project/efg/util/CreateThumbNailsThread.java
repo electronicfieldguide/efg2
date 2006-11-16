@@ -19,6 +19,10 @@ import javax.swing.JProgressBar;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import project.efg.Imports.efgInterface.ThumbNailGeneratorInterface;
 
 /**
  * @author kasiedu
@@ -37,7 +41,7 @@ implements EFGImportConstants,WindowListener{
 	 * 
 	 */
 	private int maxDim = -1;
-	private ThumbNailGenerator thm;
+	private ThumbNailGeneratorInterface thm;
 	private boolean isDone = false;
 	String srcFile, destFile;
 	JFrame frame;
@@ -73,7 +77,9 @@ implements EFGImportConstants,WindowListener{
 	private void init(){
 		this.maxDim =DnDFileBrowserMain.getMaxDim();
 		
-		this.thm = new ThumbNailGenerator();
+		//do spring stuff here
+		//this.thm = ThumbNailGeneratorInterface.Factory.newInstance();
+		this.thm = this.doSpring();
         this.progressBar = new JProgressBar();
         JLabel label = new JLabel("Please wait while application generates Thumbnails");
         label.setSize(300,300);
@@ -107,6 +113,24 @@ implements EFGImportConstants,WindowListener{
 
 
 	
+
+
+
+	/**
+	 * @return
+	 */
+	private ThumbNailGeneratorInterface doSpring() {
+		try {
+		ApplicationContext    context = 
+			new ClassPathXmlApplicationContext("springconfig.xml");
+		return (ThumbNailGeneratorInterface)context.getBean("thumbsGenerator");
+		}
+		catch(Exception ee) {
+			log.error(ee.getMessage());
+			ee.printStackTrace();
+		}
+		return null;
+	}
 
 
 
@@ -273,17 +297,18 @@ implements EFGImportConstants,WindowListener{
 	 * @param destImagesDir -
 	 *            Where the transformed images will be placed
 	 * @param srcFileName -
-	 *            The name of the urrent image file
+	 *            The name of the current image file
 	 * @param maxDim -
 	 *            The maximum dimension for the thumnail image
 	 */
 	private boolean generate(String srcDir, String destDir, String fileName) {
 		if (check(srcDir, fileName)) {
+			//use a factory here
 			return this.thm.generateThumbNail(srcDir, destDir,fileName, this.maxDim);
 		}
 		return false;
 	}
-	// Check for existance of image
+	// Check for existence of image
 	private boolean check(String dir, String fileName) {
 		File checker = new File(dir,fileName);
 		return checker.exists();

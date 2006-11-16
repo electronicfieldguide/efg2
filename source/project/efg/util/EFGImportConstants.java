@@ -121,7 +121,8 @@ public interface EFGImportConstants {
 	String[] STR_2_REMOVE = {"\\(","\\)"};
 	String CARAT_SEPARATOR="\\^";
 	String ESCAPECARAT_SEPARATOR="\\\\\\^";
-	String ORPATTERN = "\\sor\\s";
+	String ORPATTERN = "\\s*or\\s*";
+	String ANDPATTERN = "\\s*and\\s*";
 	String ORCOMMAPATTERN="([,]|([ ]+(or)[ ]))";
 	String ESCAPEORCOMMAPATTERN="\\\\([,]|([ ]+(or)[ ]))";
     String LISTSEP="#";
@@ -129,9 +130,20 @@ public interface EFGImportConstants {
 	String COLON_SEPARATOR = COLONSEP;
 	String NOPATTERN ="----#----";
 	String matchNumbeAtEnd = "^\\d+$|^-\\d+$";
-	String patternStr = "[A-Z]+";// remove everything that is an
+	
+	String matchNumberDashNumber = "\\d+\\s*--?\\s*\\d+";
+	//A number followed by 2 dashes 
+	String matchNumberDashDash = "\\d+\\s*-\\s*-";
+//	A number followed by a dashes 
+	 String matchNumberDash = "\\d+\\s*-";
+	 
+	String patternStr = "[A-Z]+";// 
 
 	//PATTERNS
+	Pattern matchNumberDashNumberPattern = Pattern.compile(matchNumberDashNumber);
+	Pattern matchNumberDashDashPattern = Pattern.compile(matchNumberDashDash);
+	Pattern matchNumberDashPattern = Pattern.compile(matchNumberDash);
+	
 	Pattern matchNumberPattern = Pattern.compile(matchNumbeAtEnd);
 	Pattern matchNumberAtEndPattern = Pattern.compile(matchNumberStr);
 	Pattern spacePattern = Pattern.compile("\\s");
@@ -507,6 +519,17 @@ public interface EFGImportConstants {
 	String ILLEGAL_CHAR_APPENDER ="illegalCharacters";
 	String BACKGROUND_IMAGE = "/icons/draganddropmsg.gif";
 	String EFG_WILDCARD = "_EFG_WILDCARD";
+	String EFG_NUMERIC = "_EFG_NUMERIC";
+	String THUMBS_VAR = "thumbsEnvVar";
+	String ANDSEP = "AND";
+	
+	String EQUAL_SYMBOL= "EQ";
+	String GREATERTHAN_SYMBOL= "GT";
+	String LESSTHAN_SYMBOL= "LT";
+	String GREATERTHANEQUAL_SYMBOL= GREATERTHAN_SYMBOL + EQUAL_SYMBOL;
+	String LESSTHANEQUAL_SYMBOL= LESSTHAN_SYMBOL + EQUAL_SYMBOL;
+	String PLUS_SYMBOL = "+";
+	
 	
 	
 	

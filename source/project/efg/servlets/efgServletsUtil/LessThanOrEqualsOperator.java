@@ -28,6 +28,7 @@
 package project.efg.servlets.efgServletsUtil;
 
 import project.efg.servlets.efgInterface.OperatorInterface;
+import project.efg.util.EFGImportConstants;
 
 /**
  * @author kasiedu
@@ -38,7 +39,7 @@ public class LessThanOrEqualsOperator implements OperatorInterface {
 		super();
 	}
 	public String toString(){
-		return "<=";
+		return EFGImportConstants.LESSTHANEQUAL_SYMBOL;
 	}
 
 }

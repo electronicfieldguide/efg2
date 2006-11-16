@@ -35,6 +35,8 @@ import java.io.Reader;
 import java.net.URI;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 import project.efg.Imports.efgInterface.EFGDataExtractorInterface;
 import project.efg.Imports.factory.CSVParserFactory;
 
@@ -47,134 +49,40 @@ import com.Ostermiller.util.LabeledCSVParser;
 public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 
 	
-
-	private LabeledCSVParser lcsvp;
+	static Logger log;
+	static {
+		try {
+			log = Logger.getLogger(EFGCSVDataExtractorImpl.class);
+		} catch (Exception ee) {
+		}
+	}
 	private String[] fieldNames;
-	
-	/**
-	 * Defaults to a comma separated delimiter if none is specified.
-	 * 
-	 * @param csvFileName -
-	 *            The full URI to the file to be parsed
-	 * @throws Exception
-	 */
-	public EFGCSVDataExtractorImpl(URI csvFileName) throws Exception {
-		this(csvFileName, ',');
+	private LabeledCSVParser lcsvp;
+	private static String defaultException() {
+		
+		return "Call setFile before you call this method";
 	}
-
-	/**
-	 * Defaults to a comma separated delimiter if none is specified.
-	 * 
-	 * @param csvFileName-
-	 *            The full URI to the file to be parsed
-	 * @param delimiter -
-	 *            The delimiter to use in parsing file
-	 * @throws Exception
-	 */
-	public EFGCSVDataExtractorImpl(URI csvFileName, char delimiter)
-			throws Exception {
-		this(new FileReader(new File(csvFileName)), delimiter);
+	private static void printUnderScoreLine(String[] labels) {
+		
 	}
-
-	/**
-	 * Defaults to a comma separated delimiter if none is specified.
-	 * 
-	 * @param in -
-	 *            A stream containing data to be imported
-	 */
-	public EFGCSVDataExtractorImpl(InputStream in) {
-		this(new InputStreamReader(in));
-	}
-
-	/**
-	 * 
-	 * @param in -
-	 *            A stream containing data to be imported
-	 * @param delimiter -
-	 *            The delimiter to use in parsing stream
-	 */
-	public EFGCSVDataExtractorImpl(InputStream in, char delimiter) {
-		this(new InputStreamReader(in), delimiter);
-	}
-
-	/**
-	 * Defaults to a comma separated delimiter if none is specified.
-	 * 
-	 * @param in -
-	 *            A Reader object containing data to be imported
-	 */
-	public EFGCSVDataExtractorImpl(Reader in) {
-		this(in, ',');
-	}
-
-	/**
-	 * 
-	 * @param in -
-	 *            A Reader object containing data to be imported
-	 * @param delimiter -
-	 *            The delimiter to use in parsing reader
-	 */
-	public EFGCSVDataExtractorImpl(Reader in, char delimiter) {
-		this.setUp(in, delimiter);
-	}
-
-	private void setUp(Reader csvFileName, char delimiter) {
-		try {
-			//use a factory?
-			this.lcsvp =(LabeledCSVParser)CSVParserFactory.getCSVParser(csvFileName,
-					delimiter);
-			
-		} catch (Exception ee) {
-			//log.error(ee.getMessage());
-		}
-	}
-	/**
-	 * Get the index of the column having the given label. The first field has
-	 * the index 0.
-	 * 
-	 * @param label-
-	 *            The field name.
-	 * @return The index of the field name, or -1 if the field name does not
-	 *         exist.
-	 */
-	public int getFieldNameIndex(String label) {
-		try {
-			return this.lcsvp.getLabelIdx(label);
-		} catch (Exception ee) {
-			//log.error(ee.getMessage());
-		}
-		return -1;
-	}
-
-	/**
-	 * Given the label for the column, get the column from the current row. If
-	 * the column cannot be found in the line, null is returned.
-	 * 
-	 * @param label -
-	 *            The field name.
-	 * @return the value from the column or null if there is no such value
-	 */
-	public String getValueByFieldName(String label) {
-		try {
-			return this.lcsvp.getValueByLabel(label);
-		} catch (Exception ee) {
-			//log.error(ee.getMessage());
-		}
-		return null;
-	}
-	private String[] getParsedFieldNames() {
+	private String[] getParsedFieldNames() throws Exception {
 		
 		try {
 			return processFields(this.lcsvp.getLabels());
 		} catch (Exception ee) {
-			//log.error(ee.getMessage());
+			log.error(ee.getMessage());
+			throw new Exception(defaultException());
 		}
-		return null;
+		
 	}
-	private String[] processFields(String[] csvFields){
+	private static void printLine(String[] labels) {
+	
+		
+	}
+	private String[] processFields(String[] csvFields) {
 		ArrayList lists = new ArrayList(csvFields.length);
 		int size = csvFields.length; 
-		//log.debug("Field Size before trim: " + size);
+		log.debug("Field Size before trim: " + size);
 		for(int i=0; i < csvFields.length; i++){
 			String field = csvFields[i];
 			if((field == null) || (field.trim().equals(""))){
@@ -187,13 +95,62 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 		if(size < 1){
 			return null;
 		}
-		//log.debug("Field Size after trim: " + size);
+		log.debug("Field Size after trim: " + size);
 		String[] toReturn = new String[size];
 		for(int j=0; j < size; j++){
 			String field = (String)lists.get(j);
 			toReturn[j]= field;
 		}
 		return toReturn;
+	}
+	private void setUp(Reader csvFileName, char delimiter) {
+		try {
+			//use a factory?
+			this.lcsvp =(LabeledCSVParser)CSVParserFactory.getCSVParser(csvFileName,
+					delimiter);
+			
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+	}
+	public EFGCSVDataExtractorImpl() {
+		
+	}
+	/**
+	 * Get the index of the column having the given label. The first field has
+	 * the index 0.
+	 * 
+	 * @param label-
+	 *            The field name.
+	 * @return The index of the field name, or -1 if the field name does not
+	 *         exist.
+	 */
+	public int getFieldNameIndex(String label)throws Exception {
+		try {
+			return this.lcsvp.getLabelIdx(label);
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+			throw new Exception(defaultException());
+		}
+		
+	}
+
+	/**
+	 * Given the label for the column, get the column from the current row. If
+	 * the column cannot be found in the line, null is returned.
+	 * 
+	 * @param label -
+	 *            The field name.
+	 * @return the value from the column or null if there is no such value
+	 */
+	public String getValueByFieldName(String label)throws Exception {
+		try {
+			return this.lcsvp.getValueByLabel(label);
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+			throw new Exception(defaultException());
+		}
+		
 	}
 	/**
 	 * A string array of field names to be used to create a database table. The
@@ -202,7 +159,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 	 * 
 	 * @return a string array of field names
 	 */
-	public String[] getFieldNames() {
+	public String[] getFieldNames() throws Exception{
 		if(this.fieldNames == null){
 			this.fieldNames = getParsedFieldNames();
 		}
@@ -218,11 +175,11 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 	 * @return a string array of data values null if there are no more values to
 	 *         return
 	 */
-	public String[] nextValue() {
+	public String[] nextValue() throws Exception{
 		try {
 			return this.lcsvp.getLine();
 		} catch (Exception ee) {
-			//log.error(ee.getMessage());
+			log.error(ee.getMessage());
 		}
 		return null;
 	}
@@ -232,46 +189,19 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 	 * 
 	 * @return the number of coumns in this object
 	 */
-	public int getNumberOfColumns() {
+	public int getNumberOfColumns() throws Exception{
 		try {
 			return this.getFieldNames().length;
 		} catch (Exception ee) {
-			//log.error(ee.getMessage());
+			log.error(ee.getMessage());
 		}
 		return 0;
-	}
-
-	private static void printLine(String[] labels) {
-
-		
-	}
-
-	private static void printUnderScoreLine(String[] labels) {
-		
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) throws Exception {
-		String csvFileName = "C:\\cvscheckout\\efg2\\lib\\data\\IpoTest.csv";
-		EFGCSVDataExtractorImpl extractor = new EFGCSVDataExtractorImpl(new URI(
-				csvFileName));
-		
-		String[] labels = extractor.getFieldNames();
-		printLine(labels);
-		printUnderScoreLine(labels);
-
-		String[] currentValues = extractor.nextValue();
-		while (currentValues != null) {
-			printLine(currentValues);
-		}
 	}
 
 	/* (non-Javadoc)
 	 * @see project.efg.Imports.efgInterface.EFGDataExtractorInterface#close()
 	 */
-	public void close() {
+	public void close() throws Exception{
 		try{
 			if(this.lcsvp != null){
 			
@@ -279,9 +209,93 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 			}
 		}
 		catch(Exception ee){
-			
+			throw new Exception(defaultException());
 		}
 		
+	}
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param csvFileName -
+	 *            The full URI to the file to be parsed
+	 * @throws Exception
+	 */
+	public void setFile(URI csvFileName) throws Exception {
+		this.setFile(csvFileName, ',');
+		
+	}
+
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param csvFileName-
+	 *            The full URI to the file to be parsed
+	 * @param delimiter -
+	 *            The delimiter to use in parsing file
+	 * @throws Exception
+	 */
+	public void setFile(URI csvFileName, char delimiter) throws Exception {
+		this.setFile(new FileReader(new File(csvFileName)), delimiter);
+		
+	}
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param in -
+	 *            A stream containing data to be imported
+	 */
+	public void setFile(InputStream in) throws Exception {
+		this.setFile(new InputStreamReader(in));
+		
+	}
+	/**
+	 * 
+	 * @param in -
+	 *            A stream containing data to be imported
+	 * @param delimiter -
+	 *            The delimiter to use in parsing stream
+	 */
+	
+	public void setFile(InputStream in, char delimiter) throws Exception {
+		this.setFile(in, delimiter);
+		
+	}
+	/**
+	 * Defaults to a comma separated delimiter if none is specified.
+	 * 
+	 * @param in -
+	 *            A Reader object containing data to be imported
+	 */
+	public void setFile(Reader in) throws Exception {
+		this.setFile(in, ',');
+		
+	}
+	/**
+	 * 
+	 * @param in -
+	 *            A Reader object containing data to be imported
+	 * @param delimiter -
+	 *            The delimiter to use in parsing reader
+	 */
+	public void setFile(Reader in, char delimiter) throws Exception {
+		this.setUp(in, delimiter);
+	}
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) throws Exception {
+		String csvFileName = "C:\\cvscheckout\\efg2\\lib\\data\\IpoTest.csv";
+		EFGCSVDataExtractorImpl extractor = new EFGCSVDataExtractorImpl();
+		extractor.setFile(new URI(
+				csvFileName));
+		String[] labels = extractor.getFieldNames();
+		printLine(labels);
+		printUnderScoreLine(labels);
+	
+		String[] currentValues = extractor.nextValue();
+		while (currentValues != null) {
+			printLine(currentValues);
+		}
 	}
 
 }

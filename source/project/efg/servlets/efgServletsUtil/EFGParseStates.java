@@ -90,7 +90,7 @@ public class EFGParseStates {
 	public  EFGParseObject parseUserStats(
 			String separator, String states) {
 		
-		String[] fields = parse( separator,states);
+		String[] fields = parse(separator,states);
 		
 		return checkForOperator(createEFGParseObject(fields[0],false));
 	}
@@ -151,12 +151,7 @@ public class EFGParseStates {
 	
 		return null;
 	}
-	/*private  String[] getFields(String separator,
-			String states){
-		
-		return parse(states, separator);
-		
-	}*/
+
 	private String unicode2Ascii(String states){
 		/*try{
 		

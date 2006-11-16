@@ -97,7 +97,7 @@ public abstract class CSV2DatabaseAbstract {
 	 * This implementation assumes that a database table already exists to hold
 	 * the tables to be created in this implementation.
 	 */
-	public CSV2DatabaseAbstract(EFGDatasourceObjectInterface datasource,
+	/*public CSV2DatabaseAbstract(EFGDatasourceObjectInterface datasource,
 			EFGDataExtractorInterface dataExtractor,DBObject dbObject,
 			ImportBehavior isUpdate) {
 		this.dataExtractor = dataExtractor;
@@ -105,6 +105,20 @@ public abstract class CSV2DatabaseAbstract {
 		this.isUpdate = isUpdate;
 		this.dbObject = dbObject;
 		
+	}*/
+	public CSV2DatabaseAbstract() {
+	}
+	public  void setDatasource(EFGDatasourceObjectInterface datasource) {
+		this.datasource = datasource;
+	}
+	public  void setDataExtractor(EFGDataExtractorInterface dataExtractor) {
+		this.dataExtractor = dataExtractor;
+	}
+	public  void setDBObject(DBObject dbObject) {
+		this.dbObject = dbObject;
+	}
+	public  void setISUpdate(ImportBehavior isUpdate) {
+		this.isUpdate = isUpdate;
 	}
 	public String getCatalinaHome(){
 		return EFGUtils.getCatalinaHome();
@@ -161,7 +175,12 @@ public abstract class CSV2DatabaseAbstract {
 	protected String[] getLegalNames() {
 		
 		if (this.legalNames == null) {
-			this.legalNames = this.translateHeaders(dataExtractor.getFieldNames());
+			try {
+				this.legalNames = this.translateHeaders(dataExtractor.getFieldNames());
+			} catch (Exception e) {
+				
+				log.error(e.getMessage());
+			}
 		}
 		return this.legalNames;
 	}

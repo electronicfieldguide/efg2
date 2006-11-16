@@ -165,6 +165,7 @@ public class EFGUtils {
 					}
 				}
 			}
+			
 		} catch (Exception ee) {
 			String message = ee.getMessage();
 			log.error(message);
@@ -178,6 +179,10 @@ public class EFGUtils {
 		if (catalina_home != null) {
 			return catalina_home;
 		}
+		/*catalina_home = System.getenv("CATALINA_HOME");
+		if (catalina_home != null) {
+			return catalina_home;
+		}*/
 		Properties props = getEnvVars();
 		if (props != null) {
 			catalina_home = props.getProperty("CATALINA_HOME");
@@ -263,6 +268,9 @@ public class EFGUtils {
 }
 
 // $Log$
+// Revision 1.1.2.5  2006/11/16 19:15:48  kasiedu
+// no message
+//
 // Revision 1.1.2.4  2006/08/26 22:12:24  kasiedu
 // Updates to xsl files
 //

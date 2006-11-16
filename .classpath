@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="properties"/>
+	<classpathentry kind="src" path="unitTests"/>
+	<classpathentry kind="src" path="lib/springConfig"/>
+	<classpathentry excluding="springConfig/" kind="src" path="lib"/>
 	<classpathentry kind="src" path="source"/>
 	<classpathentry exported="true" kind="lib" path="lib/avalon.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/batik.jar"/>
@@ -18,7 +21,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/mysqldriver.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/oscache-2.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/ostermillerutils_1_05_00_for_java_1_4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/rdbImport.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/rowset.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/serializer-2.7.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/servlet-api.jar"/>
@@ -28,6 +30,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/xerces.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlgraphics-commons-1.0.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre"/>
 	<classpathentry kind="output" path="compiled"/>
 </classpath>

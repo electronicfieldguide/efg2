@@ -1,9 +1,9 @@
 <!-- 
 Th parent build file for this application.
-to compile/deploy/clean with:
+to make a distribution call makeImport:
 
 -->
-<project name="Electronic Field Guide" default="compile" basedir=".">
+<project name="Electronic Field Guide" default="makeImport" basedir=".">
 	<property environment="myenv"/>
 	<property name="app.name" value="efg2"/>
 	<property name="app.name.war" value="efg2.war"/>
@@ -26,6 +26,7 @@ to compile/deploy/clean with:
 	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
 	<property name="efg2.images.home" value="${efg2.home}/../EFGImages"/>
+	<property name="efg2.website.home" value="${efg2.home}/../efg2_website"/>
 	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
 	<property name="dist.src" value="${app.name}.jar"/>
 	<property name="efg2.fedSchema.home" value="fedSchema"/>
@@ -55,6 +56,12 @@ to compile/deploy/clean with:
 			<include name="**.*"/>
 		</fileset>
 	</path>
+	<target name="prepare">
+		<mkdir dir="${app.name}"/>
+		<mkdir dir="${compile.home}"/>
+		<mkdir dir="${src.temp.home}"/>
+	</target>
+	
 	<!-- deployImages -->
 	<target name="deployEFGIcons">
 		<mkdir dir="${deploy.home}/EFGIcons"/>
@@ -62,25 +69,9 @@ to compile/deploy/clean with:
 			<fileset dir="${icons.home}/"/>
 		</copy>
 	</target>
-	<target name="prepare">
-		<mkdir dir="${app.name}"/>
-		<mkdir dir="${compile.home}"/>
-		<mkdir dir="${src.temp.home}"/>
-	</target>
-	<!-- Compile main sources-->
-	<target name="compileMain" depends="prepare">
-		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="generate"/>
-		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
-		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
-		<copy todir="${src.temp.home}">
-			<fileset dir="${efg2.source.home}"/>
-		</copy>
-	</target>
-	<target name="war" depends="deploy">
-		<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
-			<fileset dir="${deploy.home}"/>
-		</war>
-	</target>
+
+	
+	
 	<!-- Make preparations for deployment-->
 	<target name="deployResources">
 		<mkdir dir="${deploy.home}"/>
@@ -143,6 +134,7 @@ to compile/deploy/clean with:
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.home}" includes="*.html"/>
 		</copy>
+		
 		<copy todir="${deploy.home}/WEB-INF/metadata">
 			<fileset dir="${efg2.metadata.home}"/>
 		</copy>
@@ -157,12 +149,37 @@ to compile/deploy/clean with:
 		</delete>
 		<copy file="${efg2.properties.home}/log4j_server.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
 		<move file="${deploy.home}/WEB-INF/classes/project/efg/util/log4j_server.properties" tofile="${deploy.home}/WEB-INF/classes/project/efg/util/log4j.properties"/>
+		<copy todir="${deploy.home}">
+					<fileset dir="${efg2.website.home}" includes="*.html, *.css, *.gif, *.jpg, *.js, *.png"/>
+		</copy>
+	
 	</target>
+	
 	<target name="deploy" depends="compile, prepareDeploy">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
 		<copy todir="${deploy.home}/WEB-INF/classes/project">
 			<fileset dir="compiled/project"/>
 		</copy>
+	</target>
+	
+	<target name="war" depends="deploy">
+			<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
+				<fileset dir="${deploy.home}"/>
+			</war>
+		</target>
+	<!-- Compile main sources-->
+			<target name="compileMain" depends="prepare">
+				<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
+				<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
+				<copy todir="${src.temp.home}">
+					<fileset dir="${efg2.source.home}"/>
+				</copy>
+			</target>
+	<!-- Compile RDB sources with main sources-->
+	<target name="compile" depends="compileMain">
+		<javac srcdir="${src.temp.home}" destdir="compiled" debug="on" optimize="off" deprecation="on">
+			<classpath refid="compile.class.path"/>
+		</javac>
 	</target>
 	<target name="jarImport" depends="compile">
 		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
@@ -181,13 +198,12 @@ to compile/deploy/clean with:
 		</copy>
 		<delete dir="temp"/>
 	</target>
-	<!-- Compile RDB sources with main sources-->
-	<target name="compile" depends="compileMain">
-		<javac srcdir="${src.temp.home}" destdir="compiled" debug="on" optimize="off" deprecation="on">
-			<classpath refid="compile.class.path"/>
-		</javac>
-	</target>
-	<target name="makeImport" depends="jarImport">
+	<target name="clean">
+		<delete dir="${efg2.home}/efg2" quiet="true"/>
+				<delete dir="${efg2.dist.home}/resource" quiet="true"/>
+				<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
+	</target>	
+	<target name="makeImport" depends="clean,jarImport, war">
 		<mkdir dir="${efg2.dist.home}"/>
 		<mkdir dir="${efg2.dist.home}/resource"/>
 		<mkdir dir="${efg2.dist.home}/resource/logs"/>
@@ -227,6 +243,11 @@ to compile/deploy/clean with:
 		<copy file="${efg2.home}/efg2.xml" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/tomcat-users.xml" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/efg2.war" todir="${efg2.dist.home}/resource"/>
+	
+		<zip zipfile="${efg2.home}/efg2.zip" basedir="${efg2.dist.home}"/> 
+		<delete dir="${efg2.home}/efg2" quiet="true"/>
+		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
+		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
 	</target>
-
+	
 </project>
