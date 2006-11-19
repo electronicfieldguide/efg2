@@ -4,7 +4,6 @@
 package project.efg.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -110,15 +109,22 @@ public class ImageMagickGenerator extends ThumbNailGeneratorInterface {
 		// ImageMagick's convert command
 		// it might be something like "/usr/local/magick/bin/convert" or
 		// something else, depending on where you installed it.
+		
+		//convert -size 500x180  hatching.jpg  -thumbnail 250x90 thumbnail.gif
+		//convert -size 200x200 hatching.jpg  -thumbnail '100x100>' rectangle.gif
+		
 		command.add(this.magicHome);
-		command.add("-geometry");
-		command.add(width + "x" + height);
 		command.add("-quality");
 		command.add("" + IMAGE_QUALITY);
+		command.add("-size");
+		command.add(2*width + "x" + 2*height);
+		/*command.add("-geometry");
+		command.add(width + "x" + height);*/
+		command.add("-thumbnail");
+		command.add(width + "x" + height + ">");
 		command.add(in.getAbsolutePath());
 		command.add(out.getAbsolutePath());
-
-		// System.out.println(command);
+		
 
 		return exec((String[]) command.toArray(new String[1]));
 	}
@@ -132,47 +138,57 @@ public class ImageMagickGenerator extends ThumbNailGeneratorInterface {
 	 * @return Description of the Return Value
 	 */
 	private boolean exec(String[] command) {
-		Process proc;
 
 		try {
-			// System.out.println("Trying to execute command " +
-			// Arrays.asList(command));
-			proc = Runtime.getRuntime().exec(command);
-		} catch (IOException e) {
+			Process proc = Runtime.getRuntime().exec(command);
+		} catch (Exception e) {
 			log.error("IOException while trying to execute " + command);
 
 			return false;
 		}
-
-		// System.out.println("Got process object, waiting to return.");
-
-		int exitStatus;
+		
+		
+		/*int exitStatus = 0;
 
 		while (true) {
 			try {
+				
 				exitStatus = proc.waitFor();
+				System.out.println("returning");
 				break;
 			} catch (java.lang.InterruptedException e) {
 				System.out.println("Interrupted: Ignoring and waiting");
 			}
+			catch(Exception ee) {
+				System.out.println("Exception: " + ee.getMessage());
+				break;
+			}
 		}
 		if (exitStatus != 0) {
-			// System.out.println("Error executing command: " + exitStatus);
+			System.out.println("Error executing command: " + exitStatus);
 		}
-		return (exitStatus == 0);
+		return (exitStatus == 0);*/
+		return true;
 	}
 
 	private void create(String srcDir, String outDir, String imageName, int dim) {
 
 		try {
-			String currentInDir = srcDir + File.separator + imageName;
-			String currentOutDir = outDir + File.separator + imageName;
-			File in = new File(currentInDir);
-			File out = new File(currentOutDir);
+			File in = this.getNewFileName(srcDir,imageName);
+			
+			File out = this.getNewFileName(outDir,imageName);
 			convert(in, out, dim, dim);
 
 		} catch (Exception ioe) {
 			log.error(ioe.getMessage());
 		}
 	}
+	 private  File getNewFileName(String fullPath, 
+			 String imageSrc){
+		 File directories = new File(fullPath);
+		 if(!directories.exists()){
+			 directories.mkdirs();
+		 }
+		 return new File(fullPath,imageSrc);
+	 }
 }
