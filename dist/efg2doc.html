@@ -1,9 +1,11 @@
-<HTML>
-
-<HEAD>
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/strict.dtd">
+<html xmlns="http://www.w3.org/TR/xhtml1">
+<head>
 <!-- $Id  -->
 <title>EFG2 Documentation</title>
-<STYLE>
+<style>
 ol.toc, ul.toc, p.header {
 font-weight: bold;
 }
@@ -17,29 +19,35 @@ font-style: italic;
 .needspace {
 padding-bottom: 10px;
 }
-</STYLE>
-</HEAD>
-
-<BODY>
+</style>
+</head>
+<body>
 <p class="title">EFG2 Documentation</p>
 
 <ol class="toc">
 <li><a href="#require">Installation Requirements</a></li>
+
 <li><a href="#install">Installation Procedure</a></li>
+
 <li><a href="#import">How to Import Your Data</a></li>
+
 <li><a href="#configure">Configure EFG Templates</a></li>
+
 <li><a href="#view">View Your Data</a></li>
 </ol>
-<hr>
 
+<hr />
 <p class="header"><a name="require"></a>1. EFG2 Installation Requirements</p>
 
 <p>The following programs must be installed:</p>
 
 <ul>
 <li>Tomcat 5.0</li>
+
 <li>MySQL 5.0</li>
+
 <li>Java Development Kit (JDK) 1.4</li>
+
 <li>Java Runtime environment(JRE) 1.5 or higher</li>
 </ul>
 
@@ -47,122 +55,220 @@ padding-bottom: 10px;
 
 <ul>
 <li>CATALINA_HOME</li>
+
 <li>JAVA_HOME</li>
+
 <li>MAGICK_HOME (optional. Set this only if you want to use the image magic software to generate your thumbnails. Note that the default thumbnail generator does not generate very sharp images)</li>
 </ul>
 
-<hr>
+<hr />
 <p class="header"><a name="install"></a>2. EFG2 Installation</p>
 
 <ol>
 <li>Unzip the zip file into a directory of your choice (preferably under the C: drive).</li>
+
 <li>You should see the following files and directories:</li>
-	<ul>
-		<li>chkenv.bat (checks to make sure the system's environment variables are set correctly)</li>
-		<li>deployWebapps.bat (copies application files to the web server)</li>
-		<li>efg2Import.bat (invokes the GUI that starts the importation process)</li>
-		<li>resource (a directory) - Please Do Not view/edit/delete any files in this directory!</li>
-	</ul>
-<li>Open a command window and cd to the directory containing the files listed above.</li>
-<li>Check the environment variables by running chkenv.bat. If chkenv.bat fails:
-	<ol>
-		<li>Go to the "My Computer" icon on your desktop and right-click with your mouse. Choose "Properties" from the menu that pops up.</li>
-		<li>Click on the "Advanced" tab and then click on "Environment Variables."</li>
-		<li>In the areas labeled "User Variables" and "System Variables," look for a variable named CATALINA_HOME. If the CATALINA_HOME variable already exists, click "Edit" and make sure that the Variable Value points to the location of your Tomcat server (for example: C:\Program Files\Apache Software Foundation\Tomcat 5.0).</li>
-		<li>If there is no CATALINA_HOME variable listed in either section, click on "New" under the "System Variables" section and fill in CATALINA_HOME for the Variable Name, and fill in the full path to your Tomcat server next to Variable Value (see item 3 for example path).</li>
-		<li>Run chkenv.bat again to verify you set the environment variable correctly. <i>Note: You must close the old command window and open a new one before you run chkenv.bat again.</i></li>
-		<li>Follow steps 1-5 again for JAVA_HOME, except that its Variable Value should be the location where the JDK is installed (for example: C:\j2sdk1.4.2_10).</li>
-	</ol>
+
+<li>
+<ul>
+<li>chkenv.bat (checks to make sure the system's environment variables are set correctly)</li>
+
+<li>deployWebapps.bat (copies application files to the web server)</li>
+
+<li>efg2Import.bat (invokes the GUI that starts the importation process)</li>
+
+<li>resource (a directory) - Please Do Not view/edit/delete any files in this directory!</li>
+</ul>
 </li>
-<li>In the command window, type deployWebapps.bat. The script will verify that you have set the CATALINA_HOME environment variable correctly before it copies the application files.</li>
-</ol>
 
-<hr>
-<p class="header"><a name="import"></a>3. Import a data source</p>
+<li>Open a command window and cd to the directory containing the files listed above.</li>
 
-<p class="hint">We recommend that you read the <a href="http://wiki.cs.umb.edu/twiki/bin/view/BDEI/SummaryOFEFG2DataRequirements">documentation about the EFG2 data types</a> before you import your first data source.</p>
+<li>Check the environment variables by running chkenv.bat. If chkenv.bat works, go to the next step. If it fails: 
 
 <ol>
-	<li>Save the data file in a comma-separated format.
-		<ul>
-			<li>In FileMaker, save the data as a merge file (.mer). Note that while Filemaker will also let you choose .csv, .mer is better)</li>
-			<li>In Excel, save the data as a .csv file.</li>
-			<li>For other apps, save in .csv or other comma-separated format, as long as the tool used to generate the .csv file has column headers on the 1st row (consult the documentation of the application you wish to use for more information).</li>
-		</ul></li>
-	<li>Import Data
-	<ol>
-		<li>Open a command window to the directory containing deployWebapps.bat and efg2Import.bat.</li>
-		<li>Run efg2Import.bat. If you are not already logged into MySQL you will be required to do so. If you fail to login correctly to MySQL after enough attempts, MySQL quits and you must run efg2Import.bat again. <i>Note: MySQL will change the directory in the command window to 'resources" so you will have to type 'cd..' to return to the root directory to run efg2Import.bat.</i></li>
-		<li>Follow the instructions for the EFG2 Data Importer. Hints are available by placing your mouse pointer over most of the buttons and column headings. More detailed instructions are available from the help menu or from the documentation that comes with this distribution.</li>
-		<li>Restart Tomcat after you make your very first successful import and configuration. You do not need to restart Tomcat after you make subsequent imports.</li>
-		<li>Importation errors can be found in the 'logs' directory, which is located inside the 'resource' directory. You may e-mail it to us when you cannot interprete the error messages, which are generally technical.</li>
-	</ol></li>
+<li>Go to the "My Computer" icon on your desktop and right-click with your mouse. Choose "Properties" from the menu that pops up.</li>
+
+<li>Click on the "Advanced" tab and then click on "Environment Variables."</li>
+
+<li>In the areas labeled "User Variables" and "System Variables," look for a variable named CATALINA_HOME. If the CATALINA_HOME variable already exists, click "Edit" and make sure that the Variable
+Value points to the location of your Tomcat server (for example: C:\Program Files\Apache Software Foundation\Tomcat 5.0).</li>
+
+<li>If there is no CATALINA_HOME variable listed in either section, click on "New" under the "System Variables" section and fill in CATALINA_HOME for the Variable Name, and fill in the full path to
+your Tomcat server next to Variable Value (see item 3 for example path).</li>
+
+<li>Run chkenv.bat again to verify you set the environment variable correctly. <i>Note: You must close the old command window and open a new one before you run chkenv.bat again.</i></li>
+
+<li>Follow steps 1-5 again for JAVA_HOME, except that its Variable Value should be the location where the JDK is installed (for example: C:\j2sdk1.4.2_10).</li>
+</ol>
+</li>
+
+<li>In the command window, type deploywebapps.bat. The script will verify that you have set the CATALINA_HOME environment variable correctly before it copies the application files. If it is
+successful, restart Tomcat and you are ready to begin.</li>
 </ol>
 
-<hr>
+<hr />
+<p class="header"><a name="import"></a>3. Import a data source</p>
 
+<p class="hint">We recommend that you read the <a href="http://wiki.cs.umb.edu/twiki/bin/view/BDEI/SummaryOFEFG2DataRequirements">documentation about the EFG2 data types</a> before you import your
+first data source.</p>
+
+<ol>
+<li>Save the data file in a comma-separated format. 
+
+<ul>
+<li>In FileMaker, save the data as a merge file (.mer). Note that while Filemaker will also let you choose .csv, .mer is better.</li>
+
+<li>In Excel, save the data as a .csv file.</li>
+
+<li>For other apps, save in .csv or other comma-separated format, as long as the tool used to generate the .csv file has column headers on the 1st row (consult the documentation of the application
+you wish to use for more information).</li>
+</ul>
+</li>
+
+<li>Import Data 
+
+<ol>
+<li>Open a command window to the directory containing efg2Import.bat.</li>
+
+<li>Run efg2Import.bat. (If you are not already logged into MySQL you will be required to do so. If you fail to login correctly to MySQL after enough attempts, MySQL quits and you must run
+efg2Import.bat again.)</li>
+
+<li>There are two major steps for creating an EFG: Data Import and Image Import (or audio, video etc.). 
+
+<ul>
+<li>Click on the Data button to open the Data Import window. Click "Edit Title" if you want to. Drag your file in and click on "Data Source Configuration."</li>
+
+<li>Fill out the Data Configuration page. There is a row for each field in your data. Determine which fields are searchable, which should be on the Taxon Page, and click the button designating the
+correct resource type (Categorical data, Narrative, Numerical Value or Range, or a Media Resource). If you would like to change the order in which searchable fields appear on your search page, click
+on the field name and drag it up or down.</li>
+
+<li>When you are done, click "Update" and "Close."</li>
+
+<li>Now click on the Media Resources button, select a thumbnail size (if you want something other that the default), and drag your image folder into the left side of the window.</li>
+</ul>
+
+Hints are also available by placing your mouse pointer over most of the buttons and column headings. More detailed instructions are available from the help menu or from the documentation that comes
+with this distribution.</li>
+
+<li>Restart Tomcat after you make your very first successful import and configuration. You do not need to restart Tomcat after you make subsequent imports.</li>
+
+<li>Importation errors can be found in the 'logs' directory, which is located inside the 'resource' directory. You may e-mail it to us when you cannot interprete the error messages, which are
+generally technical.</li>
+</ol>
+</li>
+</ol>
+
+<hr />
 <p class="header"><a name="configure"></a>4. Configure EFG Templates</p>
 
 <ul>
-	<li class="needspace">To configure templates for your data source, go to the configuration webpage, which is located at http://URL_TO_TOMCAT:PORT_NUMBER/efg2/Links.html (for example, http://localhost:8080/efg2/Links.html if the web server is on the computer you are currently in front of, or http://panda.cs.umb.edu/efg2/Links.html as an example of accessing the page from a different location).</li>
-	<li>The configure page is divided into three sections:
-		<ol>
-			<li class="needspace">Template Configuration
-				<ul>
-					<li>First decide your level of expertise:
-						<ul>
-							<li><b>Beginner</b> - Choose this if you have little to no technical experience. Many decisions about layout, such as the number of fields that can be displayed, will be made for you. The least freedom to make changes but the easiest to get up and running.</li>
-							<li><b>Intermediate</b> - Choose this if you have tried Beginner and find that there are changes that you wish to make to the positioning of data, etc. In Intermediate mode, you will get extra fields in the taxon page if the number of fields in your data source exceeds the number that the template designer accounted for.</li>
-							<li><b>Advanced</b> - Choose this if you are familiar with terms like HTML and css, if you have previous experience with the EFG software, etc. Maximum flexibility of template building.</li>
-						</ul>
-					</li>
-					<li>Select a data source from the list, select the type of template you want to configure, and click "Submit":
-							<ul>
-								<li><b>Plates</b> - a thumbnail image of the taxon, typically with a caption underneath describing that taxon.</li>
-								<li><b>List</b> - a text list of taxa</li>
-								<li><b>Taxon Page</b> - set of web pages, one for each taxon, where the bulk of your data will be displayed.</li>
-							</ul>
-					</li>
-					<li>For each template, you will be prompted to "Enter a unique name for the template or select from list to edit." If you are creating a new template, just type a name for it in the text window and click "Submit." If you wish to edit an existing template, you can click on the downward-pointing triangle button to the right of the text window to get a list of all saved templates for that template type.
-					</li>
-					<li>You will then be prompted to pick a template. You can preview all the templates for that view by clicking on the links below the pull-down menu (under the thin grey line). Each preview opens in a new web browser window. <i>We recommend that you leave the preview window open for the template you select - it will make it a lot easier to configure if you have those hints.</i> Choose one template from the pull-down menu and click "Submit."
-					</li>
-					<li>The next window you see is the template configuration window. There may be up to three different types of data inputs there:
-						<ul>
-							<li><b>Pull-downs for text data</b> - places on the template that are for text data only will only show a list of fields that were indicated as text (numbers or letters) during the import process.</li>
-							<li><b>Pull-downs for media resources</b> - these pull-downs look the same as the ones for text data, but you can tell they are for media resources (images, video, audio, etc.) because the only items on the list of choices are those designated as media resources during the import process.</li>
-							<li><b>Text windows</b> - Places where you can type in text, typically used to add a caption to an image, or to as a header for a row of data. Very handy if you choose don't want the exact column heading from your data source to display next to the data. Can be left blank if desired. Some templates may have rules that displace what is typed in a text window with a column heading or with an annotation made in a cell in the data sheet.</li>
-						</ul>
-					</li>
-					<li>Configuring the template is fairly straightforward. For each pull-down on the page, select one of your data fields from the list. The location of the pull-down on the template is approximately where your data will display on the actual page (use the template preview as your guide). Your data field will take on all of the characteristics that you see on the template preview (font style and size, colors, etc.). You can leave anything blank on the page that you choose.</li>
-					<li>When you are done configuring indicate whether you want to use the template you have just configured as the default template for that view by selecting either "Use as Default Template" or "Do Not Use as Default Template" and then click on the "click to submit" button.</li>
-					<li>The next page lets you view a sample of your new template by clicking on "Test Search Page." If you want to change something, use the "Go back to configuration Page." Otherwise, you may wish to return to the Links.html page to configure another template.</li>
-				</ul>
-			</li>
-			
-			<li class="needspace">Uploading Extras
-				<ul>
-					<li>In any mode, the user has the option in some templates to select graphics to enhance the look of the template. In Expert mode, users can select css files and javascript as well (if the template allows it). Before you can do this, you need to upload the files via the config page. Use the links under "Upload Extras" to do this before you configure a template (don't worry, if you forgot to do this before configuring, you can always go back to your saved template later).</li>
-					<li>If the template you select has the option of editing the style code, you will see a pulldown menu where the default style sheet is displayed (filename.css). Use the pulldown menu to select the file you uploaded and proceed with the template configuration. If you are not very familiar with style code, one easy way to get started is to copy the default style sheet, makes any changes you want, save your file under a different name and upload it to the EFG server as described above. If you have local access to the EFG web server, the style sheets are located in your tomcat directory, e.g. C:\CATALINA|HOME\webapps\efg2\templateCSSDirectory, or use http://localhost:8080/efg2/BrowseUploadedCSSFiles.jsp. To access them via the web, use the format http://www.websitename.com/efg2/BrowseUploadedCSSFiles.jsp.</li>
-					<li>If the template you select has the option of adding javascript files, you will see a pulldown menu where the default javascript file is displayed (filename.js). Use the pulldown menu to select the file you uploaded and proceed with the template configuration.</li>
-				</ul>
-			</li>
-</ul>	
-</li>		
-<hr>
+<li class="needspace">To configure templates for your data source, go to the configuration webpage, which is located at http://URL_TO_TOMCAT:PORT_NUMBER/efg2/Links.html (for example,
+http://localhost:8080/efg2/Links.html if the web server is on the computer you are currently in front of, or http://panda.cs.umb.edu/efg2/Links.html as an example of accessing the page from a
+different location).</li>
 
-<p class="header"><a name="view"></a>5. View Your Data</p>
+<li>The configure page is divided into three sections: 
+
+<ol>
+<li class="needspace">Configure Templates 
 
 <ul>
-	<li><b>Front Page to Search</b> - Search or browse all imported data sources using the Type Page, which is located at http://URL_TO_TOMCAT:PORT_NUMBER/efg2/TypePage.jsp (for example, http://localhost:8080/efg2/TypePage.jsp if the web server is on the computer you are currently in front of, or http://panda.cs.umb.edu/efg2/TypePage.jsp as an example of accessing the page from a different location).</li>
-	<li><b>View URLs for all EFGs</b> - A Table listing all of the views (list, plate and search) for every data source that has imported. Note that this page may start out identical to the type page. This is the page to go to if you create, for example, multiple list views of a single  datasource (the type page only shows the default for each view).</li>
-    <li><b>Linking to your EFG pages:</b>You can get URLs to use as links to your EFG pages from either the "Front page to Search" or "View URLs for all EFGs" page. While the text list and thumbnail views of the taxa may look like static pages, they are actually search results, where the search was done with no restrictions, thus returning all records. For example:<br><u>http://panda.cs.umb.edu/efg2/search?dataSourceName=LifeOnThePurpleLoosestrifeFlickr08012006_1156949797187&guid=1156881710078&xslName=nantucketCommonNameSearchList.xsl&searchType=lists&displayFormat=HTML&maxDisplay=100</u><br>
-The URL above will return a maximum of 100 hits (&maxDisplay=100). If you wish to display more than 100 records in your list views, change this number. However, if you increase it too much there will likely be performance issues, and if you try to view all 5000 records of a database in a single text list, the software will likely hang. 
-</li>
-	<li><i>Note: At least one of the fields of your data source must have been configured as "Categorical" in order for the Search page, Plate View and List View to work correctly.</i></li>
-	<li>If you view the data without having configured any templates, the data will appear in the default, generic template that has virtually no formatting.</li>
+<li>First decide your level of expertise: 
+
+<ul>
+<li><b>Beginner</b> - Choose this if you have little to no technical experience. Many decisions about layout, such as the number of fields that can be displayed, will be made for you. The least
+freedom to make changes but the easiest to get up and running.</li>
+
+<li><b>Intermediate</b> - Choose this if you have tried Beginner and find that there are changes that you wish to make to the positioning of data, etc. In Intermediate mode, you will get extra fields
+in the taxon page if the number of fields in your data source exceeds the number that the template designer accounted for.</li>
+
+<li><b>Advanced</b> - Choose this if you are familiar with terms like HTML and css, if you have previous experience with the EFG software, etc. Maximum flexibility of template building.</li>
 </ul>
+</li>
 
-</BODY>
+<li>Select a data source from the list, select the type of template you want to configure, and click "Submit": 
 
-</HTML>
+<ul>
+<li><b>Plates</b> - a thumbnail image of the taxon, typically with a caption underneath describing that taxon.</li>
+
+<li><b>List</b> - a text list of taxa</li>
+
+<li><b>Taxon Page</b> - set of web pages, one for each taxon, where the bulk of your data will be displayed.</li>
+</ul>
+</li>
+
+<li>For each template, you will be prompted to "Enter a unique name for the template or select from list to edit." If you are creating a new template, just type a name for it in the text window and
+click "Submit." If you wish to edit an existing template, you can click on the downward-pointing triangle button to the right of the text window to get a list of all saved templates for that template
+type.</li>
+
+<li>You will then be prompted to pick a template. You can preview all the templates for that view by clicking on the links below the pull-down menu (under the thin grey line). Each preview opens in a
+new web browser window. <i>We recommend that you leave the preview window open for the template you select - it will make it a lot easier to configure if you have those hints.</i> Choose one template
+from the pull-down menu and click "Submit."</li>
+
+<li>The next window you see is the template configuration window. There may be up to three different types of data inputs there: 
+
+<ul>
+<li><b>Pull-downs for text data</b> - places on the template that are for text data only will only show a list of fields that were indicated as text (numbers or letters) during the import
+process.</li>
+
+<li><b>Pull-downs for media resources</b> - these pull-downs look the same as the ones for text data, but you can tell they are for media resources (images, video, audio, etc.) because the only items
+on the list of choices are those designated as media resources during the import process.</li>
+
+<li><b>Text windows</b> - Places where you can type in text, typically used to add a caption to an image, or to as a header for a row of data. Very handy if you choose don't want the exact column
+heading from your data source to display next to the data. Can be left blank if desired. Some templates may have rules that displace what is typed in a text window with a column heading or with an
+annotation made in a cell in the data sheet.</li>
+</ul>
+</li>
+
+<li>Configuring the template is fairly straightforward. For each pull-down on the page, select one of your data fields from the list. The location of the pull-down on the template is approximately
+where your data will display on the actual page (use the template preview as your guide). Your data field will take on all of the characteristics that you see on the template preview (font style and
+size, colors, etc.). You can leave anything blank on the page that you choose.</li>
+
+<li>When you are done configuring indicate whether you want to use the template you have just configured as the default template for that view by selecting either "Use as Default Template" or "Do Not
+Use as Default Template" and then click on the "click to submit" button.</li>
+
+<li>The next page lets you view a sample of your new template by clicking on "Test Search Page." If you want to change something, use the "Go back to configuration Page." Otherwise, you may wish to
+return to the Links.html page to configure another template.</li>
+</ul>
+</li>
+
+<li class="needspace">Upload Extras 
+
+<ul>
+<li>In any mode, the user has the option in some templates to select graphics to enhance the look of the template. In Expert mode, users can select css files and javascript as well (if the template
+allows it). Before you can do this, you need to upload the files via the config page. Use the links under "Upload Extras" to do this before you configure a template (don't worry, if you forgot to do
+this before configuring, you can always go back to your saved template later).</li>
+
+<li>If the template you select has the option of editing the style code, you will see a pulldown menu where the default style sheet is displayed (filename.css). Use the pulldown menu to select the
+file you uploaded and proceed with the template configuration. If you are not very familiar with style code, one easy way to get started is to copy the default style sheet, makes any changes you
+want, save your file under a different name and upload it to the EFG server as described above. If you have local access to the EFG web server, the style sheets are located in your tomcat directory,
+e.g. C:\CATALINA|HOME\webapps\efg2\templateCSSDirectory, or use http://localhost:8080/efg2/BrowseUploadedCSSFiles.jsp. To access them via the web, use the format
+http://www.websitename.com/efg2/BrowseUploadedCSSFiles.jsp.</li>
+
+<li>If the template you select has the option of adding javascript files, you will see a pulldown menu where the default javascript file is displayed (filename.js). Use the pulldown menu to select
+the file you uploaded and proceed with the template configuration.</li>
+</ul>
+</li>
+
+<li class="needspace">View Links 
+
+<ul>
+<li>Use this section to find direct links to the search page for your EFG, if one was created. <i>At least one of the fields of your data source must have been configured as "Categorical" in order
+for the Search page, Plate View and List View to work correctly.</i></li>
+
+<li>We also provide you with a page that lists all of the links for each of your data sources, including every template you've configured. This is useful if you would like to copy and paste a URL
+into an email or into another webpage.</li>
+
+<li><b>For Advanced Users:</b> While the text list and thumbnail views of the taxa may look like static pages, they are actually search results, where the search was done with no restrictions, thus
+returning all records. For example:<br />
+<u>http://panda.cs.umb.edu/efg2/search?dataSourceName=LifeOnThePurpleLoosestrifeFlickr08012006_1156949797187&mp;guid=1156881710078&mp;xslName=nantucketCommonNameSearchList.xsl&mp;searchType=lists&mp;displayFormat=HTML&mp;maxDisplay=100</u><br />
+
+The URL above will return a maximum of 100 hits (&mp;maxDisplay=100). If you wish to display more than 100 records in your list views, change this number. However, if you increase it too much there
+will likely be performance issues, and if you try to view all 5000 records of a database in a single text list, the software will likely hang.</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+</body>
+</html>
+
