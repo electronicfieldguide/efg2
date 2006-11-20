@@ -121,6 +121,9 @@ to make a distribution call makeImport:
 	</target>
 	<target name="prepareDeploy" depends="deployEFGIcons, deployResources">
 		<mkdir dir="${deploy.home}/EFGImages"/>
+		<mkdir dir="${deploy.home}/EFGImages/Het"/>
+		<mkdir dir="${deploy.home}/efgimagesthumbs"/>
+		<mkdir dir="${deploy.home}/efgimagesthumbs/Het"/>
 		<mkdir dir="${deploy.home}/WEB-INF"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes/project"/>
@@ -134,7 +137,12 @@ to make a distribution call makeImport:
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.home}" includes="*.html"/>
 		</copy>
-		
+		<copy todir="${deploy.home}/EFGImages/Het">
+			<fileset dir="${efg2.home}/sampleImages/Het" includes="*.*"/>
+		</copy>
+		<copy todir="${deploy.home}/efgimagesthumbs/Het">
+			<fileset dir="${efg2.home}/sampleImages/thumbs" includes="*.*"/>
+		</copy>
 		<copy todir="${deploy.home}/WEB-INF/metadata">
 			<fileset dir="${efg2.metadata.home}"/>
 		</copy>
