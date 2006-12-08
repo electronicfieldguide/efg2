@@ -1,5 +1,0 @@
-#$Id$
-#Run this file after you import a file succesfully
-#It is a just a security measure.
-use efg;
-REVOKE ALTER, CREATE, DELETE, DROP, INSERT, UPDATE ON efg.* FROM efg;

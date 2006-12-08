@@ -1,4 +1,0 @@
-#$Id$
-#Run this file before you import any files.
-use efg;
-GRANT ALTER, CREATE, DELETE, DROP, INSERT, SELECT, UPDATE ON efg.* TO efg;
