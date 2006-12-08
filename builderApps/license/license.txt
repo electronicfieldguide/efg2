@@ -1,0 +1,41 @@
+$Id$
+Electronic Field Guide(EFG) Keys installer,
+installs the EFG Web application on a users Machine.
+Copyright (C) 2006 University of Massachusetts, Boston,MA.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License(http://www.fsf.org/licensing/licenses/gpl.txt)
+for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+USA
+
+Contact us at:
+University of Massachusetts
+100 Morrissey blvd
+Electronic Field Guide Project(EFG)
+Computer Science Department
+Boston,MA 02125
+
+or via e-mail at: efg@cs.umb.edu
+
+$Log$
+Revision 1.2  2006/12/08 03:50:38  kasiedu
+no message
+
+Revision 1.1.2.1  2006/06/08 13:14:51  kasiedu
+New files
+
+Revision 1.1  2005/11/02 17:07:34  kasiedu
+Added license information
+
+

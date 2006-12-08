@@ -1,0 +1,52 @@
+h2 { 
+ background-color: white; line-height: 50px; font-family: "Times New Roman", Times, serif}
+
+.identification_td {  background-color: white; padding-top: 5px; padding-left: 5px}
+
+.id_text {  font-family: Arial, Helvetica, sans-serif; font-size: 10pt}
+
+.id_strong {  font-family: Arial, Helvetica, sans-serif; font-size: 11pt}
+
+.sc_name {  font-family: Arial, Helvetica, sans-serif; font-style:italic; font-size: 11pt}
+
+.detail_text {  font-family: "Times New Roman", Times, serif; font-size: 14pt; padding-left: 10px; padding-right: 10px; padding-top: 5px} 
+hr {  height: 1px; width: 100%}
+
+body { background-color: #5f9ea0}
+td.famname { border-style: none; 
+ font-family: "Times New Roman", Times, serif; font-weight:bold; font-size:20pt; padding:10px;    }
+
+table.title {
+  border: double 4px grey;
+  background-color: white;
+  } 
+ table.simfam {
+   margin-left: 20px;
+   border-collapse: collapse;
+   border: solid 1px black;
+   width: 90%;
+   } 
+	
+	td.simfam {
+	padding-top: 5px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+   	font-size: 11pt; 
+	}
+ .odd {
+    background-color: #e3f8cb;
+    }
+    .even {
+    background-color: #ffffff;
+    } 
+.odd2 {
+    background-color: #e3f8cb;
+    }
+    .even2 {
+    background-color: #ffffff;
+    } 
+.credits { font-family: Arial, Helvetica, sans-serif; font-size:10pt}
+
+	

@@ -1,0 +1,6 @@
+#$Id$
+1. Configure Thumbnail configurator using Spring config file lib/springconfig/springconfig.xml
+2. Set MAGICK_HOME classpath variable to point to your Image magic home.
+3. Default is to use efg thumbnail generator which does not generate sharp images.
+4. Extend ThumbNailGeneratorInterface with your own custom thumbnail generator
+and configure appropriately with Spring.(see springconfig.xml)

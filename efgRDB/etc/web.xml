@@ -1,0 +1,319 @@
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+	<!-- General description of your web application -->
+	<display-name>The Electronic Field Guide Project</display-name>
+	<description>
+		The goal of the Electronic Field Guide Project is to develop technology to
+		allow biologists and others to automate the creation of web-based field
+		guides.  For more information about the project, please see the main EFG
+		page at http://www.cs.umb.edu/efg
+		
+		Most of the programming was done by Matthew Passell (mpassell@cs.umb.edu), 
+		who should be contacted for more information on the technical details of 
+		the EFG.
+	</description>
+	<!--
+		Context initialization parameters that define shared
+		String constants used within your application, which
+		can be customized by the system administrator who is
+		installing your application.  The values actually
+		assigned to these parameters can be retrieved in a
+		servlet or JSP page by calling:
+		
+		String value =
+			getServletContext().getInitParameter("name");
+
+		where "name" matches the <param-name> element of
+		one of these initialization parameters.
+
+		You can define any number of context initialization
+		parameters, including zero.
+	-->
+	
+	<context-param>
+		<param-name>schemaNames</param-name>
+		<param-value>darwin2.xsd</param-value>
+		<description>
+		A list of federation schema(see Digir schema) names used by this application 
+		</description>
+	</context-param>
+	<context-param>
+		<param-name>efgMetadataFileName</param-name>
+		<param-value>efgMetadataFile.xml</param-value>
+		<description>
+			The file Name of the xml file describing the metadata associated with this application(For DiGIR use).
+		</description>
+	</context-param>
+	<filter>
+		<filter-name>CacheFilter</filter-name>
+		<filter-class>com.opensymphony.oscache.web.filter.CacheFilter</filter-class>
+		<init-param>
+			<param-name>time</param-name>
+			<param-value>-1</param-value>
+		</init-param>
+		<init-param>
+			<param-name>scope</param-name>
+			<param-value>application</param-value>
+		</init-param>
+			<init-param>
+			<param-name>ICacheKeyProvider</param-name>
+			<param-value>project.efg.util.EFGCacheProvider</param-value>
+		</init-param>
+			<init-param>
+			<param-name>ICacheGroupsProvider</param-name>
+			<param-value>project.efg.util.EFGCacheGroup</param-value>
+		</init-param>
+	</filter>
+		<!---->
+	<filter>
+		<filter-name>CacheFilterStaticContent</filter-name>
+		<filter-class>com.opensymphony.oscache.web.filter.CacheFilter</filter-class>
+		<init-param>
+			<param-name>expires</param-name>
+			<param-value>time</param-value>
+		</init-param>
+	</filter>
+
+	
+
+	<filter-mapping>
+		<filter-name>CacheFilter</filter-name>
+		<servlet-name>Redirect</servlet-name>
+	
+	</filter-mapping>
+<!--
+		<filter-mapping>
+		<filter-name>CacheFilter</filter-name>
+		<url-pattern>/search/*</url-pattern>
+	</filter-mapping>
+-->
+
+
+	<listener>
+		<listener-class>project.efg.servlets.efgImpl.EFGContextListener</listener-class>
+	</listener>
+	<!--
+		Servlet definitions for the servlets that make up
+		your web application, including initialization
+		parameters.  With Tomcat, you can also send requests
+		to servlets not listed here with a request like this:
+		
+			http://localhost:8080/{context-path}/servlet/{classname}
+		
+		but this usage is not guaranteed to be portable.  It also
+		makes relative references to images and other resources
+		required by your servlet more complicated, so defining
+		all of your servlets (and defining a mapping to them with
+		a <servlet-mapping> element) is recommended.
+		
+		Servlet initialization parameters can be retrieved in a
+		servlet or JSP page by calling:
+		
+		String value = getServletConfig().getInitParameter("name");
+
+		where "name" matches the <param-name> element of
+		one of these initialization parameters.
+
+		You can define any number of servlets, including zero.
+	-->
+	<servlet>
+		<servlet-name>loggerServlet</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.LoggerServlet</servlet-class>
+		<init-param>
+			<param-name>log4j-init-file</param-name>
+			<param-value>WEB-INF/classes/project/efg/util/log4j.properties</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<!--
+		<servlet>
+		<servlet-name>cacheServlet</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.CacheServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+-->
+	<servlet>
+		<servlet-name>search</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.SearchEngine</servlet-class>
+		<init-param>
+			<param-name>defaultMaxDisplay</param-name>
+			<param-value>20</param-value>
+		</init-param>
+		<init-param>
+			<param-name>applyXSLServlet</param-name>
+			<param-value>ApplyXSL</param-value>
+		</init-param>
+		<init-param>
+			<param-name>fopServlet</param-name>
+			<param-value>FopServlet</param-value>
+		</init-param>
+		<init-param>
+			<param-name>database</param-name>
+			<param-value>MySQL</param-value>
+		</init-param>
+	</servlet>
+		<servlet>
+		<servlet-name>mapQuery</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.EFGMappingQuery</servlet-class>
+		<init-param>
+			<param-name>defaultMaxDisplay</param-name>
+			<param-value>20</param-value>
+		</init-param>
+		<init-param>
+			<param-name>applyXSLServlet</param-name>
+			<param-value>ApplyXSL</param-value>
+		</init-param>
+		<init-param>
+			<param-name>fopServlet</param-name>
+			<param-value>FopServlet</param-value>
+		</init-param>
+		<init-param>
+			<param-name>database</param-name>
+			<param-value>MySQL</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
+		<servlet-name>ApplyXSL</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.ApplyXSL</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>FopServlet</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.FOPServlet</servlet-class>
+	</servlet>
+	<!--	-->
+	<servlet>
+		<servlet-name>configTaxonPage</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.TaxonPageTemplateConfig</servlet-class>
+	</servlet>
+<servlet>
+		<servlet-name>upload</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.UploadResources</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>Redirect</servlet-name>
+		<jsp-file>/Redirect.jsp</jsp-file>
+	</servlet>
+	<!--
+		Define mappings that are used by the servlet container to
+		translate a particular request URI (context-relative) to a
+		particular servlet.  The examples below correspond to the
+		servlet descriptions above.  Thus, a request URI like:
+		
+			http://localhost:8080/{contextpath}/graph
+		
+		will be mapped to the "graph" servlet, while a request like:
+		
+			http://localhost:8080/{contextpath}/saveCustomer.do
+		
+		will be mapped to the "controller" servlet.
+		
+		You may define any number of servlet mappings, including zero.
+		It is also legal to define more than one mapping for the same
+		servlet, if you wish to.
+	
+	<servlet-mapping>
+		<servlet-name>taxondisplay</servlet-name>
+		<url-pattern>/taxondisplay</url-pattern>
+	</servlet-mapping>
+	-->
+	<servlet-mapping>
+		<servlet-name>search</servlet-name>
+		<url-pattern>/search</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>mapQuery</servlet-name>
+		<url-pattern>/mapQuery</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ApplyXSL</servlet-name>
+		<url-pattern>/ApplyXSL</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>FopServlet</servlet-name>
+		<url-pattern>/FopServlet</url-pattern>
+	</servlet-mapping>
+	<!-- 	-->
+	<servlet-mapping>
+		<servlet-name>configTaxonPage</servlet-name>
+		<url-pattern>/configTaxonPage</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>upload</servlet-name>
+		<url-pattern>/upload</url-pattern>
+	</servlet-mapping>
+
+<!--  -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/templateJSP/*</url-pattern>
+		</web-resource-collection>
+			<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/DirectURLs2SearchResultsPages.jsp</url-pattern>
+		</web-resource-collection>
+	<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/imageUpload.jsp</url-pattern>
+		</web-resource-collection>
+	<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/cssUpload.jsp</url-pattern>
+		</web-resource-collection>
+	<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/javascriptUpload.jsp</url-pattern>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/Links.jsp</url-pattern>
+		</web-resource-collection>		
+		<auth-constraint>
+			<role-name>efg</role-name>
+		</auth-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.jsp</form-login-page>
+			<form-error-page>/login-error.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+	<security-role>
+        <description>efg roles</description>
+        <role-name>efg</role-name>
+</security-role>
+	<!-- 
+ 30 minute session timeout
+        <session-config> 
+		<session-timeout>30</session-timeout>
+	</session-config>
+        -->
+	<!-- MAKE SURE that the <res-ref-name> value here corresponds to the 
+	<resource-ref>
+		<description>efg</description>
+		<res-ref-name>jdbc/efgMySQL</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+in server.xml
+-->
+	<!--
+	***NOTE ****** Configure your environment here. Change values in the <env-entry> to suit your settings. 
+       ***PLEASE DO NOT change the entries in <env-entry-name> tags unless you would want to make changes to our source code.***
+	-->
+	<env-entry>
+		<description>The resource reference as confiugured in server.xml</description>
+		<env-entry-name>resourceName</env-entry-name>
+		<env-entry-value>jdbc/efgMySQL</env-entry-value>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<env-entry>
+		<description>EFG_RDB_TABLE is a db table that contains the names of all the efg related DB tables in the current Database</description>
+		<env-entry-name>ALL_EFG_RDB_TABLES</env-entry-name>
+		<env-entry-value>EFG_RDB_TABLES</env-entry-value>
+		<env-entry-type>java.lang.String</env-entry-type>
+	</env-entry>
+	<!-- Tell the server to use form-based authentication. -->
+</web-app>

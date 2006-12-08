@@ -1,0 +1,35 @@
+<!--
+$Id$
+-->
+<!-- A "project" describes a set of targets that may be requested
+     when Ant is executed.  The "default" attribute defines the
+     target which is executed if no specific target is requested,
+     and the "basedir" attribute defines the current working directory
+     from which Ant executes the requested task.  This is normally
+     set to the current working directory.
+-->
+<project name="Electronic Field Guide" default="all" basedir=".">
+	<property environment="myenv"/>
+	<property name="local.home" value="${rdb.src.home}"/>
+
+	<property name="local.lib.home" value="${local.home}/lib"/>
+	
+	
+	<path id="compile.class.path">
+		<fileset dir="${efg2.lib.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<pathelement location="${tomcat.home}/common/lib/servlet-api.jar"/>
+		<pathelement location="${tomcat.home}/common/lib/servlet.jar"/>
+	</path>
+
+	<target name="deploy">	
+		<copy todir="${deploy.home}/WEB-INF">
+			<fileset dir="${local.home}/etc"/>
+		</copy>
+	</target>
+	<target name="all"/>
+	<target name="dist">
+		<jar jarfile="${dist.home}/${dist.src}" basedir="."/>
+	</target>
+</project>

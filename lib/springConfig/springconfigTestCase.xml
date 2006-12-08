@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+   	 <bean id="statsComparator" class="project.efg.servlets.efgServletsUtil.StatisticalMeasureComparator">
+  		<description>Configure Statistical Measure Comparator</description>
+   	</bean>
+   	<bean id="handleStatInput" class="project.efg.servlets.efgServletsUtil.HandleStatInput">
+  		<description>Configure HandleStatInput</description>
+  		<constructor-arg>
+			<ref local="statsComparator"/>
+		</constructor-arg> 
+   	</bean>
+</beans>

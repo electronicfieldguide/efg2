@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+ 	<bean id="thumbsGenerator" class="project.efg.util.ImageMagickGenerator">
+   			<description>Configure the Thumbnail Generator here</description>
+   		<constructor-arg>
+			<value>MAGICK_HOME</value>
+		</constructor-arg> 
+  	</bean>
+  	<bean id="csvProcessor" class="project.efg.Imports.rdb.EFGCSVDataExtractorImpl">
+  		<description>Configure the csv file processor here</description>
+   	</bean>
+   	<bean id="csvImporter" class="project.efg.Imports.rdb.CSV2Database">
+  		<description>Configure the csv file processor here</description>
+   	</bean>
+   	 <bean id="statsComparator" class="project.efg.servlets.efgServletsUtil.StatisticalMeasureComparator">
+  		<description>Configure Statistical Measure Comparator</description>
+   	</bean>
+   	<bean id="handleStatInput" class="project.efg.servlets.efgServletsUtil.HandleStatInput">
+  		<description>Configure HandleStatInput</description>
+  		<constructor-arg>
+			<ref local="statsComparator"/>
+		</constructor-arg> 
+   	</bean>
+</beans>

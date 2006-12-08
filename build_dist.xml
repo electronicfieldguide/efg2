@@ -1,0 +1,264 @@
+<!-- 
+Th parent build file for this application.
+to make a distribution call makeImport:
+
+-->
+<project name="Electronic Field Guide" default="makeImport" basedir=".">
+	<property environment="myenv"/>
+	<property name="app.name" value="efg2"/>
+	<property name="app.name.war" value="efg2.war"/>
+	<property name="efg2.home" value="."/>
+	<property name="rdb.src.home" value="${efg2.home}/efgRDB"/>
+	<property name="efg2.properties.home" value="${efg2.home}/properties"/>
+	<property name="ant.home" value="${myenv.ANT_HOME}"/>
+	<property name="dist.war" value="${app.name}.war"/>
+	
+	<property name="efg2.lib.home" value="${efg2.home}/lib"/>
+	<property name="efg2.dist.home" value="${efg2.home}/dist"/>
+	<property name="efg2.css.home" value="${efg2.home}/css"/>
+	<property name="efg2.templatecss.home" value="${efg2.home}/templateCSSDirectory"/>
+	<property name="efg2.javascript.home" value="${efg2.home}/js"/>
+	<property name="efg2.templatejavascript.home" value="${efg2.home}/templateJavascriptDirectory"/>
+	<property name="efg2.templateimages.home" value="${efg2.home}/templateImagesDirectory"/>
+	<property name="efg2.jsp.home" value="${efg2.home}/jsp"/>
+	<property name="efg2.templatejsp.home" value="${efg2.home}/templateJSP"/>
+	<property name="efg2.lib.home.properties" value="${efg2.lib.home}/properties"/>
+	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
+	<property name="efg2.source.home" value="${efg2.home}/source"/>
+	<property name="efg2.images.home" value="${efg2.home}/../EFGImages"/>
+	<property name="efg2.website.home" value="${efg2.home}/../efg2_website"/>
+	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
+	<property name="dist.src" value="${app.name}.jar"/>
+	<property name="efg2.fedSchema.home" value="fedSchema"/>
+	
+	<property name="compile.home" value="${efg2.home}/compiled"/>
+	<property name="efg2.dist.home" value="${efg2.home}/dist"/>
+	<property name="deploy.home" value="${app.name}"/>
+	<!--  src files are copied to this temporal location before compilation-->
+	<property name="src.temp.home" value="${efg2.home}/temp"/>
+	<!-- Main class path required by all classes-->
+	<path id="compile.class.path">
+		<!-- all compile-time jars should be the same as the runtime jars.... ram -->
+		<!-- For Tomcat 5.0 and upwards-->
+		<pathelement location="${tomcat.home}/common/lib/servlet-api.jar"/>
+		<!-- For Tomcat's below 5.0 -->
+		<pathelement location="${tomcat.home}/common/lib/servlet.jar"/>
+		<pathelement location="${compile.home}"/>
+		<fileset dir="${efg2.lib.home}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<path id="rdb.import.class.path">
+		<fileset dir="${efg2.lib.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${efg2.lib.home.properties}">
+			<include name="**.*"/>
+		</fileset>
+	</path>
+	<target name="prepare">
+		<mkdir dir="${app.name}"/>
+		<mkdir dir="${compile.home}"/>
+		<mkdir dir="${src.temp.home}"/>
+	</target>
+	
+	
+	<!-- deployImages -->
+	<target name="deployEFGIcons">
+		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+		<mkdir dir="${deploy.home}/EFGIcons"/>
+		<copy todir="${deploy.home}/EFGIcons">
+			<fileset dir="${icons.home}/"/>
+		</copy>
+	</target>
+
+	
+	
+	<!-- Make preparations for deployment-->
+	<target name="deployResources">
+		<mkdir dir="${deploy.home}"/>
+		<mkdir dir="${deploy.home}/EFGImages"/>
+		<mkdir dir="${deploy.home}/EFGImages/Het"/>
+		<mkdir dir="${deploy.home}/efgimagesthumbs"/>
+		<mkdir dir="${deploy.home}/efgimagesthumbs/Het"/>
+		<mkdir dir="${deploy.home}/html"/>
+		<mkdir dir="${deploy.home}/css"/>
+		<mkdir dir="${deploy.home}/templateCSSDirectory"/>
+		<mkdir dir="${deploy.home}/js"/>
+		<mkdir dir="${deploy.home}/templateJavascriptDirectory"/>
+		<mkdir dir="${deploy.home}/templateJSP"/>
+		<mkdir dir="${deploy.home}/templateImagesDirectory"/>
+		<mkdir dir="${deploy.home}/templateConfigFiles"/>
+		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
+		<copy todir="${deploy.home}/EFGImages/Het">
+			<fileset dir="${efg2.home}/sampleImages/Het" includes="*.*"/>
+		</copy>
+		<copy todir="${deploy.home}/efgimagesthumbs/Het">
+			<fileset dir="${efg2.home}/sampleImages/thumbs" includes="*.*"/>
+		</copy>
+		<copy todir="${deploy.home}/templateImagesDirectory">
+			<fileset dir="${efg2.templateimages.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/css">
+			<fileset dir="${efg2.css.home}"/>
+		</copy>
+		
+		
+		<copy todir="${deploy.home}/templateCSSDirectory">
+			<fileset dir="${efg2.templatecss.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/js">
+			<fileset dir="${efg2.javascript.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateJavascriptDirectory">
+			<fileset dir="${efg2.templatejavascript.home}"/>
+		</copy>
+		<copy todir="${deploy.home}">
+			<fileset dir="${efg2.jsp.home}"/>
+		</copy>
+		<copy todir="${deploy.home}">
+			<fileset dir="${efg2.jsp.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateJSP">
+			<fileset dir="${efg2.templatejsp.home}"/>
+		</copy>
+		<copy todir="${deploy.home}/templateConfigFiles">
+			<fileset dir="templateConfigFiles"/>
+		</copy>
+	</target>
+	<target name="prepareDeploy" depends="deployEFGIcons, deployResources">
+		<mkdir dir="${deploy.home}/EFGImages"/>
+		<mkdir dir="${deploy.home}/WEB-INF"/>
+		<mkdir dir="${deploy.home}/WEB-INF/classes"/>
+		<mkdir dir="${deploy.home}/WEB-INF/classes/project"/>
+		<mkdir dir="${deploy.home}/WEB-INF/classes/properties"/>
+		<mkdir dir="${deploy.home}/WEB-INF/fedSchema"/>
+		
+		<mkdir dir="${deploy.home}/WEB-INF/lib"/>
+		<copy todir="${deploy.home}/WEB-INF/fedSchema">
+			<fileset dir="${efg2.fedSchema.home}"/>
+		</copy>
+		<copy todir="${deploy.home}">
+			<fileset dir="${efg2.home}" includes="*.html"/>
+		</copy>
+		
+		
+		<copy todir="${deploy.home}/WEB-INF/classes/properties">
+			<fileset dir="properties" excludes="log4j*.*"/>
+		</copy>
+		<copy todir="${deploy.home}/WEB-INF/lib">
+			<fileset dir="${efg2.lib.home}" includes="*.jar"/>
+		</copy>
+		<delete quiet="true">
+			<fileset dir="${deploy.home}/WEB-INF/lib" includes="rdbImport.jar,mysqldriver.jar,servlet-api.jar,junit.jar, *.fp5, *.bat"/>
+		</delete>
+		<copy file="${efg2.properties.home}/log4j_server.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
+		<move file="${deploy.home}/WEB-INF/classes/project/efg/util/log4j_server.properties" tofile="${deploy.home}/WEB-INF/classes/project/efg/util/log4j.properties"/>
+
+	
+	</target>
+	
+	<target name="deploy" depends="compile, prepareDeploy">
+		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
+		<copy todir="${deploy.home}/WEB-INF/classes/project">
+			<fileset dir="compiled/project"/>
+		</copy>
+	</target>
+	
+	<target name="war" depends="deploy">
+		<copy todir="${deploy.home}">
+			<fileset dir="${efg2.website.home}" includes="*.html, *.css, *.gif, *.jpg, *.js, *.png,*.jsp"/>
+		</copy>
+			<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
+				<fileset dir="${deploy.home}"/>
+			</war>
+		</target>
+	<!-- Compile main sources-->
+			<target name="compileMain" depends="prepare">
+				<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
+				<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
+				<copy todir="${src.temp.home}">
+					<fileset dir="${efg2.source.home}"/>
+				</copy>
+			</target>
+	
+
+	<!-- Compile RDB sources with main sources-->
+	<target name="compile" depends="compileMain">
+		<javac srcdir="${src.temp.home}" destdir="compiled" debug="on" optimize="off" deprecation="on">
+			<classpath refid="compile.class.path"/>
+		</javac>
+	</target>
+
+	<target name="jarImport" depends="compile">
+		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<section name="project.efg2.Imports.efgImpl.LoginDialog.class">
+					<attribute name="Sealed" value="false"/>
+				</section>
+			</manifest>
+		</jar>
+		<mkdir dir="${efg2.lib.home.logs}"/>
+		<mkdir dir="${efg2.lib.home.properties}"/>
+		<!-- COPY FROM rdb properties location -->
+		<copy todir="${efg2.lib.home.properties}">
+			<fileset dir="${efg2.properties.home}"/>
+		</copy>
+		<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg2.lib.home}"/>
+		<delete dir="temp"/>
+	</target>
+	<target name="clean">
+		<delete dir="${efg2.home}/efg2" quiet="true"/>
+				<delete dir="${efg2.dist.home}/resource" quiet="true"/>
+				<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
+	</target>	
+	<target name="makeImport" depends="clean,jarImport, war">
+		<mkdir dir="${efg2.dist.home}"/>
+		<mkdir dir="${efg2.dist.home}/resource"/>
+		<mkdir dir="${efg2.dist.home}/resource/logs"/>
+		<mkdir dir="${efg2.dist.home}/resource/metadataHeader"/>
+		<copy todir="${efg2.dist.home}/resource/metadataHeader">
+			<fileset dir="${efg2.lib.home}/metadataHeader"/>
+		</copy>
+		<mkdir dir="${efg2.dist.home}/resource/properties"/>
+		<copy todir="${efg2.dist.home}/resource/properties">
+			<fileset dir="${efg2.lib.home.properties}"/>
+		</copy>
+		<mkdir dir="${efg2.dist.home}/resource/icons"/>
+		<copy todir="${efg2.dist.home}/resource/icons">
+			<fileset dir="${efg2.lib.home}/Icons"/>
+		</copy>
+		<mkdir dir="${efg2.dist.home}/resource/help"/>
+		<copy todir="${efg2.dist.home}/resource/help">
+			<fileset dir="${efg2.lib.home}/help"/>
+		</copy>
+		<mkdir dir="${efg2.dist.home}/sampleData"/>
+		<copy todir="${efg2.dist.home}/resource">
+			<fileset dir="${efg2.lib.home}"/>
+		</copy>
+		<delete file="${efg2.dist.home}/resource/Tidy.jar" quiet="true"/>
+		<delete file="${efg2.dist.home}/resource/junit.jar" quiet="true"/>
+		<delete>
+			<fileset dir="${efg2.dist.home}/resource" includes="*.bat, *.fp5,*.css, *.html"/>
+		</delete>
+		<delete>
+			<fileset dir="${efg2.dist.home}/resource/properties" includes="*.dat, *_old"/>
+		</delete>
+		<delete dir="${efg2.dist.home}/resource/HandlingLists_files"/>
+		<delete dir="${efg2.dist.home}/resource/data"/>
+		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource"/>
+		<copy file="${efg2.lib.home}/data/HetaerinaData3may05.mer" todir="${efg2.dist.home}/sampleData"/>
+		<copy file="${efg2.lib.home}/login.bat" todir="${efg2.dist.home}/resource"/>
+		<copy file="${efg2.home}/efg2.xml" todir="${efg2.dist.home}/resource"/>
+
+		<copy file="${efg2.home}/efg2.war" todir="${efg2.dist.home}/resource"/>
+	
+		<zip zipfile="${efg2.home}/efg2.zip" basedir="${efg2.dist.home}"/> 
+		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
+		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
+		<delete dir="${efg2.home}/efg2" quiet="true"/>
+		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+	</target>
+	
+</project>
