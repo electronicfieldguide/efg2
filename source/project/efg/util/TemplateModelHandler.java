@@ -74,6 +74,40 @@ public abstract class TemplateModelHandler{
 		return false;
 	}
 	/**
+	 *  Remove this key form the database
+	 *  @param datasourceName - Remove all keys created for this data source
+	 *  
+	 * @see project.efg.util.TemplateModelHandler#removeFromDB(java.lang.String)
+	 */
+	public boolean removeTemplateFromDB(String datasourceName, String templateDisplayName) {
+		if(!doChecks(datasourceName)){
+			return false;
+		}
+		StringBuffer query = new StringBuffer();
+		query.append("DELETE FROM ");
+		query.append(this.templateName);
+		query.append(" WHERE ");
+		query.append(EFGImportConstants.DATASOURCE_NAME);
+		query.append("=");
+		query.append("\"");
+		query.append(datasourceName);
+		query.append(" and ");
+		query.append(EFGImportConstants.DISPLAY_NAME);
+		query.append("=");
+		query.append("\"");
+		query.append(templateDisplayName);
+		query.append("\"");
+		try{
+			this.executeStatement(query.toString());
+			return true;
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	/**
 	 * Update this key with this object
 	 * @param key
 	 * @param displayName
@@ -366,9 +400,24 @@ public abstract class TemplateModelHandler{
 		catch(Exception ee){
 			
 		}
-		
-		
-		
+	}
+	public boolean removeGuidFromTable(String guid){
+
+		StringBuffer query = new StringBuffer();
+		query.append("DELETE FROM ");
+		query.append(this.templateName);
+		query.append(" WHERE ");
+		query.append(EFGImportConstants.GUID);
+		query.append("='");
+		query.append(guid);
+		query.append("'");
+		try {
+			this.executeStatement(query.toString());
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	/**
 	 * Return all of the keys in the table

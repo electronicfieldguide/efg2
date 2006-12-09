@@ -19,6 +19,7 @@ java.util.Iterator" %>
 			it = map.keySet().iterator();
 			while (it.hasNext()) {
 				String key = (String)it.next();
+				
 				TemplateObject templateObject = (TemplateObject)map.get(key);
 				sortedMap.put(templateObject,key);
 				
@@ -35,9 +36,10 @@ java.util.Iterator" %>
 		%>
 			<table border="1">
 				<tr>
-					<th>Datasource</th><th>Template Name</th>
+					<th>Datasource</th><th>Template Name</th><th>Edit/Delete Template</th>
 				</tr>
 				<%
+				
 				while (it.hasNext()) {
 					TemplateObject templateObject  = (TemplateObject)it.next();
 					//String key = (String)it.next();
@@ -50,11 +52,36 @@ java.util.Iterator" %>
 					}//end if
 					if((displayName != null) && 
 							(templateName != null) && 
-							(key != null)){			
+							(key != null)){		
+							int index = key.indexOf("?");
+							String toDelete = "/efg2/templateJSP/DeleteTemplate.jsp?";
+							String toEdit = "/efg2/templateJSP/EditTemplate.jsp?";
+							if(index > -1){
+								toDelete =toDelete + key.substring(index+1,key.length());
+								toEdit =toEdit + key.substring(index+1,key.length());
+							}
+							
+							StringBuffer buff = new StringBuffer();
+							buff.append("&amp;");
+							buff.append(EFGImportConstants.TEMPLATE_UNIQUE_NAME);
+							buff.append("=");
+							buff.append(templateName);
+							buff.append("&amp;");
+							buff.append(EFGImportConstants.DISPLAY_NAME); 
+							 buff.append("="); 
+							 buff.append(displayName);
 				%>
 						<tr>
 							<td><%=displayName%></td>
 							<td><a href="<%=serverName + key%>"><%=templateName%></a></td>
+							<td>
+							<% 
+								if(key.toLowerCase().indexOf(EFGImportConstants.DEFAULT_SEARCH_FILE.toLowerCase()) == -1){%>
+									<a href="<%=toEdit + buff.toString()%>">Edit</a> , <a href="<%=toDelete + buff.toString()%>">Delete</a> </td>
+								<%}
+							%>
+							
+							
 						</tr>
 				<%	
 					}//end inner if

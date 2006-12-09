@@ -117,7 +117,7 @@ public class SynopticKeyTreeMain extends JDialog {
 	
 		this.parentFrame = frame;
 	
-		setSize(new Dimension(800, 800));
+		setSize(new Dimension(400, 400));
 	
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -166,8 +166,6 @@ public class SynopticKeyTreeMain extends JDialog {
 		JMenu fileMenu = new JMenu("File");
 		JMenu helpMenu = new JMenu("Help");
 		
-	
-		
 		editMetadataMenu.addActionListener(new DataManipulatorListener(this,
 				this.getEditManipulator()));
 		editMetadataMenu.setToolTipText(EFGImportConstants.EFGProperties
@@ -189,9 +187,6 @@ public class SynopticKeyTreeMain extends JDialog {
 				.getProperty("SynopticKeyTreeMain.deleteBtn.tooltip"));
 		fileMenu.add(deleteMenu);
 	
-		
-		
-		
 		
 		JMenu checkMenu = new JMenu("Check Data For Errors");
 		//sub menus

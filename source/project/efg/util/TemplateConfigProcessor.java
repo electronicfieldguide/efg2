@@ -5,6 +5,7 @@ package project.efg.util;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,6 +49,82 @@ public class TemplateConfigProcessor {
 		return fileLocationBuffer.toString();
 	
 	}
+
+	private boolean writeFile(String templateName) {
+
+		String fileLocation = this.getFile();
+		File file = new File(fileLocation);
+		String renamedFile = fileLocation + System.currentTimeMillis() + "_old";
+		File file2 = new File(renamedFile);
+		boolean isExists = false;
+		boolean success = false;
+		boolean done = true;
+		if (file.exists()) {
+			isExists = true;
+			String mute = "";
+			// Rename file (or directory)
+			synchronized (mute) {
+				try {
+					success = file.renameTo(file2);
+				} catch (Exception eeer) {
+					//log.debug(eeer.getMessage());
+				}
+			}
+			if (!success) {
+				isExists = false;
+			}
+		}
+		FileWriter writer = null;
+		try {
+			String mute = "";
+			synchronized (mute) {
+				try {
+					writer = new FileWriter(fileLocation);
+					this.tps.marshal(writer);
+					writer.flush();
+					writer.close();
+				} catch (Exception eee) {
+					done = false;
+					throw eee;
+				}
+			}
+		} catch (Exception ee) {
+			done = false;
+			try {
+				// rename file to a new one
+				if (writer != null) {
+					writer.flush();
+					//log.debug("Closing resource for writing!!!");
+					writer.close();
+				}
+				if (isExists) {
+					String mute = "";
+					synchronized (mute) {
+						success = file2.renameTo(file);
+
+					}
+					if (!success) {
+						isExists = false;
+					}
+				}
+			} catch (Exception ff) {
+				LoggerUtilsServlet.logErrors(ff);
+				done = false;
+			}
+		}
+		if(done){
+		if(this.tps != null){
+			try{
+				cacheAdmin.removeEntry(templateName.toLowerCase());
+			}
+			catch(Exception ee){
+			}
+			cacheAdmin.putInCache(templateName.toLowerCase(),tps,EFGContextListener.templateFilesGroup);
+			EFGContextListener.lastModifiedTemplateFileTable.put(templateName.toLowerCase(),new Long(file.lastModified()));
+		}
+		}
+		return done;
+	}
 	private void reLoad() {
 		
 			try{
@@ -74,6 +151,72 @@ public class TemplateConfigProcessor {
 				
 			}
 		}
+	public String getJspPage(String guid){
+		String file = this.getFile();
+		
+		File f = new File(file);
+		if(!f.exists()){
+			return null;
+		}
+		if (this.tps == null) {
+			this.tps = this.getTaxonPageTemplateRoot();
+		}
+		if (this.tps != null) {
+			XslPageType xslPageType = this.getCurrentXSLPageType(
+					this.dsName,  this.searchType);
+			
+			if (xslPageType != null) {
+				XslPage currentPage = null;
+				for (int j = 0; j < xslPageType.getXslPageCount(); j++) {// find
+					currentPage = xslPageType.getXslPage(j);
+					if(currentPage.getGuid().equalsIgnoreCase(guid)){
+						break;
+					}
+					currentPage = null;
+				}
+				if(currentPage != null){
+					return currentPage.getJspName();
+				}
+			}
+		}
+		return null;
+	}
+	public boolean removeAConfig(String guid){
+		String file = this.getFile();
+		String templateName = this.dsName + EFGImportConstants.XML_EXT;
+		File f = new File(file);
+		if(!f.exists()){
+			return false;
+		}
+		if (this.tps == null) {
+			this.tps = this.getTaxonPageTemplateRoot();
+		}
+		if (this.tps != null) {
+			XslPageType xslPageType = this.getCurrentXSLPageType(
+					this.dsName,  this.searchType);
+			
+			if (xslPageType != null) {
+				XslPage currentPage = null;
+				for (int j = 0; j < xslPageType.getXslPageCount(); j++) {// find
+					currentPage = xslPageType.getXslPage(j);
+					if(currentPage.getGuid().equalsIgnoreCase(guid)){
+						break;
+					}
+					currentPage = null;
+				}
+				if(currentPage != null){
+					//remove the page
+					xslPageType.removeXslPage(currentPage);
+					//save the file
+					return this.writeFile(templateName);
+				}
+			}
+		}
+		return false;
+	}
+	/**
+	 * @return
+	 */
 
 	/**
 	 * Get the HttpServletRequest parameters and return the value.

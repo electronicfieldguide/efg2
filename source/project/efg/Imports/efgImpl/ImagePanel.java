@@ -39,6 +39,7 @@ public class ImagePanel extends JPanel {
 		try {
 			url = this.getClass().getResource(EFGImportConstants.KEY_DROP_BACKGROUND_IMAGE);
 			this.image = new ImageIcon(url).getImage();
+			
 			this.iWidth2 = image.getWidth(this)/2;
 			this.iHeight2 = image.getHeight(this)/2;
 			

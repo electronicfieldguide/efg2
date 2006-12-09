@@ -3,10 +3,11 @@ Th parent build file for this application.
 to make a distribution call makeImport:
 
 -->
-<project name="Electronic Field Guide" default="makeImport" basedir=".">
+<project name="Electronic Field Guide" default="makeImport" basedir=".">	
 	<property environment="myenv"/>
 	<property name="app.name" value="efg2"/>
 	<property name="app.name.war" value="efg2.war"/>
+	<property name="tomcat.home" value="${myenv.CATALINA_HOME}"/>
 	<property name="efg2.home" value="."/>
 	<property name="rdb.src.home" value="${efg2.home}/efgRDB"/>
 	<property name="efg2.properties.home" value="${efg2.home}/properties"/>
@@ -25,18 +26,18 @@ to make a distribution call makeImport:
 	<property name="efg2.lib.home.properties" value="${efg2.lib.home}/properties"/>
 	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
-	<property name="efg2.images.home" value="${efg2.home}/../EFGImages"/>
+	
 	<property name="efg2.website.home" value="${efg2.home}/../efg2_website"/>
 	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
 	<property name="dist.src" value="${app.name}.jar"/>
 	<property name="efg2.fedSchema.home" value="fedSchema"/>
-	
+		
 	<property name="compile.home" value="${efg2.home}/compiled"/>
 	<property name="efg2.dist.home" value="${efg2.home}/dist"/>
 	<property name="deploy.home" value="${app.name}"/>
 	<!--  src files are copied to this temporal location before compilation-->
 	<property name="src.temp.home" value="${efg2.home}/temp"/>
-	<!-- Main class path required by all classes-->
+	<!-- Main class path required by all classes-->	
 	<path id="compile.class.path">
 		<!-- all compile-time jars should be the same as the runtime jars.... ram -->
 		<!-- For Tomcat 5.0 and upwards-->
@@ -56,6 +57,7 @@ to make a distribution call makeImport:
 			<include name="**.*"/>
 		</fileset>
 	</path>
+	
 	<target name="prepare">
 		<mkdir dir="${app.name}"/>
 		<mkdir dir="${compile.home}"/>

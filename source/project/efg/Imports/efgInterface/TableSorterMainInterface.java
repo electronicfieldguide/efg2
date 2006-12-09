@@ -287,7 +287,12 @@ public abstract class TableSorterMainInterface  extends JDialog{
 			 //Implement table header tool tips.
 		    protected JTableHeader createDefaultTableHeader() {
 		        return new JTableHeader(columnModel) {
-		            public String getToolTipText(MouseEvent e) {
+		            /**
+					 * 
+					 */
+					private static final long serialVersionUID = 1L;
+
+					public String getToolTipText(MouseEvent e) {
 		               
 		                java.awt.Point p = e.getPoint();
 		                int index = columnModel.getColumnIndexAtX(p.x);
@@ -331,13 +336,13 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		// Add the scroll pane to this panel.
 		panel.add(scrollPane, BorderLayout.CENTER);
 		JPanel pan = new JPanel();
-		/*JButton updateBtn = new JButton(EFGImportConstants.EFGProperties
+		JButton updateBtn = new JButton(EFGImportConstants.EFGProperties
 				.getProperty("TableSorterMain.updatebtn"));
 		updateBtn.addActionListener(new UpdateListener(this,this.sorter,this.ds));
 		updateBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("TableSorterMain.updatebtn.tooltip"));
 		
-		JButton helpBtn = new JButton(EFGImportConstants.EFGProperties
+		/*JButton helpBtn = new JButton(EFGImportConstants.EFGProperties
 				.getProperty("TableSorterMain.helpbtn"));
 		helpBtn.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.KEY_METADATA_HELP));
 		helpBtn.setToolTipText(EFGImportConstants.EFGProperties
@@ -376,6 +381,8 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		pan.add(onBtn);
 		pan.add(offBtn);
 		panel.add(pan, BorderLayout.SOUTH);*/
+		pan.add(updateBtn);
+		panel.add(pan, BorderLayout.SOUTH);
 		this.tableWidth = tableD.width + 35;
 		this.tableHeight = tableD.height + 50;
 		panel.setSize(new Dimension(this.tableWidth,this.tableHeight));

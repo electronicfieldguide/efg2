@@ -72,9 +72,6 @@ to compile/deploy/clean with:
 	</target>
 	<!-- Compile main sources-->
 	<target name="compileMain" depends="prepare">
-		<!--
-		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="generate"/>
-	-->
 		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
 		
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>

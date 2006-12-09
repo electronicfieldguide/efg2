@@ -10,6 +10,7 @@ if(datasourceName == null){
 	datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 
 }
+
 if(displayName == null){
 	displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME);
 }

@@ -84,8 +84,6 @@ public class DnDFileBrowserMain extends JDialog {
 
 	protected JFrame frame;
 
-	//private String currentSelection;
-	
 	/**
 	 * 
 	 */
@@ -120,6 +118,7 @@ public class DnDFileBrowserMain extends JDialog {
 		this.browser = DnDFileBrowser.getFileBrowser(imagesDirectory,
 				progressBar,this.frame);
 		this.browser.setRootVisible(false);
+		this.browser.setSelectionRow(0);
 		
 		this.browser.addTreeSelectionListener(new FileTreeSelectionListener(
 				this.browser));
@@ -140,7 +139,7 @@ public class DnDFileBrowserMain extends JDialog {
 
 		this.setSize(700, 600);
 		
-		
+		this.browser.expandRow(0);
 		addWindowListener(new WndCloser(this));
 
 	}
@@ -149,70 +148,32 @@ public class DnDFileBrowserMain extends JDialog {
 	 *
 	 */
 	private void addMenus(){
-		
-	/*	JMenuItem tmenu = new JMenuItem("Thumbnails");
-		tmenu.setMnemonic(KeyEvent.VK_T);	
-		tmenu.addActionListener(new DeployImagesListener(this,true));
-		
-		
-		
-		fmenu.add(tmenu);
-		fmenu.addSeparator();
-
-		JMenuItem cmenuItem = new JMenuItem("Close", KeyEvent.VK_C);
-		cmenuItem.addActionListener(new ExitListener(this.frame));
-
-		fmenu.add(cmenuItem);
-	*/
-		JMenu fileMenu = new JMenu("File");
-		//JMenu toolsMenu = new JMenu("Tools");
-		JMenu helpMenu = new JMenu("Help");
-		
-		//menu Items
-		//prompt for dimension input
-		//don't prompt use last value
-		//
-		
+		JMenu fileMenu = new JMenu("File");		
+		JMenu helpMenu = new JMenu("Help");		
 		JMenuItem thumbNailMenu = new JMenuItem("Thumbnails");
-		thumbNailMenu.addActionListener(new ThumbsListener());
-	
 		JMenuItem deleteMenu = new JMenuItem("Delete");
+		JMenuItem closeMenu = new JMenuItem("Close");
+		JMenuItem helpItem = new JMenuItem("Help Contents");
+
+		thumbNailMenu.addActionListener(new ThumbsListener());
 		deleteMenu.addActionListener(new DeleteListener(this.browser));
+		helpItem.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.IMAGE_DEPLOY_HELP));
+		closeMenu.addActionListener(new DoneListener(this));
+		
 		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("FileTreeBrowserMain.deleteBtn.tooltip"));
-		JMenuItem closeMenu = new JMenuItem("Close");
-			
-		//checkbox - prompt me for thumbnail size
-		//if user says don't ask me again uncheck this..Serialize checkbox
-	//	JCheckBoxMenuItem cbMenuItem = new JCheckBoxMenuItem("Use last thumbnail size");
-		//thumbNailMenu.add(cbMenuItem);
 		
 		fileMenu.add(thumbNailMenu);
 		fileMenu.add(deleteMenu);
-		
-	
-
-		
-		
-		
-		
-		JMenuItem helpItem = new JMenuItem("Help Contents");
-		helpItem.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.IMAGE_DEPLOY_HELP));
 		helpMenu.add(helpItem);
-		fileMenu.addSeparator();
-		closeMenu.addActionListener(new DoneListener(this));
-		//sub menus
 		
-		
-		
+		fileMenu.addSeparator();	
 		fileMenu.add(closeMenu);
+		
 		JMenuBar mBar = new JMenuBar();
 		mBar.add(fileMenu);
 		mBar.add(helpMenu);
-	
-	
 		this.setJMenuBar(mBar);
-		
 	}
 	/**
 	 * 
@@ -227,7 +188,6 @@ public class DnDFileBrowserMain extends JDialog {
 	 *
 	 */
 	public void close() {
-		//comboList.save(EFGImportConstants.THUMBS_FILE_NAME);
 		this.dispose();
 	}
 	/**

@@ -13,7 +13,38 @@ import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
  * 
  */
 public class TemplateMapObjectHandler {
-	
+	/**
+	 * 
+	 * @param key
+	 * @return the object removed from cache Sync with loaded class too
+	 */
+	public static boolean removeGuidFromTemplateMap(
+			String guid,
+			DBObject dbObject) {
+
+		String mutex = "";
+		synchronized (mutex) {
+		
+			try {
+				TemplateModelHandler tempHandler = null;
+				if(dbObject == null){
+					tempHandler = TemplateModelFactory.createExportTemplateHandler();
+				}
+				else{
+					tempHandler = TemplateModelFactory.createImportTemplateHandler(dbObject);
+				}
+				boolean bool = tempHandler.removeGuidFromTable(guid);
+				if(!bool){
+					throw new Exception("Template could not be removed");
+				}
+				return true;
+			} catch (Exception ee) {
+				LoggerUtilsServlet.logErrors(ee);
+			} 
+			return false;
+		}
+	}
+
 
 
 	/**
@@ -152,13 +183,5 @@ public class TemplateMapObjectHandler {
 		}
 	}
 
-	/*private static String getMapKey(String datafn) {
-		StringBuffer querySearch = new StringBuffer("/");
-		querySearch.append(EFGImportConstants.EFG_APPS);
-		querySearch.append("/search?dataSourceName=");
-		querySearch.append(datafn);
-	
-		return querySearch.toString().toLowerCase();
-	}*/
 
 }
