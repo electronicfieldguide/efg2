@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.EFGJLabel;
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
+import project.efg.Imports.efgImpl.ImagePanel;
 
 /**
  * @version $Revision$
@@ -123,7 +124,10 @@ public class DnDFileBrowserMain extends JDialog {
 		this.browser.addTreeSelectionListener(new FileTreeSelectionListener(
 				this.browser));
 		this.browser.addMouseListener(new EditMouseListener(this));
-		JScrollPane browserPane = new JScrollPane(this.browser);
+		
+		
+		//JScrollPane browserPane = new JScrollPane(this.browser);
+		JScrollPane browserPane = new JScrollPane(this.addPanel());
 		JScrollPane imageViewPane = new JScrollPane(this.imageView);
 
 		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -142,6 +146,17 @@ public class DnDFileBrowserMain extends JDialog {
 		this.browser.expandRow(0);
 		addWindowListener(new WndCloser(this));
 
+	}
+	private JPanel addPanel() {
+		ImagePanel iPanel = new ImagePanel(EFGImportConstants.IMAGE_DROP_BACKGROUND_IMAGE);
+		iPanel.setLayout(new BorderLayout());
+		iPanel.add(this.browser,BorderLayout.CENTER);
+		iPanel.setBackground(Color.white);
+	
+		
+		this.browser.setOpaque(false);
+		iPanel.setOpaque(true);
+		return iPanel;
 	}
 	/**
 	 * 

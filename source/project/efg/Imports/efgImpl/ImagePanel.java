@@ -10,8 +10,6 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import project.efg.util.EFGImportConstants;
-
 
 
 /**
@@ -26,18 +24,20 @@ public class ImagePanel extends JPanel {
 	private Image image = null;
 	private int iWidth2;
 	private int iHeight2;
-
-	public ImagePanel()
+	
+	public ImagePanel(String backgroundImageName)
 	{
 		super();
-		initImage();
+		
+		initImage(backgroundImageName);
 		
 	}
-	private void initImage(){
+	private void initImage(String backgroundImageName){
 		URL url = null;
 	
 		try {
-			url = this.getClass().getResource(EFGImportConstants.KEY_DROP_BACKGROUND_IMAGE);
+			url = this.getClass().getResource(backgroundImageName);
+			
 			this.image = new ImageIcon(url).getImage();
 			
 			this.iWidth2 = image.getWidth(this)/2;

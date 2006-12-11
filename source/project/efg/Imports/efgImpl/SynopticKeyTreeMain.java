@@ -273,7 +273,7 @@ public class SynopticKeyTreeMain extends JDialog {
 	}
 
 	private JPanel addPanel() {
-		ImagePanel iPanel = new ImagePanel();
+		ImagePanel iPanel = new ImagePanel(EFGImportConstants.KEY_DROP_BACKGROUND_IMAGE);
 		iPanel.setLayout(new BorderLayout());
 		iPanel.add(this.tree,BorderLayout.CENTER);
 		iPanel.setBackground(Color.white);

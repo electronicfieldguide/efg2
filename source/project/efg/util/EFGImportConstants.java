@@ -534,7 +534,8 @@ public interface EFGImportConstants {
 	String PLUS_SYMBOL = "+";
 	String ALL_TABLE_NAME = "ALL_TABLE_NAME";
 	String EFG_RDB_TABLES = "EFG_RDB_TABLES";
-	String CHECKBOX_SER_NAME = "checkBox.out";;
+	String CHECKBOX_SER_NAME = "checkBox.out";
+	String IMAGE_DROP_BACKGROUND_IMAGE  = "/icons/draganddropmsg_medres.gif";
 	
 	
 	
