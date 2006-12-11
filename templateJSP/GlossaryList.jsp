@@ -15,7 +15,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 	</head>
 	<body class="main">
 		 <form method="post" action="<%=context%>/configTaxonPage">
-	 				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+	 		<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 			<%if(cssFileList.length > 0){
 				%>						
 						<select name="<%=name%>"  title="Select A CSS File From List">
@@ -55,11 +55,11 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 					characterLabelValue ="title";
 				}
 		%>
-			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
-			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 			<tr>
 				<td class="abouttitle">
-					<a name="top"/><input type="text"  title="ENTER PAGE TITLE HERE" name="<%=name%>" value="<%=fieldValue%>"/> 
+					<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+					<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+					<a name="top"><input type="text"  title="ENTER PAGE TITLE HERE" name="<%=name%>" value="<%=fieldValue%>"/></a> 
 				</td>
 			</tr>
 		</table>
@@ -75,7 +75,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				<td>
 					<dl class="alphaheader">
 						<dt class="alphaheader">
-							<a name="a" />- TODO Jenn -</dt>
+							<a name="a"></a>- TODO Jenn -</dt>
 					</dl>
 					<dl class="glossary">
 						<%
@@ -94,8 +94,9 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						if(characterLabelValue == null){
 							characterLabelValue ="term";
 						}%>
-						<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+								
 						<dt class="glossary">
+						<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>	
 							<select name="<%=name%>"  title="Select a column from the list">
 							<%
 							ii = 0;
