@@ -14,6 +14,7 @@ project.efg.util.EFGImportConstants
       		<select name="<%=EFGImportConstants.TEMPLATE_NAME%>" title="Select a template from list below">
 				<option value="<%=lists1%>">List Template1</option>
 				<option value="<%=lists2%>">List Template2</option>
+				<option value="<%=lists3%>">Glossary List Template</option>
     		</select>
     		<input type="hidden" name="<%=EFGImportConstants.DATASOURCE_NAME%>" value="<%=dsName%>"/>
     		<input type="hidden" name="<%=EFGImportConstants.DISPLAY_NAME%>" value="<%=displayName%>"/>
@@ -31,6 +32,10 @@ project.efg.util.EFGImportConstants
     		<tr>
     			<td><a href="listTemplate2.html" target="list2">List Template2</a></td>
     		</tr>
+    		 <tr>
+    			<td><a href="glossary2.html" target="list3">Glossary List Template</a></td>
+    		</tr>
+    		
     	</table>
   	</center>
   </body>
