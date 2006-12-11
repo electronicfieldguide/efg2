@@ -104,9 +104,14 @@ public class EFGComboBox extends JComboBox {
 		 * 
 		 */
 		private void useDefaults() {
-			Integer maxdim = new Integer(DnDFileBrowserMain.getMaxDim());
-			this.add(maxdim.toString());
-			
+			int[] dimensions = DnDFileBrowserMain.getDefaultDimensions();
+			for(int i=0; i < dimensions.length;i++) {
+				this.add(dimensions[i] + "");
+			}
+			if(dimensions.length > 1) {
+				System.out.println("Selected set to: :" + dimensions[1] );
+				this.setSelectedItem(dimensions[1] + "");
+			}
 		}
 		private void serializeFile(String fname){
 			ObjectOutputStream stream = null;
@@ -119,9 +124,10 @@ public class EFGComboBox extends JComboBox {
 				this.add(selectedItem);
 			}
 			if(this.getItemCount() == 0){
-				DnDFileBrowserMain.maxDim = 0;
+				/*DnDFileBrowserMain.maxDim = 0;
 				int maxDim = DnDFileBrowserMain.getMaxDim();
-				this.add(maxDim+"");
+				this.add(maxDim+"");*/
+				this.useDefaults();
 			}
 			DefaultComboBoxModel model = (DefaultComboBoxModel)this.getModel();
 		

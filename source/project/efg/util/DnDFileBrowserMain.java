@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -254,6 +255,8 @@ public class DnDFileBrowserMain extends JDialog {
 				maxDimStr = EFGImportConstants.MAX_DIM;
 			}
 			try {
+				String[] defaultDims = maxDimStr.split(EFGImportConstants.COMMASEP);
+				
 				maxDim = Integer.parseInt(maxDimStr);
 				log.debug("MaxDim is set from properties file to: " + maxDim);
 			} catch (Exception ee) {
@@ -268,6 +271,62 @@ public class DnDFileBrowserMain extends JDialog {
 			log.debug("MaxDim is set to: " + maxDim);
 		}
 		return maxDim;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	public static synchronized int[] getDefaultDimensions() {
+		
+			int[] defaults = null;
+			String maxDimStr = EFGImportConstants.EFGProperties
+					.getProperty(EFGImportConstants.MAX_DIM_STR);
+
+			if ((maxDimStr == null)) {
+				maxDimStr = EFGImportConstants.MAX_DIM;
+			}
+			try {
+				String[] defaultDims = maxDimStr.split(EFGImportConstants.COMMASEP);
+				defaults = new int[defaultDims.length];
+				for(int i=0; i < defaultDims.length; i++) {
+					try {
+						int defaultDim = Integer.parseInt(defaultDims[i]);
+						defaults[i] = defaultDim;
+					}
+					catch(Exception ee) {
+					}
+					
+				}
+				
+				
+				log.debug("MaxDim is set from properties file to: " + maxDim);
+			} catch (Exception ee) {
+				defaults = new int[1];
+				defaults[0] = Integer.parseInt(EFGImportConstants.MAX_DIM);
+				
+			}
+			log.debug("MaxDim is set to: " + maxDim);
+			
+			for(int i=0; i < defaults.length; i++) {
+				try {
+					System.out.println("Before sort: " + defaults[i]);
+				}
+				catch(Exception ee) {
+				}
+				
+			}
+			
+			Arrays.sort(defaults);
+			for(int i=0; i < defaults.length; i++) {
+				try {
+					System.out.println("After sort: " + defaults[i]);
+				}
+				catch(Exception ee) {
+				}
+				
+			}
+			
+		return defaults;
 	}
 	/**
 	 * 
