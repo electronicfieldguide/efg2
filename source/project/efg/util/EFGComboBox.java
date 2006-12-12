@@ -45,7 +45,7 @@ public class EFGComboBox extends JComboBox {
 			super();
 			setEditable(true);
 			
-		this.setPrototypeDisplayValue(new String("xxxx"));
+		//this.setPrototypeDisplayValue(new String("xxxx"));
 		this.setToolTipText("Enter or select max dimension in pixels or "+ 
 		        "select one from the list:");
 		
@@ -67,7 +67,7 @@ public class EFGComboBox extends JComboBox {
 		public void deserialize(String fName) {
 			try {
 				if (getItemCount() > 0){
-					removeAllItems();
+					//removeAllItems();
 				}
 				File f = null;
 				
@@ -76,6 +76,8 @@ public class EFGComboBox extends JComboBox {
 				if (!f.exists()){
 					this.serializeFile(fName);
 					useDefaults();
+					//this.add(EFGImportConstants.DEFAULT_MAX_DIM+"");
+					
 					return;
 				}
 				URL propsURL = 
@@ -87,9 +89,9 @@ public class EFGComboBox extends JComboBox {
 					new ObjectInputStream(new FileInputStream(dir));
 				Object obj = in.readObject();
 				
-				if (obj instanceof DefaultComboBoxModel)
-					
+				if (obj instanceof DefaultComboBoxModel){
 					setModel((DefaultComboBoxModel)obj);
+				}
 				in.close();
 				
 				this.setSelectedIndex(0);
@@ -105,12 +107,8 @@ public class EFGComboBox extends JComboBox {
 		 */
 		private void useDefaults() {
 			int[] dimensions = DnDFileBrowserMain.getDefaultDimensions();
-			for(int i=0; i < dimensions.length;i++) {
-				this.add(dimensions[i] + "");
-			}
-			if(dimensions.length > 1) {
-				System.out.println("Selected set to: :" + dimensions[1] );
-				this.setSelectedItem(dimensions[1] + "");
+			for(int i= dimensions.length;i > 0;i--) {
+				this.add(dimensions[i-1] + "");
 			}
 		}
 		private void serializeFile(String fname){
@@ -123,11 +121,11 @@ public class EFGComboBox extends JComboBox {
 				String selectedItem = (String)this.getSelectedItem();
 				this.add(selectedItem);
 			}
+			
 			if(this.getItemCount() == 0){
-				/*DnDFileBrowserMain.maxDim = 0;
-				int maxDim = DnDFileBrowserMain.getMaxDim();
-				this.add(maxDim+"");*/
 				this.useDefaults();
+				//this.add(EFGImportConstants.DEFAULT_MAX_DIM+"");
+				
 			}
 			DefaultComboBoxModel model = (DefaultComboBoxModel)this.getModel();
 		
@@ -164,4 +162,3 @@ public class EFGComboBox extends JComboBox {
 		}
 	
 	}
-

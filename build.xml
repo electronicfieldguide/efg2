@@ -214,7 +214,7 @@ to compile/deploy/clean with:
 	<target name="cleanAll" depends="cleanSource">
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
-		<delete dir="	${efg2.lib.home.properties}" quiet="true"/>
+		<delete dir="${efg2.lib.home.properties}" quiet="true"/>
 		<delete dir="${efg2.lib.home.logs}" quiet="true"/>
 		<delete quiet="true">
 			<fileset dir="logs">
@@ -222,6 +222,8 @@ to compile/deploy/clean with:
 			</fileset>
 		</delete>
 		<delete file="${efg2.home}/lib/rdbImport.jar" quiet="true"/>
+		<delete file="${efg2.home}/lib/checkBox.out" quiet="true"/>
+
 	</target>
 	<target name="clean">
 		<!-- -->

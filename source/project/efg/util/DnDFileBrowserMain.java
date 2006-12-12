@@ -9,11 +9,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Vector;
 
 import javax.swing.JButton;
-//import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JEditorPane;
@@ -234,13 +232,7 @@ public class DnDFileBrowserMain extends JDialog {
 			
 		}
 	}
-	/**
-	 * 
-	 * @param newMaxDim
-	 */
-	public static synchronized void setMaxDim(int newMaxDim) {
-		maxDim = newMaxDim;
-	}
+
 	/**
 	 * 
 	 * @return
@@ -254,21 +246,11 @@ public class DnDFileBrowserMain extends JDialog {
 			if ((maxDimStr == null)) {
 				maxDimStr = EFGImportConstants.MAX_DIM;
 			}
-			try {
-				String[] defaultDims = maxDimStr.split(EFGImportConstants.COMMASEP);
-				
-				maxDim = Integer.parseInt(maxDimStr);
-				log.debug("MaxDim is set from properties file to: " + maxDim);
+			try {				
+				return Integer.parseInt(maxDimStr);
 			} catch (Exception ee) {
-				try {
-					maxDimStr = EFGImportConstants.MAX_DIM;
-					maxDim = Integer.parseInt(maxDimStr);
-				} catch (Exception eex) {
-					log.error(eex.getMessage());
-					log.error("Default max dimension is not set!!!");
-				}
 			}
-			log.debug("MaxDim is set to: " + maxDim);
+			
 		}
 		return maxDim;
 	}
@@ -306,26 +288,7 @@ public class DnDFileBrowserMain extends JDialog {
 				
 			}
 			log.debug("MaxDim is set to: " + maxDim);
-			
-			for(int i=0; i < defaults.length; i++) {
-				try {
-					System.out.println("Before sort: " + defaults[i]);
-				}
-				catch(Exception ee) {
-				}
-				
-			}
-			
-			Arrays.sort(defaults);
-			for(int i=0; i < defaults.length; i++) {
-				try {
-					System.out.println("After sort: " + defaults[i]);
-				}
-				catch(Exception ee) {
-				}
-				
-			}
-			
+
 		return defaults;
 	}
 	/**
@@ -473,6 +436,7 @@ public class DnDFileBrowserMain extends JDialog {
 					} else {
 						imageLabel.setText("");
 					}
+					
 					imageLabel.setEFGJLabel(path, getMaxDim());
 					imageLabel.setLocation(60, 60);
 					imageLabel.repaint();

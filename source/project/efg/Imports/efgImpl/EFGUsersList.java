@@ -181,6 +181,10 @@ public class EFGUsersList  extends JDialog
 	}
 	public class UserListCombo extends EFGComboBox{
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		public UserListCombo() {
 			super();
 			this.setToolTipText("");
@@ -255,9 +259,9 @@ public class EFGUsersList  extends JDialog
 					superuserInfo = dialog.getDbObject();
 				}
 				dialog.dispose();
-				boolean bool = false;
+				
 				if(superuserInfo != null){
-					bool = RunSetUp.createSuperUser(dbObject,superuserInfo);
+					RunSetUp.createSuperUser(dbObject,superuserInfo);
 					String newusername = superuserInfo.getUserName();
 					efgUsers.setEditable(true);
 					efgUsers.add(newusername);

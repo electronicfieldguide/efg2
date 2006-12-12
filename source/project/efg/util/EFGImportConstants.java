@@ -219,7 +219,7 @@ public interface EFGImportConstants {
 	String EFG_THUMB_NAILS_DIR = "EFG_ThumbNails_EFG";
 
 	// READ FROM A PROPERTIES FILE
-	String MAX_DIM = "200";
+	String MAX_DIM = "150";
 	
 
 	String XSL_PROPERTIES_FILE = "XSLProps.properties";
@@ -235,7 +235,7 @@ public interface EFGImportConstants {
 
 	String EFGIMAGES = "EFGImages";
 
-	String DEFAULT_MAX_DIM = "200";
+	String DEFAULT_MAX_DIM = "150";
 
 	
 	String ISDEFAULT_STR="isDefault";

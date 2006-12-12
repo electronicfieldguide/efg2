@@ -75,7 +75,19 @@ implements EFGImportConstants,WindowListener{
 		this.init();
 	}
 	private void init(){
-		this.maxDim =DnDFileBrowserMain.getMaxDim();
+		//unserialize and get selected
+		EFGComboBox combo = new EFGComboBox();	
+		combo.deserialize(EFGImportConstants.THUMBS_FILE_NAME);
+		 String selected = (String)combo.getSelectedItem();
+		 
+		 try{
+			 this.maxDim =Integer.parseInt(selected);
+		 }
+		 catch (Exception e) {
+			// this.maxDim =DnDFileBrowserMain.getMaxDim();
+		}
+		
+		
 		
 		
 		//do spring stuff here

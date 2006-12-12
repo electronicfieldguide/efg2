@@ -78,7 +78,7 @@ public class HandleStatInput extends HandleStatInputAbstract {
 				return stats;
 			}
 			
-			System.out.println("And error occured");
+			
 			
 		}
 		catch(Exception ee){

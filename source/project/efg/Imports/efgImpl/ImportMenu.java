@@ -168,8 +168,6 @@ public class ImportMenu extends JFrame {
 		}
 	
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//this.setSize(650, 450);
-		//this.setContentPane(this.addPanel());
 		this.setContentPane(this.createContentPane());
 		this.setResizable(false);
 		this.setVisible(true);
@@ -186,12 +184,8 @@ public class ImportMenu extends JFrame {
 	return jbutton;
 	}
     private JPanel createContentPane() {
-    //	JPanel content = new JPanel(new BorderLayout());
         BufferedImage image = null;
-    	
-		
-
-			   try {
+ 			   try {
 				   URL url = this.getClass().getResource(EFGImportConstants.EFG_MAIN_BKGD_ICON);
 				   URI uri = new URI(url.toString());
 			 

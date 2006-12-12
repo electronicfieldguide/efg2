@@ -20,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -64,11 +65,11 @@ public class EFGThumbNailDimensions  extends JDialog {
 	public EFGThumbNailDimensions(JFrame frame, String title, boolean modal
 			) {
 		super(frame, title, modal);
-    	this.setTitle("Enter or select max dimension(in pixels)");
+    	this.setTitle("Thumbnail Options");
         this.frame = frame;
         this.checkBoxManager = new EFGCheckBoxManager();
         
-        setSize(new Dimension(330, 100));
+        setSize(new Dimension(330, 150));
         add(addButtons());
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
@@ -91,30 +92,32 @@ public class EFGThumbNailDimensions  extends JDialog {
 		return this.currentSelection;
 	}
 	private JPanel addButtons() {
+		JPanel btnPanel = new JPanel(new BorderLayout());
 		this.comboList = new EFGComboBox();
 		comboList.setFocusable(true);	
 		comboList.deserialize(EFGImportConstants.THUMBS_FILE_NAME);
-
-		JPanel btnPanel = new JPanel(new BorderLayout());
-		btnPanel.add(comboList,BorderLayout.PAGE_START);
+		
+		JPanel labelPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		labelPane.add(new JLabel("Enter or Select max dimension(in pixels): "));
+		btnPanel.add(labelPane,BorderLayout.PAGE_START);
+		
+		JPanel comboBoxPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		comboBoxPane.add(comboList);
+		btnPanel.add(comboBoxPane,BorderLayout.CENTER);
 		
 		
-		JPanel btnFlowPanel = new JPanel(new FlowLayout());
-		
-
+		JPanel btnFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		this.checkBox = 
 			this.checkBoxManager.deserialize(EFGImportConstants.CHECKBOX_SER_NAME);
 		this.checkBox.setText("Don't ask me again..");
-		
 		btnFlowPanel.add(this.checkBox);
 		
 		JButton doneBtn = new JButton("OK");
 		doneBtn.addActionListener(new ComboBoxListener(this,comboList));
 		btnFlowPanel.add(doneBtn);
-		
-		
-		
 		btnPanel.add(btnFlowPanel, BorderLayout.PAGE_END);
+		
+		
 		return btnPanel;
 	}
 
@@ -150,8 +153,6 @@ public class EFGThumbNailDimensions  extends JDialog {
 				}
 				this.dimensions.setCurrentSelection(tempSelection);	
 				cb.add(currentSelection);
-				//serialize
-			
 				this.dimensions.close();
 				
 			}
