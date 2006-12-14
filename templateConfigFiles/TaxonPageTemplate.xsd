@@ -138,6 +138,16 @@
 					<xs:field xpath="@guid"/>
 				</xs:unique>
 			</xs:element>
+			<xs:element name="xslPdfPages" type="xslPageType" minOccurs="0">
+				<xs:unique name="xslPdfPage_unique">
+					<xs:selector xpath="xslPage"/>
+					<xs:field xpath="@displayName"/>
+				</xs:unique>
+				<xs:unique name="xslPdfPageguid_unique">
+					<xs:selector xpath="xslPage"/>
+					<xs:field xpath="@guid"/>
+				</xs:unique>
+			</xs:element>
 		</xs:sequence>
 	</xs:complexType>
 	<xs:complexType name="xslPageType">
