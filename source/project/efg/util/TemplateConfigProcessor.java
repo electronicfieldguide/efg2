@@ -319,8 +319,17 @@ public class TemplateConfigProcessor {
 							.equalsIgnoreCase(searchType)) {
 						//log.debug("It is a plate");
 						xslPageType = xslFileNames.getXslPlatePages();
-					} else {
+					} else if (EFGImportConstants.SEARCH_LISTS_TYPE
+							.equalsIgnoreCase(searchType)) {
 						//log.debug("It is a list");
+						xslPageType = xslFileNames.getXslListPages();
+					}
+					else if (EFGImportConstants.SEARCH_PDFS_TYPE
+							.equalsIgnoreCase(searchType)) {
+						//log.debug("It is a list");
+						xslPageType = xslFileNames.getXslPdfPages();
+					}
+					else{//default
 						xslPageType = xslFileNames.getXslListPages();
 					}
 				}

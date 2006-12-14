@@ -88,6 +88,11 @@ to compile/deploy/clean with:
 	<target name="deployWar">
 		<copy file="efg2.war" todir="${webapps.home}"/>
 	</target>
+	<target name="deployPlates">
+		<copy todir="${deploy.home}">
+					<fileset dir="efg2_platemaker"/>
+				</copy>
+	</target>
 	<target name="deployResources">
 		<mkdir dir="${deploy.home}"/>
 		<mkdir dir="${deploy.home}/EFGImages"/>

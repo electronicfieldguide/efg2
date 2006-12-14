@@ -480,6 +480,7 @@ public interface EFGImportConstants {
 	String SEARCH_PLATES_TYPE = "plates";
 	String SEARCH_TAXON_TYPE = "taxon";
 	String SEARCH_LISTS_TYPE = "lists";
+	String SEARCH_PDFS_TYPE = "pdfs";
 	String CONFIG_TYPE="configType";
 	String EFG_APPS = "efg2";
 
@@ -536,6 +537,7 @@ public interface EFGImportConstants {
 	String EFG_RDB_TABLES = "EFG_RDB_TABLES";
 	String CHECKBOX_SER_NAME = "checkBox.out";
 	String IMAGE_DROP_BACKGROUND_IMAGE  = "/icons/draganddropmsg_medres.gif";
+	
 	
 	
 	

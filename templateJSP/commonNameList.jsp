@@ -106,7 +106,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						characterLabelValue ="title";
 					}
 %>
-									 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 
 <%
 						if(isTableExists){
