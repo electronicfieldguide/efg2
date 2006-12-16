@@ -85,7 +85,7 @@
 			<xsl:variable name="med">
 				<xsl:value-of select="."/>
 			</xsl:variable>
-			<xsl:if test="not(string($med))='' and not(string($caps))=''">
+			<xsl:if test="not(string($med))=''">
 				<xsl:variable name="new-pop" select="imageList:addImageDisplay($myImageList, string($med),string($caps))"/>
 			</xsl:if>
 		</xsl:for-each>
