@@ -30,10 +30,10 @@ project.efg.util.TemplateConfigProcessor
   %>
 <html>
 	<head>
-		<title><%=title%><title>
+		<title><%=title%></title>
 	</head>
 	<body>
-		<p><%=title%></p>
+		<p id="title"><%=title%></p>
 		<p><a href="/efg2/DirectURLs2SearchResultsPages.jsp">View URLs for all EFGs</a></p>
 	</body>
 	

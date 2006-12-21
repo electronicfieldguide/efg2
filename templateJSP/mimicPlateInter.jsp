@@ -841,7 +841,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 		<hr/>
 		<table width="504" border="0" cellspacing="0" cellpadding="4">
 			<tr>
-				<td><b>Ceated: </b>xxx <b>Updated:</b> xxxx </td>
+				<td><b>Created: </b>xxx <b>Updated:</b> xxxx </td>
 			</tr>
 		</table>
 			<%@ include file="footerPlates.jsp" %>
