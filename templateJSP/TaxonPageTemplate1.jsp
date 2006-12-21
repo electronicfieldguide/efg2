@@ -14,7 +14,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 	<%@ include file="TaxonPageTemplate1Header.jsp" %>	
 	<body>
 		<form method="post" action="<%=context%>/configTaxonPage">
-				 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
+		<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
 
 			<%if(cssFileList.length > 0){
 				%>						
@@ -196,7 +196,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 						if(fieldValue == null){
 							fieldValue ="";
 						}
-	characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabel= tp.getCurrentCharacterLabel(name);
 					characterLabelValue = (String)groupTable.get(characterLabel);
 					if(characterLabelValue == null){
 						characterLabelValue ="header";

@@ -356,7 +356,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				</td>
 			</tr>
 		</table>
-		<%@ include file="footerPlates.jsp" %>
+		<%@ include file="footerLists.jsp" %>
 
 	
 		</form>

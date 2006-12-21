@@ -337,27 +337,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 		</table>
 		<hr/>
 		<br/><br/>
-				<%
-									
-									fieldValue = (String)groupTable.get(EFGImportConstants.ISDEFAULT_STR);
-									if(fieldValue == null){
-										fieldValue = "false";
-									}
-									Boolean bool = new Boolean(fieldValue);
-								
-									
-					%>
-				<p>The following is not part of the template:
-			<select name="<%=EFGImportConstants.ISDEFAULT_STR%>"  title="Indicate whether this template should be the default for search results page">
-				<option value="false">Do not use as Default Template</option>
-				<%if(bool.booleanValue() ){
-					%>
-					 <option value="true" selected="selected">Use as Default Template</option>
-					 <%} else{%>
-					  <option value="true">Use as Default Template</option>
-					<%}%>
-			</select>
-			</p><br/><br/>
+
 <%@ include file="footerLists.jsp" %>
 
 	<input type="submit"  name="submit" value="Click to submit" align="middle" />	
