@@ -24,6 +24,7 @@ to compile/deploy/clean with:
 	<property name="efg2.templateimages.home" value="${efg2.home}/templateImagesDirectory"/>
 	<property name="efg2.jsp.home" value="${efg2.home}/jsp"/>
 	<property name="efg2.templatejsp.home" value="${efg2.home}/templateJSP"/>
+	<property name="efg2_platemaker.home" value="${efg2.home}/efg2_platemaker"/>
 	<property name="efg2.lib.home.properties" value="${efg2.lib.home}/properties"/>
 	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
@@ -89,12 +90,15 @@ to compile/deploy/clean with:
 		<copy file="efg2.war" todir="${webapps.home}"/>
 	</target>
 	<target name="deployPlates">
-		<copy todir="${deploy.home}">
-					<fileset dir="efg2_platemaker"/>
+		<mkdir dir="${deploy.home}/plateConfiguration"/>
+		<copy todir="${deploy.home}/plateConfiguration">
+					<fileset dir="${efg2_platemaker.home}"/>
 				</copy>
 	</target>
 	<target name="deployResources">
 		<mkdir dir="${deploy.home}"/>
+		<mkdir dir="${deploy.home}/exports"/>
+		<mkdir dir="${deploy.home}/imports"/>
 		<mkdir dir="${deploy.home}/EFGImages"/>
 		<mkdir dir="${deploy.home}/html"/>
 		<mkdir dir="${deploy.home}/css"/>
@@ -105,6 +109,11 @@ to compile/deploy/clean with:
 		<mkdir dir="${deploy.home}/templateImagesDirectory"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
+		<mkdir dir="${deploy.home}/efg2efg2export"/>
+		
+		<copy todir="${deploy.home}/efg2efg2export">
+			<fileset dir="${efg2.home}/efg2efg2export"/>
+		</copy>
 		<copy todir="${deploy.home}/templateImagesDirectory">
 			<fileset dir="${efg2.templateimages.home}"/>
 		</copy>
@@ -209,13 +218,7 @@ to compile/deploy/clean with:
 	<target name="cleanSource">
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="clean"/>
 	</target>
-	<!--
-	<target name="cleanTomcatUsers">
-		<ant antfile="${efg2.home}/generateTomcatUsers.xml" inheritAll="true" target="clean"/>
-	</target>
-	
-	<target name="cleanAll" depends="cleanSource,cleanTomcatUsers">
-	-->
+
 	<target name="cleanAll" depends="cleanSource">
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
@@ -231,7 +234,7 @@ to compile/deploy/clean with:
 
 	</target>
 	<target name="clean">
-		<!-- -->
+		
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="clean"/>
 	</target>
 	<target name="cleandeploy">

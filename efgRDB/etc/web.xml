@@ -186,10 +186,18 @@
 		<servlet-name>configTaxonPage</servlet-name>
 		<servlet-class>project.efg.servlets.efgImpl.TaxonPageTemplateConfig</servlet-class>
 	</servlet>
-<servlet>
-		<servlet-name>upload</servlet-name>
+	<servlet>
+		<servlet-name>uploadResources</servlet-name>
 		<servlet-class>project.efg.servlets.efgImpl.UploadResources</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>export</servlet-name>
+		<servlet-class>project.efg.servlets.efgImpl.ExportEFG</servlet-class>
+	</servlet>
+	  <servlet>
+    <servlet-name>importEFG</servlet-name>
+    <servlet-class>project.efg.servlets.efgImpl.ImportEFG</servlet-class>
+  </servlet>
 	<servlet>
 		<servlet-name>Redirect</servlet-name>
 		<jsp-file>/Redirect.jsp</jsp-file>
@@ -239,36 +247,42 @@
 		<url-pattern>/configTaxonPage</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>upload</servlet-name>
-		<url-pattern>/upload</url-pattern>
+		<servlet-name>uploadResources</servlet-name>
+		<url-pattern>/uploadResources</url-pattern>
 	</servlet-mapping>
-
-<!--  -->
+<servlet-mapping>
+		<servlet-name>export</servlet-name>
+		<url-pattern>/export</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>importEFG</servlet-name>
+		<url-pattern>/efg2efg2export/importEFG</url-pattern>
+	</servlet-mapping>
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
 			<url-pattern>/templateJSP/*</url-pattern>
 		</web-resource-collection>
-			<web-resource-collection>
+		<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/DirectURLs2SearchResultsPages.jsp</url-pattern>
-		</web-resource-collection>
-	<web-resource-collection>
-			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/imageUpload.jsp</url-pattern>
-		</web-resource-collection>
-	<web-resource-collection>
-			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/cssUpload.jsp</url-pattern>
-		</web-resource-collection>
-	<web-resource-collection>
-			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/javascriptUpload.jsp</url-pattern>
+			<url-pattern>/efg2efg2export/*</url-pattern>
 		</web-resource-collection>
 		<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>
-			<url-pattern>/Links.jsp</url-pattern>
+			<url-pattern>/DirectURLs2SearchResultsPages.jsp</url-pattern>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/plateConfiguration/*</url-pattern>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/Links.html</url-pattern>
 		</web-resource-collection>		
+		<web-resource-collection>
+			<web-resource-name>Configuration</web-resource-name>
+			<url-pattern>/uploadTemplateResources.html</url-pattern>
+		</web-resource-collection>	
 		<auth-constraint>
 			<role-name>efg</role-name>
 		</auth-constraint>

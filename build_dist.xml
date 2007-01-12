@@ -26,7 +26,7 @@ to make a distribution call makeImport:
 	<property name="efg2.lib.home.properties" value="${efg2.lib.home}/properties"/>
 	<property name="efg2.lib.home.logs" value="${efg2.lib.home}/logs"/>
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
-	
+	<property name="efg2_platemaker.home" value="${efg2.home}/efg2_platemaker"/>
 	<property name="efg2.website.home" value="${efg2.home}/../efg2_website"/>
 	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
 	<property name="dist.src" value="${app.name}.jar"/>
@@ -79,6 +79,8 @@ to make a distribution call makeImport:
 	<!-- Make preparations for deployment-->
 	<target name="deployResources">
 		<mkdir dir="${deploy.home}"/>
+		<mkdir dir="${deploy.home}/exports"/>
+		<mkdir dir="${deploy.home}/imports"/>
 		<mkdir dir="${deploy.home}/EFGImages"/>
 		<mkdir dir="${deploy.home}/EFGImages/Het"/>
 		<mkdir dir="${deploy.home}/efgimagesthumbs"/>
@@ -92,6 +94,20 @@ to make a distribution call makeImport:
 		<mkdir dir="${deploy.home}/templateImagesDirectory"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
+		<mkdir dir="${deploy.home}/efg2efg2export"/>
+		<mkdir dir="${deploy.home}/efg2efg2export/javascripts"/>
+		<mkdir dir="${deploy.home}/efg2efg2export/css"/>
+		
+		<copy todir="${deploy.home}/efg2efg2export">
+			<fileset dir="${efg2.home}/efg2efg2export"/>
+		</copy>
+		<copy todir="${deploy.home}/efg2efg2export/javascripts">
+			<fileset dir="${efg2.home}/efg2efg2export/javascripts"/>
+		</copy>
+		<copy todir="${deploy.home}/efg2efg2export/css">
+			<fileset dir="${efg2.home}/efg2efg2export/css"/>
+		</copy>
+
 		<copy todir="${deploy.home}/EFGImages/Het">
 			<fileset dir="${efg2.home}/sampleImages/Het" includes="*.*"/>
 		</copy>

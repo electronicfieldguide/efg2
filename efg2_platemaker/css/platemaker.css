@@ -1,0 +1,201 @@
+body {
+background-color: #f5fff1;
+}
+table.menubarcase {
+width: 100%;
+margin-top: 8px;
+margin-bottom: 10px;
+}
+table.menubar {
+padding: 0px;
+}
+table.menubartitle {
+padding: 0px;
+padding-left: 8px;
+margin: 0px;
+}
+table.searchpage {
+background-color: #dfffba;
+border: #9C9C9C solid 1px;
+margin-bottom: 15px;
+}
+table.viewpage {
+background-color: #dfffba;
+border: #9C9C9C solid 1px;
+margin-bottom: 15px;
+}
+table.pdfpage {
+border: #9C9C9C solid 0px;
+}
+table.form {
+background-color: #dfffba;
+border: #9C9C9C solid 0px;
+margin-bottom: 15px;
+}
+table.pdfchoices {
+margin-left: 6px;
+}
+td.menubartitle {
+font-size: 1.2em;
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+color: #305a1b;
+padding: 0px;
+padding-right: 3px;
+margin: 0px;
+vertical-align: bottom;
+}
+td.menubarsubtitle {
+font-size: .85em;
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+padding: 0px;
+padding-bottom: 1px;
+padding-right: 15px;
+margin: 0px;
+vertical-align: bottom;
+}
+td.menubartext {
+font-size: .75em;
+font-weight: bold;
+font-family: sans, helvetica, verdana, arial;
+background-color: #ccff8f;
+border: #9C9C9C solid 0px;
+padding: 5px;
+}
+td.menubartextactive {
+font-size: .75em;
+font-weight: bold;
+font-family: sans, helvetica, verdana, arial;
+background-color: #ccff8f;
+border: #9C9C9C groove 2px;
+padding: 5px;
+}
+td.menubaricon {
+padding-left: 8px;
+padding-right: 8px;
+}
+td.datalist {
+padding-top: 30px;
+padding-left: 10px;
+}
+td.formitem {
+font-family: sans, helvetica, verdana, arial;
+padding-top: 30px;
+padding-left: 10px;
+vertical-align: top;
+}
+td.uploadnote {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: 1em;
+padding-left: 10px;
+padding-top: 2px;
+margin-top: 10px;
+}
+td.datasourcename {
+font-family: sans, helvetica, verdana, arial;
+padding-top: 10px;
+padding-left: 10px;
+font-weight: bold;
+}
+td.instructions {
+font-family: sans, helvetica, verdana, arial;
+padding-top: 30px;
+padding-left: 10px;
+padding-bottom: 20px;
+font-weight: normal;
+font-size: .75em;
+border-bottom: 3px solid black;
+}
+td.subheading {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: 1em;
+padding-left: 10px;
+padding-top: 10px;
+}
+td.pdfheading {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: 1em;
+padding-left: 6px;
+padding-top: 6px;
+padding-bottom: 16px;
+}
+td.pdfitem {
+font-family: sans, helvetica, verdana, arial;
+padding: 6px;
+margin-bottom: 30px;
+background-color: white;
+border: #9C9C9C solid 1px;
+}
+a {
+color: #003300;
+text-decoration: none;
+}
+a:hover {
+color: #000000;
+text-decoration: underline;
+}
+a.upload {
+color: #003300;
+text-decoration: underline;
+font-weight: bold;
+}
+a.upload:hover {
+color: #000000;
+text-decoration: underline;
+font-weight: bold;
+}
+a.pdf {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: .8em;
+text-decoration: none;
+color: green;
+}
+a.pdf:hover {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: .8em;
+text-decoration: underline;
+color: black;
+}
+p.captionrow {
+padding-left: 20px;
+}
+.configitem {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .8em;
+padding-left: 15px;
+}
+.boldcheck {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: .8em;
+padding-left: 0px;
+}
+.italicscheck {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-style: italic;
+font-size: .8em;
+padding-left: 0px;
+}
+.underlinecheck {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+text-decoration: underline;
+font-size: .8em;
+padding-left: 0px;
+}
+.note {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .75em;
+}
+hr {
+border-top: solid 1px #000;
+}

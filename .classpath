@@ -30,5 +30,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlgraphics-commons-1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/fileupload-ext.jar"/>
 	<classpathentry kind="output" path="compiled"/>
 </classpath>

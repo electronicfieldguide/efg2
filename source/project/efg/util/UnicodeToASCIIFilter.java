@@ -32,74 +32,110 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import java.io.Writer;
 
 /**
  * @author kasiedu
  *
  */
-public class UnicodeToASCIIFilter {
-
-	/**
-	 * 
-	 */
-	public UnicodeToASCIIFilter() {
-		//read illegal characters from a properties file
-	}
+public class UnicodeToASCIIFilter implements EFGImportConstants{
+	
 	  /**
      * Read characters from the reader, one at a time (using a BufferedReader
      * for efficiency).  Output printable ASCII characters unfiltered.  For
      * other characters, output the \U Unicode encoding.
      **/
-    public void filter(Reader r, Writer w) throws IOException {
-      BufferedReader in = new BufferedReader(r);
-      PrintWriter out = new PrintWriter(new BufferedWriter(w));
-      boolean bool = false;
-      int c;
-      while((c = in.read()) != -1) {
-    	  
-        // Just output ASCII characters
-        if (((c >= ' ') && (c <= '~')) || (c=='\t') || (c=='\n') || (c=='\r'))
-          out.write(c);
-        // And encode the others
-        else {
-        	
-          String hex = Integer.toHexString(c);
-          switch (hex.length()) { 
-            case 1:  out.print("\\u000" + hex); break;
-            case 2:  out.print("\\u00" + hex); break;
-            case 3:  out.print("\\u0" + hex); break;
-            default: out.print("\\u" + hex); break;
-          }
-        }
-      }
-      out.flush();  // flush the output buffer we create
-    }
-    
-    /**
-     * Read characters from the reader, one at a time (using a BufferedReader
-     * for efficiency).  Output printable ASCII characters unfiltered.  For
-     * other characters, output the \U Unicode encoding.
-     **/
-    public boolean filter(Reader r) throws IOException {
-      BufferedReader in = new BufferedReader(r);
-     
-      boolean bool = false;
-      int c;
-      while((c = in.read()) != -1) {
-    	  
-        // Just output ASCII characters
-    	 if(c == 127){
-    		 bool = true;
-    	 }
-    	 if ((c=='\t') || (c=='\n') || (c=='\r') || (c > 31)){
-        	
-        }
-        else {
-        	bool = true;
-        }
-      }
-     
-      return bool;
-    }
+	   public static void convertIllegalToUnicode(Reader r, Writer w)
+	       throws IOException
+	   {
+		   
+		      BufferedReader in = new BufferedReader(r);
+		      PrintWriter out = new PrintWriter(new BufferedWriter(w));
+		      boolean bool = false;
+		      int c;
+		      while((c = in.read()) != -1) {
+		           if(!isValidXMLChar(c)) {
+		        	String illegalCharacter = EFGProperties.getProperty(ILLEGALCHARACTER_TEXT);
+		            out.print(illegalCharacter);
+		        	/*String hex = Integer.toHexString(c);
+		               switch (hex.length()) { 
+		                 case 1:  out.print("\\u000" + hex); break;
+		                 case 2:  out.print("\\u00" + hex); break;
+		                 case 3:  out.print("\\u0" + hex); break;
+		                 default: out.print("\\u" + hex); break;
+		               }*/
+		           }
+		           else {
+		        	   out.write(c);
+		           }
+		      }
+		      out.flush();  // flush the output buffer we create
+
+	   }
+
+	   /**
+	    * Section 2.2 of the XML spec describes which Unicode code points
+	    * are valid in XML:
+	    *
+	    * <blockquote><code>#x9 | #xA | #xD | [#x20-#xD7FF] |
+	    * [#xE000-#xFFFD] | [#x10000-#x10FFFF]</code></blockquote>
+	    *
+	    * Code points outside this set must be entity encoded to be
+	    * represented in XML.
+	    *
+	    * @param c The character to inspect.
+	    * @return Whether the specified character is valid in XML.
+	    */
+	   private static final boolean isValidXMLChar(int c)
+	   {
+		   
+		     switch (c)
+		      {
+		       case 0x9:
+		       case 0xa:  // line feed, '\n'
+		       case 0xd:  // carriage return, '\r'
+		           return true;
+
+		       default:
+		         break;
+		      }
+		   if(c >= 0x20  && c <= 0xd7ff ) {
+			   
+		   }
+		   else if (c > 0xe000  && c <= 0xfffd) {
+			   
+		   }
+		   else if( c > 0x10000  && c <= 0x10ffff) {
+			  
+		   }
+		   else {
+			   return false;
+		   }
+		   return true;
+	  
+	   }
+
+	/**
+	 * @param reader
+	 * @return
+	 * @throws IOException 
+	 */
+	public boolean filter(StringReader reader) throws IOException {
+	      BufferedReader in = new BufferedReader(reader);
+	     
+	      boolean bool = false;
+	      int c;
+	      while((c = in.read()) != -1) {
+	           if(!isValidXMLChar(c)) {
+	        	   bool = true;
+	        	   break;
+	           }
+	      }
+
+		return bool;
+	}
+
+  
+
 }

@@ -1,6 +1,8 @@
 package project.efg.Imports.rdb;
 
 import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.URI;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -31,6 +33,7 @@ import project.efg.Imports.efgInterface.ImportBehavior;
 import project.efg.Imports.factory.ComparatorFactory;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGUniqueID;
+import project.efg.util.UnicodeToASCIIFilter;
 
 /**
  * CSV2Database.java
@@ -558,7 +561,11 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							}
 							query.append(",");
 							query.append("\"");
-							query.append(escapeQuotes(dataVal.trim()));
+							StringWriter writer = new StringWriter();
+							
+							UnicodeToASCIIFilter.convertIllegalToUnicode(new StringReader(dataVal.trim()),writer);
+							String newData = writer.toString();
+							query.append(escapeQuotes(newData.trim()));
 							query.append("\"");
 						}
 						try {

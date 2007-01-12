@@ -46,7 +46,9 @@ import project.efg.Imports.factory.EFGQueueObjectFactory;
 public class EFGRowMapperImpl implements EFGRowMapperInterface {
 	
 	private List list; 
-	
+	/**
+	 * Map the current row to a List
+	 */
 	public List mapRows(final JdbcTemplate jdbcTemplate,final String query, 
 			final int numberOfColumns){
 	

@@ -466,6 +466,15 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 								.equalsIgnoreCase(searchType)) {
 							//log.debug("It is a list");
 							xslPageType = xslFileNames.getXslListPages();
+						} else if (EFGImportConstants.SEARCH_PDFS_TYPE
+							.equalsIgnoreCase(searchType)) {
+						//log.debug("It is a list");
+							xslPageType = xslFileNames.getXslPdfPages();
+							//if it is null create it
+							if(xslPageType == null) {
+								xslPageType = new XslPageType();
+								xslFileNames.setXslPdfPages(xslPageType);
+							}
 						}
 						else{
 							xslPageType = xslFileNames.getXslTaxonPages();
@@ -492,6 +501,8 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 		try {
 			// forward to TestConfigPage.jsp
 			if (!isError) {
+				String searchType = req
+				.getParameter(EFGImportConstants.SEARCH_TYPE_STR);
 				//log.debug("No errors");
 				String searchPage = req
 						.getParameter(EFGImportConstants.SEARCH_PAGE_STR);// "search"
@@ -504,13 +515,21 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 						allTableName);	
 				if (searchPage != null) {// allow multiple xslNames
 					//log.debug("Forward to Test Search page");
-					String searchType = req
-							.getParameter(EFGImportConstants.SEARCH_TYPE_STR);
+					
 					if (EFGImportConstants.SEARCH_PLATES_TYPE
 							.equalsIgnoreCase(searchType)) {
 						req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
 								EFGImportConstants.SEARCH_PLATES_TYPE);
-					} else {
+					} 
+					else if (EFGImportConstants.SEARCH_PDFS_TYPE
+							.equalsIgnoreCase(searchType)) {
+						req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
+								EFGImportConstants.SEARCH_PDFS_TYPE);
+						dispatcher = getServletContext().getRequestDispatcher(
+								EFGImportConstants.TEST_TAXON_CONFIG_PAGE);
+					}
+					
+					else {
 						req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
 								EFGImportConstants.SEARCH_LISTS_TYPE);
 					}
@@ -518,6 +537,11 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 							EFGImportConstants.TEST_SEARCH_CONFIG_PAGE);
 
 				} else {
+					if (EFGImportConstants.SEARCH_PDFS_TYPE
+							.equalsIgnoreCase(searchType)) {
+						req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
+								EFGImportConstants.SEARCH_PDFS_TYPE);
+					}
 					//log.debug("Forward to Test taxon page");
 					dispatcher = getServletContext().getRequestDispatcher(
 							EFGImportConstants.TEST_TAXON_CONFIG_PAGE);

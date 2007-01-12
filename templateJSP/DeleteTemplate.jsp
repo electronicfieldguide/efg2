@@ -8,7 +8,8 @@ project.efg.util.TemplateConfigProcessor
 	
 	String context = request.getContextPath();
 	String configType = request.getParameter(EFGImportConstants.SEARCH_TYPE_STR);
-    String title = uniqueName;
+    String message = "";
+   
     if(datasourceName == null){
 		datasourceName =request.getParameter("dataSourceName");
 	}
@@ -17,26 +18,30 @@ project.efg.util.TemplateConfigProcessor
 	boolean bool= TemplateMapObjectHandler.removeGuidFromTemplateMap(guid,null);
 	if(bool){
 		bool = tcp.removeAConfig(guid);
-	}
-	
-	
-	if(bool){
-		title = title + " deleted successfully";
-	}
- 	else{
- 		title = "Unable to delete " + title;
- 	}
- 	
+	} 	
   %>
 <html>
 	<head>
-		<title><%=title%></title>
+		<title>Delete Message</title>
 	</head>
-	<body>
-		<p id="title"><%=title%></p>
-		<p><a href="/efg2/DirectURLs2SearchResultsPages.jsp">View URLs for all EFGs</a></p>
-	</body>
+	<body>	
 	
+		<% 
+		if(bool){
+			message = uniqueName + " deleted successfully";
+		%>
+			<p id="successDeleteID">
+				<%=message%>
+			</p>
+		<%} else {
+			message = "Unable to delete " + uniqueName;
+		%>
+			<p id="failureDeleteID">
+				<%=message%>
+			</p>		
+		<%} %>		
+		<p><a href="/efg2/DirectURLs2SearchResultsPages.jsp">View URLs for all EFGs</a></p>
+	</body>	
 </html>
 
 

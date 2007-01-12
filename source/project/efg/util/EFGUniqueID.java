@@ -29,6 +29,9 @@ package project.efg.util;
 
 //import java.net.InetAddress;
 //import java.net.UnknownHostException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -69,11 +72,29 @@ public class EFGUniqueID {
 		}
 		return id;
 	}
-
+	/**
+	 * Create a unique ID.
+	 * 
+	 * @return a string representing a unique ID
+	 */
+	public synchronized static String getUniqueID() {
+		 Calendar tempCalendar = 
+		      new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+		    long timeStamp = tempCalendar.getTime().getTime();
+		    String localAddress = "";
+		    try {
+		      localAddress = InetAddress.getLocalHost().getHostAddress();
+		    }
+		    catch (UnknownHostException e) {}
+		    return "efg2_"+localAddress+timeStamp;
+	}
 	
 }
 
 // $Log$
+// Revision 1.3  2007/01/12 15:03:40  kasiedu
+// no message
+//
 // Revision 1.2  2006/12/08 03:51:02  kasiedu
 // no message
 //

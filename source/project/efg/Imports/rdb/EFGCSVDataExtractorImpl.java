@@ -284,7 +284,7 @@ public class EFGCSVDataExtractorImpl implements EFGDataExtractorInterface {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		String csvFileName = "C:\\cvscheckout\\efg2\\lib\\data\\IpoTest.csv";
+		String csvFileName = "C:\\cvscheckout\\efg2\\lib\\data\\Ith.csv";
 		EFGCSVDataExtractorImpl extractor = new EFGCSVDataExtractorImpl();
 		extractor.setFile(new URI(
 				csvFileName));

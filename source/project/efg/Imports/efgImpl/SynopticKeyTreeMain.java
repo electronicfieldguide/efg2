@@ -82,7 +82,7 @@ public class SynopticKeyTreeMain extends JDialog {
 
 	private SynopticKeyTreeInterface tree;
 
-	
+	// handle the metadata menu
 	final JMenuItem editMetadataMenu = new JMenuItem(EFGImportConstants.EFGProperties
 			.getProperty("SynopticKeyTreeMain.editMetadataBtn"));
 	final JMenuItem editTitleMenu = new JMenuItem(EFGImportConstants.EFGProperties

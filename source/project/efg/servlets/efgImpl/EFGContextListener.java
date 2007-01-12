@@ -142,7 +142,7 @@ public class EFGContextListener implements ServletContextListener {
 		
 		createConfigFileMap();
 		EFGRDBImportUtils.init();
-		createTemplateObjectMap();
+		
 	}
 	/**
 	 * 
@@ -174,6 +174,9 @@ public class EFGContextListener implements ServletContextListener {
 				servletContext.log(ee.getMessage());
 			}
 		}
+		
+	}
+	private void removeImportExportFiles() {
 		
 	}
 	private void writeTemplatesToDisk() {
@@ -208,6 +211,56 @@ public class EFGContextListener implements ServletContextListener {
 			}
 		}
 		
+	}
+	private void cleanCommonImportExport(File dir) {
+		
+		String[] files = dir.list();
+		if (!dir.exists()) {
+			
+			return;
+		}
+		File[] list = dir.listFiles();
+		
+		for (int f = 0; f < list.length; f++) {
+			this.deleteDir(list[f]);
+		}		
+	}
+	private synchronized void cleanTemplateDirectory(){
+		String fullPath = servletContext.getRealPath("/");
+		
+		File staleFiles = new File(fullPath + File.separator
+				+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
+		if (!staleFiles.exists()) {
+			EFGUtils.log(staleFiles.getAbsolutePath() + " does not yet exists");
+			return;
+		}
+		File[] list = staleFiles.listFiles();
+		EFGUtils.log("Number of files to remove: " + list.length);
+		for (int f = 0; f < list.length; f++) {
+			File staleFile = list[f];
+	
+			if (staleFile.getName().endsWith("_old")) {	
+				EFGUtils.log("Removing: " + staleFile.getAbsolutePath());
+					this.deleteDir(list[f]);
+			
+			}
+		}
+	}
+	private synchronized void cleanImportExportDirectories() {
+		StringBuffer fileLocationBuffer = new StringBuffer();
+		fileLocationBuffer.append(servletContext.getRealPath("/"));
+		
+		StringBuffer cBuffer = new StringBuffer(fileLocationBuffer.toString());
+		cBuffer.append("imports");
+		cBuffer.append(File.separator);
+		File dir = new File(fileLocationBuffer.toString());
+		cleanCommonImportExport(dir);
+		
+		cBuffer = new StringBuffer(fileLocationBuffer.toString());
+		cBuffer.append("exports");
+		cBuffer.append(File.separator);
+		dir = new File(fileLocationBuffer.toString());
+		cleanCommonImportExport(dir);
 	}
 	private boolean marshal(FileWriter writer, TaxonPageTemplates tps) {
 		try {
@@ -453,12 +506,7 @@ public class EFGContextListener implements ServletContextListener {
   
 
 	
-	/**
-	 * 
-	 */
-	private void createTemplateObjectMap() {
-		
-	}
+
 	private void destroyDriverManager() { 
 	    try { 
 	      Introspector.flushCaches(); 
@@ -490,35 +538,18 @@ public class EFGContextListener implements ServletContextListener {
 	}
 
 
-	private void clean() {
-		String fullPath = servletContext.getRealPath("/");
-		
-		File staleFiles = new File(fullPath + File.separator
-				+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME);
-		if (!staleFiles.exists()) {
-			EFGUtils.log(staleFiles.getAbsolutePath() + " does not yet exists");
-			return;
-		}
-		File[] list = staleFiles.listFiles();
-		EFGUtils.log("Number of files to remove: " + list.length);
-		for (int f = 0; f < list.length; f++) {
-			File staleFile = list[f];
-	
-			if (staleFile.getName().endsWith("_old")) {	
-				EFGUtils.log("Removing: " + staleFile.getAbsolutePath());
-					this.deleteDir(list[f]);
-			
-			}
-		}
+	private  void clean() {
+		cleanImportExportDirectories();
+		cleanTemplateDirectory();
 	}
-
+	
 	/**
 	 * Deletes all files and subdirectories under dir.
 	 * Returns true if all deletions were successful.
 	 * If a deletion fails, the method stops attempting to delete and returns
 	 *false.
 	 */	
-	private boolean deleteDir(File dir) {
+	private synchronized boolean deleteDir(File dir) {
 		if (dir.isDirectory()) {
 			String[] children = dir.list();
 			for (int i = 0; i < children.length; i++) {
@@ -636,6 +667,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.3  2007/01/12 15:04:04  kasiedu
+// no message
+//
 // Revision 1.2  2006/12/08 03:51:00  kasiedu
 // no message
 //

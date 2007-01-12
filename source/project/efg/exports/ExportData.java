@@ -1,0 +1,186 @@
+/**
+ * 
+ */
+package project.efg.exports;
+
+/**
+ * @author kasiedu
+ *
+ */
+
+	/**
+	 * Copyright Isocra Ltd 2004
+	 * You can use, modify and freely distribute this file as long as you credit Isocra Ltd.
+	 * There is no explicit or implied guarantee of functionality associated with this file, 
+	 * use it at your own risk.
+	 */
+
+
+
+import java.sql.SQLException;
+
+import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.JdbcUtils;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.jdbc.support.rowset.SqlRowSetMetaData;
+
+import project.efg.Imports.efgImpl.DBObject;
+import project.efg.Imports.efgImportsUtil.EFGDBMetadata;
+import project.efg.Imports.factory.EFGRowMapperFactory;
+import project.efg.Imports.rdb.EFGRDBImportUtils;
+import project.efg.Imports.rdb.EFGRowMapperInterface;
+import project.efg.servlets.rdb.EFGRDBUtils;
+
+	/**
+	 * This class connects to a database and dumps all the tables and contents out to stdout in the 
+	 * form of
+	 * a set of SQL executable statements
+	 */
+	public class ExportData {
+		
+		private JdbcTemplate jdbcTemplate;
+		private EFGRowMapperInterface rowMapper;
+		
+		private EFGDBMetadata dbMetadata;
+		static Logger log = null;
+		static {
+			try {
+				log = Logger.getLogger(ExportData.class);
+			} catch (Exception ee) {
+			}
+		}
+		/**
+		 * 
+		 */
+		public ExportData(DBObject dbObject) {
+			
+			this.rowMapper = EFGRowMapperFactory.getRowMapper();
+			this.jdbcTemplate = EFGRDBImportUtils.getJDBCTemplate(dbObject);
+		}
+		public ExportData() {
+			
+			this.rowMapper = EFGRowMapperFactory.getRowMapper();
+			this.jdbcTemplate = new JdbcTemplate(EFGRDBUtils.getDatasource());
+		}
+	
+
+		/**
+		 * @param string
+		 * @return
+		 */
+		private String escapeQuotes(String string) {
+			if (string == null) {
+				return null;
+			}
+			return string.trim().replaceAll("\"", "\\\\\"");
+		}
+
+		/**
+		 * 
+		 * @param props
+		 * @return
+		 */
+	    public  String dumpDB(String tableName) {
+	    	
+	    	dbMetadata = new EFGDBMetadata(tableName);
+	        // Default to not having a quote character
+	        String columnNameQuote = "";
+	       
+	        try {
+	        	StringBuffer result = new StringBuffer();
+              
+
+	        	result.append(
+	        			(String)JdbcUtils.extractDatabaseMetaData
+	        			(
+	        			this.jdbcTemplate.getDataSource(),
+	        			this.dbMetadata
+	        			)
+	        			);
+	        	String query = "SELECT * FROM "+tableName;
+	        	result.append(dumpTable(tableName, query));
+	        	 return result.toString();
+	  
+	        }
+	        catch (Exception e) {
+	            System.out.println(e);
+	        }
+	      
+	        return null;
+	    }
+
+
+		/**
+		 * 
+		 * @param metaData
+		 * @return
+		 * @throws SQLException
+		 * @throws Exception
+		 */
+	    private  String getColumnNames( 
+	    		SqlRowSetMetaData metaData) throws SQLException, Exception {
+	    	StringBuffer result = new StringBuffer();
+	    	String[] columnNames = metaData.getColumnNames(); 
+           for (int i=0; i<columnNames.length; i++) {
+                if (i > 0) {
+                    result.append(", ");
+                }
+                String columnName =columnNames[i];
+                if (columnName== null) {
+                    throw new Exception("Column name cannot be null");
+                }
+                   result.append(columnName);
+            }
+           return result.toString();
+	    }
+
+
+	    /** dump this particular table to the string buffer 
+	     * @param query TODO*/
+	    public String dumpTable( String tableName, String query)throws Exception {
+	    	
+	       
+	        	StringBuffer result = new StringBuffer();
+	        	
+				SqlRowSet rs = this.rowMapper.mapRows(
+						this.jdbcTemplate, query);
+
+				
+				SqlRowSetMetaData metaData = rs.getMetaData(); 
+				 int columnCount = metaData.getColumnCount();
+	            String columnNames = getColumnNames(metaData);
+	           
+	            // Now we can output the actual data
+	            result.append("\n\n-- Data for "+tableName+"\n");
+	            while (rs.next()) {
+	                result.append("INSERT INTO ");
+	                result.append(tableName);
+	                result.append(" (");
+	                result.append(columnNames);
+	                result.append(") ");
+	                result.append(" VALUES (");
+	                
+	                for (int i=0; i<columnCount; i++) {
+	                    if (i > 0) {
+	                        result.append(", ");
+	                    }
+	                    Object value = rs.getObject(i+1);
+	                    if (value == null) {
+	                        result.append("NULL");
+	                    } else {
+	                        String outputValue = value.toString();
+	                        outputValue = escapeQuotes(outputValue);
+	                        result.append("\"");
+	                        result.append(outputValue);
+	                        result.append("\"");
+	                    }
+	                }
+	                result.append(");\n");
+	               
+	            }
+	            return result.toString();
+		    }
+	}
+
+

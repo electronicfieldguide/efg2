@@ -192,6 +192,7 @@
 						<img src="{$src}" alt="{$caption}"/>
 					</a>
 				</div>
+				
 			</td>
 		</xsl:if>
 	</xsl:template>
@@ -499,9 +500,10 @@
 					<xsl:value-of select="$datasource"/>
 				</title>
 				<xsl:variable name="linkhref" select="concat($css_home,$css)"/>
+				<script type="text/javascript"  src="js/popUpHypertext.js"></script>
 				<link rel="stylesheet" href="{$linkhref}"/>
 			</head>
-			<body>
+			<body onunload="closeWindow()">
 				<xsl:variable name="taxonEntry" select="//TaxonEntry[1]"/>
 				<xsl:if test="count($headerGroup) &gt; 0">
 					<xsl:call-template name="headerGroup">
@@ -563,6 +565,7 @@
 						</td>
 					</tr>
 				</table>
+				<div id="popUpMessage" class="popUp"> Loading </div>
 			</body>
 		</html>
 	</xsl:template>

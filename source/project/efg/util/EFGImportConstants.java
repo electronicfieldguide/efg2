@@ -29,8 +29,8 @@ import java.util.regex.Pattern;
  * USA
  */
 public interface EFGImportConstants {
-	
-	
+	String ZIP_EXT = ".zip";
+	String ILLEGALCHARACTER_TEXT="efg_illegalcharacter";
 	String SAMPLE_MEDIA_RESOURCE_FIELD = "SampleMediaResourceFields";
 	String SAMPLE_SEARCHABLE_FIELD = "SampleSearchableFields";
 	String SAMPLE_NEW_DISPLAY_NAME = "EFG2SampleDisplayName";
@@ -261,6 +261,9 @@ public interface EFGImportConstants {
 	String SEARCH_RESULTS = "SearchResult";
 
 	String TEXT_HTML = "text/html";
+	String TEXT_XML = "text/xml";
+	
+	
 
 	String DIGIR_TIME = "yyyy-MM-dd'T'hh:mm:ss";
 
@@ -451,7 +454,7 @@ public interface EFGImportConstants {
 	String SEARCHPAGE_FILLER = "_" + SEARCHPAGE + XML_EXT;
 
 	String IMAGETYPE = "Image";
-
+	//IGNORE
 	String DATABASENAME = "file:///C:/database.database";
 
 	String MYSQL = "MySQL";
@@ -463,10 +466,10 @@ public interface EFGImportConstants {
 	String NO_MATCH_ATTR="nomatch_attr";
 	
 	String WILDCARD = "*";
-	String TEMPLATE_JSP_LOCTION="/templateJSP";
-	String TEST_TAXON_CONFIG_PAGE =TEMPLATE_JSP_LOCTION+  "/TestTaxonPage.jsp";
+	String TEMPLATE_JSP_LOCATION="/templateJSP";
+	String TEST_TAXON_CONFIG_PAGE =TEMPLATE_JSP_LOCATION+  "/TestTaxonPage.jsp";
 
-	String TEST_SEARCH_CONFIG_PAGE =TEMPLATE_JSP_LOCTION+  "/TestSearchPage.jsp";
+	String TEST_SEARCH_CONFIG_PAGE =TEMPLATE_JSP_LOCATION+  "/TestSearchPage.jsp";
 
 	String SERVICE_LINK_FILLER = "_EFG_";
 
@@ -537,7 +540,13 @@ public interface EFGImportConstants {
 	String EFG_RDB_TABLES = "EFG_RDB_TABLES";
 	String CHECKBOX_SER_NAME = "checkBox.out";
 	String IMAGE_DROP_BACKGROUND_IMAGE  = "/icons/draganddropmsg_medres.gif";
-	
+	String ZIP_FILE_EXTENSION =".zip";
+	String SQL_DIR = "efgSQL";
+	String SAND_BOX_DIRECTORY= "sandBox";
+	String EFG_GLOSSARY_TABLES="EFG_GLOSSARY_TABLES";
+	String IMPORT_FOLDER = EFGProperties.getProperty("imports_directory");
+	String EXPORT_FOLDER = EFGProperties.getProperty("exports_directory");
+	String SQL_EXT = ".sql";
 	
 	
 	
