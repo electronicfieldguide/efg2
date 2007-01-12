@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Upload Template Resources</title>
+		<link href="css/upload.css" rel="stylesheet" type="text/css" />	
+		<script src="js/trimfunctions.js" language="JavaScript"  type="text/javascript"></script>			
+		<script src="js/prototype.js" language="JavaScript" type="text/javascript"></script>
+		<script src="js/uploads.js" language="JavaScript" type="text/javascript"></script>
+
+	    <script type="text/javascript" language="JavaScript" language="JavaScript">
+		  <!--
+		  var updater = null;
+		  var initNumber = 0;
+		  
+		  function validateForm(form){
+		  
+		  	var allowSubmit = false;
+		  	var flagNotAllEmpty = false;
+			var theForm = $(form);
+			  
+			
+			for (var i=0; i < theForm.elements.length; i++) { 
+	   			var elem = theForm.elements[i];
+	   			if (elem.type == 'file') {
+		   			if (trim(elem.value).toString() == '') {
+		   			
+		   			}
+		   			else{
+		   				flagNotAllEmpty = true;
+		   				allowSubmit = validateFormFieldsForFileType(elem);
+		   				if(allowSubmit == false){
+		   					break;
+		   				}
+		   				else{
+		   					allowSubmit = true;
+		   				}
+		   				
+		   			}
+	   			}
+	   		}
+
+	    	if(!flagNotAllEmpty){
+	    	  	printMessage('no files selected to upload');
+	    	  	return false;
+	    	 }
+	    	 else{
+	    	 	return allowSubmit;
+	    	 }
+    	 }
+		  function startStatusCheck(form)
+		  {
+		  	var isSubmit = validateForm(form);
+			if(!isSubmit){
+				return false;
+			}
+			else{
+			    $('submitButton').disabled = true;
+			     updater = new Ajax.PeriodicalUpdater(
+			                                'status',
+			                                'uploadResources',
+			                                {asynchronous:true, frequency:1, 
+			                                method: 'get', 
+			                                parameters: 'c=status', 
+			                                onFailure: reportAjaxError});
+			    return true;
+		    }
+		  }
+		
+
+		
+		  function killUpdate(message)
+		  {
+		    $('submitButton').disabled = false;
+
+			updater.stop();
+		    if(message != '')
+		    {
+		      $('status').innerHTML = '<div class="error"><b>Error processing results: ' + message + '</b></div>';
+		    }
+		    else
+		    {
+		      new Ajax.Updater('status',
+		                     'uploadResources',
+		                     {asynchronous:true, method: 'get', parameters: 'c=status', onFailure: reportAjaxError});
+		    }
+		}
+		function removeFileElement(divNumId, currentDivId, defaultDivId) {
+			if(divNumId ==defaultDivId){
+				return;
+			} 
+			 var d = document.getElementById(currentDivId);
+			 var olddiv = document.getElementById(divNumId);
+			 d.removeChild(olddiv);
+			 return;
+		}
+		function clearFileElement(divIdName) { 
+			 var d = document.getElementById(divIdName);
+			 if(d != null){
+			    var input = d.getElementsByTagName('input')[0];
+			 	if(input != null){
+			 		input.value = "";
+			 	}
+			 }
+			 return;
+		}
+		
+	
+		function addFileElement(currentDivId, defaultDivId, divExt, currentname) {
+		  var ni = document.getElementById(currentDivId);
+		 
+		  initNumber = (initNumber -1)+ 2;
+		  var newdiv = document.createElement('div');
+		  var divIdName = 'my'+initNumber + divExt;
+		  newdiv.setAttribute('id',divIdName);
+		  var a = document.createElement(a);
+		  newdiv.innerHTML = '<input name="' + currentname + '" type="file" size="100"/>' +
+		   ' <a href="#" onclick="javascript:addFileElement(\'' + currentDivId + '\',\'' + defaultDivId + '\',\'' + divExt + '\',\'' + currentname  +'\');">Add</a>' + 
+		   ' <a href="#" onclick="javascript:removeFileElement(\'' + divIdName + '\',\'' + currentDivId + '\',\'' +  defaultDivId +'\');">Remove</a>' +
+		    '<a href="#" onclick="javascript:clearFileElement(\'' + divIdName + '\');">Clear</a>';
+		  ni.appendChild(newdiv);
+		}
+	  	//-->
+		</script>
+		
+	</head>	
+	<body>	
+		  <!-- This iframe is used as a place for the post to load -->
+	  <iframe id='target_upload' name='target_upload' src='' style='display: none'></iframe>
+	
+	  <form enctype="multipart/form-data" name="form" method="post" action="uploadResources" onsubmit="return startStatusCheck(this);" target="target_upload">
+	
+		<h2>Warning: Files with same name will be overwritten!!</h2>
+		<hr/>
+
+		<div id="uploadCSS"><div class="bold">Upload CSS</div>
+			<p><a href="/efg2/templateCSSDirectory/" target="new">View css file names on server</a></p>	
+			<div id="myDivcss">
+				<div id="my0Divcss">				
+					<input name="templateCSSDirectory" type="file" size="100"/>
+					<a href="#" onclick="javascript:addFileElement('myDivcss','my0Divcss','Divcss','templateCSSDirectory');">Add</a> 
+					<a href="#" onclick="removeFileElement('my0Divcss','myDivcss','my0Divcss');">Remove</a>
+					<a href="#" onclick="clearFileElement('my0Divcss');">Clear</a>
+				</div>
+			</div>
+			<br/>
+			
+			<br/>
+			<hr></hr>
+			<br/>
+		</div>
+		<div id="uploadJS"><div class="bold">Upload Javascript</div>
+			<p><a href="/efg2/templateJavascriptDirectory/" target="new">View javascript file names on server</a></p>
+
+			<div id="myDivjs">
+				<div id="my0Divjs">				
+					<input name="templateJavascriptDirectory" type="file" size="100"/>
+					<a href="#" onclick="javascript:addFileElement('myDivjs','my0Divjs','Divjs','templateJavascriptDirectory');">Add</a> 
+					<a href="#" onclick="removeFileElement('my0Divjs','myDivjs','my0Divjs');">Remove</a>
+					<a href="#" onclick="clearFileElement('my0Divjs');">Clear</a>
+				</div>
+			</div>
+			<br/>
+		
+			<br/>
+			<hr/>
+			<br/>
+		</div>
+		<div id="uploadIM"><div class="bold">Upload images</div>
+			<p><a href="/efg2/templateImagesDirectory/" target="new">View current image file names on server</a></p>
+			<div id="myDivim">
+				<div id="my0Divim">				
+					<input name="templateImagesDirectory" type="file" size="100"/>
+					<a href="#" onclick="javascript:addFileElement('myDivim','my0Divim','Divim','templateImagesDirectory');">Add</a> 
+					<a href="#" onclick="removeFileElement('my0Divim','myDivim','my0Divim');">Remove</a>
+					<a href="#" onclick="clearFileElement('my0Divim','myDivim','my0Divim');">Clear</a>
+				</div>
+			</div>
+			<br/>
+			 <input id="submitButton" type="submit" value="Upload resources"/>
+			 <input id="resetButton" type="reset" value="clear all"/>
+			<br/>
+			<hr/>
+			<br/>
+		</div>
+		</form>
+		<div id="errorMessage"></div>
+		 <div id="status"></div>
+	</body>
+</html>
