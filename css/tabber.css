@@ -1,3 +1,4 @@
 .tabberlive .tabbertab {
-	  height:200px;
+	  height:600px;
+	  overflow:auto;
 }

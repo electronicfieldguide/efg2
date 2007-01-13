@@ -10,22 +10,21 @@
  */
  -->
 	<head>
-		<link rel="stylesheet" href="css/example.css" type="text/css" media="screen"/>
+		<link href="../css/tabberMain.css" rel="stylesheet" type="text/css" media="screen"/>
 		<link href="../css/upload.css" rel="stylesheet" type="text/css" />	
 		<link href="../css/popUpHypertext.css" rel="stylesheet" type="text/css" />
 		<script src="../js/prototype.js" language="JavaScript" type="text/javascript"></script>
 		<script src="../js/popUps.js" language="JavaScript" type="text/javascript"></script>
 	  	<script src="../js/uploads.js" language="JavaScript" type="text/javascript"></script>
-		<link rel="stylesheet" href="../css/tabber.css" type="text/css" media="screen"/>
-	<style type="text/css">
-	
-	</style>
+		<link href="../css/tabber.css" rel="stylesheet"  type="text/css" media="screen"/>
+
 	
 		<script language="JavaScript">
 		<!--	
 		var POP_UP_MESSAGE = 'The response to your requests may take a long time.Please be patient..';
-		var SUBMIT_BUTTON_ID="efg_submit_id_11";
+		
 		var erroMessagesPointer=null;	
+		var deleteMessagesPointer = null;
 		var initNumber = 0;
 		var autoClose=1;
 		var oldObject=null;
@@ -36,6 +35,7 @@
 		var datasourcelisturl = "../Listdatasources.jsp";
 		var mediaresourcelisturl ="../ListMediaResources.jsp";
 		var otherresourcelisturl ="../ListOtherResources.jsp";
+		var deletesurl="DeleteResources.jsp";
 		var exportsurl ="../export";
 		var exportsloader = null;
 		
@@ -54,14 +54,13 @@
 	    
 		var myGlobalHandlers = {
 		onCreate: function(){
-		 	$(SUBMIT_BUTTON_ID).disabled = true;
 			showProgressMessage();
 		},
 
 		onComplete: function() {
 			if(Ajax.activeRequestCount == 0){
 				popHideHyper();	
-				$(SUBMIT_BUTTON_ID).disabled = false;
+				
 			}
 		}
 	};
@@ -76,42 +75,82 @@
 		 * Include another javascript file here
 		 */
 		 var isLoaded = false;
-		function loadInputs(){
-		if(!isLoaded){
-		
-			isLoaded = true;
-			var ajax1 = new Ajax.Updater(
-			{success: 'datasources'},
-			datasourcelisturl,
-			{method: 'post', contentType: 'application/x-www-form-urlencoded', encoding: 'UTF-8', parameters: strParamsDatasources,onComplete: dummyResponse, onFailure: reportError}
-			);
-			var ajax2 = new Ajax.Updater(
-			{success: 'glossaries'},
-			datasourcelisturl,
-			{method: 'post',contentType: 'application/x-www-form-urlencoded', encoding: 'UTF-8', parameters: strParamsGlossaries,onComplete: dummyResponse, onFailure: reportError}
-			);
-
-			var ajax3 = new Ajax.Updater(
-			{success: 'mediaresources'},
-			 mediaresourcelisturl,
-			{method: 'post',contentType: 'application/x-www-form-urlencoded' ,encoding: 'UTF-8', parameters: strParamsDummy,  onComplete: dummyResponse, onFailure: reportError}
-			);
-
-			var ajax4 = new Ajax.Updater(
-			{success: 'otherresources'},
-			otherresourcelisturl,
-			{method: 'post',contentType: 'application/x-www-form-urlencoded', encoding:	'UTF-8', parameters: strParamsDummy, onComplete: dummyResponse,onFailure: reportError}
-			);
+		function loadInputs(argsObj){
+		    var ind = argsObj.index;
+		      
+			if(!isLoaded){
 			
-			}			
+				isLoaded = true;
+				var ajax1 = new Ajax.Updater(
+				{success: 'datasources'},
+				datasourcelisturl,
+				{method: 'post', contentType: 'application/x-www-form-urlencoded', encoding: 'UTF-8', parameters: strParamsDatasources,onComplete: dummyResponse, onFailure: reportError}
+				);
+				var ajax2 = new Ajax.Updater(
+				{success: 'glossaries'},
+				datasourcelisturl,
+				{method: 'post',contentType: 'application/x-www-form-urlencoded', encoding: 'UTF-8', parameters: strParamsGlossaries,onComplete: dummyResponse, onFailure: reportError}
+				);
+	
+				var ajax3 = new Ajax.Updater(
+				{success: 'mediaresources'},
+				 mediaresourcelisturl,
+				{method: 'post',contentType: 'application/x-www-form-urlencoded' ,encoding: 'UTF-8', parameters: strParamsDummy,  onComplete: dummyResponse, onFailure: reportError}
+				);
+				
+				refreshAjax();
+			}
+			else{
+				if(ind == 2 || ind == 3){
+					refreshAjax();
+				}
+			}	
+					
+		}
+		function refreshAjax(){
+			
+				var ajax41 = new Ajax.Updater(
+				{success: 'otherresources'},
+				otherresourcelisturl,
+				{method: 'post',contentType: 
+				'application/x-www-form-urlencoded',
+				 encoding:	'UTF-8', 
+				 parameters: strParamsDummy, 
+				 onComplete: dummyResponse,
+				 onFailure: reportError}
+				);
+				var params = 'className=deleteresource';
+				var ajax51 = new Ajax.Updater(
+					{success: 'dotherresources'},
+					otherresourcelisturl,
+					{method: 'post',
+					contentType: 'application/x-www-form-urlencoded', 
+					encoding:	'UTF-8', 
+					parameters: params, 
+					onComplete: dummyResponse,
+					onFailure: reportError}
+				);
+		
 		}
 		function dummyResponse(){
 		}
 		function clearErrorMessages(){
-				if(erroMessagesPointer != null){
-					erroMessagesPointer.innerHTML ="";
-				}
+			if(erroMessagesPointer != null){
+				erroMessagesPointer.innerHTML ="";
+			}
 		}
+		function clearDeleteMessages(){
+			
+			if(deleteMessagesPointer == null){
+				
+			}
+			else{
+				deleteMessagesPointer.innerHTML ="";
+			}
+			
+		}
+		
+		
 		function removeElement(currentDivId,datasourceName) {	
 			clearErrorMessages();
 			 var d = document.getElementById(currentDivId);
@@ -139,12 +178,31 @@
 			else{
 				removeElement(currentDivId,checkbox.name);
 			}		
-		}		
+		}
+		function deleteResources(deleteresources){
+			$('defg_submit_id_11').disabled = true;
+			var exports = document.getElementById(deleteresources);
+			var inputs = exports.getElementsByTagName("input");
+  			var query = formData2QueryString(inputs);
+  			
+  			var ajaxD = new Ajax.Request(
+			deletesurl, 
+			{
+				method: 'post', 
+				contentType: 'application/x-www-form-urlencoded', 
+				encoding:	'UTF-8',
+				parameters: query, 
+				onComplete: handleDeletes, 
+				onFailure: handleDeletes}
+			);
+		}
+		
 		function submitForm(exportData){
-			
+			$('efg_submit_id_11').disabled =true;
 			var exports = document.getElementById(exportData);
 			var inputs = exports.getElementsByTagName("input");
   			var query = formData2QueryString(inputs);
+  		
   			
   			var loader = new Ajax.Request(
 			exportsurl, 
@@ -157,12 +215,30 @@
 				onFailure: reportError
 			});
 		}
+		function handleDeletes(request){
+			
+			clearDeleteMessages();
+			
+			var resp = request.responseText;
+			
+			deleteMessagesPointer = document.getElementById('derrorMessages');
+			if(deleteMessagesPointer == null){
+			}
+			else{
+				deleteMessagesPointer.innerHTML = resp;
+			}
+			//refresh;
+			var params = 'className=deleteresource';
+			refreshAjax();
+			$('defg_submit_id_11').disabled = false;
+			alert("done");
+		}		
 		
 	/**
 	* Handled when requests for the zip file completes successfully
 	*/
 	function handleZipResponse(loader,obj){
-	
+		
 		clearErrorMessages();
 	 	var response = loader.responseXML.getElementsByTagName('div')[0]; // grabs first <div>
 	 	var forwardurl = response.firstChild.nodeValue; 
@@ -174,12 +250,13 @@
 		else{
 			erroMessagesPointer = document.getElementById('errorMessages');
 			erroMessagesPointer.innerHTML =forwardurl;
+			$('efg_submit_id_11').disabled =false;
 		}
-		popHideHyper();	
+		//popHideHyper();	
 	}
 	function forwardRequests(forwardurl){
 		popHideHyper();	
-		$(SUBMIT_BUTTON_ID).disabled = false;
+		$('efg_submit_id_11').disabled = false;
 		
 		var divzip = document.getElementById('placezipHere');
 		divzip.innerHTML = '<a href="' + forwardurl + '"> Download zip file </a>'; 
@@ -212,7 +289,7 @@
 	                       strSubmit += myname + 
 	                       '=' + escape(myNode.value) + '&';
 	               break;
-	          	}
+	        }
 	   	}
 	   	 strSubmit = strSubmit + strLastElemName;
    	
@@ -226,12 +303,13 @@
 		  }
 		  function startStatusCheck()
 		  {
-			
+			 $('submitButton').disabled = true;
 			if(!validateForm()){
+			  $('submitButton').disabled = false;
 				return false;
 			}
 			else{
-			    $('submitButton').disabled = true;
+			  
 			
 			    updater = new Ajax.PeriodicalUpdater(
 			                                'status',
@@ -283,7 +361,7 @@ var tabberOptions = {
   /* Optional: code to run after each tabber object has initialized */
 
   'onLoad': function(argsObj) {
-   
+ 	loadInputs(argsObj);  
  
   },
 
@@ -294,11 +372,11 @@ var tabberOptions = {
 
   'onClick': function(argsObj) {
 
-    var t = argsObj.tabber; /* Tabber object */
+   // var t = argsObj.tabber; /* Tabber object */
   
     var i = argsObj.index; /* Which tab was clicked (0 is the first tab) */
     var e = argsObj.event; /* Event object */
-
+	loadInputs(argsObj);
   },
 
   /* Optional: set an ID for each tab navigation link */
@@ -308,7 +386,7 @@ var tabberOptions = {
 		 	
 		 	//-->
 	</script>
-	<script type="text/javascript" src="javascripts/../../js/tabber.js"></script>
+	<script type="text/javascript" src="../js/tabber.js"></script>
 	</head>
 	<body>
 		<div class="tabber">
@@ -348,7 +426,7 @@ var tabberOptions = {
 						<!-- Check inputs before you submit -->
 						<div id="exportData"></div>
 						<br/>
-						<p id="errorMessages" class="errorMessage"></p>
+						<div id="errorMessages" class="errorMessage"></div>
 						<div id="popUpMessageParent">
 							<div id="popUpMessage" class="popUp"> Loading.. </div>
 						</div>
@@ -356,20 +434,36 @@ var tabberOptions = {
 						<input name="submit" id="efg_submit_id_11" type="button" value="Get Data" onclick="javascript:submitForm('exportData');"/>
 				
 					</div>
-					<div id="placezipHere">Link to zip file appears here</div>
+					<div id="placezipHere">Link to zip file appears here.</div>
 			</div>
-		
+			<div class="tabbertab">
+				<h2>Delete resources</h2>
+				<div id="dotherresources">
+				</div>	
+				<div>
+					<!-- Check inputs before you submit -->
+					<div id="deleteresources"></div>
+					<br/>
+					<div id="derrorMessages" class="errorMessage"></div>
+					<div id="dpopUpMessageParent">
+						<div id="dpopUpMessage" class="popUp"> Loading.. </div>
+					</div>					
+					<input name="submit" id="defg_submit_id_11" type="button" 
+					value="Delete selected" onclick="javascript:deleteResources('deleteresources');"/>
+				</div>
+							
+			</div>
 		</div>
 		
-<script type="text/javascript">
-
-/* Since we specified manualStartup=true, tabber will not run after
-   the onload event. Instead let's run it now, to prevent any delay
-   while images load.
-*/
-
-tabberAutomatic(tabberOptions);
-
-</script>
+		<script type="text/javascript">
+		
+		/* Since we specified manualStartup=true, tabber will not run after
+		   the onload event. Instead let's run it now, to prevent any delay
+		   while images load.
+		*/
+		
+		tabberAutomatic(tabberOptions);
+		
+		</script>
 	</body>
 </html>

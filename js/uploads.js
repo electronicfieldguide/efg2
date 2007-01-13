@@ -105,7 +105,7 @@
   */
  function reportAjaxError(request)
  {
-    $('submitButton').disabled = false;
+    //$('submitButton').disabled = false;
 
 	$('status').innerHTML = '<div class="error"><b>Error communicating with server. Please try again.</b></div>';
   }

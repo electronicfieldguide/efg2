@@ -1,12 +1,20 @@
 <%@page import="project.efg.util.EFGImportConstants,java.io.File,project.efg.util.EFGUniqueID" %>
 
 	<%
+			boolean isClassExists = true;
+			String defaultclassname = "otherresources"; 
+			String classname = request.getParameter("className");
+			if(classname == null || 
+					"".equals(classname.trim())){
+				classname = defaultclassname;
+				isClassExists = false;
+			}
 			String realPath = getServletContext().getRealPath("/");
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(realPath);
 			buffer.append(File.separator);
 			
-			String classname = "otherresources"; 
+			
 			
              String[] titles ={"Select css files to export","Select javascript files to export","Select images files to export"}; 
              String[] directories ={"templateCSSDirectory","templateJavascriptDirectory","templateImagesDirectory"}; 
@@ -34,8 +42,12 @@
 						File file = files[j];
 						String filename = file.getName();
 						String id = "Otherresource_" + EFGUniqueID.getID();				
-					%>
-					<input class="<%=classname%>" id="<%=id%>" type="checkbox" name="<%=directories[i]+ "/" + filename%>" onclick="javascript:checkClick(this,'exportData');"/>
+					
+					if(isClassExists){%>
+						<input class="<%=classname%>" id="<%=id%>" type="checkbox" name="<%=directories[i]+ "/" + filename%>" onclick="javascript:checkClick(this,'deleteresources');"/>
+					<%} else{ %>
+						<input class="<%=classname%>" id="<%=id%>" type="checkbox" name="<%=directories[i]+ "/" + filename%>" onclick="javascript:checkClick(this,'exportData');"/>					
+					<%} %>
 					<label for="<%=id%>"><%=filename%></label> <br/>
 					<% 
 				}
