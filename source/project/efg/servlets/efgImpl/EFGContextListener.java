@@ -222,6 +222,7 @@ public class EFGContextListener implements ServletContextListener {
 		File[] list = dir.listFiles();
 		
 		for (int f = 0; f < list.length; f++) {
+			EFGUtils.log("Removing: " + list[f].getAbsolutePath());
 			this.deleteDir(list[f]);
 		}		
 	}
@@ -249,17 +250,20 @@ public class EFGContextListener implements ServletContextListener {
 	private synchronized void cleanImportExportDirectories() {
 		StringBuffer fileLocationBuffer = new StringBuffer();
 		fileLocationBuffer.append(servletContext.getRealPath("/"));
+		fileLocationBuffer.append(File.separator);
 		
 		StringBuffer cBuffer = new StringBuffer(fileLocationBuffer.toString());
 		cBuffer.append("imports");
 		cBuffer.append(File.separator);
-		File dir = new File(fileLocationBuffer.toString());
+		File dir = new File(cBuffer.toString());
+		
 		cleanCommonImportExport(dir);
 		
 		cBuffer = new StringBuffer(fileLocationBuffer.toString());
 		cBuffer.append("exports");
 		cBuffer.append(File.separator);
-		dir = new File(fileLocationBuffer.toString());
+		dir = new File(cBuffer.toString());
+		
 		cleanCommonImportExport(dir);
 	}
 	private boolean marshal(FileWriter writer, TaxonPageTemplates tps) {
@@ -667,6 +671,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.4  2007/01/13 03:22:14  kasiedu
+// no message
+//
 // Revision 1.3  2007/01/12 15:04:04  kasiedu
 // no message
 //

@@ -150,9 +150,19 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 				SqlRowSetMetaData metaData = rs.getMetaData(); 
 				 int columnCount = metaData.getColumnCount();
 	            String columnNames = getColumnNames(metaData);
-	           
+	            result.append("\n--");
+	            result.append("\n-- Dumping data for table ");
+	            result.append(tableName);
+	            result.append("\n--\n");
+	            result.append("/*!40000 ALTER TABLE ");
+	            result.append(tableName);
+	            result.append(" DISABLE KEYS */;");
+
+
 	            // Now we can output the actual data
-	            result.append("\n\n-- Data for "+tableName+"\n");
+	           
+	            result.append("\nLOCK TABLES " + tableName + " WRITE;");
+	           
 	            while (rs.next()) {
 	                result.append("INSERT INTO ");
 	                result.append(tableName);
@@ -179,6 +189,7 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 	                result.append(");\n");
 	               
 	            }
+	            result.append("\nUNLOCK TABLES;");
 	            return result.toString();
 		    }
 	}

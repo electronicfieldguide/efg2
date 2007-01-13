@@ -82,7 +82,10 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 				
 				this.isCreate = true;
 			}
-			else if(toLower.startsWith("insert")){
+			else if((toLower.startsWith("insert")) ||
+					(toLower.startsWith("lock")) ||
+					(toLower.startsWith("drop")) ||
+					(toLower.startsWith("unlock"))){
 				this.isCreate = false;
 				this.executeQuery(line);
 			}
@@ -94,7 +97,7 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 					this.isCreate = false;
 				}
 			}
-			else if(toLower.startsWith("--")){
+			else if((toLower.startsWith("--")) || (toLower.startsWith("/*"))){
 				this.isCreate = false;
 			}
 			else{

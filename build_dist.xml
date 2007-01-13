@@ -95,17 +95,9 @@ to make a distribution call makeImport:
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
 		<mkdir dir="${deploy.home}/efg2efg2export"/>
-		<mkdir dir="${deploy.home}/efg2efg2export/javascripts"/>
-		<mkdir dir="${deploy.home}/efg2efg2export/css"/>
-		
+
 		<copy todir="${deploy.home}/efg2efg2export">
 			<fileset dir="${efg2.home}/efg2efg2export"/>
-		</copy>
-		<copy todir="${deploy.home}/efg2efg2export/javascripts">
-			<fileset dir="${efg2.home}/efg2efg2export/javascripts"/>
-		</copy>
-		<copy todir="${deploy.home}/efg2efg2export/css">
-			<fileset dir="${efg2.home}/efg2efg2export/css"/>
 		</copy>
 
 		<copy todir="${deploy.home}/EFGImages/Het">

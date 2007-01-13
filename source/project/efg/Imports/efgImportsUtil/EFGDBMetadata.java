@@ -132,7 +132,18 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
 	 */
 	public Object processMetaData(DatabaseMetaData dbmd) throws SQLException, MetaDataAccessException {
 			StringBuffer results = new StringBuffer();
-			results.append("\n\n-- "+this.getTableName());
+
+		/*	--
+			-- Table structure for table `efg_glossary_tables`
+			--
+
+			DROP TABLE IF EXISTS `efg_glossary_tables`;*/
+			results.append("\n\n-- ");
+			results.append("\n\n-- Table structure for table `"+this.getTableName() + "`");
+			results.append("\n\n-- ");
+			results.append("\nDROP TABLE IF EXISTS ");
+			results.append(this.getTableName());
+			results.append(";");
 			results.append("\nCREATE TABLE "+this.getTableName()+" (\n");
 
 			results.append(this.getColumns(dbmd));
