@@ -28,7 +28,7 @@
 package project.efg.servlets.efgServletsUtil;
 
 import project.efg.servlets.efgInterface.OperatorInterface;
-import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -39,7 +39,7 @@ public class EqualsOperator implements OperatorInterface {
 		super();
 	}
 	public String toString(){
-		return EFGImportConstants.EQUAL_SYMBOL;
+		return RegularExpresionConstants.EQUAL_SYMBOL;
 	}
 
 }

@@ -11,7 +11,6 @@ import project.efg.servlets.efgInterface.HandleStatInputAbstract;
 import project.efg.servlets.efgInterface.OperatorInterface;
 import project.efg.servlets.efgInterface.StatisticalMesureComparatorInterface;
 import project.efg.servlets.factory.OperatorFactory;
-import project.efg.util.EFGImportConstants;
 import project.efg.util.RegularExpresionConstants;
 
 /**
@@ -130,8 +129,8 @@ public class HandleStatInput extends HandleStatInputAbstract {
 		if(userValues.indexOf(RegularExpresionConstants.ORSEP) > -1) {
 			params = userValues.split(RegularExpresionConstants.ORSEP);
 		}
-		else if(userValues.indexOf(EFGImportConstants.ANDSEP) > -1) {
-			params = userValues.split(EFGImportConstants.ANDSEP);
+		else if(userValues.indexOf(RegularExpresionConstants.ANDSEP) > -1) {
+			params = userValues.split(RegularExpresionConstants.ANDSEP);
 			isAnd = true;
 			
 		}
@@ -177,9 +176,9 @@ public class HandleStatInput extends HandleStatInputAbstract {
 		    	  if(matcher.find()) {
 		    		  int index = userValues.lastIndexOf("-");
 		    		  if(index > -1) {
-		    			  String firstPart = EFGImportConstants.GREATERTHANEQUAL_SYMBOL + " "+ userValues.substring(0,index-1);
-		    			  String secondPart =EFGImportConstants.LESSTHANEQUAL_SYMBOL + " "+  userValues.substring(index,userValues.length());
-		    			  return firstPart + " " + EFGImportConstants.ANDSEP + " " + secondPart;
+		    			  String firstPart = RegularExpresionConstants.GREATERTHANEQUAL_SYMBOL + " "+ userValues.substring(0,index-1);
+		    			  String secondPart =RegularExpresionConstants.LESSTHANEQUAL_SYMBOL + " "+  userValues.substring(index,userValues.length());
+		    			  return firstPart + " " + RegularExpresionConstants.ANDSEP + " " + secondPart;
 		    		  }
 		    	  }
 		    	 else {
@@ -189,9 +188,9 @@ public class HandleStatInput extends HandleStatInputAbstract {
 		    		 if(matcher.find()) {
 		    			  int index = userValues.lastIndexOf("-");
 		    			  if(index > -1) {
-		    				  String firstPart = EFGImportConstants.GREATERTHANEQUAL_SYMBOL + " "  + userValues.substring(0,index);
-		    				  String secondPart = EFGImportConstants.LESSTHANEQUAL_SYMBOL + " " + userValues.substring(index+1,userValues.length());
-		    				  return firstPart + " " + EFGImportConstants.ANDSEP + " " + secondPart;
+		    				  String firstPart = RegularExpresionConstants.GREATERTHANEQUAL_SYMBOL + " "  + userValues.substring(0,index);
+		    				  String secondPart = RegularExpresionConstants.LESSTHANEQUAL_SYMBOL + " " + userValues.substring(index+1,userValues.length());
+		    				  return firstPart + " " + RegularExpresionConstants.ANDSEP + " " + secondPart;
 		    			  }
 		    		  }
 		    	  }

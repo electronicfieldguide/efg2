@@ -89,5 +89,13 @@ public interface RegularExpresionConstants {
 	 Pattern escaperightParenPattern = Pattern.compile(ESCAPERIGHTPARENSEP, 
 	Pattern.CASE_INSENSITIVE);
 	 Pattern escapecaratPattern = Pattern.compile(ESCAPECARAT_SEPARATOR);
+	String FORWARD_SLASH = "/";
+	String ANDSEP = "AND";
+	String EQUAL_SYMBOL= "EQ";
+	String GREATERTHAN_SYMBOL= "GT";
+	String LESSTHAN_SYMBOL= "LT";
+	String GREATERTHANEQUAL_SYMBOL= GREATERTHAN_SYMBOL + EQUAL_SYMBOL;
+	String LESSTHANEQUAL_SYMBOL= LESSTHAN_SYMBOL + EQUAL_SYMBOL;
+	String PLUS_SYMBOL = "+";
 
 }

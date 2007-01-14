@@ -28,7 +28,7 @@
 package project.efg.servlets.efgServletsUtil;
 
 import project.efg.servlets.efgInterface.OperatorInterface;
-import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -39,7 +39,7 @@ public class GreaterThanOperator implements OperatorInterface {
 		super();
 	}
 	public String toString(){
-		return EFGImportConstants.GREATERTHAN_SYMBOL;
+		return RegularExpresionConstants.GREATERTHAN_SYMBOL;
 	}
 
 }

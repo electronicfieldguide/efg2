@@ -13,7 +13,7 @@ public interface ZipInterface{
 	String  EFG_THUMS_DIR=EFGImagesConstants.EFGIMAGES_THUMBS;
 	String  SQL_DIR=EFGImportConstants.SQL_DIR;
 	int MAX_NUMBER_OF_CHARS=30;
-	String SQL_EXT=".sql";
+	String SQL_EXT=EFGImportConstants.SQL_EXT;
 	int BUF_SIZE = 8 * 1024;
 }
 	

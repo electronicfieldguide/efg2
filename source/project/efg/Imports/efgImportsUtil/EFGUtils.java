@@ -100,7 +100,7 @@ public class EFGUtils {
 	 *            The uri form of a string to parse
 	 */
 	public synchronized static String parseEFGSEP(String string) {
-		string = string.replaceAll(project.efg.util.EFGImportConstants.FORWARD_SLASH,
+		string = string.replaceAll(project.efg.util.RegularExpresionConstants.FORWARD_SLASH,
 				project.efg.util.EFGImportConstants.EFG_SEP);
 		return string.replaceAll(project.efg.util.RegularExpresionConstants.COLONSEP,
 				project.efg.util.EFGImportConstants.EFG_COLON);
@@ -112,7 +112,7 @@ public class EFGUtils {
 	 */
 	public synchronized static String reverseParseEFGSEP(String string) {
 		string = string.replaceAll(project.efg.util.EFGImportConstants.EFG_SEP,
-				project.efg.util.EFGImportConstants.FORWARD_SLASH);
+				project.efg.util.RegularExpresionConstants.FORWARD_SLASH);
 		return string.replaceAll(project.efg.util.EFGImportConstants.EFG_COLON,
 				project.efg.util.RegularExpresionConstants.COLONSEP);
 	}
@@ -324,6 +324,9 @@ public class EFGUtils {
 }
 
 // $Log$
+// Revision 1.4  2007/01/14 17:29:41  kasiedu
+// no message
+//
 // Revision 1.3  2007/01/14 15:54:57  kasiedu
 // no message
 //
