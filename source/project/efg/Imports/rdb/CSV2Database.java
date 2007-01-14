@@ -464,7 +464,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		if (name == null) {
 			return null;
 		}
-		return EFGUtils.getName(name) + "_" + EFGUniqueID.getID();
+		return EFGUtils.getDataBaseTableName(name) + "_" + EFGUniqueID.getID();
 	}
 
 	/**
@@ -1155,9 +1155,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 * Create a name for the Metadata table if none is supplied
 	 */
 	private String createMetadataTableName() {
-		String meta = this.tableName + "Info";
+		String meta = this.tableName + EFGImportConstants.METAFILESUFFIX;
 		log.debug("About to create Metadata table name: '" + meta + "'");
-		return meta;
+		return meta.toLowerCase();
 	}
 
 	/**

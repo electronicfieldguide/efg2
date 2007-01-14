@@ -56,7 +56,7 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgInterface.SynopticKeyTreeModelInterface;
 import project.efg.Imports.factory.SynopticKeyTreeModelFactory;
-import project.efg.util.EFGImportConstants;
+import project.efg.util.EFGImagesConstants;
 
 public class FileTree extends JTree implements Autoscroll {
 
@@ -312,8 +312,8 @@ public class FileTree extends JTree implements Autoscroll {
 	private void deleteFromThumbNailsDir(File file){
 		String imageName = file.getAbsolutePath();
 		String thumbsName = replace(imageName,
-				EFGImportConstants.EFGIMAGES,
-				EFGImportConstants.EFGIMAGES_THUMBS);
+				EFGImagesConstants.EFG_IMAGES_DIR,
+				EFGImagesConstants.EFGIMAGES_THUMBS);
 		
 		File thumbsFile = new File(thumbsName);
 		if (thumbsFile.exists()) {

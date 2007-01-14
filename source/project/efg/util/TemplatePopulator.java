@@ -110,7 +110,7 @@ public class TemplatePopulator implements EFGImportConstants{
 			String groupText = group.getText();
 			
 			String key = null;
-			String constructor =EFGImportConstants.COLON_SEPARATOR+  groupID + EFGImportConstants.COLON_SEPARATOR + groupRank;
+			String constructor =RegularExpresionConstants.COLON_SEPARATOR+  groupID + RegularExpresionConstants.COLON_SEPARATOR + groupRank;
 			if((groupLabel != null)&&(!groupLabel.trim().equals(""))){
 				key = EFGImportConstants.GROUP_LABEL + constructor;
 					
@@ -131,17 +131,17 @@ public class TemplatePopulator implements EFGImportConstants{
 				String charValue = characterVal.getValue();
 				if((charLabel != null)&&(!charLabel.trim().equals(""))){
 					key = EFGImportConstants.CHARACTER_LABEL + constructor +
-					EFGImportConstants.COLON_SEPARATOR + charRank;
+					RegularExpresionConstants.COLON_SEPARATOR + charRank;
 					table.put(key,charLabel);
 				}
 				if((charText != null)&&(!charText.trim().equals(""))){
 					key = EFGImportConstants.CHARACTER_TEXT_LABEL + constructor+
-					EFGImportConstants.COLON_SEPARATOR + charRank;
+					RegularExpresionConstants.COLON_SEPARATOR + charRank;
 					table.put(key,charText);
 				}
 				if((charValue != null)&&(!charValue.trim().equals(""))){
 					key = EFGImportConstants.GROUP + constructor+
-					EFGImportConstants.COLON_SEPARATOR + charRank;
+					RegularExpresionConstants.COLON_SEPARATOR + charRank;
 					table.put(key,charValue);
 				}
 				GroupsType groupsT = item.getGroups();

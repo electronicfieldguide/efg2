@@ -68,6 +68,7 @@ import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.efgInterface.EFGWebAppsDirectoryInterface;
 import project.efg.Imports.factory.EFGWebAppsDirectoryFactory;
 import project.efg.util.DnDFileBrowserMain;
+import project.efg.util.EFGImagesConstants;
 import project.efg.util.EFGImportConstants;
 
 import com.Ostermiller.util.Browser;
@@ -161,7 +162,7 @@ public class ImportMenu extends JFrame {
 				+ File.separator + project.efg.util.EFGImportConstants.EFG_APPS;
 
 		this.webappsDirectory = EFGWebAppsDirectoryFactory.getEFGWebAppsDirectory(pathToServer);
-		this.webappsDirectory.setImagesDirectory(EFGImportConstants.EFGIMAGES);
+		this.webappsDirectory.setImagesDirectory(EFGImagesConstants.EFG_IMAGES_DIR);
 		this.dbObject = dbObject;
 		if(this.dbObject == null){
 			log.error("DBObject is null inside ImportMenu");

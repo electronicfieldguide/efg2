@@ -4,7 +4,6 @@ package project.efg.util;
 import java.io.File;
 import java.util.Properties;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 /**
  * $Id$
@@ -36,7 +35,6 @@ public interface EFGImportConstants {
 	String SAMPLE_NEW_DISPLAY_NAME = "EFG2SampleDisplayName";
 	String SAMPLE_LISTS_FIELD = "SampleListFields";
 	String SAMPLE_DATA_LOCATION = "SampleDataLocation";
-	
 	String TEMPLATE_KEY = "EFGKey";
 	
 	
@@ -58,8 +56,6 @@ public interface EFGImportConstants {
 	
 	String HTML_EXT = ".html";
 	
-	String DEFAULT_PLATES_DISPLAY = "Default Thumbnails";
-	String DEFAULT_LISTS_DISPLAY = "Default Text List";
 	String KEY_METADATA_HELP = "/help/metadataHelp.html";
 	String MAIN_DEPLOY_HELP="/help/mainDeployHelp.html";
 	String IMAGE_DEPLOY_HELP="/help/imagesDeployHelp.html";
@@ -68,162 +64,50 @@ public interface EFGImportConstants {
 	String JSP_NAME = "jsp";
 	String TEMPLATE_UNIQUE_NAME="templateUniqueName";
 	String GUID="guid";
-	String TEMPLATE_MAP_NAME="templateMap.out";
 	String TEMPLATE_SUCCESS_PAGE = "/UploadSuccess.jsp";
 	String templateImagesDirectory ="templateImagesDirectory";
 	String templateCSSDirectory="templateCSSDirectory";
 	String templateJavascriptDirectory="templateJavascriptDirectory";
 	String ITEMTYPE ="efgItemtype";
-	int NUMBER_OF_TAXON_ON_PAGE=100;
+	
+	
+	/**
+	 * Used by JSP to upload resources
+	 */
 	int TEMPLATE_IMAGES_DEFAULT_SIZE=1000000;
 	int TEMPLATE_CSS_DEFAULT_SIZE=1000000;
 	int TEMPLATE_JAVASCRIPT_DEFAULT_SIZE=1000000;
 	
-	String IMGTYPE= "imageType";
-	String CSSTYPE ="cssType";
-	String JAVASCRIPTYPE = "javascriptType";
 	
+	/*
+	 * 
+	 * Template XML File constants
+	 * 
+	 */
 	String GROUP_TEXT_LABEL = "gtl";
-
 	String GROUP_LABEL = "gl";
-
 	String GROUP = "group";
 	String EFG_SEP = "_EFG_SEP_";
-
 	String EFG_COLON = "EFG_COLON";
-
-	String COMMASEP = ",";
-
-	String CAPTION = "caption";
-
-	String ORSEP = "OR";
-
-	//used for server name construction
-	String COLONSEP = ":";
-	String ESCAPECOLONSEP = "\\\\:";
-
-	String SEMICOLON = ";";
-
-	String PIPESEP = "\\|";
-	String ESCAPEPIPESEP = "\\\\\\|";
-	
-	String PIPESEP_PARSE="|";
-	String DASHSEP = "-";
-	String DASHSEPREG = "\\-";
-	String ESCAPEDASHSEPREG = "\\\\\\-";
-	String LEFTPARENSEP = "\\(";
-	String ESCAPELEFTPARENSEP = "\\\\\\(";
-	String LEFTPAREN="(";
-	String RIGHTPAREN=")";
-	String matchNumberStr = "\\d+$";
-	String RIGHTPARENSEP = "\\)";
-	String ESCAPERIGHTPARENSEP = "\\\\\\)";
-	String[] STR_2_REMOVE = {"\\(","\\)"};
-	String CARAT_SEPARATOR="\\^";
-	String ESCAPECARAT_SEPARATOR="\\\\\\^";
-	String ORPATTERN = "\\s*or\\s*";
-	String ANDPATTERN = "\\s*and\\s*";
-	String ORCOMMAPATTERN="([,]|([ ]+(or)[ ]))";
-	String ESCAPEORCOMMAPATTERN="\\\\([,]|([ ]+(or)[ ]))";
-    String LISTSEP="#";
-    String ESCAPELISTSEP="\\\\#";
-	String COLON_SEPARATOR = COLONSEP;
-	String NOPATTERN ="----#----";
-	String matchNumbeAtEnd = "^\\d+$|^-\\d+$";
-	
-	String matchNumberDashNumber = "\\d+\\s*--?\\s*\\d+";
-	//A number followed by 2 dashes 
-	String matchNumberDashDash = "\\d+\\s*-\\s*-";
-//	A number followed by a dashes 
-	 String matchNumberDash = "\\d+\\s*-";
-	 
-	String patternStr = "[A-Z]+";// 
-
-	//PATTERNS
-	Pattern matchNumberDashNumberPattern = Pattern.compile(matchNumberDashNumber);
-	Pattern matchNumberDashDashPattern = Pattern.compile(matchNumberDashDash);
-	Pattern matchNumberDashPattern = Pattern.compile(matchNumberDash);
-	
-	Pattern matchNumberPattern = Pattern.compile(matchNumbeAtEnd);
-	Pattern matchNumberAtEndPattern = Pattern.compile(matchNumberStr);
-	Pattern spacePattern = Pattern.compile("\\s");
-	Pattern equalsPattern = Pattern.compile("=");	
-	Pattern colonPattern = Pattern.compile(COLON_SEPARATOR);	
-	Pattern caratPattern = Pattern.compile(CARAT_SEPARATOR);
-	Pattern rightParenPattern = Pattern.compile(EFGImportConstants.RIGHTPARENSEP, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern leftParenPattern = Pattern.compile(EFGImportConstants.LEFTPARENSEP, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern dashParenPattern =  Pattern.compile(EFGImportConstants.DASHSEPREG, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern pipePattern = Pattern.compile(EFGImportConstants.PIPESEP, Pattern.CASE_INSENSITIVE);
-	Pattern catPattern = Pattern.compile(EFGImportConstants.ORCOMMAPATTERN, Pattern.CASE_INSENSITIVE);
-	Pattern commaPattern = Pattern.compile(EFGImportConstants.COMMASEP, Pattern.CASE_INSENSITIVE);
-	Pattern noPattern = Pattern.compile(EFGImportConstants.NOPATTERN, Pattern.CASE_INSENSITIVE);
-	Pattern listSepPattern = Pattern.compile(EFGImportConstants.LISTSEP, Pattern.CASE_INSENSITIVE);
-	Pattern alphaPattern = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
-	
-
-	//ESCAPE PATTERNS
-	Pattern escapecolonPattern = Pattern.compile(ESCAPECOLONSEP);
-	Pattern escapepipePattern = Pattern.compile(EFGImportConstants.ESCAPEPIPESEP,
-			Pattern.CASE_INSENSITIVE);
-	Pattern escapecatPattern = Pattern.compile(EFGImportConstants.ESCAPEORCOMMAPATTERN, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern escapecommaPattern = Pattern.compile(EFGImportConstants.COMMASEP, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern escapenoPattern = Pattern.compile(EFGImportConstants.NOPATTERN, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern escapelistSepPattern = Pattern.compile(EFGImportConstants.ESCAPELISTSEP, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern escapedashParenPattern =  Pattern.compile(EFGImportConstants.ESCAPEDASHSEPREG, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern escapeleftParenPattern = Pattern.compile(EFGImportConstants.ESCAPELEFTPARENSEP, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern escaperightParenPattern = Pattern.compile(EFGImportConstants.ESCAPERIGHTPARENSEP, 
-			Pattern.CASE_INSENSITIVE);
-	Pattern escapecaratPattern = Pattern.compile(ESCAPECARAT_SEPARATOR);
-	
-	
-	
 	String CHARACTER_TEXT_LABEL = "ctl";
 	String CHARACTER_LABEL = "cl";
-	String XSL_SEARCH_GROUPS = "xslSearchAllGroups";
-	String SEARCH_GROUP = "searchPageGroups";
-	String IMAGES_MAX_DIM="imagemaxdim";
+	
+	
+
+	/*
+	 * EFG_RDB Table Column names
+	 * 
+	 */
 	String DS_DATA_COL= "DS_DATA";
 	String DISPLAY_NAME_COL="DISPLAY_NAME";
 	String DS_METADATA_COL = "DS_METADATA";
-	String TAXON_PAGE_XSL_COL="XSL_FILENAME_TAXON";
 	String SEARCH_PAGE_PLATES_XSL_COL="XSL_FILENAME_SEARCHPAGE_PLATES";
 	String SEARCH_PAGE_LISTS_XSL_COL="XSL_FILENAME_SEARCHPAGE_LISTS";
 	
-	int OS_CONSTANT = 1;
-
-	// Using relational database
-	int RDB_CONSTANT = 2;
-
-	// A property name for the maximum dimension property of Images
-	String MAX_DIM_NAME = "EFG_MAX_DIM";
-	String MAX_DIM_STR = "imagemaxdim";
-	// A property name for the directory holding EFG images
-	String EFG_IMAGES_DIR_NAME = "EFG_IMAGES_DIR";
-
-	// A property name for the directory holding EFG images
-	String EFG_THUMB_NAILS_DIR_NAME = "EFG_THUMB_NAILS_DIR";
-
-	// The parent directory where all EFGImages can be found
-	String EFG_IMAGES_DIR = "EFGImages";
-
-	// The parent directory where all thumbnail generated images are placed
-	String EFG_THUMB_NAILS_DIR = "EFG_ThumbNails_EFG";
-
-	// READ FROM A PROPERTIES FILE
-	String MAX_DIM = "150";
 	
-
-	String XSL_PROPERTIES_FILE = "XSLProps.properties";
-
+	/**
+	 * Servlet cosntants
+	 */
 	String EFG_KEYWORDS_PROPERTIES = "queryKeyWords.properties";
 	//no hits page
 	String NO_MATCH_PAGE="SearchPage_nohits.jsp";
@@ -231,52 +115,22 @@ public interface EFGImportConstants {
 	String APPLYXSL="ApplyXSL";
 	String ERROR_PAGE="ErrorPage.jsp";
 	String UNIQUEID_STR="uniqueID";
-	String EFGIMAGES_THUMBS = "efgimagesthumbs";
-
-	String EFGIMAGES = "EFGImages";
-
-	String DEFAULT_MAX_DIM = "150";
-
-	
 	String ISDEFAULT_STR="isDefault";
 	String XSL_STRING = "xslName";
-
+	String DEFAULT_PLATES_DISPLAY = "Default Thumbnails";
+	String DEFAULT_LISTS_DISPLAY = "Default Text List";
 	String SUBMIT = "submit";
 
 	String DATABASE_NAME = "efg";
     String ANY_STR = "any";
-	String CREATE_DATABASE_QUERYBASE = "CREATE DATABASE IF NOT EXISTS ";
-
-	String DEFAULTQUERYBASE = "SELECT * FROM ";
-
-	String FILEMAKERURI = "jdbc:odbc:FileMaker_Files";
-
-	String JDBCODBCCLASS = "sun.jdbc.odbc.JdbcOdbcDriver";
-
-	String XML = "xml";
-	String TAXONSIZE_STR="taxonSize";
-
-	String RESULT_SET = "resultSet";
-
-	String SEARCH_RESULTS = "SearchResult";
-
-	String TEXT_HTML = "text/html";
+    String TAXONSIZE_STR="taxonSize";
+    String RESULT_SET = "resultSet";
+    String TEXT_HTML = "text/html";
 	String TEXT_XML = "text/xml";
-	
-	
-
-	String DIGIR_TIME = "yyyy-MM-dd'T'hh:mm:ss";
-
-	String DIGIR_NAMESPACE = "http://www.namespaceTBD.org/digir";
-
-	String SEARCHSTR = "searchStr";
-
 	String HTML = "HTML";
-
-	String DIGIR = "digir";
-	
+	String XML = "xml";
+	String SEARCHSTR = "searchStr";
 	String REQUEST_TYPE="request_type";
-
 	String DATASOURCE_NAME = "dataSourceName";
 
 	String MAX_DISPLAY = "maxDisplay";
@@ -288,23 +142,10 @@ public interface EFGImportConstants {
 	String DISPLAY_FORMAT = "displayFormat";
 	String DISPLAY_NAME="displayName";
 	String METAFILESUFFIX = "Info";
-
-	String EXCEL_EXT = ".xls";
+	
 	String TEMPLATE_ERROR_PAGE = "/templateJSP/TemplateError.jsp";
 	String TEMPLATE_SCHEMA_NAME = "TaxonPageTemplate.xsd";
 	String XML_EXT = ".xml";
-
-	String DATAFILESUFFIX = "Data";
-
-	String DATA_XML_EXT = "." + DATAFILESUFFIX + XML_EXT;
-
-	String METADATA_XML_EXT = "." + METAFILESUFFIX + XML_EXT;
-
-	String XML_PROCESSED_DIR = "processedXML";
-
-	String PLATES = "Plates";
-
-	String LISTS = "Lists";
 
 	String AMP = "&";
 
@@ -315,7 +156,21 @@ public interface EFGImportConstants {
 	String XSL_EXT = ".xsl";
 	String DEFAULT_SEARCH_FILE ="defaultSearchFile.xsl";
 	String DEFAULT_TAXON_PAGE_FILE ="defaultTaxonPageFile.xsl";
+
+
+
 	
+	
+	
+	/**
+	 * DIGIR related stuff. To be implemented with Digir like queries
+	 */
+	String DIGIR_TIME = "yyyy-MM-dd'T'hh:mm:ss";
+
+	String DIGIR_NAMESPACE = "http://www.namespaceTBD.org/digir";
+
+	String DIGIR = "digir";
+
 
 	String SEARCH_PAGE_TITLE = "title";
 
@@ -430,7 +285,7 @@ public interface EFGImportConstants {
 	String FORWARD_SLASH = "/";
 
 
-	String EXCELPATTERN = EXCEL_EXT;
+	
 
 	String SERVICE_LINK = "serviceLink";
 
@@ -546,6 +401,9 @@ public interface EFGImportConstants {
 	String EFG_GLOSSARY_TABLES="EFG_GLOSSARY_TABLES";
 	String IMPORT_FOLDER = EFGProperties.getProperty("imports_directory");
 	String EXPORT_FOLDER = EFGProperties.getProperty("exports_directory");
+	String NUMBER_OF_TAXON_ON_PAGE=EFGProperties.getProperty("numberoftaxaperpage");
+
+
 	String SQL_EXT = ".sql";
 	
 	

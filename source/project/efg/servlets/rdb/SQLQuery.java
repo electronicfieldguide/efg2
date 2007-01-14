@@ -49,6 +49,7 @@ import project.efg.util.EFGDisplayObject;
 import project.efg.util.EFGDisplayObjectList;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGObject;
+import project.efg.util.RegularExpresionConstants;
 import project.efg.util.UnicodeToASCIIFilter;
 
 /**
@@ -231,7 +232,7 @@ public class SQLQuery extends EFGHTTPQuery {
 						//log.debug("Before splitting: " + paramVals);
 					
 						//String[] params = paramVals.split(EFGImportConstants.PIPESEP);
-						String[] params =EFGImportConstants.pipePattern.split(paramVals);
+						String[] params =RegularExpresionConstants.pipePattern.split(paramVals);
 						
 						isFound  = processStates(params, 
 								legalName,
@@ -555,7 +556,7 @@ public class SQLQuery extends EFGHTTPQuery {
 					if (oldVal.indexOf(pVal) == -1) {//does not exists
 						/*log.debug("pval already exists in paramValuesTable: "
 								+ pVal);*/
-						pVal = oldVal + EFGImportConstants.PIPESEP_PARSE + pVal;
+						pVal = oldVal + RegularExpresionConstants.PIPESEP_PARSE + pVal;
 						//log.debug("pval in paramValuesTable is now: " + pVal);
 						this.paramValuesTable
 								.put(legalName.toLowerCase(), pVal);

@@ -23,7 +23,9 @@ import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.servlets.efgServletsUtil.EFGParseObject;
 import project.efg.servlets.efgServletsUtil.EFGParseObjectList;
 import project.efg.servlets.efgServletsUtil.EFGParseStates;
+import project.efg.util.EFGImagesConstants;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 /**
  * @author kasiedu
  * 
@@ -75,7 +77,7 @@ public class MediaResourceDataChecker extends DataChecker {
 			StringBuffer imagesHomeBuffer = new StringBuffer(getServerHome());
 			
 			imagesHomeBuffer.append(File.separator);
-			imagesHomeBuffer.append(EFGImportConstants.EFG_IMAGES_DIR);
+			imagesHomeBuffer.append(EFGImagesConstants.EFG_IMAGES_DIR);
 			imagesHomeBuffer.append(File.separator);
 			imagesHome = imagesHomeBuffer.toString();
 		}
@@ -186,7 +188,7 @@ public class MediaResourceDataChecker extends DataChecker {
 								.next();
 						String states = image.getObject(0);
 						EFGParseObjectList lists =
-							this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,states,true); 
+							this.efgParseStates.parseStates(RegularExpresionConstants.LISTSEP,states,true); 
 						
 						for(int i = 0; i < lists.getSize(); i++){
 							EFGParseObject obj = lists.getEFGParseObject(i);

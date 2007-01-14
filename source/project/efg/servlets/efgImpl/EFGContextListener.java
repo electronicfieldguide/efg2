@@ -60,6 +60,7 @@ import project.efg.servlets.efgServletsUtil.EFGServletInitializerInstance;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 import project.efg.util.XMLFileNameFilter;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
@@ -537,7 +538,7 @@ public class EFGContextListener implements ServletContextListener {
 	 */
 	private void parseAndFillSet(String schemaNames, String path) {
 		//String[] arr = schemaNames.split("\\s");
-		String[] arr = EFGImportConstants.spacePattern.split(schemaNames);
+		String[] arr = RegularExpresionConstants.spacePattern.split(schemaNames);
 		fillSet(arr, path);
 	}
 
@@ -586,7 +587,7 @@ public class EFGContextListener implements ServletContextListener {
 				if (!word.startsWith("#")) {// Strings that starts with the "#"
 											// sign are comments
 					//String[] tokens = word.split("=");
-					String[] tokens = EFGImportConstants.equalsPattern.split(word);
+					String[] tokens = RegularExpresionConstants.equalsPattern.split(word);
 					String temp1 = null;
 					String temp2 = null;
 					if (tokens.length == 2) {
@@ -639,7 +640,7 @@ public class EFGContextListener implements ServletContextListener {
 				if (!word.startsWith("#")) {// Strings that starts with the "#"
 											// sign are comments
 					//String[] tokens = word.split("\\s");
-					String[] tokens = EFGImportConstants.spacePattern.split(word);
+					String[] tokens = RegularExpresionConstants.spacePattern.split(word);
 					if (tokens.length >= 2) {
 						StringBuffer buf = new StringBuffer();
 						int i = 1;
@@ -671,6 +672,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.5  2007/01/14 15:56:31  kasiedu
+// no message
+//
 // Revision 1.4  2007/01/13 03:22:14  kasiedu
 // no message
 //

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import project.efg.efgDocument.EFGDocument;
 import project.efg.servlets.efgInterface.ResponseObject;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -41,7 +42,7 @@ public class ErrorResponseObject extends ResponseObject {
 			errorBuffer.append("=");
 			for(int i = 0; i < paramValues.length; i++){
 				errorBuffer.append(paramValues[i]);
-				errorBuffer.append(EFGImportConstants.NOPATTERN);
+				errorBuffer.append(RegularExpresionConstants.NOPATTERN);
 			}
 			errorBuffer.append("\n");
 		}

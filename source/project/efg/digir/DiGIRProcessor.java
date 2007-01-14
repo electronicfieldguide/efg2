@@ -52,6 +52,7 @@ import project.efg.servlets.efgImpl.EFGContextListener;
 import project.efg.servlets.efgInterface.EFGDataSourceHelperInterface;
 import project.efg.util.EFGDisplayObject;
 import project.efg.util.EFGDisplayObjectList;
+import project.efg.util.EFGImportConstants;
 
 public class DiGIRProcessor {
   private DigirParserHandler dph;
@@ -342,7 +343,7 @@ public class DiGIRProcessor {
      Element resource = null;
      while(efgIter.hasNext()){
        String str = (String)efgIter.next();
-       metadataFile = pathToResourceFiles + System.getProperty("file.separator") + str +".xml";
+       metadataFile = pathToResourceFiles + System.getProperty("file.separator") + str +EFGImportConstants.XML_EXT;
        doc = parser.build(new File(metadataFile));
        resource = doc.getRootElement();
        temp = (Element)(resource.clone());

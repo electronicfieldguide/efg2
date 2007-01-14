@@ -8,9 +8,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URL;
 import java.util.Vector;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -25,13 +28,13 @@ import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.SwingConstants;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import project.efg.Imports.efgImpl.EFGJLabel;
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
 import project.efg.Imports.efgImpl.ImagePanel;
 
@@ -67,13 +70,13 @@ public class DnDFileBrowserMain extends JDialog {
 
 	JComponent imageView;
 
-	EFGJLabel imageLabel;
-
+	JLabel imageLabel;
+	JPanel displayPanel;
 	URL helpURL;
 
 	JEditorPane htmlPane;
 	Vector userItems = new Vector();
-	static String thumsStr = "Current Thumb size: "; 
+	static String thumsStr = "Current Generated Thumbnail Size: "; 
 	public static String imageL = EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.imageL");
 
@@ -210,15 +213,17 @@ public class DnDFileBrowserMain extends JDialog {
 	 */
 	private JComponent addImagePanel() {
 		// Create the HTML viewing pane.
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
+		displayPanel = new JPanel();
+		displayPanel.setLayout(new BorderLayout());
 		this.progressBar.setSize(300, 300);
 		this.progressBar.setStringPainted(true);
 		this.progressBar.setString(""); // but don't paint it
-		this.imageLabel = new EFGJLabel(imageL);
-		panel.add(this.imageLabel);
+		this.imageLabel = new JLabel(imageL, SwingConstants.CENTER);
+		this.imageLabel.setVerticalTextPosition(JLabel.BOTTOM);
+		this.imageLabel.setHorizontalTextPosition(JLabel.CENTER);
+		this.displayPanel.add(this.imageLabel, BorderLayout.CENTER);
 
-		return panel;
+		return displayPanel;
 	}
 	/**
 	 * 
@@ -241,11 +246,9 @@ public class DnDFileBrowserMain extends JDialog {
 		
 		if (maxDim <= 0) {
 			String maxDimStr = EFGImportConstants.EFGProperties
-					.getProperty(EFGImportConstants.MAX_DIM_STR);
+					.getProperty(EFGImagesConstants.MAX_DIM_STR);
 
-			if ((maxDimStr == null)) {
-				maxDimStr = EFGImportConstants.MAX_DIM;
-			}
+
 			try {				
 				return Integer.parseInt(maxDimStr);
 			} catch (Exception ee) {
@@ -262,13 +265,11 @@ public class DnDFileBrowserMain extends JDialog {
 		
 			int[] defaults = null;
 			String maxDimStr = EFGImportConstants.EFGProperties
-					.getProperty(EFGImportConstants.MAX_DIM_STR);
+					.getProperty(EFGImagesConstants.MAX_DIM_STR);
 
-			if ((maxDimStr == null)) {
-				maxDimStr = EFGImportConstants.MAX_DIM;
-			}
+
 			try {
-				String[] defaultDims = maxDimStr.split(EFGImportConstants.COMMASEP);
+				String[] defaultDims = maxDimStr.split(RegularExpresionConstants.COMMASEP);
 				defaults = new int[defaultDims.length];
 				for(int i=0; i < defaultDims.length; i++) {
 					try {
@@ -284,7 +285,7 @@ public class DnDFileBrowserMain extends JDialog {
 				log.debug("MaxDim is set from properties file to: " + maxDim);
 			} catch (Exception ee) {
 				defaults = new int[1];
-				defaults[0] = Integer.parseInt(EFGImportConstants.MAX_DIM);
+			
 				
 			}
 			log.debug("MaxDim is set to: " + maxDim);
@@ -434,16 +435,37 @@ public class DnDFileBrowserMain extends JDialog {
 					if (path == null) {
 						imageLabel.setText(imageL);
 					} else {
-						imageLabel.setText("");
+					
+						path = path.replaceAll(EFGImagesConstants.EFG_IMAGES_DIR,
+								EFGImagesConstants.EFGIMAGES_THUMBS);
+
+						File imageFile = new File(path);
+						if(imageFile.isDirectory()){//not an image
+							return;
+						}
+						BufferedImage image = javax.imageio.ImageIO.read(imageFile);
+						//this.setText("Some text");
+						int wt = image.getWidth(null);
+						int ht = image.getHeight(null);
+						StringBuffer buffer = new StringBuffer();
+						buffer.append("<html>");
+						buffer.append("<p>Image Dimensions in pixels</p>");
+						buffer.append("<hr></hr>");
+						buffer.append("<p>width  : " + wt + "</p>");
+						buffer.append("<p>height : " + ht + "</p>");
+						buffer.append("</html>");
+						imageLabel.setIcon(new ImageIcon(image));
+						imageLabel.setText(buffer.toString());
 					}
 					
-					imageLabel.setEFGJLabel(path, getMaxDim());
-					imageLabel.setLocation(60, 60);
-					imageLabel.repaint();
+					//imageLabel.setEFGJLabel(path, getMaxDim());
+					//imageLabel.setLocation(60, 60);
+					//imageLabel.repaint();
 				}
 			} catch (Exception ee) {
 				imageLabel.setText("Image too large to draw");
 			}
+			displayPanel.revalidate();
 		}
 	}
 

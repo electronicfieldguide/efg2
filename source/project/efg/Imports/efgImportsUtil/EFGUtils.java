@@ -102,7 +102,7 @@ public class EFGUtils {
 	public synchronized static String parseEFGSEP(String string) {
 		string = string.replaceAll(project.efg.util.EFGImportConstants.FORWARD_SLASH,
 				project.efg.util.EFGImportConstants.EFG_SEP);
-		return string.replaceAll(project.efg.util.EFGImportConstants.COLONSEP,
+		return string.replaceAll(project.efg.util.RegularExpresionConstants.COLONSEP,
 				project.efg.util.EFGImportConstants.EFG_COLON);
 	}
 	/**
@@ -114,8 +114,41 @@ public class EFGUtils {
 		string = string.replaceAll(project.efg.util.EFGImportConstants.EFG_SEP,
 				project.efg.util.EFGImportConstants.FORWARD_SLASH);
 		return string.replaceAll(project.efg.util.EFGImportConstants.EFG_COLON,
-				project.efg.util.EFGImportConstants.COLONSEP);
+				project.efg.util.RegularExpresionConstants.COLONSEP);
 	}
+	/**
+	 * Return an identifier that can be used to create a Table name
+	 * this implementation removes all non-eglish alphabets in the String
+	 * but if the string length after that is 0 it supplies some generic string
+	 * Note that some random numbers are appended to the table names before 
+	 * they are created.
+	 * @param originalName
+	 * @return
+	 */
+	public synchronized static String getDataBaseTableName(URI fullFileName) {
+		
+		if(fullFileName == null) {
+			return null;
+		}
+		String name = fullFileName.toString();
+		try {
+			
+			File f = new File(name);
+			name = f.getName();
+			int index = name.lastIndexOf(".");
+			if (index > -1) {
+				name = name.substring(0, index);
+			}
+		} catch (Exception ee) {
+
+		}
+		name = name.replaceAll("[^A-Za-z]", "");
+		if(name.trim().equals("")) {
+			name = "EFG_SUPPLIED_TABLE_NAME";
+		}
+		return name.toLowerCase();
+	}
+	   
 	/**
 	 * @param fullName -
 	 *            The full path to a file
@@ -124,6 +157,7 @@ public class EFGUtils {
 	public synchronized static String getName(URI fullFileName) {
 		String name = fullFileName.toString();
 		try {
+			
 			File f = new File(name);
 			name = f.getName();
 			int index = name.lastIndexOf(".");
@@ -290,6 +324,9 @@ public class EFGUtils {
 }
 
 // $Log$
+// Revision 1.3  2007/01/14 15:54:57  kasiedu
+// no message
+//
 // Revision 1.2  2006/12/08 03:50:58  kasiedu
 // no message
 //

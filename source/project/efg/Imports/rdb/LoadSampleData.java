@@ -25,6 +25,7 @@ import project.efg.Imports.factory.EFGDatasourceObjectFactory;
 import project.efg.Imports.factory.EFGDatasourceObjectListFactory;
 import project.efg.Imports.factory.ImportBehaviorFactory;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -307,7 +308,7 @@ public class LoadSampleData {
 	 */
 	private String parseField(String string) {
 		StringBuffer buffer = new StringBuffer();
-		String[] resources = string.split(EFGImportConstants.COMMASEP);
+		String[] resources = string.split(RegularExpresionConstants.COMMASEP);
 		for(int i = 0; i < resources.length;i++){
 			if(i != 0){
 				buffer.append(" OR ");

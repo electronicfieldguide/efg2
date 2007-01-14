@@ -166,7 +166,7 @@ implements EFGImportConstants,WindowListener{
 		
 			this.srcFile = drop.getSourceFile().getAbsolutePath();
 			File destFile1 = drop.getDestinationFile();
-			this.destFile = this.replace(destFile1.getAbsolutePath(), EFGIMAGES, EFGIMAGES_THUMBS);
+			this.destFile = this.replace(destFile1.getAbsolutePath(), EFGImagesConstants.EFG_IMAGES_DIR, EFGImagesConstants.EFGIMAGES_THUMBS);
 			this.generateThumbs(new File(this.srcFile),new File(this.destFile));
 		}
 		Toolkit.getDefaultToolkit().beep();

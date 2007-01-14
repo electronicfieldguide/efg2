@@ -42,6 +42,7 @@ import org.apache.log4j.Logger;
 
 
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -68,7 +69,7 @@ public abstract class DataManipulatorInterface {
 		/*String regEX = "\\d+$";
 		Pattern p = Pattern.compile(regEX);
 		Matcher matcher = p.matcher(str);*/
-		Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(str);
+		Matcher matcher = RegularExpresionConstants.matchNumberPattern.matcher(str);
 		if (matcher.find()) {
 			numeric = matcher.group();
 		}

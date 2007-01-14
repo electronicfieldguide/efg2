@@ -532,10 +532,10 @@ this(root,progressBar,null);
 				if (dropTargetDropEvent.getDropAction() == DnDConstants.ACTION_MOVE) {
 					isRename = srcFile.renameTo(newFile);
 					//rename directory in thumbnails folder
-					 String thumbSrc = this.replace(srcFile.getAbsolutePath(), EFGImportConstants.EFGIMAGES, 
-							 EFGImportConstants.EFGIMAGES_THUMBS);
-					 String thumbDest = this.replace(newFile.getAbsolutePath(), EFGImportConstants.EFGIMAGES, 
-							 EFGImportConstants.EFGIMAGES_THUMBS);
+					 String thumbSrc = this.replace(srcFile.getAbsolutePath(), EFGImagesConstants.EFG_IMAGES_DIR, 
+							 EFGImagesConstants.EFGIMAGES_THUMBS);
+					 String thumbDest = this.replace(newFile.getAbsolutePath(), EFGImagesConstants.EFG_IMAGES_DIR, 
+							 EFGImagesConstants.EFGIMAGES_THUMBS);
 					 File thumbSrcFile = new File(thumbSrc);
 					 File thumbDestFile = new File(thumbDest);
 					 thumbSrcFile.renameTo(thumbDestFile);

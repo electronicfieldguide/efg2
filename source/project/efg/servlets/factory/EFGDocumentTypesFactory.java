@@ -41,6 +41,7 @@ import project.efg.servlets.efgServletsUtil.EFGParseStates;
 import project.efg.servlets.rdb.QueryExecutor;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGObject;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -93,7 +94,7 @@ public class EFGDocumentTypesFactory {
 		ItemsType items = null;
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.ORCOMMAPATTERN, efgObject,false);
+					RegularExpresionConstants.ORCOMMAPATTERN, efgObject,false);
 			if (oldList.getSize() > 0) {
 				items = parseFactory.createItems(oldList);
 				if (items != null) {
@@ -110,7 +111,7 @@ public class EFGDocumentTypesFactory {
 		ItemsType items = null;
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.NOPATTERN, efgObject,true);
+					RegularExpresionConstants.NOPATTERN, efgObject,true);
 			if (oldList.getSize() > 0) {
 				items = parseFactory.createItems(oldList);
 				if (items != null) {
@@ -129,7 +130,7 @@ public class EFGDocumentTypesFactory {
 
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.LISTSEP, efgObject,true);
+					RegularExpresionConstants.LISTSEP, efgObject,true);
 			if (oldList.getSize() > 0) {
 				media = parseFactory.createMediaResources(oldList);
 				if (media != null) {
@@ -147,7 +148,7 @@ public class EFGDocumentTypesFactory {
 		EFGListsType lists = null;
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.LISTSEP, efgObject,true);
+					RegularExpresionConstants.LISTSEP, efgObject,true);
 
 			if (oldList.getSize() > 0) {
 				lists = parseFactory.createEFGLists(oldList);
@@ -168,7 +169,7 @@ public class EFGDocumentTypesFactory {
 
 		try {
 			EFGParseObjectList oldList = parseObject(list,
-					EFGImportConstants.ORCOMMAPATTERN, efgObject,false);
+					RegularExpresionConstants.ORCOMMAPATTERN, efgObject,false);
 
 			if (oldList.getSize() > 0) {
 				stats = parseFactory.createStatisticalMeasures(oldList);

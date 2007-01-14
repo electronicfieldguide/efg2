@@ -34,6 +34,7 @@ package project.efg.Imports.efgImpl;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.io.File;
+import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
@@ -108,6 +109,12 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 							JOptionPane.INFORMATION_MESSAGE);
 					continue;
 				}
+				//f.toURI()
+				//find out if this is a valid uri
+				//write to a temp file and then 
+				//upload the temp file instead
+				URI uri = f.toURI();
+			
 				obj = tree.importIntoDatabase(f.toURI());
 
 				EFGDatasourceObjectStateInterface state = obj.getState();
@@ -118,6 +125,7 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 			}
 		} catch (Exception ee) {
 			message = ee.getMessage();
+			ee.printStackTrace();
 			log.error(message);
 			obj = new EFGDatasourceObjectImpl();
 			if (f != null) {

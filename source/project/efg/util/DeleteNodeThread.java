@@ -138,8 +138,8 @@ public class DeleteNodeThread extends SwingWorker{
 		private void deleteFromThumbNailsDir(File file){
 			String imageName = file.getAbsolutePath();
 			String thumbsName = replace(imageName,
-					EFGImportConstants.EFGIMAGES,
-					EFGImportConstants.EFGIMAGES_THUMBS);
+					EFGImagesConstants.EFG_IMAGES_DIR,
+					EFGImagesConstants.EFGIMAGES_THUMBS);
 			
 			File thumbsFile = new File(thumbsName);
 			if (thumbsFile.exists()) {

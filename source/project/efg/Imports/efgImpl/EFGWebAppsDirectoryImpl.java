@@ -79,12 +79,10 @@ public class EFGWebAppsDirectoryImpl implements EFGWebAppsDirectoryInterface {
 			this.imagesDirectory = this.getPathToServer() + File.separator
 					+ imagesDirectory.trim();
 		} else {
+			//set to local directory relative to the current source
 			String catalina_home = project.efg.Imports.efgImportsUtil.EFGUtils.getCatalinaHome();
 			if ((catalina_home != null) && (!"".equals(catalina_home.trim()))) {
-				this.setPathToServer(catalina_home + File.separator
-						+ project.efg.util.EFGImportConstants.EFG_WEB_APPS
-						+ File.separator
-						+ project.efg.util.EFGImportConstants.EFG_APPS);
+				this.setPathToServer(".");
 				this.setImagesDirectory(imagesDirectory.trim());
 			}
 		}

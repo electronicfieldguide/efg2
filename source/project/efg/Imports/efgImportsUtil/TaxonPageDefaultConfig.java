@@ -138,7 +138,7 @@ public class TaxonPageDefaultConfig {
 		querySearch.append("&");
 		querySearch.append(EFGImportConstants.MAX_DISPLAY);
 		querySearch.append("=");
-		querySearch.append(EFGImportConstants.NUMBER_OF_TAXON_ON_PAGE+"");
+		querySearch.append(EFGImportConstants.NUMBER_OF_TAXON_ON_PAGE);
 		
 		String key = querySearch.toString();
 		
@@ -379,6 +379,9 @@ public class TaxonPageDefaultConfig {
 
 }
 // $Log$
+// Revision 1.3  2007/01/14 15:54:57  kasiedu
+// no message
+//
 // Revision 1.2  2006/12/08 03:50:58  kasiedu
 // no message
 //

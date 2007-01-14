@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
 
 import project.efg.servlets.efgInterface.OperatorInterface;
 import project.efg.servlets.factory.OperatorFactory;
-import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 import project.efg.util.UnicodeToASCIIFilter;
 
 /**
@@ -49,17 +49,17 @@ public class EFGParseStates {
 		String[] arr = null;
 		boolean isDone = false;
 	
-		if(patternStr.equalsIgnoreCase(EFGImportConstants.NOPATTERN)){
+		if(patternStr.equalsIgnoreCase(RegularExpresionConstants.NOPATTERN)){
 		
-			p = EFGImportConstants.noPattern;
+			p = RegularExpresionConstants.noPattern;
 		}
-		else if(patternStr.equalsIgnoreCase(EFGImportConstants.LISTSEP)){
+		else if(patternStr.equalsIgnoreCase(RegularExpresionConstants.LISTSEP)){
 			
-			p = EFGImportConstants.listSepPattern;
+			p = RegularExpresionConstants.listSepPattern;
 		}
-		else if(patternStr.equalsIgnoreCase(EFGImportConstants.ORCOMMAPATTERN)){
+		else if(patternStr.equalsIgnoreCase(RegularExpresionConstants.ORCOMMAPATTERN)){
 			
-			p = EFGImportConstants.catPattern;
+			p = RegularExpresionConstants.catPattern;
 		}
 		else{
 			
@@ -78,8 +78,8 @@ public class EFGParseStates {
 		for (int i = 0; i < str2Remove.length; i++) {
 			String str = str2Remove[i];
 
-			if ((state.indexOf(EFGImportConstants.LEFTPAREN) > -1)
-					|| (state.indexOf(EFGImportConstants.RIGHTPAREN) > -1)) {
+			if ((state.indexOf(RegularExpresionConstants.LEFTPAREN) > -1)
+					|| (state.indexOf(RegularExpresionConstants.RIGHTPAREN) > -1)) {
 				state = state.replaceAll(str, "");
 			}
 		}
@@ -125,7 +125,7 @@ public class EFGParseStates {
 		String state = fields.trim();
 		
 		
-		String[] curStatePipe =EFGImportConstants.pipePattern.split(state);
+		String[] curStatePipe =RegularExpresionConstants.pipePattern.split(state);
 		String resourceLink = "";
 		String annotation = "";
 
@@ -134,7 +134,7 @@ public class EFGParseStates {
 			state = curStatePipe[1];
 		}
 		
-		String[] annotations = EFGImportConstants.caratPattern.split(state);
+		String[] annotations = RegularExpresionConstants.caratPattern.split(state);
 		if (annotations.length > 1) {
 			annotation = annotations[0];
 			state = annotations[1];
@@ -142,7 +142,7 @@ public class EFGParseStates {
 	
 		if ((state != null) && (!state.trim().equals(""))) {
 			if(!notRemoveParen){
-				state = removeString(state, EFGImportConstants.STR_2_REMOVE);
+				state = removeString(state, RegularExpresionConstants.STR_2_REMOVE);
 			}
 		
 			return new EFGParseObject(state,

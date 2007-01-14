@@ -12,6 +12,7 @@ import project.efg.servlets.efgInterface.OperatorInterface;
 import project.efg.servlets.efgInterface.StatisticalMesureComparatorInterface;
 import project.efg.servlets.factory.OperatorFactory;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -126,8 +127,8 @@ public class HandleStatInput extends HandleStatInputAbstract {
 		//System.out.println("userValue before convert: " + userValues);
 		userValues = this.convertToOperators(userValues);
 		
-		if(userValues.indexOf(EFGImportConstants.ORSEP) > -1) {
-			params = userValues.split(EFGImportConstants.ORSEP);
+		if(userValues.indexOf(RegularExpresionConstants.ORSEP) > -1) {
+			params = userValues.split(RegularExpresionConstants.ORSEP);
 		}
 		else if(userValues.indexOf(EFGImportConstants.ANDSEP) > -1) {
 			params = userValues.split(EFGImportConstants.ANDSEP);
@@ -135,7 +136,7 @@ public class HandleStatInput extends HandleStatInputAbstract {
 			
 		}
 		else { 
-			params = userValues.split(EFGImportConstants.ORSEP);
+			params = userValues.split(RegularExpresionConstants.ORSEP);
 			
 		}
 		
@@ -168,10 +169,10 @@ public class HandleStatInput extends HandleStatInputAbstract {
 	 */
 	private String convertToOperators(String userValues) {
 		
-		Matcher matcher = EFGImportConstants.matchNumberDashNumberPattern.matcher(userValues);
+		Matcher matcher = RegularExpresionConstants.matchNumberDashNumberPattern.matcher(userValues);
 	   if(matcher.find()) {
 		    
-		    	 matcher = EFGImportConstants.matchNumberDashDashPattern.matcher(userValues);
+		    	 matcher = RegularExpresionConstants.matchNumberDashDashPattern.matcher(userValues);
 		    	 
 		    	  if(matcher.find()) {
 		    		  int index = userValues.lastIndexOf("-");
@@ -183,7 +184,7 @@ public class HandleStatInput extends HandleStatInputAbstract {
 		    	  }
 		    	 else {
 		    		 
-		    		 matcher = EFGImportConstants.matchNumberDashPattern.matcher(userValues);
+		    		 matcher = RegularExpresionConstants.matchNumberDashPattern.matcher(userValues);
 		    		 
 		    		 if(matcher.find()) {
 		    			  int index = userValues.lastIndexOf("-");

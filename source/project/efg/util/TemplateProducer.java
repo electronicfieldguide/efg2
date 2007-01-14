@@ -170,12 +170,12 @@ public class TemplateProducer implements EFGImportConstants{
 
 	private String groupConstants(boolean isCharacter) {
 		StringBuffer buffer = new StringBuffer();
-		buffer.append(COLON_SEPARATOR);
+		buffer.append(RegularExpresionConstants.COLON_SEPARATOR);
 		buffer.append(this.groupIDCounter);
-		buffer.append(COLON_SEPARATOR);
+		buffer.append(RegularExpresionConstants.COLON_SEPARATOR);
 		buffer.append(this.groupRankCounter);
 		if(isCharacter){
-			buffer.append(COLON_SEPARATOR);
+			buffer.append(RegularExpresionConstants.COLON_SEPARATOR);
 			buffer.append(this.characterRankCounter);
 		}
 		return buffer.toString();

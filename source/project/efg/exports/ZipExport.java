@@ -337,8 +337,8 @@ public class ZipExport implements ZipInterface{
 		for(int i = 0; i < datasources.length; ++i) {
 			String datasource = datasources[i];
 			String metadatasource = datasource +  EFGImportConstants.METAFILESUFFIX;
-			buffer.append(export.dumpDB(datasource));
-			buffer.append(export.dumpDB(metadatasource));
+			buffer.append(export.dumpDB(datasource.toLowerCase()));
+			buffer.append(export.dumpDB(metadatasource.toLowerCase()));
 			
 			
 			StringBuffer query = new StringBuffer( "SELECT * FROM ");

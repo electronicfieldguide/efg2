@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -36,7 +37,7 @@ public class QueryMaker {
 		//Pattern pattern = Pattern.compile(patternStr);
 		//Matcher matcher = pattern.matcher(states);
 		try {
-			Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(states);
+			Matcher matcher = RegularExpresionConstants.matchNumberPattern.matcher(states);
 			return matcher.find();
 		} catch (Exception vvv) {
 		}
@@ -123,7 +124,7 @@ public class QueryMaker {
 						String oldVal = (String) paramValuesTable.get(legalName
 								.toLowerCase());
 						if (oldVal.indexOf(pVal) == -1) {//does not exists
-							pVal = oldVal + EFGImportConstants.PIPESEP + pVal;
+							pVal = oldVal + RegularExpresionConstants.PIPESEP + pVal;
 							paramValuesTable.put(legalName.toLowerCase(), pVal);
 						}
 					} else {

@@ -45,6 +45,7 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.factory.EFGRowMapperFactory;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 
 /**
@@ -142,7 +143,7 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 			EFGProperties.getProperty(EFGImportConstants.SQL_KEYWORD_KEY);
 		
 		//String[] csv = sql.split(EFGImportConstants.COMMASEP);
-		String[] csv = EFGImportConstants.commaPattern.split(sql);
+		String[] csv = RegularExpresionConstants.commaPattern.split(sql);
 		for(int i=0; i < csv.length; i++){
 			sqlKeywords.add(csv[i].trim().toLowerCase());
 		}
@@ -215,6 +216,9 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 }
 
 // $Log$
+// Revision 1.3  2007/01/14 15:55:15  kasiedu
+// no message
+//
 // Revision 1.2  2006/12/08 03:50:59  kasiedu
 // no message
 //

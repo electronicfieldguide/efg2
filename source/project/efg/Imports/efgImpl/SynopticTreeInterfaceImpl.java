@@ -66,7 +66,7 @@ public class SynopticTreeInterfaceImpl extends SynopticKeyTreeInterface {
 		super(root, asks, dbObject, frame);
 
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 

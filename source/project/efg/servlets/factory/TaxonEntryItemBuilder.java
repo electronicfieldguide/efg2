@@ -43,6 +43,7 @@ import project.efg.servlets.efgServletsUtil.HandleStatInput;
 import project.efg.servlets.efgServletsUtil.StatisticalMeasureComparator;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGObject;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -82,7 +83,7 @@ public class TaxonEntryItemBuilder {
 		if (EFGImportConstants.ISLISTS.equalsIgnoreCase(efgObject.getDataType())) {
 				boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,databaseValues,true);
+				this.efgParseStates.parseStates(RegularExpresionConstants.LISTSEP,databaseValues,true);
 		
 			if(userValues != null){
 				if(!this.compareString(lists,userValues, isLike)){
@@ -103,7 +104,7 @@ public class TaxonEntryItemBuilder {
 			||(EFGImportConstants.NUMERICRANGE.equalsIgnoreCase(efgObject.getDataType()))){
 			boolean flag = true;
 				lists =
-					this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,databaseValues,false); 
+					this.efgParseStates.parseStates(RegularExpresionConstants.ORCOMMAPATTERN,databaseValues,false); 
 		
 					StatisticalMeasuresType dbStats = 
 						this.createStatisticalMeasure(lists);
@@ -124,7 +125,7 @@ public class TaxonEntryItemBuilder {
 		else if (EFGImportConstants.MEDIARESOURCE.equalsIgnoreCase(efgObject.getDataType())) {
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.LISTSEP,databaseValues,true); 
+				this.efgParseStates.parseStates(RegularExpresionConstants.LISTSEP,databaseValues,true); 
 			if(userValues != null){
 				if(!this.compareString(lists,userValues, isLike)){
 					flag = false;
@@ -144,7 +145,7 @@ public class TaxonEntryItemBuilder {
 		else if (EFGImportConstants.CATEGORICAL.equals(efgObject.getDataType())) {
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.ORCOMMAPATTERN,databaseValues,false); 
+				this.efgParseStates.parseStates(RegularExpresionConstants.ORCOMMAPATTERN,databaseValues,false); 
 		
 			if(userValues != null){
 				flag = this.compareString(lists,userValues, isLike);
@@ -164,7 +165,7 @@ public class TaxonEntryItemBuilder {
 		else{
 			boolean flag = true;
 			lists =
-				this.efgParseStates.parseStates(EFGImportConstants.NOPATTERN,databaseValues,true);
+				this.efgParseStates.parseStates(RegularExpresionConstants.NOPATTERN,databaseValues,true);
 			
 			if(userValues != null){
 				flag = this.compareString(lists,userValues, isLike);

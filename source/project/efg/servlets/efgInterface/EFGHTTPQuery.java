@@ -43,6 +43,7 @@ import project.efg.efgDocument.EFGDocument;
 import project.efg.efgDocument.TaxonEntries;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -112,7 +113,7 @@ public abstract class EFGHTTPQuery {
 	 */
 	protected boolean matchNumber(String states) {
 		try {
-			Matcher matcher = EFGImportConstants.matchNumberPattern.matcher(states);
+			Matcher matcher = RegularExpresionConstants.matchNumberPattern.matcher(states);
 			return matcher.find();
 		} catch (Exception vvv) {
 		}

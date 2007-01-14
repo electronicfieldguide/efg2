@@ -34,6 +34,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -148,7 +149,7 @@ public class SearchStrQuery extends SQLQuery {
 				if(this.paramValuesTable.containsKey(legalName)){//could have parameter with multiple values
 					String oldVal = (String)paramValuesTable.get(legalName);
 					if(oldVal.indexOf(current) == -1){//does not exists
-						current = oldVal + EFGImportConstants.PIPESEP + current;
+						current = oldVal + RegularExpresionConstants.PIPESEP + current;
 						paramValuesTable.put(legalName,current);
 					}
 				}

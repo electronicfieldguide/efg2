@@ -32,6 +32,7 @@ import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGUniqueID;
 import project.efg.util.GroupTypeComparator;
 import project.efg.util.GroupTypeSorter;
+import project.efg.util.RegularExpresionConstants;
 
 import com.opensymphony.oscache.base.NeedsRefreshException;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
@@ -634,7 +635,7 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 		String groupID = "";
 		String groupRank = "";
 		String characterRank = "";
-		String[] splits = EFGImportConstants.colonPattern.split(key);
+		String[] splits = RegularExpresionConstants.colonPattern.split(key);
 	
 		if (splits.length == 0) {
 			

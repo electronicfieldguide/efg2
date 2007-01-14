@@ -45,6 +45,7 @@ import project.efg.servlets.efgInterface.ServletAbstractFactoryInterface;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.servlets.factory.ServletAbstractFactoryCreator;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -156,7 +157,7 @@ public class DiGIRQuery extends SQLQuery {
 		
 		StringBuffer queryString = new StringBuffer();
 		
-		String arr[] = EFGImportConstants.spacePattern.split(digirQuery);
+		String arr[] = RegularExpresionConstants.spacePattern.split(digirQuery);
 		for (int i = 0; i < arr.length; i++) {
 			String keyword = (String) EFGContextListener.getKeyWordValue(arr[i]);
 			
@@ -191,7 +192,7 @@ public class DiGIRQuery extends SQLQuery {
 							if(this.paramValuesTable.containsKey(legalName)){//could have parameter with multiple values
 								String oldVal = (String)paramValuesTable.get(legalName);
 								if(oldVal.indexOf(pVal) == -1){//does not exists
-									pVal = oldVal + EFGImportConstants.PIPESEP + pVal;
+									pVal = oldVal + RegularExpresionConstants.PIPESEP + pVal;
 									paramValuesTable.put(legalName,pVal);
 								}
 							}

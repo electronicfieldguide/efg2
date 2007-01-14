@@ -18,7 +18,7 @@ import project.efg.efgDocument.StatisticalMeasureType;
 import project.efg.efgDocument.StatisticalMeasuresType;
 import project.efg.efgDocument.types.ItemTypeEnum;
 import project.efg.servlets.factory.EFGParseObjectFactory;
-import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 /**
  * @author kasiedu
@@ -239,7 +239,7 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 	private String[] parseStats(String inputStr){
 		//log.debug("InputString: " + inputStr);
 		
-		String[] fieldsR = EFGImportConstants.rightParenPattern.split(inputStr);
+		String[] fieldsR = RegularExpresionConstants.rightParenPattern.split(inputStr);
 		
 		ArrayList lists = new ArrayList();
 		for(int i = 0; i < fieldsR.length; i++){//right paren removed
@@ -249,11 +249,11 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 			if("".equals(fieldR)){//skip over empty strings
 				continue;
 			}
-			if(fieldR.equals(EFGImportConstants.DASHSEP)){//skip over '-' that exists alone
+			if(fieldR.equals(RegularExpresionConstants.DASHSEP)){//skip over '-' that exists alone
 				continue;
 			}
 			
-			String []fieldsL =  EFGImportConstants.leftParenPattern.split(fieldR); 
+			String []fieldsL =  RegularExpresionConstants.leftParenPattern.split(fieldR); 
 			
 			for(int j = 0; j < fieldsL.length; j++){//left paren removed
 				String fieldL = fieldsL[j].trim();
@@ -261,10 +261,10 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 				if("".equals(fieldL)){//skip over empty string
 					continue;
 				}
-				if(fieldL.indexOf(EFGImportConstants.DASHSEP) > 0){//dash not the first item in string
+				if(fieldL.indexOf(RegularExpresionConstants.DASHSEP) > 0){//dash not the first item in string
 					
 				//	String[] minVals = fieldL.split(EFGImportConstants.DASHSEP);
-					String[] minVals = EFGImportConstants.dashParenPattern.split(fieldL);
+					String[] minVals = RegularExpresionConstants.dashParenPattern.split(fieldL);
 					//log.debug("FieLDL After split: " + minVals.length);
 					for(int w=0; w < minVals.length; w++){
 						String minVal = minVals[w].trim();
@@ -306,7 +306,7 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 		//log.debug("About to parse: " + inputStr);
 		//log.debug("With pattern: " + patternStr);
 		//return p.split(inputStr);
-		return EFGImportConstants.alphaPattern.split(inputStr);
+		return RegularExpresionConstants.alphaPattern.split(inputStr);
 		
 	}
 	private String[] parseStatsMeasure(String inputStr1) {
@@ -346,7 +346,7 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 																// with only
 																// digits
 							
-							Matcher matcher = EFGImportConstants.matchNumberAtEndPattern.matcher(newStr);
+							Matcher matcher = RegularExpresionConstants.matchNumberAtEndPattern.matcher(newStr);
 							matcher.find();
 							String match = matcher.group();
 							if ((match != null) || (!match.trim().equals(""))) {
@@ -410,7 +410,7 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 			//Pattern p = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);
 			
 			//Matcher matcher = p.matcher(inputStr);
-			Matcher matcher = EFGImportConstants.alphaPattern.matcher(inputStr);
+			Matcher matcher = RegularExpresionConstants.alphaPattern.matcher(inputStr);
 			// boolean matchFound = false;
 			String match = null;
 			while (matcher.find()) {
