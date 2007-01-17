@@ -5,6 +5,7 @@
 	<property name="efg.home" value="."/>
 	<property name="jars.home" value="${efg.home}/lib"/>
 	<property name="args" value=""/>
+	
 	<!--
 Templates generation
 -->
@@ -16,7 +17,7 @@ Templates generation
 	</path>
 	<target name="generate" depends="clean">
 		<java fork="yes" classname="org.exolab.castor.builder.SourceGenerator">
-			<arg line="-verbose -i templateConfigFiles/taxonPageTemplate.xsd -package project.efg.templates.taxonPageTemplates -dest temp -types j2 -f "/>
+			<arg line="-verbose -i templateConfigFiles/xml/taxonPageTemplate.xsd -package project.efg.templates.taxonPageTemplates -dest temp -types j2 -f "/>
 			<classpath refid="compile.class.path"/>
 		</java>
 	</target>
