@@ -6,7 +6,7 @@ project.efg.util.TemplateConfigProcessor
 <%@ include file="allTableName.jsp"%>
 <% 
     if(datasourceName == null){
-		datasourceName =request.getParameter("dataSourceName");
+		datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 	}
     //make me dynamic
     String configType = request.getParameter(EFGImportConstants.SEARCH_TYPE_STR);

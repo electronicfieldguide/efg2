@@ -98,23 +98,38 @@ public class DeleteNodeThread extends SwingWorker{
 		this.dialog.dispose();
 	  return null;
 	}
-
+	private void cannotRemoveMessage() {
+		JOptionPane.showMessageDialog(this.frame, "You can't delete EFGImages!!",
+				"Error", JOptionPane.ERROR_MESSAGE);
+	}
 	private void deleteSelectedFiles(){
 		
 			for (int i = 0; i < path.length; i++) {
 				FileNode fnode = (FileNode) path[i].getLastPathComponent();
 				File file = fnode.getFile();
 				if (file != null) {
-					MutableTreeNode node = (MutableTreeNode) path[i]
-							.getLastPathComponent();
-					MutableTreeNode parentNode = (MutableTreeNode)node.getParent();
-					this.model.removeNodeFromParent(node);
-					this.model.reload(parentNode);
-					deleteFile(file);
-					deleteFromThumbNailsDir(file);
+					if(file.getName().equals(EFGImagesConstants.EFG_IMAGES_DIR)) {
+						cannotRemoveMessage();
+						
+					}else {
+						MutableTreeNode node = (MutableTreeNode) path[i]
+								.getLastPathComponent();
+						MutableTreeNode parentNode = (MutableTreeNode)node.getParent();
+						
+						if(parentNode != null) {
+							this.model.removeNodeFromParent(node);
+							this.model.reload(parentNode);
+							deleteFile(file);
+							deleteFromThumbNailsDir(file);
+						}
+						else {
+							cannotRemoveMessage();
+							
+						}
+					}
 				} else {
-					JOptionPane.showMessageDialog(this.frame, "Can't delete!",
-							"Error", JOptionPane.ERROR_MESSAGE);
+					cannotRemoveMessage();
+					
 				}
 			}
 	 }
@@ -133,7 +148,6 @@ public class DeleteNodeThread extends SwingWorker{
 					deleteFile(files[i]);
 				}
 			}
-			toDelete.delete();
 		}
 		private void deleteFromThumbNailsDir(File file){
 			String imageName = file.getAbsolutePath();

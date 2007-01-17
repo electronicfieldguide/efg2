@@ -21,9 +21,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
+
 import project.efg.util.EFGImportConstants;
 
 public class UnZipImport implements ZipInterface {
+	static Logger log = null;
+	static {
+		try {
+			log = Logger.getLogger(UnZipImport.class);
+		} catch (Exception ee) {
+		}
+	}
 	private File sqlDirectory;
 
 	/**
@@ -89,7 +100,7 @@ public class UnZipImport implements ZipInterface {
 			 }
 		 }
 		 catch(Exception ee){
-			 ee.printStackTrace();
+			 log.error(ee.getMessage());
 			return;
 			 
 		 }
@@ -103,7 +114,7 @@ public class UnZipImport implements ZipInterface {
 				 }
 			 }
 			 catch(Exception eee){
-				 eee.printStackTrace();
+				 log.error(eee.getMessage());
 			 }
 		 }
 	  }
@@ -132,13 +143,8 @@ public class UnZipImport implements ZipInterface {
 	 */
 	private void copy(InputStream in, OutputStream out,
 			int bufSizeHint) throws IOException {
-		int read = -1;
-		byte[] buf = new byte[bufSizeHint];
-		while ((read = in.read(buf, 0, bufSizeHint)) >= 0) {
-			out.write(buf, 0, read);
-		}
+		IOUtils.copy(in,out);
 		out.flush();
-		
 	}
 	
 
@@ -243,7 +249,7 @@ public class UnZipImport implements ZipInterface {
 				}
 			}
 			else {
-				System.out.println("Files zero!!");
+				log.error("Files zero!!");
 			}
 		}
 		
@@ -272,10 +278,9 @@ public class UnZipImport implements ZipInterface {
 		File destinationOnServer = new File("C:\\Program Files\\Apache Software Foundation\\Tomcat 5.0\\webapps\\efg2");
 		try {
 			unzip.unzipFile(zipFile, sandBoxDirectory, destinationOnServer);
-			System.out.println(unzip.getSqlDirectory());
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 	}

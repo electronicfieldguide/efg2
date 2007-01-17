@@ -103,7 +103,7 @@ public class FileBrowser extends JTree {
 			putClientProperty("JTree.lineStyle", "Angled");
 			this.setRowHeight(0);
 			setShowsRootHandles(true);
-			setRootVisible(false);
+			setRootVisible(true);
 			setEditable(false);
 			setLargeModel(true);
 			setToolTipText("Drag and Drop one or more Image(s) Folder into this Window.");
@@ -165,6 +165,7 @@ public class FileBrowser extends JTree {
 		
 		TreePath path[] = removeDescendants(getSelectionPaths());
 		if (path != null) {
+			
 			int result = JOptionPane.showConfirmDialog(this.getFrame(),
 					"Delete selected resource(s)?", "Delete Resource(s)",
 					JOptionPane.YES_NO_OPTION);

@@ -104,7 +104,7 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 	  
 	        }
 	        catch (Exception e) {
-	            System.out.println(e);
+	           log.error(e.getMessage());
 	        }
 	      
 	        return null;

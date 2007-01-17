@@ -10,7 +10,11 @@ java.util.Iterator" %>
 <html>
   <head>
   	<%
-		String serverName = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+  		String context = request.getContextPath();
+		String serverName = request.getScheme() +
+		"://"
+		+ request.getServerName() + 
+		":" + request.getServerPort();
 		Hashtable map = 
 			TemplateMapObjectHandler.getTemplateObjectMap(null);
 		Iterator it = null;
@@ -54,8 +58,8 @@ java.util.Iterator" %>
 							(templateName != null) && 
 							(key != null)){		
 							int index = key.indexOf("?");
-							String toDelete = "/efg2/templateJSP/DeleteTemplate.jsp?";
-							String toEdit = "/efg2/templateJSP/EditTemplate.jsp?";
+							String toDelete = context + "/templateJSP/DeleteTemplate.jsp?";
+							String toEdit = context + "/templateJSP/EditTemplate.jsp?";
 							if(index > -1){
 								toDelete =toDelete + key.substring(index+1,key.length());
 								toEdit =toEdit + key.substring(index+1,key.length());

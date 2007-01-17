@@ -42,7 +42,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 								<select name="<%=name%>"  title="Select an image from List">
 								<%
 									for (ii=0; ii<imageFileList.length; ii++ ) {
-										File imgFile = (File)imageFileList[ii];
+										File imgFile = imageFileList[ii];
 										fieldName = imgFile.getName();
 										if(ii==0){
 										%>

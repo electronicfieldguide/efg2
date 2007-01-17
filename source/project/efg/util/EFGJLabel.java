@@ -1,16 +1,19 @@
 /**
  * 
  */
-package project.efg.Imports.efgImpl;
+package project.efg.util;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.StringReader;
 
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 import org.apache.log4j.Logger;
 
@@ -20,6 +23,7 @@ public class EFGJLabel extends JLabel {
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = 1L;
 	static Logger log = null;
 	static {
@@ -30,19 +34,14 @@ public class EFGJLabel extends JLabel {
 	}
 	
 	private String path;
-
-	
-
-	int maxDim;
-
-	
+	private String text="";
 
 	public EFGJLabel() {
 		super();
 	}
 
 	public EFGJLabel(String text) {
-		super(text);
+		super(text,SwingConstants.CENTER);
 	}
 
 	public EFGJLabel(Icon image) {
@@ -56,13 +55,15 @@ public class EFGJLabel extends JLabel {
 	public EFGJLabel(String text, int horizontalAlignment) {
 		super(text, horizontalAlignment);
 	}
-	public void setEFGJLabel(String path, int maxDim) {
+	public void setEFGJLabel(String path) {
 		this.path = path;
-		this.maxDim = maxDim;
 	}
+
 	protected void paintComponent(Graphics g) {
 		if (this.path != null) {
+			
 			this.createThumbnail(g);
+			
 		} else {
 			super.paintComponent(g);
 		}
@@ -78,36 +79,42 @@ public class EFGJLabel extends JLabel {
 			if(new File(path).isDirectory()){//not an image
 				return outImage;
 			}
-			BufferedImage image = javax.imageio.ImageIO.read(new File(this.path));
-			// Determine the scale.
-			double scale = (double) maxDim
-					/ (double) image.getHeight(null);
-			if (image.getWidth(null) > image.getHeight(null)) {
-				scale = (double) this.maxDim / (double)image.getWidth(null);
-			}
-			// Determine size of new image. 
-			//One of them
-			// should equal maxDim.
-			int scaledW = (int) (scale * image.getWidth(null));
-			int scaledH = (int) (scale * image.getHeight(null));
+			File imageFile = new File(this.path);
+			BufferedImage image = javax.imageio.ImageIO.read(imageFile);
+			StringBuffer buffer = 
+				new StringBuffer();
+			ImageInfo imageInfo = new ImageInfo();
+			buffer.append(ImageInfo.getFileInfoHtml(imageFile,imageInfo));
+			//buffer.append();
+			this.setText(buffer.toString());
 			// Create an image buffer in 
 			//which to paint on.
-			outImage = new BufferedImage(scaledW, scaledH,
+			outImage = new BufferedImage(image.getWidth(null), image.getHeight(null),
 					BufferedImage.TYPE_INT_RGB);
 			// Set the scale.
 			AffineTransform tx = new AffineTransform();
+		
 			// If the image is smaller than 
 			//the desired image size,
 			// don't bother scaling.
-			if (scale < 1.0d) {
-				tx.scale(scale, scale);
-			}
 		
 			// Paint image.
 			Graphics2D g2d = (Graphics2D)g;
-			g2d.drawImage(image, tx, null);
+			//g2d.drawImage(image,null, (int)rect.getCenterX()-60,(int)rect.getCenterY());
+			g2d.drawImage(image,null, 60,60);
+			String tt = this.getText();
+			BufferedReader reader = new BufferedReader(new StringReader(tt));
+			String s = null;
+			int i = 15;
+			while( (s = reader.readLine()) != null) {
+				g2d.drawString(s,60,60 + image.getHeight(null) + i);
+				i = i + 15;
+			}
+			
+			
 			g2d.dispose();
 			image.flush();
+			
 		} catch (Exception e) {
 			log.error(this.path + " is not an image");
 		}

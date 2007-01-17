@@ -8,8 +8,14 @@ import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,6 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.tree.DefaultTreeModel;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -31,12 +38,7 @@ import project.efg.Imports.efgInterface.ThumbNailGeneratorInterface;
 public class CreateThumbNailsThread extends SwingWorker 
 implements EFGImportConstants,WindowListener{
 	static Logger log;
-	static {
-		try {
-			log = Logger.getLogger(CreateThumbNailsThread.class);
-		} catch (Exception ee) {
-		}
-	}
+
 	/**
 	 * 
 	 */
@@ -53,8 +55,21 @@ implements EFGImportConstants,WindowListener{
 	 public CreateThumbNailsThread( DnDFileBrowser browser,File srcFile, File destFile) {
 		 this(browser,srcFile,destFile,null);
 	 }
-	    	
-	
+	 private static Set supportedImageTpes;  	
+		static {
+			try {
+				log = Logger.getLogger(CreateThumbNailsThread.class);
+				supportedImageTpes = new HashSet();
+				String formats = 
+					EFGImportConstants.EFGProperties.getProperty("supported_images_format");
+				String[] formatsArr = formats.split(RegularExpresionConstants.COMMASEP);
+				for(int i = 0; i < formatsArr.length;i++) {
+					supportedImageTpes.add(formatsArr[i]);
+				}
+				
+			} catch (Exception ee) {
+			}
+		}
 
 	public CreateThumbNailsThread(DnDFileBrowser browser,File srcFile, File destFile, FileNode node) {
     		
@@ -175,7 +190,7 @@ implements EFGImportConstants,WindowListener{
 		String message = "ThumbNail Generation done!!!";
 		
 		this.frame.dispose();
-		JOptionPane.showMessageDialog(this.browser.frame, message, "Done",
+		JOptionPane.showMessageDialog(this.browser.importMenu, message, "Done",
 				JOptionPane.INFORMATION_MESSAGE);
 		FileNode root = (FileNode)((DefaultTreeModel)this.browser.getModel()).getRoot();
 
@@ -271,6 +286,7 @@ implements EFGImportConstants,WindowListener{
 					 }
 				 }
 				 else{
+					 
 					 String srcDir = srcFile.getParent();
 					 String fileName = srcFile.getName();
 					 
@@ -279,6 +295,7 @@ implements EFGImportConstants,WindowListener{
 					
 					 boolean isTemp = false;
 					 try{
+						 
 						isTemp = this.generate(srcDir,destDir,fileName);
 						if(!isTemp){
 							log.error("Thumbnails for " + srcDir + File.separator + fileName + " could not be created!!");
@@ -314,7 +331,33 @@ implements EFGImportConstants,WindowListener{
 	private boolean generate(String srcDir, String destDir, String fileName) {
 		if (check(srcDir, fileName)) {
 			//use a factory here
-			return this.thm.generateThumbNail(srcDir, destDir,fileName, this.maxDim);
+			//supportedImageTpes
+			//get the file format
+			boolean justCopy = false;
+			ImageInfo imageInfo = new ImageInfo();
+			try {
+				imageInfo.setInput(new FileInputStream(new File(srcDir,fileName)));
+			} catch (FileNotFoundException e) {
+				
+				return false;
+			}
+			if(imageInfo.check()) {
+				String format = imageInfo.getFormatName();
+				if(format != null && !format.trim().equals("")) {
+					if(supportedImageTpes.contains(format.toLowerCase())) {//this is an image copy it
+						return this.thm.generateThumbNail(srcDir, destDir,fileName, this.maxDim);
+					}
+				}
+			}
+			try {	//this is not an image			
+				IOUtils.copy(new FileInputStream(new File(srcDir,fileName)), 
+						new FileOutputStream(new File(destDir,fileName)));
+				return true;
+			} catch (FileNotFoundException e) {
+				
+			} catch (IOException e) {
+				
+			}
 		}
 		return false;
 	}

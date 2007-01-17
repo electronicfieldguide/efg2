@@ -144,28 +144,7 @@ public class ImageMagickGenerator extends ThumbNailGeneratorInterface {
 
 			return false;
 		}
-		
-		
-		/*int exitStatus = 0;
 
-		while (true) {
-			try {
-				
-				exitStatus = proc.waitFor();
-				
-				break;
-			} catch (java.lang.InterruptedException e) {
-				
-			}
-			catch(Exception ee) {
-				
-				break;
-			}
-		}
-		if (exitStatus != 0) {
-		
-		}
-		return (exitStatus == 0);*/
 		return true;
 	}
 

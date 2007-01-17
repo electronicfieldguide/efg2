@@ -33,47 +33,47 @@ project.efg.util.StatisticalMeasureTypeSorter
    if(datasourceName == null){
 	datasourceName=doSearches.getDatasourceName();		
    }
-EFGDocumentSorter sorter = null;
+	EFGDocumentSorter sorter = null;
 	Iterator itemsIter = null;
-EFGType item = null;
+	EFGType item = null;
 //taxonomy  
-String genus=null;
-ItemsType genusItems = null;
-
-String family=null;
-ItemsType familyItems = null;
-
-String commonName=null;
-ItemsType commonNameItems = null;
-
-String origin = null;
-ItemsType originItems = null;
-
-//degree of invasiveness
-  String degInvNan=null;
-ItemsType degInvNanItems = null;
-
-  String degInvMass=null;
-ItemsType degInvMassItems = null;
-
-  String dispersal=null;
-ItemsType dispersalItems = null;
-
-  String reproduction = null;
-ItemsType reproductionItems = null;
-
-   //growth form
-   String growthForm=null;
-ItemsType growthFormItems = null;
-
-   String flowerColor = null;
-ItemsType flowerColorItems = null;
-
-   String petalNumber = null;
-  ItemsType petalNumberItems = null;
-
-   String fruitColor = null;
-ItemsType fruitColorItems = null;
+	String genus=null;
+	ItemsType genusItems = null;
+	
+	String family=null;
+	ItemsType familyItems = null;
+	
+	String commonName=null;
+	ItemsType commonNameItems = null;
+	
+	String origin = null;
+	ItemsType originItems = null;
+	
+	//degree of invasiveness
+	 String degInvNan=null;
+	ItemsType degInvNanItems = null;
+	
+	String degInvMass=null;
+	ItemsType degInvMassItems = null;
+	
+	String dispersal=null;
+	ItemsType dispersalItems = null;
+	
+	  String reproduction = null;
+	ItemsType reproductionItems = null;
+	
+	   //growth form
+	   String growthForm=null;
+	ItemsType growthFormItems = null;
+	
+	   String flowerColor = null;
+	ItemsType flowerColorItems = null;
+	
+	   String petalNumber = null;
+	  ItemsType petalNumberItems = null;
+	
+	   String fruitColor = null;
+	ItemsType fruitColorItems = null;
 
 for(int s = 0 ; s < doSearches.getEFGDataObjectCount(); s++){
 			EFGDataObject searchable = doSearches.getEFGDataObject(s);
@@ -553,7 +553,7 @@ function toggleMax(field,idVar){
 	    </tr>
           <tr>
             <td class="radioheader">Leaf margins:</td>
-		<td>
+			<td>
 			<table class="radiothumbs">
 				<tr>
 					<td class="radiothumbs">
@@ -623,9 +623,7 @@ function toggleMax(field,idVar){
 				</table>
 			 </td>
 		  </tr>
-            </td>
-          </tr>
-          		<tr>
+          <tr>
 			<th>
 		  		Taxonomy
 		  	</th>

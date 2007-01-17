@@ -13,10 +13,12 @@
 	 if((fieldToUse != null) && (!fieldToUse.trim().equals(""))){
 			 fieldValue=fieldToUse;
 	}
-		
+	 //DATASOURCE_NAME
 	StringBuffer querySearch = new StringBuffer();
 	querySearch.append(context);
-	querySearch.append("/search?dataSourceName=");
+	querySearch.append("/search?");
+	querySearch.append(EFGImportConstants.DATASOURCE_NAME);
+	querySearch.append("=");
 	querySearch.append(dsName);
 	querySearch.append("&");
 	querySearch.append(fieldValue);

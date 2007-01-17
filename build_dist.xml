@@ -228,6 +228,8 @@ to make a distribution call makeImport:
 		<mkdir dir="${efg2.dist.home}/resource"/>
 		<mkdir dir="${efg2.dist.home}/resource/logs"/>
 		<mkdir dir="${efg2.dist.home}/resource/metadataHeader"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository/EFGImages"/>
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>

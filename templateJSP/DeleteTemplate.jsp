@@ -11,7 +11,7 @@ project.efg.util.TemplateConfigProcessor
     String message = "";
    
     if(datasourceName == null){
-		datasourceName =request.getParameter("dataSourceName");
+    	datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
 	}
     //make me dynamic
 	TemplateConfigProcessor tcp = new TemplateConfigProcessor(datasourceName,configType);

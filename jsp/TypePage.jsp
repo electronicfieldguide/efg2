@@ -24,7 +24,6 @@ project.efg.util.EFGDisplayObject
  		
  			
  		   String beginString = "/efg2/templateJSP/ConfigurePageBegin.jsp?" +  mainTableConstant.toString(); 
- 		   String interString = "/efg2/templateJSP/ConfigurePageInter.jsp?" +  mainTableConstant.toString(); 
  		   String advancedString = "/efg2/templateJSP/ConfigurePage.jsp?" +  mainTableConstant.toString(); 
 
    	String forwardPage="NoDatasource.jsp";

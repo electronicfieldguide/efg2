@@ -99,7 +99,6 @@ public class SearchableImplTest extends TestCase {
 					list.getEFGDataObjectCount());
 			
 			int counter = list.getEFGDataObjectCount();
-			System.out.println("Counter: " + counter);
 			for(int i = 0; i < counter; i++){
 				//EFGDataObject obj= list.getEFGDataObject(i);
 				EFGDataObject obj= null;//list.getEFGDataObject(i);

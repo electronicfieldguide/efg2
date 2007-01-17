@@ -94,8 +94,6 @@ public class HandleStatInput extends HandleStatInputAbstract {
 	 * @return
 	 */
 	private boolean compareStats(StatisticalMeasuresType dbStats, StatisticalMeasureType userValue, OperatorInterface operator) {
-		//System.out.println("Val: " + val2Compare);
-		
 		
 		for(int j = 0; j < dbStats.getStatisticalMeasureCount();j++){
 				StatisticalMeasureType databaseValue = dbStats.getStatisticalMeasure(j);
@@ -123,7 +121,6 @@ public class HandleStatInput extends HandleStatInputAbstract {
 		boolean isAnd = false;
 		
 		//convert to operators
-		//System.out.println("userValue before convert: " + userValues);
 		userValues = this.convertToOperators(userValues);
 		
 		if(userValues.indexOf(RegularExpresionConstants.ORSEP) > -1) {

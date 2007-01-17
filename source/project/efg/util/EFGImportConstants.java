@@ -331,7 +331,7 @@ public interface EFGImportConstants {
 	
 	String ALL_TABLE_NAME = "ALL_TABLE_NAME";
 	String EFG_RDB_TABLES = EFGProperties.getProperty("efg_rdb_tables_name");
-	String CHECKBOX_SER_NAME = "checkBox.out";
+	String MR_CHECKBOX_SER_NAME = "mr_checkBox.out";
 	String IMAGE_DROP_BACKGROUND_IMAGE  = 
 		EFGProperties.getProperty("image_drop_background_image");
 	

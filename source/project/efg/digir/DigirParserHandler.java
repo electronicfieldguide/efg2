@@ -701,7 +701,6 @@ public class DigirParserHandler extends DefaultHandler {
 	 *            the Namespace prefix being declared
 	 */
 	public void endPrefixMapping(String prefix) throws SAXException {
-		// System.out.println("End namespace prefix: " + prefix);
 	}
 
 	/**
@@ -714,8 +713,6 @@ public class DigirParserHandler extends DefaultHandler {
 	 */
 	public void processingInstruction(String instruction, String data)
 			throws SAXException {
-		// System.out.println("Instruction: " + instruction + ", data: " +
-		// data);
 	}
 
 	/**
@@ -725,7 +722,6 @@ public class DigirParserHandler extends DefaultHandler {
 	 *            the name of the skipped entity
 	 */
 	public void skippedEntity(String name) throws SAXException {
-		// System.out.println("Skipped entity: " + name);
 	}
 
 	/**
@@ -774,6 +770,9 @@ public class DigirParserHandler extends DefaultHandler {
 }
 
 // $Log$
+// Revision 1.4  2007/01/17 06:21:55  kasiedu
+// no message
+//
 // Revision 1.3  2006/12/08 03:51:00  kasiedu
 // no message
 //

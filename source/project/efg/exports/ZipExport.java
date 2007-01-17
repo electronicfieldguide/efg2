@@ -13,6 +13,8 @@ import java.nio.channels.FileChannel;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import org.apache.commons.io.IOUtils;
+
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGUniqueID;
 
@@ -90,11 +92,7 @@ public class ZipExport implements ZipInterface{
 	 */
 	private void copy(InputStream in, OutputStream out,
 			int bufSizeHint) throws IOException {
-		int read = -1;
-		byte[] buf = new byte[bufSizeHint];
-		while ((read = in.read(buf, 0, bufSizeHint)) >= 0) {
-			out.write(buf, 0, read);
-		}
+		IOUtils.copy(in, out);
 		out.flush();
 		
 	}

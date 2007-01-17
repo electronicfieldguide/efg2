@@ -156,7 +156,7 @@ public class SynopticKeyTreeMain extends JDialog {
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().add(treePane, BorderLayout.CENTER);
 
-		
+		this.setLocationRelativeTo(frame);
 	} // SynoptcKeyTreeMain constructor
 
 	public SynopticKeyTreeMain(DBObject db, JFrame frame, String mainTableName) {

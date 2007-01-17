@@ -2,6 +2,7 @@ package project.efg.util;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,8 +18,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -37,12 +36,15 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
 import project.efg.Imports.efgImpl.ImagePanel;
+import project.efg.Imports.efgImpl.ImportMenu;
+import project.efg.Imports.efgImpl.MediaResourceLocationHandler;
 
 /**
  * @version $Revision$
  * @author Benoît Mahé (bmahe@w3.org)
  */
 public class DnDFileBrowserMain extends JDialog {
+
 
 	/**
 	 * 
@@ -54,8 +56,9 @@ public class DnDFileBrowserMain extends JDialog {
 		} catch (Exception ee) {
 		}
 	}
-	final JPopupMenu popup = new JPopupMenu();
 	
+	final JPopupMenu popup = new JPopupMenu();
+	final ImageInfo imageInfo = new ImageInfo();
 	private static final long serialVersionUID = 1L;
 	static JLabel currentDimLabel; 
 	final JButton deleteBtn = new JButton(EFGImportConstants.EFGProperties
@@ -73,8 +76,9 @@ public class DnDFileBrowserMain extends JDialog {
 	JLabel imageLabel;
 	JPanel displayPanel;
 	URL helpURL;
+	private ImagePanel iPanel;
 
-	JEditorPane htmlPane;
+	//JEditorPane htmlPane;
 	Vector userItems = new Vector();
 	static String thumsStr = "Current Generated Thumbnail Size: "; 
 	public static String imageL = EFGImportConstants.EFGProperties
@@ -84,73 +88,93 @@ public class DnDFileBrowserMain extends JDialog {
 	// Constructor
 	//
 	FileBrowser browser;
+	private String currentImagesDirectory;
+	protected ImportMenu importMenu;
+	
 
-	protected JFrame frame;
 
 	/**
 	 * 
 	 */
-	public DnDFileBrowserMain(JFrame frame, boolean modal,
-			String imagesDirectory) {
-		this(frame, "", modal, imagesDirectory);
+	public DnDFileBrowserMain(ImportMenu importMenu, boolean modal) {
+		this(importMenu, "", modal);
 	}
+	private JScrollPane browserPane;
 	/**
 	 * 
 	 * @param frame
 	 * @param title
 	 * @param modal
-	 * @param imagesDirectory
+	 * @param currentImagesDirectory
 	 */
-	public DnDFileBrowserMain(JFrame frame, String title, boolean modal,
-			String imagesDirectory) {
-
-		super(frame, modal);
-		this.frame = frame;
+	public DnDFileBrowserMain(ImportMenu importMenu, 
+			String title, 
+			boolean modal) {
+		super(importMenu, modal);
+		this.importMenu = importMenu;
+		//always set to false
+		this.importMenu.setBrowserReload(false);
+		this.currentImagesDirectory =
+			this.importMenu.getMediaResourcesDirectory();
 		this.setTitle("Drag and Drop Image Folders here");
-
 		this.setModal(true);
-
-		imageView = addImagePanel();
-		htmlPane = new JEditorPane();
-		
-		htmlPane.setContentType("text/html");
-		htmlPane.setEditable(false);
-	
+		imageView = addImagePanel();	
 		initHelp();
 		this.progressBar.setSize(300, 300);
-		this.browser = DnDFileBrowser.getFileBrowser(imagesDirectory,
-				progressBar,this.frame);
+		//this.reloadBrowser();
+		this.iPanel = this.loadPanel();
+		this.browserPane = new JScrollPane(this.iPanel);
+		JScrollPane imageViewPane = new JScrollPane(this.imageView);
+		JSplitPane pane = 
+			new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+				browserPane, imageViewPane);
+		pane.setOneTouchExpandable(true);
+		pane.setDividerLocation(300);
+		this.addMenus();	
+		this.createPopUp();
+		this.getContentPane().add(pane, BorderLayout.CENTER);
+		this.getContentPane().add(addButtons(), BorderLayout.SOUTH);
+		this.setSize(700, 600);
+		addWindowListener(new WndCloser(this));
+		this.setLocationRelativeTo(importMenu);
+	}
+	/**
+	 * 
+	 * @param currentImagesDirectory
+	 * @param frame
+	 */
+	public DnDFileBrowserMain(String imagesDirectory, ImportMenu frame) {
+		this(frame, "", false);
+	}
+	/**
+	 * if !imagesDirectory.equals(currentImagesDirectory)
+	 * then reload browser because directory has changed.
+	 * 
+	 * @param imagesDirectory
+	 */
+	public void setBrowserReload(String imagesDirectory) {
+		
+		if(!this.currentImagesDirectory.equalsIgnoreCase(imagesDirectory)) {
+
+			importMenu.setBrowserReload(true);
+		
+		}
+	}
+
+	private ImagePanel loadPanel() {
+
+		this.browser = DnDFileBrowser.getFileBrowser(this.currentImagesDirectory,
+				progressBar,this.importMenu);
 		this.browser.setRootVisible(false);
 		this.browser.setSelectionRow(0);
 		
 		this.browser.addTreeSelectionListener(new FileTreeSelectionListener(
 				this.browser));
-		this.browser.addMouseListener(new EditMouseListener(this));
-		
-		
-		//JScrollPane browserPane = new JScrollPane(this.browser);
-		JScrollPane browserPane = new JScrollPane(this.addPanel());
-		JScrollPane imageViewPane = new JScrollPane(this.imageView);
-
-		JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				browserPane, imageViewPane);
-
-		pane.setOneTouchExpandable(true);
-		pane.setDividerLocation(300);
-		
-		this.addMenus();	
-		this.createPopUp();
-		this.getContentPane().add(pane, BorderLayout.CENTER);
-		this.getContentPane().add(addButtons(), BorderLayout.SOUTH);
-
-		this.setSize(700, 600);
-		
+		//this.browser.addMouseListener(new EditMouseListener(this));
 		this.browser.expandRow(0);
-		addWindowListener(new WndCloser(this));
 
-	}
-	private JPanel addPanel() {
-		ImagePanel iPanel = new ImagePanel(EFGImportConstants.IMAGE_DROP_BACKGROUND_IMAGE);
+		ImagePanel iPanel = 
+			new ImagePanel(EFGImportConstants.IMAGE_DROP_BACKGROUND_IMAGE);
 		iPanel.setLayout(new BorderLayout());
 		iPanel.add(this.browser,BorderLayout.CENTER);
 		iPanel.setBackground(Color.white);
@@ -160,27 +184,48 @@ public class DnDFileBrowserMain extends JDialog {
 		iPanel.setOpaque(true);
 		return iPanel;
 	}
+
 	/**
 	 * 
 	 *
 	 */
 	private void addMenus(){
-		JMenu fileMenu = new JMenu("File");		
-		JMenu helpMenu = new JMenu("Help");		
-		JMenuItem thumbNailMenu = new JMenuItem("Thumbnails");
-		JMenuItem deleteMenu = new JMenuItem("Delete");
-		JMenuItem closeMenu = new JMenuItem("Close");
-		JMenuItem helpItem = new JMenuItem("Help Contents");
+		JMenu fileMenu = 
+			new JMenu("File");		
+		JMenu helpMenu = 
+			new JMenu("Help");		
+		JMenuItem thumbNailMenu = 
+			new JMenuItem("Thumbnails");
+		
+		JMenuItem deleteMenu = 
+			new JMenuItem("Delete");
+		JMenuItem closeMenu = 
+			new JMenuItem("Close");
+		JMenuItem helpItem = 
+			new JMenuItem("Help Contents");
 
 		thumbNailMenu.addActionListener(new ThumbsListener());
-		deleteMenu.addActionListener(new DeleteListener(this.browser));
-		helpItem.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.IMAGE_DEPLOY_HELP));
-		closeMenu.addActionListener(new DoneListener(this));
+		fileMenu.add(thumbNailMenu);
 		
+		deleteMenu.addActionListener(new DeleteListener(this.browser));
 		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("FileTreeBrowserMain.deleteBtn.tooltip"));
+		helpItem.addActionListener(new HelpEFG2ItemListener
+				(EFGImportConstants.IMAGE_DEPLOY_HELP));
 		
-		fileMenu.add(thumbNailMenu);
+		closeMenu.addActionListener(new DoneListener(this));
+		File bitSetter = 
+			new File(new File(this.importMenu.getLocalMediaResourceDirectory()),
+				EFGImagesConstants.BIT_SET_FILE);
+		if(!bitSetter.exists()) {//show only if the bit is not set
+			JMenuItem imagesRootDirectoryMenu = 
+				new JMenuItem("Change MediaResource Root Directory");
+			imagesRootDirectoryMenu.addActionListener(new ChangeImagesRootListener(this));
+			
+			fileMenu.add(imagesRootDirectoryMenu);
+			
+		}
+		
 		fileMenu.add(deleteMenu);
 		helpMenu.add(helpItem);
 		
@@ -191,14 +236,6 @@ public class DnDFileBrowserMain extends JDialog {
 		mBar.add(fileMenu);
 		mBar.add(helpMenu);
 		this.setJMenuBar(mBar);
-	}
-	/**
-	 * 
-	 * @param imagesDirectory
-	 * @param frame
-	 */
-	public DnDFileBrowserMain(String imagesDirectory, JFrame frame) {
-		this(frame, "", false, imagesDirectory);
 	}
 	/**
 	 * 
@@ -305,7 +342,26 @@ public class DnDFileBrowserMain extends JDialog {
 		
 		currentDimLabel = new JLabel(thumsStr + maxDim + " ", JLabel.LEADING);
 		currentDimLabel.setForeground(Color.blue);
-		JPanel btnPanel = new JPanel();
+		JPanel btnPanel =  new JPanel(new GridLayout(0, 1));
+		
+		
+		String currentD = this.currentImagesDirectory;
+		JLabel currentDirectory = new JLabel(); 
+		currentDirectory.setText("Current Mediaresource directory: " + 
+				this.importMenu.getMediaResourcesDirectory());
+		/*if(currentD.indexOf(EFGImagesConstants.LOCAL_IMAGES_DIR) > -1) {
+			currentDirectory.setText("Current Mediaresource directory: " + 
+					new File(importMenu.importMenu.getMediaResourcesDirectory() , 
+							EFGImagesConstants.EFG_IMAGES_DIR).getAbsolutePath()+ 
+					"     ");
+		}
+		else {
+			currentDirectory.setText("Current Mediaresource directory: "+ 
+					importMenu.getMediaResourcesDirectory() +  
+					File.separator + EFGImagesConstants.EFG_IMAGES_DIR);
+		}*/
+		//current directory
+		btnPanel.add(currentDirectory);
 		
 		btnPanel.add(currentDimLabel);
 		return btnPanel;
@@ -331,15 +387,7 @@ public class DnDFileBrowserMain extends JDialog {
 	 * @param url
 	 */
 	private void displayURL(URL url) {
-		try {
-			if (url != null) {
-				htmlPane.setPage(url);
-			} else { // null url
-				htmlPane.setText("File Not Found");
-			}
-		} catch (Exception e) {
-			log.error("Attempted to read a bad URL: " + url);
-		}
+	
 	}
 	/**
 	 * 
@@ -444,26 +492,19 @@ public class DnDFileBrowserMain extends JDialog {
 							return;
 						}
 						BufferedImage image = javax.imageio.ImageIO.read(imageFile);
-						//this.setText("Some text");
-						int wt = image.getWidth(null);
-						int ht = image.getHeight(null);
-						StringBuffer buffer = new StringBuffer();
-						buffer.append("<html>");
-						buffer.append("<p>Image Dimensions in pixels</p>");
-						buffer.append("<hr></hr>");
-						buffer.append("<p>width  : " + wt + "</p>");
-						buffer.append("<p>height : " + ht + "</p>");
+						StringBuffer buffer = 
+							new StringBuffer("<html>");
+						buffer.append(ImageInfo.getFileInfoHtml(imageFile,imageInfo));
 						buffer.append("</html>");
+						
+						
 						imageLabel.setIcon(new ImageIcon(image));
 						imageLabel.setText(buffer.toString());
-					}
-					
-					//imageLabel.setEFGJLabel(path, getMaxDim());
-					//imageLabel.setLocation(60, 60);
-					//imageLabel.repaint();
+					}					
 				}
 			} catch (Exception ee) {
-				imageLabel.setText("Image too large to draw");
+				imageLabel.setIcon(null);
+				imageLabel.setText("");
 			}
 			displayPanel.revalidate();
 		}
@@ -477,6 +518,8 @@ public class DnDFileBrowserMain extends JDialog {
 		}
 
 		public void actionPerformed(ActionEvent evt) {
+			imageLabel.setIcon(null);
+			imageLabel.setText("");
 			this.tree.deleteSelectedFiles();
 		}
 
@@ -503,11 +546,36 @@ public class DnDFileBrowserMain extends JDialog {
 		 */
 		public void actionPerformed(ActionEvent e) {
 			EFGThumbNailDimensions thd = 
-				new EFGThumbNailDimensions(frame,
+				new EFGThumbNailDimensions(importMenu,
 						"Enter Thumbnail Dimension",true);
 			thd.setVisible(true);			
 		}
 		
+
+	}
+	/**
+	 * @author kasiedu
+	 *
+	 */
+	class ChangeImagesRootListener implements ActionListener {
+		private DnDFileBrowserMain browser;
+		/**
+		 * 
+		 */
+		public ChangeImagesRootListener(DnDFileBrowserMain browser) {
+			this.browser = browser;
+		}
+		 /* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			MediaResourceLocationHandler mdr = 
+				new MediaResourceLocationHandler(importMenu,"",true,this.browser);
+			mdr.setVisible(true);
+			if(importMenu.isBrowserReload()) {
+				this.browser.close();
+			}
+		}
 
 	}
 	/**

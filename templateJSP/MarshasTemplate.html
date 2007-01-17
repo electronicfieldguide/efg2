@@ -1,951 +1,406 @@
-<%@page import="
-java.io.File,
-java.util.List,
-java.util.ArrayList,
-
-java.util.Iterator,
-java.util.Hashtable,
-project.efg.servlets.efgInterface.EFGDataSourceHelperInterface,
-project.efg.util.EFGImportConstants,
-project.efg.util.TemplateProducer,
-project.efg.util.TemplatePopulator,
-project.efg.Imports.efgInterface.EFGQueueObjectInterface
-" %>
 <html>
-	<head>
-	<%@ include file="jspName.jsp" %>
-		<%
-            String guid =  (String)request.getAttribute(EFGImportConstants.GUID); 
-			String uniqueName = (String)request.getAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
-			String displayName = (String)request.getAttribute(EFGImportConstants.DISPLAY_NAME); 
-			String datasourceName =(String)request.getAttribute(EFGImportConstants.DATASOURCE_NAME);
-			if(datasourceName == null){
-				datasourceName =request.getParameter(EFGImportConstants.DATASOURCE_NAME);
-			
-			}
-			if(displayName == null){
-				displayName = request.getParameter(EFGImportConstants.DISPLAY_NAME);
-			}
-			if(uniqueName == null){
-				uniqueName = request.getParameter(EFGImportConstants.TEMPLATE_UNIQUE_NAME); 
-			}
-			if(guid == null){
-				guid = request.getParameter(EFGImportConstants.GUID); 
-			}
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Taxon Page for : American Cranberry</title>
+<style>
+.title {
+font-size: 20px;
+font-weight: bold;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+border-bottom-style: none;
+border-bottom-color: #33FF33;
+border-bottom-size: 1px;
+padding-left: 8px;
+}
+.pageauthor {
+font-size: 16px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+border-bottom-style: none;
+border-bottom-color: #33FF33;
+border-bottom-size: 1px;
+padding-left: 5px;
+}
+table {
+font-family: arial, helvetica, verdana, sans-serif;
+border-collapse: collapse;
+font-color: #000000;
+margin-top: 8px;
+}
+td.headingtop {
+vertical-align: top;
+background-color: #990000;
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 8px;
+padding-right: 5px;
+border-bottom-style: groove;
+border-bottom-width: 4px;
+border-bottom-color: #000000;
+border-top-style: groove;
+border-top-width: 4px;
+border-top-color: #000000;
+font-size: 11px;
+font-weight: bold;
+color: #FFFFCC;
+}
+td.datatop {
+width: 375px;
+vertical-align: top;
+background-color: #FFFFCC; 
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 10px;
+padding-right: 10px;
+border-bottom-style: groove;
+border-bottom-width: 4px;
+border-bottom-color: #000000;
+border-top-style: groove;
+border-top-width: 4px;
+border-top-color: #000000;
+font-size: 12px;
+font-weight: normal;
+}
+td.imagestop {
+vertical-align: top;
+background-color: #FFFFCC;
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 8px;
+padding-right: 5px;
+border-bottom-style: groove;
+border-bottom-width: 4px;
+border-bottom-color: #000000;
+border-top-style: groove;
+border-top-width: 4px;
+border-top-color: #000000;
+}
+td.heading {
+vertical-align: top;
+background-color: #990000;
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 8px;
+padding-right: 5px;
+border-bottom-style: groove;
+border-bottom-width: 2px;
+border-top-style: groove;
+border-top-width: 2px;
+font-size: 11px;
+font-weight: bold;
+color: #FFFFCC;
+}
+td.data {
+width: 375px;
+vertical-align: top;
+background-color: #FFFFCC; 
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 10px;
+padding-right: 10px;
+border-bottom-style: groove;
+border-bottom-width: 2px;
+border-top-style: groove;
+border-top-width: 2px;
+font-size: 12px;
+font-weight: normal;
+}
+td.images {
+vertical-align: top;
+background-color: #FFFFCC;
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 8px;
+padding-right: 5px;
+border-bottom-style: groove;
+border-bottom-width: 2px;
+border-top-style: groove;
+border-top-width: 2px;
+}
+.comname {
+font-size: 18px;
+font-weight: bold;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+padding-bottom: 5px;
+}
+.sciname {
+font-size: 16px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+font-style: italic;
+padding-bottom: 45px;
+}
+.scinameintext {
+font-size: 12px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+font-style: italic;
+}
+.descriptivetext {
+font-size: 12px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+font-style: normal;
+}
+.scinameauth {
+font-size: 16px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+font-style: normal;
+padding-bottom: 45px;
+}
+.family {
+font-size: 13px;
+font-weight: bold;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+vertical-align: bottom;
+}
+ul {
+margin-left: 0px;
+padding-left: 0px;
+list-style-type: none;
+}
+li {
+margin-left: 0px;
+padding-left: 0px;
+padding-bottom: 5px;
+}
+a.simspp {
+color: #6f0c1e;
+font-weight: bold;
+font-size: 12px;
+}
+a.simspp:hover {
+color: #6f0c1e;
+text-decoration: underline;
+font-weight: bold;
+font-size: 12px;
+}
+img {
+margin-right: 5px;
+}
+.imagecaption {
+font-family: arial, helvetica, verdana, sans-serif;
+font-size: 10px;
+font-weight: normal;
+}
+.copyright {
+font-size: 10px;
+font-style: italic;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+}
+td.assochead {
+font-size: 12px;
+font-weight: bold;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+vertical-align: top;
+padding-bottom: 15px;
+padding-right: 5px;
+margin-top: 0px;
+}
+td.simspptext {
+font-size: 12px;
+font-weight: normal;
+font-family: arial, helvetica, verdana, sans-serif;
+font-color: #000000;
+vertical-align: top;
+padding-bottom: 15px;
+margin-top: 0px;
+}
+table.simspp {
+margin-top: 0px;
+}
+.itemlist {
+padding-bottom: 4px;
+}
+</style>
 
-			String context = request.getContextPath();
-			String realPath = getServletContext().getRealPath("/");
-			String xslFileName = "TaxonPageTemplate5.xsl";
-	
-            String templateMatch ="TaxonPage Template5";
-			EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
-			StringBuffer fileName = new StringBuffer(realPath);
-			 fileName.append(File.separator);
-			 fileName.append(EFGImportConstants.TEMPLATES_XML_FOLDER_NAME); 
-			 fileName.append(File.separator);
-			 fileName.append(datasourceName.toLowerCase());
-			  fileName.append(EFGImportConstants.XML_EXT);
-			String fieldName = null;
-			String fieldValue = null;
-			
-        	boolean isImagesExists = false;
-			boolean isTableExists = false;
-			boolean isListsExists = false;
+</head>
+<body>
+<span class="title">Field Guide to the Bogs of Southern New England</span><span class="pageauthor">by Marsha Salett</span>
+<table>
+<tr>
+<td class="headingtop">Taxonomy</td><td class="datatop">
 
+<div class="comname">American Cranberry</div>
 
-			Iterator it =null;
-			List table = dsHelper.getTaxonPageFields(displayName,datasourceName);
-			List mediaResourceFields = dsHelper.getMediaResourceFields(displayName,datasourceName);
-			List efgList = dsHelper.getEFGListsFields(displayName,datasourceName);
+<div class="sciname">Vaccinium macrocarpon Ait. <span class="scinameauth"></span>
+</div>
+<div class="family">ERICACEAE (Heath Family)</div>
+</td><td class="imagestop"><a href="sampleImages/largecran.colony.jpg"><img border="0" src="sampleImages/largecran.colony_thumb.jpg"></a></td>
+</tr>
+<tr>
+<td class="heading">Etymology</td><td class="data">Vaccinium, the ancient Latin name for bilberry; macrocarpon means large-fruited, from the Greek: macro = long or large + carpa = fruit.</td><td class="images"></td>
+</tr>
+<tr>
+<td class="heading">Synonyms</td><td class="data">Large Cranberry, Marshberry, Sourberry, Bounceberry</td><td class="images"></td>
 
-			TemplatePopulator tpop = new  TemplatePopulator();
+</tr>
 
-			Hashtable groupTable = tpop.populateTable(fileName.toString(), guid, EFGImportConstants.TAXONPAGE_XSL, datasourceName );
-			if(groupTable == null){
-					groupTable = new Hashtable();
-			}
-String groupKey = null;
-           String groupLabel= null;
-			String groupLabelValue = null;
-			String characterLabelValue = null;
-			String characterLabel = null;
-			String characterText = null;
-			String characterValue = null;
-			String groupText = null;
-			String groupValue = null;
+<tr>
+<td class="heading">Description</td><td class="data">American Cranberry is a low, trailing, evergreen shrub that forms dense mats. Along with blueberry (Vaccinium corymbosum) and grape (Vitis labrusca), American Cranberry is one of three fruits native to New England that have been cultivated successfully. Cultivars of V. macrocarponare the staple of the cranberry industry, but the "ruby of the bog" still grows wild in natural peatlands. Cranberry flowers resemble the head and neck of a crane. Hence, the name cranberry comes from "crane's berry."</td><td class="images"></td>
+</tr>
+<tr>
+<td class="heading">Wetland indicator status</td><td class="data">OBL</td><td class="images"></td>
+</tr>
+<tr>
+<td class="heading">Plant Height</td><td class="data">4-12 inches</td><td class="images"></td>
 
-			int tableSize = table.size();
-			int listSize = efgList.size();
-			TemplateProducer tp = new TemplateProducer();
-			boolean isNew = true;
-			boolean isOld = false;
-			String name = null;
-			int ii = 0;
-            File imageFiles = new File(realPath + File.separator +  EFGImportConstants.templateImagesDirectory);
-			 File[] imageFileList = imageFiles.listFiles(); 
-			String defaultInfo ="Click on a name to view more information about that Taxon."; 
-			if((table != null) && (table.size() > 0)){
-				isTableExists = true;	
-			}
-			if((efgList != null) && (efgList.size() > 0)){
-				isListsExists = true;	
-			}
-			if((mediaResourceFields != null) && (mediaResourceFields.size() > 0)){
-				isImagesExists = true;	
-			}
+</tr>
 
-		    File cssFiles = new File(realPath + File.separator +  EFGImportConstants.templateCSSDirectory);
-			File[] cssFileList = cssFiles.listFiles(); 
-			String cssLocation = context + "/" + EFGImportConstants.templateCSSDirectory  + "/";
-			 String cssFile = "bogstyle.css";
-		    if(!isTableExists){    	
-	 			String forwardPage="NoDatasource.jsp";
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
-				dispatcher.forward(request, response);
-		    }
+<tr>
+<td class="heading">Leaves</td><td class="data">Evergreen, alternate, simple, entire, 1/4 - 3/4" long; oblong to elliptical, rounded tip; leathery; shiny, dark green above; underside is pale; maroon-brown in winter.</td><td class="images"></td>
 
-		//sort and iterate
-		%>
-		<title>Taxon Page Template</title>
-			<%
-				name =tp.getCharacter(isNew,isNew);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					cssLocation =cssLocation + cssFile;
-					fieldValue = cssFile;
-				}
-				else{
-					cssLocation =cssLocation + fieldValue;
-				}
-			%>		
-		<link rel="stylesheet" href="<%=cssLocation%>"/>
-	</head>
-	<body>
-		 <form method="post" action="<%=context%>/configTaxonPage">
-			<%if(cssFileList.length > 0){
-				%>						
-				<select name="<%=name%>"  title="Select  a css file from list">
-					<%
-						for (ii=0; ii<cssFileList.length; ii++ ) {
-							File currentCSSFile = (File)cssFileList[ii];
-							fieldName = currentCSSFile.getName();
-							if(fieldName.equals(fieldValue)){
-							%>
-							<option selected="selected"><%=fieldName%></option>
-							<%
-							}
-							else{
-							%>
-								<option><%=fieldName%></option>
-							<%
-							}
-						}
-					%>
-				</select><br/>
-			<%}//end if css
-			name =tp.getCharacter(isNew,isNew);
-			characterText = tp.getCurrentCharacterText(name);
-			characterValue = (String)groupTable.get(characterText);
-		  
-			if(characterValue == null){
-				characterValue ="";
-			}
+</tr>
+<tr>
+<td class="heading">Flower/Inflorescence</td><td class="data">Pale pink, small (1/2"); long orange stamens and red style protrude "beaklike" from the center of four recurved petals; single or in pairs on slender stalks that arise from mid- to lower leaf axils of the upright branches.</td><td class="images"><a href="sampleImages/largecran.flower.jpg"><img border="0" src="sampleImages/largecran.flower_thumb.jpg"></a></td>
+</tr>
+<tr>
+<td class="heading">Fruiting Period</td><td class="data">September-November</td><td class="images"></td>
 
-			groupLabel= tp.getCurrentGroupLabel(name);
-		
-				groupLabelValue = (String)groupTable.get(groupLabel);
-					if(groupLabelValue == null){
-						groupLabelValue ="title";
-					}
-			
+</tr>
+<tr>
 
+<td class="heading">Habitat</td><td class="data">bogs, acidic peatlands, interdune swales</td><td class="images"></td>
+</tr>
+<tr>
 
-				%>
-				<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>	
-			<span class="title"><input type="text" size="75"  title="ENTER PAGE TITLE HERE" name="<%=characterText%>" value="<%=characterValue%>"/> </span>
-			<%
-				name =tp.getCharacter(isOld,isOld);
-			characterText = tp.getCurrentCharacterText(name);
-			characterValue = (String)groupTable.get(characterText);
-		
-			if(characterValue == null){
-				characterValue ="";
-			}
-				%>
-				 <span class="pageauthor"><input type="text"  title="ENTER AUTHOR HERE" name="<%=characterText%>" value="<%=characterValue%>"/> </span>
-			<table>
-				<tr>
-				
+<td class="heading">Range</td><td class="data">Newfoundland to Manitoba; south to Virginia, Illinois, Wisconsin and Minnesota; mountains to North Carolina and Tennessee.</td><td class="images"></td>
+</tr>
+<tr>
+<td class="heading">Flowering Period</td><td class="data">June-August</td><td class="images"></td>
 
-					<%
-					name =tp.getCharacter(isNew,isNew);
+</tr>
+<tr>
+<td class="heading">Fruit</td><td class="data">Berry, bright red, 1/2-7/8" wide; shape varies: round, pear-shaped or oval-oblong; edible, tart -- the cultivated cranberry.</td><td class="images"><a href="sampleImages/largecran.roundfruit.jpg"><img border="0" src="sampleImages/largecran.roundfruit_thumb.jpg"></a><a href="sampleImages/largecran.bellfruit.jpg"><img border="0" src="sampleImages/largecran.bellfruit_thumb.jpg"></a>
+<a href="sampleImages/largecran.buglefruit.jpg"><img border="0" src="sampleImages/largecran.buglefruit_thumb.jpg"></a></td>
 
-					
-					groupText = tp.getCurrentGroupText(name);
-					
-					String[] groupArr = groupText.split(":");
+</tr>
 
-				if(groupArr.length > 3){
-					groupKey = groupText.substring(0,groupText.lastIndexOf(":"));
-				}
-				else{
-					groupKey = groupText;
-				}
-					groupValue = (String)groupTable.get(groupKey );
-					if(groupValue == null){
-						groupValue ="";
-					}
-			groupLabel= tp.getCurrentGroupLabel(name);
-				groupLabelValue = (String)groupTable.get(groupLabel);
-					if(groupLabelValue == null){
-						groupLabelValue ="header";
-					}
-			
+<tr>
+<td class="heading">Associates</td>
+<td class="data">
+<table class="simspp">
+<tr>
+<td class="assochead">
+Trees:
 
+</td>
+<td class="simspptext">
+<div class="itemlist">
+</div>
+</td>
+</tr>
+<tr>
 
-				%>
-				
-					   <td class="headingtop"><input size="20" type="text"   title="ENTER HEADER FOR ROW" name="<%=groupText%>" value="<%=groupValue%>"/>
-					   <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>			
-					   </td>
-					   <td class="datatop">
-						<%
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="item";
-					}
+<td class="assochead">
+Shrubs:
+</td>
+<td class="simspptext">
+<div class="itemlist"><a class="simspp" href="#">Leatherleaf</a><span class="scinameintext"> (Chamaedaphne calyculata)</span></div>
+<div class="itemlist"><a class="simspp" href="#">Sheep Laurel</a><span class="scinameintext"> (Kalmia angustifolia)</span></div>
 
-						%>
-						<div class="comname">							
-							<select name="<%=name%>"  title="Select a column from the list">
-								<%
-									ii = 0;
-									it = table.iterator();
-									while (it.hasNext()) {
-										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-										 if(isImagesExists) {
-											if(mediaResourceFields.contains(queueObject)){
-												continue;
-											}
-										}	
-										if(isListsExists) {
-											if(efgList.contains(queueObject)){
-												continue;
-											}
-										}	
+<div class="itemlist"><a class="simspp" href="#">Swamp Azalea</a><span class="scinameintext"> (Rhododendron viscosum)</span></div>
+<div class="itemlist"><a class="simspp" href="#">Sweet Gale</a><span class="scinameintext"> (Myrica gale)</span>
 
-											fieldName = (String)queueObject.getObject(1);
-											if(ii==0){
-											%>
-											<option>
-											<%
-											}
-											if(fieldName.equals(fieldValue)){
-											%>
-											<option selected="selected"><%=fieldName%></option>
-											<%
-											}
-											else{
-											%>
-												<option><%=fieldName%></option>
-											<%
-											}
-											ii++;
-									}//end while
-								%>
-							</select>   
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+</td>
+</tr>
+<tr>
+<td class="assochead">
+Herbs/Groundcovers:
+</td>
+<td class="simspptext">
+<div class="itemlist"><a class="simspp" href="#">Sphagnum mosses</a></div>
 
-						</div>
-						<div class="sciname">					
-						<%
-							name =tp.getCharacter(isOld,isOld);
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="item";
-					}
+<div class="itemlist"><a class="simspp" href="#">Pitcher Plant</a><span class="scinameintext"> (Sarracenia purpurea)</span></div>
+<div class="itemlist"><a class="simspp" href="#">Round-leaved Sundew</a><span class="scinameintext"> (Drosera rotundiflora)</span></div>
 
-						%>
-							<select   name="<%=name%>"  title="Select A Field From List" style="width:100px;">                                                                                     
-							<%
-								ii=0;
-								it = table.iterator();
-								while (it.hasNext()) {
-									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-									 if(isImagesExists) {
-										if(mediaResourceFields.contains(queueObject)){
-											continue;
-										}
-									}	
-										if(isListsExists) {
-											if(efgList.contains(queueObject)){
-												continue;
-											}
-										}	
+<div class="itemlist"><a class="simspp" href="#">Cotton Grass</a><span class="scinameintext"> (Eriophorum virginicum).</span>
+</td>
+</tr>
+</table>
+</td>
 
-									fieldName = (String)queueObject.getObject(1);
-									if(ii==0){
-									%>
-											<option>
-									<%
-									}
-									if(fieldName.equals(fieldValue)){
-									%>
-											<option selected="selected"><%=fieldName%></option>
-									<%
-									}
-									else{
-									%>
-										<option><%=fieldName%></option>
-									<%
-									}
-									ii++;
-								}//end while	
-							%>
-							</select>  
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
- 
-							<%
-								name =tp.getCharacter(isOld,isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="item";
-					}
+<td class="images">
+<a href="sampleImages/largecran.colony.jpg"><img border="0" src="sampleImages/largecran.colony_thumb.jpg"/></a></td>
+</tr>
 
-							%>
-							<select name="<%=name%>"  title="Select A Field From List" style="width:100px;">    								
-								<%
-								ii=0;
-								it = table.iterator();
-								while (it.hasNext()) {
-									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-									 if(isImagesExists) {
-										if(mediaResourceFields.contains(queueObject)){
-											continue;
-										}
-									}	
-										if(isListsExists) {
-											if(efgList.contains(queueObject)){
-												continue;
-											}
-										}	
+<tr>
+<td class="heading">Similar Species</td>
+<td class="data">
+<table class="simspp">
 
-									fieldName = (String)queueObject.getObject(1);
-									if(ii==0){
-									%>
-											<option>
-									<%
-									}
-									if(fieldName.equals(fieldValue)){
-									%>
-											<option selected="selected"><%=fieldName%></option>
-									<%
-									}
-									else{
-									%>
-										<option><%=fieldName%></option>
-									<%
-									}
-									ii++;
-								}//end while	
-							%>
-							</select>   
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+<tr>
+<td class="assochead">
+</td>
+<td class="simspptext"><div class="itemlist">
+<a class="simspp" href="#">Small Cranberry</a> (Vaccinium oxycoccus) grows in more acidic, nutrient-poor habitats amd has smaller leaves and berries than American Cranberry. The leaves of Small Cranberry have white undersides, pointed tips and inrolled margins. The leaf tips of American Cranberry are rounded and the margins are flat. Another good diagnostic is location of the flower/fruit stalks on American Cranberry, the stalks arise from mid-branch; on Small Cranberry, the stalks are at the tip of the branch.</div>
 
-							 <span class="scinameauth">	
-							<%
-							name =tp.getCharacter(isOld,isOld);
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="item";
-					}
+<div class="itemlist"><a class="simspp" href="#">Creeping Snowberry</a> (Gaultheria hispidula) has small, white flowers and berries.</div>
+</td>
+</tr>
+</table>
+</td>
+<td class="images"></td>
 
-							%>
-								<select name="<%=name%>"  title="Select A Field From List" style="width:100px;">                                                                                                      
-								<%
-									ii=0;
-									it = table.iterator();
-									while (it.hasNext()) {
-										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-										 if(isImagesExists) {
-											if(mediaResourceFields.contains(queueObject)){
-												continue;
-											}
-										}	
-										if(isListsExists) {
-											if(efgList.contains(queueObject)){
-												continue;
-											}
-										}	
+</tr>
 
-										fieldName = (String)queueObject.getObject(1);
-										if(ii==0){
-										%>
-												<option>
-										<%
-										}
-										if(fieldName.equals(fieldValue)){
-										%>
-												<option selected="selected"><%=fieldName%></option>
-										<%
-										}
-										else{
-										%>
-											<option><%=fieldName%></option>
-										<%
-										}
-										ii++;
-									}//end while	
-								%>
-								</select>   
-								<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+<tr>
+<td class="heading">Seasonal Diagnostics</td>
+<td class="data">
+<table class="simspp">
 
-							</span>
-						 </div>
-						 <div class="family">	
-							<%
-								name =tp.getCharacter(isOld,isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="item";
-					}
+<tr>
+<td class="assochead">
+Spring:
+</td>
+<td class="simspptext">
+Pink flowers in June and July
+</td>
+</tr>
+<tr>
+<td class="assochead">
 
-							%>
-							<select name="<%=name%>"  title="Select A Field From List" style="width:150px;">            								
-							<%
-								ii=0;
-								it = table.iterator();
-								while (it.hasNext()) {
-									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-									 if(isImagesExists) {
-										if(mediaResourceFields.contains(queueObject)){
-											continue;
-										}
-									}	
-										if(isListsExists) {
-											if(efgList.contains(queueObject)){
-												continue;
-											}
-										}	
+Summer:
+</td>
+<td class="simspptext">
+Pale green unripe berries.
+</td>
+</tr>
 
-									fieldName = (String)queueObject.getObject(1);
-									if(ii==0){
-									%>
-											<option>
-									<%
-									}
-									if(fieldName.equals(fieldValue)){
-									%>
-											<option selected="selected"><%=fieldName%></option>
-									<%
-									}
-									else{
-									%>
-										<option><%=fieldName%></option>
-									<%
-									}
-									ii++;
-								}//while	
-							%>
-							</select>   
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+<tr>
+<td class="assochead">
+Fall:
+</td>
+<td class="simspptext">
+Ripe, bright or dark red berries that persist into winter.
+</td>
+</tr>
+<tr>
+<td class="assochead">
+Winter:
 
-							 (	<%
-									name =tp.getCharacter(isOld,isOld);
-									fieldValue = (String)groupTable.get(name);
-									if(fieldValue == null){
-										fieldValue ="";
-									}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="item";
-					}
+</td>
+<td class="simspptext">
+Evergreen leaves turn maroon-brown.
+</td>
+</tr>
+</table>
 
-							%>
-							<select name="<%=name%>"  title="Select A Field From List" style="width:150px;"> 								
-							<%
-								ii=0;
-								it = table.iterator();
-								while (it.hasNext()) {
-									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-									 if(isImagesExists) {
-										if(mediaResourceFields.contains(queueObject)){
-											continue;
-										}
-									}	
-										if(isListsExists) {
-											if(efgList.contains(queueObject)){
-												continue;
-											}
-										}	
-
-									fieldName = (String)queueObject.getObject(1);
-									if(ii==0){
-									%>
-											<option>
-									<%
-									}
-									if(fieldName.equals(fieldValue)){
-									%>
-											<option selected="selected"><%=fieldName%></option>
-									<%
-									}
-									else{
-									%>
-										<option><%=fieldName%></option>
-									<%
-									}
-									ii++;
-								}//end while	
-							%>
-							</select>   
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>							
-							)
-						</div>
-					</td>
-					<td class="imagestop">
-					<%	
-						name =tp.getCharacter(isOld,isOld);
-						 if(isImagesExists) {
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="image";
-					}
-
-						%>
-							<select name="<%=name%>"  title="Select An Image Field From List">     														
-							<%
-								ii=0;
-								it = mediaResourceFields.iterator();
-	
-								while (it.hasNext()) {
-									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-									fieldName = (String)queueObject.getObject(1);
-									if(ii==0){
-									%>
-											<option>
-									<%
-									}
-									if(fieldName.equals(fieldValue)){
-									%>
-											<option selected="selected"><%=fieldName%></option>
-									<%
-									}
-									else{
-									%>
-										<option><%=fieldName%></option>
-									<%
-									}
-									ii++;
-								}// end while	
-							%>
-							</select> 
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>							
-	<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
-						<%}//end if images
-					%>
-					 </td>
-				</tr>
-				<%
-				for(int zz = 0; zz < table.size(); zz++){
-					EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)table.get(zz);
-					if(isImagesExists) {
-						if(mediaResourceFields.contains(queueObject1)){
-							continue;
-						}
-					}	
-					if(isListsExists) {
-						if(efgList.contains(queueObject1)){
-								continue;
-							}
-					}	
-
-					name =tp.getCharacter(isNew,isNew);
-					fieldValue = (String)groupTable.get(name);
-					if(fieldValue == null){
-						fieldValue ="";
-					}//end if fieldValue == null				
-
-			groupText = tp.getCurrentGroupText(name);
-			groupArr = groupText.split(":");
-
-				if(groupArr.length > 3){
-					groupKey = groupText.substring(0,groupText.lastIndexOf(":"));
-				}
-				else{
-					groupKey = groupText;
-				}
-					groupValue = (String)groupTable.get(groupKey );
-					if(groupValue == null){
-						groupValue ="";
-					}
-
-					
-			
-					groupLabel= tp.getCurrentGroupLabel(name);
-				 groupLabelValue = (String)groupTable.get(groupLabel);
-					if(groupLabelValue == null){
-						groupLabelValue ="items";
-					}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="item";
-					}
-				%>
-				<tr>
-				   <td class="heading"><input size="20" type="text"  title="" name="<%=groupText%>" value="<%=groupValue%>"/>
-					 <input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>					   
-				   </td>
-				   <td class="data">													
-						<select name="<%=name%>"  title="Select A Field From List">     														
-						<%
-							ii=0;
-							it = table.iterator();
-							while (it.hasNext()) {
-
-		EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-								if(isImagesExists) {
-									if(mediaResourceFields.contains(queueObject)){
-										continue;
-									}
-								}	
-								if(isListsExists) {
-									if(efgList.contains(queueObject)){
-										continue;
-									}
-								}	
-								if(ii == 0){
-								%>
-										<option>
-								<%
-								}//end if ii =0 
-								fieldName = (String)queueObject.getObject(1);
-								if(fieldName.equals(fieldValue)){
-								%>
-									<option selected="selected"><%=fieldName%></option>
-								<%
-								}//fieldName.equals(fieldValue)
-								else{
-								%>
-									<option><%=fieldName%></option>
-								<%
-								}//end else
-								ii++;
-							}//end while	
-						%>
-						</select> 
-						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-					</td>
-					<td class="images">
-					<%	
-						name =tp.getCharacter(isOld,isOld);
-						 if(isImagesExists) {
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
-						characterLabel= tp.getCurrentCharacterLabel(name);
-						characterLabelValue = (String)groupTable.get(characterLabel);
-							if(characterLabelValue == null){
-								characterLabelValue ="image";
-							}
-
-						%>
-							<select name="<%=name%>"  title="Select An Image Field From List">     														
-							<%
-								int yy=0;
-								it = mediaResourceFields.iterator();
-								
-								while (it.hasNext()) {
-									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-									fieldName = (String)queueObject.getObject(1);
-									if(yy==0){
-									%>
-											<option>
-									<%
-									}
-									if(fieldName.equals(fieldValue)){
-									%>
-											<option selected="selected"><%=fieldName%></option>
-									<%
-									}
-									else{
-									%>
-										<option><%=fieldName%></option>
-									<%
-									}
-									yy++;
-								}// end while	
-							%>
-							</select> 
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
-						<%}//end if images
-					%>
-					</td>         
-				</tr>
-				<%}//end outer for 
-			
-				for(int zz = 0; zz < efgList.size(); zz++){
-					EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)efgList.get(zz);
-					
-
-				name =tp.getCharacter(isNew,isNew);
-					fieldValue = (String)groupTable.get(name);
-					if(fieldValue == null){
-						fieldValue ="";
-					}//end if fieldValue == null		
-
-
-		groupText = tp.getCurrentGroupText(name);
-			groupArr = groupText.split(":");
-
-				if(groupArr.length > 3){
-					groupKey = groupText.substring(0,groupText.lastIndexOf(":"));
-				}
-				else{
-					groupKey = groupText;
-				}
-					groupValue = (String)groupTable.get(groupKey );
-					if(groupValue == null){
-						groupValue ="";
-					}
-			
-				groupLabel= tp.getCurrentGroupLabel(name);
-				groupLabelValue = (String)groupTable.get(groupLabel);
-					if(groupLabelValue == null){
-						groupLabelValue ="lists";
-					}
-						
-
-					
-				%>
-				<tr>
-				   <td class="heading"><input size="20" type="text"  title="" name="<%=groupText%>" value="<%=groupValue%>"/>
-							<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>		   
-				   </td>
-				   <td class="data">		
-				   <table class="simspp">
-
-				<%
-				
-					for(int zz2 = 0; zz2 < efgList.size(); zz2++){
-					queueObject1 = (EFGQueueObjectInterface)efgList.get(zz);
-				
-					name =tp.getCharacter(isOld,isOld);
-				
-					fieldValue = (String)groupTable.get(name);
-					if(fieldValue == null){
-						fieldValue ="";
-					}//end if fieldValue == null				
-					characterText = tp.getCurrentCharacterText(name);
-					characterValue = (String)groupTable.get(characterText);
-					if(characterValue == null){
-						characterValue ="";
-					}
-					characterLabel= tp.getCurrentCharacterLabel(name);
-					characterLabelValue = (String)groupTable.get(characterLabel);
-					if(characterLabelValue == null){
-						characterLabelValue ="list";
-					}
-
-				%>	
-					<tr>
-						<td class="assochead"><input size="20" type="text"  title="" name="<%=characterText%>" value="<%=characterValue%>"/></td>
-						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-						<td class="simspptext">
-						<div class="itemlist">
-						<select name="<%=name%>"  title="Select A Field From List" style="width:140px;">              														
-						<%
-							int zii=0;
-							Iterator it1 = efgList.iterator();
-							while (it1.hasNext()) {
-								if(zii == 0){
-								%>
-										<option>
-								<%
-								}//end if ii =0 
-								EFGQueueObjectInterface queueObject2 = (EFGQueueObjectInterface)it1.next();
-								fieldName = (String)queueObject2.getObject(1);
-								if(fieldName.equals(fieldValue)){
-								%>
-									<option selected="selected"><%=fieldName%></option>
-								<%
-								}//fieldName.equals(fieldValue)
-								else{
-								%>
-									<option><%=fieldName%></option>
-								<%
-								}//end else
-								zii++;
-							}//end while	
-						%>
-						</select> 
-						</div>
-					</td>
-				</tr>		
-						<%}%>
-						
-					</table>
-					</td>
-					<td class="images">
-					<%	name =tp.getCharacter(isOld,isOld);
-						 if(isImagesExists) {
-							fieldValue = (String)groupTable.get(name);
-							if(fieldValue == null){
-								fieldValue ="";
-							}
-						characterLabel= tp.getCurrentCharacterLabel(name);
-						characterLabelValue = (String)groupTable.get(characterLabel);
-							if(characterLabelValue == null){
-								characterLabelValue ="image";
-							}
-
-						%>
-
-							<select name="<%=name%>"  title="Select An Image Field From List" style="width:120px;">          														
-							<%
-								int yy=0;
-								it = mediaResourceFields.iterator();
-								
-								while (it.hasNext()) {
-									EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-									fieldName = (String)queueObject.getObject(1);
-									if(yy==0){
-									%>
-											<option>
-									<%
-									}
-									if(fieldName.equals(fieldValue)){
-									%>
-											<option selected="selected"><%=fieldName%></option>
-									<%
-									}
-									else{
-									%>
-										<option><%=fieldName%></option>
-									<%
-									}
-									yy++;
-								}// end while	
-							%>
-							</select> 
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%	characterText = tp.getCurrentCharacterText(name);
-									characterValue = (String)groupTable.get(characterText);
-		
-									if(characterValue == null){
-										characterValue ="";
-									}
-							%>
-							<br/>	<span class="imagecaption">
-							<input type="text"    name="<%=characterText%>" value="<%=characterValue%>"/>
-							</span>
-						<%}//end if images
-					%>
-					</td>         
-				</tr>
-				<%}//end outer for 
-				
-				%>
-			</table>
-			<%
-				name =tp.getGroupText(isNew,isNew);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-				fieldValue ="";
-				}			
-					groupLabel= tp.getCurrentGroupLabel(name);
-				 groupLabelValue = (String)groupTable.get(groupLabel);
-					if(groupLabelValue == null){
-						groupLabelValue ="copyright";
-					}
-	
-			%>
-			<span class="copyright">
-			<input size="100" type="text"  title="ENTER CREDIT INFORMATION" name="<%=name%>" value="<%=fieldValue%>"/>
-							<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>		   
-			
-			</span>
-			<%
-			fieldValue = (String)groupTable.get(EFGImportConstants.ISDEFAULT_STR);
-			if(fieldValue == null){
-				fieldValue = "false";
-			}
-			Boolean bool = new Boolean(fieldValue);	
-			%>
-			<p>The following is not part of the template:
-			<select name="<%=EFGImportConstants.ISDEFAULT_STR%>"  title="Indicate whether this template should be the default for search results page">
-				<option value="false">Do not use as Default Template</option>
-				<%if(bool.booleanValue() ){
-					%>
-				<option value="true" selected="selected">Use as Default Template</option>
-				<%} else{%>
-				<option value="true">Use as Default Template</option>
-				<%}%>
-			</select>
-			</p>
-			<br/><br/>
-			<input type="hidden"   name="<%=EFGImportConstants.DISPLAY_NAME%>"  value="<%=displayName%>"/>
-			<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_NAME%>"  value="<%=datasourceName%>"/>
-			<input type="hidden"   name="<%=EFGImportConstants.HTML_TEMPLATE_NAME%>"  value="<%=templateMatch%>"/>
-			<input type="hidden"   name="<%=EFGImportConstants.XSL_STRING%>"  value="<%=xslFileName%>"/>
-			<%if( guid != null){%>
-			<input type="hidden"   name="<%=EFGImportConstants.GUID%>"  value="<%=guid%>"/>
-			<%}%>
-			<input type="hidden"   name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>"  value="<%=uniqueName%>"/>
-			<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="<%=jspName%>"/>
-			<input type="submit"  name="submit" value="Click to submit" align="middle" />	
-		</form>
-	</body>
+</td>
+<td class="images"><a href="sampleImages/largecran.winter.jpg"><img border="0" src="sampleImages/largecran.winter_thumb.jpg"/></a></td>
+</tr>
+</table>
+<span class="copyright">&copy; 1998-2006 Marsha Salett</span>
+</body>
 </html>

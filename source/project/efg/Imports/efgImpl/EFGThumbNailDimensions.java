@@ -27,8 +27,8 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import project.efg.util.DnDFileBrowserMain;
-import project.efg.util.EFGCheckBoxManager;
 import project.efg.util.EFGComboBox;
+import project.efg.util.EFGImagesConstants;
 import project.efg.util.EFGImportConstants;
 
 
@@ -45,7 +45,7 @@ public class EFGThumbNailDimensions  extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private EFGCheckBoxManager checkBoxManager;
+	private SerializeDeserializeHandler checkBoxManager;
 	
 	static Logger log = null;
 	static {
@@ -67,7 +67,7 @@ public class EFGThumbNailDimensions  extends JDialog {
 		super(frame, title, modal);
     	this.setTitle("Thumbnail Options");
         this.frame = frame;
-        this.checkBoxManager = new EFGCheckBoxManager();
+        this.checkBoxManager = new SerializeDeserializeHandler();
         
         setSize(new Dimension(330, 150));
         add(addButtons());
@@ -76,10 +76,12 @@ public class EFGThumbNailDimensions  extends JDialog {
 				close();
 			}
 		});
+		this.setLocationRelativeTo(frame);
     }
 	protected void close(){
-		this.checkBoxManager.serialize(EFGImportConstants.CHECKBOX_SER_NAME, 
-				this.checkBox);
+		this.checkBoxManager.serializeCheckBox(this.checkBox,
+		EFGImagesConstants.CHECKBOX_SER_NAME
+				);
 		this.comboList.serialize(EFGImportConstants.THUMBS_FILE_NAME);
 		this.dispose();
 	}
@@ -107,9 +109,11 @@ public class EFGThumbNailDimensions  extends JDialog {
 		
 		
 		JPanel btnFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		String buttonLabel = "Don't ask me again..";
 		this.checkBox = 
-			this.checkBoxManager.deserialize(EFGImportConstants.CHECKBOX_SER_NAME);
-		this.checkBox.setText("Don't ask me again..");
+			this.checkBoxManager.getCheckBox(EFGImagesConstants.CHECKBOX_SER_NAME,buttonLabel );
+		
+		
 		btnFlowPanel.add(this.checkBox);
 		
 		JButton doneBtn = new JButton("OK");

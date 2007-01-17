@@ -72,6 +72,7 @@ public class EFGUsersList  extends JDialog
         this.frame = frame;
         setSize(new Dimension(600, 150));
         add(addButtons());
+        this.setLocationRelativeTo(frame);
     }
 	/**
 	 * @return

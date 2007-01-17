@@ -1,11 +1,14 @@
-<%@page import="project.efg.util.EFGImportConstants,java.io.File,project.efg.util.EFGUniqueID" %>
+<%@page import="project.efg.util.EFGImportConstants,
+project.efg.util.EFGImagesConstants,
+java.io.File,
+project.efg.util.EFGUniqueID" %>
 
 	<%
 			String realPath = getServletContext().getRealPath("/");
 			StringBuffer buffer = new StringBuffer();
 			buffer.append(realPath);
 			buffer.append(File.separator);
-			buffer.append(EFGImportConstants.EFG_IMAGES_DIR);
+			buffer.append(EFGImagesConstants.EFG_IMAGES_DIR);
 			String classname = "mediaresources"; 
 			 File dir = new File(buffer.toString());
 			 File[] files = dir.listFiles(); 

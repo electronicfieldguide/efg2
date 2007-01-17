@@ -65,25 +65,32 @@ public class EFGWebAppsDirectoryImpl implements EFGWebAppsDirectoryInterface {
 
 	public EFGWebAppsDirectoryImpl(String pathToServer) {
 		this.pathToServer = pathToServer;
+		this.imagesDirectory = pathToServer;
 	} // EFGWebAppsDirectoryObject constructor
 
 	/* (non-Javadoc)
 	 * @see project.efg.Imports.efgInterface.EFGWebAppsDirectoryInterface#setImagesDirectory(java.lang.String)
 	 */
-	public void setImagesDirectory(String imagesDirectory) {
-		if (imagesDirectory == null) {
+	public void setImagesDirectory(String imagesD) {
+		if (imagesD == null) {
 			return;
 		}
-		if ((this.getPathToServer() != null)
-				&& (!"".equals(this.getPathToServer().trim()))) {
-			this.imagesDirectory = this.getPathToServer() + File.separator
-					+ imagesDirectory.trim();
+		String path = this.getPathToServer();
+		if (( path!= null)
+				&& (!"".equals(path.trim()))) {
+			if(new File(path.trim()).exists()) {
+				this.imagesDirectory = path + File.separator
+				+ imagesD.trim();
+			}
 		} else {
+			
 			//set to local directory relative to the current source
 			String catalina_home = project.efg.Imports.efgImportsUtil.EFGUtils.getCatalinaHome();
 			if ((catalina_home != null) && (!"".equals(catalina_home.trim()))) {
+				if(new File(catalina_home.trim()).exists()) {
 				this.setPathToServer(".");
-				this.setImagesDirectory(imagesDirectory.trim());
+				this.setImagesDirectory(imagesD.trim());
+				}
 			}
 		}
 	}

@@ -29,7 +29,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,8 +47,9 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import project.efg.Imports.efgImpl.EFGJLabel;
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
+import project.efg.Imports.efgImpl.ImportMenu;
+import project.efg.Imports.efgImpl.SerializeDeserializeHandler;
 
 /**
  * @version $Revision$
@@ -92,19 +95,21 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	//
 	private JProgressBar progressBar;
 	public DnDFileBrowser(FileNode root,JProgressBar progressBar) {
-this(root,progressBar,null);
+		this(root,progressBar,null);
 		
 	}
-	protected JFrame frame;
+	private SerializeDeserializeHandler serializerManager;
+	protected ImportMenu importMenu;
 	protected JFrame getFrame() {
-		return this.frame;
+		return this.importMenu;
 	}
-	public DnDFileBrowser(FileNode root,JProgressBar progressBar,JFrame frame) {
+	public DnDFileBrowser(FileNode root,JProgressBar progressBar,ImportMenu importMenu) {
 		super(root);
 		this.root = root;
-		this.frame = frame;
+		this.importMenu = importMenu;
 		this.progressBar = progressBar;
-		
+		this.serializerManager = 
+			new SerializeDeserializeHandler();
 		this.progressBar.setMinimum(0);
 		if (this.progressBar.isIndeterminate()) {
 			progressBar.setIndeterminate(false);
@@ -191,14 +196,18 @@ this(root,progressBar,null);
 	public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent) {
 
 	}
-	private boolean isCheckBoxSelected(){
-		EFGCheckBoxManager checkBoxManager = new EFGCheckBoxManager();
-		
+	private boolean isThumbNailsPromptCheckBoxSelected(){	
 		JCheckBox checkBox = 
-			checkBoxManager.deserialize(EFGImportConstants.CHECKBOX_SER_NAME);
+			this.serializerManager.getCheckBox(EFGImagesConstants.CHECKBOX_SER_NAME, "");
+		
+		if(checkBox == null) {
+			return false;
+		}
 	
 		return checkBox.isSelected();
 	}
+
+	
 	/**
 	 * The Drag operation has terminated with a Drop on this DropTarget
 	 */
@@ -255,18 +264,7 @@ this(root,progressBar,null);
 				if(dropObject != null){
 					objectsToDrop.add(dropObject);
 				}
-				if(objectsToDrop.size() > 0){
-					//ask for the size of the thing and set it
-					//set the minimum and all of that
-					if(!isCheckBoxSelected()){
-						EFGThumbNailDimensions thd = 
-							new EFGThumbNailDimensions(this.frame,"Enter Max Dimension",true);
-						thd.setVisible(true);
-					}
-				    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
-				      copyFiles.start();
-				      copyOverExistingFiles = false;
-					}
+				this.prepareAndShow(objectsToDrop);
 					
 			} else if (tr.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				//
@@ -287,16 +285,7 @@ this(root,progressBar,null);
 						objectsToDrop.add(dropObject);
 					}
 				}
-				if(objectsToDrop.size() > 0){
-					if(!isCheckBoxSelected()){
-						EFGThumbNailDimensions thd = 
-							new EFGThumbNailDimensions(this.frame,"Enter Max Dimension",true);
-						thd.setVisible(true);
-					}
-			    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
-			      copyFiles.start();
-			      copyOverExistingFiles = false;
-				}
+				this.prepareAndShow(objectsToDrop);
 				
 
 			} else {
@@ -310,7 +299,32 @@ this(root,progressBar,null);
 			dropTargetDropEvent.rejectDrop();
 		}	
 	}
+	private String getLocalMediaResourceDirectory() {
+		URL url = this.getClass().getResource("/resource/" + EFGImagesConstants.LOCAL_IMAGES_DIR);
+		String dir = null;
+		try {
+			dir = URLDecoder.decode(url.getFile(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return dir;
+	}
+	private void prepareAndShow(List objectsToDrop) {
+		if(objectsToDrop.size() > 0){
+			
+			if(!isThumbNailsPromptCheckBoxSelected()){
+				EFGThumbNailDimensions thd = 
+					new EFGThumbNailDimensions(this.importMenu,"Enter Max Dimension",true);
+				thd.setVisible(true);
+			}
+	    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
+	      copyFiles.start();
+	      copyOverExistingFiles = false;
+		}
 
+	}
 	public void copyFile(File srcFile, File destFile) {
 		  FileChannel sourceChannel = null;
 		  FileChannel destinationChannel = null;
@@ -650,7 +664,7 @@ private FileNode getSelectedDirectory(){
 private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 	   dropTargetDropEvent.dropComplete(false);
 		
-		JOptionPane.showMessageDialog(this.frame, message, "Error",
+		JOptionPane.showMessageDialog(this.importMenu, message, "Error",
 				JOptionPane.ERROR_MESSAGE); 
    }
 	private void startDrag(DragGestureEvent dragGestureEvent) {
@@ -666,17 +680,18 @@ private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 	public static FileBrowser getFileBrowser(String rootname,JProgressBar progressBar ) {
 		return getFileBrowser(rootname,progressBar,null);
 	}
-	public static FileBrowser getFileBrowser(String rootname,JProgressBar progressBar,JFrame frame ) {
+	public static FileBrowser getFileBrowser(String rootname,
+			JProgressBar progressBar,ImportMenu importMenu ) {
 		
 		FilenameFilter filter = new FilenameFilter() {
 			public boolean accept(File dir, String name) {
 				return (name.charAt(0) != '.');
 			}
 		};
-	
+		
 		FileNode root = new FileNode(rootname, filter);
 		
-		FileBrowser browser = new DnDFileBrowser(root,progressBar,frame);
+		FileBrowser browser = new DnDFileBrowser(root,progressBar,importMenu);
 		root.initializeRootNode(browser);
 		return browser;
 	}
