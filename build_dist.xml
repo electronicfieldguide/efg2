@@ -230,6 +230,8 @@ to make a distribution call makeImport:
 		<mkdir dir="${efg2.dist.home}/resource/metadataHeader"/>
 		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository"/>
 		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository/EFGImages"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository/templateConfigFiles"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository/templateConfigFiles/xml"/>
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>
@@ -258,9 +260,9 @@ to make a distribution call makeImport:
 			<fileset dir="${efg2.dist.home}/resource/properties" includes="*.dat, *_old"/>
 		</delete>
 		<delete dir="${efg2.dist.home}/resource/HandlingLists_files"/>
-		<delete dir="${efg2.dist.home}/resource/data"/>
+		
 		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource"/>
-		<copy file="${efg2.lib.home}/data/HetaerinaData3may05.mer" todir="${efg2.dist.home}/sampleData"/>
+		<copy file="${efg2.lib.home}/sampleData/HetaerinaData3may05.mer" todir="${efg2.dist.home}/sampleData"/>
 		<copy file="${efg2.lib.home}/login.bat" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/efg2.xml" todir="${efg2.dist.home}/resource"/>
 

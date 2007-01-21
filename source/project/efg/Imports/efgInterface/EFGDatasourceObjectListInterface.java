@@ -35,14 +35,13 @@
  */
 package project.efg.Imports.efgInterface;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import project.efg.Imports.efgImpl.DBObject;
-import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.factory.StateObjectFactory;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.WorkspaceResources;
 
 public abstract class EFGDatasourceObjectListInterface {
 	protected ArrayList lists;
@@ -59,22 +58,19 @@ public abstract class EFGDatasourceObjectListInterface {
 				new StateObjectFactory();
 	}
 	
-	protected String getCatalinaHome(){
-		return EFGUtils.getCatalinaHome();
-	}
+
 	protected String getTemplateConfig(){
-		if(this.templateConfigHome == null){
-			this.templateConfigHome = this.getCatalinaHome() + File.separator
-			+ EFGImportConstants.EFG_WEB_APPS
-			+ File.separator + EFGImportConstants.EFG_APPS + 
-			File.separator + EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
-			+ File.separator ;
+		this.templateConfigHome = 
+			EFGImportConstants.EFGProperties.getProperty("efg.templates.home.current");
+		
+		if(this.templateConfigHome == null || this.templateConfigHome.trim().equals("")) {
+			WorkspaceResources.computeMediaResourcesHome();
 		}
+		this.templateConfigHome = 
+			EFGImportConstants.EFGProperties.getProperty("efg.templates.home.current");
 		return this.templateConfigHome;
 	}
-	private EFGDatasourceObjectListInterface() {
-		this(null);
-	}
+
 	/**
 	 * @return an iterator over the members of this lists.
 	 */

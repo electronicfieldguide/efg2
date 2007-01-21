@@ -329,7 +329,7 @@ public class SQLQuery extends EFGHTTPQuery {
 			String legalName = rowset.getString(EFGImportConstants.LEGALNAME);
 			String name = rowset.getString(EFGImportConstants.NAME);
 			String state = rowset.getString(EFGImportConstants.ISLISTS);
-			if (state.equalsIgnoreCase("true")) {//if it is a lists return it
+			if (state.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {//if it is a lists return it
 				dataType = EFGImportConstants.ISLISTS;
 				EFGObject efgObject = new EFGObject();
 				efgObject.setDatabaseName(legalName);
@@ -345,7 +345,7 @@ public class SQLQuery extends EFGHTTPQuery {
 					////log.debug("ColumnName: " + columnName);
 					state = rowset.getString(columnName);
 					////log.debug("State: " + state);
-					if (state.equalsIgnoreCase("true")) {
+					if (state.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 						dataType = columnName;
 						EFGObject efgObject = new EFGObject();
 						efgObject.setDatabaseName(legalName);

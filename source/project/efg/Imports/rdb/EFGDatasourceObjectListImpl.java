@@ -60,7 +60,7 @@ public class EFGDatasourceObjectListImpl extends
 		EFGDatasourceObjectListInterface {
 
 	private JdbcTemplate jdbcTemplate;
-
+	
 	private DataSourceTransactionManager txManager;
 
 	private EFGRowMapperInterface rowMapper;
@@ -113,7 +113,8 @@ public class EFGDatasourceObjectListImpl extends
 	 * @return true if this datasource was successfully added, false otherwise
 	 */
 	public boolean addEFGDatasourceObject(
-			EFGDatasourceObjectInterface datasource, ImportBehavior isUpdate) {
+			EFGDatasourceObjectInterface datasource, 
+			ImportBehavior isUpdate) {
 
 		try {
 	
@@ -125,6 +126,7 @@ public class EFGDatasourceObjectListImpl extends
 					.getDataExtractor(datasource.getDataName(), delimArr[0]);
 		
 			// use abstract method call
+
 			CSV2DatabaseAbstract table = DatabaseAbstractFactory
 					.getDatabaseObject(datasource, extractor, dbObject,
 							isUpdate);
@@ -148,6 +150,8 @@ public class EFGDatasourceObjectListImpl extends
 		datasource.setState(stateFactory.getFailureObject());
 		return false;
 	}
+
+
 
 	/**
 	 * @param oldDisplayName -
@@ -359,10 +363,11 @@ public class EFGDatasourceObjectListImpl extends
 				// also delete the file if it exists
 				boolean bool = false;
 				try {
+					String tf = datafn + EFGImportConstants.XML_EXT;
 					
 					File templatesFiles = 
-						new File(this.getTemplateConfig().toLowerCase()
-							+ datafn + EFGImportConstants.XML_EXT);
+						new File(this.getTemplateConfig(),
+								tf);
 					if (templatesFiles.exists()) {
 						bool = templatesFiles.delete();
 						if (!bool) {

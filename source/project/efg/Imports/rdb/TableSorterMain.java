@@ -147,7 +147,7 @@ public class TableSorterMain extends TableSorterMainInterface {
 						// add each column to a groupbutton
 						String str = rowset.getString(colName);
 						MyJRadioButton mj = new MyJRadioButton("", str
-								.equalsIgnoreCase("true"));
+								.equalsIgnoreCase(EFGImportConstants.EFG_TRUE));
 						dataRow[w] = mj;
 						button.add(mj);
 					}

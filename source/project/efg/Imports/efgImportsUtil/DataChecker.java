@@ -133,7 +133,7 @@ public abstract class DataChecker {
 
 	public static String getServerHome() {
 		StringBuffer serverHomeBuffer = new StringBuffer(EFGUtils
-				.getCatalinaHome());
+				.getServerHome());
 		serverHomeBuffer.append(File.separator);
 		serverHomeBuffer.append(EFGImportConstants.EFG_WEB_APPS);
 		serverHomeBuffer.append(File.separator);

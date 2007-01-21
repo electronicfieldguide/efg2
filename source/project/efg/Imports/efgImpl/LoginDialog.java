@@ -22,8 +22,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 
@@ -44,14 +47,146 @@ import javax.swing.border.EtchedBorder;
 import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
+import project.efg.Imports.efgImportsUtil.ResourceWarning;
 import project.efg.Imports.efgInterface.LoginListenerInterface;
 import project.efg.Imports.factory.LoginListenerFactory;
+import project.efg.util.CreateSampleDataThread;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
+import project.efg.util.ServerLocator;
+import project.efg.util.WorkspaceResources;
 
 /**
  * Dialog to login to the system.
  */
 public class LoginDialog extends JDialog {
+
+		/**
+		 * Remove file locations that no longer exists
+		 *
+		 */
+		private static int pruneServerLocationsProperties(
+				String[] properties,
+				StringBuffer buffer,
+				String pathToServer) {
+			String current = 
+				EFGImportConstants.EFGProperties.getProperty("efg.serverlocations.current");
+			 int j = 0;
+			 boolean isFound = false;
+			 for(int i = 0 ; i < properties.length;i++) {
+				 String property = properties[i];
+				 if(property.trim().equals("")) {
+					 continue;
+				 }
+				 File file = new File(property);
+				 if(file.exists()) {//write only the directories that exists
+					 if(property.equalsIgnoreCase(
+							 WorkspaceResources.convertFileNameToURLString(pathToServer))) {//skip over the path to server if cound
+						 continue;
+					 }
+					 if(property.equalsIgnoreCase(current)) {
+						 
+						 EFGImportConstants.EFGProperties.setProperty(
+									"efg.serverlocations.current", 
+									WorkspaceResources.convertFileNameToURLString(current));
+						 WorkspaceResources.computeMediaResourcesHome();
+						 WorkspaceResources.computeTemplatesHome();
+						 isFound = true;
+					 }
+					 else {
+						 if(!isFound) {//set the current to something else
+							 EFGImportConstants.EFGProperties.setProperty(
+										"efg.serverlocations.current",
+										WorkspaceResources.convertFileNameToURLString(current));
+							 WorkspaceResources.computeMediaResourcesHome();
+							 WorkspaceResources.computeTemplatesHome();
+						 }
+					 }
+					
+					 if(j > 0) {//add comma if we have more than one valid location
+						 buffer.append(",");
+					 }
+					 buffer.append(property);//add the property
+					 j++;
+				 }
+			 }
+			 return j;
+		}
+		/**
+		 * @param pathToServer
+		 */
+		private void writeDefaultMessage() {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("Application will place generated resources\n( media resources, generated templates etc) in \n");
+			buffer.append("'");
+			buffer.append(EFGImportConstants.EFG_RESOUCRES_REPOSITORY);
+			buffer.append("' directory  \n");
+			buffer.append("The directories inside the above named folder must be copied\n " +
+					"to the efg2 web application running on your server\n");
+			buffer.append("See the docs on how to copy folders to the web application\n"); 
+			
+			
+			JOptionPane.showConfirmDialog(frame, 
+					buffer.toString(), 
+					"Resources Will be placed in a local repository", 
+					JOptionPane.YES_OPTION, 
+					JOptionPane.INFORMATION_MESSAGE);
+	
+			
+		}
+		/**
+		 * @param isDefault
+		 * @param string 
+		 * 
+		 */
+		private void setServerRoot(String pathToServer, boolean isDefault) {
+			String property = 
+				EFGImportConstants.EFGProperties.getProperty(
+						"efg.serverlocation.checked",
+						EFGImportConstants.EFG_TRUE);
+	       boolean isSelected = true;
+	        if(!property.trim().equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
+	        	isSelected = false;
+	        }
+	       pathToServer =  checkServerLocation(pathToServer);
+
+	        property = 
+				EFGImportConstants.EFGProperties.getProperty(
+						"efg.showchangedirectorymessage.checked",EFGImportConstants.EFG_TRUE);
+	       
+			if(isSelected) {
+				
+			
+			if(property.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
+				StringBuffer buffer = new StringBuffer();
+				buffer.append("<html>");
+				buffer.append("<p>If the folder you are about to select is not the root</p>");
+				buffer.append("<p>of your Tomcat server , then be aware of the following: </p>");
+				buffer.append("<p>1. Application generated resources ( media resources,</p>");
+				buffer.append("<p>generated templates etc)</p>");
+				buffer.append("<p>will be placed in the folder you are about to select. </p>");
+				buffer.append("<p>2. You will have to physically copy these resources</p>" +
+						"<p> to an efg2 web application.</p>");
+				buffer.append("<p> See the docs on how to copy resources to the web application</p>"); 
+				buffer.append("</html>");
+				
+				ResourceWarning rw = 
+					new ResourceWarning(frame,
+						"Changing Directory",buffer.toString(),true);
+				rw.setVisible(true);
+				isDefault = false;
+				
+			}
+			if(isDefault) {
+				this.writeDefaultMessage();
+			}
+		
+			ServerLocator locator = new ServerLocator(frame,pathToServer,true);
+			locator.setVisible(true);
+		}		
+	}
+	
+
 	static final long serialVersionUID = 1;
 
 	protected JTextField m_loginNameBox;
@@ -137,7 +272,8 @@ public class LoginDialog extends JDialog {
 				JComponent.WHEN_IN_FOCUSED_WINDOW);
 		p.add(loginButton);
 
-		JButton cancelButton = new JButton(EFGImportConstants.EFGProperties.getProperty("LoginDialog.cancelBtn"));
+		JButton cancelButton = new JButton(
+				EFGImportConstants.EFGProperties.getProperty("LoginDialog.cancelBtn"));
 
 		ActionListener lst = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
@@ -244,6 +380,54 @@ public class LoginDialog extends JDialog {
 			log.error(e.getMessage());
 		}
 	}
+
+	private String checkServerLocation(String pathToServer) {
+		
+		 String propertyStr = 
+				EFGImportConstants.EFGProperties.getProperty(
+						"efg.serverlocations.lists"
+						);
+		
+		 if(propertyStr != null && 
+				 !propertyStr.trim().equalsIgnoreCase("")) {
+			 
+			 String[] properties = 
+				 propertyStr.split(RegularExpresionConstants.COMMASEP);
+			 	
+			 StringBuffer buffer = new StringBuffer();
+	
+			int j =  pruneServerLocationsProperties(properties,
+						buffer,
+						pathToServer);
+			 if(j > 0) {//if we already added something to the buffer
+				 buffer.append(","); 
+			 }
+			 buffer.append(WorkspaceResources.convertFileNameToURLString(pathToServer));
+			 EFGImportConstants.EFGProperties.setProperty(
+						"efg.serverlocations.current",
+						WorkspaceResources.convertFileNameToURLString(pathToServer));//set current
+			
+			 EFGImportConstants.EFGProperties.setProperty(
+					"efg.serverlocations.lists",buffer.toString());
+			 WorkspaceResources.computeMediaResourcesHome();
+			 WorkspaceResources.computeTemplatesHome();
+			return pathToServer;
+		 }
+	
+		EFGImportConstants.EFGProperties.setProperty(
+						"efg.serverlocations.lists",
+						WorkspaceResources.convertFileNameToURLString(pathToServer));
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.serverlocations.current",
+				WorkspaceResources.convertFileNameToURLString(pathToServer)); 
+		 WorkspaceResources.computeMediaResourcesHome();
+		 WorkspaceResources.computeTemplatesHome();
+			return pathToServer;
+	}
+	/**
+	 * 
+	 */
+
 	/**
 	 * Start the import application
 	 * @param args
@@ -263,36 +447,85 @@ public class LoginDialog extends JDialog {
 								JOptionPane.WARNING_MESSAGE);
 				System.exit(1);
 			}
-
-			 if (args.length > 0) { //we need more than one args
-				catalina_home = args[0].toString();
-				
-				int index = catalina_home.lastIndexOf("\"");
-				if (index > -1) {
-					catalina_home = catalina_home.substring(0, index);
-					//log.debug("Cat home after: " + catalina_home);
+			catalina_home = args[0];
+			
+			String serverRoot = EFGImportConstants.EFGProperties.getProperty(
+							"efg.serverlocations.current");
+			File file = new File(catalina_home);
+			boolean isCatExists = true;
+			boolean isDefault = false;
+			URL url = null;
+			if(!file.exists()) {//suplied args does not exists
+				isCatExists = false;
+				try {
+					url = 
+						LoginDialog.class.getResource(
+								EFGImportConstants.EFG_RESOUCRES_REPOSITORY
+								);
+					catalina_home  = URLDecoder.decode(url.getFile(), "UTF-8");
+					file = new File(catalina_home);
+					if(file.exists()) {//if default exists
+						isCatExists = true;
+						isDefault = true;
+					}
 				}
-			} else {//display usage message and exit
+				catch(Exception ee) {
+					
+				}
 				
-				log.error(usage_message);
-				releaseLock(lock);
-				log.error("Exiting application..");
-				
-				System.err.println(usage_message);
-				System.exit(1);
 			}
-			if ((catalina_home != null) && (!catalina_home.trim().equals(""))) {//if catalina_home is found
+			if((serverRoot == null ||
+					serverRoot.trim().equals("")) && 
+					(!isCatExists)) {
+				
+				//bail out
+			}
+			else if((serverRoot == null ||
+					serverRoot.trim().equals("")) && 
+					(isCatExists)) {
+				serverRoot = catalina_home;
+				
+				
+			}
+			
+				
+				/*
+				 * see if catalina_home environment
+				 * variable is checked
+				*/
+		
+			
+			//find the current home and call with it
+			//if it does not exist
+			//find catalina home if absent use default
+			//if it does not exists use the application home
+			//EFGImportConstants.EFGProperties.setProperty(
+			//		"efg.serverlocations.current"
+			
+
+			 
+			if ((serverRoot != null) &&
+					(!serverRoot.trim().equals(""))) {//if catalina_home is found
 				// construct from catalina home
 				//log.debug("Cat home installer: " + catalina_home);
+				
 				LoginDialog dlg = new LoginDialog(null); //create a new dialog
 				dlg.setVisible(true);//make it visible
 				if (dlg.isSuccess()) {//if user name and password are correct
-					String url = EFGImportConstants.EFGProperties.getProperty("dburl");
+					String urldb = EFGImportConstants.EFGProperties.getProperty("dburl");
 					//log.debug("url: " + url);
 					
-					DBObject dbObject = new DBObject(url, dlg.getLoginName(),
+					DBObject dbObject = new DBObject(urldb, dlg.getLoginName(),
 							dlg.getPassword());
-					menu = new ImportMenu(EFGImportConstants.IMPORT_TITLE, catalina_home,
+					
+					dlg.setServerRoot(serverRoot,isDefault);
+				
+					//if it is written 
+					
+					dlg.loadSampleData(dbObject);
+					menu = new ImportMenu(
+							EFGImportConstants.IMPORT_TITLE, 
+							serverRoot,
 							dbObject);
 					menu.setVisible(true);
 				}
@@ -301,9 +534,9 @@ public class LoginDialog extends JDialog {
 				}
 			} else {
 				StringBuffer message = new StringBuffer();
-				message.append("The 'CATALINA_HOME' environment variable  must be set for this application\n");
-				message.append("to run successfully.");
-				message.append("Consult your administrator on how to set environment variables\n");
+				
+				message.append("The application cannot find your workspace directory\n");
+				message.append("Please read the docs on how to set your workspace directory\n");
 				System.err.println(message.toString());
 				releaseLock(lock);
 				System.exit(1);
@@ -314,6 +547,21 @@ public class LoginDialog extends JDialog {
 		} 
 	}
 
+	/**
+	 * 
+	 */
+	private void loadSampleData(DBObject dbObject) {
+		String property =
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.sampledata.loaded", EFGImportConstants.EFG_FALSE
+					);
+		if(property.equals(EFGImportConstants.EFG_FALSE)) {
+			//put progress bar here
+			CreateSampleDataThread dataT =
+				new CreateSampleDataThread(this.frame,dbObject);
+			 dataT .start();
+		}
+	}
 	public static void main(String args[]) {
 		LoginDialog.callImportMenu(args);
 	}

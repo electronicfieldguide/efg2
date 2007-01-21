@@ -190,10 +190,7 @@ public interface EFGImportConstants {
 	/**
 	 * File names
 	 */
-	String TEMPLATES_FOLDER_NAME = "templateConfigFiles";
-	String TEMPLATES_XML_FOLDER_NAME = TEMPLATES_FOLDER_NAME + File.separator + XML;
 
-	
 
 	/**
 	 * Metadata field names
@@ -286,9 +283,11 @@ public interface EFGImportConstants {
 	String SEARCH_TAXON_TYPE = "taxon";
 	String SEARCH_LISTS_TYPE = "lists";
 	String SEARCH_PDFS_TYPE = "pdfs";
+	String SEARCH_SEARCH_TYPE="searches";
+	
 	String SEARCH_PAGE_CONFIG_TYPE = "search";
 	String CONFIG_TYPE="configType";
-	String EFG_APPS = EFGProperties.getProperty("efg_app_name");
+	String EFG_APPS = EFGProperties.getProperty("efg.application.name");
 	//EFG_WEB_APPS
 	String EFG_WEB_APPS = "webapps";
 
@@ -344,9 +343,12 @@ public interface EFGImportConstants {
 	String DATABASE_NAME = EFG_DATABASE_DATA_NAME;
 	
 	
+	String TEMPLATES_FOLDER_NAME = "templateConfigFiles";
+	String TEMPLATES_XML_FOLDER_NAME = TEMPLATES_FOLDER_NAME + File.separator + XML;
+	String PROMPT_FOR_DIMENSIONS = "Prompt Me to Enter Dimensions";
 	
-	
-	
-	
+	String EFG_RESOUCRES_REPOSITORY = "/resource/EFGLocalRepository";
+	String EFG_TRUE = "true";
+	String EFG_FALSE="false";
 	
 }// EFGImportConstants

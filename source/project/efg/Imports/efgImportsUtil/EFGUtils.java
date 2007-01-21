@@ -49,7 +49,7 @@ import com.Ostermiller.util.LabeledCSVParser;
  * that the fields and methods present shouldn't be in a particular class.
  */
 public class EFGUtils {
-	private static String catalina_home = null;
+	
 	private static String currentTableName = null;
 	private static String[] metadataTableHeaders = null;
 
@@ -224,29 +224,13 @@ public class EFGUtils {
 		}
 		return envVars;
 	}
-	/**
-	 * 
-	 * @param catalina - Set the Tomcat home for the current application
-	 */
-	public static void setCatalinaHome(String catalina){
-		catalina_home = catalina;
-	}
+
 	/**
 	 * 
 	 * @return get the full directory path to Tomcat
 	 */
-	public static String getCatalinaHome() {
-		if (catalina_home != null) {
-			return catalina_home;
-		}
-		Properties props = getEnvVars();
-		if (props != null) {
-			catalina_home = props.getProperty("CATALINA_HOME");
-		}
-		if (props == null) {
-			log.error("Catalina home environment variable is not set!!");
-		}
-		return catalina_home;
+	public static String getServerHome() {
+		return EFGImportConstants.EFGProperties.getProperty("efg.serverlocations.current");
 	}
 
 	/**
@@ -324,6 +308,9 @@ public class EFGUtils {
 }
 
 // $Log$
+// Revision 1.5  2007/01/21 02:07:18  kasiedu
+// no message
+//
 // Revision 1.4  2007/01/14 17:29:41  kasiedu
 // no message
 //

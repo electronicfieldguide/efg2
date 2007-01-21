@@ -39,27 +39,20 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.util.Hashtable;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JViewport;
 import javax.swing.SwingConstants;
@@ -70,11 +63,11 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
-import project.efg.Imports.efgInterface.EFGWebAppsDirectoryInterface;
-import project.efg.Imports.factory.EFGWebAppsDirectoryFactory;
+import project.efg.Imports.efgImportsUtil.PreferencesListener;
 import project.efg.util.DnDFileBrowserMain;
-import project.efg.util.EFGImagesConstants;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.ExitHandler;
+import project.efg.util.WorkspaceResources;
 
 import com.Ostermiller.util.Browser;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
@@ -90,19 +83,24 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
  * @version 1.0
  */
 public class ImportMenu extends JFrame {
+	/**
+	 * @author kasiedu
+	 *
+	 */
+
 	static final long serialVersionUID = 1;
 	final BevelBorder   bevel = new BevelBorder(BevelBorder.RAISED);
 	final EmptyBorder empty = new EmptyBorder(5, 5, 5, 5);
       
-	private String pathToServer = null;
+	
 
-	private EFGWebAppsDirectoryInterface webappsDirectory;
-	boolean isLocalTomcatServerExists = false;
+	//private EFGWebAppsDirectoryInterface webappsDirectory;
+	
 	final public static Hashtable imageCacheTable = new Hashtable();
 	private static GeneralCacheAdministrator cacheAdmin;
 		
 	DnDFileBrowserMain fileBrowser;
-	SerializeDeserializeHandler serializerManager;
+	
 	private DBObject dbObject;
 	private boolean browserreload=false;
   
@@ -115,32 +113,7 @@ public class ImportMenu extends JFrame {
 		}
 	}
 
-	public ImportMenu(String title) {
-		this(EFGImportConstants.IMPORT_TITLE, null);
-	}
-
-	public ImportMenu() {
-		this(EFGImportConstants.IMPORT_TITLE, null);
-	}
-
-	public ImportMenu(String title, String pathToserVer) {
-		this(title, pathToserVer, null);
-
-	}
-	public void close() {
-		this.dispose();
-		System.exit(0);
-	}
-
-	public  static GeneralCacheAdministrator getCacheAdmin(){
-		if(cacheAdmin == null){
-			cacheAdmin = new GeneralCacheAdministrator();
-			cacheAdmin.setAlgorithmClass("com.opensymphony.oscache.base.algorithm.LRUCache");
-			cacheAdmin.setCacheCapacity(1000);
-		}
-		return cacheAdmin;
-	}
-	public ImportMenu(String title, String pathToserVer, DBObject dbObject) {
+	public ImportMenu(String title, String pathToServer, DBObject dbObject) {
 		super(title);
 		URL url = null;
 		
@@ -152,20 +125,14 @@ public class ImportMenu extends JFrame {
 		} catch (Exception ee) {
 			
 		}
-		this.serializerManager = 
-			new SerializeDeserializeHandler();
-		this.pathToServer = pathToserVer;
-		//set the catalina home 
-		EFGUtils.setCatalinaHome(this.pathToServer);
-		//setSize(new Dimension(220, 150));
 		setSize(new Dimension(400, 400));
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				close();
 			}
 		});
-		this.setMediaResourcesDirectory(true);
-
+		
+	
 		this.dbObject = dbObject;
 		if(this.dbObject == null){
 			log.error("DBObject is null inside ImportMenu");
@@ -175,155 +142,68 @@ public class ImportMenu extends JFrame {
 		this.setContentPane(this.createContentPane());
 		this.setResizable(false);
 		this.setVisible(true);
-		this.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(null);	
+	}
+
+
+
+
+
+	public void close() {
+		//doHouseKeeping?
+		boolean isSelected = true;//default is prompt me
+		String property = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.showdismiss.checked",EFGImportConstants.EFG_TRUE);
+		
+		if(property.trim().equals(EFGImportConstants.EFG_FALSE)) {
+			isSelected = false;//means do not prompt  me
+		}
+		
 	
-	} 
-	public void setMediaResourcesParentDirectory(String parentDirectory) {
-		this.webappsDirectory.setPathToServer(parentDirectory);
-		this.webappsDirectory.setImagesDirectory(EFGImagesConstants.EFG_IMAGES_DIR);
-	}
-	// ImportMenu constructor
-	public String getMediaResourcesDirectory() {
-		return this.webappsDirectory.getImagesDirectory();
-	}
-	public String getLocalMediaResourceDirectory() {
-		URL url = this.getClass().getResource("/resource/" + EFGImagesConstants.LOCAL_IMAGES_DIR);
-		String dir = null;
-		try {
-			dir = URLDecoder.decode(url.getFile(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// 
-			e.printStackTrace();
+		if(!isSelected) {
+			 WorkspaceResources.doHouseKeepingbeforeClosing();
+			this.dispose();
+		 	System.exit(0);
 		}
 		
-		return dir;
+		ExitHandler handler = new ExitHandler();
+		JOptionPane optionPane = new JOptionPane();
+		optionPane.setInputValue(new Integer(-1));
+		JCheckBox checkBox = handler.getCheckbox(isSelected);
+		Object msg[] = {"Exit EFG2 Importer Application?:", checkBox};
+		optionPane.setMessage(msg);
+		optionPane.setMessageType(
+		 JOptionPane.QUESTION_MESSAGE);
+		   optionPane.setOptionType(
+		     JOptionPane.OK_CANCEL_OPTION);
+		   JDialog dialog = optionPane.createDialog(
+		       this, "Confirm Exit");
+		   dialog.show();
+		   Object value = optionPane.getValue();
+		   if (value == null || !(value instanceof Integer)) {
+		     //do nothing
+		   } else {
+		     int i = ((Integer)value).intValue();
+		     if (i == JOptionPane.CLOSED_OPTION) {
+		       //do nothing
+		     } else if (i == JOptionPane.OK_OPTION) {
+		    	 WorkspaceResources.doHouseKeepingbeforeClosing();
+		    	 this.dispose();
+		 		System.exit(0);
+		     } else if (i == JOptionPane.CANCEL_OPTION) {
+		       //Do nothing
+		     }
+		   }
 	}
-	public String getLocalTomcatServerPath() {
-		return (this.pathToServer + File.separator
-		+ project.efg.util.EFGImportConstants.EFG_WEB_APPS
-		+ File.separator + project.efg.util.EFGImportConstants.EFG_APPS);
 
-	}
-	public boolean isLocatTomcatExists(boolean isInit) {
-		String path = this.getLocalTomcatServerPath()+ 
-		File.separator + EFGImagesConstants.EFG_IMAGES_DIR;
-		
-		File f1 = new File(path);
-		//bit set?
-		File bitSetter = 
-			new File(new File(getLocalMediaResourceDirectory()),
-				EFGImagesConstants.BIT_SET_FILE);
-		
-		if(f1.exists()) {
-			this.isLocalTomcatServerExists = true;
-			if(bitSetter.exists()) {//clear bit setter if it exists
-				bitSetter.delete();
-			}
+	public  static GeneralCacheAdministrator getCacheAdmin(){
+		if(cacheAdmin == null){
+			cacheAdmin = new GeneralCacheAdministrator();
+			cacheAdmin.setAlgorithmClass("com.opensymphony.oscache.base.algorithm.LRUCache");
+			cacheAdmin.setCacheCapacity(1000);
 		}
-		else {
-
-			if(!bitSetter.exists()) {//set the bit
-				try {
-					bitSetter.createNewFile();
-				} catch (IOException e) {
-					
-					e.printStackTrace();
-				}
-			}
-			if(!isInit) {//show this message only when we are inside ImportMenu
-			StringBuffer buffer = new StringBuffer();
-			buffer.append("The application cannot find " +
-					"Tomcat " +
-					"on your " +
-					"local machine.\n" +
-					"It will place media resources in " +
-					"'" + this.getLocalMediaResourceDirectory() + "' \n directory and you will " +
-							"have to copy them to the server yourself." +
-							" .\n See docs on " +
-							"how to rectify this problem if " +
-							"you want media resources to be\n " +
-							"copied to your Tomcat server by the application."
-					);
-			JOptionPane.showMessageDialog(this, buffer.toString(),
-					"Information", JOptionPane.INFORMATION_MESSAGE);
-			}
-			this.isLocalTomcatServerExists = false;
-		}
-		return this.isLocalTomcatServerExists;
-	}
-	private void deleteAllSerializedBoxes() {
-		File serializedCheckBox = 
-			new File(EFGImagesConstants.CHECK_BOX_1_FNAME);
-		
-		if(serializedCheckBox.exists()) {
-			serializedCheckBox.delete();
-		}
-		serializedCheckBox = 
-			new File(EFGImagesConstants.RADIO_BUTTON_1_FNAME);
-		
-		if(serializedCheckBox.exists()) {
-			serializedCheckBox.delete();
-		}
-		
-		serializedCheckBox = 
-			new File(EFGImagesConstants.RADIO_BUTTON_2_FNAME);
-		
-		if(serializedCheckBox.exists()) {
-			serializedCheckBox.delete();
-		}
-	}
-	public void setMediaResourcesDirectory(boolean bool) {
-		String imagesDirectory = null;
-		try {
-			//find out what was last selected and set to it
-			
-			
-			if(!isLocatTomcatExists(bool)) {//tomcat server/efg2/EFGImages does not exists
-				deleteAllSerializedBoxes();//remove all serializations
-				imagesDirectory = this.getLocalMediaResourceDirectory();
-				//delete all checks
-			}
-			else {
-//			already serialized?
-			File serializedCheckBox = 
-				new File(EFGImagesConstants.CHECK_BOX_1_FNAME);
-			
-			if(serializedCheckBox.exists()) {/*There is a serialized check box.
-												Find out which radio button was selected
-			 									*/
-				SerializeDeserializeHandler sd = 
-					new SerializeDeserializeHandler();
-				
-				JCheckBox checkBox = sd.getCheckBox(EFGImagesConstants.CHECK_BOX_1_FNAME, ""); 
-				JRadioButton jr= 
-					sd.getRadioButton(EFGImagesConstants.RADIO_BUTTON_1_FNAME, "");
-			
-				if(!jr.isSelected()) {//means copy to local images directory
-					imagesDirectory = this.getLocalMediaResourceDirectory(); 
-				}
-				else {//copy to local Tomcat efg images directory
-					imagesDirectory = this.getLocalTomcatServerPath();
-				}
-
-			}
-			else {//assume local tomcat server
-				imagesDirectory = this.getLocalTomcatServerPath();
-			}
-			}
-		}catch(Exception ee) {
-			imagesDirectory = this.getLocalTomcatServerPath();
-			deleteAllSerializedBoxes();
-			
-		}
-		if(this.webappsDirectory == null) {
-			this.webappsDirectory = 
-				EFGWebAppsDirectoryFactory.getEFGWebAppsDirectory(imagesDirectory);
-			this.webappsDirectory.setImagesDirectory(EFGImagesConstants.EFG_IMAGES_DIR);
-		}
-		else {
-			this.webappsDirectory.setPathToServer(imagesDirectory);
-			this.webappsDirectory.setImagesDirectory(EFGImagesConstants.EFG_IMAGES_DIR);
-		}
+		return cacheAdmin;
 	}
 	private JButton createButton(String title, String tooltipText){
 	  	  JButton jbutton = new JButton(		
@@ -379,7 +259,17 @@ public class ImportMenu extends JFrame {
 		EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn.tooltipText"));
 		deployImagesBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		deployImagesBtn.addActionListener(new DeployImagesListener(this));
-
+		
+		
+		JButton manageResourceHomeBtn =
+			this.createButton("Preferences",
+					"Click to change preferences.");
+		manageResourceHomeBtn.setHorizontalAlignment(SwingConstants.CENTER);
+		manageResourceHomeBtn.addActionListener(new PreferencesListener(this, true, true));
+		
+		
+		
+		
 		JButton efgUserBtn =
 			this.createButton(EFGImportConstants.EFGProperties.getProperty("ImportMenu.efgUserManagementBtn"),
 		EFGImportConstants.EFGProperties.getProperty("ImportMenu.efgUserManagementBtn.tooltipText"));
@@ -414,6 +304,7 @@ public class ImportMenu extends JFrame {
     	selection.add(addNewDatasourceBtn);
     	selection.add(addNewGlossaryBtn);
     	selection.add(deployImagesBtn);
+    	selection.add(manageResourceHomeBtn);
     	selection.add(efgUserBtn);
     
     	selection.add(helpBtn);
@@ -432,6 +323,8 @@ public class ImportMenu extends JFrame {
     	content.add(selection, BorderLayout.CENTER);
     	return content;
         }
+    
+
     class ImagePanel extends JPanel
     {
         /**
@@ -605,39 +498,17 @@ public class ImportMenu extends JFrame {
 		public DeployImagesListener(ImportMenu importMenu
 				) {
 			this.importMenu = importMenu;
+			
 		}
 
 		public void actionPerformed(ActionEvent evt) {
 			 this.handleInput();
 		}
-		
-		private boolean isMediaResourceLocationPromptCheckBoxSelected(){
-			
-			
-			JCheckBox checkBox = 
-				serializerManager.getCheckBox(EFGImagesConstants.CHECK_BOX_1_FNAME, "");
-			
-			if(checkBox == null) {
-				return false;
-			}
-		
-			return checkBox.isSelected();
-		}
-
 		/**
 		 * 
 		 */
 		private void handleInput() {
 			try { 
-				
-				this.importMenu.setMediaResourcesDirectory(false);
-				if(this.importMenu.isLocatTomcatExists(true)){
-					if(!isMediaResourceLocationPromptCheckBoxSelected()) {//if user wants to be reminded everytime
-						MediaResourceLocationHandler mdr = 
-							new MediaResourceLocationHandler(importMenu,"",true,null);
-						mdr.setVisible(true);
-					}
-				}
 				fileBrowser = 
 					new DnDFileBrowserMain(
 						this.importMenu,
@@ -646,22 +517,6 @@ public class ImportMenu extends JFrame {
 						);
 			
 				fileBrowser.setVisible(true);
-				
-				boolean isBrowserReload = isBrowserReload();//find out if a bit is set to reload browser
-				while(isBrowserReload) {//reload browser if user changed directories
-					if(!fileBrowser.isVisible()) {
-						this.importMenu.setMediaResourcesDirectory(false);
-							fileBrowser = new DnDFileBrowserMain(
-									this.importMenu,
-									EFGImportConstants.EFGProperties.getProperty("DeployImagesListener.title"),
-									true
-									);
-						
-							fileBrowser.setVisible(true);
-							isBrowserReload = isBrowserReload();
-						}
-				}
-				
 			} catch (Exception ee) {
 				ee.printStackTrace();
 				log.error(ee.getMessage());
@@ -743,11 +598,7 @@ public class ImportMenu extends JFrame {
 			this.iMenu = iMenu;
 		}
 		
-	
-		 public void mouseClicked(MouseEvent e) {
-			
-	         
-	        }
+
 		/**
 		 * 
 		 */
@@ -765,22 +616,6 @@ public class ImportMenu extends JFrame {
 			
 		}
 	}
-	 // Inner class to respond to mouse events for the "rollover" effect
-    class RolloverListener extends MouseAdapter {
-        public void mouseEntered(MouseEvent e) {
-            ((JLabel)e.getComponent()).setBorder(bevel);
-            repaint();
-	}
-	
-        public void mouseExited(MouseEvent e) {
-            ((JLabel)e.getComponent()).setBorder(empty);
-            repaint();
-        }
-
-       
-    }
-
-    
     class AboutEFGListener implements ActionListener{
     	private JFrame frame;
 
@@ -848,15 +683,5 @@ public class ImportMenu extends JFrame {
 	}
 
 
-
-	/**
-	 * @param b
-	 */
-	public void setBrowserReload(boolean b) {
-		this.browserreload = b;
-	}
-	public boolean isBrowserReload() {
-		return this.browserreload;
-	}
 } // ImportMenu
 

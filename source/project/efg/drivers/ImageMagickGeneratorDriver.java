@@ -112,7 +112,6 @@ public static void main(String[] args) {
 	try {
 		ImageMagickGeneratorDriver driver = new ImageMagickGeneratorDriver();
 		driver.generateThumbs(new File(srcDir),new File(outDir));
-		System.out.println("Done");
 	}catch (Exception e) {
 		
 		e.printStackTrace();

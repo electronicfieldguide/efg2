@@ -383,12 +383,12 @@ public class RunSetUp {
 			
 			}
 			//load sample data
-			LoadSampleData sampleData = new LoadSampleData(dbObject);
+		/*	LoadSampleData sampleData = new LoadSampleData(dbObject);
 			sampleData.loadData();
 			if(sampleData.isError()){
 				JOptionPane.showMessageDialog(null, "Error in Loading Sample Data. View logs for more details", "Error in Loading Sample Data",
 						JOptionPane.ERROR_MESSAGE);
-			}
+			}*/
 		}	
 	
 	/**
@@ -473,6 +473,9 @@ public class RunSetUp {
 
 }
 // $Log$
+// Revision 1.3  2007/01/21 02:10:45  kasiedu
+// no message
+//
 // Revision 1.2  2006/12/08 03:50:59  kasiedu
 // no message
 //

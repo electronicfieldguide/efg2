@@ -256,7 +256,7 @@ public class DiGIRProcessor {
       (cloneEFG.getChildren()).clear();//Remove all the children of the cloned root element
 
       //We need the element alone for processing
-      if("true".equalsIgnoreCase(dph.getCount())){
+      if(EFGImportConstants.EFG_TRUE.equalsIgnoreCase(dph.getCount())){
 	  count = new Element("count",digir);
 	  count.setText(list.size() + "");
 	  content.addContent(count);

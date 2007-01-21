@@ -52,18 +52,22 @@ public class TaxonPageDefaultConfig {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String realPath;
+	private String templateConfigHome;
 	private TaxonPageTemplates tps;
 	private String mainTableName;
 	private DBObject dbObject;
 
-	/**
-	 * @param mainTableName TODO
-	 * 
-	 */
-	public TaxonPageDefaultConfig(DBObject dbObject, String realPath, String mainTableName) {
+/**
+ * 
+ * @param dbObject
+ * @param templateConfigHome
+ * @param mainTableName
+ */
+	public TaxonPageDefaultConfig(DBObject dbObject, 
+			String templateConfigHome, 
+			String mainTableName) {
 		this.dbObject= dbObject;
-		this.realPath = realPath;
+		this.templateConfigHome = templateConfigHome;
 		this.mainTableName = mainTableName;
 	}
 
@@ -174,6 +178,7 @@ public class TaxonPageDefaultConfig {
 					uniqueName);
 			//create the file here
 		} catch (Exception ee) {
+			ee.printStackTrace();
 			return;
 		}
 	}
@@ -184,7 +189,8 @@ public class TaxonPageDefaultConfig {
 			
 			if(this.tps == null){
 				StringBuffer fileLocationBuffer = new StringBuffer();
-				fileLocationBuffer.append(realPath);
+				fileLocationBuffer.append(this.templateConfigHome);
+				fileLocationBuffer.append(File.separator);
 				fileLocationBuffer.append(oldDSName.toLowerCase());
 				fileLocationBuffer.append(EFGImportConstants.XML_EXT);
 
@@ -198,6 +204,7 @@ public class TaxonPageDefaultConfig {
 					tp.setDatasourceName(newDSName.toLowerCase());
 				
 				} catch (Exception ee) {
+					ee.printStackTrace();
 					LoggerUtils.logErrors(ee);
 				}
 			}
@@ -219,7 +226,8 @@ public class TaxonPageDefaultConfig {
 	private void reloadTps(String newDSName) {
 	try {
 			StringBuffer fileLocationBuffer = new StringBuffer();
-			fileLocationBuffer.append(realPath);
+			fileLocationBuffer.append(templateConfigHome);
+			fileLocationBuffer.append(File.separator);
 			fileLocationBuffer.append(newDSName.toLowerCase());
 			fileLocationBuffer.append(EFGImportConstants.XML_EXT);
 			
@@ -228,6 +236,7 @@ public class TaxonPageDefaultConfig {
 			this.tps = (TaxonPageTemplates) TaxonPageTemplates
 					.unmarshalTaxonPageTemplates(reader);
 	}  catch (Exception e) {
+		e.printStackTrace();
 		}	
 	}
 
@@ -243,16 +252,24 @@ public class TaxonPageDefaultConfig {
 	}
 	private boolean writeToFile(String datasourceName) {
 		//log.debug("Real Path: " + this.realPath);
+		File f = new File(this.templateConfigHome);
+		if(!f.exists()) {
+			return true;
+		}
 		StringBuffer fileLocationBuffer = new StringBuffer();
-		fileLocationBuffer.append(this.realPath);
-
+		fileLocationBuffer.append(this.templateConfigHome);
+		File file = new File(fileLocationBuffer.toString());
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+		fileLocationBuffer.append(File.separator);
 		fileLocationBuffer.append(datasourceName.toLowerCase());
 		fileLocationBuffer.append(EFGImportConstants.XML_EXT);
 
 		String fileLocation = fileLocationBuffer.toString();
-		//log.debug("xml template file: " + fileLocation);
+		
 		// lock file to block this operation from happening
-		File file = new File(fileLocation);
+		file = new File(fileLocation);
 		String renamedFile = fileLocation + System.currentTimeMillis() + "_old";
 		File file2 = new File(renamedFile);
 		boolean isExists = false;
@@ -279,7 +296,7 @@ public class TaxonPageDefaultConfig {
 			String mutex = "";
 			synchronized (mutex) {
 				try {
-					writer = new FileWriter(fileLocation);
+					writer = new FileWriter(file);
 					org.exolab.castor.xml.Marshaller marshaller = new org.exolab.castor.xml.Marshaller(
 							writer);
 					marshaller.setNoNamespaceSchemaLocation(EFGImportConstants.TEMPLATE_SCHEMA_NAME);
@@ -294,12 +311,14 @@ public class TaxonPageDefaultConfig {
 					writer.close();
 
 				} catch (Exception eee) {
+					eee.printStackTrace();
 					done = false;
 					LoggerUtils.logErrors(eee);
 				}
 			}
 		} catch (Exception ee) {
 			done = false;
+			ee.printStackTrace();
 			LoggerUtils.logErrors(ee);
 			try {
 				// rename file to a new one
@@ -319,6 +338,7 @@ public class TaxonPageDefaultConfig {
 					}
 				}
 			} catch (Exception ff) {
+				
 				LoggerUtils.logErrors(ff);
 			}
 		}
@@ -379,6 +399,9 @@ public class TaxonPageDefaultConfig {
 
 }
 // $Log$
+// Revision 1.4  2007/01/21 02:07:18  kasiedu
+// no message
+//
 // Revision 1.3  2007/01/14 15:54:57  kasiedu
 // no message
 //

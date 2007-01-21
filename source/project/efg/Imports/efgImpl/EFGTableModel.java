@@ -100,7 +100,7 @@ public class EFGTableModel extends AbstractTableModel {
 	/*
 	 * JTable uses this method to determine the default renderer/ editor for
 	 * each cell. If we didn't implement this method, then the last column
-	 * would contain text ("true"/"false"), rather than a check box.
+	 * would contain text (EFGImportConstants.EFG_TRUE/EFGImportConstants.EFG_FALSE), rather than a check box.
 	 */
 	public Class getColumnClass(int c) {
 		return getValueAt(0, c).getClass();

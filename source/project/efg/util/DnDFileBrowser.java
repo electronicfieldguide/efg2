@@ -29,15 +29,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLDecoder;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JProgressBar;
@@ -48,8 +45,7 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
-import project.efg.Imports.efgImpl.ImportMenu;
-import project.efg.Imports.efgImpl.SerializeDeserializeHandler;
+
 
 /**
  * @version $Revision$
@@ -98,18 +94,17 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 		this(root,progressBar,null);
 		
 	}
-	private SerializeDeserializeHandler serializerManager;
-	protected ImportMenu importMenu;
+	
+	protected JFrame importMenu;
 	protected JFrame getFrame() {
 		return this.importMenu;
 	}
-	public DnDFileBrowser(FileNode root,JProgressBar progressBar,ImportMenu importMenu) {
+	public DnDFileBrowser(FileNode root,JProgressBar progressBar,JFrame importMenu) {
 		super(root);
 		this.root = root;
 		this.importMenu = importMenu;
 		this.progressBar = progressBar;
-		this.serializerManager = 
-			new SerializeDeserializeHandler();
+		
 		this.progressBar.setMinimum(0);
 		if (this.progressBar.isIndeterminate()) {
 			progressBar.setIndeterminate(false);
@@ -196,15 +191,16 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent) {
 
 	}
-	private boolean isThumbNailsPromptCheckBoxSelected(){	
-		JCheckBox checkBox = 
-			this.serializerManager.getCheckBox(EFGImagesConstants.CHECKBOX_SER_NAME, "");
-		
-		if(checkBox == null) {
-			return false;
+	private boolean isThumbNailsPromptCheckBoxSelected(){
+		String property = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.thumbnails.dimensions.checked", 
+					EFGImportConstants.EFG_TRUE);
+
+		if(property.trim().equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
+			return true;
 		}
-	
-		return checkBox.isSelected();
+		return false;
 	}
 
 	
@@ -299,18 +295,7 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 			dropTargetDropEvent.rejectDrop();
 		}	
 	}
-	private String getLocalMediaResourceDirectory() {
-		URL url = this.getClass().getResource("/resource/" + EFGImagesConstants.LOCAL_IMAGES_DIR);
-		String dir = null;
-		try {
-			dir = URLDecoder.decode(url.getFile(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			
-			e.printStackTrace();
-		}
-		
-		return dir;
-	}
+
 	private void prepareAndShow(List objectsToDrop) {
 		if(objectsToDrop.size() > 0){
 			
@@ -681,7 +666,7 @@ private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 		return getFileBrowser(rootname,progressBar,null);
 	}
 	public static FileBrowser getFileBrowser(String rootname,
-			JProgressBar progressBar,ImportMenu importMenu ) {
+			JProgressBar progressBar,JFrame importMenu ) {
 		
 		FilenameFilter filter = new FilenameFilter() {
 			public boolean accept(File dir, String name) {

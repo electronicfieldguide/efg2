@@ -173,16 +173,16 @@ public class SearchableImpl extends SearchableInterface {
 			efgObject.setDatabaseName(legal);
 			efgObject.setName(name);
 			String type = null;
-			if (isLists.equalsIgnoreCase("true")) {
+			if (isLists.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				type = EFGImportConstants.ISLISTS;
-			} else if (mediaResource.equalsIgnoreCase("true")) {
+			} else if (mediaResource.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				isSearchable = false;
 				type = EFGImportConstants.MEDIARESOURCE;
-			} else if (numericRange.equalsIgnoreCase("true")) {
+			} else if (numericRange.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				type = EFGImportConstants.NUMERIC;
-			} else if (numericval.equalsIgnoreCase("true")) {
+			} else if (numericval.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				type = EFGImportConstants.NUMERIC;
-			} else if (cat.equalsIgnoreCase("true")) {
+			} else if (cat.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				type = EFGImportConstants.CATEGORICAL;
 			}
 			efgObject.setDataType(type);

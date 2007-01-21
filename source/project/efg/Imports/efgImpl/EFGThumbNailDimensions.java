@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -26,16 +27,10 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import project.efg.util.DnDFileBrowserMain;
 import project.efg.util.EFGComboBox;
-import project.efg.util.EFGImagesConstants;
 import project.efg.util.EFGImportConstants;
-
-
-
-
-
-
+import project.efg.util.RegularExpresionConstants;
+import project.efg.util.WorkspaceResources;
 
 /*
  * EFGUsersList.java uses these additional files:
@@ -45,8 +40,6 @@ public class EFGThumbNailDimensions  extends JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private SerializeDeserializeHandler checkBoxManager;
-	
 	static Logger log = null;
 	static {
 		try {
@@ -55,20 +48,17 @@ public class EFGThumbNailDimensions  extends JDialog {
 		} catch (Exception ee) {
 		}
 	}
-	private String currentSelection;
+	
 	private JFrame frame;
 	private JCheckBox checkBox;
 	private EFGComboBox comboList;
-	public EFGThumbNailDimensions(JFrame frame, boolean modal) {
-		this(frame, "", modal);
-	}
-	public EFGThumbNailDimensions(JFrame frame, String title, boolean modal
+
+	public EFGThumbNailDimensions(
+			JFrame frame, String title, boolean modal
 			) {
 		super(frame, title, modal);
     	this.setTitle("Thumbnail Options");
         this.frame = frame;
-        this.checkBoxManager = new SerializeDeserializeHandler();
-        
         setSize(new Dimension(330, 150));
         add(addButtons());
 		addWindowListener(new WindowAdapter() {
@@ -79,25 +69,44 @@ public class EFGThumbNailDimensions  extends JDialog {
 		this.setLocationRelativeTo(frame);
     }
 	protected void close(){
-		this.checkBoxManager.serializeCheckBox(this.checkBox,
-		EFGImagesConstants.CHECKBOX_SER_NAME
-				);
-		this.comboList.serialize(EFGImportConstants.THUMBS_FILE_NAME);
 		this.dispose();
 	}
-	public void setCurrentSelection(String selection) {
-		this.currentSelection = selection;
-		DnDFileBrowserMain.setCurrentDim(this.currentSelection);
-		DnDFileBrowserMain.setCurrentDimLabel(this.currentSelection);
-	}
-	public String getCurrentSelection() {
-		return this.currentSelection;
+	/**
+	 * 
+	 */
+	private void useDefaults(EFGComboBox comboList) {
+		String[] dimensions = WorkspaceResources.getDefaultDimensions();
+		//DefaultComboBoxModel model =(DefaultComboBoxModel)comboList.getModel();
+		StringBuffer buffer = new StringBuffer();
+		for(int i= dimensions.length;i > 0;i--) {
+			comboList.add(dimensions[i-1]);
+			if(i < dimensions.length) {
+				buffer.append(",");
+			}
+			buffer.append(dimensions[i-1]);
+		}
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.lists",
+				buffer.toString());
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.current",
+				comboList.getItemAt(0).toString());
 	}
 	private JPanel addButtons() {
 		JPanel btnPanel = new JPanel(new BorderLayout());
 		this.comboList = new EFGComboBox();
+		String properties = 
+			EFGImportConstants.EFGProperties.getProperty("efg.thumbnails.dimensions.lists");
+		if(properties == null || properties.trim().equals("")) {
+			this.useDefaults(this.comboList);
+		}
+		else {
+			String[] comboProps = properties.split(RegularExpresionConstants.COMMASEP);
+			DefaultComboBoxModel model = new DefaultComboBoxModel(comboProps);
+			this.comboList.setModel(model);
+		}
 		comboList.setFocusable(true);	
-		comboList.deserialize(EFGImportConstants.THUMBS_FILE_NAME);
+		
 		
 		JPanel labelPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		labelPane.add(new JLabel("Enter or Select max dimension(in pixels): "));
@@ -109,11 +118,23 @@ public class EFGThumbNailDimensions  extends JDialog {
 		
 		
 		JPanel btnFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		String buttonLabel = "Don't ask me again..";
-		this.checkBox = 
-			this.checkBoxManager.getCheckBox(EFGImagesConstants.CHECKBOX_SER_NAME,buttonLabel );
 		
 		
+		properties = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.thumbnails.dimensions.checked",
+					EFGImportConstants.EFG_TRUE);
+		String buttonLabel = EFGImportConstants.PROMPT_FOR_DIMENSIONS;
+		this.checkBox = new JCheckBox(buttonLabel);
+		
+
+		if(properties.trim().equals(EFGImportConstants.EFG_TRUE)) {
+			this.checkBox.setSelected(true);
+		}
+		else {
+			this.checkBox.setSelected(false);
+		}
+	
 		btnFlowPanel.add(this.checkBox);
 		
 		JButton doneBtn = new JButton("OK");
@@ -143,6 +164,60 @@ public class EFGThumbNailDimensions  extends JDialog {
 			this.cb = comboList;
 			
 		}
+
+
+        protected void doHouseKeepingbeforeClosing() {
+        	
+           	try {
+ 
+        		
+        		int numberOfItems =  cb.getItemCount() + 1;
+        		String numberOfFilesToShowStr = 
+        			EFGImportConstants.EFGProperties.getProperty("numberofserverfilestoshow","5");
+        		
+    			
+    			try {
+    				int i  = Integer.parseInt(numberOfFilesToShowStr);
+    				numberOfItems = i;
+    			}
+    			catch(NumberFormatException ee) {
+    				numberOfItems = numberOfItems -1;
+    			}
+        	
+        		if(numberOfItems > cb.getItemCount()) {
+        			numberOfItems=cb.getItemCount();
+        		}
+        		
+        		
+        		StringBuffer buffer = new StringBuffer();
+				for(int index =0; index < numberOfItems ;index++) {
+            		String currentURL = cb.getItemAt(index).toString();
+            		
+            		if(index > 0 ) {
+            			buffer.append(",");
+            		}
+            		buffer.append(currentURL);
+            	}
+				//add to current properties
+				EFGImportConstants.EFGProperties.setProperty(
+						"efg.thumbnails.dimensions.lists",
+						buffer.toString());
+				EFGImportConstants.EFGProperties.setProperty(
+						"efg.thumbnails.dimensions.current",
+						cb.getSelectedItem().toString());
+				
+				EFGImportConstants.EFGProperties.setProperty(
+						"efg.thumbnails.dimensions.checked",
+						checkBox.isSelected()+"");
+				
+				
+				this.dimensions.close();
+			} catch (Exception e) {
+				
+				log.error(e.getMessage());
+			}
+        	
+        }
 		public void actionPerformed(ActionEvent e) {
 			//if it is not an integer
 			String tempSelection = (String)this.cb.getSelectedItem();
@@ -155,29 +230,23 @@ public class EFGThumbNailDimensions  extends JDialog {
 				if(intval == null){
 					throw new Exception ("The value entered must not be null or the empty string!!");
 				}
-				this.dimensions.setCurrentSelection(tempSelection);	
-				cb.add(currentSelection);
-				this.dimensions.close();
 				
+				cb.add(tempSelection);
+				this.doHouseKeepingbeforeClosing();
 			}
 			catch(NumberFormatException nee){
 				JOptionPane.showMessageDialog(frame, "The value you entered: '" + tempSelection + "' must be a number!!",
 						"Number Format Exception", JOptionPane.ERROR_MESSAGE);
-				if((this.dimensions.getCurrentSelection() != null) && 
-						(!this.dimensions.getCurrentSelection().trim().equals(""))){
-					cb.setSelectedItem(this.dimensions.getCurrentSelection());
-				}
-				//do not dismiss the window
+					cb.setSelectedItem(EFGImportConstants.EFGProperties.getProperty(
+							"efg.thumbnails.dimensions.current"));
+				
 				return;
 			}
 			catch(Exception ee){
 				JOptionPane.showMessageDialog(frame,ee.getMessage(),
 						"Exception", JOptionPane.ERROR_MESSAGE);
-		
-				if((this.dimensions.getCurrentSelection() != null) && 
-						(!this.dimensions.getCurrentSelection().trim().equals(""))){
-					cb.setSelectedItem(this.dimensions.getCurrentSelection());
-				}
+				cb.setSelectedItem(EFGImportConstants.EFGProperties.getProperty(
+				"efg.thumbnails.dimensions.current"));
 				return;
 				
 			}

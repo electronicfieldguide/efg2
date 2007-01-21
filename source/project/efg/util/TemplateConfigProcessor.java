@@ -344,7 +344,13 @@ public class TemplateConfigProcessor {
 							.equalsIgnoreCase(searchType)) {
 						// log.debug("It is a list");
 						xslPageType = xslFileNames.getXslPdfPages();
-					} else {// default
+					} 
+					else if (EFGImportConstants.SEARCH_SEARCH_TYPE
+							.equalsIgnoreCase(searchType)) {
+						// log.debug("It is a list");
+						xslPageType = xslFileNames.getXslSearchPages();
+					} 
+					else {// default
 						xslPageType = xslFileNames.getXslListPages();
 					}
 				}

@@ -28,9 +28,12 @@ package project.efg.Imports.efgInterface;
 */
 
 
+import org.apache.log4j.Logger;
+
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.Imports.efgImportsUtil.EFGUtils;
-import org.apache.log4j.Logger;
+import project.efg.util.EFGImportConstants;
+import project.efg.util.WorkspaceResources;
 
 public abstract class CSV2DatabaseAbstract {
 	static Logger log = null;
@@ -45,6 +48,7 @@ public abstract class CSV2DatabaseAbstract {
 	protected EFGDatasourceObjectInterface datasource;
 	protected EFGDataExtractorInterface dataExtractor;
 	protected ImportBehavior isUpdate;
+	
 	
 	
 
@@ -120,9 +124,7 @@ public abstract class CSV2DatabaseAbstract {
 	public  void setISUpdate(ImportBehavior isUpdate) {
 		this.isUpdate = isUpdate;
 	}
-	public String getCatalinaHome(){
-		return EFGUtils.getCatalinaHome();
-	}
+
 	
 	/**
 	 * Import the current data into your database.
@@ -183,6 +185,19 @@ public abstract class CSV2DatabaseAbstract {
 			}
 		}
 		return this.legalNames;
+	}
+
+	public String getTemplateConfigHome() {
+		String property = 
+			EFGImportConstants.EFGProperties.getProperty("efg.templates.home.current");
+		
+		if(property == null || property.trim().equals("")) {
+			WorkspaceResources.computeMediaResourcesHome();
+		}
+		property = 
+			EFGImportConstants.EFGProperties.getProperty("efg.templates.home.current");
+		return property;
+		//return WorkspaceResources.getTemplateConfigHome();
 	}
 
 	

@@ -90,16 +90,14 @@ implements EFGImportConstants,WindowListener{
 		this.init();
 	}
 	private void init(){
-		//unserialize and get selected
-		EFGComboBox combo = new EFGComboBox();	
-		combo.deserialize(EFGImportConstants.THUMBS_FILE_NAME);
-		 String selected = (String)combo.getSelectedItem();
-		 
+		String maxDimStr = EFGImportConstants.EFGProperties.getProperty(
+				"efg.thumbnails.dimensions.current");
+	
 		 try{
-			 this.maxDim =Integer.parseInt(selected);
+			 this.maxDim =Integer.parseInt(maxDimStr);
 		 }
 		 catch (Exception e) {
-			// this.maxDim =DnDFileBrowserMain.getMaxDim();
+			 this.maxDim =200;
 		}
 		
 		
@@ -325,8 +323,6 @@ implements EFGImportConstants,WindowListener{
 	 *            Where the transformed images will be placed
 	 * @param srcFileName -
 	 *            The name of the current image file
-	 * @param maxDim -
-	 *            The maximum dimension for the thumnail image
 	 */
 	private boolean generate(String srcDir, String destDir, String fileName) {
 		if (check(srcDir, fileName)) {

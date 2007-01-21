@@ -136,12 +136,12 @@ public class EFGUsersList  extends JDialog
 		 if(userList == null || userList.length == 0) {
 			 userList = defaultString;
 			 addValues2Combo(userList);
-			 //efgUsers = new JComboBox(defaultString);
+			
 			efgUsers.setEnabled(false);
 		 }
 		 else {
 			 addValues2Combo(userList);
-			//efgUsers = new JComboBox(userList);
+			
 			efgUsers.setSelectedIndex(0);
 		 }
 		 efgUsers.setEditable(false);

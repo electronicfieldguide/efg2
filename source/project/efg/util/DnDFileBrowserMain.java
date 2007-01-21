@@ -18,6 +18,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -36,8 +37,8 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
 import project.efg.Imports.efgImpl.ImagePanel;
-import project.efg.Imports.efgImpl.ImportMenu;
-import project.efg.Imports.efgImpl.MediaResourceLocationHandler;
+import project.efg.Imports.efgImportsUtil.PreferencesListener;
+
 
 /**
  * @version $Revision$
@@ -56,18 +57,16 @@ public class DnDFileBrowserMain extends JDialog {
 		} catch (Exception ee) {
 		}
 	}
-	
-	final JPopupMenu popup = new JPopupMenu();
-	final ImageInfo imageInfo = new ImageInfo();
 	private static final long serialVersionUID = 1L;
-	static JLabel currentDimLabel; 
-	final JButton deleteBtn = new JButton(EFGImportConstants.EFGProperties
+	final private JPopupMenu popup = new JPopupMenu();
+	final private ImageInfo imageInfo = new ImageInfo();
+
+	private JLabel currentDimLabel; 
+	final private JButton deleteBtn = new JButton(EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.deleteBtn"));
 
-	final JButton doneBtn = new JButton(EFGImportConstants.EFGProperties
+	final private JButton doneBtn = new JButton(EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.doneBtn"));
-
-	public static int maxDim = 0;
 
 	JProgressBar progressBar = new JProgressBar();
 
@@ -80,8 +79,8 @@ public class DnDFileBrowserMain extends JDialog {
 
 	//JEditorPane htmlPane;
 	Vector userItems = new Vector();
-	static String thumsStr = "Current Generated Thumbnail Size: "; 
-	public static String imageL = EFGImportConstants.EFGProperties
+	String thumsStr = "Current Generated Thumbnail Size: "; 
+	public String imageL = EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.imageL");
 
 	//
@@ -89,40 +88,33 @@ public class DnDFileBrowserMain extends JDialog {
 	//
 	FileBrowser browser;
 	private String currentImagesDirectory;
-	protected ImportMenu importMenu;
+	protected JFrame importMenu;
 	
 
 
-	/**
-	 * 
-	 */
-	public DnDFileBrowserMain(ImportMenu importMenu, boolean modal) {
-		this(importMenu, "", modal);
-	}
 	private JScrollPane browserPane;
 	/**
 	 * 
 	 * @param frame
 	 * @param title
 	 * @param modal
-	 * @param currentImagesDirectory
 	 */
-	public DnDFileBrowserMain(ImportMenu importMenu, 
+	public DnDFileBrowserMain(JFrame importMenu, 
 			String title, 
 			boolean modal) {
 		super(importMenu, modal);
 		this.importMenu = importMenu;
 		//always set to false
-		this.importMenu.setBrowserReload(false);
-		this.currentImagesDirectory =
-			this.importMenu.getMediaResourcesDirectory();
+	
+		this.currentImagesDirectory = 
+			this.computeCurrentMediaResourceDirectory();
 		this.setTitle("Drag and Drop Image Folders here");
 		this.setModal(true);
-		imageView = addImagePanel();	
+		imageView = addImageDisplayPanel();	
 		initHelp();
 		this.progressBar.setSize(300, 300);
-		//this.reloadBrowser();
-		this.iPanel = this.loadPanel();
+		
+		this.iPanel = this.addTreeBkgdImagePanel();
 		this.browserPane = new JScrollPane(this.iPanel);
 		JScrollPane imageViewPane = new JScrollPane(this.imageView);
 		JSplitPane pane = 
@@ -138,30 +130,42 @@ public class DnDFileBrowserMain extends JDialog {
 		addWindowListener(new WndCloser(this));
 		this.setLocationRelativeTo(importMenu);
 	}
-	/**
-	 * 
-	 * @param currentImagesDirectory
-	 * @param frame
-	 */
-	public DnDFileBrowserMain(String imagesDirectory, ImportMenu frame) {
-		this(frame, "", false);
-	}
-	/**
-	 * if !imagesDirectory.equals(currentImagesDirectory)
-	 * then reload browser because directory has changed.
-	 * 
-	 * @param imagesDirectory
-	 */
-	public void setBrowserReload(String imagesDirectory) {
+	private String computeCurrentMediaResourceDirectory() {
+		String property = 
+			EFGImportConstants.EFGProperties.getProperty("efg.mediaresources.home.current");
 		
-		if(!this.currentImagesDirectory.equalsIgnoreCase(imagesDirectory)) {
-
-			importMenu.setBrowserReload(true);
-		
+		if(property == null || property.trim().equals("")) {
+			WorkspaceResources.computeMediaResourcesHome();
 		}
+		property = 
+			EFGImportConstants.EFGProperties.getProperty("efg.mediaresources.home.current");
+		if(property == null || property.trim().equals("")) {
+			this.close();
+		}
+		return property;
+	}
+	/**
+	 * 
+	 * @return
+	 */
+	private JComponent addImageDisplayPanel() {
+		// Create the HTML viewing pane.
+		displayPanel = new JPanel();
+		displayPanel.setLayout(new BorderLayout());
+		this.progressBar.setSize(300, 300);
+		this.progressBar.setStringPainted(true);
+		this.progressBar.setString(""); // but don't paint it
+		this.imageLabel = new JLabel(imageL, SwingConstants.CENTER);
+		this.imageLabel.setVerticalTextPosition(JLabel.BOTTOM);
+		this.imageLabel.setHorizontalTextPosition(JLabel.CENTER);
+		this.displayPanel.add(this.imageLabel, BorderLayout.CENTER);
+	
+		return displayPanel;
 	}
 
-	private ImagePanel loadPanel() {
+
+
+	private ImagePanel addTreeBkgdImagePanel() {
 
 		this.browser = DnDFileBrowser.getFileBrowser(this.currentImagesDirectory,
 				progressBar,this.importMenu);
@@ -170,7 +174,7 @@ public class DnDFileBrowserMain extends JDialog {
 		
 		this.browser.addTreeSelectionListener(new FileTreeSelectionListener(
 				this.browser));
-		//this.browser.addMouseListener(new EditMouseListener(this));
+		
 		this.browser.expandRow(0);
 
 		ImagePanel iPanel = 
@@ -196,7 +200,9 @@ public class DnDFileBrowserMain extends JDialog {
 			new JMenu("Help");		
 		JMenuItem thumbNailMenu = 
 			new JMenuItem("Thumbnails");
-		
+		JMenuItem preferencesMenu = 
+			new JMenuItem("Change/View Preferences");
+
 		JMenuItem deleteMenu = 
 			new JMenuItem("Delete");
 		JMenuItem closeMenu = 
@@ -204,9 +210,11 @@ public class DnDFileBrowserMain extends JDialog {
 		JMenuItem helpItem = 
 			new JMenuItem("Help Contents");
 
-		thumbNailMenu.addActionListener(new ThumbsListener());
-		fileMenu.add(thumbNailMenu);
+		thumbNailMenu.addActionListener(new ThumbsListener(this));
+		preferencesMenu.addActionListener(new PreferencesListener(this.importMenu, false, true));
 		
+		fileMenu.add(thumbNailMenu);
+		fileMenu.add(preferencesMenu);
 		deleteMenu.addActionListener(new DeleteListener(this.browser));
 		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("FileTreeBrowserMain.deleteBtn.tooltip"));
@@ -214,17 +222,16 @@ public class DnDFileBrowserMain extends JDialog {
 				(EFGImportConstants.IMAGE_DEPLOY_HELP));
 		
 		closeMenu.addActionListener(new DoneListener(this));
-		File bitSetter = 
-			new File(new File(this.importMenu.getLocalMediaResourceDirectory()),
-				EFGImagesConstants.BIT_SET_FILE);
-		if(!bitSetter.exists()) {//show only if the bit is not set
-			JMenuItem imagesRootDirectoryMenu = 
-				new JMenuItem("Change MediaResource Root Directory");
-			imagesRootDirectoryMenu.addActionListener(new ChangeImagesRootListener(this));
+		
+		
+		/*	JMenuItem imagesRootDirectoryMenu = 
+				new JMenuItem("Change Server Root Directory");
+			imagesRootDirectoryMenu.addActionListener(
+					new ChangeServerRootListener(this.importMenu));
 			
-			fileMenu.add(imagesRootDirectoryMenu);
+			fileMenu.add(imagesRootDirectoryMenu);*/
 			
-		}
+		
 		
 		fileMenu.add(deleteMenu);
 		helpMenu.add(helpItem);
@@ -244,126 +251,63 @@ public class DnDFileBrowserMain extends JDialog {
 	public void close() {
 		this.dispose();
 	}
-	/**
-	 * 
-	 * @return
-	 */
-	private JComponent addImagePanel() {
-		// Create the HTML viewing pane.
-		displayPanel = new JPanel();
-		displayPanel.setLayout(new BorderLayout());
-		this.progressBar.setSize(300, 300);
-		this.progressBar.setStringPainted(true);
-		this.progressBar.setString(""); // but don't paint it
-		this.imageLabel = new JLabel(imageL, SwingConstants.CENTER);
-		this.imageLabel.setVerticalTextPosition(JLabel.BOTTOM);
-		this.imageLabel.setHorizontalTextPosition(JLabel.CENTER);
-		this.displayPanel.add(this.imageLabel, BorderLayout.CENTER);
 
-		return displayPanel;
-	}
 	/**
-	 * 
 	 * @param currentSelection
 	 */
-	public static void setCurrentDim(String currentSelection){
-		try{
-			maxDim =Integer.parseInt(currentSelection);
-		}
-		catch(Exception ee){
-			
-		}
+	protected void setCurrentDimLabel(String currentSelection) {
+		this.currentDimLabel.setText(thumsStr + currentSelection);
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public static synchronized int getMaxDim() {
-		
-		if (maxDim <= 0) {
-			String maxDimStr = EFGImportConstants.EFGProperties
-					.getProperty(EFGImagesConstants.MAX_DIM_STR);
 
+	private void setDefaultThumbnailDimensions() {
+	
+			String[] dimensions = WorkspaceResources.getDefaultDimensions();
+			String maxDim = null;
+			StringBuffer buffer = new StringBuffer();
+			for(int i= dimensions.length;i > 0;i--) {
 
-			try {				
-				return Integer.parseInt(maxDimStr);
-			} catch (Exception ee) {
-			}
-			
-		}
-		return maxDim;
-	}
-	/**
-	 * 
-	 * @return
-	 */
-	public static synchronized int[] getDefaultDimensions() {
-		
-			int[] defaults = null;
-			String maxDimStr = EFGImportConstants.EFGProperties
-					.getProperty(EFGImagesConstants.MAX_DIM_STR);
-
-
-			try {
-				String[] defaultDims = maxDimStr.split(RegularExpresionConstants.COMMASEP);
-				defaults = new int[defaultDims.length];
-				for(int i=0; i < defaultDims.length; i++) {
-					try {
-						int defaultDim = Integer.parseInt(defaultDims[i]);
-						defaults[i] = defaultDim;
-					}
-					catch(Exception ee) {
-					}
-					
+				if(i < dimensions.length) {
+					buffer.append(",");
 				}
-				
-				
-				log.debug("MaxDim is set from properties file to: " + maxDim);
-			} catch (Exception ee) {
-				defaults = new int[1];
-			
-				
+				buffer.append(dimensions[i-1]);
 			}
-			log.debug("MaxDim is set to: " + maxDim);
-
-		return defaults;
+			EFGImportConstants.EFGProperties.setProperty(
+					"efg.thumbnails.dimensions.lists",
+					buffer.toString());
+			EFGImportConstants.EFGProperties.setProperty(
+					"efg.thumbnails.dimensions.current",
+					dimensions[dimensions.length -1]);
+		
 	}
+	
 	/**
 	 * 
 	 * @return
 	 */
 	private JPanel addButtons() {
-		//get Max Dim
-		//unserialiaze and set the max dimension
-		EFGComboBox efgComboBox = new EFGComboBox();
-		efgComboBox.deserialize(EFGImportConstants.THUMBS_FILE_NAME);
-		String maxDim = (String)efgComboBox.getSelectedItem();
 		
-		currentDimLabel = new JLabel(thumsStr + maxDim + " ", JLabel.LEADING);
-		currentDimLabel.setForeground(Color.blue);
+		String maxDim = 
+			EFGImportConstants.EFGProperties.getProperty("efg.thumbnails.dimensions.current");
+		
+		if(maxDim == null || maxDim.trim().equals("")) {
+			setDefaultThumbnailDimensions();
+			maxDim = 
+				EFGImportConstants.EFGProperties.getProperty("efg.thumbnails.dimensions.current");
+		}
+		this.currentDimLabel = new JLabel(thumsStr + maxDim + " ", JLabel.LEADING);
+		this.currentDimLabel.setForeground(Color.blue);
 		JPanel btnPanel =  new JPanel(new GridLayout(0, 1));
 		
 		
-		String currentD = this.currentImagesDirectory;
+		
 		JLabel currentDirectory = new JLabel(); 
 		currentDirectory.setText("Current Mediaresource directory: " + 
-				this.importMenu.getMediaResourcesDirectory());
-		/*if(currentD.indexOf(EFGImagesConstants.LOCAL_IMAGES_DIR) > -1) {
-			currentDirectory.setText("Current Mediaresource directory: " + 
-					new File(importMenu.importMenu.getMediaResourcesDirectory() , 
-							EFGImagesConstants.EFG_IMAGES_DIR).getAbsolutePath()+ 
-					"     ");
-		}
-		else {
-			currentDirectory.setText("Current Mediaresource directory: "+ 
-					importMenu.getMediaResourcesDirectory() +  
-					File.separator + EFGImagesConstants.EFG_IMAGES_DIR);
-		}*/
-		//current directory
+				WorkspaceResources.toFileName(this.currentImagesDirectory));
+		
 		btnPanel.add(currentDirectory);
 		
-		btnPanel.add(currentDimLabel);
+		btnPanel.add(this.currentDimLabel);
 		return btnPanel;
 
 	}
@@ -539,8 +483,13 @@ public class DnDFileBrowserMain extends JDialog {
 
 	
 	class ThumbsListener implements ActionListener {
-		
-	
+		private DnDFileBrowserMain dnd;
+		/**
+		 * 
+		 */
+		public ThumbsListener(DnDFileBrowserMain dnd) {
+			this.dnd = dnd;
+		}
 		/* (non-Javadoc)
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
@@ -548,41 +497,13 @@ public class DnDFileBrowserMain extends JDialog {
 			EFGThumbNailDimensions thd = 
 				new EFGThumbNailDimensions(importMenu,
 						"Enter Thumbnail Dimension",true);
-			thd.setVisible(true);			
+			thd.setVisible(true);
+			
+			String currentDim = EFGImportConstants.EFGProperties.getProperty(
+			"efg.thumbnails.dimensions.current");
+			this.dnd.setCurrentDimLabel(currentDim);
 		}
-		
+	}
 
-	}
-	/**
-	 * @author kasiedu
-	 *
-	 */
-	class ChangeImagesRootListener implements ActionListener {
-		private DnDFileBrowserMain browser;
-		/**
-		 * 
-		 */
-		public ChangeImagesRootListener(DnDFileBrowserMain browser) {
-			this.browser = browser;
-		}
-		 /* (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(ActionEvent e) {
-			MediaResourceLocationHandler mdr = 
-				new MediaResourceLocationHandler(importMenu,"",true,this.browser);
-			mdr.setVisible(true);
-			if(importMenu.isBrowserReload()) {
-				this.browser.close();
-			}
-		}
 
-	}
-	/**
-	 * @param currentSelection
-	 */
-	public static void setCurrentDimLabel(String currentSelection) {
-		currentDimLabel.setText(thumsStr + currentSelection);
-		
-	}
 }

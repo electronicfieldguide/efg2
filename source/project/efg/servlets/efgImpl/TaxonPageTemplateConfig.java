@@ -477,6 +477,16 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 								xslFileNames.setXslPdfPages(xslPageType);
 							}
 						}
+						else if (EFGImportConstants.SEARCH_SEARCH_TYPE
+								.equalsIgnoreCase(searchType)) {
+							//log.debug("It is a list");
+								xslPageType = xslFileNames.getXslSearchPages();
+								//if it is null create it
+								if(xslPageType == null) {
+									xslPageType = new XslPageType();
+									xslFileNames.setXslSearchPages(xslPageType);
+								}
+							}
 						else{
 							xslPageType = xslFileNames.getXslTaxonPages();
 						}
@@ -529,7 +539,13 @@ public class TaxonPageTemplateConfig extends HttpServlet {
 						dispatcher = getServletContext().getRequestDispatcher(
 								EFGImportConstants.TEST_TAXON_CONFIG_PAGE);
 					}
-					
+					else if (EFGImportConstants.SEARCH_SEARCH_TYPE
+							.equalsIgnoreCase(searchType)) {
+						req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
+								EFGImportConstants.SEARCH_SEARCH_TYPE);
+						dispatcher = getServletContext().getRequestDispatcher(
+								EFGImportConstants.TEST_TAXON_CONFIG_PAGE);
+					}
 					else {
 						req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
 								EFGImportConstants.SEARCH_LISTS_TYPE);

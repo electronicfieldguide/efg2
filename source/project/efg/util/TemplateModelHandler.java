@@ -30,7 +30,7 @@ public abstract class TemplateModelHandler{
 
 	public TemplateModelHandler() {
 		this.templateName = 
-			EFGImportConstants.EFGProperties.getProperty(EFGImportConstants.TEMPLATE_TABLE);
+			EFGImportConstants.TEMPLATE_TABLE;
 		
 	}
 	
@@ -194,6 +194,7 @@ public abstract class TemplateModelHandler{
 	 */
 	public boolean add2DB(String key, TemplateObject templateObject) {
 		if(!doChecks(key)){
+			
 			return false;
 		}
 		
@@ -205,10 +206,12 @@ public abstract class TemplateModelHandler{
 		EFGDisplayObject displayObject = templateObject.getDisplayObject();
 		
 		if(displayObject == null){
+			
 			return false;
 		}
 		String datasourceName = displayObject.getDatasourceName();
 		if((datasourceName == null) || (datasourceName.trim().equals(""))){
+			
 			return false;
 		}
 		String guid = templateObject.getGUID();
@@ -306,7 +309,7 @@ public abstract class TemplateModelHandler{
 		TemplateObject templateObject = null;
 		createEFG2TemplatesTable();
 		
-		String catHome = EFGUtils.getCatalinaHome();
+		String catHome = EFGUtils.getServerHome();
 		if(catHome == null){
 			return;
 		}
@@ -582,9 +585,11 @@ public abstract class TemplateModelHandler{
 	private boolean doChecks(String key) {
 		if((this.templateName == null) || 
 				(this.templateName.trim().equals(""))){
+			
 			return false;
 		}
 		if((key == null) || (key.trim().equals(""))){ 
+			
 			return false;
 		}
 		return true;

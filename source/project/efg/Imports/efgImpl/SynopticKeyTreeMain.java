@@ -54,6 +54,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
+import project.efg.Imports.efgImportsUtil.PreferencesListener;
 import project.efg.Imports.efgInterface.CheckListener;
 import project.efg.Imports.efgInterface.DataManipulatorInterface;
 import project.efg.Imports.efgInterface.SynopticKeyTreeInterface;
@@ -210,6 +211,12 @@ public class SynopticKeyTreeMain extends JDialog {
 		//checkMenu.add(checkIllegalCharactersMenu);
 		fileMenu.addSeparator();
 		fileMenu.add(checkMenu);
+		fileMenu.addSeparator();
+		
+		JMenuItem preferencesMenu = 
+			new JMenuItem("Change/View Preferences");
+		preferencesMenu.addActionListener(new PreferencesListener(parentFrame, false, false));
+		fileMenu.add(preferencesMenu);
 		fileMenu.addSeparator();
 		
 		doneMenu.addActionListener(new DoneListener(this));

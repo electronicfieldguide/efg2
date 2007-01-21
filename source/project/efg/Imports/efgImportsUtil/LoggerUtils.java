@@ -47,6 +47,8 @@ import java.sql.SQLException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
+import project.efg.util.EFGImportConstants;
+
 /**
  * This servlet performs the task of setting up the log4j configuration.
  * 
@@ -81,7 +83,7 @@ public class LoggerUtils {
 			// we will use System.err for some basic information
 
 			// use the props file to load up configuration parameters for log4j
-			if (watch != null && watch.equalsIgnoreCase("true")) {
+			if (watch != null && watch.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				PropertyConfigurator.configureAndWatch(props);
 			} else {
 				PropertyConfigurator.configure(props);

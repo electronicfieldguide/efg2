@@ -1,6 +1,5 @@
 package project.efg.Imports.rdb;
 
-import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
@@ -63,8 +62,6 @@ import project.efg.util.UnicodeToASCIIFilter;
 public class CSV2Database extends CSV2DatabaseAbstract {
 
 	private JdbcTemplate jdbcTemplate;
-	private String templateConfigHome;
-	
 	private String[] dataHeaders;
 
 	private String metadataTableName; // metadata table to use
@@ -134,17 +131,6 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		
 		this.efgRDBTable = EFGUtils.getCurrentTableName();
 	}
-	private String getTemplateConfig() {
-		if (this.templateConfigHome == null) {
-			this.templateConfigHome = this.getCatalinaHome() + File.separator
-					+ EFGImportConstants.EFG_WEB_APPS + File.separator
-					+ EFGImportConstants.EFG_APPS + File.separator
-					+ EFGImportConstants.TEMPLATES_XML_FOLDER_NAME
-					+ File.separator;
-		}
-		return this.templateConfigHome;
-	}
-
 	/**
 	 * @return true if import was successful. false otherwise
 	 */
@@ -243,9 +229,13 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 									legalNames);
 							if (isSuccess) {// create a new Default template
 											// file
+								//ask where to put files
+								//ask user to copy to server
+								//share with media resources
+								//call this if only server is present
 								
 								TaxonPageDefaultConfig taxonPageConfig = new TaxonPageDefaultConfig(
-										this.dbObject, this.getTemplateConfig(), this.efgRDBTable);
+										this.dbObject, this.getTemplateConfigHome(), this.efgRDBTable);
 								boolean bool = taxonPageConfig.processNew(this
 										.getDataTableName(), this
 										.getDisplayName());
@@ -404,9 +394,11 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		
 	}
 	private boolean copyClone(String clonedDataTableName) {
-
+		
 		TaxonPageDefaultConfig taxonPageConfig = 
-			new TaxonPageDefaultConfig(this.dbObject, this.getTemplateConfig(), this.efgRDBTable);
+			new TaxonPageDefaultConfig(this.dbObject, 
+					this.getTemplateConfigHome(), 
+					this.efgRDBTable);
 		
 		boolean bool = taxonPageConfig.cloneOldFile(clonedDataTableName, this
 				.getDataTableName(), this.getDisplayName());
@@ -881,42 +873,42 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					query.append(",");
 
 					query.append("\"");
-					query.append("false");
+					query.append(EFGImportConstants.EFG_FALSE);
 					query.append("\"");
 					query.append(",");
 
 					query.append("\"");
-					query.append("false");
+					query.append(EFGImportConstants.EFG_FALSE);
 					query.append("\"");
 					query.append(",");
 
 					query.append("\"");
-					query.append("true");
+					query.append(EFGImportConstants.EFG_TRUE);
 					query.append("\"");
 					query.append(",");
 
 					query.append("\"");
-					query.append("false");
+					query.append(EFGImportConstants.EFG_FALSE);
 					query.append("\"");
 					query.append(",");
 
 					query.append("\"");
-					query.append("true");
+					query.append(EFGImportConstants.EFG_TRUE);
 					query.append("\"");
 					query.append(",");
 
 					query.append("\"");
-					query.append("false");
+					query.append(EFGImportConstants.EFG_FALSE);
 					query.append("\"");
 					query.append(",");
 
 					query.append("\"");
-					query.append("false");
+					query.append(EFGImportConstants.EFG_FALSE);
 					query.append("\"");
 					query.append(",");
 
 					query.append("\"");
-					query.append("false");
+					query.append(EFGImportConstants.EFG_FALSE);
 					query.append("\"");
 					query.append(",");
 					if(counter < 1){
@@ -1380,42 +1372,42 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						} else if (EFGImportConstants.SEARCHABLE
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("false");
+							query.append(EFGImportConstants.EFG_FALSE);
 							query.append("\"");
 						} else if (EFGImportConstants.ISLISTS
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("false");
+							query.append(EFGImportConstants.EFG_FALSE);
 							query.append("\"");
 						} else if (EFGImportConstants.ONTAXONPAGE
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("true");
+							query.append(EFGImportConstants.EFG_TRUE);
 							query.append("\"");
 						} else if (EFGImportConstants.CATEGORICAL
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("false");
+							query.append(EFGImportConstants.EFG_FALSE);
 							query.append("\"");
 						} else if (EFGImportConstants.NARRATIVE
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("true");
+							query.append(EFGImportConstants.EFG_TRUE);
 							query.append("\"");
 						} else if (EFGImportConstants.NUMERIC
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("false");
+							query.append(EFGImportConstants.EFG_FALSE);
 							query.append("\"");
 						} else if (EFGImportConstants.NUMERICRANGE
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("false");
+							query.append(EFGImportConstants.EFG_FALSE);
 							query.append("\"");
 						} else if (EFGImportConstants.MEDIARESOURCE
 								.equalsIgnoreCase(th)) {
 							query.append("\"");
-							query.append("false");
+							query.append(EFGImportConstants.EFG_FALSE);
 							query.append("\"");
 						} else if (EFGImportConstants.ORDER
 								.equalsIgnoreCase(th)) {
