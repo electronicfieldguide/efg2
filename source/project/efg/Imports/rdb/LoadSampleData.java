@@ -75,6 +75,35 @@ public class LoadSampleData {
 		.getProperty("dburl");
 		return dbObject2.clone(url);
 	}
+	private boolean createGlossaryTable() {
+		
+			try {
+			
+					StringBuffer query = new StringBuffer();
+					
+					// PUT IN PROPERTIES FILE
+					query.append("CREATE TABLE IF NOT EXISTS efg_glossary_tables");
+					query.append("( DS_DATA VARCHAR(255) not null,"
+							+ "ORIGINAL_FILE_NAME TEXT, "
+							+ "DS_METADATA VARCHAR(255) not null, "
+							+ "DISPLAY_NAME VARCHAR(255) unique not null, "
+							+ "XSL_FILENAME_TAXON VARCHAR(255), "
+							+ "XSL_FILENAME_SEARCHPAGE_PLATES VARCHAR(255), "
+							+ "XSL_FILENAME_SEARCHPAGE_LISTS VARCHAR(255), "
+							+ "CSS_FILENAME VARCHAR(255), "
+							+ "JAVASCRIPT_FILENAME VARCHAR(255) " + ")");
+					log.debug("About to execute query : '" + query.toString());
+					this.jdbcTemplate.update(query.toString());
+					
+					return true;
+				
+			} catch (Exception ee) {
+				
+			}
+			
+			return false;
+		
+	}
 	public String getErrorBuffer(){
 		return this.messageBuffer.toString();
 	}
@@ -121,6 +150,7 @@ public class LoadSampleData {
 					.getJDBCTemplate(this.dbObject);
 		}
 		if(this.loadFile()){
+			this.createGlossaryTable();
 			this.list = EFGDatasourceObjectListFactory
 				.getEFGObjectList(this.dbObject);
 			String behaviorType =
@@ -135,6 +165,7 @@ public class LoadSampleData {
 		
 			this.readNewDisplayName();
 			this.readFields();
+			
 		}
 	
 	}
