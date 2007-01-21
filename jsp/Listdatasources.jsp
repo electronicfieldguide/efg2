@@ -15,7 +15,10 @@ project.efg.util.EFGDisplayObject
 		  	if(mainTableName.equalsIgnoreCase(EFGImportConstants.EFG_GLOSSARY_TABLES)){
 		  		title = "Select glossaries to export";
 		  		classname = "glossaries"; 
+		  		
 		  	}
+
+		  	
 			ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
 			servFactory.setMainDataTableName(mainTableName);	
 			EFGDisplayObjectList listInter = servFactory.getListOfDatasources();

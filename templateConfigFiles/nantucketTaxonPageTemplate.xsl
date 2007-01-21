@@ -565,7 +565,7 @@
 						</td>
 					</tr>
 				</table>
-				<div id="popUpMessage" class="popUp"> Loading </div>
+			
 			</body>
 		</html>
 	</xsl:template>

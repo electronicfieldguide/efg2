@@ -40,7 +40,7 @@ java.util.Iterator" %>
 		%>
 			<table border="1">
 				<tr>
-					<th>Datasource</th><th>Template Name</th><th>Edit/Delete Template</th>
+					<th>Datasource</th><th>Template Name</th><th>Edit/Delete Template</th><th>dataSourceName</th>
 				</tr>
 				<%
 				
@@ -51,8 +51,9 @@ java.util.Iterator" %>
 					EFGDisplayObject displayObject = templateObject.getDisplayObject();
 					String templateName = templateObject.getTemplateName();
 					String displayName = displayObject.getDisplayName();
+					String datasourceName = displayObject.getDatasourceName();
 					if((displayName == null) || (displayName.trim().equals(""))){
-						displayName = displayObject.getDatasourceName();
+						displayName = datasourceName;
 					}//end if
 					if((displayName != null) && 
 							(templateName != null) && 
@@ -81,10 +82,13 @@ java.util.Iterator" %>
 							<td>
 							<% 
 								if(key.toLowerCase().indexOf(EFGImportConstants.DEFAULT_SEARCH_FILE.toLowerCase()) == -1){%>
-									<a href="<%=toEdit + buff.toString()%>">Edit</a> , <a href="<%=toDelete + buff.toString()%>">Delete</a> </td>
+									<a href="<%=toEdit + buff.toString()%>">Edit</a> , <a href="<%=toDelete + buff.toString()%>">Delete</a> 
 								<%}
 							%>
-							
+							</td>
+							<td>
+								<%=datasourceName%>
+							</td>
 							
 						</tr>
 				<%	
