@@ -33,25 +33,18 @@ package project.efg.Imports.efgImpl;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.io.File;
-import java.net.URI;
-import java.util.Iterator;
+import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.TransferHandler;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.log4j.Logger;
 
-import project.efg.Imports.efgInterface.EFGDatasourceObjectInterface;
-import project.efg.Imports.efgInterface.EFGDatasourceObjectStateInterface;
 import project.efg.Imports.efgInterface.SynopticKeyTreeInterface;
 import project.efg.Imports.factory.StateObjectFactory;
-import project.efg.util.EFGImportConstants;
 
 public class SynopticKeyTransferHandler extends TransferHandler {
 
@@ -74,139 +67,44 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 		String message = "";
 		// Make sure we have the right starting points
 		if (!(comp instanceof JTree)) {
-			// log an error message
+			log.error("Returning false");
 			return false;
 		}
 		if (!t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
-			// log an error message
+			log.error("Returning false list not supported");
 			return false;
 		}
 
 		// Grab the tree, its model and the root node
 		SynopticKeyTreeInterface tree = (SynopticKeyTreeInterface) comp;
-		DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-		DefaultMutableTreeNode root = (DefaultMutableTreeNode) model.getRoot();
-
-		File f = null;
-		EFGDatasourceObjectInterface obj = null;
-		boolean isSuccess = false;
+		List data;
 		try {
-
-			List data = (List) t.getTransferData(DataFlavor.javaFileListFlavor);
-			Iterator i = data.iterator();
-			while (i.hasNext()) {
-				// boolean isFound = false;
-				f = (File) i.next();
-				// if file is a directory log and skip
-				if (f.isDirectory()) {
-					message = f.getAbsolutePath()
-							+ " "
-							+ EFGImportConstants.EFGProperties
-									.getProperty("SynopticKeyTransferHandler.directoryNoImport");
-					log.error(message);
-					JOptionPane.showMessageDialog(null, message,
-							"Import Information",
-							JOptionPane.INFORMATION_MESSAGE);
-					continue;
-				}
-				//f.toURI()
-				//find out if this is a valid uri
-				//write to a temp file and then 
-				//upload the temp file instead
-				URI uri = f.toURI();
+		
+			data = (List)t.getTransferData(DataFlavor.javaFileListFlavor);
+			if(data == null || data.size() == 0) {
+				log.error("Empty lists");
+			}
+			return HandleDataImport.handleImport(tree, 
+					data, this.stateFactory);
+		} catch (UnsupportedFlavorException e) {
+			log.error(e.getMessage());
+		} catch (IOException e) {
 			
-				obj = tree.importIntoDatabase(f.toURI());
-
-				EFGDatasourceObjectStateInterface state = obj.getState();
-				state.handleState(obj, root);
-				if(!isSuccess){
-					isSuccess = state.isSuccess();
-				}
-			}
-		} catch (Exception ee) {
-			message = ee.getMessage();
-			ee.printStackTrace();
-			log.error(message);
-			obj = new EFGDatasourceObjectImpl();
-			if (f != null) {
-				obj.setDataName(f.toURI());
-				EFGDatasourceObjectStateInterface state =
-					stateFactory.getFailureObject();
-					
-				state.handleState(obj, root);
-				if(!isSuccess){
-					isSuccess = state.isSuccess();
-				}
-			}
-			return isSuccess;
+		log.error(e.getMessage());
 		}
-		/*
-		 * boolean success = false; StringBuffer messageBuffer = new
-		 * StringBuffer(); if(addedList.size() > 0){ messageBuffer.append(
-		 * this.getInformationFromLists(addedList,EFGImportConstants.
-		 * EFGProperties.getProperty(
-		 * "SynopticKeyTransferHandler.add.success.title")));
-		 * 
-		 * success = true; }
-		 * messageBuffer.append(this.getInformationFromLists(notAddedList,EFGImportConstants.
-		 * EFGProperties.getProperty(
-		 * "SynopticKeyTransferHandler.add.failure.title")));
-		 * 
-		 * messageBuffer.append(this.getInformationFromLists(neutralList,EFGImportConstants.
-		 * EFGProperties.getProperty(
-		 * "SynopticKeyTransferHandler.add.neutral.title")));
-		 * 
-		 * if(success){ JOptionPane.showMessageDialog(null,
-		 * messageBuffer.toString(), "Import Information",
-		 * JOptionPane.INFORMATION_MESSAGE); } else{
-		 * JOptionPane.showMessageDialog(null, messageBuffer.toString(), "Error
-		 * Message", JOptionPane.ERROR_MESSAGE); }
-		 */
-		return true;
+		return false;
 	}
 
-	/*
-	 * private String getInformationFromLists(ArrayList list, String message){
-	 * StringBuffer messageBuffer = new StringBuffer(); if(list.size() > 0){
-	 * if(messageBuffer.length() > 0){ messageBuffer.append("\n\n"); }
-	 * messageBuffer.append(message); messageBuffer.append("\n\n"); for(int i=0;
-	 * i < list.size(); i++){ messageBuffer.append((i +1) + ":" +
-	 * (String)list.get(i)); messageBuffer.append("\n"); }
-	 *  } return messageBuffer.toString(); } private void
-	 * handleNeutral(java.util.ArrayList neutralList, String fileName){
-	 * StringBuffer message = new StringBuffer(fileName); message.append(" ");
-	 * message.append(EFGImportConstants.EFGProperties.
-	 * getProperty("SynopticKeyTransferHandler.update.neutral"));
-	 * neutralList.add(message.toString()); //log.debug(message.toString()); }
-	 * private void handleFailure(java.util.ArrayList notAddedList, String
-	 * fileName){ StringBuffer failureMessage = new StringBuffer(fileName);
-	 * failureMessage.append(" ");
-	 * failureMessage.append(EFGImportConstants.EFGProperties.
-	 * getProperty("SynopticKeyTransferHandler.add.failure"));
-	 * notAddedList.add(failureMessage); //log.error(failureMessage.toString()); }
-	 * private boolean handleSuccess(java.util.ArrayList addedList,
-	 * EFGDatasourceObjectInterface obj, DefaultMutableTreeNode root, String
-	 * fileName){ boolean isFound = false; StringBuffer message = new
-	 * StringBuffer(); int childCount = root.getChildCount(); for (int j = 0; j <
-	 * childCount; j++) { DefaultMutableTreeNode node = (DefaultMutableTreeNode)
-	 * root .getChildAt(j); if (((EFGDatasourceObjectInterface) node
-	 * .getUserObject()).equals(obj)) {//node already exists isFound = true;
-	 * message.append(fileName); message.append(" ");
-	 * message.append(EFGImportConstants.EFGProperties.
-	 * getProperty("SynopticKeyTransferHandler.update.success"));
-	 * //log.debug(message.toString()); addedList.add(message.toString()); break; } }
-	 * return isFound;
-	 *  }
-	 */
 	// We only support file lists on SynopticKeyTrees...
 	public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
 		if (comp instanceof SynopticKeyTreeInterface) {
 			for (int i = 0; i < transferFlavors.length; i++) {
-				if (!transferFlavors[i].equals(DataFlavor.javaFileListFlavor)) {
-					return false;
+				
+				if (transferFlavors[i].equals(DataFlavor.javaFileListFlavor)) {
+					
+					return true;
 				}
 			}
-			return true;
 		}
 		return false;
 	}

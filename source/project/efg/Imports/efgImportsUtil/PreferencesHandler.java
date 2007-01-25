@@ -69,6 +69,7 @@ public class PreferencesHandler extends JDialog implements ItemListener {
     boolean showResourceLocator;
     boolean showChangeThumbDimensions;
     JFrame frame;
+	private JCheckBox imageMagickDirectoryDirectoryButton;
 	/**
 	 * @param showResourceLocator 
 	 * @param showChangeThumbDimensions 
@@ -124,6 +125,20 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         isSelected = true;
        
 
+        imageMagickDirectoryDirectoryButton = 
+        	new JCheckBox("Prompt When I Change Image Magick Location");
+        imageMagickDirectoryDirectoryButton.setMnemonic(KeyEvent.VK_I);
+        property = 
+        	EFGImportConstants.EFGProperties.getProperty(
+        		"efg.imagemagicklocation.checked",EFGImportConstants.EFG_TRUE
+        		);
+        if(!property.trim().equals(EFGImportConstants.EFG_TRUE)) {
+        	isSelected = false;
+        	
+        }
+        imageMagickDirectoryDirectoryButton.setSelected(isSelected);
+        isSelected = true;
+        
         confimChangeDirectoryButton = new JCheckBox("Prompt When I Change Server Location");
         confimChangeDirectoryButton.setMnemonic(KeyEvent.VK_P);
         property = 
@@ -135,15 +150,14 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         	
         }
         confimChangeDirectoryButton.setSelected(isSelected);
-       
-
-      
+        isSelected = true;
 
         //Register a listener for the check boxes.
         serverRootButton.addItemListener(this);
         thumbnailsButton.addItemListener(this);
         confirmExitButton.addItemListener(this);
         confimChangeDirectoryButton.addItemListener(this);
+        imageMagickDirectoryDirectoryButton.addItemListener(this);
         
         JButton closeBtn = new JButton("OK");
         closeBtn.addActionListener(new CloseButtonListener());
@@ -153,11 +167,15 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         checkPanel.add(serverRootButton);
         checkPanel.add(thumbnailsButton);
         checkPanel.add(confirmExitButton);
+        checkPanel.add(imageMagickDirectoryDirectoryButton);
         checkPanel.add(confimChangeDirectoryButton);
-        checkPanel.add(closeBtn);
+      //  checkPanel.add(closeBtn);
         
         checkPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         this.getContentPane().add(checkPanel, BorderLayout.LINE_START);
+        JPanel btnPanel = new JPanel();
+        btnPanel.add(closeBtn);
+        this.getContentPane().add(btnPanel, BorderLayout.SOUTH);
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
 				close();
@@ -205,8 +223,16 @@ public class PreferencesHandler extends JDialog implements ItemListener {
 	    						"Changing Directory",buffer.toString(),true);
 	    				rw.setVisible(true);	
 	    			} 
-	            	 //bring up the warning
-	    			ServerLocator locator = new ServerLocator(frame,pathToServer,true);
+
+	    			ServerLocator locator = new ServerLocator(frame,
+	    					pathToServer,
+	    					true,
+	    					"efg.serverlocations.lists",
+	    					"efg.serverlocations.current",
+	    					"efg.serverlocation.checked",
+	    					"Prompt me for server location every time");
+	    			
+	    	
 	    			locator.setVisible(true);
         	   }
             }
@@ -229,6 +255,12 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         			"efg.showchangedirectorymessage.checked",
         			confimChangeDirectoryButton.isSelected()+"");
         } 
+ 	   else if (source == imageMagickDirectoryDirectoryButton) {
+ 	      	EFGImportConstants.EFGProperties.setProperty(
+ 	      			"efg.imagemagicklocation.checked",
+ 	      			imageMagickDirectoryDirectoryButton.isSelected()+"");
+ 	      	
+ 	    }
 	   else if (source == confirmExitButton) {
       	EFGImportConstants.EFGProperties.setProperty(
       			"efg.showdismiss.checked",

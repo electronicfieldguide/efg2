@@ -228,26 +228,30 @@ to make a distribution call makeImport:
 		<mkdir dir="${efg2.dist.home}/resource"/>
 		<mkdir dir="${efg2.dist.home}/resource/logs"/>
 		<mkdir dir="${efg2.dist.home}/resource/metadataHeader"/>
-		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository"/>
-		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository/EFGImages"/>
-		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository/templateConfigFiles"/>
-		<mkdir dir="${efg2.dist.home}/resource/EFGLocalImagesRepository/templateConfigFiles/xml"/>
+		<mkdir dir="${efg2.dist.home}/resource/properties"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalRepository"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalRepository/EFGImages"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalRepository/templateConfigFiles"/>
+		<mkdir dir="${efg2.dist.home}/resource/EFGLocalRepository/templateConfigFiles/xml"/>
+		<mkdir dir="${efg2.dist.home}/resource/icons"/>
+		<mkdir dir="${efg2.dist.home}/resource/help"/>
+		<mkdir dir="${efg2.dist.home}/sampleData"/>
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>
-		<mkdir dir="${efg2.dist.home}/resource/properties"/>
+		
 		<copy todir="${efg2.dist.home}/resource/properties">
 			<fileset dir="${efg2.lib.home.properties}"/>
 		</copy>
-		<mkdir dir="${efg2.dist.home}/resource/icons"/>
+		
 		<copy todir="${efg2.dist.home}/resource/icons">
 			<fileset dir="${efg2.lib.home}/Icons"/>
 		</copy>
-		<mkdir dir="${efg2.dist.home}/resource/help"/>
+		
 		<copy todir="${efg2.dist.home}/resource/help">
 			<fileset dir="${efg2.lib.home}/help"/>
 		</copy>
-		<mkdir dir="${efg2.dist.home}/sampleData"/>
+		
 		<copy todir="${efg2.dist.home}/resource">
 			<fileset dir="${efg2.lib.home}"/>
 		</copy>

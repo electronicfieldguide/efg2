@@ -110,6 +110,7 @@ public  class FileTreeNode extends DefaultMutableTreeNode implements
 		String str = this.getFullName();
 		ArrayList list = new ArrayList();
 		try {
+			
 			list.add(new File(str));
 		} catch (Exception ff) {
 			log.error(ff.getMessage());

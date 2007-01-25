@@ -73,7 +73,8 @@ public class RunSetUp {
 	 * @param superuserInfo
 	 * @return
 	 */
-	public static boolean createSuperUser(DBObject db,DBObject superuserInfo){
+	public static boolean createSuperUser(DBObject db,
+			DBObject superuserInfo){
 		if(superuserInfo == null){
 			return true;
 		}
@@ -88,7 +89,10 @@ public class RunSetUp {
 	private static void flushPrivileges(DBObject db) {
 		try {
 			StringBuffer queryBuffer = new StringBuffer();
-			queryBuffer.append(EFGImportConstants.EFGProperties.getProperty("flushprivileges"));
+			queryBuffer.append(
+					EFGImportConstants.EFGProperties.getProperty(
+							"flushprivileges"
+							));
 			
 			if(!queryBuffer.toString().trim().equals("")) {
 				if(jdbcTemplate == null){
@@ -136,7 +140,8 @@ public class RunSetUp {
 		try{
 			queryBuffer = new StringBuffer();
 			
-			queryBuffer.append(EFGImportConstants.EFGProperties.getProperty("grantsuperusermysqlcmd"));
+			queryBuffer.append(EFGImportConstants.EFGProperties.getProperty(
+					"grantsuperusermysqlcmd"));
 			queryBuffer.append( " " );
 			queryBuffer.append(superuserInfo.getUserName());
 			queryBuffer.append(" WITH GRANT OPTION ");
@@ -161,11 +166,25 @@ public class RunSetUp {
 			}
 			jdbcTemplate.execute(queryBuffer.toString());
 			flushPrivileges(db);
+			
+			queryBuffer = new StringBuffer();
+			queryBuffer.append(
+					EFGImportConstants.EFGProperties.getProperty(
+							"grantlocalcmd"
+							)
+						);
+			
+			if(jdbcTemplate == null){
+				jdbcTemplate=
+					EFGRDBImportUtils.getJDBCTemplate(db);
+			}
+			jdbcTemplate.execute(queryBuffer.toString());
+			flushPrivileges(db);
+
 		}
 		catch (Exception ee) {
 			log.error(ee.getMessage());
 			return false;
-		
 		}
 		return true;
 	} 
@@ -182,7 +201,11 @@ public class RunSetUp {
 				jdbcTemplate=
 					EFGRDBImportUtils.getJDBCTemplate(db);
 			}
-			StringBuffer queryBuffer = new StringBuffer("SELECT User FROM MYSQL.DB WHERE DB='efg'");
+			String property = 
+				EFGImportConstants.EFGProperties.getProperty(
+						"selectefguser"
+						);
+			StringBuffer queryBuffer = new StringBuffer(property);
 			 
 			List list = jdbcTemplate.queryForList(queryBuffer.toString(), String.class);
 			if(list != null){
@@ -466,6 +489,9 @@ public class RunSetUp {
 
 }
 // $Log$
+// Revision 1.5  2007/01/25 23:46:48  kasiedu
+// no message
+//
 // Revision 1.4  2007/01/21 18:22:03  kasiedu
 // no message
 //

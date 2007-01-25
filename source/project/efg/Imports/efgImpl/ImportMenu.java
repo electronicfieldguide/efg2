@@ -139,7 +139,8 @@ public class ImportMenu extends JFrame {
 		}
 	
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setContentPane(this.createContentPane());
+		//this.setContentPane(this.createContentPane());
+		this.getContentPane().add(this.createContentPane());
 		this.setResizable(false);
 		this.setVisible(true);
 		this.setLocationRelativeTo(null);	
@@ -242,17 +243,19 @@ public class ImportMenu extends JFrame {
     			EFGImportConstants.EFGProperties.getProperty(
     					"ImportMenu.addNewDatasourceBtn.tooltip"));
     	  
-    	addNewDatasourceBtn.addActionListener(new HandleDatasourceListener(
-				this.dbObject, this));
+    	String title=EFGImportConstants.EFGProperties.getProperty(
+    			"HandleDatasourceListener.SynopticKeyTreeMain.title");
+		addNewDatasourceBtn.addActionListener(new HandleDatasourceListener(
+				this.dbObject, this,title));
     	
-    	
+		title = EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.glossary.title");
     	 JButton addNewGlossaryBtn =this.createButton(
  	    		EFGImportConstants.EFGProperties.getProperty(
  				"ImportMenu.addNewGlossaryBtn"),
  			EFGImportConstants.EFGProperties.getProperty(
  					"ImportMenu.addNewGlossaryBtn.tooltip"));
     	 addNewGlossaryBtn.addActionListener(new HandleDatasourceListener(
- 				this.dbObject, this));
+ 				this.dbObject, this,title));
 
     	JButton deployImagesBtn = this.createButton(
     			EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn"),
@@ -302,8 +305,8 @@ public class ImportMenu extends JFrame {
     	
     	
     	selection.add(addNewDatasourceBtn);
-    	selection.add(addNewGlossaryBtn);
     	selection.add(deployImagesBtn);
+    	selection.add(addNewGlossaryBtn);
     	selection.add(manageResourceHomeBtn);
     	selection.add(efgUserBtn);
     
@@ -527,7 +530,7 @@ public class ImportMenu extends JFrame {
 
 	class HandleDatasourceListener implements ActionListener{
 		private DBObject dbObject;
-
+		private String title;
 		private JFrame frame;
 		private String mainTableName;
 		
@@ -541,9 +544,10 @@ public class ImportMenu extends JFrame {
 			return this.frame;
 		}
 		public HandleDatasourceListener(DBObject dbObject, 
-				JFrame frame) {
+				JFrame frame, String title) {
 			this.dbObject = dbObject;
 			this.frame = frame;
+			this.title = title;
 			
 		}
 		protected void handleInput(){
@@ -563,9 +567,7 @@ public class ImportMenu extends JFrame {
 		
 				EFGUtils.setTableName(this.getMainTableName());
 				//run this in another thread?
-				SynopticKeyTreeMain ftb = new SynopticKeyTreeMain(this.getFrame(),
-						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.title")	
-		, true, this.getDBObject());
+				SynopticKeyTreeMain ftb = new SynopticKeyTreeMain(this.getFrame(),this.title, true, this.getDBObject());
 				ftb.setVisible(true);
 			} catch (Exception ee) {
 				log.error(ee.getMessage());

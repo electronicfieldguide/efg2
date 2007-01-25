@@ -1121,10 +1121,10 @@ public class ImageInfo {
 	private static String printHtmlVerbose(ImageInfo ii) {
 		StringBuffer buffer = new StringBuffer();
 		printLine2Html(buffer,"File format: ", ii.getFormatName());
-		printLine2Html(buffer,"MIME type: ", ii.getMimeType());
+		//printLine2Html(buffer,"MIME type: ", ii.getMimeType());
 		printLine2Html(buffer,"Width (pixels): ", ii.getWidth(), 1);
 		printLine2Html(buffer,"Height (pixels): ", ii.getHeight(), 1);
-		printLine2Html(buffer,"Number of images: ", ii.getNumberOfImages(), 1);
+		//printLine2Html(buffer,"Number of images: ", ii.getNumberOfImages(), 1);
 		int numComments = ii.getNumberOfComments();
 		printLine2Html(buffer,"Number of textual comments: ", numComments, 1);
 		if (numComments > 0) {

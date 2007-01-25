@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
+import java.util.Properties;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -37,6 +38,9 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
 import project.efg.Imports.efgImpl.ImagePanel;
+
+
+import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.PreferencesListener;
 
 
@@ -45,6 +49,62 @@ import project.efg.Imports.efgImportsUtil.PreferencesListener;
  * @author Benoît Mahé (bmahe@w3.org)
  */
 public class DnDFileBrowserMain extends JDialog {
+
+
+	/**
+	 * @author kasiedu
+	 *
+	 */
+	public class MagickHomeListener implements ActionListener {
+		private DnDFileBrowserMain main;
+		/**
+		 * @param main
+		 */
+		public MagickHomeListener(DnDFileBrowserMain main) {
+			this.main = main;
+		}
+
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+ 			
+ 			//	     			this.fileLocationProperty = 
+ 			//	     			currentFileLocationProperty = 
+ 			  //. isCurrentPropertyChecked = "efg.serverlocation.checked"
+ 			 //prompt = "Prompt me for server location every time"  
+ 			/*JFrame frame,
+			String serverLocator,
+			boolean modal,
+			String fileLocationProperty,
+			String currentFileLocationProperty, 
+			String isCurrentPropertyChecked,
+			String prompt*/
+			Properties props = EFGUtils.getEnvVars();
+			String property = null;
+			if (props != null) {
+				String propertyToUse = 
+					EFGImportConstants.EFGProperties.getProperty(
+							"efg.images.magickhome.variable"
+							);
+				property = props.getProperty(propertyToUse);
+			}
+			String pathToServer = 
+				EFGImportConstants.EFGProperties.getProperty(
+						"efg.imagemagicklocation.lists",
+						property);
+			ServerLocator locator = new ServerLocator(
+					importMenu,
+					pathToServer,
+					true,
+					"efg.imagemagicklocation.lists",
+					"efg.imagemagicklocation.current",
+					"efg.imagemagicklocation.checked",
+					"Prompt Me For Image Magick Location Every Time");
+				locator.setVisible(true);
+		}
+
+	}
 
 
 	/**
@@ -61,7 +121,7 @@ public class DnDFileBrowserMain extends JDialog {
 	final private JPopupMenu popup = new JPopupMenu();
 	final private ImageInfo imageInfo = new ImageInfo();
 
-	private JLabel currentDimLabel; 
+	private static JLabel currentDimLabel; 
 	final private JButton deleteBtn = new JButton(EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.deleteBtn"));
 
@@ -79,7 +139,7 @@ public class DnDFileBrowserMain extends JDialog {
 
 	//JEditorPane htmlPane;
 	Vector userItems = new Vector();
-	String thumsStr = "Current Generated Thumbnail Size: "; 
+	static String thumsStr; 
 	public String imageL = EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.imageL");
 
@@ -104,6 +164,8 @@ public class DnDFileBrowserMain extends JDialog {
 			boolean modal) {
 		super(importMenu, modal);
 		this.importMenu = importMenu;
+		thumsStr = 
+			EFGImportConstants.EFGProperties.getProperty("maximum_dimension_string");
 		//always set to false
 	
 		this.currentImagesDirectory = 
@@ -123,12 +185,13 @@ public class DnDFileBrowserMain extends JDialog {
 		pane.setOneTouchExpandable(true);
 		pane.setDividerLocation(300);
 		this.addMenus();	
-		this.createPopUp();
+		
 		this.getContentPane().add(pane, BorderLayout.CENTER);
 		this.getContentPane().add(addButtons(), BorderLayout.SOUTH);
 		this.setSize(700, 600);
 		addWindowListener(new WndCloser(this));
 		this.setLocationRelativeTo(importMenu);
+	
 	}
 	private String computeCurrentMediaResourceDirectory() {
 		String property = 
@@ -185,6 +248,7 @@ public class DnDFileBrowserMain extends JDialog {
 	
 		
 		this.browser.setOpaque(false);
+		this.browser.addMouseListener(new EditMouseListener(this));
 		iPanel.setOpaque(true);
 		return iPanel;
 	}
@@ -200,6 +264,9 @@ public class DnDFileBrowserMain extends JDialog {
 			new JMenu("Help");		
 		JMenuItem thumbNailMenu = 
 			new JMenuItem("Thumbnails");
+		JMenuItem magickHomeMenu = 
+			new JMenuItem("Reset Magick Home");
+		magickHomeMenu.setToolTipText("Set the directory where ImageMagick is located");
 		JMenuItem preferencesMenu = 
 			new JMenuItem("Change/View Preferences");
 
@@ -211,10 +278,13 @@ public class DnDFileBrowserMain extends JDialog {
 			new JMenuItem("Help Contents");
 
 		thumbNailMenu.addActionListener(new ThumbsListener(this));
+		magickHomeMenu.addActionListener(new MagickHomeListener(this));
 		preferencesMenu.addActionListener(new PreferencesListener(this.importMenu, false, true));
 		
 		fileMenu.add(thumbNailMenu);
+		fileMenu.add(magickHomeMenu);
 		fileMenu.add(preferencesMenu);
+		
 		deleteMenu.addActionListener(new DeleteListener(this.browser));
 		deleteBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("FileTreeBrowserMain.deleteBtn.tooltip"));
@@ -222,16 +292,6 @@ public class DnDFileBrowserMain extends JDialog {
 				(EFGImportConstants.IMAGE_DEPLOY_HELP));
 		
 		closeMenu.addActionListener(new DoneListener(this));
-		
-		
-		/*	JMenuItem imagesRootDirectoryMenu = 
-				new JMenuItem("Change Server Root Directory");
-			imagesRootDirectoryMenu.addActionListener(
-					new ChangeServerRootListener(this.importMenu));
-			
-			fileMenu.add(imagesRootDirectoryMenu);*/
-			
-		
 		
 		fileMenu.add(deleteMenu);
 		helpMenu.add(helpItem);
@@ -243,6 +303,7 @@ public class DnDFileBrowserMain extends JDialog {
 		mBar.add(fileMenu);
 		mBar.add(helpMenu);
 		this.setJMenuBar(mBar);
+		this.createPopUp();
 	}
 	/**
 	 * 
@@ -255,8 +316,8 @@ public class DnDFileBrowserMain extends JDialog {
 	/**
 	 * @param currentSelection
 	 */
-	protected void setCurrentDimLabel(String currentSelection) {
-		this.currentDimLabel.setText(thumsStr + currentSelection);
+	public static void setCurrentDimLabel(String currentSelection) {
+		currentDimLabel.setText(thumsStr + " " + currentSelection);
 	}
 
 
@@ -295,8 +356,8 @@ public class DnDFileBrowserMain extends JDialog {
 			maxDim = 
 				EFGImportConstants.EFGProperties.getProperty("efg.thumbnails.dimensions.current");
 		}
-		this.currentDimLabel = new JLabel(thumsStr + maxDim + " ", JLabel.LEADING);
-		this.currentDimLabel.setForeground(Color.blue);
+		currentDimLabel = new JLabel(thumsStr + " " + maxDim + " ", JLabel.LEADING);
+		currentDimLabel.setForeground(Color.blue);
 		JPanel btnPanel =  new JPanel(new GridLayout(0, 1));
 		
 		
@@ -307,7 +368,7 @@ public class DnDFileBrowserMain extends JDialog {
 		
 		btnPanel.add(currentDirectory);
 		
-		btnPanel.add(this.currentDimLabel);
+		btnPanel.add(currentDimLabel);
 		return btnPanel;
 
 	}
@@ -338,10 +399,28 @@ public class DnDFileBrowserMain extends JDialog {
 	 *
 	 */
 	public void createPopUp() {
+		JMenuItem thumbNailMenu = 
+			new JMenuItem("Thumbnails");
+		
+		
+		JMenuItem preferencesMenu = 
+			new JMenuItem("Change/View Preferences");
+		
+		thumbNailMenu.addActionListener(new ThumbsListener(this));
+		preferencesMenu.addActionListener(new PreferencesListener(this.importMenu, false, true));
 
-		JMenuItem menuItem = new JMenuItem(this.deleteBtn.getText());
-		menuItem.addActionListener(new DeleteListener(this.browser));
-		this.popup.add(menuItem);
+		
+		JMenuItem deleteMenu = new JMenuItem(this.deleteBtn.getText());
+		deleteMenu.addActionListener(new DeleteListener(this.browser));
+		
+		JMenuItem closeMenu = 
+			new JMenuItem("Close");
+		closeMenu.addActionListener(new DoneListener(this));
+		
+		this.popup.add(thumbNailMenu);
+		this.popup.add(preferencesMenu);
+		this.popup.add(deleteMenu);
+		this.popup.add(closeMenu);
 	}
 	/**
 	 * 
@@ -381,6 +460,7 @@ public class DnDFileBrowserMain extends JDialog {
 		 * 
 		 */
 		public void mousePressed(MouseEvent e) {
+
 			if (e.isPopupTrigger()) {
 				showPopUp(e);
 			}
@@ -427,10 +507,17 @@ public class DnDFileBrowserMain extends JDialog {
 					if (path == null) {
 						imageLabel.setText(imageL);
 					} else {
-					
-						path = path.replaceAll(EFGImagesConstants.EFG_IMAGES_DIR,
-								EFGImagesConstants.EFGIMAGES_THUMBS);
-
+						String images_home = 
+							EFGImportConstants.EFGProperties.getProperty(
+									"efg.images.home");
+						String thumbshome = 
+							EFGImportConstants.EFGProperties.getProperty(
+									"efg.mediaresources.thumbs.home");
+										
+						path = path.replaceAll(
+								images_home,
+								thumbshome);
+						
 						File imageFile = new File(path);
 						if(imageFile.isDirectory()){//not an image
 							return;
@@ -501,7 +588,7 @@ public class DnDFileBrowserMain extends JDialog {
 			
 			String currentDim = EFGImportConstants.EFGProperties.getProperty(
 			"efg.thumbnails.dimensions.current");
-			this.dnd.setCurrentDimLabel(currentDim);
+			DnDFileBrowserMain.setCurrentDimLabel(currentDim);
 		}
 	}
 

@@ -43,7 +43,7 @@ public class EFGComboBox extends JComboBox {
 			}
 
 		public void add(String item) {
-			removeItem(item);
+			removeCurrent(item);
 			insertItemAt(item, 0);
 			setSelectedItem(item);
 			if (getItemCount() > MAX_MEM_LEN){
@@ -51,7 +51,20 @@ public class EFGComboBox extends JComboBox {
 			}
 			
 		}
+		public void removeCurrent(String item){
+			int toremove = -1;
+			for(int index = 0; index < this.getItemCount();index++) {
+				String current = (String)this.getItemAt(index);
+				if(item.equalsIgnoreCase(current)) {
+					toremove = index;
+				}
+			}
+			if(toremove > -1) {
+				this.remove(toremove);
+			}
+		}
 		public void remove(String item){
+		
 			removeItem(item);
 			setSelectedIndex(0);
 		}

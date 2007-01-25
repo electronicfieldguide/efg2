@@ -51,6 +51,12 @@ implements EFGImportConstants,WindowListener{
 	private JProgressBar progressBar;
 	private FileNode destNode;
 	   private DnDFileBrowser browser;
+	  private final String images_home = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.images.home");
+	  private final	String thumbshome = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.mediaresources.thumbs.home");
 	private List objectsToDrop;
 	 public CreateThumbNailsThread( DnDFileBrowser browser,File srcFile, File destFile) {
 		 this(browser,srcFile,destFile,null);
@@ -176,10 +182,13 @@ implements EFGImportConstants,WindowListener{
 				this.destNode = drop.getDestinationNode();
 			
 			}
-		
+			
+
 			this.srcFile = drop.getSourceFile().getAbsolutePath();
 			File destFile1 = drop.getDestinationFile();
-			this.destFile = this.replace(destFile1.getAbsolutePath(), EFGImagesConstants.EFG_IMAGES_DIR, EFGImagesConstants.EFGIMAGES_THUMBS);
+			this.destFile = this.replace(destFile1.getAbsolutePath(),
+					images_home, 
+					thumbshome);
 			this.generateThumbs(new File(this.srcFile),new File(this.destFile));
 		}
 		Toolkit.getDefaultToolkit().beep();

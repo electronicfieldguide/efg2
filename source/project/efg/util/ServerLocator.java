@@ -65,11 +65,32 @@ public class ServerLocator extends JDialog {
        JCheckBox dontAskMeAgainMessage;
       JButton btnSelectFile;
 		private boolean isInsert = false;
+		private String currentFileLocationProperty;
+		private String prompt;
+		private String fileLocationProperty;
+		private String isCurrentPropertyChecked;
       
-		
-		public ServerLocator(JFrame frame,String serverLocator,boolean modal) {
+		/**
+		 * 
+		 * @param frame
+		 * @param fileLocationProperty - A comma separated list of file names
+		 * @param modal
+		 * @param currentFileLocationProperty - The property to use to find the current
+		 * location
+		 * @param prompt - The prompt to use for the 'don't ask me again message'
+		 */
+		public ServerLocator(JFrame frame,
+				String serverLocator,
+				boolean modal,
+				String fileLocationProperty,
+				String currentFileLocationProperty, 
+				String isCurrentPropertyChecked,
+				String prompt) {
             super(frame,"",modal);
-            
+            this.prompt = prompt;
+            this.isCurrentPropertyChecked = isCurrentPropertyChecked;
+            this.fileLocationProperty=fileLocationProperty;
+            this.currentFileLocationProperty= currentFileLocationProperty;
             String[] serverLocations = this.readServerLocations(serverLocator);
             if(serverLocations != null) {
             	cmbURLModel = new DefaultComboBoxModel(serverLocations);
@@ -78,7 +99,7 @@ public class ServerLocator extends JDialog {
             	cmbURLModel = new DefaultComboBoxModel();
             }
             this.addComponents(serverLocator);
-           this.addGridBags();
+            this.addGridBags();
      
           
     		addWindowListener(new WindowAdapter() {
@@ -88,10 +109,11 @@ public class ServerLocator extends JDialog {
     		});
     		 this.setLocationRelativeTo(frame);
         }
+   
         private String[] readServerLocations(String serverLocator) {
         	
         	String serverLocationProps = 
-        		EFGImportConstants.EFGProperties.getProperty("efg.serverlocations.lists");
+        		EFGImportConstants.EFGProperties.getProperty(this.fileLocationProperty,null);
         	if((serverLocationProps != null) && 
         			(!serverLocationProps.trim().equals("")) && 
         			((serverLocator != null) && 
@@ -100,7 +122,7 @@ public class ServerLocator extends JDialog {
         			serverLocationProps.split(RegularExpresionConstants.COMMASEP);
         		if(serverLocations[0] != null && !serverLocations[0].equals("")) {
         			EFGImportConstants.EFGProperties.setProperty(
-						"efg.serverlocations.current",serverLocations[0]);
+						currentFileLocationProperty,serverLocations[0]);
         			 WorkspaceResources.computeMediaResourcesHome();
         			 WorkspaceResources.computeTemplatesHome();
         		}
@@ -153,27 +175,31 @@ public class ServerLocator extends JDialog {
 		        this.getContentPane().add(okBtn, c);
 		}
 		private void addComponents(String serverLocator) {
+			
 		    if(this.isInsert) {
-		    	this.cmbURLModel.insertElementAt(serverLocator,0);
-		    	EFGImportConstants.EFGProperties.setProperty(
-						"efg.serverlocations.current",
-						WorkspaceResources.convertFileNameToURLString(serverLocator));
-		    	 WorkspaceResources.computeMediaResourcesHome();
-				 WorkspaceResources.computeTemplatesHome();
+		    	if(serverLocator != null && !serverLocator.trim().equals("")) {
+			    	this.cmbURLModel.insertElementAt(serverLocator,0);
+			    	
+			    	EFGImportConstants.EFGProperties.setProperty(
+			    			currentFileLocationProperty,
+							WorkspaceResources.convertFileNameToURLString(serverLocator));
+			    	 WorkspaceResources.computeMediaResourcesHome();
+					 WorkspaceResources.computeTemplatesHome();
+		    	}
 		    }
 		    this.cmbURL = new JComboBox(cmbURLModel);
-		    cmbURL.setToolTipText("Select your Tomcat Folder");
+		    cmbURL.setToolTipText("Select your Folder");
 		    cmbURL.setEditable(true);
 		    cmbURL.setSelectedIndex(0);
 		    
-		            
+		   
 		    
 		   dontAskMeAgainMessage = new JCheckBox(
-		            "Prompt me for server location every time");
-		    
+		            prompt);
+		
 		   String property = 
 			EFGImportConstants.EFGProperties.getProperty(
-					"efg.serverlocation.checked",
+					isCurrentPropertyChecked,
 					EFGImportConstants.EFG_TRUE);
 		  boolean isSelected = true;
 		   if(!property.trim().equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
@@ -186,7 +212,7 @@ public class ServerLocator extends JDialog {
 		     
 		   this.btnSelectFile = 
 		    	new JButton(
-		    		"<html><p>Set Tomcat Home...</p></html>");
+		    		"<html><p>Set Home...</p></html>");
 		    this.btnSelectFile.addActionListener(
 		    		new FileChooserListener(serverLocator)
 		    		);
@@ -232,14 +258,16 @@ public class ServerLocator extends JDialog {
 				String url = 
 					WorkspaceResources.convertFileNameToURLString(cmbURL.getSelectedItem().toString());
 				//add to current properties
+				
 				EFGImportConstants.EFGProperties.setProperty(
-						"efg.serverlocations.lists",
+						fileLocationProperty,
+						
 						buffer.toString());
 				EFGImportConstants.EFGProperties.setProperty(
-						"efg.serverlocation.checked",
+						isCurrentPropertyChecked,
 						dontAskMeAgainMessage.isSelected()+"");
 				EFGImportConstants.EFGProperties.setProperty(
-						"efg.serverlocations.current",url
+						currentFileLocationProperty,url
 						);
 				 WorkspaceResources.computeMediaResourcesHome();
 				 WorkspaceResources.computeTemplatesHome();
@@ -272,7 +300,7 @@ public class ServerLocator extends JDialog {
 	            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	            chooser.setMultiSelectionEnabled(false);
 	            chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-	            chooser.setDialogTitle("Choose your Tomcat Folder...");
+	            chooser.setDialogTitle("Choose your Folder...");
 	            chooser.setCurrentDirectory(new File(this.serverLocation));
 	            if (
 	                chooser.showOpenDialog(

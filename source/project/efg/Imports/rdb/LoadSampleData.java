@@ -82,7 +82,8 @@ public class LoadSampleData {
 					StringBuffer query = new StringBuffer();
 					
 					// PUT IN PROPERTIES FILE
-					query.append("CREATE TABLE IF NOT EXISTS efg_glossary_tables");
+					query.append("CREATE TABLE IF NOT EXISTS ");
+					query.append(EFGImportConstants.EFGProperties.getProperty("ALL_EFG_GLOSSARY_TABLES"));
 					query.append("( DS_DATA VARCHAR(255) not null,"
 							+ "ORIGINAL_FILE_NAME TEXT, "
 							+ "DS_METADATA VARCHAR(255) not null, "

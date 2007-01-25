@@ -40,6 +40,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -59,9 +60,13 @@ import project.efg.Imports.efgInterface.CheckListener;
 import project.efg.Imports.efgInterface.DataManipulatorInterface;
 import project.efg.Imports.efgInterface.SynopticKeyTreeInterface;
 import project.efg.Imports.factory.DataManipulatorFactory;
+import project.efg.Imports.factory.StateObjectFactory;
 import project.efg.Imports.factory.SynopticKeyTreeFactory;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.FileNameSelector;
 import project.efg.util.HelpEFG2ItemListener;
+import project.efg.util.RegularExpresionConstants;
+import project.efg.util.WorkspaceResources;
 
 /**
  * SynopticKeyTreeMain.java
@@ -73,6 +78,8 @@ import project.efg.util.HelpEFG2ItemListener;
  * @version 1.0
  */
 public class SynopticKeyTreeMain extends JDialog {
+
+
 	static final long serialVersionUID = 1;
 
 	DataManipulatorInterface deleteManipulator;
@@ -166,6 +173,15 @@ public class SynopticKeyTreeMain extends JDialog {
 	private void addMenus(){
 		JMenu fileMenu = new JMenu("File");
 		JMenu helpMenu = new JMenu("Help");
+		String property = 
+			EFGImportConstants.EFGProperties.getProperty("efg.mac.ismac","false");
+		
+		/*if(property.equalsIgnoreCase("true")) {
+			JMenuItem imac = new JMenuItem(
+					EFGImportConstants.EFGProperties.getProperty("efg.mac.menu.title"));
+			imac.addActionListener(new NoDragDropHandler(tree));
+			fileMenu.add(imac);
+		}*/
 		
 		editMetadataMenu.addActionListener(new DataManipulatorListener(this,
 				this.getEditManipulator()));
@@ -312,6 +328,13 @@ public class SynopticKeyTreeMain extends JDialog {
 		this.popup.add(menuItem);
 
 	}
+	/**
+	 * @param interface1
+	 */
+	public void processNode(DataManipulatorInterface manipulator) {
+
+		manipulator.processNode();
+	}
 
 	/**
 	 * 
@@ -399,13 +422,74 @@ public class SynopticKeyTreeMain extends JDialog {
 		}
 
 	}
-
 	/**
-	 * @param interface1
+	 * @author kasiedu
+	 *
 	 */
-	public void processNode(DataManipulatorInterface manipulator) {
+	public class NoDragDropHandler implements ActionListener {
+		private SynopticKeyTreeInterface tree;
+		private StateObjectFactory stateFactory;
+		
+		
+			
+		/**
+		 * @param tree
+		 */
+		public NoDragDropHandler(SynopticKeyTreeInterface tree) {
+			this.tree = tree;
+			this.stateFactory = new StateObjectFactory();
+		}
 
-		manipulator.processNode();
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+			
+			//select files
+			List data = chooseFiles();
+			if((data != null) && (data.size() > 0)) {
+				//need a progress bar too
+				HandleDataImport.handleImport(this.tree, data, this.stateFactory);
+			}
+
+		}
+		private List chooseFiles() {
+			
+            String property = 
+            	EFGImportConstants.EFGProperties.getProperty(
+            			"efg.data.last.file",null);
+ 
+            if(property != null) {
+            	String[] properties = {property};
+            	properties = WorkspaceResources.convertURIToString(properties);
+            	if(properties != null) {
+            		property = properties[0];
+            	}
+            }
+            //String datafileext = ""
+            FileNameSelector selector = 
+            	new FileNameSelector(this.tree,property);
+            String prompt = 
+            	EFGImportConstants.EFGProperties.getProperty(
+            			"efg.datafiles.prompt","Select Data Files to Import");
+            String extensionDefaults ="mer,csv";
+            String extensions =EFGImportConstants.EFGProperties.getProperty(
+        			"efg.datafiles.extension",extensionDefaults);
+            
+            String[] extn =extensions.split(RegularExpresionConstants.COMMASEP);
+			selector.setExtension(extn);
+            List data =  selector.selectFiles(prompt);
+            if((data != null) && (data.size() > 0)) {
+            	String path = selector.getDirectoryPath();
+            	if(path != null && !path.trim().equals("")) {
+            		EFGImportConstants.EFGProperties.setProperty(
+            				"efg.data.last.file",
+            				WorkspaceResources.convertFileNameToURLString(path));
+            	}
+            }
+           return data;
+		}
+
 	}
 
 } // SynopticKeyTreeMain

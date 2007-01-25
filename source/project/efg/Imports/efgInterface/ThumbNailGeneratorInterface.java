@@ -10,8 +10,6 @@ package project.efg.Imports.efgInterface;
  */
 public abstract class ThumbNailGeneratorInterface {
 	
-
-
 	/**
 	 *@param src - The full path to src file .
 	 *@param dest - The full path to destination file.

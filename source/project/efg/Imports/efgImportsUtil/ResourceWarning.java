@@ -67,7 +67,7 @@ public class ResourceWarning  extends JDialog implements ItemListener, ActionLis
 		
         setSize(new Dimension(400, 220));
         this.message = message;
-        add(addButtons());
+        this.getContentPane().add(addButtons());
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
 				close();
@@ -111,7 +111,7 @@ public class ResourceWarning  extends JDialog implements ItemListener, ActionLis
 		JButton doneBtn = new JButton("OK");
 		doneBtn.addActionListener(this);
 		btnFlowPanel.add(doneBtn);
-		btnPanel.add(btnFlowPanel, BorderLayout.PAGE_END);
+		btnPanel.add(btnFlowPanel, BorderLayout.SOUTH);
 			
 		return btnPanel;
 	}

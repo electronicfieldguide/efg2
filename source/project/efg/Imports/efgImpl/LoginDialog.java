@@ -181,7 +181,15 @@ public class LoginDialog extends JDialog {
 				this.writeDefaultMessage();
 			}
 		
-			ServerLocator locator = new ServerLocator(frame,pathToServer,true);
+			ServerLocator locator = new ServerLocator(frame,
+					pathToServer,
+					true,
+					"efg.serverlocations.lists",
+					"efg.serverlocations.current",
+					"efg.serverlocation.checked",
+					"Prompt me for server location every time");
+			
+	
 			locator.setVisible(true);
 		}		
 	}
@@ -560,6 +568,9 @@ public class LoginDialog extends JDialog {
 			CreateSampleDataThread dataT =
 				new CreateSampleDataThread(this.frame,dbObject);
 			 dataT .start();
+			 EFGImportConstants.EFGProperties.setProperty(
+						"efg.sampledata.loaded", EFGImportConstants.EFG_TRUE
+						);
 		}
 	}
 	public static void main(String args[]) {

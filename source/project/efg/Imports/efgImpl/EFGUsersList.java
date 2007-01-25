@@ -71,7 +71,7 @@ public class EFGUsersList  extends JDialog
     	this.setTitle("Current user is : " + newTitle);
         this.frame = frame;
         setSize(new Dimension(600, 150));
-        add(addButtons());
+        this.getContentPane().add(addButtons());
         this.setLocationRelativeTo(frame);
     }
 	/**

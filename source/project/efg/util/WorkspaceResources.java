@@ -255,7 +255,15 @@ public class WorkspaceResources {
 					"efg.thumbnails.dimensions.current"));
 			buffer.append("\n");
        		
- 		
+			
+			if(EFGImportConstants.EFGProperties.getProperty(
+					"efg.data.last.file") != null) {
+				buffer.append("efg.data.last.file=");	
+				buffer.append(EFGImportConstants.EFGProperties.getProperty(
+						"efg.data.last.file",null));
+				buffer.append("\n");
+			}
+			
        		buffer.append("efg.serverlocation.checked=");	
 			buffer.append(EFGImportConstants.EFGProperties.getProperty(
 					"efg.serverlocation.checked",EFGImportConstants.EFG_TRUE));
@@ -274,13 +282,16 @@ public class WorkspaceResources {
 					"efg.showdismiss.checked",EFGImportConstants.EFG_TRUE));
 			buffer.append("\n");  
 			
+			
+			buffer.append("efg.imagemagicklocation.checked="); 
+			buffer.append(EFGImportConstants.EFGProperties.getProperty(
+					"efg.imagemagicklocation.checked",EFGImportConstants.EFG_TRUE));
+			buffer.append("\n");  
+			
 			buffer.append("efg.showchangedirectorymessage.checked=");
 			buffer.append(EFGImportConstants.EFGProperties.getProperty(
 					"efg.showchangedirectorymessage.checked",EFGImportConstants.EFG_TRUE));
 			buffer.append("\n");  
-			
-
-			
 			
 			File file = getWorkspaceFileName();
 			FileWriter writer = new FileWriter(file);

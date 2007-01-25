@@ -268,11 +268,14 @@ public class DataObjectTransferHandler extends TransferHandler {
 	                    importer.setDropPoint(e.getLocation());
 	                    importer.setDropComponent(c);
 	                    e.dropComplete(importer.importData(c, t));
+	                    TableSorterMainInterface.isChanged = true;
 	                } catch (RuntimeException re) {
 	                    e.dropComplete(false);
+	                    TableSorterMainInterface.isChanged= false;
 	                }
 	            } else {
 	                e.rejectDrop();
+	                TableSorterMainInterface.isChanged = false;
 	            }
 	        }
 	 
@@ -281,8 +284,10 @@ public class DataObjectTransferHandler extends TransferHandler {
 	 
 	            if (canImport && actionSupported(dropAction)) {
 	                e.acceptDrag(dropAction);
+	                
 	            } else {
 	                e.rejectDrag();
+	               
 	            }
 	        }
 	    }

@@ -42,15 +42,18 @@ public class ImageMagickGenerator extends ThumbNailGeneratorInterface {
 	}
 
 	private void init(String environmentalVariable) {
+		//read from properties files where the image magick home is
+		
 		Properties props = EFGUtils.getEnvVars();
 		if (props != null) {
 			this.magicHome = props.getProperty(environmentalVariable);
 		}
-		//this.magicHome = System.getenv(environmentalVariable);
+	
 	
 		if (this.magicHome == null || this.magicHome.trim().equals("")) {
 			this.defaultGenerator = new ThumbNailGenerator();
 		} else {
+			
 			this.magicHome = this.magicHome + File.separator + CONVERT_PROG;
 		}
 	}
@@ -65,8 +68,8 @@ public class ImageMagickGenerator extends ThumbNailGeneratorInterface {
 			String fileName, int maxDim) {
 		try {
 			if (this.defaultGenerator == null) {
-				
-				
+				//TODO read property here
+				log.info("Using Image Magick at: " + this.magicHome );
 				create(src, destSrc, fileName, maxDim);
 			} else {
 				

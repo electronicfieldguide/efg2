@@ -30,6 +30,13 @@ public class DeleteNodeThread extends SwingWorker{
 		} catch (Exception ee) {
 		}
 	}
+	  private final String images_home = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.images.home");
+	  private final	String thumbshome = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.mediaresources.thumbs.home");
+
 	/**
 	 * 
 	 */
@@ -108,7 +115,7 @@ public class DeleteNodeThread extends SwingWorker{
 				FileNode fnode = (FileNode) path[i].getLastPathComponent();
 				File file = fnode.getFile();
 				if (file != null) {
-					if(file.getName().equals(EFGImagesConstants.EFG_IMAGES_DIR)) {
+					if(file.getName().equals(images_home)) {
 						cannotRemoveMessage();
 						
 					}else {
@@ -148,12 +155,13 @@ public class DeleteNodeThread extends SwingWorker{
 					deleteFile(files[i]);
 				}
 			}
+			toDelete.delete();
 		}
 		private void deleteFromThumbNailsDir(File file){
 			String imageName = file.getAbsolutePath();
 			String thumbsName = replace(imageName,
-					EFGImagesConstants.EFG_IMAGES_DIR,
-					EFGImagesConstants.EFGIMAGES_THUMBS);
+					images_home,
+					thumbshome);
 			
 			File thumbsFile = new File(thumbsName);
 			if (thumbsFile.exists()) {

@@ -170,11 +170,11 @@ public abstract class TableSorterMainInterface  extends JDialog{
 
 	public static DataObjectTransferHandler dndHandler = new DataObjectTransferHandler();
 
-	protected static TableDNDRecognizer dndRecognizer = new TableDNDRecognizer();
+	protected static TableDNDRecognizer dndRecognizer=new TableDNDRecognizer();
 
 	public static boolean isDragged;
 	
-	
+	public static boolean isChanged = false;
 
 	public TableSorterMainInterface(DBObject dbObject, 
 			EFGDatasourceObjectInterface ds, 
@@ -188,8 +188,12 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		this.dbObject = dbObject;
 		this.sorterObject = 
 			this.createData(this.ds);//get the column names
-	
-		
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				close();
+			}
+		});
 		if(this.sorterObject != null){
 			init();
 		} else {
@@ -226,24 +230,29 @@ public abstract class TableSorterMainInterface  extends JDialog{
 	 * @see project.efg.Imports.efgImpl.TabelSorterMainInterface#close()
 	 */
 	public void close() {
-		if(this.sorter.isChanged()){
+		if(this.sorter.isChanged() || isChanged ){
 			int res = JOptionPane.showOptionDialog(this,
-					"Changes to the metadata table has not been saved.\n" + 
-					"Would you like to save them?", "Changes not saved!!",
+					"Data has not been updated, are you sure you want to exit?.\n",
+					"Changes not saved!!",
 					JOptionPane.DEFAULT_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, new String[] {
 				"Yes",  "No"}, "No");
 			switch (res) {
 			case 0: // Yes
 				this.updateMetadataTable(this.sorter,this.ds);
+				this.sorter.setIsChanged(false);
+				isChanged = false;
+				this.dispose();
 				break;
 			default: // No 
 				break;
 			}
-			this.sorter.setIsChanged(false);
+		}
+		else {
+			this.dispose();
 		}
 		
-		this.dispose();
+		
 	}
 	public String[] getColumnNames(){
 		return this.sorterObject.getColumnNames();
@@ -341,46 +350,12 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		updateBtn.setToolTipText(EFGImportConstants.EFGProperties
 				.getProperty("TableSorterMain.updatebtn.tooltip"));
 		
-		/*JButton helpBtn = new JButton(EFGImportConstants.EFGProperties
-				.getProperty("TableSorterMain.helpbtn"));
-		helpBtn.addActionListener(new HelpEFG2ItemListener(EFGImportConstants.KEY_METADATA_HELP));
-		helpBtn.setToolTipText(EFGImportConstants.EFGProperties
-				.getProperty("TableSorterMain.helpbtn.tooltip"));
-	
-		JButton doneBtn = new JButton(EFGImportConstants.EFGProperties
-				.getProperty("TableSorterMain.cancelbtn"));
+		JButton doneBtn = new JButton("Done");
 		doneBtn.addActionListener(new DoneListener(this));
-		doneBtn.setToolTipText(EFGImportConstants.EFGProperties
-				.getProperty("TableSorterMain.cancelbtn.tooltip"));
-	
-			String sortOn =EFGImportConstants.SORTING_ON;// "Sorting ON";
-		   JRadioButton onBtn = new JRadioButton(sortOn);
-		   onBtn.setMnemonic(KeyEvent.VK_O);
-		   onBtn.setActionCommand(sortOn);
-		   onBtn.setSelected(false);
-		   RadioButtonListener rbl = new RadioButtonListener(this.sorter);
-		   String sortOff =EFGImportConstants.SORTING_OFF;// "Sorting OFF";
-		    JRadioButton offBtn = new JRadioButton( sortOff);
-		    offBtn.setMnemonic(KeyEvent.VK_F);
-		    offBtn.setSelected(true);
-		    offBtn.setActionCommand(sortOff);
-		    offBtn.addActionListener(rbl);
-		    onBtn.addActionListener(rbl);
-		    ButtonGroup btnGroup = new ButtonGroup();
-		   btnGroup.add(onBtn);
-		   btnGroup.add(offBtn);
-		    
-		this.sortingCheck = new JCheckBox(EFGImportConstants.SORTING_OFF);
-		sortingCheck.setForeground(Color.BLUE);
-		sortingCheck.addItemListener(new CheckBoxListener(this.sorter));
+		doneBtn.setToolTipText("Click to close");
+
 		pan.add(updateBtn);
-		pan.add(helpBtn);
 		pan.add(doneBtn);
-		//pan.add(sortingCheck);
-		pan.add(onBtn);
-		pan.add(offBtn);
-		panel.add(pan, BorderLayout.SOUTH);*/
-		pan.add(updateBtn);
 		panel.add(pan, BorderLayout.SOUTH);
 		this.tableWidth = tableD.width + 35;
 		this.tableHeight = tableD.height + 50;
@@ -468,7 +443,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		
 	}
 	private void init(){
-		this.setLayout(new BorderLayout());
+		this.getContentPane().setLayout(new BorderLayout());
 		
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -630,6 +605,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		}
 
 		public void actionPerformed(ActionEvent evt) {
+			
 			this.sorterMain.close();
 		}
 	}

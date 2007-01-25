@@ -9,16 +9,25 @@ package project.efg.Imports.efgImpl;
  */
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import javax.swing.DefaultComboBoxModel;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -27,7 +36,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-import project.efg.util.EFGComboBox;
+import project.efg.util.DnDFileBrowserMain;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.RegularExpresionConstants;
 import project.efg.util.WorkspaceResources;
@@ -35,7 +44,7 @@ import project.efg.util.WorkspaceResources;
 /*
  * EFGUsersList.java uses these additional files:
  */
-public class EFGThumbNailDimensions  extends JDialog {
+public class EFGThumbNailDimensions  extends JDialog{
 	/**
 	 * 
 	 */
@@ -48,79 +57,67 @@ public class EFGThumbNailDimensions  extends JDialog {
 		} catch (Exception ee) {
 		}
 	}
-	
+
 	private JFrame frame;
 	private JCheckBox checkBox;
-	private EFGComboBox comboList;
+	
+	
+	List historyList;
+	String currentSelection;
+    Set comboBoxItemsSet;
+    JComboBox comboBoxItems;
+    int MAX_SIZE = -1;
+    
 
-	public EFGThumbNailDimensions(
-			JFrame frame, String title, boolean modal
-			) {
-		super(frame, title, modal);
-    	this.setTitle("Thumbnail Options");
-        this.frame = frame;
-        setSize(new Dimension(330, 150));
-        add(addButtons());
-		addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent we) {
-				close();
-			}
-		});
-		this.setLocationRelativeTo(frame);
+    public EFGThumbNailDimensions(JFrame frame,String title,boolean isModal) {
+    	super(frame,title,isModal);
+    	this.frame =frame;
+    	this.setComboListSize();
+    	this.getContentPane().setLayout(new BorderLayout());
+    	
+//    	Handle window closing correctly.
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+                public void windowClosing(WindowEvent we) {
+                	close();
+            }
+        });
+    	
+        this.setSize(300, 200);
+        this.setResizable(false);
+        
+
+        this.getContentPane().add(getMainPanel(),BorderLayout.CENTER);
+        this.getContentPane().add(getBottomPanel(),BorderLayout.SOUTH);
+        
+        
+        this.setLocationRelativeTo(frame);
+        try {
+        	this.comboBoxItems.setSelectedItem(this.historyList.get(0));
+        
+        }
+        catch(Exception ee) {
+        	log.error(ee.getMessage());
+        }
+    } //constructor
+    
+    private void setComboListSize() {
+    	String numberOfFilesToShowStr = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"numberofserverfilestoshow","5");
+   		try {
+   			int intval = Integer.parseInt(numberOfFilesToShowStr);
+   			MAX_SIZE = intval;
+   		}
+   		catch(Exception ee) {
+   			MAX_SIZE=5;
+   		}
     }
-	protected void close(){
-		this.dispose();
-	}
-	/**
-	 * 
-	 */
-	private void useDefaults(EFGComboBox comboList) {
-		String[] dimensions = WorkspaceResources.getDefaultDimensions();
-		//DefaultComboBoxModel model =(DefaultComboBoxModel)comboList.getModel();
-		StringBuffer buffer = new StringBuffer();
-		for(int i= dimensions.length;i > 0;i--) {
-			comboList.add(dimensions[i-1]);
-			if(i < dimensions.length) {
-				buffer.append(",");
-			}
-			buffer.append(dimensions[i-1]);
-		}
-		EFGImportConstants.EFGProperties.setProperty(
-				"efg.thumbnails.dimensions.lists",
-				buffer.toString());
-		EFGImportConstants.EFGProperties.setProperty(
-				"efg.thumbnails.dimensions.current",
-				comboList.getItemAt(0).toString());
-	}
-	private JPanel addButtons() {
-		JPanel btnPanel = new JPanel(new BorderLayout());
-		this.comboList = new EFGComboBox();
+    private JPanel getBottomPanel() {
+    	JPanel btnFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
+		
 		String properties = 
-			EFGImportConstants.EFGProperties.getProperty("efg.thumbnails.dimensions.lists");
-		if(properties == null || properties.trim().equals("")) {
-			this.useDefaults(this.comboList);
-		}
-		else {
-			String[] comboProps = properties.split(RegularExpresionConstants.COMMASEP);
-			DefaultComboBoxModel model = new DefaultComboBoxModel(comboProps);
-			this.comboList.setModel(model);
-		}
-		comboList.setFocusable(true);	
-		
-		
-		JPanel labelPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		labelPane.add(new JLabel("Enter or Select max dimension(in pixels): "));
-		btnPanel.add(labelPane,BorderLayout.PAGE_START);
-		
-		JPanel comboBoxPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		comboBoxPane.add(comboList);
-		btnPanel.add(comboBoxPane,BorderLayout.CENTER);
-		
-		
-		JPanel btnFlowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		
-		
-		properties = 
 			EFGImportConstants.EFGProperties.getProperty(
 					"efg.thumbnails.dimensions.checked",
 					EFGImportConstants.EFG_TRUE);
@@ -134,125 +131,237 @@ public class EFGThumbNailDimensions  extends JDialog {
 		else {
 			this.checkBox.setSelected(false);
 		}
-	
-		btnFlowPanel.add(this.checkBox);
+		JPanel btnCheckPanel = new JPanel();
+		btnCheckPanel.add(this.checkBox);
 		
 		JButton doneBtn = new JButton("OK");
-		doneBtn.addActionListener(new ComboBoxListener(this,comboList));
+		doneBtn.addActionListener( 
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						  close();
+					}
+				}//end 
+        );
+		JButton closeBtn = new JButton("Cancel");
+		closeBtn.addActionListener( 
+				new ActionListener(){
+					public void actionPerformed(ActionEvent e) {
+						  close();
+					}
+				}//end 
+        );
+
 		btnFlowPanel.add(doneBtn);
-		btnPanel.add(btnFlowPanel, BorderLayout.PAGE_END);
+		btnFlowPanel.add(closeBtn);
+		JPanel btnPanel = new JPanel(new BorderLayout());
+		btnPanel.add(btnFlowPanel, BorderLayout.CENTER);
+		btnPanel.add(btnCheckPanel,BorderLayout.SOUTH);
+        return btnPanel;
+    }
+    private JPanel getMainPanel() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.PAGE_AXIS));
+        this.historyList = new ArrayList();
+        this.loadComboBox();
+   
+        //Set up the UI for selecting a pattern.
+        JLabel dimensionsLabel1 = new JLabel("Enter the maximum");
+        JLabel dimensionsLabel2 = new JLabel("dimension or");
+        JLabel dimensionsLabel3 = new JLabel("select one from the list:");
+
+        comboBoxItems = new JComboBox(comboBoxItemsSet.toArray());
+        comboBoxItems.setEditable(true);
+        comboBoxItems.addActionListener(new ComboBoxListener());
+      
+        //Create the UI for displaying result.
+  
+
+        //Lay out everything.
+        JPanel dimensionsPanel = new JPanel();
+        dimensionsPanel.setLayout(new BoxLayout(dimensionsPanel,
+                               BoxLayout.PAGE_AXIS));
+        dimensionsPanel.add(dimensionsLabel1);
+        dimensionsPanel.add(dimensionsLabel2);
+        dimensionsPanel.add(dimensionsLabel3);
+        comboBoxItems.setAlignmentX(Component.LEFT_ALIGNMENT);
+        dimensionsPanel.add(comboBoxItems);
+
+  
+
+        dimensionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
+
+        mainPanel.add(dimensionsPanel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+       
+
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        return mainPanel;
+    }
+	/**
+	 * 
+	 */
+	private void loadComboBox() {
+		String properties = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"efg.thumbnails.dimensions.lists"
+					);
 		
-		
-		return btnPanel;
+		if(properties == null || properties.trim().equals("")) {
+			this.useDefaults();
+			DnDFileBrowserMain.setCurrentDimLabel((String)this.historyList.get(0));
+		}
+		else {
+			this.loadHistoryList(properties.split(
+					RegularExpresionConstants.COMMASEP));
+			DnDFileBrowserMain.setCurrentDimLabel((String)this.historyList.get(0));
+		}
+        this.comboBoxItemsSet = new TreeSet(this.historyList);
 	}
 
+
+	public void close() {
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.checked",
+				checkBox.isSelected()+"");
+		this.dispose();
+	}
+	/**
+	 * 
+	 */
+	private void useDefaults() {
+		this.loadHistoryList(WorkspaceResources.getDefaultDimensions());
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.current",
+				(String)this.historyList.get(0));
+	}
+	/**
+	 * @param strings
+	 */
+	private void loadHistoryList(String[] dimensions) {
+		
+		StringBuffer buffer = new StringBuffer();
+		for(int i=0; i < dimensions.length;i++) {
+			this.historyList.add(dimensions[i]);
+			if(i > 0) {
+				buffer.append(",");
+			}
+			buffer.append(dimensions[i]);
+		}
+		
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.lists",
+				buffer.toString());
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.current",
+				(String)this.historyList.get(0));
+
+		
+	}
+	private String getCurrentHistoryLists() {
+ 		StringBuffer buffer = new StringBuffer();
+ 		
+		for (Iterator iter = this.historyList.iterator(); iter.hasNext();) {
+			String element = (String)iter.next();
+			buffer.append(element);
+			if(iter.hasNext()) {
+				buffer.append(",");
+			}
+		}
+		
+		return buffer.toString();
+	}
+    public void doHouseKeepingbeforeClosing() {
+    	
+       	try {
+		
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
+    	
+    }
+
+    public void reloadComboBoxes() {
+        String newSelection = (String)this.comboBoxItems.getSelectedItem();
+       
+        if(newSelection == null || "".equals(newSelection.trim())) {
+        	return;
+        }
+        if(!comboBoxItemsSet.contains(newSelection.trim())) {
+	         
+        	if(historyList.size() > (MAX_SIZE  -1)) {
+        		String itemToRemove = (String)historyList.get(historyList.size()-1);
+        		comboBoxItems.removeItem(itemToRemove);
+        		comboBoxItemsSet.remove(itemToRemove);
+        		historyList.remove(itemToRemove);
+        	}
+        }
+        else {
+    		comboBoxItems.removeItem(newSelection);
+    		comboBoxItemsSet.remove(newSelection);
+    		historyList.remove(newSelection);
+        	
+        }
+        comboBoxItemsSet.add(newSelection.trim());
+	    comboBoxItems.insertItemAt(newSelection.trim(), 0);
+	    
+	    historyList.add(0,newSelection.trim());	
+       
+        comboBoxItems.setSelectedItem(newSelection);
+        comboBoxItems.setFocusable(true);
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.lists",
+				this.getCurrentHistoryLists());
+		EFGImportConstants.EFGProperties.setProperty(
+				"efg.thumbnails.dimensions.current",
+				(String)this.historyList.get(0));
+		DnDFileBrowserMain.setCurrentDimLabel((String)this.historyList.get(0));
+    }
+    public void doHouseKeeping() {
+    	String newSelection = null;
+    	try{
+	       newSelection = (String)comboBoxItems.getSelectedItem();
+	       
+	        if(newSelection == null || "".equals(newSelection.trim())) {
+	        	throw new Exception ("Enter or select a value!!");
+	        }
+        	Integer intval = new Integer(newSelection);
+			if(intval == null){
+				throw new Exception ("The value entered must not be null or the empty string!!");
+			}
+			
+			reloadComboBoxes();
+			
+    	}
+		catch(NumberFormatException nee){
+				JOptionPane.showMessageDialog(frame, "The value you entered: '" +
+						newSelection + "' must be a number!!",
+						"Number Format Exception", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		catch(Exception ee){
+			
+				JOptionPane.showMessageDialog(frame,ee.getMessage(),
+						"Exception", JOptionPane.ERROR_MESSAGE);
+				return;
+		}
+    }
     /**
 	 * @author kasiedu
 	 * 
 	 */
 	class ComboBoxListener implements ActionListener  {
-		
-		private EFGThumbNailDimensions dimensions;
-		private EFGComboBox cb;
 		/**
 		 * @param dimensions
 		 * @param comboList 
 		 */
-		public ComboBoxListener(EFGThumbNailDimensions dimensions,
-				EFGComboBox comboList) {
-			this.dimensions = dimensions;
-			this.cb = comboList;
-			
+		public ComboBoxListener() {	
 		}
-
-
-        protected void doHouseKeepingbeforeClosing() {
-        	
-           	try {
- 
-        		
-        		int numberOfItems =  cb.getItemCount() + 1;
-        		String numberOfFilesToShowStr = 
-        			EFGImportConstants.EFGProperties.getProperty("numberofserverfilestoshow","5");
-        		
-    			
-    			try {
-    				int i  = Integer.parseInt(numberOfFilesToShowStr);
-    				numberOfItems = i;
-    			}
-    			catch(NumberFormatException ee) {
-    				numberOfItems = numberOfItems -1;
-    			}
-        	
-        		if(numberOfItems > cb.getItemCount()) {
-        			numberOfItems=cb.getItemCount();
-        		}
-        		
-        		
-        		StringBuffer buffer = new StringBuffer();
-				for(int index =0; index < numberOfItems ;index++) {
-            		String currentURL = cb.getItemAt(index).toString();
-            		
-            		if(index > 0 ) {
-            			buffer.append(",");
-            		}
-            		buffer.append(currentURL);
-            	}
-				//add to current properties
-				EFGImportConstants.EFGProperties.setProperty(
-						"efg.thumbnails.dimensions.lists",
-						buffer.toString());
-				EFGImportConstants.EFGProperties.setProperty(
-						"efg.thumbnails.dimensions.current",
-						cb.getSelectedItem().toString());
-				
-				EFGImportConstants.EFGProperties.setProperty(
-						"efg.thumbnails.dimensions.checked",
-						checkBox.isSelected()+"");
-				
-				
-				this.dimensions.close();
-			} catch (Exception e) {
-				
-				log.error(e.getMessage());
-			}
-        	
-        }
-		public void actionPerformed(ActionEvent e) {
-			//if it is not an integer
-			String tempSelection = (String)this.cb.getSelectedItem();
-			try{
-				
-				if(tempSelection == null || tempSelection.trim().equals("")) {
-					throw new Exception ("Enter or select a value!!");
-				}
-				Integer intval = new Integer(tempSelection);
-				if(intval == null){
-					throw new Exception ("The value entered must not be null or the empty string!!");
-				}
-				
-				cb.add(tempSelection);
-				this.doHouseKeepingbeforeClosing();
-			}
-			catch(NumberFormatException nee){
-				JOptionPane.showMessageDialog(frame, "The value you entered: '" + tempSelection + "' must be a number!!",
-						"Number Format Exception", JOptionPane.ERROR_MESSAGE);
-					cb.setSelectedItem(EFGImportConstants.EFGProperties.getProperty(
-							"efg.thumbnails.dimensions.current"));
-				
-				return;
-			}
-			catch(Exception ee){
-				JOptionPane.showMessageDialog(frame,ee.getMessage(),
-						"Exception", JOptionPane.ERROR_MESSAGE);
-				cb.setSelectedItem(EFGImportConstants.EFGProperties.getProperty(
-				"efg.thumbnails.dimensions.current"));
-				return;
-				
-			}
-		}
-
-	}	
+	    public void actionPerformed(ActionEvent e) {
+	        doHouseKeeping();
+	    }
+	}
+	
 }
 
 

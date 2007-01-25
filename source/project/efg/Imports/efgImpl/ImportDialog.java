@@ -212,7 +212,7 @@ public class ImportDialog extends JDialog {
 		pane1.add(showButton);
 		closeButton.setToolTipText(EFGImportConstants.EFGProperties.getProperty("ImportDialog.closeBtn.tooltip"));
 		pane1.add(closeButton);
-		pane.add(pane1, BorderLayout.PAGE_END);
+		pane.add(pane1, BorderLayout.SOUTH);
 		return pane;
 	}
 

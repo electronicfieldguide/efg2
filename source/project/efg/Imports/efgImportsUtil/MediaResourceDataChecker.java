@@ -23,7 +23,6 @@ import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.servlets.efgServletsUtil.EFGParseObject;
 import project.efg.servlets.efgServletsUtil.EFGParseObjectList;
 import project.efg.servlets.efgServletsUtil.EFGParseStates;
-import project.efg.util.EFGImagesConstants;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.RegularExpresionConstants;
 /**
@@ -45,7 +44,12 @@ public class MediaResourceDataChecker extends DataChecker {
 		} catch (Exception ee) {
 		}
 	}
-
+	static String images_home = 
+		EFGImportConstants.EFGProperties.getProperty(
+				"efg.images.home");
+	static String thumbshome = 
+		EFGImportConstants.EFGProperties.getProperty(
+				"efg.mediaresources.thumbs.home");
 	public MediaResourceDataChecker(DBObject dbObject, String displayName) {
 		super(dbObject,displayName);
 		this.efgParseStates = new EFGParseStates();
@@ -77,7 +81,7 @@ public class MediaResourceDataChecker extends DataChecker {
 			StringBuffer imagesHomeBuffer = new StringBuffer(getServerHome());
 			
 			imagesHomeBuffer.append(File.separator);
-			imagesHomeBuffer.append(EFGImagesConstants.EFG_IMAGES_DIR);
+			imagesHomeBuffer.append(images_home);
 			imagesHomeBuffer.append(File.separator);
 			imagesHome = imagesHomeBuffer.toString();
 		}
