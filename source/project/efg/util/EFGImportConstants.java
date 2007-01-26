@@ -346,8 +346,9 @@ public interface EFGImportConstants {
 	String TEMPLATES_FOLDER_NAME = "templateConfigFiles";
 	String TEMPLATES_XML_FOLDER_NAME = TEMPLATES_FOLDER_NAME + File.separator + XML;
 	String PROMPT_FOR_DIMENSIONS = "Prompt Me to Enter Dimensions";
-	
-	String EFG_RESOUCRES_REPOSITORY = "/resource/EFGLocalRepository";
+	String RESOURCE_DIRECTORY="/resource";
+	String EFG_LOCAL_REPOSITORY = "/EFGLocalRepository";
+	String EFG_RESOUCRES_REPOSITORY = RESOURCE_DIRECTORY + EFG_LOCAL_REPOSITORY;
 	String EFG_TRUE = "true";
 	String EFG_FALSE="false";
 	

@@ -382,6 +382,7 @@ public class TableSorter extends AbstractTableModel {
 			if (!isSorting()) {
 				clearSortingState();
 				fireTableChanged(e);
+				this.sorter.setIsChanged(true);
 				return;
 			}
 
@@ -391,6 +392,7 @@ public class TableSorter extends AbstractTableModel {
 			if (e.getFirstRow() == TableModelEvent.HEADER_ROW) {
 				cancelSorting();
 				fireTableChanged(e);
+				
 				return;
 			}
 
@@ -426,6 +428,7 @@ public class TableSorter extends AbstractTableModel {
 				int viewIndex = getModelToView()[e.getFirstRow()];
 				fireTableChanged(new TableModelEvent(TableSorter.this,
 						viewIndex, viewIndex, column, e.getType()));
+				
 				return;
 			}
 
@@ -434,6 +437,7 @@ public class TableSorter extends AbstractTableModel {
 			clearSortingState();
 			fireTableDataChanged();
 			this.sorter.setIsChanged(true);
+			
 			return;
 		}
 	}
@@ -536,33 +540,7 @@ public class TableSorter extends AbstractTableModel {
 
 	private class SortableHeaderRenderer implements TableCellRenderer {
 		private TableCellRenderer tableCellRenderer;
-		/*public MultiLineHeaderRenderer() {
-			setOpaque(true);
-			setForeground(UIManager.getColor("TableHeader.foreground"));
-			setBackground(UIManager.getColor("TableHeader.background"));
-			setBorder(UIManager.getBorder("TableHeader.cellBorder"));
-			ListCellRenderer renderer = getCellRenderer();
-			((JLabel)renderer).setHorizontalAlignment(JLabel.CENTER);
-			setCellRenderer(renderer);
-		  }
 
-		  public Component getTableCellRendererComponent(JTable table, Object value,
-				       boolean isSelected, boolean hasFocus, int row, int column) {
-			setFont(table.getFont());
-			String str = (value == null) ? "" : value.toString();
-			BufferedReader br = new BufferedReader(new StringReader(str));
-			String line;
-			Vector v = new Vector();
-			try {
-			  while ((line = br.readLine()) != null) {
-			    v.addElement(line);
-			  }
-			} catch (IOException ex) {
-			  ex.printStackTrace();
-			}
-			setListData(v);
-			return this;
-		  }*/
 		public SortableHeaderRenderer(TableCellRenderer tableCellRenderer) {
 			this.tableCellRenderer = tableCellRenderer;
 		}

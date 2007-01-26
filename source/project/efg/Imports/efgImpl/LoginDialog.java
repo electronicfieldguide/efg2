@@ -116,10 +116,16 @@ public class LoginDialog extends JDialog {
 		 * @param pathToServer
 		 */
 		private void writeDefaultMessage() {
+			
+			String property = 
+				EFGImportConstants.EFGProperties.getProperty("efg.local.resource",
+						EFGImportConstants.EFG_RESOUCRES_REPOSITORY);
+			
+
 			StringBuffer buffer = new StringBuffer();
 			buffer.append("Application will place generated resources\n( media resources, generated templates etc) in \n");
 			buffer.append("'");
-			buffer.append(EFGImportConstants.EFG_RESOUCRES_REPOSITORY);
+			buffer.append(property);
 			buffer.append("' directory  \n");
 			buffer.append("The directories inside the above named folder must be copied\n " +
 					"to the efg2 web application running on your server\n");
@@ -466,10 +472,12 @@ public class LoginDialog extends JDialog {
 			if(!file.exists()) {//suplied args does not exists
 				isCatExists = false;
 				try {
+					String property = 
+						EFGImportConstants.EFGProperties.getProperty("efg.local.repository",
+								EFGImportConstants.EFG_LOCAL_REPOSITORY);
+					
 					url = 
-						LoginDialog.class.getResource(
-								EFGImportConstants.EFG_RESOUCRES_REPOSITORY
-								);
+						LoginDialog.class.getResource(property);
 					catalina_home  = URLDecoder.decode(url.getFile(), "UTF-8");
 					file = new File(catalina_home);
 					if(file.exists()) {//if default exists

@@ -232,26 +232,22 @@ public abstract class TableSorterMainInterface  extends JDialog{
 	public void close() {
 		if(this.sorter.isChanged() || isChanged ){
 			int res = JOptionPane.showOptionDialog(this,
-					"Data has not been updated, are you sure you want to exit?.\n",
+					"Data has not been updated,do you want to save before quitting?\n",
 					"Changes not saved!!",
 					JOptionPane.DEFAULT_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null, new String[] {
 				"Yes",  "No"}, "No");
 			switch (res) {
-			case 0: // Yes
+			case JOptionPane.YES_OPTION: // Yes
 				this.updateMetadataTable(this.sorter,this.ds);
-				this.sorter.setIsChanged(false);
-				isChanged = false;
-				this.dispose();
 				break;
 			default: // No 
 				break;
 			}
 		}
-		else {
-			this.dispose();
-		}
-		
+		this.sorter.setIsChanged(false);
+		isChanged = false;
+		this.dispose();
 		
 	}
 	public String[] getColumnNames(){
@@ -526,6 +522,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		public void actionPerformed(ActionEvent evt) {
 			this.sorterMain.updateMetadataTable(sorter,ds);
 			this.sorterMain.sorter.setIsChanged(false);
+			isChanged = false;
 		}
 	}
 	class RadioButtonListener implements ActionListener {
