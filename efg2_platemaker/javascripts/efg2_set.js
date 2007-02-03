@@ -38,14 +38,15 @@
      int size() 
               Returns the number of elements in this Set. 
 */
+Set.prototype.set = null;
 function Set(){
-    this.set = new Array();
+    this.set = new Object();
 }
 
 /* privileged functions */
     
 Set.prototype.clear = function(){
-      this.set = new Array();
+      this.set = new Object();
 }              
 Set.prototype.contains = function(element){
     var exists = false;

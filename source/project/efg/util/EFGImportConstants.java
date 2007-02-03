@@ -153,7 +153,7 @@ public interface EFGImportConstants {
 	String SEARCHSTR = "searchStr";
 	String REQUEST_TYPE="request_type";
 	String DATASOURCE_NAME = "dataSourceName";
-
+	
 	String MAX_DISPLAY = "maxDisplay";
 
 	String DEFAULT_MAX_DISPLAY = "defaultMaxDisplay";
@@ -247,6 +247,7 @@ public interface EFGImportConstants {
 	String SEARCH_CONFIG_PAGE_XSL = "XSL_FILENAME_SEARCH_CONFIG";
 	String SEARCHPAGE_PLATES_XSL = "XSL_FILENAME_SEARCHPAGE_PLATES";
 	String SEARCHPAGE_LISTS_XSL = "XSL_FILENAME_SEARCHPAGE_LISTS";
+	String SEARCHPAGE_PDF_XSL = "XSL_FILENAME_SEARCHPAGE_PDF";
 
 	
 
@@ -269,7 +270,8 @@ public interface EFGImportConstants {
 	String TEST_TAXON_CONFIG_PAGE =TEMPLATE_JSP_LOCATION+  "/TestTaxonPage.jsp";
 
 	String TEST_SEARCH_CONFIG_PAGE =TEMPLATE_JSP_LOCATION+  "/TestSearchPage.jsp";
-
+	String TO_PDF_PAGE ="/efg2pdf.pdf";
+	String QUERY_RESULTS_XML="searchqueryresultsxml";
 	String SERVICE_LINK_FILLER = "_EFG_";
 
 	String SEARCHPAGE_LISTS_FILLER = "_search_page_lists.xml";
@@ -351,5 +353,11 @@ public interface EFGImportConstants {
 	String EFG_RESOUCRES_REPOSITORY = RESOURCE_DIRECTORY + EFG_LOCAL_REPOSITORY;
 	String EFG_TRUE = "true";
 	String EFG_FALSE="false";
+
+	String IS_SAVE_PDF = "savepdf";
+
+	String TEMPLATE_CONFIG_PAGE = "/configTaxonPage";
+
+	String PDF_SUCCESS_PAGE = TEMPLATE_JSP_LOCATION+  "/PDFSuccessPage.html";
 	
 }// EFGImportConstants

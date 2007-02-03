@@ -202,6 +202,14 @@
 		<servlet-name>Redirect</servlet-name>
 		<jsp-file>/Redirect.jsp</jsp-file>
 	</servlet>
+	<servlet>
+    <servlet-name>EFG2PDF</servlet-name>
+    <servlet-class>project.efg.servlets.efgImpl.EFG2PDFConverter</servlet-class>
+  </servlet>
+	<servlet>
+    <servlet-name>PDFPageConfig</servlet-name>
+    <servlet-class>project.efg.servlets.efgImpl.PDFPageTemplateConfig</servlet-class>
+  </servlet>	
 	<!--
 		Define mappings that are used by the servlet container to
 		translate a particular request URI (context-relative) to a
@@ -258,6 +266,15 @@
 		<servlet-name>importEFG</servlet-name>
 		<url-pattern>/efg2efg2export/importEFG</url-pattern>
 	</servlet-mapping>
+	<servlet-mapping>
+  <servlet-name>EFG2PDF</servlet-name>
+  <url-pattern>/efg2pdf.pdf</url-pattern>
+</servlet-mapping>
+<servlet-mapping>
+  <servlet-name>PDFPageConfig</servlet-name>
+  <url-pattern>/efg2pdfconfig</url-pattern>
+</servlet-mapping>
+	
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Configuration</web-resource-name>

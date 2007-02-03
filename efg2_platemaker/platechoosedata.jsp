@@ -32,9 +32,9 @@ project.efg.util.EFGDisplayObject
 			else{
 				isEmpty = true;
 			}
-		
 		%>
 		<title>Plate Maker - printable PDFs for your EFGs</title>
+		
 		<link href="css/platemaker.css" rel="stylesheet" type="text/css" />
 		<link href="../css/popUpHypertext.css" rel="stylesheet" type="text/css" />
 		<style type="text/css">
@@ -150,11 +150,14 @@ project.efg.util.EFGDisplayObject
 		</style>
 		<script language="JavaScript" src="../js/trimfunctions.js" type="text/javascript"></script>
 		<script language="JavaScript" src="javascripts/efg2_set.js" type="text/javascript"></script>
+
 		<script language="JavaScript" src="javascripts/efg2_validator.js" type="text/javascript"></script>
+		<script language="JavaScript" src="../js/prototype1.5.js" type="text/javascript"></script>
+
 		<script language="JavaScript" src="javascripts/efg2_ajaxfunctions.js" type="text/javascript"></script>
 		<script language="JavaScript" src="javascripts/ecritterz_biz_colorpicker.js" type="text/javascript"></script>
 		<script language="JavaScript" src="javascripts/efg2_otherfunctions.js" type="text/javascript"></script>
-	</head>
+	</head
 	<body>
 	<%@ include file="platemakertop.html" %>
 		<table>
@@ -164,10 +167,12 @@ project.efg.util.EFGDisplayObject
 					<input type="hidden" id="<%=EFGImportConstants.DATASOURCE_NAME%>" name="<%=EFGImportConstants.DATASOURCE_NAME %>" value=""/>
 					<input type="hidden" id="<%=EFGImportConstants.DISPLAY_NAME%>" name="<%=EFGImportConstants.DISPLAY_NAME%>" value=""/>
 					<input type="hidden" id="numberoftaxa" name="numberOfResults" value=""/>
+					<input type="hidden" id="searchqueryresultsxml1" name="searchqueryresultsxml1" value""/>
 					<input type="hidden" id="searchquery" name="searchquery" value""/>
+					
 					<input type="hidden" id="templateuniquename" name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>" value""/>
 				    <div id="zerothdiv">				
-						<select name="states" size="1" title="Select the datasource to configure" id="statesDS">
+						<select name="states" size="1" title="Select the datasource to configure" id="statesDS" onChange="JavaScript:platechoosedataResponse(this);">
 						<option onclick="JavaScript:platechoosedataResponse(this);">Select a Data source</option>
 						<%
 						Iterator dsNameIter = listInter.getIterator(); 

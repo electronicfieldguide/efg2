@@ -91,7 +91,7 @@ public class ImportEFG extends UploadServlet implements EFGImportConstants {
 			return;
 			//throw new Exception("No files uploaded");
 		}
-		StringBuffer messageBuffer = new StringBuffer();
+		
 		
 		for(int i = 0; i < files.length; i++) {
 			File zipFile =files[i];
@@ -119,6 +119,9 @@ public class ImportEFG extends UploadServlet implements EFGImportConstants {
 	}
 }
 //$Log$
+//Revision 1.2  2007/02/03 00:04:27  kasiedu
+//*** empty log message ***
+//
 //Revision 1.1  2007/01/12 15:04:04  kasiedu
 //no message
 //

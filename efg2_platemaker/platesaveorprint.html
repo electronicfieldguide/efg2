@@ -1,55 +1,25 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/strict.dtd">
-<html xmlns="http://www.w3.org/TR/xhtml1">
-<head>
-<title>Plate Maker - printable PDFs for your EFGs</title>
-<link href="platemaker.css" rel="stylesheet" type="text/css" />
-</head>
-<body>
-<table class="menubartitle">
-<tr>
-<td class="menubartitle">Plate Maker:</td>
-<td class="menubarsubtitle">printable pdfs for your EFGs</td>
-</tr>
-</table>
-
-<table class="menubarcase">
-<tr>
-<td>
-<table class="menubar">
-<tr>
-<td class="menubartext"><a href="platechoosedata.html">Select<br />
- Datasource</a></td>
-<td class="menubaricon"><img src="images/bluearrow.png" width="35" height="35" border="0" alt="arrow" /></td>
-<td class="menubartext"><a href="platequerydata.html">Query<br />
- Data</a></td>
-<td class="menubaricon"><img src="images/bluearrow.png" width="35" height="35" border="0" alt="arrow" /></td>
-<td class="menubartext"><a href="platedesignform.html">Design the<br />
- Plate</a></td>
-<td class="menubaricon"><img src="images/bluearrow.png" width="35" height="35" border="0" alt="arrow" /></td>
-<!-- New code starts here -->
-<td class="menubartextactive"><a href="platesaveorprint.html">View<br />PDF file</a></td>
-<!-- New code ends here -->
-</tr>
-</table>
-</td>
-</tr>
-</table>
-
-<!-- New code starts here -->
-<table class="viewpage">
-<tr>
-<td class="menubarsubtitle">Your PDF file should display below.<br />
-<span class="note">(Adobe Acrobat or another PDF reader plugin for your web browser in order to view the file.)</span></td>
-</tr>
-</table>
-<table class="viewpage">
-<tr>
-<td>The PDF app would show up here...</td>
-</tr>
-</table>
-<!-- New code ends here -->
-
-</body>
+<html>	
+	<head>
+		<title>Plate Maker - printable PDFs for your EFGs</title>
+		<link href="css/platemaker.css" rel="stylesheet" type="text/css" />
+	</head>
+	<body>
+		<table class="pdfpage" summary="">
+			<tr>
+				<td colspan="2">
+					<table class="pdfchoices" summary="">
+						<tr>
+							<td class="pdfitem">
+								<a class="pdf" href="">Save Current Plate Configuration</a>
+							</td>
+							<td class="pdfitem">
+								<input type="text" name="saveconfig" size="25" />
+								<input type="submit" name="saveconfig" value="Save" size="25" />
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+		</table>
+	</body>
 </html>
-

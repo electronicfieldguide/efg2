@@ -1,8 +1,8 @@
 // A few configuration settings
-var CROSSHAIRS_LOCATION = 'crosshairs.png';
-var HUE_SLIDER_LOCATION = 'p.png';
-var HUE_SLIDER_ARROWS_LOCATION = 'position.png';
-var SAT_VAL_SQUARE_LOCATION = 'sv.png';
+var CROSSHAIRS_LOCATION = './images/crosshairs.png';
+var HUE_SLIDER_LOCATION = './images/p.png';
+var HUE_SLIDER_ARROWS_LOCATION = './images/position.png';
+var SAT_VAL_SQUARE_LOCATION = './images/sv.png';
 
 // Here are some boring utility functions. The real code comes later.
 
@@ -112,35 +112,17 @@ function trackDrag(node, handler)
 {
     function fixCoords(x, y)
     {
-    	var vals ="";
-    	
         var nodePageCoords = pageCoords(node);
         x = (x - nodePageCoords.x) + document.documentElement.scrollLeft;
         y = (y - nodePageCoords.y) + document.documentElement.scrollTop;
-        if (x < 0){
-        	//vals = vals + " x is already zero "; 
-        	x = 0;
-        }
-        if (y < 0){
-           	//vals = vals + " y is already zero "; 
-         	y = 0;
-         }
-        if (x > node.offsetWidth - 1){ 
-        	x = node.offsetWidth - 1;
-        //	   	vals = vals + " x offset "; 
-        }
-        if (y > node.offsetHeight - 1){
-        	 y = node.offsetHeight - 1;
-        	    	//vals = vals + " y offset "; 
-        }
-         // vals = vals + " x: " + x + " y: " + y;
-       //document.getElementById('mydiv').innerHTML = vals;
-        
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x > node.offsetWidth - 1) x = node.offsetWidth - 1;
+        if (y > node.offsetHeight - 1) y = node.offsetHeight - 1;
         return {x: x, y: y};
     }
     function mouseDown(ev)
     {
-   
         var coords = fixCoords(ev.clientX, ev.clientY);
         var lastX = coords.x;
         var lastY = coords.y;
@@ -148,7 +130,6 @@ function trackDrag(node, handler)
 
         function moveHandler(ev)
         {
-        
             var coords = fixCoords(ev.clientX, ev.clientY);
             if (coords.x != lastX || coords.y != lastY)
             {
@@ -191,6 +172,7 @@ function findEventListener(node, event, handler)
 }
 function myAddEventListener(node, event, handler)
 {
+	
     if (findEventListener(node, event, handler) != null)
     {
         return;
@@ -480,22 +462,23 @@ function makeColorSelector(inputBox)
     return colorSelectorDiv;
 }
 
-	function makeColorSelectors(ev)
-	{
-	  
-	    
-	    for (i = 0; i < colorids.length; i++)
-	    {
-	        var node = document.getElementById(colorids[i]);
-	       
-	        if (node.className != 'color')
-	        {
-	        	
-	            continue;
-	        }
-	        var parent = node.parentNode;
-	        var prevNode = node.previousSibling;
-	        var selector = makeColorSelector(node);
-	        parent.insertBefore(selector, (prevNode ? prevNode.nextSibling : null));
-	    }
-	}	
+function makeColorSelectors(ev)
+{
+	
+    var inputNodes = document.getElementsByTagName('input');
+    var i;
+    for (i = 0; i < inputNodes.length; i++)
+    {
+        var node = inputNodes[i];
+        if (node.className != 'color')
+        {
+            continue;
+        }
+        var parent = node.parentNode;
+        var prevNode = node.previousSibling;
+        var selector = makeColorSelector(node);
+        parent.insertBefore(selector, (prevNode ? prevNode.nextSibling : null));
+    }
+}
+
+//myAddEventListener(window, 'load', makeColorSelectors);

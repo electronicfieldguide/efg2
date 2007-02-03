@@ -1,13 +1,35 @@
   
 var inputBoxError;
 var constantInputs;
+var stack;
 /**
  * initialize and populate sets
  */
-function init(){
+function init(){	
 	this.inputBoxError = new Set();
+	
 	this.constantInputs = new Set();
+	this.stack = new Set();
 	this.addConstants();
+}
+function checkSelected(selectObject){
+	if(this.inputBoxError== null){
+		init();
+	}
+
+	var nameVar = selectObject.name;
+	
+	var selectedVal = selectObject.options[selectObject.selectedIndex].text;
+	if(selectedVal == null || selectedVal ==''){
+		if(this.stack.contains(nameVar)){
+			this.stack.remove(nameVar);
+		}	
+	}
+	else{
+		if(!this.stack.contains(nameVar)){
+			this.stack.add(nameVar);
+		}	
+	}
 }
 /*
  * Add some constants to the set of constants
@@ -22,6 +44,10 @@ function addConstants(){
  * Set some constant values to blank before they are submitted to server. 
  */
 function clearConstants(){
+	if(this.inputBoxError== null){
+		init();
+	}
+
 	var clearClasses =  this.getElementsByClassName(document, "input", "formInputText");
 	for(var i=0; i<clearClasses.length; i++){
 		var inputClass = clearClasses[i];
@@ -37,6 +63,9 @@ function clearConstants(){
  * color - the color to set the background to
  */
 function resetBackgroundColor(inputObject,color){
+	if(this.inputBoxError== null){
+		init();
+	}
 	
 	inputObject.style.backgroundColor = color;
 }
@@ -52,11 +81,13 @@ function resetBackgroundColor(inputObject,color){
  */
 function checkNumeric(inputObject,minval, maxval,errormessage)
 {
+	if(this.inputBoxError== null){
+		init();
+	}
 	
 	if (doChecks(inputObject,minval,maxval,errormessage) == false)
 	{
 		this.resetBackgroundColor(inputObject,"#FF0000");
-		//inputObject.style.backgroundColor = "#FF0000";
 		this.inputBoxError.add(inputObject.name);
  		return false;
 	}
@@ -72,15 +103,26 @@ function checkNumeric(inputObject,minval, maxval,errormessage)
  * returns true if contents are valid
  */
 function validateForm(){
+	if(this.inputBoxError== null){
+		init();
+	}
 	
 	if(!inputBoxError.isEmpty()){
+	
 		alert("Input errors exists in one or more text boxes. " +
-				"The background colore of such error boxes is red.");
+				"The background color of such error boxes is red.");
 		return false;
 	}
-	//clear constants
-	clearConstants();
-	return true;
+	else{
+		if(this.stack.size() == 0){
+			alert("Select at least one character");
+			return false;
+		}
+	//make sure there is at least one input selection
+		//clear constants
+		clearConstants();
+		return true;
+	}
 }
 /**
  * inputObject - The html input text box
@@ -91,7 +133,10 @@ function validateForm(){
  * return true if inputs are valid
  */
 function doChecks(inputObject,minvalue,maxvalue,errorMessage){
- 
+ 	if(this.inputBoxError== null){
+		init();
+	}
+ 	
     if(isNaN(inputObject.value)) 
     { 
       alert(inputObject.name+": Should be a number "); 
@@ -101,7 +146,7 @@ function doChecks(inputObject,minvalue,maxvalue,errorMessage){
     { 
       if(!errorMessage || errorMessage.length ==0) 
       { 
-        errorMessage = "The value should entered should be less than or equal "+ maxvalue; 
+        errorMessage = "The value you entered should be less than or equal "+ maxvalue; 
       }//if               
       alert(errorMessage); 
       return false;                 
@@ -111,7 +156,7 @@ function doChecks(inputObject,minvalue,maxvalue,errorMessage){
      { 
        if(!errorMessage || errorMessage.length ==0) 
        { 
-         errorMessage = "The value should entered should be greater than or equal "+ minvalue; 
+         errorMessage = "The value you entered should be greater than or equal "+ minvalue; 
        }//if               
        alert(errorMessage); 
        return false;                 
@@ -125,6 +170,10 @@ function doChecks(inputObject,minvalue,maxvalue,errorMessage){
     Add-ons by Robert Nyman, http://www.robertnyman.com
 */
 function getElementsByClassName(oElm, strTagName, strClassName){
+	if(this.inputBoxError== null){
+		init();
+	}
+
 	var arrElements = (strTagName == "*" && oElm.all)? oElm.all : oElm.getElementsByTagName(strTagName);
 	var arrReturnElements = new Array();
 	strClassName = strClassName.replace(/\-/g, "\\-");
@@ -144,6 +193,10 @@ function getElementsByClassName(oElm, strTagName, strClassName){
 	no matter in which order they're applied to the element
 */
 function getElementsByClassName(oElm, strTagName, oClassNames){
+	if(this.inputBoxError== null){
+		init();
+	}
+
 	var arrElements = (strTagName == "*" && oElm.all)? oElm.all : oElm.getElementsByTagName(strTagName);
 	var arrReturnElements = new Array();
 	var arrRegExpClassNames = new Array();

@@ -32,17 +32,19 @@ project.efg.util.StatisticalMeasureTypeSorter
    EFGDataSourceHelperInterface dsHelper = new EFGDataSourceHelperInterface();
    dsHelper.setMainDataTableName(tableName);
    EFGDataObjectListInterface doSearches = dsHelper.getSearchable(displayName,datasourceName);	
-   if(datasourceName == null){
-	datasourceName=doSearches.getDatasourceName();		
-   }
-  
+  	if(doSearches != null){
+	   if(datasourceName == null){
+		datasourceName=doSearches.getDatasourceName();		
+	   }
+  }
    
 %>	
 	<table class="searchpage">
 		<tr>
 			<td>      
 		        <table id="searchPageID">
-			        <%				
+			        <%
+			        if(doSearches != null){				
 					for(int s = 0 ; s < doSearches.getEFGDataObjectCount(); s++){
 						EFGDataObject searchable = doSearches.getEFGDataObject(s);
 				   		
@@ -142,8 +144,14 @@ project.efg.util.StatisticalMeasureTypeSorter
 		        	<input type="hidden" name="<%=EFGImportConstants.DISPLAY_FORMAT%>" value="<%=EFGImportConstants.XML%>"/>
 		        	<input type="hidden" name="<%=EFGImportConstants.DATASOURCE_NAME%>" value="<%=datasourceName%>"/>
 		       		<input type="hidden" name="<%=EFGImportConstants.ALL_TABLE_NAME%>" value="<%=tableName%>"/>
-		        </table>	      			
+		        </table>
+		         <%}%>			      			
   			</td>
 		</tr>
 	</table>
+	<%  if(doSearches != null){	%>
 	<input type="submit" name="submit" value="Go"  onclick="javascript:handlePost('searchPageID','platedesignform')";/>
+ 	<%}
+ 	else{%>
+ 	<table id="searchPageID"><tr><td>The selected datasource has no searchable characters</td></tr><table>
+ 	<%}%>	

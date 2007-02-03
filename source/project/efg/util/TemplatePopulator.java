@@ -45,7 +45,9 @@ public class TemplatePopulator implements EFGImportConstants{
 			if(table == null){
 				
 				table = getTable(guid,itemType,dsName);
-				tableStore.put(key,table);
+				if(table != null){
+					tableStore.put(key,table);
+				}
 			}
 			return table;
 		}

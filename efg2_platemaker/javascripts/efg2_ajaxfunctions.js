@@ -1,10 +1,18 @@
+/**
+*
+*Requires Prototype.js 1.5 and above from the ajax prototype group
+*/
+var READY_STATE_COMPLETE=4;
 var pageids = new Array();
 pageids[0] = "platechoosedata";
 pageids[1] = "platequerydata";
 pageids[2] = "platedesignform";
 pageids[3] = "platesaveorprint";
-
-
+var SAVE_URL='/efg2pdfconfig';
+var DATASOURCE_NAME='dataSourceName';
+var SEARCH_QUERY_XML_RESULTS='searchqueryresultsxml';
+var SEARCH_QUERY_XML_RESULTS_1='searchqueryresultsxml1';
+var SEARCH_QUERY='searchquery';
 var colorids = new Array();
 colorids[0] = "imageframecolor1id";
 colorids[1] = "boundingboxcolor1id";
@@ -17,18 +25,19 @@ var DELETE_TEMPLATE= JSP_ROOT + "DeleteTemplate.jsp?";
 var PROGRESS_MESSAGE = "Please wait while your requests is processed....";
 var NO_TEMPLATE_MESSAGE = "Please select a template or new if configuring a new plate..Fix Me";
 var current_template_list;
-var xmlHttp;
-var READY_STATE_COMPLETE=4;
+
+
 var ACTIVE_TEXT_CLASS = "menubartextactive";
 var IN_ACTIVE_TEXT_CLASS = "menubartext";
 
 var DATASOURCE_MESSAGE='Select a Data source';
-var SEARCH_URL="/efg2/Redirect.jsp";
+var SEARCH_URL="/efg2/search";
 var CHOOSE_DATA_URL=JSP_ROOT + "platechoosedata.jsp";
 var DESIGN_FORM_URL =JSP_ROOT + "platedesignform.jsp";
-var PLATE_DATA_LIST_URL = JSP_ROOT + "platedatalist.jsp?";
-var PLATE_QUERY_DATA = JSP_ROOT + "platequerydata.jsp?";
+var PLATE_DATA_LIST_URL = JSP_ROOT + "platedatalist.jsp";
+var PLATE_QUERY_DATA = JSP_ROOT + "platequerydata.jsp";
 var DELETE_TEMPLATE_URL="/efg2/templateJSP/DeleteTemplate.jsp";
+var PDF_SERVER_URL="/efg2/efg2pdfconfig";
 var CONFIGURE_PAGE = "/efg2/configTaxonPage";
 var DATASOURCE_NAME="dataSourceName";
 var DISPLAY_NAME = "displayName";
@@ -53,41 +62,43 @@ var TEMPALTE_SELECTED_MESSAGE ="Place Holder For Template selected message: ";
 var DELETE_MESSAGE_ID = 'deleteMessageID';
 var FAILURE_DELETE_ID = 'failureDeleteID';
 var SUCCESS_DELETE_ID = 'successDeleteID';
-
+var query2="";
+var objPopUp = null;
+var POP_UP_MESSAGE = "Please wait while your request is processed..";
+/*
+* Quote from prototype engine docs.
+*"The $() function is a handy shortcut to the all-too-frequent 
+*document.getElementById() function of the DOM.."
+*/
 function deleteTemplate(templateid){
-	var templatename = document.getElementById(templateid).value;
+	var selectObject =  $(templateid);
 	
-	var guid= document.getElementById(templatename).value;
-	var ds=document.getElementById('datasourceName').value;
-	 //DELETE_TEMPLATE_URL + "?" +
-	 var url =  CONFIGURE_PAGE_TYPE + "&" +
-	  			DATASOURCE_NAME + "=" + ds + "&" + 
-	  			 GUID + "=" + guid + "&" + "templateUniqueName=" + templatename;
-
-	xmlHttp=GetXmlHttpObject(THIRD_DIV);
-	if (xmlHttp==null)
-	{
-		alert (BROWSER_MESSAGE);
+	var templatename = selectObject.options[selectObject.selectedIndex].value;
+	if(templatename == 'NEW_EFG_TAG'){
+		alert("Cannot delete New");
 		return;
-	} 
-	  			 
-	xmlHttp.overrideMimeType('text/html'); 
-	
-	xmlHttp.onreadystatechange = processDeleteQuery;
-	doPosts(xmlHttp,DELETE_TEMPLATE_URL,url);
+	}
+	else{	
+		var guid= $(templatename).value;
+		//var guid= $F(templatename);
+		var ds=$(DATASOURCE_NAME).value;
+		//var ds=$F(DATASOURCE_NAME);
+		 //DELETE_TEMPLATE_URL + "?" +
+		 var url =  CONFIGURE_PAGE_TYPE + "&" +
+		  			DATASOURCE_NAME + "=" + ds + "&" + 
+		  			 GUID + "=" + guid + "&" + "templateUniqueName=" + templatename;
+		doPosts(DELETE_TEMPLATE_URL,url,processDeleteQuery);
+	}
 	
 }
-function processDeleteQuery(){
+function processDeleteQuery(loader,obj){
 
-	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
-	{ 
-		popHideHyper();
-		var responseDoc = document.getElementById(DELETE_MESSAGE_ID);
-		responseDoc.innerHTML = xmlHttp.responseText;
+		var responseDoc = $(DELETE_MESSAGE_ID);
+		responseDoc.innerHTML = loader.responseText;
 		alert(responseDoc.innerHTML );
-		var newSuccessDoc = document.getElementById(SUCCESS_DELETE_ID); 
+		var newSuccessDoc = $(SUCCESS_DELETE_ID); 
 		if( newSuccessDoc == null){
-			var failDoc = document.getElementById(FAILURE_DELETE_ID).innerHTML; 
+			var failDoc = $(FAILURE_DELETE_ID).innerHTML; 
 			alert(failDoc);
 			responseDoc.innerHTML="";
 		}
@@ -95,80 +106,66 @@ function processDeleteQuery(){
 			alert(newSuccessDoc.innerHTML);
 		 	//reload
 			responseDoc.innerHTML="";
-			var sel = document.getElementById('statesDS').options[document.getElementById('statesDS').selectedIndex];
+			var sel = $('statesDS').options[$('statesDS').selectedIndex];
 			platechoosedataResponse(sel);
-		
-		}	
-	}
-	else{
-		showProgressMessage(xmlHttp.id);
-	}			
+		}		
 }
 function platechoosedataResponse(idSel){
-
+	//FIXME
 	if(idSel.value == null || idSel.value == DATASOURCE_MESSAGE){
+	
 		window.location.href = CHOOSE_DATA_URL;
 		return;
 	}
 	textSet(idSel);
 	
-	var url=PLATE_DATA_LIST_URL;
+	//var url=PLATE_DATA_LIST_URL;
 	
-	url=url+DATASOURCE_NAME+ "="+document.getElementById('datasourceName').value;
+	//var url=DATASOURCE_NAME+ "="+$(DATASOURCE_NAME).value;
+	var url=DATASOURCE_NAME+ "="+$F(DATASOURCE_NAME);
 	
-	ajaxResponse(url,FIRST_DIV,stateChanged);
+	message_id = FIRST_DIV;
 	
-	
+	doPostsUpdater(PLATE_DATA_LIST_URL,url,stateChangedID,FIRST_DIV); 
 }
-function platedatalistResponse(nextPageID){
+/**
+* Handle after user clicks 'Go' button on datalist page
+* nextPageID - The id of the next page
+* guidxid - the id of the select box
+*/
+function platedatalistResponse(nextPageID,guidxid){
+	var selectObject =  $(guidxid);
+	
+	var selectedVal = selectObject.options[selectObject.selectedIndex].value;
+	$('templateUniqueNamex').value =selectedVal;
+	//$F('templateUniqueNamex')=selectedVal;
+	$(TEMPLATE_UNIQUE_NAME).value=selectedVal;
+	//$F(TEMPLATE_UNIQUE_NAME)=selectedVal;
 
-
-	var oldValue = document.getElementById(TEMPLATE_UNIQUE_NAME).value;
-	//if this oldValue is not in the list then continue if it is then go directly to page	
-	var templateNameValue = '';
-	if(trim(oldValue) == ''){
-		templateNameValue =trim(document.getElementById('templateUniqueNamex').value);
-	}
-	else{
-		templateNameValue = oldValue;
-	}
-
-	 if(templateNameValue == ''){
-		alert(TEMPLATE_ALERT_MESSAGE);
-		return;
-	}
-	document.getElementById(TEMPLATE_UNIQUE_NAME).value=templateNameValue;
-//if displayName is not selected alert and return
-	var isFound='notFound';
-	 for(i = 0 ; i < current_template_list.length;i++){
-	 	var curvar = current_template_list[i];
-	 	if(curvar == templateNameValue){
-	 		isFound = 'found';
-	 		break;
-	 		//go to pdf page if found
-	 	}
-	 	
-	 }
 	 
 	 //go to design page
-	var url=PLATE_QUERY_DATA;
-	url=url+DATASOURCE_NAME+ "="+document.getElementById('datasourceName').value;
-	url=url+"&" + DISPLAY_NAME+ "="+document.getElementById(DISPLAY_NAME).value;
-	url=url+"&"+document.getElementById(MAIN_TABLE_CONSTANT ).value;
+	//var url=PLATE_QUERY_DATA;
+	//var url = DATASOURCE_NAME+ "="+$(DATASOURCE_NAME).value;
+	var url = DATASOURCE_NAME+ "="+$F(DATASOURCE_NAME);
 	
-	ajaxResponse(url,SECOND_DIV,stateChanged);
+	//url=url+"&" + DISPLAY_NAME+ "="+$(DISPLAY_NAME).value;
+	url=url+"&" + DISPLAY_NAME+ "="+$F(DISPLAY_NAME);
+	//url=url+"&"+$(MAIN_TABLE_CONSTANT ).value;
+	url=url+"&"+$F(MAIN_TABLE_CONSTANT );
+	
+	
+	message_id =SECOND_DIV;
+	doPostsUpdater(PLATE_QUERY_DATA,url,doNothingHandler,SECOND_DIV); 
 	actdeactClasses(nextPageID);
-	if(oldValue ==''){
-		changeDivIntoText(ZEROTH_DIV,EFG_SELECTED_MESSAGE + " " + document.getElementById(DISPLAY_NAME).value);
-		changeDivIntoText(FIRST_DIV,TEMPALTE_SELECTED_MESSAGE + " " + templateNameValue);
-	}
-				
+	
+	
+	$('hide').innerHTML ="";			
 }
 /**
 * Change the selected values into text messages
 */
 function changeDivIntoText(pageID, textValue){
-	document.getElementById(pageID).innerHTML = textValue;
+	$(pageID).innerHTML = textValue;
 }
 /**
 * change to next tab
@@ -177,39 +174,16 @@ function actdeactClasses(nextPageID){
 	for(var i = 0; i < pageids.length; i++){
 		var currentID = pageids[i];
 		if(currentID == nextPageID){
-			document.getElementById(nextPageID).className = ACTIVE_TEXT_CLASS;
+			$(nextPageID).className = ACTIVE_TEXT_CLASS;
 		}
 		else{
-			document.getElementById(currentID).className = IN_ACTIVE_TEXT_CLASS;
+			$(currentID).className = IN_ACTIVE_TEXT_CLASS;
 		}
 	}
 
 }
-/**
-* Response to an ajax request
-*/
-function ajaxResponse(url,id,funcname){
-	xmlHttp=GetXmlHttpObject(id)
-	if (xmlHttp==null)
-	{
-		alert (BROWSER_MESSAGE);
-		return;
-	} 
-		
-	xmlHttp.onreadystatechange=funcname; 
-	
-	xmlHttp.open("GET",url,true);
-	xmlHttp.send(null);
-	
-	//display page
-}
-/**
-* Write the response data into a div
-*/
-function setDataHTML(req,id)
-{	
-	document.getElementById(id).innerHTML = req.responseText;	
-}
+
+
 /**
 * Show the progress of a request
 */
@@ -220,55 +194,35 @@ function showProgressMessage(id){
 * Set the value or text for a hidden field
 */
 function textSet(idSel)
-{
+{	
+	$(DATASOURCE_NAME).value = idSel.value;
+	$(DISPLAY_NAME).value  = idSel.text;
 	
-	document.getElementById('datasourceName').value = idSel.value;
+	/*$F(DATASOURCE_NAME) = idSel.value;
+	$F(DISPLAY_NAME)= idSel.text;*/
 	
-
-	document.getElementById(DISPLAY_NAME).value  = idSel.text;
-
 }
 /**
-* Get the request object
+* What should happen when a state changes for a particular request
 */
-function GetXmlHttpObject(id)
+function stateChangedID(loader,obj) 
 { 
+	
 
-	var objXMLHttp=null
-	if (window.XMLHttpRequest)
-	{
-		objXMLHttp=new XMLHttpRequest()
+	//copy the contents of select box into array
+	current_template_list = new Array();
+	var selects = $('guidx');
+	
+	for(i = 0; i < selects.options.length; i++){
+		current_template_list[i] = selects.options[i]; 
 	}
-	else if (window.ActiveXObject)
-	{
-		objXMLHttp=new ActiveXObject("Microsoft.XMLHTTP")
-	}
-	objXMLHttp.id = id;
-	return objXMLHttp
 }
 /**
-* What should happen when a state changes for a particulra request
+* What should happen when a state changes for a particular request
 */
-function stateChanged() 
+function doNothingHandler(loader,obj) 
 { 
-
-	if (xmlHttp.readyState==4 || xmlHttp.readyState=="complete")
-	{ 
-		popHideHyper();
-		setDataHTML(xmlHttp,xmlHttp.id);
-		if(xmlHttp.id == FIRST_DIV){
-			//copy the contents of select box into array
-			current_template_list = new Array();
-			var selects = document.getElementById('guidx');
-			
-			for(i = 0; i < selects.options.length; i++){
-				current_template_list[i] = selects.options[i]; 
-			}
-		}
-	} 
-	else{
-		showProgressMessage(xmlHttp.id);
-	}
+	popHideHyper();
 } 
 /**
 * Collect selected options from a form
@@ -278,14 +232,20 @@ function formData2QueryString(myNodes) {
 	var strSubmit       = '';
 	var formElem;
 	var strLastElemName = '';
+	var curNode = null;
 	
 	for (i = 0; i < myNodes.length; i++) {
+		
        	myNode = myNodes[i];
-       	var myname = myNode.name
+       	var myname = myNode.name;
        	switch (myNode.type) {
                // Text, select, hidden                       
                case 'select-one':
-               strSubmit += myname + '=' + escape(myNode.options[myNode.selectedIndex].text) + '&';
+              	curNode = escape(myNode.options[myNode.selectedIndex].text);
+               if(curNode != null && trim(curNode) != ''){
+               		strSubmit += myname + '=' + curNode + '&';
+               		
+               }
                break;
                case 'select-multiple':
                
@@ -294,16 +254,25 @@ function formData2QueryString(myNodes) {
 				// For each selected option in the parent...
 				for (var j=0; j<obj_o.length; j++) {
 					if (obj_o[j].selected) {
-					   strSubmit += myname + '=' + obj_o[j].value + '&';
+						curNode = obj_o[j].value;
+						if(curNode != null && trim(curNode) != ''){
+						
+						   strSubmit += myname + '=' + curNode+ '&';
+						  
 						}
+					}
 				}
 			}
                 break;
                case 'text':
                case 'hidden':
-               
-                       strSubmit += myname + 
-                       '=' + escape(myNode.value) + '&';
+               		  curNode = myNode.value;
+               		  if(curNode != null && trim(curNode) != ''){
+               		  		
+                       		strSubmit += myname + 
+                       		'=' + escape(myNode.value) + '&';
+                       		
+                     }
                       
                break;
           	}
@@ -312,7 +281,7 @@ function formData2QueryString(myNodes) {
    	
    	return strSubmit;
    }
-  var query2=""; 
+ 
    function findInputsRecursively(elementElem){
 		
 		
@@ -325,7 +294,7 @@ function formData2QueryString(myNodes) {
          case 'hidden':
        
          query2 = query2 + formData2QueryString(elementElem.parentNode.childNodes);
-       
+       	
         break;
         default:
 			var chnodes = elementElem.childNodes;
@@ -337,146 +306,265 @@ function formData2QueryString(myNodes) {
 	}
 }    
    //call from html 
+   
+var message_id = null;
+
+var myGlobalHandlers = {
+	onCreate: function(){
+	//search for all buttons and disable them
+	 	//$(SUBMIT_BUTTON_ID).disabled = true;
+		showProgressMessage(message_id);
+	},
+
+	onComplete: function() {
+		if(Ajax.activeRequestCount == 0){
+			popHideHyper();	
+			//search for all buttons and enable them
+			//$(SUBMIT_BUTTON_ID).disabled = false;
+		}
+	}
+};
+
+Ajax.Responders.register(myGlobalHandlers);
+
+function reportError(request)
+{
+	alert("Error");
+   popHideHyper();	
+   // $(deleteMessageID).innerHTML = '<div class="error"><b>Error communicating with server. Please try again.</b></div>';
+}
+
+
+function doPosts(currenturl,query,handler){
+	
+	
+  	var loader = new Ajax.Request(
+	currenturl, 
+	{
+		method: 'post', 
+		contentType: 'application/x-www-form-urlencoded', 
+		encoding:	'UTF-8',
+		parameters: query, 
+		onComplete: handler, 
+		onFailure: reportError
+	});	
+}
+
+function doPostsUpdater(currenturl,query,handler,objectid){
+	
+	var loader1 = new Ajax.Updater(
+	{success: objectid},
+	currenturl,
+	{method: 'post', 
+	contentType: 'application/x-www-form-urlencoded', 
+	encoding: 'UTF-8', 
+	parameters: query,
+	onComplete: handler, 
+	onFailure: reportError
+	}
+	);		
+}
+function resetGlobalQuery(){
+	
+	query2='';
+}
+
+var xmlHttp = null;
+function stripLastAmp(query){
+
+ var lastindex = query.lastIndexOf('&');
+
+ if(lastindex > -1){
+ 	return query.substring(0,lastindex);
+ }
+ else{
+ 	return query;
+ }
+}
 function handlePost(elementID,nextPageID){
 	
-  	myTable = document.getElementById(elementID);
+  	myTable = $(elementID);
   
   	if(myTable == null){
   		
   		return;
   	}
-  	
+  	query2="";
   	findInputsRecursively(myTable);
-
-	var id=SECOND_DIV;
-	xmlHttp=GetXmlHttpObject(id)
-	if (xmlHttp==null)
-	{
-		alert (BROWSER_MESSAGE);
-		return;
-	} 
-	xmlHttp.overrideMimeType('text/xml'); 
-	setSearchQuery(query2);
-	xmlHttp.onreadystatechange = processSearchQuery;
-	doPosts(xmlHttp,SEARCH_URL,query2);
+	
+	message_id=SECOND_DIV;
+	
+	var query = stripLastAmp(query2); 
+	setSearchQuery(SEARCH_QUERY,query);
+	query2="";
+	//alert("query2 after strip: " + query2);
+	doPosts(SEARCH_URL,query,processSearchQuery);
 	
 	actdeactClasses(nextPageID);
 	
 }
-function doPosts(req,currenturl,query){
-req.open('POST',escape(currenturl), true);
-	req.setRequestHeader('Content-Type', 
- 		'application/x-www-form-urlencoded');
-		
-	req.send(query);	
+
+
+function processSearchQuery(loader,obj){
 	
-}
-function resetGlobalQuery(){
-	query2='';
-}
-function processSearchQuery(){
-	var ready = xmlHttp.readyState;
 	var xml = null;
 	var taxonEntries = null;
 	var taxonEntryCount = null;
 	var counter = null;
+	var response=loader.responseText;
+	
+	//resetGlobalQuery();
+	xml = loader.responseXML;
 	
 	
 	
-	if(ready == READY_STATE_COMPLETE){
-		resetGlobalQuery();
-		xml = xmlHttp.responseXML;
-		taxonEntries = xmlHttp.responseXML.getElementsByTagName('TaxonEntries')[0];
-		taxonEntryCount = taxonEntries.childNodes.length;
-		counter = taxonEntries.childNodes.length;
-		//number of taxa
-		
-		if(counter > 0){
-			document.getElementById(NUMBER_OF_TAXA).value = counter + "";
-			//call design page
-			//with right arguments
-			popHideHyper();
-			//use wait time here..
-			var query = designPageQuery();
-			alert(query);
-			getDesignForm(query);
-			
-			
-		}
-		else{
-			popHideHyper();
-			alert("Query returned zero results");
-			return;
-		}
-	}
-	else{
-		showProgressMessage(xmlHttp.id);
-	}
-	}
-	function getDesignForm(query){
+	//store in a hidden field and send with query to server
+	//also store query so that if response is not present query will be used
+	taxonEntries = loader.responseXML.getElementsByTagName('TaxonEntries')[0];
 	
-	xmlHttp.overrideMimeType('text/html'); 
-	xmlHttp.onreadystatechange = processDesignQuery;
-	
-	doPosts(xmlHttp,DESIGN_FORM_URL,query);
-	
-}
-function processDesignQuery(){
-	var ready = xmlHttp.readyState;
-
-	if(ready == READY_STATE_COMPLETE){
+	if(taxonEntries == null){
+		alert("Query returned zero results");
 		popHideHyper();
-		setDataHTML(xmlHttp,xmlHttp.id);
-			makeColorSelectors();
+		return;
+	}
+	taxonEntryCount = taxonEntries.childNodes.length;
+	if(taxonEntryCount == 0){
+		alert("Query returned zero results");
+		popHideHyper();
+		return;
+	}
+	
+	counter = taxonEntries.childNodes.length;
+	
+	//number of taxa
+	
+	if(counter > 0){
+		$(NUMBER_OF_TAXA).value = counter + "";
+		
+		setSearchQuery(SEARCH_QUERY_XML_RESULTS_1,response);
+		
+		var query = designPageQuery();
+		//resetGlobalQuery();
+		//getDesignForm(query);
+		
+		
 	}
 	else{
-		showProgressMessage(xmlHttp.id);
+		
+		alert("Query returned zero results");
+		return;
 	}
+	
 }
-function designPageQuery(){
-	var tempU = document.getElementById(TEMPLATE_UNIQUE_NAME).value;
+function getDesignForm(query){
+	message_id = SECOND_DIV;
 	
-	var url=DATASOURCE_NAME+ "="+document.getElementById('datasourceName').value;
+	doPostsUpdater(DESIGN_FORM_URL,query,
+	processDesignQuery,SECOND_DIV); 
 	
-	url= url+"&" + DISPLAY_NAME+"="+document.getElementById(DISPLAY_NAME).value;
-	url= url+"&" + ALL_TABLE_NAME+ "="+document.getElementById(MAIN_TABLE_CONSTANT ).value;
-	url = url + "&" + NUMBER_OF_RESULTS+ "=" + document.getElementById(NUMBER_OF_TAXA).value;
-	url = url + "&templateUniqueName=" + tempU;
+}
+
+function processDesignQuery(loader, obj){
 	
-	//FIX ME
-	var guidN = document.getElementById(tempU);
-	if(guidN != null){
-		var guid = guidN.value;
-		url = url + "&" + GUID + "=" + guid;
+	makeColorSelectors();
+	
+}
+function saveConfig(myTableId){
+	alert("Working on it :)");
+	return;
+/*	var tempU = $(TEMPLATE_UNIQUE_NAME).value;
+		var promptAnswer = callPrompt(tempU);
+	if(promptAnswer == null){		
+		return;
 	}
+	else if(promptAnswer == ''){
+		return;
+	}
+
+	$(TEMPLATE_UNIQUE_NAME).value = promptAnswer;
+	var myTable = $(myTableId);
+	var queryToSave = requestPDFSavePage(myTable);
+	
+	var id=THIRD_DIV;
+	message_id = THIRD_DIV;
+	doPosts(SAVE_URL,queryToSave,processSave);
+	resetGlobalQuery();*/
+	//do ajax here
+}
+function processSave(loader,obj){
+	alert(req.responseText);
+}
+function requestPDFSavePage(myTable){
+	findInputsRecursively(myTable);
+	
+	var queryStr = query2 + "&" + constructQuery(false);
+	resetGlobalQuery();
+ 	queryStr=queryStr+"&xslName=xslName.xsl&jsp=defaultJSP.jsp&isDefault=true&searchType=pdfs&search=search";
+ 	return queryStr;
+}
+function constructQuery(addDatasourceName){	
+
+	var url = NUMBER_OF_RESULTS+ "=" + $(NUMBER_OF_TAXA).value;
+	var sq = $(SEARCH_QUERY).value;
+	
+	if(sq != null && trim(sq) != ''){
+	
+		url = url + "&" + sq;
+	}
+	var tempU = $(TEMPLATE_UNIQUE_NAME).value;
+	if(tempU != null && trim(tempU) != ''){
+		url = url + "&templateUniqueName=" + tempU;	
+		var guidN = $(tempU);
+		if(guidN != null){
+			var guid = guidN.value;
+			url = url + "&" + GUID + "=" + guid;
+		}
+	}
+	url=  url+ "&" + $(MAIN_TABLE_CONSTANT).value;
+	if(addDatasourceName){
+		url= url + "&" + DATASOURCE_NAME+ "="+$(DATASOURCE_NAME).value;	
+		url= url+"&" + DISPLAY_NAME+"="+$(DISPLAY_NAME).value;
+	}
+	
 	return url;
 }
+function designPageQuery(){
 
-function setSearchQuery(query){
-	document.getElementById('searchquery').value =query;	
+	return getDesignForm(constructQuery(false));
 }
-function savePrintPage(elementID,nextPageID){
 
-  	var myTable = document.getElementById(elementID);
-  
-  	if(myTable == null){
-  		
-  		return;
-  	}
-  	var trs = myTable.getElementsByTagName("input");
-  	var query = formData2QueryString(trs);
-  	trs = myTable.getElementsByTagName("select");
-	query = query + formData2QueryString(trs);
-
+function setSearchQuery(objectid,query){
 	
-	document.write(query);
-
+	$(objectid).value =query;	
 }
-var objPopUp = null;
-var POP_UP_MESSAGE = "Please wait while your request is processed..";
+function insertQueryResultsXML(){
+
+ 	if(validateForm()){
+ 	
+	  	$(SEARCH_QUERY_XML_RESULTS).value = 
+	  	$(SEARCH_QUERY_XML_RESULTS_1).value;
+		return true;
+	}
+	else{
+	
+		return false;
+	}
+}
+/**
+*defaultValueToUse - to use for prompt. returns when 
+*the user enters something that is not the empty 
+*string or cancels
+*/
+function callPrompt(defaultValueToUse){
+	var promptAnswer = prompt('Enter The Template Name',defaultValueToUse);
+	while(promptAnswer != null && trim(promptAnswer) == ''){
+		promptAnswer = prompt('Enter The Template Name',defaultValueToUse);
+	}
+	return promptAnswer;	
+}
 function popUpHyper(whichLink) {
-	objPopTrig = document.getElementById(whichLink);
-	objPopUp = document.getElementById('popUpMessage');
+	objPopTrig = $(whichLink);
+	objPopUp = $('popUpMessage');
 
 	objPopUp.innerHTML='<b>' + POP_UP_MESSAGE + '</b>';
 
@@ -487,7 +575,7 @@ function popUpHyper(whichLink) {
 	objPopUp.style.left = xPos + 'px';
 	objPopUp.style.top = yPos + 'px';
 	objPopUp.style.visibility = 'visible';
-	document.getElementById('popUpMessage').innerHTML=POP_UP_MESSAGE;
+	$('popUpMessage').innerHTML=POP_UP_MESSAGE;
 	
 }
 function popHideHyper() {

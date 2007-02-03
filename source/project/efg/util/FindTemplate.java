@@ -55,15 +55,13 @@ public class FindTemplate {
 	
 		return this.page;
 	}
+	public XslPageType getXSLPageType() {
 
-	private XslPage getXSL() {
-
-		XslPageType xslPageType = null;
 		
 		try {
 
 			int counter = tps.getTaxonPageTemplateCount();
-			XslPage currentPage = null;
+			
 			for (int i = 0; i < counter; i++) {
 
 				TaxonPageTemplateType tp = 
@@ -76,38 +74,54 @@ public class FindTemplate {
 					if (EFGImportConstants.TAXONPAGE_XSL
 							.equalsIgnoreCase(this.xslType)) {
 							//log.debug("It is a taxon Page");
-						xslPageType = xslFileNames.getXslTaxonPages();
+						return  xslFileNames.getXslTaxonPages();
 
 					} else if (EFGImportConstants.SEARCHPAGE_PLATES_XSL
 							.equalsIgnoreCase(this.xslType)) {
 						//log.debug("It is a palte");
-						xslPageType = xslFileNames.getXslPlatePages();
-					} else{
+						return xslFileNames.getXslPlatePages();
+					} else if (EFGImportConstants.SEARCHPAGE_LISTS_XSL
+							.equalsIgnoreCase(this.xslType)) {
 						//log.debug("It is a list");
-						xslPageType = xslFileNames.getXslListPages();
+						return xslFileNames.getXslListPages();
 						
 					}
-
-					for (int j = 0; j < xslPageType.getXslPageCount(); ++j) {// find
-						currentPage = xslPageType.getXslPage(j);
+					else if (EFGImportConstants.SEARCHPAGE_PDF_XSL 
+							.equalsIgnoreCase(this.xslType)) {
+						//log.debug("It is a list");
+						return xslFileNames.getXslPdfPages();
 						
-						boolean isDefault = currentPage.getIsDefault();
-						//log.debug("currentXSLName : " + currentXSLFile);
-						if (isDefault) {// if
-							this.page = currentPage;
-							break;
-						}
-					}
-					if(this.page == null){
-						this.page = currentPage;
 					}
 					break;
 				}
 			}
 		} catch (Exception ee) {
-			return null;
+			
 		}
 		
+		return null;
+	}
+	private XslPage getXSL() {
+		try {
+			XslPageType xslPageType = getXSLPageType();
+			XslPage currentPage = null;
+			
+			if(xslPageType != null){			
+				for (int j = 0; j < xslPageType.getXslPageCount(); ++j) {// find
+					currentPage = xslPageType.getXslPage(j);					
+					boolean isDefault = currentPage.getIsDefault();
+					if (isDefault) {// if
+						this.page = currentPage;
+						break;
+					}
+				}
+			}
+			if(this.page == null){
+				this.page = currentPage;
+			}
+		} catch (Exception ee) {
+			return null;
+		}
 		return page;
 	}
 

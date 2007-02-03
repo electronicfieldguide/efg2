@@ -112,7 +112,9 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			if (EFGImportConstants.XML.equalsIgnoreCase(displayFormat)) {
 				presentXML(req, res, query.getEFGDocument());
 			} else {
-				req.setAttribute(EFGImportConstants.ALL_TABLE_NAME,query.getMainTableName());
+				req.setAttribute(
+						EFGImportConstants.ALL_TABLE_NAME,
+						query.getMainTableName());
 				present(req, res, query.getEFGDocument());
 			}
 		} catch (Exception ee) {
@@ -207,6 +209,9 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	}
 }
 //$Log$
+//Revision 1.3  2007/02/03 00:04:27  kasiedu
+//*** empty log message ***
+//
 //Revision 1.2  2006/12/08 03:51:00  kasiedu
 //no message
 //
