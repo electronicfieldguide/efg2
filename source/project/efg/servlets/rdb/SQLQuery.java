@@ -529,14 +529,11 @@ public class SQLQuery extends EFGHTTPQuery {
 				orBuffer.append("=");
 				orBuffer.append(pVal);
 			} else {
+				
 				orBuffer.append(" LIKE ");
 				orBuffer.append("\"%");
 			
-				/*if ((this.matchNumber(pVal)) || ("".equals(pVal.trim()))) {//if there is a number or if it is blank
-					orBuffer.append("\"");// match on 'any'
-				} else {
-					orBuffer.append(pVal + "%\"");
-				}*/
+
 				if(index > -1){
 					
 					orBuffer.append("\"");
@@ -544,12 +541,13 @@ public class SQLQuery extends EFGHTTPQuery {
 				else if ("".equals(pVal.trim())) {//if there is a number or if it is blank
 					orBuffer.append("\"");// match on 'any'
 				} else {
+					pVal = replacePercent(pVal);
 					orBuffer.append(pVal + "%\"");
 				}
 			}
 			orBuffer.append(" ) ");
 			if (!"".equals(pVal.trim())) {
-			
+				pVal = replacePercent(pVal);
 				if (this.paramValuesTable.containsKey(legalName.toLowerCase())) {//could have parameter with multiple values
 					String oldVal = (String) paramValuesTable.get(legalName
 							.toLowerCase());

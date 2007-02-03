@@ -99,15 +99,15 @@ java.io.StringReader
 
 	String selectedDS="EFG selected: " + displayName;
 	String queryResults = "Query results: " + numberOfResults;
-	
+
 	Hashtable paperSizes = new Hashtable();
-	paperSizes.put("8.5x11","8.5\"" + "x 11\"");
-	paperSizes.put("8.5x14","8.5\"" +  "x 14\"");
-	paperSizes.put("11x17","11\"" +  "x 17\"");
+	paperSizes.put("EFG_LETTER","8.5\"" + "x 11\"");
+	paperSizes.put("EFG_LEGAL","8.5\"" +  "x 14\"");
+	paperSizes.put("EFG_792_1224","11\"" +  "x 17\"");
 	paperSizes.put("A4","A4");
-	paperSizes.put("3x5","3\"" + "x 5\"");
-	paperSizes.put("4x6","4\"" + "x 6\"");
-	paperSizes.put("5x7","5\"" + "x 7\"");
+	paperSizes.put("EFG_216_360","3\"" + "x 5\"");
+	paperSizes.put("EFG_288_432","4\"" + "x 6\"");
+	paperSizes.put("EFG_360_504","5\"" + "x 7\"");
 	
 	int numberoftitles = 4; 
 	String creditsText = "Credits/Copyright Info Goes Here";
@@ -151,7 +151,7 @@ java.io.StringReader
 
 %>
 
- <form method="post" action="<%=context%>/efg2pdfconfig" target="_blank" onsubmit="return insertQueryResultsXML('pdfFillFormID');">
+ <form method="post" action="<%=context%>/efg2pdfconfig" target="_blank" onsubmit="return insertQueryResultsXML();">
 
 	<table class="form" id="pdfFillFormID">
 		<tr>

@@ -46,8 +46,10 @@ public interface RegularExpresionConstants {
 	//A number followed by 2 dashes 
 	 String matchNumberDashDash = "\\d+\\s*-\\s*-";
 	//	A number followed by a dashes 
-	  String matchNumberDash = "\\d+\\s*-";
-	 String patternStr = "[A-Z]+";// 
+	String matchNumberDash = "\\d+\\s*-";
+	String patternStr = "[A-Z]+"; 
+	String HTTP_QUERY_PERCENT_SIGN = "%2520";
+	String REPLACEMENT_PERCENT_SIGN=" ";
 	//PATTERNS
 	 Pattern matchNumberDashNumberPattern = Pattern.compile(matchNumberDashNumber);
 	 Pattern matchNumberDashDashPattern = Pattern.compile(matchNumberDashDash);

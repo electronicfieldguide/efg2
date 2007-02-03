@@ -39,6 +39,7 @@ project.efg.util.StatisticalMeasureTypeSorter
   }
    
 %>	
+<form id="form_search_id">
 	<table class="searchpage">
 		<tr>
 			<td>      
@@ -149,9 +150,11 @@ project.efg.util.StatisticalMeasureTypeSorter
   			</td>
 		</tr>
 	</table>
-	<%  if(doSearches != null){	%>
-	<input type="submit" name="submit" value="Go"  onclick="javascript:handlePost('searchPageID','platedesignform')";/>
+	
+ 	</form>
+ 	<%  if(doSearches != null){	%>
+	<input type="submit" name="submit" value="Go"  onclick="javascript:postSearch('searchPageID','platedesignform','form_search_id')";/>
  	<%}
  	else{%>
  	<table id="searchPageID"><tr><td>The selected datasource has no searchable characters</td></tr><table>
- 	<%}%>	
+ 	<%}%>

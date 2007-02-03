@@ -157,6 +157,8 @@ project.efg.util.EFGDisplayObject
 		<script language="JavaScript" src="javascripts/efg2_ajaxfunctions.js" type="text/javascript"></script>
 		<script language="JavaScript" src="javascripts/ecritterz_biz_colorpicker.js" type="text/javascript"></script>
 		<script language="JavaScript" src="javascripts/efg2_otherfunctions.js" type="text/javascript"></script>
+		<script language="JavaScript" src="javascripts/searchpage.js" type="text/javascript"></script>
+
 	</head
 	<body>
 	<%@ include file="platemakertop.html" %>

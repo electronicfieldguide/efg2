@@ -399,15 +399,19 @@ public class PDFMaker {
 							}
 						}
 					} else if (label
-							.equalsIgnoreCase("generalsettingpapersize")) {// we
+							.equalsIgnoreCase("generalsettingpapersize")) {
+						val = cv.getValue();
+						// we
 						// do
 						// not
 						// know
 						// who
 						// you
 						// are
+						System.out.println("Papersize: " + val);
 						if (val != null && !val.trim().equals("")) {
-							PAPER_SIZE = (Rectangle) paperSizes.get(val.trim());
+							this.PAPER_SIZE = (Rectangle) paperSizes.get(val.trim());
+							System.out.println("Papersize: " + this.PAPER_SIZE);
 						}
 					}
 

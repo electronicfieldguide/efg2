@@ -8,6 +8,7 @@ pageids[0] = "platechoosedata";
 pageids[1] = "platequerydata";
 pageids[2] = "platedesignform";
 pageids[3] = "platesaveorprint";
+var FORM_SEARCH_ID='form_search_id';
 var SAVE_URL='/efg2pdfconfig';
 var DATASOURCE_NAME='dataSourceName';
 var SEARCH_QUERY_XML_RESULTS='searchqueryresultsxml';
@@ -117,7 +118,7 @@ function platechoosedataResponse(idSel){
 		window.location.href = CHOOSE_DATA_URL;
 		return;
 	}
-	textSet(idSel);
+	setDatasourceDisplayName(idSel);
 	
 	//var url=PLATE_DATA_LIST_URL;
 	
@@ -138,27 +139,15 @@ function platedatalistResponse(nextPageID,guidxid){
 	
 	var selectedVal = selectObject.options[selectObject.selectedIndex].value;
 	$('templateUniqueNamex').value =selectedVal;
-	//$F('templateUniqueNamex')=selectedVal;
 	$(TEMPLATE_UNIQUE_NAME).value=selectedVal;
-	//$F(TEMPLATE_UNIQUE_NAME)=selectedVal;
-
-	 
 	 //go to design page
-	//var url=PLATE_QUERY_DATA;
-	//var url = DATASOURCE_NAME+ "="+$(DATASOURCE_NAME).value;
-	var url = DATASOURCE_NAME+ "="+$F(DATASOURCE_NAME);
-	
-	//url=url+"&" + DISPLAY_NAME+ "="+$(DISPLAY_NAME).value;
-	url=url+"&" + DISPLAY_NAME+ "="+$F(DISPLAY_NAME);
-	//url=url+"&"+$(MAIN_TABLE_CONSTANT ).value;
-	url=url+"&"+$F(MAIN_TABLE_CONSTANT );
-	
-	
+	var url = DATASOURCE_NAME+ "="+$(DATASOURCE_NAME).value;
+		
+	url=url+"&" + DISPLAY_NAME+ "="+$(DISPLAY_NAME).value;
+	url=url+"&"+$(MAIN_TABLE_CONSTANT ).value;
 	message_id =SECOND_DIV;
 	doPostsUpdater(PLATE_QUERY_DATA,url,doNothingHandler,SECOND_DIV); 
-	actdeactClasses(nextPageID);
-	
-	
+	actdeactClasses(nextPageID);	
 	$('hide').innerHTML ="";			
 }
 /**
@@ -191,16 +180,12 @@ function showProgressMessage(id){
 	popUpHyper(id);
 }
 /*
-* Set the value or text for a hidden field
+* Set the datasource and the displayname fields
 */
-function textSet(idSel)
+function setDatasourceDisplayName(idSel)
 {	
 	$(DATASOURCE_NAME).value = idSel.value;
-	$(DISPLAY_NAME).value  = idSel.text;
-	
-	/*$F(DATASOURCE_NAME) = idSel.value;
-	$F(DISPLAY_NAME)= idSel.text;*/
-	
+	$(DISPLAY_NAME).value  = idSel.text;	
 }
 /**
 * What should happen when a state changes for a particular request
@@ -210,7 +195,7 @@ function stateChangedID(loader,obj)
 	
 
 	//copy the contents of select box into array
-	current_template_list = new Array();
+	current_template_list = new Object();
 	var selects = $('guidx');
 	
 	for(i = 0; i < selects.options.length; i++){
@@ -224,87 +209,8 @@ function doNothingHandler(loader,obj)
 { 
 	popHideHyper();
 } 
-/**
-* Collect selected options from a form
-*/
-function formData2QueryString(myNodes) {
 
-	var strSubmit       = '';
-	var formElem;
-	var strLastElemName = '';
-	var curNode = null;
-	
-	for (i = 0; i < myNodes.length; i++) {
-		
-       	myNode = myNodes[i];
-       	var myname = myNode.name;
-       	switch (myNode.type) {
-               // Text, select, hidden                       
-               case 'select-one':
-              	curNode = escape(myNode.options[myNode.selectedIndex].text);
-               if(curNode != null && trim(curNode) != ''){
-               		strSubmit += myname + '=' + curNode + '&';
-               		
-               }
-               break;
-               case 'select-multiple':
-               
-               if (myNode.options!=null) {
-				var obj_o = myNode.options;
-				// For each selected option in the parent...
-				for (var j=0; j<obj_o.length; j++) {
-					if (obj_o[j].selected) {
-						curNode = obj_o[j].value;
-						if(curNode != null && trim(curNode) != ''){
-						
-						   strSubmit += myname + '=' + curNode+ '&';
-						  
-						}
-					}
-				}
-			}
-                break;
-               case 'text':
-               case 'hidden':
-               		  curNode = myNode.value;
-               		  if(curNode != null && trim(curNode) != ''){
-               		  		
-                       		strSubmit += myname + 
-                       		'=' + escape(myNode.value) + '&';
-                       		
-                     }
-                      
-               break;
-          	}
-   	}
-   	 strSubmit = strSubmit + strLastElemName;
-   	
-   	return strSubmit;
-   }
  
-   function findInputsRecursively(elementElem){
-		
-		
-		
-        switch (elementElem.type) {
-             // Text, select, hidden                       
-         case 'select-one':
-         case 'select-multiple':
-         case 'text':
-         case 'hidden':
-       
-         query2 = query2 + formData2QueryString(elementElem.parentNode.childNodes);
-       	
-        break;
-        default:
-			var chnodes = elementElem.childNodes;
-			
-			  for(i = 0 ; i < chnodes.length; i++){
-			  	findInputsRecursively(chnodes[i]);
-			  }	
-        	break;
-	}
-}    
    //call from html 
    
 var message_id = null;
@@ -334,7 +240,20 @@ function reportError(request)
    // $(deleteMessageID).innerHTML = '<div class="error"><b>Error communicating with server. Please try again.</b></div>';
 }
 
-
+function doFormPosts(currenturl,formid,handler){
+	
+	
+  	var loader = new Ajax.Request(
+	currenturl, 
+	{
+		method: 'post', 
+		contentType: 'application/x-www-form-urlencoded', 
+		encoding:	'UTF-8',
+		parameters: Form.serialize($(formid)), 
+		onComplete: handler, 
+		onFailure: reportError
+	});	
+}
 function doPosts(currenturl,query,handler){
 	
 	
@@ -369,7 +288,6 @@ function resetGlobalQuery(){
 	query2='';
 }
 
-var xmlHttp = null;
 function stripLastAmp(query){
 
  var lastindex = query.lastIndexOf('&');
@@ -381,30 +299,22 @@ function stripLastAmp(query){
  	return query;
  }
 }
-function handlePost(elementID,nextPageID){
+function postSearch(elementID,nextPageID,formID){
 	
   	myTable = $(elementID);
   
-  	if(myTable == null){
-  		
+  	if(myTable == null){	
   		return;
   	}
-  	query2="";
-  	findInputsRecursively(myTable);
-	
 	message_id=SECOND_DIV;
-	
-	var query = stripLastAmp(query2); 
-	setSearchQuery(SEARCH_QUERY,query);
-	query2="";
-	//alert("query2 after strip: " + query2);
-	doPosts(SEARCH_URL,query,processSearchQuery);
-	
+	setSearchQuery(SEARCH_QUERY,Form.serialize($(formID)));
+	doFormPosts(SEARCH_URL,formID,processSearchQuery);	
 	actdeactClasses(nextPageID);
-	
 }
-
-
+/**
+*
+*
+*/
 function processSearchQuery(loader,obj){
 	
 	var xml = null;
@@ -412,7 +322,7 @@ function processSearchQuery(loader,obj){
 	var taxonEntryCount = null;
 	var counter = null;
 	var response=loader.responseText;
-	
+
 	//resetGlobalQuery();
 	xml = loader.responseXML;
 	
@@ -444,6 +354,7 @@ function processSearchQuery(loader,obj){
 		setSearchQuery(SEARCH_QUERY_XML_RESULTS_1,response);
 		
 		var query = designPageQuery();
+		//alert(query);
 		//resetGlobalQuery();
 		//getDesignForm(query);
 		
@@ -495,12 +406,12 @@ function processSave(loader,obj){
 	alert(req.responseText);
 }
 function requestPDFSavePage(myTable){
-	findInputsRecursively(myTable);
+	/*findInputsRecursively(myTable);
 	
 	var queryStr = query2 + "&" + constructQuery(false);
 	resetGlobalQuery();
  	queryStr=queryStr+"&xslName=xslName.xsl&jsp=defaultJSP.jsp&isDefault=true&searchType=pdfs&search=search";
- 	return queryStr;
+ 	return queryStr;*/
 }
 function constructQuery(addDatasourceName){	
 
@@ -537,6 +448,7 @@ function setSearchQuery(objectid,query){
 	
 	$(objectid).value =query;	
 }
+
 function insertQueryResultsXML(){
 
  	if(validateForm()){

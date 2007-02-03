@@ -359,5 +359,7 @@ public interface EFGImportConstants {
 	String TEMPLATE_CONFIG_PAGE = "/configTaxonPage";
 
 	String PDF_SUCCESS_PAGE = TEMPLATE_JSP_LOCATION+  "/PDFSuccessPage.html";
+
+
 	
 }// EFGImportConstants

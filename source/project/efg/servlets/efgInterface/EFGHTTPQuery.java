@@ -65,7 +65,17 @@ public abstract class EFGHTTPQuery {
 			LoggerUtilsServlet.logErrors(ee);
 		}
 	}
-	
+	/**
+	 * Replace % sign in the string with a space character
+	 * @param toReplace
+	 * @return replaced string
+	 */
+	public String replacePercent(String toReplace){
+		
+			return toReplace.replaceAll(RegularExpresionConstants.HTTP_QUERY_PERCENT_SIGN,
+					RegularExpresionConstants.REPLACEMENT_PERCENT_SIGN);
+		
+	}
 	public void setMainDataTableName(String mainTableName) {
 		this.mainTableName = mainTableName;
 	}
@@ -83,7 +93,7 @@ public abstract class EFGHTTPQuery {
 		}
 		 String query = this.buildQuery(req);
 		 //	call cache here
-		 
+		 //System.out.println("Query: " + query);
 		 this.efgDocument = new EFGDocument();
 		 //log.debug("Query: " + query);
 		 TaxonEntries entries = this.executeQuery(query);

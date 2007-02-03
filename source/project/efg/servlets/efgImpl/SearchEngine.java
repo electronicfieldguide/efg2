@@ -108,6 +108,7 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 			//TO DO: MERGE present and presentXML
 			//log.debug("Get query instance");
 			EFGHTTPQuery query = EFGHTTPQueryFactory.getQueryInstance(req);
+			
 			//log.debug("After get query instance");
 			if (EFGImportConstants.XML.equalsIgnoreCase(displayFormat)) {
 				presentXML(req, res, query.getEFGDocument());
@@ -209,6 +210,9 @@ public class SearchEngine extends HttpServlet implements EFGImportConstants {
 	}
 }
 //$Log$
+//Revision 1.4  2007/02/03 23:46:25  kasiedu
+//*** empty log message ***
+//
 //Revision 1.3  2007/02/03 00:04:27  kasiedu
 //*** empty log message ***
 //
