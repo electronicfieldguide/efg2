@@ -104,7 +104,7 @@ java.io.StringReader
 	paperSizes.put("EFG_LETTER","8.5\"" + "x 11\"");
 	paperSizes.put("EFG_LEGAL","8.5\"" +  "x 14\"");
 	paperSizes.put("EFG_792_1224","11\"" +  "x 17\"");
-	paperSizes.put("A4","A4");
+	paperSizes.put("EFG_A4","A4");
 	paperSizes.put("EFG_216_360","3\"" + "x 5\"");
 	paperSizes.put("EFG_288_432","4\"" + "x 6\"");
 	paperSizes.put("EFG_360_504","5\"" + "x 7\"");

@@ -278,7 +278,9 @@ public class EFG2PDF{
 			int numberOfCellsNotWritten = 
 				(this.numberOfCellsCounter % this.pdfMaker.getNumberColumns());
 			if(numberOfCellsNotWritten > 0){
-				this.writeEmptyCells(numberOfCellsNotWritten);
+				this.writeEmptyCells(
+						this.pdfMaker.getNumberColumns() - 
+						numberOfCellsNotWritten);
 			}
 			document.add(pdfTable);
 		} catch (Exception e) {

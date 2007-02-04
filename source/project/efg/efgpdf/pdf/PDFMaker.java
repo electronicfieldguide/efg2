@@ -408,10 +408,11 @@ public class PDFMaker {
 						// who
 						// you
 						// are
-						System.out.println("Papersize: " + val);
 						if (val != null && !val.trim().equals("")) {
-							this.PAPER_SIZE = (Rectangle) paperSizes.get(val.trim());
-							System.out.println("Papersize: " + this.PAPER_SIZE);
+							Object ps = paperSizes.get(val.trim());
+							if(ps != null){
+								this.PAPER_SIZE = (Rectangle)ps ;
+							}
 						}
 					}
 
