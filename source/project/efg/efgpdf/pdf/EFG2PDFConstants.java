@@ -5,7 +5,7 @@ import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
 public interface EFG2PDFConstants {
-	//36,36,72,36
+
 	// read from a properties file
 	int DEFAULT_LEFT_MARGIN = 36;
 
@@ -27,7 +27,7 @@ public interface EFG2PDFConstants {
 	/**
 	 * maps to Padding around image
 	 */
-	double DEFAULT_WEIGHT_FRAME_AROUND_IMAGE = 0;
+	float DEFAULT_WEIGHT_FRAME_AROUND_IMAGE = 0;
 
 	/**
 	 * border weight around image
@@ -56,13 +56,12 @@ public interface EFG2PDFConstants {
 	
 	boolean DEFAULT_TEXT_ABOVE_IMAGE=false;
 
-	String DEFAULT_COLOR_SPACE_AROUND_DISPROP_IMAGES = "#00FF00";
-	
+		
 	int DEFAULT_ROWS = 4;
 
 	int DEFAULT_COLUMNS = 4;
 	
-	float DEFAULT_FRACTION_OF_IMAGE_IN_CELL= 3/5;
+	
 
 	
 	int DEFAULT_FONTNAME = Font.HELVETICA;
@@ -70,15 +69,22 @@ public interface EFG2PDFConstants {
 	int DEFAULT_FONTSIZE = Font.DEFAULTSIZE;
 
 	int DEFAULT_FONTTYPE = Font.NORMAL;
-	
-	int DEFAULT_UNDERLINE = Font.UNDERLINE;
 
 	boolean DEFAULT_ISBOLD = false;
 
 	boolean DEFAULT_ISITALICS = false;
 	
 	boolean DEFAULT_ISUNDERLINE = false;
+
+	boolean DEFAULT_SHOW_ALL_IMAGES = false;
+
+	boolean DEFAULT_SKIP_CELL_IF_NO_IMAGES = true;
+	
 	float DEFAULT_UNDERLINE_THICKNESS= 0.2f;
 	float DEFAULT_UNDERLINE_Y_POSITION=-0.2f;
-	float DEFAULT_HEADER_HEIGHT = 40;
+	
+	float DEFAULT_UNDERLINE_HEADER_THICKNESS= 0.8f;
+	float DEFAULT_UNDERLINE_HEADER_Y_POSITION=-0.3f;
+	float DEFAULT_UNDERLINE_FOOTER_THICKNESS= 0.4f;
+	float DEFAULT_UNDERLINE_FOOTER_Y_POSITION=-1f;
 }

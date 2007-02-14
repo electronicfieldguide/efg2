@@ -5,6 +5,7 @@ package project.efg.servlets.efgImpl;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -14,9 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import project.efg.efgDocument.EFGDocument;
 import project.efg.efgpdf.pdf.EFG2PDF;
+import project.efg.efgpdf.pdf.EFG2PDFInterface;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.util.EFGImagesConstants;
+import project.efg.util.EFGImportConstants;
 
 /**
  * @author jacob.asiedu
@@ -28,8 +31,9 @@ public class EFG2PDFConverter extends EFGServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private File imagesDirectory = null;
 	
+	
+	private File mediaResourceDirectory;
 
 	
 	/**
@@ -40,7 +44,7 @@ public class EFG2PDFConverter extends EFGServlet {
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 		String realPath = getServletContext().getRealPath("/");
-		this.imagesDirectory = new File(realPath, EFGImagesConstants.EFG_IMAGES_DIR);
+		this.mediaResourceDirectory = new File(realPath,EFGImagesConstants.EFG_IMAGES_DIR); 
 	}
 
 	/**
@@ -74,16 +78,17 @@ public class EFG2PDFConverter extends EFGServlet {
 	    		if(efgDoc == null || xslPage == null){
 	    			throw new Exception("Error in Generating pdf. XslPage and efgDoc request attributes must be present!!");
 	    		}
-
+				java.io.Writer stringw = new StringWriter();
+				xslPage.marshal(stringw);
+			
 				response.setHeader("Expires", "0");
 				response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 				response.setHeader("Pragma", "public");
 				//setting the content type
 				response.setContentType("application/pdf");
 				out =  response.getOutputStream();
-	    		EFG2PDF efg2pdf = new EFG2PDF(xslPage,efgDoc,this.imagesDirectory,out);
-	    		
-	    		 efg2pdf.writePdfToStream();
+	    		EFG2PDFInterface efg2pdf = new EFG2PDF();
+	    		 efg2pdf.writePdfToStream(efgDoc,xslPage,out,this.mediaResourceDirectory);
 	    		 out.flush();
 	    		 out.close();
 		 }

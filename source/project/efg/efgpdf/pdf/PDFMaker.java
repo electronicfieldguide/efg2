@@ -1,9 +1,14 @@
 package project.efg.efgpdf.pdf;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 import project.efg.templates.taxonPageTemplates.GroupType;
@@ -11,20 +16,23 @@ import project.efg.templates.taxonPageTemplates.GroupTypeItem;
 import project.efg.templates.taxonPageTemplates.GroupsType;
 import project.efg.templates.taxonPageTemplates.GroupsTypeItem;
 import project.efg.templates.taxonPageTemplates.XslPage;
+import project.efg.util.EFGImportConstants;
+import project.efg.util.PDFGUIConstants;
+import project.efg.util.RegularExpresionConstants;
 
+import com.lowagie.text.Element;
 import com.lowagie.text.Font;
-import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 
 
-public class PDFMaker {
+public class PDFMaker implements PDFGUIConstants{
 
 	/*
 	 * Variables for handling cell properties
 	 */
 	private int WEIGHT_WHITE_SPACE_AROUND_IMAGE;
 
-	private double WEIGHT_FRAME_AROUND_IMAGE;
+	private float WEIGHT_FRAME_AROUND_IMAGE;
 
 	/**
 	 * border weight around image
@@ -49,9 +57,6 @@ public class PDFMaker {
 	 */
 
 	private boolean FILL_SPACE_AROUND_DISP_IMAGES;
-
-	private String COLOR_SPACE_AROUND_DISPROP_IMAGES;
-
 	/**
 	 * End variable definitions
 	 * 
@@ -62,9 +67,8 @@ public class PDFMaker {
 
 	private int NUMBER_OF_COLUMNS;
 
-	private boolean isTextAboveImage;
-
-	private List headerImagesList;
+	
+	private List footerImagesList;
 
 	private CaptionFontObject mainTitleObject;
 
@@ -74,44 +78,82 @@ public class PDFMaker {
 
 	private CaptionFontObject copyRight2Object;
 
-	private List captionsList;
-
+	private SortedSet captionsBelowSet;
+	private SortedSet captionsAboveSet;
 	private List sortingList;
-
+	private boolean SHOW_ALL_IMAGES;
+	private boolean SKIP_CELL_IF_NO_IMAGES;
 	private List image2DisplayFields;
 
-	
-
-	
 	private XslPage xslPage;
-
-	static Map paperSizes = new HashMap();
-	//FIXME read from properties or Spring file
+	static Map alignMap;
+	
+	
+	static Map paperSizes;
 	static {
-		// read from a properties file
-		//use same file to populate html table
-		paperSizes.put("EFG_LETTER", PageSize.LETTER);
-		paperSizes.put("EFG_LEGAL", PageSize.LEGAL);
-		paperSizes.put("EFG_792_1224", new Rectangle(792, 1224));
-		paperSizes.put("EFG_A4", PageSize.A4);
-		paperSizes.put("EFG_216_360", new Rectangle(216, 360));
-		paperSizes.put("EFG_288_432", new Rectangle(288, 432));
-		paperSizes.put("EFG_360_504", new Rectangle(360, 504));
+		loadPaperSizeProperties();
 	}
-
+	static {	
+		loadAlignmentProperties();	
+	}
+	/**
+	 * @param property
+	 * @param papersizesuffix
+	 * @return
+	 */
+	private static String[] parseEFG(String property, String separator) {
+		String[] splits = property.split(separator);
+		
+		return  splits;
+		
+	}
+	private static void loadAlignmentProperties(){
+		alignMap = new HashMap();
+		alignMap.put("left", new Integer(Element.ALIGN_LEFT));
+		alignMap.put("right",new Integer(Element.ALIGN_RIGHT));
+		alignMap.put("center", new Integer(Element.ALIGN_CENTER));
+		alignMap.put("top", new Integer(Element.ALIGN_TOP));
+		alignMap.put("bottom", new Integer(Element.ALIGN_BOTTOM));	
+		alignMap.put("middle", new Integer(Element.ALIGN_MIDDLE));	
+		alignMap.put("justified", new Integer(Element.ALIGN_JUSTIFIED));
+	}
+	private static void loadPaperSizeProperties(){
+		paperSizes = new HashMap();
+		Properties props = EFGImportConstants.EFGProperties;
+		String papersizesuffix = props.getProperty("papersize_suffix");
+		Enumeration enum2 = props.propertyNames();
+		
+		while(enum2.hasMoreElements()){
+			String property = (String)enum2.nextElement();
+			if(property.endsWith(papersizesuffix)){
+				String[] key = parseEFG(property,papersizesuffix);
+				String[] val = parseEFG(props.getProperty(property), 
+						RegularExpresionConstants.COMMASEP);
+				
+				paperSizes.put(key[0], 
+						new Rectangle(Integer.parseInt(val[0]),
+								Integer.parseInt(val[1])));
+				
+			}
+		}
+	
+	}
 	public PDFMaker(XslPage xslPage) {
-		
-		
 		this.xslPage = xslPage;
+		this.setSKIP_CELL_IF_NO_IMAGES(true);
+		//show only one image
+		this.setSHOW_ALL_IMAGES(false);
+		this.initObjects();
+		this.readProperties();
 		
-		initObjects();
 	}
-
 	private void initObjects(){
-		this.captionsList = new ArrayList();
+		this.captionsBelowSet = new TreeSet(new EFGRankObjectSortingCriteria());
+		this.captionsAboveSet= new TreeSet(new EFGRankObjectSortingCriteria());
 		this.sortingList = new ArrayList();
+		
 		this.image2DisplayFields = new ArrayList();
-		this.headerImagesList = new ArrayList();
+		this.footerImagesList = new ArrayList();
 
 		this.mainTitleObject = new CaptionFontObject();
 
@@ -120,70 +162,65 @@ public class PDFMaker {
 		this.copyRight1Object = new CaptionFontObject();
 
 		this.copyRight2Object = new CaptionFontObject();
-		this.initDefaults();	
-		this.processPDF();
+		this.initDefaults();
 	}
 	// read off a properties file
 	private void initDefaults() {
 
-		this.WEIGHT_WHITE_SPACE_AROUND_IMAGE =
-			EFG2PDFConstants.DEFAULT_WEIGHT_WHITE_SPACE_AROUND_IMAGE;
+		this.WEIGHT_WHITE_SPACE_AROUND_IMAGE = EFG2PDFConstants.DEFAULT_WEIGHT_WHITE_SPACE_AROUND_IMAGE;
 
-		this.WEIGHT_FRAME_AROUND_IMAGE =
-			EFG2PDFConstants.DEFAULT_WEIGHT_FRAME_AROUND_IMAGE;
+		this.WEIGHT_FRAME_AROUND_IMAGE = EFG2PDFConstants.DEFAULT_WEIGHT_FRAME_AROUND_IMAGE;
 
-		this.COLOR_FOR_FRAME_AROUND_IMAGE = 
-			EFG2PDFConstants.DEFAULT_COLOR_FOR_FRAME_AROUND_IMAGE;// border
+		this.COLOR_FOR_FRAME_AROUND_IMAGE = EFG2PDFConstants.DEFAULT_COLOR_FOR_FRAME_AROUND_IMAGE;// border
 																									// color
 																									// around
 																									// image
-		this.WEIGHT_WHITE_SPACE_BETWEEN_ELEMENTS = 
-			EFG2PDFConstants.DEFAULT_WEIGHT_WHITE_SPACE_BETWEEN_ELEMENTS;
 
-		this.WEIGHT_BOUNDING_BOX = 
-			EFG2PDFConstants.DEFAULT_WEIGHT_BOUNDING_BOX;
+		this.WEIGHT_WHITE_SPACE_BETWEEN_ELEMENTS = EFG2PDFConstants.DEFAULT_WEIGHT_WHITE_SPACE_BETWEEN_ELEMENTS;
 
-		this.COLOR_FOR_BOUNDING_BOX = 
-			EFG2PDFConstants.DEFAULT_COLOR_FOR_BOUNDING_BOX;
+		this.WEIGHT_BOUNDING_BOX = EFG2PDFConstants.DEFAULT_WEIGHT_BOUNDING_BOX;
 
-		this.FILL_SPACE_AROUND_DISP_IMAGES = 
-			EFG2PDFConstants.DEFAULT_FILL_SPACE_AROUND_DISP_IMAGES;
+		this.COLOR_FOR_BOUNDING_BOX = EFG2PDFConstants.DEFAULT_COLOR_FOR_BOUNDING_BOX;
 
-		this.COLOR_SPACE_AROUND_DISPROP_IMAGES = 
-			EFG2PDFConstants.DEFAULT_COLOR_SPACE_AROUND_DISPROP_IMAGES;
+		this.FILL_SPACE_AROUND_DISP_IMAGES = EFG2PDFConstants.DEFAULT_FILL_SPACE_AROUND_DISP_IMAGES;
 
 		this.PAPER_SIZE = EFG2PDFConstants.DEFAULT_PAPER_SIZE;
 
 		this.NUMBER_OF_ROWS = EFG2PDFConstants.DEFAULT_ROWS;
 
 		this.NUMBER_OF_COLUMNS = EFG2PDFConstants.DEFAULT_COLUMNS;
-
 	}
 
 
-
+	public boolean isCaptionsExists(){
+		if(this.getCaptionsAbove().size() > 0 ||
+				this.getCaptionsBelow().size() > 0){
+			return true;
+		}
+		return false;
+	}
+	private CaptionFontObject getDefaultSortingField(){
+		List list = new ArrayList();
+		if(this.getCaptionsBelow().size() > 0){
+			list.addAll(this.getCaptionsBelow());
+			return (CaptionFontObject)list.get(0);
+		}
+		if(this.getCaptionsAbove().size() > 0){
+			list.addAll(this.getCaptionsAbove());
+			return (CaptionFontObject)list.get(0);
+		}
+		return null;
+	}
 	/**
 	 * 
 	 * @return
 	 */
 	public List getSortingFields() {
-		if(this.sortingList.size() == 0){
-			if(this.getCaptions().size() > 0){
-			CaptionFontObject cfo 	= 
-				(CaptionFontObject)this.getCaptions().get(0);
-				if(cfo != null){
-					this.sortingList.add(cfo.getCaption());
+		if(this.sortingList.size() == 0){			
+			CaptionFontObject cfo = getDefaultSortingField();			
+			if(cfo != null){
+				this.sortingList.add(cfo.getCaption());
 
-				}
-				else{
-					if(this.getImage2DisplayFields().size() > 0){
-						String images = 
-							(String)this.getImage2DisplayFields().get(0);
-						
-
-						this.sortingList.add(images);
-					}
-				}
 			}
 			else{
 				if(this.getImage2DisplayFields().size() > 0){
@@ -193,6 +230,13 @@ public class PDFMaker {
 				}
 			}
 		}
+		else{
+			if(this.getImage2DisplayFields().size() > 0){
+				String images = 
+					(String)this.getImage2DisplayFields().get(0);
+				this.sortingList.add(images);
+			}
+		}		
 		return this.sortingList;
 	}
 
@@ -208,10 +252,16 @@ public class PDFMaker {
 	 * 
 	 * @return
 	 */
-	public List getCaptions() {
-		return this.captionsList;
+	public Set getCaptionsBelow() {
+		return this.captionsBelowSet;
 	}
-
+	/**
+	 * 
+	 * @return
+	 */
+	public Set getCaptionsAbove() {
+		return this.captionsAboveSet;
+	}
 	/**
 	 * 
 	 * @return
@@ -228,13 +278,7 @@ public class PDFMaker {
 		return this.COLOR_FOR_FRAME_AROUND_IMAGE;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getCOLOR_SPACE_AROUND_DISPROP_IMAGES() {
-		return this.COLOR_SPACE_AROUND_DISPROP_IMAGES;
-	}
+
 
 	/**
 	 * 
@@ -248,8 +292,8 @@ public class PDFMaker {
 	 * 
 	 * @return
 	 */
-	public List getHeaderImagesList() {
-		return this.headerImagesList;
+	public List getFooterImagesList() {
+		return this.footerImagesList;
 	}
 
 	/**
@@ -260,13 +304,7 @@ public class PDFMaker {
 		return this.image2DisplayFields;
 	}
 
-	/**
-	 * 
-	 * @return
-	 */
-	public boolean isTextAboveImage() {
-		return this.isTextAboveImage;
-	}
+
 
 	/**
 	 * 
@@ -280,7 +318,7 @@ public class PDFMaker {
 	 * 
 	 * @return
 	 */
-	public double getWEIGHT_FRAME_AROUND_IMAGE() {
+	public float getWEIGHT_FRAME_AROUND_IMAGE() {
 		return WEIGHT_FRAME_AROUND_IMAGE;
 	}
 
@@ -366,20 +404,20 @@ public class PDFMaker {
 				if (cv != null) {
 					String label = cv.getLabel();
 					String val = null;
-					if (label.equalsIgnoreCase("generalsettingsort")) {
+					if (label.equalsIgnoreCase(GENERAL_SETTING_SORT)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							this.sortingList.add(val);
 						}
 					} else if (label
-							.equalsIgnoreCase("generalsettingimageColumn")) {
+							.equalsIgnoreCase(GENERAL_SETTING_IMAGE_COLUMN)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							this.image2DisplayFields.add(val.trim());
 						}
 
 					} else if (label
-							.equalsIgnoreCase("generalsettingrowdimension")) {
+							.equalsIgnoreCase(GENERAL_SETTING_ROW_DIMENSION)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							try {
@@ -389,7 +427,7 @@ public class PDFMaker {
 							}
 
 						}
-					} else if (label.equalsIgnoreCase("columndimension")) {
+					} else if (label.equalsIgnoreCase(GENERAL_SETTING_COLUMN_DIMENSION)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							try {
@@ -399,26 +437,69 @@ public class PDFMaker {
 							}
 						}
 					} else if (label
-							.equalsIgnoreCase("generalsettingpapersize")) {
+							.equalsIgnoreCase(GENERAL_SETTING_PAPER_SIZE)) {// we
+						//the size of the paper
 						val = cv.getValue();
-						// we
-						// do
-						// not
-						// know
-						// who
-						// you
-						// are
 						if (val != null && !val.trim().equals("")) {
-							Object ps = paperSizes.get(val.trim());
-							if(ps != null){
-								this.PAPER_SIZE = (Rectangle)ps ;
-							}
+							PAPER_SIZE = (Rectangle) paperSizes.get(val.trim());
 						}
+				} else if (label
+						.equalsIgnoreCase(GENERAL_SETTING_IMAGE_NUMBER)) {
+					//Show all images (default is to display the first one only) 
+					val = cv.getValue();
+					if (val != null && !val.trim().equals("")) {
+						this.setSHOW_ALL_IMAGES(true);
+						
 					}
+					else{
+						this.setSHOW_ALL_IMAGES(false);
+						
+					}
+				} else if (label
+						.equalsIgnoreCase(GENERAL_SETTING_SHOW_CAPTIONS)) {
+					//Always display captions (default is to skip if no image is available)
+					val = cv.getValue();
+					if (val != null && !val.trim().equals("")) {
+						this.setSKIP_CELL_IF_NO_IMAGES(false);
+					}
+					else{
+						this.setSKIP_CELL_IF_NO_IMAGES(true);
+					}
+				}
 
 				}
 			}
 		}
+	}
+	/**
+	 * @return true if Show all images
+	 * false - display the first image only 
+	 */
+	public boolean isSHOW_ALL_IMAGES() {
+		return this.SHOW_ALL_IMAGES;
+	}
+	/**
+	 * @param true if Show all images
+	 * false - display the first image only 
+	 */
+	public void setSHOW_ALL_IMAGES(boolean show_all_images) {
+		this.SHOW_ALL_IMAGES = show_all_images;
+	}
+	/**
+	 * @return true- skip if no image is available
+	 * false do not skip cell always display captions.
+	 */
+
+	public boolean isSKIP_CELL_IF_NO_IMAGES() {
+		return this.SKIP_CELL_IF_NO_IMAGES;
+	}
+	
+	/**
+	 * @param true skip if no image is available
+	 * false do not skip cell always display captions.
+	 */
+	public void setSKIP_CELL_IF_NO_IMAGES(boolean skip_cell_if_no_images) {
+		this.SKIP_CELL_IF_NO_IMAGES = skip_cell_if_no_images;
 	}
 
 	/**
@@ -431,7 +512,7 @@ public class PDFMaker {
 		GroupTypeItem key = null;
 		CharacterValue cv = null;
 		String caption = null;
-
+		String align = ALIGN_LEFT;
 		FontObject font = new FontObject();
 		boolean isUnderLine = false;
 
@@ -445,7 +526,7 @@ public class PDFMaker {
 					String label = cv.getLabel();
 					String val = null;
 
-					if (label.toLowerCase().endsWith("font")) {
+					if (label.toLowerCase().endsWith(FONT)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							try {
@@ -458,12 +539,8 @@ public class PDFMaker {
 							}
 						}
 
-					} else if (label.toLowerCase().indexOf("captiontext") > -1) {
-						val = cv.getValue();
-						if (val != null && !val.trim().equals("")) {
-							caption = val;
-						}
-					} else if (label.equalsIgnoreCase("textsettingsize")) {
+					} 
+					else if (label.toLowerCase().endsWith(SIZE)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							try {
@@ -473,22 +550,38 @@ public class PDFMaker {
 
 							}
 						}
-					} else if (label.equalsIgnoreCase("textsettingbold")) {
+					}
+					else if (label.toLowerCase().endsWith(BOLD)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							font.setBold(true);
 						}
-					} else if (label.equalsIgnoreCase("textsettingitalics")) {
+					}
+					else if (label.toLowerCase().endsWith(ITALICS)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							font.setItalics(true);
 						}
-					} else if (label.equalsIgnoreCase("textsettingunderline")) {
+					}
+					else if (label.toLowerCase().endsWith(UNDER_LINE)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							isUnderLine = true;
 						}
-					} else {// we do not know who you are
+					}
+					else if (label.toLowerCase().endsWith(ALIGN)) {
+						val = cv.getValue();
+						if (val != null && !val.trim().equals("")) {
+							align = val;
+						}
+					}
+					else if (label.toLowerCase().indexOf(CAPTION_TEXT) > -1) {
+						val = cv.getValue();
+						if (val != null && !val.trim().equals("")) {
+							caption = val;
+						}
+					} 
+					 else {// we do not know who you are
 						// throw exception
 					}
 				}
@@ -496,49 +589,25 @@ public class PDFMaker {
 		}
 		if (caption != null && !caption.trim().equals("")) {
 			CaptionFontObject co = new CaptionFontObject();
+			co.setRank(group.getRank());
 			co.setCaption(caption);
 			co.setFontObject(font);
 			co.setUnderLine(isUnderLine);
+			co.setAlignment(align);
 			return co;
 		}
 		return null;
 	}
 
-	private void createTextAboveImage(GroupType group) {
-		GroupTypeItem key = null;
-		CharacterValue cv = null;
 
-		for (java.util.Enumeration e = group.enumerateGroupTypeItem(); e
-				.hasMoreElements();) {
-			key = (GroupTypeItem) e.nextElement();
 
-			if (key != null) {
-				cv = key.getCharacterValue();
-				if (cv != null) {
-					String label = cv.getLabel();
-					String val = null;
-					val = cv.getValue();
-					if (val != null && !val.trim().equals("")) {
-						if (label.equalsIgnoreCase("textsettingimageabove")) {
-							this.isTextAboveImage = true;
-						}
-					}
-				}
-			}
-		}
-	}
 	/**
 	 * 
-	 * @param pdfConfigs
-	 * @param guid
-	 * @param displayName
-	 * @return
+	 * @param tp
 	 */
-	private boolean processPDF() {
+	private void readProperties() {
 		
-		if(this.xslPage == null){
-			return false;
-		}
+		
 		GroupsType groups = this.xslPage.getGroups();
 		GroupsTypeItem[] groupsArray = groups.getGroupsTypeItem();
 
@@ -547,62 +616,45 @@ public class PDFMaker {
 			GroupType group = gpt.getGroup();
 			String label = group.getLabel();
 
-			if (label.toLowerCase().equals("generalsettings")) {
+			if (label.toLowerCase().equals(GENERAL_SETTINGS)) {
 				createGeneralSettings(group);
-			} else if (label.toLowerCase().equals("textsettings")) {
-				createTextAboveImage(group);
-			} else if (label.toLowerCase().equals("titles")) {
+			}else if (label.toLowerCase().equals(TITLES)) {
 				createTitles(group);
-			} else if (label.toLowerCase().equals("images")) {
+			} else if (label.toLowerCase().equals(IMAGES)) {
 				createHeaderImages(group);
-			} else if (label.toLowerCase().equals("imagewhitespaces")) {
+			} else if (label.toLowerCase().equals(IMAGE_WHITE_SPACES)) {
 				createWhiteSpaceAroundImage(group);
-			} else if (label.toLowerCase().equals("elementwhitespaces")) {
+			} else if (label.toLowerCase().equals(ELEMENT_WHITE_SPACES)) {
 				createElementWhiteSpace(group);
-			} else if (label.toLowerCase().equals("imageframeweights")) {
+			} else if (label.toLowerCase().equals(IMAGE_FRAME_WEIGHTS)) {
 				createImageFrameWeightAroundImage(group);
-			} else if (label.toLowerCase().equals("boundingboxweights")) {
+			} else if (label.toLowerCase().equals(BOUNDING_BOX_WEIGHTS)) {
 				createBoundingBoxWeight(group);
-			} else if (label.toLowerCase().equals("fillbackgrounds")) {
-				createColorFillAroundDisPropImage(group);
-			} else if (label.toLowerCase().indexOf("captionstext") > -1) {// returns
+			}  else if (label.toLowerCase().indexOf(CAPTIONS_TEXT_ABOVE) > -1) {// returns
 																			// captions
 				// order
 				// of
 				// caption
 				CaptionFontObject cfo = createCaptionFont(group);
 				if (cfo != null) {
-					this.captionsList.add(cfo);
+					this.captionsAboveSet.add(cfo);
+				}
+			} else if (label.toLowerCase().indexOf(CAPTIONS_TEXT_BELOW) > -1) {// returns
+				// captions
+				// order
+				// of
+				// caption
+				CaptionFontObject cfo = createCaptionFont(group);
+				if (cfo != null) {
+					this.captionsBelowSet.add(cfo);
 				}
 			}
-		}
-		return true;	
-	}
-	/**
-	 * 
-	 * @param group
-	 */
-	private void createColorFillAroundDisPropImage(GroupType group) {
-		for (java.util.Enumeration e = group.enumerateGroupTypeItem(); e
-				.hasMoreElements();) {
-			GroupTypeItem key = (GroupTypeItem) e.nextElement();
+			
 
-			if (key != null) {
-				CharacterValue cv = key.getCharacterValue();
-				if (cv != null) {
-					String label = cv.getLabel();
-					String val = cv.getValue();
-					if (val != null && !val.trim().equals("")) {
-						if (label.equalsIgnoreCase("fillbackground")) {
-							this.FILL_SPACE_AROUND_DISP_IMAGES = true;
-						} else if (label.equalsIgnoreCase("boundingboxcolor")) {
-							this.COLOR_SPACE_AROUND_DISPROP_IMAGES = val;
-						}
-					}
-				}
-			}
 		}
 	}
+
+
 
 	/**
 	 * 
@@ -619,7 +671,7 @@ public class PDFMaker {
 					String label = cv.getLabel();
 					String val = cv.getValue();
 					if (val != null && !val.trim().equals("")) {
-						if (label.equalsIgnoreCase("boundingboxweight")) {
+						if (label.equalsIgnoreCase(BOUNDING_BOX_WEIGHT)) {
 							try {
 								int wspace = Integer.parseInt(val);
 								this.WEIGHT_BOUNDING_BOX = wspace;
@@ -627,7 +679,7 @@ public class PDFMaker {
 
 							}
 
-						} else if (label.equalsIgnoreCase("boundingboxcolor")) {
+						} else if (label.equalsIgnoreCase(BOUNDING_BOX_COLOR)) {
 							this.COLOR_FOR_BOUNDING_BOX = val;
 						}
 					}
@@ -651,7 +703,7 @@ public class PDFMaker {
 					String label = cv.getLabel();
 					String val = cv.getValue();
 					if (val != null && !val.trim().equals("")) {
-						if (label.equalsIgnoreCase("imageframeweight")) {
+						if (label.equalsIgnoreCase(IMAGE_FRAME_WEIGHT)) {
 							try {
 								int wspace = Integer.parseInt(val);
 								this.WEIGHT_FRAME_AROUND_IMAGE = wspace;
@@ -659,7 +711,7 @@ public class PDFMaker {
 
 							}
 
-						} else if (label.equalsIgnoreCase("imageframecolor")) {
+						} else if (label.equalsIgnoreCase(IMAGE_FRAME_COLOR)) {
 							this.COLOR_FOR_FRAME_AROUND_IMAGE = val;
 						}
 					}
@@ -743,7 +795,7 @@ public class PDFMaker {
 
 					String val = cv.getValue();
 					if (val != null && !val.trim().equals("")) {
-						this.headerImagesList.add(val);
+						this.footerImagesList.add(val);
 					}
 				}
 			}
@@ -777,7 +829,6 @@ public class PDFMaker {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							if (label.equalsIgnoreCase("maintitle")) {
-
 								this.mainTitleObject.setCaption(val);
 							} else if (label.equalsIgnoreCase("maintitlefont")) {
 								try {
@@ -797,11 +848,11 @@ public class PDFMaker {
 
 								}
 							} else if (label.equalsIgnoreCase("titleformat")) {
-								if (val.equalsIgnoreCase("bold")) {
+								if (val.equalsIgnoreCase(BOLD)) {
 									this.mainTitleObject.setFontBold(true);
-								} else if (val.equalsIgnoreCase("italics")) {
+								} else if (val.equalsIgnoreCase(ITALICS)) {
 									this.mainTitleObject.setFontItalics(true);
-								} else if (val.equalsIgnoreCase("underline")) {
+								} else if (val.equalsIgnoreCase(UNDER_LINE)) {
 									this.mainTitleObject.setUnderLine(true);
 								}
 							}
@@ -834,13 +885,13 @@ public class PDFMaker {
 
 								}
 							} else if (label.equalsIgnoreCase("subtitleformat")) {
-								if (val.equalsIgnoreCase("bold")) {
+								if (val.equalsIgnoreCase(BOLD)) {
 									this.subTitleObject.setFontBold(true);
 								}
-								if (val.equalsIgnoreCase("italics")) {
+								if (val.equalsIgnoreCase(ITALICS)) {
 									this.subTitleObject.setFontItalics(true);
 								}
-								if (val.equalsIgnoreCase("underline")) {
+								if (val.equalsIgnoreCase(UNDER_LINE)) {
 									this.subTitleObject.setUnderLine(true);
 								}
 							}
@@ -862,23 +913,21 @@ public class PDFMaker {
 															.get(val
 																	.toLowerCase())));
 								} catch (Exception ee) {
-
 								}
 							} else if (label.equalsIgnoreCase("creditstitle1size")) {
 								try {
 									int tempVal = Integer.parseInt(val);
 									this.copyRight1Object.setFontSize(tempVal);
 								} catch (Exception ee) {
-
 								}
 							} else if (label.equalsIgnoreCase("creditstitle1format")) {
-								if (val.equalsIgnoreCase("bold")) {
+								if (val.equalsIgnoreCase(BOLD)) {
 									this.copyRight1Object.setFontBold(true);
 								}
-								if (val.equalsIgnoreCase("italics")) {
+								if (val.equalsIgnoreCase(ITALICS)) {
 									this.copyRight1Object.setFontItalics(true);
 								}
-								if (val.equalsIgnoreCase("underline")) {
+								if (val.equalsIgnoreCase(UNDER_LINE)) {
 									this.copyRight1Object.setUnderLine(true);
 								}
 							}
@@ -901,23 +950,21 @@ public class PDFMaker {
 															.get(val
 																	.toLowerCase())));
 								} catch (Exception ee) {
-
 								}
 							} else if (label.equalsIgnoreCase("creditstitle2size")) {
 								try {
 									int tempVal = Integer.parseInt(val);
 									this.copyRight2Object.setFontSize(tempVal);
 								} catch (Exception ee) {
-
 								}
 							} else if (label.equalsIgnoreCase("creditstitle2format")) {
-								if (val.equalsIgnoreCase("bold")) {
+								if (val.equalsIgnoreCase(BOLD)) {
 									this.copyRight2Object.setFontBold(true);
 								}
-								if (val.equalsIgnoreCase("italics")) {
+								if (val.equalsIgnoreCase(ITALICS)) {
 									this.copyRight2Object.setFontItalics(true);
 								}
-								if (val.equalsIgnoreCase("underline")) {
+								if (val.equalsIgnoreCase(UNDER_LINE)) {
 									this.copyRight2Object.setUnderLine(true);
 								}
 							}
@@ -931,29 +978,45 @@ public class PDFMaker {
 		}
 
 	}
-
 	/**
 	 * 
 	 * @author jacob.asiedu
 	 * 
 	 */
-	class CaptionFontObject {
+	class CaptionFontObject extends EFGRankObject{
 		private String caption;
-
+		private int align;
 		private boolean isUnderLine = EFG2PDFConstants.DEFAULT_ISUNDERLINE;
 
 		private List states;
 
 		private FontObject fontObject;
 
+	
+		public String toString(){
+			return this.caption;
+		}
+		public void setAlignment(String align) {
+			Integer al =(Integer)alignMap.get(align.toLowerCase());
+			if(al != null){
+				this.align = al.intValue();
+			}
+		}
+		public int getAlignment(){
+			return this.align;
+		}
 		/**
 		 * 
 		 * 
 		 */
 		public CaptionFontObject() {
+			super();
 			this.fontObject = new FontObject();
 			this.states = new ArrayList();
+			this.align=Element.ALIGN_LEFT;
 		}
+
+	
 
 		/**
 		 * 
@@ -1057,7 +1120,7 @@ public class PDFMaker {
 		 */
 		public boolean equals(Object o) {
 			CaptionFontObject co = (CaptionFontObject) o;
-			return this.getCaption().equals(co.getCaption());
+			return this.getCaption().equals(co.getCaption()) && this.getRank()==co.getRank();
 		}
 
 		/**
@@ -1082,6 +1145,7 @@ public class PDFMaker {
 		public List getStates() {
 			return this.states;
 		}
+
 	}
 
 	/**
@@ -1184,6 +1248,19 @@ public class PDFMaker {
 			return new Font(this.getFontName(), this.getFontsize(), this
 					.getFontType());
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isTextAboveImage() {
+		return this.getCaptionsAbove().size() > 0;
+	}
+	/**
+	 * @return
+	 */
+	public boolean isTextBelowImage() {
+		return this.getCaptionsBelow().size() > 0;
 	}
 
 }

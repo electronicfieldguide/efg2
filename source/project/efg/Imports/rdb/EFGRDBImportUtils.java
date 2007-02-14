@@ -196,6 +196,7 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 				//	//log.debug("about to process file: " + newFile.getAbsolutePath());
 					InputStream input = newFile.toURL().openStream();
 					EFGProperties = new Properties(EFGProperties);
+					
 					EFGProperties.load(input);
 					if(input != null){
 						input.close();
@@ -216,6 +217,9 @@ public class EFGRDBImportUtils implements EFGRDBConstants {
 }
 
 // $Log$
+// Revision 1.4  2007/02/14 02:44:10  kasiedu
+// no message
+//
 // Revision 1.3  2007/01/14 15:55:15  kasiedu
 // no message
 //

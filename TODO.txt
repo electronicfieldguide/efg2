@@ -1,27 +1,36 @@
-1. Links on EFGLists to other datasources must be fixed.
-2. Refactor to make source code independent of relational databases.
-3. Make possible to import only data/metadata.
-4. Replace info file columns with the following:
-	- html page shows each field name with radio buttons
-		-numeric
-		-numericRange
-		-isNarrative
-		-categorical
-		-mediaresources/lists/simple
-
-	-display order - left of each field is a text box already filled with numbers.
-	-reorder that sorts the list
-	
-		
-5. Add deployer
-	- deploy webapps
-	- deploy images
-	- deploy templates and management tools
-
-6. Add a tool that manages MySQL (grants and revokes privileges etc).
-   Should be a front end to the import code..Make users enter their MySQl admin passwords.
+Done: A hack for now.Prevent searches of more than a 100
+1. Remove imports and replace with a script
+3. Jenns bug about going back to top of back after serach..
 
 
-7. states:
- resourceLink|a,b,c
+4. Use get to get pdf with a 
+session id after using post to generate it.
+
+
+Using Fonts:
+
+1. Create a fonts directory
+2. Copy all .tff,.otf,.ttc,.afm files that you would like 
+to use into this folder
+3. This folder must be accesible to your web server(Tomcat).
+You can even create this directory under Tomcat
+
+4. Open efg Importer and select the set Fonts directory option
+5. The efg2 Importer must be able to copy files to your server
+6. Click on the configure fonts option
+to indicate which fonts you want embedded in pdf
+7. Click OK, a configuration file will be copied to your server
+
+For Advanced users edit pdfPlateFonts.xml
+and set embedded to true for the fonts that
+you want embedded.
+Note that there may be licensing issues involved and it is 
+your responsibility to make sure that the fonts you embed are
+correctly licensed.
+
+Also note that the fonts you select will be made available
+on the user interface for the plate maker
+
+Restart Tomcat every time you make changes to the configuration file
+
 	 

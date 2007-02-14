@@ -1,0 +1,30 @@
+$Id$
+
+Using ftp to copy efg documents
+
+1. use efg export to export data source
+2. The generated zip file must be ftped/copy to
+server where efg web application is.
+3.User must have enough privileges to read/write.
+4. unzip file  and copy resulting directories to 
+efg2 folder.
+5. Copy efgSQL to anywhere on your machine
+6. Open the efgSQL and note the name
+of the .sql file inside.
+For purposes of this documenttation lets call it:
+SQL_FILE.sql.
+
+
+7. There must be an existing efg2 database table
+with all the helper tables- 
+
+8. log into mySQL
+9. At the mysql prompt type : use efg2
+10. Then type : source LOCATION_OF_efgSQL_FOLDER\SQL_FILE.sql
+
+Where  LOCATION_OF_efgSQL_FOLDER is the
+full path to the efgSQL folder you copied in 
+point 5) above and SQL_FILE.sql is the name of
+the .sql file located in that folder.
+
+11. 

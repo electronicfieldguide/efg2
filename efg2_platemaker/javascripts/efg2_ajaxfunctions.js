@@ -53,6 +53,7 @@ var THIRD_DIV = "thirddiv";
 var FOURTH_DIV = "fourthdiv";
 var BROWSER_MESSAGE="Browser does not support HTTP Request";
 var NUMBER_OF_TAXA = "numberoftaxa";
+var TEMP_MAX_NUMBER=100;
 var SELECTED_TEMPLATE="selectedTemplate";
 var GUID = "guid";
 var ALL_TABLE_NAME = "ALL_TABLE_NAME";
@@ -71,6 +72,23 @@ var POP_UP_MESSAGE = "Please wait while your request is processed..";
 *"The $() function is a handy shortcut to the all-too-frequent 
 *document.getElementById() function of the DOM.."
 */
+/**
+*
+*/
+function AddCaptionRow(currenturl,
+						spanid,
+						captionid,
+						numberofcaptionsid){
+	var currentU = JSP_ROOT + currenturl;
+	var caption =  $(captionid);
+	var params = caption.name + "=" + caption.value;
+ 	caption =  $(numberofcaptionsid);
+	params = params + "&" + caption.name + "=" + caption.value;
+	doPostsUpdater(currentU,params,doNothingHandler,spanid,Insertion.Before);		
+}
+/**
+*
+*/			
 function deleteTemplate(templateid){
 	var selectObject =  $(templateid);
 	
@@ -137,9 +155,13 @@ function platechoosedataResponse(idSel){
 function platedatalistResponse(nextPageID,guidxid){
 	var selectObject =  $(guidxid);
 	
-	var selectedVal = selectObject.options[selectObject.selectedIndex].value;
-	$('templateUniqueNamex').value =selectedVal;
-	$(TEMPLATE_UNIQUE_NAME).value=selectedVal;
+		if(selectObject != null){
+		var selectedVal = selectObject.options[selectObject.selectedIndex].value;
+		
+		$('templateUniqueNamex').value =selectedVal;
+		$(TEMPLATE_UNIQUE_NAME).value=selectedVal;
+	}
+	
 	 //go to design page
 	var url = DATASOURCE_NAME+ "="+$(DATASOURCE_NAME).value;
 		
@@ -269,8 +291,7 @@ function doPosts(currenturl,query,handler){
 	});	
 }
 
-function doPostsUpdater(currenturl,query,handler,objectid){
-	
+function doPostsUpdater(currenturl,query,handler,objectid,insertion){
 	var loader1 = new Ajax.Updater(
 	{success: objectid},
 	currenturl,
@@ -278,6 +299,7 @@ function doPostsUpdater(currenturl,query,handler,objectid){
 	contentType: 'application/x-www-form-urlencoded', 
 	encoding: 'UTF-8', 
 	parameters: query,
+	insertion: insertion,
 	onComplete: handler, 
 	onFailure: reportError
 	}
@@ -349,16 +371,18 @@ function processSearchQuery(loader,obj){
 	//number of taxa
 	
 	if(counter > 0){
-		$(NUMBER_OF_TAXA).value = counter + "";
-		
-		setSearchQuery(SEARCH_QUERY_XML_RESULTS_1,response);
-		
-		var query = designPageQuery();
-		//alert(query);
-		//resetGlobalQuery();
-		//getDesignForm(query);
-		
-		
+		if(counter > TEMP_MAX_NUMBER){
+			alert("Your query returned more than a 100 results. \n" + 
+			"Please increase your search criteria and try again");
+			return;
+		}
+		else{
+			$(NUMBER_OF_TAXA).value = counter + "";
+			
+			setSearchQuery(SEARCH_QUERY_XML_RESULTS_1,response);
+			
+			var query = designPageQuery();
+		}
 	}
 	else{
 		

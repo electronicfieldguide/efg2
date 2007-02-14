@@ -46,9 +46,10 @@ while(iter.hasNext()) {
 <% 
 }	
 %>		
-<br/> <br/>
-<br/> <br/>
+<br/>
 <div id="hide">
+<!--
 <input type="submit" name="submit" value="Delete" onclick="JavaScript:deleteTemplate('guidx');"/>
+-->
 <input type="submit" name="submit" value="Go" onclick="JavaScript:platedatalistResponse('platequerydata','guidx');"/>
 </div>

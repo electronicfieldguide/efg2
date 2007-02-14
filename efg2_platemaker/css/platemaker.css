@@ -35,6 +35,11 @@ margin-bottom: 15px;
 table.pdfchoices {
 margin-left: 6px;
 }
+table.captions {
+width: 90%;
+background-color: #ffffff;
+border: 3px solid black;
+}
 td.menubartitle {
 font-size: 1.2em;
 font-family: sans, helvetica, verdana, arial;
@@ -85,6 +90,14 @@ padding-top: 30px;
 padding-left: 10px;
 vertical-align: top;
 }
+td.formitemcaption {
+margin: 20px;
+font-family: sans, helvetica, verdana, arial;
+padding-top: 5px;
+padding-left: 10px;
+vertical-align: top;
+border: 0px solid darkgreen;
+}
 td.uploadnote {
 font-family: sans, helvetica, verdana, arial;
 font-weight: normal;
@@ -130,6 +143,20 @@ margin-bottom: 30px;
 background-color: white;
 border: #9C9C9C solid 1px;
 }
+td.sampleimage {
+text-align: center;
+padding-top: 0px;
+padding-bottom: 15px;
+}
+td.captionrow {
+padding-left: 20px;
+}
+td.captionbutton {
+text-align: right;
+padding-right: 80px;
+padding-top: 5px;
+padding-bottom: 10px;
+}
 a {
 color: #003300;
 text-decoration: none;
@@ -162,14 +189,17 @@ font-size: .8em;
 text-decoration: underline;
 color: black;
 }
-p.captionrow {
-padding-left: 20px;
-}
 .configitem {
 font-family: sans, helvetica, verdana, arial;
 font-weight: normal;
 font-size: .8em;
 padding-left: 15px;
+}
+.subconfigitem {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .7em;
+padding-left: 35px;
 }
 .boldcheck {
 font-family: sans, helvetica, verdana, arial;
@@ -198,4 +228,19 @@ font-size: .75em;
 }
 hr {
 border-top: solid 1px #000;
+}
+input.addrow {
+background-color: #f5fff1;
+border: 2px #333333 groove;
+font-weight: bold;
+font-size: 8pt;
+padding: 3px;
+color: #006633;
+}
+input.addrow:hover
+{
+color: #f5fff1;
+background-color: #006633;
+border: 2px groove #333333;
+outline: 1px solid #333333;
 }

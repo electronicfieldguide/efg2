@@ -215,7 +215,7 @@ public class EFGContextListener implements ServletContextListener {
 	}
 	private void cleanCommonImportExport(File dir) {
 		
-		String[] files = dir.list();
+		
 		if (!dir.exists()) {
 			
 			return;
@@ -672,6 +672,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.6  2007/02/14 02:44:40  kasiedu
+// no message
+//
 // Revision 1.5  2007/01/14 15:56:31  kasiedu
 // no message
 //

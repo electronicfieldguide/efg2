@@ -59,7 +59,6 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig {
 		try {
 			String isSavePDF = req
 			.getParameter(EFGImportConstants.IS_SAVE_PDF);
-			
 			if(isSavePDF != null && 
 					!isSavePDF.trim().equals("")){//we are not saving we are doing testing
 				this.forwardPage(req,res,true,true);
@@ -105,7 +104,6 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig {
 				this.add2Groups(req, xslPage);
 				//allow writing to streams also
 				req.setAttribute("xslPage", xslPage);
-				
 				req.setAttribute("efgDoc", efgDoc);
 				//come with forward page as parameter
 				//if it does not exists then forward to the 

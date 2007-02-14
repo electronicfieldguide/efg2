@@ -18,6 +18,7 @@
 		  {
 			
 			if(!validateForm()){
+					
 				return false;
 			}
 			else{
@@ -54,7 +55,7 @@
 	
 	  <!-- This iframe is used as a place for the post to load -->
 	  <iframe id='target_upload' name='target_upload' src='' style='display: none'></iframe>
-	  <form enctype="multipart/form-data" name="form" method="post" action="importEFG" onsubmit="return startStatusCheck();" target="target_upload">
+	  <form enctype="multipart/form-data" name="form" method="post" action="efg2/importEFG" onsubmit="return startStatusCheck();" target="target_upload">
 	   EFG2 Zip File: <input id="importFile" name="importFile" type="file" size="100"> <br/>
 		<br/>
 	    <input id="submitButton" type="submit" value="Import Data"/>
