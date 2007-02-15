@@ -81,8 +81,7 @@ public interface EFGImportConstants {
 	String THUMBS_FILE_NAME = EFGProperties.getProperty("thumbs_file_name");
 	String JSP_NAME = EFGProperties.getProperty("jsp_name");
 	String TEMPLATE_UNIQUE_NAME=EFGProperties.getProperty("template_unique_name");
-	String GUID=EFGProperties.getProperty("template_guid");
-	
+		
 	String templateImagesDirectory =EFGProperties.getProperty("templateImagesDirectory");
 	String templateCSSDirectory=EFGProperties.getProperty("templateCSSDirectory");
 	String templateJavascriptDirectory=EFGProperties.getProperty("templateJavascriptDirectory");
@@ -137,8 +136,7 @@ public interface EFGImportConstants {
 	String ERROR_PAGE="ErrorPage.jsp";
 	String UNIQUEID_STR="uniqueID";
 	String ISDEFAULT_STR="isDefault";
-	String XSL_STRING = "xslName";
-	String DEFAULT_PLATES_DISPLAY = "Default Thumbnails";
+		String DEFAULT_PLATES_DISPLAY = "Default Thumbnails";
 	String DEFAULT_LISTS_DISPLAY = "Default Text List";
 	String SUBMIT = "submit";
 
@@ -150,18 +148,24 @@ public interface EFGImportConstants {
 	String TEXT_XML = "text/xml";
 	String HTML = "HTML";
 	String XML = "xml";
-	String SEARCHSTR = "searchStr";
-	String REQUEST_TYPE="request_type";
-	String DATASOURCE_NAME = "dataSourceName";
-	
-	String MAX_DISPLAY = "maxDisplay";
 
-	String DEFAULT_MAX_DISPLAY = "defaultMaxDisplay";
+	String REQUEST_TYPE="request_type";
+
+	
 
 	String MAX_DISPLAY_IGNORE = "ignore";
-
-	String DISPLAY_FORMAT = "displayFormat";
-	String DISPLAY_NAME="displayName";
+	String DEFAULT_MAX_DISPLAY = "defaultMaxDisplay";
+	
+	String DATASOURCE_NAME = EFGProperties.getProperty("dataSourceName");
+	String MAX_DISPLAY = EFGProperties.getProperty("maxDisplay");
+	String DISPLAY_FORMAT = EFGProperties.getProperty("displayFormat");
+	String SEARCHSTR = EFGProperties.getProperty("searchStr");
+	String SEARCHTYPE = EFGProperties.getProperty("searchType");
+	String DISPLAY_NAME=EFGProperties.getProperty("displayName");
+	String XSL_STRING =EFGProperties.getProperty("xslName");
+	String GUID=EFGProperties.getProperty("template_guid");
+	String ALL_TABLE_NAME ="ALL_TABLE_NAME";	
+	String UNDER_SCORE = EFGProperties.getProperty("underscore");
 	
 	
 	String TEMPLATE_ERROR_PAGE = "/templateJSP/TemplateError.jsp";
@@ -170,7 +174,6 @@ public interface EFGImportConstants {
 	String SEARCH_STR = "search?" + EFGImportConstants.DATASOURCE_NAME + "=";
 	String DEFAULT_SEARCH_FILE ="defaultSearchFile" + XSL_EXT;
 	String DEFAULT_TAXON_PAGE_FILE ="defaultTaxonPageFile" + XSL_EXT;
-	String SEARCHTYPE = "searchType";
 	String EFG_ANY="EFG_ANY_OPTION";
 
 	String MYSQL = "MySQL";
@@ -330,7 +333,6 @@ public interface EFGImportConstants {
 	String EFG_WILDCARD = "_EFG_WILDCARD";
 	String EFG_NUMERIC = "_EFG_NUMERIC";
 	
-	String ALL_TABLE_NAME = "ALL_TABLE_NAME";
 	String EFG_RDB_TABLES = EFGProperties.getProperty("efg_rdb_tables_name");
 	String MR_CHECKBOX_SER_NAME = "mr_checkBox.out";
 	String IMAGE_DROP_BACKGROUND_IMAGE  = 
@@ -359,6 +361,7 @@ public interface EFGImportConstants {
 	String TEMPLATE_CONFIG_PAGE = "/configTaxonPage";
 
 	String PDF_SUCCESS_PAGE = TEMPLATE_JSP_LOCATION+  "/PDFSuccessPage.html";
+
 
 
 	

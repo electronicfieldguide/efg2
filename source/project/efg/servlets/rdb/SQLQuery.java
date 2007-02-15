@@ -28,7 +28,6 @@
 package project.efg.servlets.rdb;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
@@ -59,7 +58,7 @@ import project.efg.util.UnicodeToASCIIFilter;
 public class SQLQuery extends EFGHTTPQuery {
 	protected Hashtable paramValuesTable; //holds the parameter values of this query
 	protected Hashtable wildCardTable;
-	protected Collection specialParams;
+	
 
 	protected QueryExecutor queryExecutor;
 
@@ -576,7 +575,6 @@ public class SQLQuery extends EFGHTTPQuery {
 		if ((specialParams.contains(paramName.toLowerCase()))
 				|| (paramName.equalsIgnoreCase(EFGImportConstants.SEARCHSTR.toLowerCase()))
 				||  ("".equals(paramName.trim()))) {
-			//log.debug("Skipping current paramName: " + paramName);
 			return true;
 		}
 		return false;
@@ -649,23 +647,4 @@ public class SQLQuery extends EFGHTTPQuery {
 			}
 		}
 	}
-
-	/**
-	 * Add special parameters to a list so that special parameters can be
-	 * excluded when building the query.
-	 */
-	protected void addSpecialParams() {
-		// Construct collection of special parameter names
-		specialParams = new ArrayList();
-		specialParams.add(EFGImportConstants.DATASOURCE_NAME.toLowerCase());
-		specialParams.add(EFGImportConstants.MAX_DISPLAY.toLowerCase());
-		specialParams.add(EFGImportConstants.DISPLAY_FORMAT.toLowerCase());
-		specialParams.add(EFGImportConstants.SEARCHSTR.toLowerCase());
-		specialParams.add(EFGImportConstants.SEARCHTYPE.toLowerCase());
-		specialParams.add(EFGImportConstants.DISPLAY_NAME.toLowerCase());
-		specialParams.add(EFGImportConstants.XSL_STRING.toLowerCase());
-		specialParams.add(EFGImportConstants.GUID.toLowerCase());
-		specialParams.add(EFGImportConstants.ALL_TABLE_NAME.toLowerCase());
-	}
-
 }

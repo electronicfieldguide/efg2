@@ -568,9 +568,9 @@ public class EFG2PDF implements EFG2PDFInterface {
 		MalformedURLException, 
 			IOException{
 		
-		System.out.println("Generating image: " + imageName);
+		
 		if(this.imageHeight <= 0){
-			System.out.println("this.imageHeight <= 0 ");
+			log.debug("this.imageHeight <= 0 ");
 			return null;
 		}
 		Image image  = null;
@@ -604,7 +604,6 @@ public class EFG2PDF implements EFG2PDFInterface {
 			}
 		}
 		catch(Exception ee){
-			System.out.println(ee.getMessage());
 			log.error(ee.getMessage());
 		}
 		if(image == null){

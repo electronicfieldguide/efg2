@@ -30,6 +30,8 @@
  * implement equals and hashcode if it is used as part of a Collection.
  */
 package project.efg.servlets.efgInterface;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.regex.Matcher;
 //import java.util.regex.Pattern;
 
@@ -56,6 +58,7 @@ public abstract class EFGHTTPQuery {
 	protected String displayName;
 	protected String metadatasourceName;
 	private String mainTableName;
+	protected Collection specialParams;
 	static Logger log = null;
 	static {
 		try {
@@ -64,6 +67,25 @@ public abstract class EFGHTTPQuery {
 			//log.error(ee.getMessage());
 			LoggerUtilsServlet.logErrors(ee);
 		}
+	}
+	/**
+	 * Add special parameters to a list so that special parameters can be
+	 * excluded when building the query.
+	 */
+	protected void addSpecialParams() {
+		
+		// Construct collection of special parameter names
+		specialParams = new ArrayList();
+		specialParams.add(EFGImportConstants.DATASOURCE_NAME.toLowerCase());
+		specialParams.add(EFGImportConstants.MAX_DISPLAY.toLowerCase());
+		specialParams.add(EFGImportConstants.DISPLAY_FORMAT.toLowerCase());
+		specialParams.add(EFGImportConstants.SEARCHSTR.toLowerCase());
+		specialParams.add(EFGImportConstants.SEARCHTYPE.toLowerCase());
+		specialParams.add(EFGImportConstants.DISPLAY_NAME.toLowerCase());
+		specialParams.add(EFGImportConstants.XSL_STRING.toLowerCase());
+		specialParams.add(EFGImportConstants.GUID.toLowerCase());
+		specialParams.add(EFGImportConstants.ALL_TABLE_NAME.toLowerCase());
+		specialParams.add(EFGImportConstants.UNDER_SCORE);
 	}
 	/**
 	 * Replace % sign in the string with a space character
@@ -84,6 +106,7 @@ public abstract class EFGHTTPQuery {
 		return this.mainTableName;
 	}
 	public EFGHTTPQuery(HttpServletRequest req){
+		this.addSpecialParams();
 		String allTableName= req.getParameter(EFGImportConstants.ALL_TABLE_NAME);
 		if(allTableName != null && !allTableName.trim().equals("")){
 			this.setMainDataTableName(allTableName);
@@ -93,7 +116,6 @@ public abstract class EFGHTTPQuery {
 		}
 		 String query = this.buildQuery(req);
 		 //	call cache here
-		 //System.out.println("Query: " + query);
 		 this.efgDocument = new EFGDocument();
 		 //log.debug("Query: " + query);
 		 TaxonEntries entries = this.executeQuery(query);
