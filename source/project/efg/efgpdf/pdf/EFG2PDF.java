@@ -164,7 +164,14 @@ public class EFG2PDF implements EFG2PDFInterface {
 		this.taxonEntryMap = new HashMap();
 	}
 
-
+	public static Phrase writeMessage(String message){
+		String mutex ="";
+			synchronized (mutex) {
+				return new Phrase(message,
+						new Font(Font.HELVETICA,15f,Font.BOLD,Color.RED));
+	
+			}
+		}
 	/* (non-Javadoc)
 	 * @see project.efg.efgpdf.pdf.EFG2PDFInterface#readData(java.io.Reader)
 	 */
@@ -172,6 +179,9 @@ public class EFG2PDF implements EFG2PDFInterface {
 			XslPage xslPage,OutputStream output,File mediaResourcesDirectory) {
 		
 		try{
+			/*FileOutputStream foutput =
+				new FileOutputStream(new File(mediaResourcesDirectory,"Test.pdf"));
+			*/
 			this.mediaResourcesDirectory = mediaResourcesDirectory;
 			this.footerImagesDirectory = 
 				computeFooterImagesDirectory(this.mediaResourcesDirectory);
@@ -266,6 +276,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 				}
 			}
 			writeObject(handleTaxonEntries(taxonEntryMap));
+			
 			int numberOfCellsNotWritten = 
 				(this.numberOfCellsCounter % this.pdfMaker.getNumberColumns());
 			if(numberOfCellsNotWritten > 0){
@@ -273,7 +284,12 @@ public class EFG2PDF implements EFG2PDFInterface {
 				this.writeEmptyCells(
 						numberOfCellsNotWritten,this.fixedCellHeight 
 						);
-			}	
+			}
+			else if(this.numberOfCellsCounter == 0){
+				String message = "The selections you chose returns " + 
+				"0 results. Please review them. And try again";			
+				this.writeErrorMessages(message, this.fixedCellHeight);
+			}
 			document.add(pdfTable);
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -283,20 +299,27 @@ public class EFG2PDF implements EFG2PDFInterface {
 				if(this.document == null){
 					
 					this.document = new Document(
-							EFG2PDFConstants.DEFAULT_PAPER_SIZE,36,36,36,36);
+							EFG2PDFConstants.DEFAULT_PAPER_SIZE,
+							EFG2PDFConstants.DEFAULT_LEFT_MARGIN,
+							EFG2PDFConstants.DEFAULT_RIGHT_MARGIN,
+							EFG2PDFConstants.DEFAULT_TOP_MARGIN,
+							EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN);
 					if(this.writer == null){
 						this.writer = PdfWriter.getInstance(this.document,output);
 					}
 					document.open();
 				}
+				if(!document.isOpen()){
+					document.open();
+				}
 				if(e == null || e.getMessage().trim().equals("")){
 					
-					this.document.add(new Paragraph("An error occured " +
+					this.document.add(writeMessage("An error occured " +
 					"during the processing of pdf document."));	
 				}
 				else{
 				
-					this.document.add(new Paragraph("ERROR: " + e.getMessage()));
+					this.document.add(writeMessage("ERROR: " + e.getMessage()));
 				}
 			} catch (DocumentException e1) {
 				
@@ -386,13 +409,44 @@ public class EFG2PDF implements EFG2PDFInterface {
 		this.pdfMaker = new PDFMaker(xslPage);
 		this.sortBy = this.pdfMaker.getSortingFields();
 	}
+	private void writeErrorMessages(String message,
+			float cellHeight){
+		if(message != null && !message.trim().equals("")){
+			message = "Error occured during processing of document";
+		}
+		PdfPCell cell = new PdfPCell();
+		if(this.pdfMaker.getNumberColumns() > 0){
+			cell.setColspan(this.pdfMaker.getNumberColumns());
+		}
+		else{
+			cell.setColspan(1);
+		}
+		if(cellHeight <= 0){
+			cellHeight = 1f;
+		}
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setFixedHeight(cellHeight);
+		cell.setBorder(0);
+		cell.addElement(writeMessage(message));
+		if(this.pdfTable == null){
+			this.pdfTable = new PdfPTable(1);
+			
+		}
+		this.pdfTable.addCell(cell);
+	}
 	/**
 	 * 
 	 * @param numberToWrite
 	 */
-	private void writeEmptyCells(int numberToWrite, float cellHeight){
+	private void writeEmptyCells(int numberToWrite, 
+			float cellHeight){
+	
+		
 		for(int i = 0; i < numberToWrite;i++){
 			PdfPCell cell = new PdfPCell();
+			if(cellHeight <= 0){
+				cellHeight = 1f;
+			}
 			cell.setFixedHeight(cellHeight);
 			cell.setBorder(0);
 			this.pdfTable.addCell(cell);
@@ -514,7 +568,9 @@ public class EFG2PDF implements EFG2PDFInterface {
 		MalformedURLException, 
 			IOException{
 		
+		System.out.println("Generating image: " + imageName);
 		if(this.imageHeight <= 0){
+			System.out.println("this.imageHeight <= 0 ");
 			return null;
 		}
 		Image image  = null;
@@ -548,6 +604,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 			}
 		}
 		catch(Exception ee){
+			System.out.println(ee.getMessage());
 			log.error(ee.getMessage());
 		}
 		if(image == null){
@@ -565,6 +622,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 		else{
 			imageCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
 		}
+		imageCell.setHorizontalAlignment(this.pdfMaker.getHorizontalAlignmentForImages());
 		imageCell.setUseBorderPadding(true);
 		imageCell.setPadding(this.pdfMaker.getWEIGHT_WHITE_SPACE_AROUND_IMAGE());
 		return imageCell;
@@ -675,6 +733,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 		PdfPCell imageCell = null;
 		
 		try{
+			
 			if(this.imageHeight > 0){
 				imageCell = this.getImageCell(imageName);
 			}
@@ -725,7 +784,10 @@ public class EFG2PDF implements EFG2PDFInterface {
 	
 		this.pdfTable.addCell(mainCell);
 	}
-	private boolean writeTableRow(DisplayObject object,String imageName,int numberOnpage,int rowNumber){
+	private boolean writeTableRow(DisplayObject object,
+			String imageName,
+			int numberOnpage,
+			int rowNumber){
 		boolean isHead = false;
 		boolean isFoot = false;
 		int numberN = numberOnpage;
@@ -768,6 +830,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 				}	
 			}*/
 		}
+		
 		writeToPdf(imageName,object);
 		return true;
 		

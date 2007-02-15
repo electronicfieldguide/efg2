@@ -1,6 +1,16 @@
-Done: A hack for now.Prevent searches of more than a 100
+Fix long name in efg.sql file
+Write script for efg2 imports
+Remove from tab and add the fonts to tab.
+
+Done: A hack for now.Prevent searches of more than 400
+Issue has to do with browser ask users to set type in browser and not
+use Firefox plugin for pdfs.
+
+2. Not work on Safari and IE yet.
+Figure out why..
+
 1. Remove imports and replace with a script
-3. Jenns bug about going back to top of back after serach..
+3. Jenns bug about going back to top of back after search..
 
 
 4. Use get to get pdf with a 

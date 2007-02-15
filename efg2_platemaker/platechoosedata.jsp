@@ -175,7 +175,7 @@ project.efg.util.EFGDisplayObject
 					<input type="hidden" id="templateuniquename" name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>" value""/>
 				    <div id="zerothdiv">				
 						<select name="states" size="1" title="Select the datasource to configure" id="statesDS" onChange="JavaScript:platechoosedataResponse(this);">
-						<option onclick="JavaScript:platechoosedataResponse(this);">Select a Data source</option>
+						<option>Select a Data source</option>
 						<%
 						Iterator dsNameIter = listInter.getIterator(); 
 						while (dsNameIter.hasNext()) { 
@@ -183,7 +183,7 @@ project.efg.util.EFGDisplayObject
 							String displayName = obj.getDisplayName();
 							String datasourceName = obj.getDatasourceName();
 						%>
-						<option value="<%=datasourceName%>" onclick="JavaScript:platechoosedataResponse(this);"><%=displayName%></option>
+						<option value="<%=datasourceName%>"><%=displayName%></option>
 						<%}%>
 						</select>
 					</div>

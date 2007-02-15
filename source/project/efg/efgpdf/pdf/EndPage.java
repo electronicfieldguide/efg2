@@ -3,7 +3,9 @@ package project.efg.efgpdf.pdf;
 import org.apache.log4j.Logger;
 
 import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
 import com.lowagie.text.ExceptionConverter;
+import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
@@ -37,16 +39,35 @@ public class EndPage extends PdfPageEventHelper implements EFG2PDFConstants{
     public void onEndPage(PdfWriter writer, 
     		Document document) {
         try {
-        	
-        	writeHeader(document,writer);
-        	writeFooter(document,writer);
+        	if(document.isOpen()){
+	        	writeHeader(document,writer);
+	        	writeFooter(document,writer);
+        	}
+        	else{
+        		throw new Exception("Error in processing document");
+        	}
 
         }
         catch (Exception e) {
         	log.error(e.getMessage());
-            throw new ExceptionConverter(e);
+        	if(document == null){
+        		document = new Document(PageSize.LETTER);
+        	}
+        	if(!document.isOpen()){
+        		document.open();
+        	}
+        	try {
+				document.add(EFG2PDF.writeMessage("Please review your selections and try again.\n" +
+						" If for instance you indicated that images should not be skipped and\n " +
+						"there are no images for the selected datasource this error message " +
+						"will be produced. If that does not resolve the issue then please\n" +
+						" contact the EFG team"));
+			} catch (DocumentException e1) {
+				throw new ExceptionConverter(e);
+			}	
         }
     }
+
 	private void writeFooter(Document document,PdfWriter writer) {
 		
 

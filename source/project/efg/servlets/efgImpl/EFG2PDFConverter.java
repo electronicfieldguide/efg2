@@ -19,7 +19,6 @@ import project.efg.efgpdf.pdf.EFG2PDFInterface;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.util.EFGImagesConstants;
-import project.efg.util.EFGImportConstants;
 
 /**
  * @author jacob.asiedu

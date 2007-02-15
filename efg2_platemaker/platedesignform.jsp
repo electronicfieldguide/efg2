@@ -423,663 +423,588 @@ java.io.File
 						if(characterLabelValue == null){
 							characterLabelValue =PDFGUIConstants.CAPTION_TEXT+ indexCapsAbove;
 						}
-					%>
-				
-					<tr>
-						<td class="captionrow">
-						<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>	
-						
-							<span class="configitem">Text to Display:</span> 
-							<select name="<%=name%>"  onChange="JavaScript:checkSelected(this);">
+					%>				
+				<tr>
+					<td class="captionrow">
+						<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>							
+						<span class="configitem">Text to Display:</span> 
+						<select name="<%=name%>"  onChange="JavaScript:checkSelected(this);">
+						<%
+						ii = 0;
+						it = table.iterator();
+						while (it.hasNext()) {
+							EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+						 	if(isImagesExists) {
+								if(mediaResourceFields.contains(queueObject)){
+									continue;
+								}
+							}	
+							fieldName =queueObject.getObject(1);
+							if(ii==0){
+							%>
+							<option></option>
 							<%
-							ii = 0;
-							it = table.iterator();
-							while (it.hasNext()) {
-								EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-							 	if(isImagesExists) {
-									if(mediaResourceFields.contains(queueObject)){
-										continue;
-									}
-								}	
-								fieldName =queueObject.getObject(1);
-								if(ii==0){
-								%>
-								<option></option>
-								<%
-								}
-								if(fieldName.equals(fieldValue)){
-								%>
-								<option selected="selected">                                                                 <%=fieldName%>
-								</option>
-								<%
-								}
-								else{
-								%>
-								<option>                                                                 <%=fieldName%>
-								</option>
-								<%
-								}
-								ii++;
 							}
-							%>						
-							</select>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.FONT;
-								}
-							 %>
-
-							<span class="configitem">Font:</span> 
-							<select name="<%=name%>"><!-- Show built in fonts? -->
-							<% 
-							for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
-								fieldName = PDFGUIConstants.FONTS_NAME[j];
-								if(fieldName.equalsIgnoreCase(fieldValue)){%>
-								<option value="<%=fieldName%>" selected="selected">                                                                  <%=fieldName%>
-								</option>
-								<%} else{ %>
-								<option value="<%=fieldName%>">                                                                  <%=fieldName%>
-								</option>
-								<%}%>
-							<%} %>
-							</select>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="10";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.SIZE;
-								}
-							 %>							
-							<span class="configitem">Size</span> 
-							<span class="note">(6 to 100 pt):</span> 
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/> 
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.BOLD;
-								}
-							 %>		
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.BOLD)){%>					
-								<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
-							<%}
-							else{%>
-								<input type="checkbox" name="<%=name%>"  value="bold"/>							
-							<%}%>
-							<span class="boldcheck">bold</span> 
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.ITALICS;
-								}
-							 %>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ITALICS)){%>					
-								<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
-							<%}
-							else{%>
-								<input type="checkbox" name="<%=name%>" value="italics" />
-							
-							<%}%>							 							
-							<span class="italicscheck">italics</span> 
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
-									indexCapsAbove + PDFGUIConstants.UNDER_LINE;
-								}
-							 %>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.UNDER_LINE)){%>					
-								<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
-							<%}
-							else{%>
-								<input type="checkbox" name="<%=name%>" value="underline" />								
-							<%}%>
-							<span class="underlinecheck">underline</span>
-							<span class="configitem">Align:</span> 
+							if(fieldName.equals(fieldValue)){
+							%>
+							<option selected="selected">                                                                 <%=fieldName%>
+							</option>
 							<%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
+							}
+							else{
+							%>
+							<option>                                                                 <%=fieldName%>
+							</option>
+							<%
+							}
+							ii++;
+						}
+						%>						
+						</select>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.FONT;
+							}
+						 %>
+						<span class="configitem">Font:</span> 
+						<select name="<%=name%>"><!-- Show built in fonts? -->
+						<% 
+						for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
+							fieldName = PDFGUIConstants.FONTS_NAME[j];
+							if(fieldName.equalsIgnoreCase(fieldValue)){%>
+							<option value="<%=fieldName%>" selected="selected">                                                                  <%=fieldName%>
+							</option>
+							<%} else{ %>
+							<option value="<%=fieldName%>">                                                                  <%=fieldName%>
+							</option>
+							<%}%>
+						<%} %>
+						</select>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="10";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.SIZE;
+							}
+						 %>							
+						<span class="configitem">Size</span> 
+						<span class="note">(6 to 100 pt):</span> 
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/> 
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.BOLD;
+							}
+						 %>		
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.BOLD)){%>					
+							<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
+						<%}
+						else{%>
+							<input type="checkbox" name="<%=name%>"  value="bold"/>							
+						<%}%>
+						<span class="boldcheck">bold</span> 
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsAbove + PDFGUIConstants.ITALICS;
+							}
+						 %>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ITALICS)){%>					
+							<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
+						<%}
+						else{%>
+							<input type="checkbox" name="<%=name%>" value="italics" />						
+						<%}%>							 							
+						<span class="italicscheck">italics</span> 
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
+								indexCapsAbove + PDFGUIConstants.UNDER_LINE;
+							}
+						 %>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.UNDER_LINE)){%>					
+							<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
+						<%}
+						else{%>
+							<input type="checkbox" name="<%=name%>" value="underline" />								
+						<%}%>
+						<span class="underlinecheck">underline</span>
+						<span class="configitem">Align:</span> 
+						<%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
+								indexCapsAbove + PDFGUIConstants.ALIGN;
+							}
+						 %>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_CENTER)){%>
+							<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>" CHECKED />								
+							<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
+						<%}
+						else if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_RIGHT)){%>
+							<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>" CHECKED />	
+						<%} else {%>
+							<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>" CHECKED />
+							<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
+						<% }%>							
+					</td>
+				</tr>
+				<%
+					++indexCapsAbove;
+				}//end is loop
+				%>
+				<tr id="spanabovebuttonid">
+					<td class="captionbutton" id="captionabovebuttonid">		
+						<input type="hidden" id="captionaboveid" name="<%=PDFGUIConstants.ABOVE_BELOW%>" value="<%=PDFGUIConstants.ABOVE%>"/>					
+						<input type="hidden" id="numberofcaptionsaboveid" name="<%=PDFGUIConstants.INDEXCAP%>" value="<%=indexCapsAbove%>"/>
+						<input class="addrow" type="button" name="Add new row" value="Add new row" 
+						onClick="javascript:AddCaptionRow('CreateMoreFieldRows.jsp',
+						'spanabovebuttonid','captionaboveid','numberofcaptionsaboveid')"/>
+					</td>
+				</tr>
+				<tr>
+					<td class="sampleimage">
+						<img src="sampledragonfly.jpg" width="200" height="162" title="Sample Image" border="1" alt="Sample Image"/>
+					</td>
+				</tr>
+				<%
+				numberofcaptions = 2;
+				int indexCapsBelow = 1;
+				isLoop = true;
+				while(isLoop){
+					name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
+					fieldValue = (String)groupTable.get(name);
+					if(fieldValue == null){
+						if(indexCapsBelow > numberofcaptions){
+							isLoop = false;
+							break;
+						}
+						fieldValue ="";
+					}
+					
+					groupLabel= tp.getCurrentGroupLabel(name);
+					groupLabelValue = (String)groupTable.get(groupLabel);
+					if(groupLabelValue == null){						
+						groupLabelValue =PDFGUIConstants.CAPTIONS_TEXT_BELOW + indexCapsBelow;	
+					}
+					else{
+						if(groupLabelValue.indexOf(PDFGUIConstants.ABOVE) > -1){
+							isLoop = false;
+							break;
+						}
+					}
+					characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue =PDFGUIConstants.CAPTION_TEXT+ indexCapsBelow;
+					}
+				%>			
+				<tr>
+					<td class="captionrow">
+					<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>		
+						<span class="configitem">Text to Display:</span> 
+						<select name="<%=name%>"  onChange="JavaScript:checkSelected(this);">
+						<%
+						ii = 0;
+						it = table.iterator();
+						while (it.hasNext()) {
+							EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+						 	if(isImagesExists) {
+								if(mediaResourceFields.contains(queueObject)){
+									continue;
 								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
-									indexCapsAbove + PDFGUIConstants.ALIGN;
-								}
-							 %>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_CENTER)){%>
-								<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>" CHECKED />								
-								<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
-							<%}
-							else if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_RIGHT)){%>
-								<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>" CHECKED />	
-							<%} else {%>
-								<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>" CHECKED />
-								<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
-							<% }%>							
-						</td>
-					</tr>
-					<%
-						++indexCapsAbove;
-					}//end is loop
-					%>
-					<span id="spanabovebuttonid">
-					<tr>
-						<td class="captionbutton" id="captionabovebuttonid">		
-							<input type="hidden" id="captionaboveid" name="<%=PDFGUIConstants.ABOVE_BELOW%>" value="<%=PDFGUIConstants.ABOVE%>"/>					
-							<input type="hidden" id="numberofcaptionsaboveid" name="<%=PDFGUIConstants.INDEXCAP%>" value="<%=indexCapsAbove%>"/>
-							<input class="addrow" type="button" name="Add new row" value="Add new row" 
-							onClick="javascript:AddCaptionRow('CreateMoreFieldRows.jsp',
-							'spanabovebuttonid','captionaboveid','numberofcaptionsaboveid')"/>
-						</td>
-					</tr>
-					</span>
-					<tr>
-						<td class="sampleimage">
-							<img src="sampledragonfly.jpg" width="200" height="162" title="Sample Image" border="1" alt="Sample Image"/>
-						</td>
-					</tr>
-					<%
-					numberofcaptions = 2;
-					int indexCapsBelow = 1;
-					isLoop = true;
-					while(isLoop){
-						name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
+							}	
+							fieldName =queueObject.getObject(1);
+							if(ii==0){
+							%>
+							<option></option>
+							<%
+							}
+							if(fieldName.equals(fieldValue)){
+							%>
+							<option selected="selected">                                                                 <%=fieldName%>
+							</option>
+							<%
+							}
+							else{
+							%>
+							<option>                                                                 <%=fieldName%>
+							</option>
+							<%
+							}
+							ii++;
+						}
+						%>						
+						</select>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.FONT;
+							}
+						 %>
+						<span class="configitem">Font:</span> 
+						<select name="<%=name%>"><!-- Show built in fonts? -->
+						<% 
+						for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
+							fieldName = PDFGUIConstants.FONTS_NAME[j];
+							if(fieldName.equalsIgnoreCase(fieldValue)){%>
+							<option value="<%=fieldName%>" selected="selected">                                                                  <%=fieldName%>
+							</option>
+							<%} else{ %>
+							<option value="<%=fieldName%>">                                                                  <%=fieldName%>
+							</option>
+							<%}%>
+						<%} %>
+						</select>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="10";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.SIZE;
+							}
+						 %>							
+						<span class="configitem">Size</span> 
+						<span class="note">(6 to 100 pt):</span> 
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/> 
+						<%
+					 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
 						fieldValue = (String)groupTable.get(name);
 						if(fieldValue == null){
-							if(indexCapsBelow > numberofcaptions){
-								isLoop = false;
-								break;
-							}
 							fieldValue ="";
-						}
-						
-						groupLabel= tp.getCurrentGroupLabel(name);
-						groupLabelValue = (String)groupTable.get(groupLabel);
-						if(groupLabelValue == null){						
-							groupLabelValue =PDFGUIConstants.CAPTIONS_TEXT_BELOW + indexCapsBelow;
-							
-						}
-						else{
-						
-							if(groupLabelValue.indexOf(PDFGUIConstants.ABOVE) > -1){
-								isLoop = false;
-								break;
-							}
 						}
 						characterLabel= tp.getCurrentCharacterLabel(name);
 						characterLabelValue = (String)groupTable.get(characterLabel);
 						if(characterLabelValue == null){
-							characterLabelValue =PDFGUIConstants.CAPTION_TEXT+ indexCapsBelow;
+							characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.BOLD;
 						}
-					%>
-				
-					<tr>
-						<td class="captionrow">
-						<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>	
-						
-							<span class="configitem">Text to Display:</span> 
-							<select name="<%=name%>"  onChange="JavaScript:checkSelected(this);">
-							<%
-							ii = 0;
-							it = table.iterator();
-							while (it.hasNext()) {
-								EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-							 	if(isImagesExists) {
-									if(mediaResourceFields.contains(queueObject)){
-										continue;
-									}
-								}	
-								fieldName =queueObject.getObject(1);
-								if(ii==0){
-								%>
-								<option></option>
-								<%
-								}
-								if(fieldName.equals(fieldValue)){
-								%>
-								<option selected="selected">                                                                 <%=fieldName%>
-								</option>
-								<%
-								}
-								else{
-								%>
-								<option>                                                                 <%=fieldName%>
-								</option>
-								<%
-								}
-								ii++;
+						%>		
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.BOLD)){%>					
+							<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
+						<%}
+						else{%>
+							<input type="checkbox" name="<%=name%>"  value="bold"/>							
+						<%}%>
+						<span class="boldcheck">bold</span> 
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
 							}
-							%>						
-							</select>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.FONT;
-								}
-
-							 %>
-
-							<span class="configitem">Font:</span> 
-							<select name="<%=name%>"><!-- Show built in fonts? -->
-							<% 
-							for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
-								fieldName = PDFGUIConstants.FONTS_NAME[j];
-								if(fieldName.equalsIgnoreCase(fieldValue)){%>
-								<option value="<%=fieldName%>" selected="selected">                                                                  <%=fieldName%>
-								</option>
-								<%} else{ %>
-								<option value="<%=fieldName%>">                                                                  <%=fieldName%>
-								</option>
-								<%}%>
-							<%} %>
-							</select>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="10";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.SIZE;
-								}
-							 %>							
-							<span class="configitem">Size</span> 
-							<span class="note">(6 to 100 pt):</span> 
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/> 
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.BOLD;
-								}
-							 %>		
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.BOLD)){%>					
-								<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
-							<%}
-							else{%>
-								<input type="checkbox" name="<%=name%>"  value="bold"/>							
-							<%}%>
-							<span class="boldcheck">bold</span> 
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.ITALICS;
-								}
-							 %>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ITALICS)){%>					
-								<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
-							<%}
-							else{%>
-								<input type="checkbox" name="<%=name%>" value="italics" />
-							
-							<%}%>							 							
-							<span class="italicscheck">italics</span> 
-							 <%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow +PDFGUIConstants. UNDER_LINE;
-								}
-							 %>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.UNDER_LINE)){%>					
-								<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
-							<%}
-							else{%>
-								<input type="checkbox" name="<%=name%>" value="underline" />								
-							<%}%>
-							<span class="underlinecheck">underline</span>
-							<span class="configitem">Align:</span> 
-							<%
-							 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-								fieldValue = (String)groupTable.get(name);
-								if(fieldValue == null){
-									fieldValue ="";
-								}
-								characterLabel= tp.getCurrentCharacterLabel(name);
-								characterLabelValue = (String)groupTable.get(characterLabel);
-								if(characterLabelValue == null){
-									characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
-									indexCapsBelow + PDFGUIConstants.ALIGN;
-								}
-							 %>
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-							<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_CENTER)){%>
-								<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>" CHECKED />								
-								<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
-							<%}
-							else if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_RIGHT)){%>
-								<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>" CHECKED />	
-							<%} else {%>
-								<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>" CHECKED />
-								<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
-								<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
-								<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
-							<% }%>														
-						</td>
-					</tr>
-					<%
-						indexCapsBelow++;
-					}//end is loop
-					%>
-					<span id="spanbelowbuttonid">
-					<tr>
-						<td class="captionbutton" id="captionbelowbuttonid">
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow + PDFGUIConstants.ITALICS;
+							}
+						 %>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ITALICS)){%>					
+							<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
+						<%}
+						else{%>
+							<input type="checkbox" name="<%=name%>" value="italics" />
+						
+						<%}%>							 							
+						<span class="italicscheck">italics</span> 
+						 <%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCapsBelow +PDFGUIConstants. UNDER_LINE;
+							}
+						 %>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.UNDER_LINE)){%>					
+							<input type="checkbox" name="<%=name%>"  value="<%=fieldValue%>" checked="checked"/>
+						<%}
+						else{%>
+							<input type="checkbox" name="<%=name%>" value="underline" />								
+						<%}%>
+						<span class="underlinecheck">underline</span>
+						<span class="configitem">Align:</span> 
+						<%
+						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+							fieldValue = (String)groupTable.get(name);
+							if(fieldValue == null){
+								fieldValue ="";
+							}
+							characterLabel= tp.getCurrentCharacterLabel(name);
+							characterLabelValue = (String)groupTable.get(characterLabel);
+							if(characterLabelValue == null){
+								characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
+								indexCapsBelow + PDFGUIConstants.ALIGN;
+							}
+						 %>
+						<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+						<%if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_CENTER)){%>
+							<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>" CHECKED />								
+							<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
+						<%}
+						else if(fieldValue.equalsIgnoreCase(PDFGUIConstants.ALIGN_RIGHT)){%>
+							<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>" CHECKED />	
+						<%} else {%>
+							<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>" CHECKED />
+							<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
+							<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
+							<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
+						<% }%>														
+					</td>
+				</tr>
+				<%
+					indexCapsBelow++;
+				}//end is loop
+				%>
+				<!--<span id="spanbelowbuttonid">-->
+				<tr id="spanbelowbuttonid">
+					<td class="captionbutton" id="captionbelowbuttonid">
 						<input type="hidden" id="captionbelowid" name="<%=PDFGUIConstants.ABOVE_BELOW%>" value="<%=PDFGUIConstants.BELOW%>"/>	
 						<input type="hidden" id="numberofcaptionsbelowid" name="<%=PDFGUIConstants.INDEXCAP%>" value="<%=indexCapsBelow%>"/>
 						<input class="addrow" type="button" name="Add new row" value="Add new row" 
 						onClick="javascript:AddCaptionRow('CreateMoreFieldRows.jsp','spanbelowbuttonid','captionbelowid','numberofcaptionsbelowid')"/>
-						<!-- When user clicks Add button, another row like the one above appears, allowing him/her to add another field as a line in the caption -->
-						</td>
-					</tr>	
-					</span>				
-				</table>
-			</td>
-		</tr>	
-		<%	
-			name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);//guaranteed to be generated at least once
-				groupLabel= tp.getCurrentGroupLabel(name);
-				groupLabelValue = (String)groupTable.get(groupLabel);
-				if(groupLabelValue == null){
-					groupLabelValue =PDFGUIConstants.TITLES;
-				}
-				%>
-				<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>						
-		<%
-		for(int i = 0; i < PDFGUIConstants.NUMBER_OF_TITLES; i++ ) {
-		fieldName = PDFGUIConstants.TITLES_STR[i];
-		if( i > 0){
+					<!-- When user clicks Add button, another row like the one above appears, allowing him/her to add another field as a line in the caption -->
+					</td>
+				</tr>	
+				<!--</span>	-->			
+			</table>
+		</td>
+	</tr>	
+	<%	
+	name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);//guaranteed to be generated at least once
+	groupLabel= tp.getCurrentGroupLabel(name);
+	groupLabelValue = (String)groupTable.get(groupLabel);
+	if(groupLabelValue == null){
+		groupLabelValue =PDFGUIConstants.TITLES;
+	}
+	%>
+	<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>						
+	<%
+	for(int i = 0; i < PDFGUIConstants.NUMBER_OF_TITLES; i++ ) {
+	fieldName = PDFGUIConstants.TITLES_STR[i];
+	if( i > 0){
+		name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+	}
+	fieldValue = (String)groupTable.get(name);
+	if(fieldValue == null){
+		fieldValue ="";
+	}
+	characterLabel= tp.getCurrentCharacterLabel(name);
+	characterLabelValue = (String)groupTable.get(characterLabel);
+	if(characterLabelValue == null){
+		characterLabelValue =PDFGUIConstants.TITLES_LABEL[i];
+	}
+	%>		
+	<tr>
+		<td class="formitem" colspan="2">
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			<%if(fieldValue.equalsIgnoreCase(fieldName)){ %>
+			<input type="text" name="<%=name%>" size="50" value="<%=fieldValue%>" /> 
+			<%} else { %>
+			<input type="text" name="<%=name%>" size="50" value="<%=fieldName%>" class="formInputText" onfocus="clearField(this)" title="<%=fieldName%>"/> 
+			<%}	
 			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-		}
-		fieldValue = (String)groupTable.get(name);
-		if(fieldValue == null){
-			fieldValue ="";
-		}
-		characterLabel= tp.getCurrentCharacterLabel(name);
-		characterLabelValue = (String)groupTable.get(characterLabel);
-		if(characterLabelValue == null){
-			characterLabelValue =PDFGUIConstants.TITLES_LABEL[i];
-		}
-		%>		
-		<tr>
-			<td class="formitem" colspan="2">
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-				<%if(fieldValue.equalsIgnoreCase(fieldName)){ %>
-				<input type="text" name="<%=name%>" size="50" value="<%=fieldValue%>" /> 
-				<%} else { %>
-				<input type="text" name="<%=name%>" size="50" value="<%=fieldName%>" class="formInputText" onfocus="clearField(this)" title="<%=fieldName%>"/> 
-				<%}	
-				name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					fieldValue ="";
-				}
-				characterLabel= tp.getCurrentCharacterLabel(name);
-				characterLabelValue = (String)groupTable.get(characterLabel);
-				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.FONTS_LABEL[i];
-				}						
-				%>								
-				<select name="<%=name%>">
-					<% 
-					for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
-						fieldName = PDFGUIConstants.FONTS_NAME[j];
-						if(fieldName.equalsIgnoreCase(fieldValue)){%>
-						<option value="<%=fieldName%>" selected="selected">                                                                  <%=fieldName%>
-						</option>
-						<%} else{ %>
-						<option value="<%=fieldName%>">                                                                  <%=fieldName%>
-						</option>
-						<%}%>
-					<%} %>
-				</select>
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 
-				<span class="configitem">Size</span> 	
-				<span class="note">(6 to 100 pt):</span> 
-				<%
-				name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					fieldValue ="10";
-				}
-				characterLabel= tp.getCurrentCharacterLabel(name);
-				characterLabelValue = (String)groupTable.get(characterLabel);
-				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.TITLE_SIZE[i];
-				}						
-				%>								
-				<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/>
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 						
-				<span class="configitem">Style:</span>
-	
-				<%
-				name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					fieldValue ="";
-				}
-				characterLabel= tp.getCurrentCharacterLabel(name);
-				characterLabelValue = (String)groupTable.get(characterLabel);
-				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.TITLE_FORMAT[i];
-				}
-				fieldName =PDFGUIConstants.BOLD;
-				if(fieldName.equals(fieldValue)){%>
-					<input type="checkbox" name="<%=name%>" value="<%=fieldName%>" checked="checked"/>
-				<%} else{%>
-					<input type="checkbox" name="<%=name%>" value="<%=fieldName%>"/>
-				
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="";
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.FONTS_LABEL[i];
+			}						
+			%>								
+			<select name="<%=name%>">
+			<% 
+			for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
+				fieldName = PDFGUIConstants.FONTS_NAME[j];
+				if(fieldName.equalsIgnoreCase(fieldValue)){%>
+				<option value="<%=fieldName%>" selected="selected">                                                                  <%=fieldName%>
+				</option>
+				<%} else{ %>
+				<option value="<%=fieldName%>">                                                                  <%=fieldName%>
+				</option>
 				<%}%>
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-				<span class="boldcheck">bold</span> 
-				
-				<%
-				name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					fieldValue ="";
-				}
-				characterLabel= tp.getCurrentCharacterLabel(name);
-				characterLabelValue = (String)groupTable.get(characterLabel);
-				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.TITLE_FORMAT[i];
-				}
-				fieldName =PDFGUIConstants.ITALICS;
-				if(fieldName.equals(fieldValue)){%>
-					<input type="checkbox" name="<%=name%>" value="<%=fieldName%>" checked="checked"/>
-				<%} else{%>
-					<input type="checkbox" name="<%=name%>" value="<%=fieldName%>"/>
-				
-				<%}%>
-				<span class="italicscheck">italics</span>
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-	
-				<%
-				name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					fieldValue ="";
-				}
-				characterLabel= tp.getCurrentCharacterLabel(name);
-				characterLabelValue = (String)groupTable.get(characterLabel);
-				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.TITLE_FORMAT[i];
-				}
-				fieldName =PDFGUIConstants.UNDER_LINE;
-				if(fieldName.equals(fieldValue)){%>
-					<input type="checkbox" name="<%=name%>" value="<%=fieldName%>" checked="checked"/>
-				<%} else{%>
-					<input type="checkbox" name="<%=name%>" value="<%=fieldName%>"/>						
-				<%}%>
-				<span class="underlinecheck">underline</span> 
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-			</td>
-		</tr>	
-		<%}
-		%>
-		<tr>
-			<td colspan="2">
-			<hr />
-			</td>
-		</tr>	
-		<tr colspan="2">
-			<td class="subheading">Logos and Color Settings</td>
-			</tr>
-			
-			<tr>
-				<td class="formitem" colspan="2">Add pre-sized images to use as logos in the credits section 
-					<span class="note">(must be .jpg, .gif or .png format, less than 1 inch print size recommended):</span>
-					<br>
-					<%
-						name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
-						fieldValue = (String)groupTable.get(name);
-						if(fieldValue == null){
-							fieldValue ="";
-						}
-						groupLabel= tp.getCurrentGroupLabel(name);
-						groupLabelValue = (String)groupTable.get(groupLabel);
-						if(groupLabelValue == null){
-							groupLabelValue =PDFGUIConstants.IMAGES;
-						}
-						characterLabel= tp.getCurrentCharacterLabel(name);
-						characterLabelValue = (String)groupTable.get(characterLabel);
-						if(characterLabelValue == null){
-							characterLabelValue =PDFGUIConstants.IMAGE;
-						}
-					%>
-					<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
-					<select name="<%=name%>" size="5">
-					<% 
-					for (int i=0; i < imageFileList.length; i++ ) { 
-						if(i==0){%>
-							<option></option>
-						<%}
-						File imgFile = imageFileList[i];
-						fieldName = imgFile.getName();
-						if(fieldName.equals(fieldValue)){
-							%>
-							<option selected="selected"><%=fieldName%></option>
-							<%
-						}
-						else{
-							%>
-								<option><%=fieldName%></option>
-							<%
-						}
-					}%>
-					</select>
-					<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-				</td>
-			</tr>	
-		<tr>
-			<td class= "uploadnote" colspan="2">
-			(To select multiple images, hold down the Ctrl key. To add additional images, use the 
-			<a class="upload" href="/efg2/uploadTemplateResources.html#uploadIM" target="_blank">Upload interface</a>.) 
+			<%} %>
+			</select>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 
+			<span class="configitem">Size</span> 	
+			<span class="note">(6 to 100 pt):</span> 
+			<%
+			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="10";
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.TITLE_SIZE[i];
+			}						
+			%>								
+			<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 						
+			<span class="configitem">Style:</span>
+			<%
+			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="";
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.TITLE_FORMAT[i];
+			}
+			fieldName =PDFGUIConstants.BOLD;
+			if(fieldName.equals(fieldValue)){%>
+			<input type="checkbox" name="<%=name%>" value="<%=fieldName%>" checked="checked"/>
+			<%} else{%>
+			<input type="checkbox" name="<%=name%>" value="<%=fieldName%>"/>
+			<%}%>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
+			<span class="boldcheck">bold</span> 
+			<%
+			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="";
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.TITLE_FORMAT[i];
+			}
+			fieldName =PDFGUIConstants.ITALICS;
+			if(fieldName.equals(fieldValue)){%>
+			<input type="checkbox" name="<%=name%>" value="<%=fieldName%>" checked="checked"/>
+			<%} else{%>
+			<input type="checkbox" name="<%=name%>" value="<%=fieldName%>"/>			
+			<%}%>
+			<span class="italicscheck">italics</span>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
 
-			</td>
-		</tr>	
-		<!-- submitting the following as an enhancement request -->
-		<!-- <tr> -->
-		<!-- <td class="formitem" colspan="2">Upload pre-sized images to use as logos in the credits section <span class="note">(must be .jpg, .gif or .png format, less than 1 inch print size recommended):</span><br /> -->
-		<!-- It would be good if the user was not allowed to upload something that is not in one of these three file formats -->
-		<!-- <input type="file" name="logo1" size="25" /><br /> -->
-		<!-- <input type="file" name="logo2" size="25" /><br /> -->
-		<!-- <input type="file" name="logo3" size="25" /></td> -->
-		<!-- </tr> -->	
-		<tr>
-			<td class="formitem">White space around image: 
+			<%
+			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="";
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.TITLE_FORMAT[i];
+			}
+			fieldName =PDFGUIConstants.UNDER_LINE;
+			if(fieldName.equals(fieldValue)){%>
+				<input type="checkbox" name="<%=name%>" value="<%=fieldName%>" checked="checked"/>
+			<%} else{%>
+				<input type="checkbox" name="<%=name%>" value="<%=fieldName%>"/>						
+			<%}%>
+			<span class="underlinecheck">underline</span> 
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
+		</td>
+	</tr>	
+	<%}
+	%>
+	<tr>
+		<td colspan="2">
+			<hr />
+		</td>
+	</tr>	
+	<tr colspan="2">
+		<td class="subheading">Logos and Color Settings</td>
+	</tr>
+	<tr>
+		<td class="formitem" colspan="2">Add pre-sized images to use as logos in the credits section 
+			<span class="note">(must be .jpg, .gif or .png format, less than 1 inch print size recommended):</span>
+			<br>
 			<%
 				name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
 				fieldValue = (String)groupTable.get(name);
@@ -1089,87 +1014,144 @@ java.io.File
 				groupLabel= tp.getCurrentGroupLabel(name);
 				groupLabelValue = (String)groupTable.get(groupLabel);
 				if(groupLabelValue == null){
-					groupLabelValue =PDFGUIConstants.IMAGE_WHITE_SPACES;
+					groupLabelValue =PDFGUIConstants.IMAGES;
 				}
 				characterLabel= tp.getCurrentCharacterLabel(name);
 				characterLabelValue = (String)groupTable.get(characterLabel);
 				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.IMAGE_WHITE_SPACE;
+					characterLabelValue =PDFGUIConstants.IMAGE;
 				}
 			%>
 			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
-				<select name="<%=name%>">						
-				<% 
-				for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
-					fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
-					String fieldN = fieldName;
-					if(i==0){
-							fieldN = "0 (none)"; 
-					}
-					if(fieldName.equals(fieldValue)){
-						%>
-					<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
-					</option>
-						<%
-					}
-					else{
-						%>
-						<option value="<%=fieldName%>">                                                            <%=fieldN%>
-						</option>
-						<%
-					}
-				}%>
-				</select>
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-			</td>
-			<td class="formitem">White space between elements 
-			<span class="note">(image plus captions):</span> 
-				<%
-				name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					fieldValue ="";
-				}
-				groupLabel= tp.getCurrentGroupLabel(name);
-				groupLabelValue = (String)groupTable.get(groupLabel);
-				if(groupLabelValue == null){
-					groupLabelValue =PDFGUIConstants.ELEMENT_WHITE_SPACES;
-				}
-				characterLabel= tp.getCurrentCharacterLabel(name);
-				characterLabelValue = (String)groupTable.get(characterLabel);
-				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.ELEMENT_WHITE_SPACE;
-				}
-			%>
-				<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
-				<select name="<%=name%>">						
-				<% 
-				for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
-					fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
-					String fieldN = fieldName;
-					if(i==0){
-							fieldN = "0 (none)"; 
-					}
-					if(fieldName.equals(fieldValue)){
+			<select name="<%=name%>" size="5">
+			<% 
+			for (int i=0; i < imageFileList.length; i++ ) { 
+				if(i==0){%>
+					<option></option>
+				<%}
+				File imgFile = imageFileList[i];
+				fieldName = imgFile.getName();
+				if(fieldName.equals(fieldValue)){
 					%>
-						<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
-						</option>
+					<option selected="selected"><%=fieldName%></option>
 					<%
-					}
-					else{
-						%>
+				}
+				else{
+					%>
+						<option><%=fieldName%></option>
+					<%
+				}
+			}%>
+			</select>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
+		</td>
+	</tr>	
+	<tr>
+		<td class= "uploadnote" colspan="2">
+		(To select multiple images, hold down the Ctrl key. To add additional images, use the 
+		<a class="upload" href="/efg2/uploadTemplateResources.html#uploadIM" target="_blank">Upload interface</a>.) 
+
+		</td>
+	</tr>	
+		<!-- submitting the following as an enhancement request -->
+		<!-- <tr> -->
+		<!-- <td class="formitem" colspan="2">Upload pre-sized images to use as logos in the credits section <span class="note">(must be .jpg, .gif or .png format, less than 1 inch print size recommended):</span><br /> -->
+		<!-- It would be good if the user was not allowed to upload something that is not in one of these three file formats -->
+		<!-- <input type="file" name="logo1" size="25" /><br /> -->
+		<!-- <input type="file" name="logo2" size="25" /><br /> -->
+		<!-- <input type="file" name="logo3" size="25" /></td> -->
+		<!-- </tr> -->	
+	<tr>
+		<td class="formitem">White space around image: 
+		<%
+			name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="";
+			}
+			groupLabel= tp.getCurrentGroupLabel(name);
+			groupLabelValue = (String)groupTable.get(groupLabel);
+			if(groupLabelValue == null){
+				groupLabelValue =PDFGUIConstants.IMAGE_WHITE_SPACES;
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.IMAGE_WHITE_SPACE;
+			}
+		%>
+		<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
+			<select name="<%=name%>">						
+			<% 
+			for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
+				fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
+				String fieldN = fieldName;
+				if(i==0){
+						fieldN = "0 (none)"; 
+				}
+				if(fieldName.equals(fieldValue)){
+					%>
+				<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
+				</option>
+					<%
+				}
+				else{
+					%>
 					<option value="<%=fieldName%>">                                                            <%=fieldN%>
 					</option>
 					<%
-					}
-				}%>
-				</select>
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-			</td>
-			
-		</tr>	
-		<tr>
-			<td class="formitem">Frame around image:<br />
+				}
+			}%>
+			</select>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
+		</td>
+		<td class="formitem">White space between elements 
+			<span class="note">(image plus captions):</span> 
+			<%
+			name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="";
+			}
+			groupLabel= tp.getCurrentGroupLabel(name);
+			groupLabelValue = (String)groupTable.get(groupLabel);
+			if(groupLabelValue == null){
+				groupLabelValue =PDFGUIConstants.ELEMENT_WHITE_SPACES;
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.ELEMENT_WHITE_SPACE;
+			}
+			%>
+			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
+			<select name="<%=name%>">						
+			<% 
+			for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
+				fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
+				String fieldN = fieldName;
+				if(i==0){
+						fieldN = "0 (none)"; 
+				}
+				if(fieldName.equals(fieldValue)){
+				%>
+				<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
+				</option>
+				<%
+				}
+				else{
+					%>
+				<option value="<%=fieldName%>">                                                            <%=fieldN%>
+				</option>
+				<%
+				}
+			}%>
+			</select>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
+		</td>		
+	</tr>	
+	<tr>
+		<td class="formitem">Frame around image:<br />
 			<br />
 			 <span class="configitem">Weight:</span>
 				<%
@@ -1189,53 +1171,52 @@ java.io.File
 					characterLabelValue =PDFGUIConstants.IMAGE_FRAME_WEIGHT;
 				}
 			%>
-				<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
-				<select name="<%=name%>">						
-				<% 
-				for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
-					fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
-					String fieldN = fieldName;
-					if(i==0){
-							fieldN = "0 (none)"; 
-					}
-					if(fieldName.equals(fieldValue)){
-					%>
-						<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
-						</option>
-					<%
-					}
-					else{
-						%>
-					<option value="<%=fieldName%>">                                                            <%=fieldN%>
-					</option>
-					<%
-					}
-				}%>
-				</select>
-				<input type="hidden"  name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-				<br>
-	 			<span class="configitem">Select a color:</span> 
-				<%
-				name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-				fieldValue = (String)groupTable.get(name);
-				if(fieldValue == null){
-					fieldValue ="#7C3B35";
+			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
+			<select name="<%=name%>">						
+			<% 
+			for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
+				fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
+				String fieldN = fieldName;
+				if(i==0){
+						fieldN = "0 (none)"; 
 				}
-				characterLabel= tp.getCurrentCharacterLabel(name);
-				characterLabelValue = (String)groupTable.get(characterLabel);
-				if(characterLabelValue == null){
-					characterLabelValue =PDFGUIConstants.IMAGE_FRAME_COLOR;
-				}
+				if(fieldName.equals(fieldValue)){
 				%>
-	
-	 				<input id="imageframecolor1id" name="<%=name%>" class="color"  value="<%=fieldValue%>" type="text"/>
-	 			
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-		</td>
-					<td class="formitem">Bounding Box <span class="note">(frame image plus captions):</span><br />
-				<br />
-				<span class="configitem">Weight:</span> 
+					<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
+					</option>
 				<%
+				}
+				else{
+					%>
+				<option value="<%=fieldName%>">                                                            <%=fieldN%>
+				</option>
+				<%
+				}
+			}%>
+			</select>
+			<input type="hidden"  name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			<br/>
+ 			<span class="configitem">Select a color:</span> 
+			<%
+			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+			fieldValue = (String)groupTable.get(name);
+			if(fieldValue == null){
+				fieldValue ="#7C3B35";
+			}
+			characterLabel= tp.getCurrentCharacterLabel(name);
+			characterLabelValue = (String)groupTable.get(characterLabel);
+			if(characterLabelValue == null){
+				characterLabelValue =PDFGUIConstants.IMAGE_FRAME_COLOR;
+			}
+			%>	
+ 			<input id="imageframecolor1id" name="<%=name%>" class="color"  value="<%=fieldValue%>" type="text"/>	
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
+		</td>
+		<td class="formitem">Bounding Box 
+			<span class="note">(frame image plus captions):</span><br />
+			<br />
+			<span class="configitem">Weight:</span> 
+			<%
 				name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
 				fieldValue = (String)groupTable.get(name);
 				if(fieldValue == null){
@@ -1251,53 +1232,52 @@ java.io.File
 				if(characterLabelValue == null){
 					characterLabelValue =PDFGUIConstants.BOUNDING_BOX_WEIGHT;
 				}
+			%>
+			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
+			<select name="<%=name%>">						
+			<% 
+			for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
+				fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
+				String fieldN = fieldName;
+				if(i==0){
+						fieldN = "0 (none)"; 
+				}
+				if(fieldName.equals(fieldValue)){
 				%>
-				<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
-				<select name="<%=name%>">						
-				<% 
-				for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
-					fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
-					String fieldN = fieldName;
-					if(i==0){
-							fieldN = "0 (none)"; 
-					}
-					if(fieldName.equals(fieldValue)){
-					%>
-						<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
-						</option>
-					<%
-					}
-					else{
-						%>
-					<option value="<%=fieldName%>">                                                            <%=fieldN%>
+					<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
 					</option>
-					<%
+				<%
+				}
+				else{
+					%>
+				<option value="<%=fieldName%>">                                                            <%=fieldN%>
+				</option>
+				<%
+				}
+			}%>
+			</select>
+			<br/>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 													
+	 		<span class="configitem">Select a color: 
+	 			<span>
+ 					<%
+					name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+					fieldValue = (String)groupTable.get(name);
+					if(fieldValue == null){
+						fieldValue ="#BA575A";
 					}
-				}%>
-				</select>
-				<br/>
-				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-	
-	 			<span class="configitem">Select a color: 
-	 				<span>
-	 					<%
-						name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-						fieldValue = (String)groupTable.get(name);
-						if(fieldValue == null){
-							fieldValue ="#BA575A";
-						}
-						characterLabel= tp.getCurrentCharacterLabel(name);
-						characterLabelValue = (String)groupTable.get(characterLabel);
-						if(characterLabelValue == null){
-							characterLabelValue =PDFGUIConstants.BOUNDING_BOX_COLOR;
-						}%>						
-		 					<input id="boundingboxcolor1id" name="<%=name%>" class="color" value="<%=fieldValue%>" type="text">
-							<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-	 				</span>
+					characterLabel= tp.getCurrentCharacterLabel(name);
+					characterLabelValue = (String)groupTable.get(characterLabel);
+					if(characterLabelValue == null){
+						characterLabelValue =PDFGUIConstants.BOUNDING_BOX_COLOR;
+					}%>						
+		 			<input id="boundingboxcolor1id" name="<%=name%>" class="color" value="<%=fieldValue%>" type="text">
+					<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
 	 			</span>
-			 </td>
+	 		</span>
+		</td>
 	</tr>
-		<input type="hidden"   name="<%=EFGImportConstants.SEARCH_PAGE_STR%>"  value="<%=EFGImportConstants.SEARCH_PAGE_STR%>"/>
+	<input type="hidden"   name="<%=EFGImportConstants.SEARCH_PAGE_STR%>"  value="<%=EFGImportConstants.SEARCH_PAGE_STR%>"/>
 	<input type="hidden"   name="<%=EFGImportConstants.SEARCH_TYPE_STR%>"  value="<%=EFGImportConstants.SEARCH_PDFS_TYPE%>"/>
 	<input type="hidden"   name="<%=EFGImportConstants.DISPLAY_NAME%>"  value="<%=displayName%>"/>
 	<input type="hidden"   name="<%=EFGImportConstants.DATASOURCE_NAME%>"  value="<%=datasourceName%>"/>
@@ -1308,8 +1288,7 @@ java.io.File
 	<%}%>
 	<input type="hidden"   name="<%=EFGImportConstants.TEMPLATE_UNIQUE_NAME%>"  value="<%=uniqueName%>"/>
 	<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="platedesignform.jsp"/>	
-	<input type="hidden" name="<%=EFGImportConstants.ALL_TABLE_NAME%>" value="<%=whichDatabase%>"/>
-		
+	<input type="hidden" name="<%=EFGImportConstants.ALL_TABLE_NAME%>" value="<%=whichDatabase%>"/>	
 	</table>
 	<input type="submit"  name="submit" value="Click to submit" align="middle"/>
 

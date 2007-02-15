@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 import project.efg.templates.taxonPageTemplates.GroupType;
 import project.efg.templates.taxonPageTemplates.GroupTypeItem;
@@ -146,6 +147,45 @@ public class PDFMaker implements PDFGUIConstants{
 		this.initObjects();
 		this.readProperties();
 		
+	}
+	private int imageAlignment = Element.ALIGN_UNDEFINED; 
+	public int getHorizontalAlignmentForImages(){
+		if(this.imageAlignment > Element.ALIGN_UNDEFINED){
+			return this.imageAlignment;
+		}
+		if(this.captionsBelowSet.size() > 0){
+			this.imageAlignment = findAlignment(this.captionsBelowSet,true);
+		}
+		else if(this.captionsAboveSet.size() > 0){
+			this.imageAlignment = findAlignment(this.captionsAboveSet,false);
+		}
+		else{
+			this.imageAlignment =  ((Integer)alignMap.get("left")).intValue();
+		}
+		return this.imageAlignment;
+	}
+
+	/**
+	 * @param captionsBelowSet2
+	 * @param b
+	 * @return
+	 */
+	/**
+	 * @param captionsBelowSet2
+	 * @param b
+	 * @return
+	 */
+	private int findAlignment(SortedSet captionSet, boolean findLowestRank) {
+		if(captionSet.size() > 0){
+			if(findLowestRank){
+				return ((CaptionFontObject)captionSet.first()).getAlignment();
+			}
+			else{
+				return ((CaptionFontObject)captionSet.last()).getAlignment();
+			}
+		
+		}
+		return Element.ALIGN_LEFT;
 	}
 	private void initObjects(){
 		this.captionsBelowSet = new TreeSet(new EFGRankObjectSortingCriteria());

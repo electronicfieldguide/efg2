@@ -372,7 +372,7 @@ crossHairsImg.style.position = 'absolute';
 function makeColorSelector(inputBox)
 {
     var rgb, hsv
-    
+  
     function colorChanged()
     {
         var hex = rgbToHex(rgb.r, rgb.g, rgb.b);
@@ -464,10 +464,11 @@ function makeColorSelector(inputBox)
 
 function makeColorSelectors(ev)
 {
-	
-    var inputNodes = document.getElementsByTagName('input');
-    var i;
-    for (i = 0; i < inputNodes.length; i++)
+	var inputNodes = new Array(2);
+	inputNodes[0] = document.getElementById("imageframecolor1id");
+	inputNodes[1] = document.getElementById("boundingboxcolor1id");
+
+    for (var i = 0; i < inputNodes.length; i++)
     {
         var node = inputNodes[i];
         if (node.className != 'color')

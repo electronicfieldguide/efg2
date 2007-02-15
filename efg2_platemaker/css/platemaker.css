@@ -149,7 +149,7 @@ padding-top: 0px;
 padding-bottom: 15px;
 }
 td.captionrow {
-padding-left: 20px;
+padding-left: 8px;
 }
 td.captionbutton {
 text-align: right;
@@ -193,7 +193,7 @@ color: black;
 font-family: sans, helvetica, verdana, arial;
 font-weight: normal;
 font-size: .8em;
-padding-left: 15px;
+padding-left: 8px;
 }
 .subconfigitem {
 font-family: sans, helvetica, verdana, arial;
@@ -204,27 +204,34 @@ padding-left: 35px;
 .boldcheck {
 font-family: sans, helvetica, verdana, arial;
 font-weight: bold;
-font-size: .8em;
+font-size: .7em;
 padding-left: 0px;
 }
 .italicscheck {
 font-family: sans, helvetica, verdana, arial;
 font-weight: normal;
 font-style: italic;
-font-size: .8em;
+font-size: .7em;
 padding-left: 0px;
 }
 .underlinecheck {
 font-family: sans, helvetica, verdana, arial;
 font-weight: normal;
 text-decoration: underline;
-font-size: .8em;
+font-size: .7em;
 padding-left: 0px;
 }
 .note {
 font-family: sans, helvetica, verdana, arial;
 font-weight: normal;
-font-size: .75em;
+font-size: .70em;
+}
+.align {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .7em;
+padding-left: 0px;
+vertical-align: bottom;
 }
 hr {
 border-top: solid 1px #000;

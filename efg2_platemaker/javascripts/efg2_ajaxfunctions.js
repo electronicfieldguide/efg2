@@ -53,7 +53,7 @@ var THIRD_DIV = "thirddiv";
 var FOURTH_DIV = "fourthdiv";
 var BROWSER_MESSAGE="Browser does not support HTTP Request";
 var NUMBER_OF_TAXA = "numberoftaxa";
-var TEMP_MAX_NUMBER=100;
+var TEMP_MAX_NUMBER=400;
 var SELECTED_TEMPLATE="selectedTemplate";
 var GUID = "guid";
 var ALL_TABLE_NAME = "ALL_TABLE_NAME";
@@ -79,11 +79,13 @@ function AddCaptionRow(currenturl,
 						spanid,
 						captionid,
 						numberofcaptionsid){
+						
 	var currentU = JSP_ROOT + currenturl;
 	var caption =  $(captionid);
 	var params = caption.name + "=" + caption.value;
  	caption =  $(numberofcaptionsid);
 	params = params + "&" + caption.name + "=" + caption.value;
+	
 	doPostsUpdater(currentU,params,doNothingHandler,spanid,Insertion.Before);		
 }
 /**
@@ -132,7 +134,7 @@ function processDeleteQuery(loader,obj){
 function platechoosedataResponse(idSel){
 	//FIXME
 	if(idSel.value == null || idSel.value == DATASOURCE_MESSAGE){
-	
+		
 		window.location.href = CHOOSE_DATA_URL;
 		return;
 	}
@@ -153,11 +155,12 @@ function platechoosedataResponse(idSel){
 * guidxid - the id of the select box
 */
 function platedatalistResponse(nextPageID,guidxid){
+
+	
 	var selectObject =  $(guidxid);
 	
-		if(selectObject != null){
+	if(selectObject != null){
 		var selectedVal = selectObject.options[selectObject.selectedIndex].value;
-		
 		$('templateUniqueNamex').value =selectedVal;
 		$(TEMPLATE_UNIQUE_NAME).value=selectedVal;
 	}
@@ -167,6 +170,7 @@ function platedatalistResponse(nextPageID,guidxid){
 		
 	url=url+"&" + DISPLAY_NAME+ "="+$(DISPLAY_NAME).value;
 	url=url+"&"+$(MAIN_TABLE_CONSTANT ).value;
+
 	message_id =SECOND_DIV;
 	doPostsUpdater(PLATE_QUERY_DATA,url,doNothingHandler,SECOND_DIV); 
 	actdeactClasses(nextPageID);	
@@ -206,8 +210,13 @@ function showProgressMessage(id){
 */
 function setDatasourceDisplayName(idSel)
 {	
-	$(DATASOURCE_NAME).value = idSel.value;
-	$(DISPLAY_NAME).value  = idSel.text;	
+	if(idSel.type == 'select-one'){
+	 	var text =  idSel.options[idSel.selectedIndex].text;
+		var val =  idSel.options[idSel.selectedIndex].value;
+		$(DATASOURCE_NAME).value =val;
+		$(DISPLAY_NAME).value  =text;	
+		
+	}
 }
 /**
 * What should happen when a state changes for a particular request
