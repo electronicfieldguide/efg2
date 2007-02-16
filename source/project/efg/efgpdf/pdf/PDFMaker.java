@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 import project.efg.templates.taxonPageTemplates.GroupType;
@@ -27,7 +29,13 @@ import com.lowagie.text.Rectangle;
 
 
 public class PDFMaker implements PDFGUIConstants{
-
+	static Logger log;
+	static {
+		try {
+			log = Logger.getLogger(PDFMaker.class);
+		} catch (Exception ee) {
+		}
+	}
 	/*
 	 * Variables for handling cell properties
 	 */
@@ -87,10 +95,16 @@ public class PDFMaker implements PDFGUIConstants{
 	private List image2DisplayFields;
 
 	private XslPage xslPage;
+
+	private boolean isPortrait;
 	static Map alignMap;
-	
+	private int imageVerticalAlignment = Element.ALIGN_UNDEFINED;
+
+	private int imageHorizontalAlignment= Element.ALIGN_CENTER; 
 	
 	static Map paperSizes;
+
+	private static Map orientationMap;
 	static {
 		loadPaperSizeProperties();
 	}
@@ -109,6 +123,9 @@ public class PDFMaker implements PDFGUIConstants{
 		
 	}
 	private static void loadAlignmentProperties(){
+		orientationMap = new HashMap();
+		orientationMap.put("portrait",new Boolean("true"));
+		orientationMap.put("landscape",new Boolean("false"));
 		alignMap = new HashMap();
 		alignMap.put("left", new Integer(Element.ALIGN_LEFT));
 		alignMap.put("right",new Integer(Element.ALIGN_RIGHT));
@@ -137,9 +154,10 @@ public class PDFMaker implements PDFGUIConstants{
 				
 			}
 		}
-	
+		
 	}
 	public PDFMaker(XslPage xslPage) {
+		this.isPortrait = true;
 		this.xslPage = xslPage;
 		this.setSKIP_CELL_IF_NO_IMAGES(true);
 		//show only one image
@@ -148,21 +166,26 @@ public class PDFMaker implements PDFGUIConstants{
 		this.readProperties();
 		
 	}
-	private int imageAlignment = Element.ALIGN_UNDEFINED; 
-	public int getHorizontalAlignmentForImages(){
-		if(this.imageAlignment > Element.ALIGN_UNDEFINED){
-			return this.imageAlignment;
+	private void setPortraitOrientation(boolean isPortrait ){
+		this.isPortrait = isPortrait;
+	}
+	private boolean isPortraitOrientation(){
+		return this.isPortrait;
+	}	
+	public int getVerticalAlignmentForImages(){
+		if(this.imageVerticalAlignment > Element.ALIGN_UNDEFINED){
+			return this.imageVerticalAlignment;
 		}
 		if(this.captionsBelowSet.size() > 0){
-			this.imageAlignment = findAlignment(this.captionsBelowSet,true);
+			this.imageVerticalAlignment = findAlignment(this.captionsBelowSet,true);
 		}
 		else if(this.captionsAboveSet.size() > 0){
-			this.imageAlignment = findAlignment(this.captionsAboveSet,false);
+			this.imageVerticalAlignment = findAlignment(this.captionsAboveSet,false);
 		}
 		else{
-			this.imageAlignment =  ((Integer)alignMap.get("left")).intValue();
+			this.imageVerticalAlignment =  ((Integer)alignMap.get("left")).intValue();
 		}
-		return this.imageAlignment;
+		return this.imageVerticalAlignment;
 	}
 
 	/**
@@ -186,6 +209,9 @@ public class PDFMaker implements PDFGUIConstants{
 		
 		}
 		return Element.ALIGN_LEFT;
+	}
+	public int getImageHorizontalAlignment(String imageName){
+		return this.imageHorizontalAlignment;
 	}
 	private void initObjects(){
 		this.captionsBelowSet = new TreeSet(new EFGRankObjectSortingCriteria());
@@ -285,6 +311,13 @@ public class PDFMaker implements PDFGUIConstants{
 	 * @return
 	 */
 	public Rectangle getPaperSize() {
+		if(!this.isPortraitOrientation()){
+			Rectangle rect = new Rectangle(
+					this.PAPER_SIZE.height(),
+					this.PAPER_SIZE.width() 
+					);
+			return rect;
+		}
 		return this.PAPER_SIZE;
 	}
 
@@ -444,7 +477,18 @@ public class PDFMaker implements PDFGUIConstants{
 				if (cv != null) {
 					String label = cv.getLabel();
 					String val = null;
-					if (label.equalsIgnoreCase(GENERAL_SETTING_SORT)) {
+					if (label.equalsIgnoreCase("paperorientation")){
+						val = cv.getValue();
+						if (val != null && !val.trim().equals("")) {
+							log.debug("Orientation: " + val);
+							Boolean bool = (Boolean)orientationMap.get(val.toLowerCase());
+							if(bool != null){
+								log.debug("Bool is not null");
+								this.setPortraitOrientation(bool.booleanValue());
+							}
+						}
+					}
+					else if (label.equalsIgnoreCase(GENERAL_SETTING_SORT)) {
 						val = cv.getValue();
 						if (val != null && !val.trim().equals("")) {
 							this.sortingList.add(val);
@@ -660,7 +704,11 @@ public class PDFMaker implements PDFGUIConstants{
 				createGeneralSettings(group);
 			}else if (label.toLowerCase().equals(TITLES)) {
 				createTitles(group);
-			} else if (label.toLowerCase().equals(IMAGES)) {
+			}
+			else if (label.toLowerCase().equals(IMAGES_HORIZONTAL_ALIGNMENT)) {
+				createImagesAlignment(group);
+			}
+			else if (label.toLowerCase().equals(IMAGES)) {
 				createHeaderImages(group);
 			} else if (label.toLowerCase().equals(IMAGE_WHITE_SPACES)) {
 				createWhiteSpaceAroundImage(group);
@@ -696,6 +744,27 @@ public class PDFMaker implements PDFGUIConstants{
 
 
 
+	/**
+	 * @param group
+	 */
+	private void createImagesAlignment(GroupType group) {
+		for (java.util.Enumeration e = group.enumerateGroupTypeItem(); 
+		e.hasMoreElements();) {
+			GroupTypeItem key = (GroupTypeItem) e.nextElement();
+			if (key != null) {
+				CharacterValue cv = key.getCharacterValue();
+				if (cv != null) {
+					String val = cv.getValue();
+					if (val != null && !val.trim().equals("")) {
+						Integer al =(Integer)alignMap.get(val.toLowerCase());
+						if(al != null){
+							this.imageHorizontalAlignment = al.intValue();
+						}
+					}
+				}
+			}
+		}
+	}
 	/**
 	 * 
 	 * @param group
@@ -863,6 +932,7 @@ public class PDFMaker implements PDFGUIConstants{
 
 					if (label.equalsIgnoreCase("maintitle")
 							|| label.equalsIgnoreCase("maintitlefont")
+							|| label.equalsIgnoreCase("maintitlealign")
 							|| label.equalsIgnoreCase("titlesize")
 							|| label.equalsIgnoreCase("titleformat")) {
 
@@ -896,9 +966,16 @@ public class PDFMaker implements PDFGUIConstants{
 									this.mainTitleObject.setUnderLine(true);
 								}
 							}
+							else if (label.equalsIgnoreCase("maintitlealign")) {
+								val = cv.getValue();
+								if (val != null && !val.trim().equals("")) {
+									this.mainTitleObject.setAlignment(val);
+								}
+							}
 						}
 					} else if (label.equalsIgnoreCase("subtitle")
 							|| label.equalsIgnoreCase("subtitlefont")
+							|| label.equalsIgnoreCase("subtitlealign")
 							|| label.equalsIgnoreCase("subtitlesize")
 							|| label.equalsIgnoreCase("subtitleformat")) {
 						val = cv.getValue();
@@ -935,9 +1012,17 @@ public class PDFMaker implements PDFGUIConstants{
 									this.subTitleObject.setUnderLine(true);
 								}
 							}
+							else if (label.equalsIgnoreCase("subtitlealign")) {
+								val = cv.getValue();
+								if (val != null && !val.trim().equals("")) {
+									this.subTitleObject.setAlignment(val);
+								}
+							}
+
 						}
 					} else if (label.equalsIgnoreCase("creditstitle1")
 							|| label.equalsIgnoreCase("creditstitle1font")
+								|| label.equalsIgnoreCase("creditstitle1align")
 							|| label.equalsIgnoreCase("creditstitle1size")
 							|| label.equalsIgnoreCase("creditstitle1format")) {
 						val = cv.getValue();
@@ -972,8 +1057,16 @@ public class PDFMaker implements PDFGUIConstants{
 								}
 							}
 						}
+						else if (label.equalsIgnoreCase("creditstitle1align")) {
+							val = cv.getValue();
+							if (val != null && !val.trim().equals("")) {
+								this.copyRight1Object.setAlignment(val);
+							}
+						}
+
 					} else if (label.equalsIgnoreCase("creditstitle2")
 							|| label.equalsIgnoreCase("creditstitle2font")
+							|| label.equalsIgnoreCase("creditstitle2align")
 							|| label.equalsIgnoreCase("creditstitle2size")
 							|| label.equalsIgnoreCase("creditstitle2format")) {
 						val = cv.getValue();
@@ -1006,6 +1099,12 @@ public class PDFMaker implements PDFGUIConstants{
 								}
 								if (val.equalsIgnoreCase(UNDER_LINE)) {
 									this.copyRight2Object.setUnderLine(true);
+								}
+							}
+							else if (label.equalsIgnoreCase("creditstitle2align")) {
+								val = cv.getValue();
+								if (val != null && !val.trim().equals("")) {
+									this.copyRight2Object.setAlignment(val);
 								}
 							}
 						}
@@ -1055,9 +1154,6 @@ public class PDFMaker implements PDFGUIConstants{
 			this.states = new ArrayList();
 			this.align=Element.ALIGN_LEFT;
 		}
-
-	
-
 		/**
 		 * 
 		 * @param font

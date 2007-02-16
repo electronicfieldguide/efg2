@@ -464,13 +464,14 @@ public class EFG2PDF implements EFG2PDFInterface {
 		catch(Exception ee){
 			throw new Exception("XslPage configuration is null. " +
 					"Please consult the EFG team for help");
-		}
+		}	
 		this.document = new Document(
 				this.pdfMaker.getPaperSize(),
 				left_margin,
 				right_margin,
 				top_margin,
 				bottom_margin);
+		
 		try{
 			this.writer = 
 				PdfWriter.getInstance(this.document,output);
@@ -621,7 +622,9 @@ public class EFG2PDF implements EFG2PDFInterface {
 		else{
 			imageCell.setVerticalAlignment(Element.ALIGN_BOTTOM);
 		}
-		imageCell.setHorizontalAlignment(this.pdfMaker.getHorizontalAlignmentForImages());
+		imageCell.setHorizontalAlignment(
+				this.pdfMaker.getImageHorizontalAlignment(imageName)
+				);
 		imageCell.setUseBorderPadding(true);
 		imageCell.setPadding(this.pdfMaker.getWEIGHT_WHITE_SPACE_AROUND_IMAGE());
 		return imageCell;

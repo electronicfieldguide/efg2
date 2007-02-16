@@ -19,6 +19,7 @@ public interface PDFGUIConstants {
 	String ALIGN_CENTER="center";
 
 //	constants for general settings
+	String IMAGES_HORIZONTAL_ALIGNMENT ="imagesalignment";
 	String GENERAL_SETTINGS="generalsettings";
 	String GENERAL_SETTING_SORT="generalsettingsort";
 	String GENERAL_SETTING_IMAGE_COLUMN="generalsettingimageColumn";
@@ -91,6 +92,18 @@ public interface PDFGUIConstants {
 			"Subtitle Goes Here",
 			CREDITS_TEXT,
 			CREDITS_TEXT
+	};
+	int[] TITLES_DROP_DOWN_SIZE = {
+		54,
+		51,
+		50,
+		50	
+	};
+	String[] TITLES_LABEL_STR = {
+			"Title",
+			"Subtitle",
+			"Credits 1",
+			"Credits 1"
 	};
 	String[] TITLES_LABEL = {
 			"maintitle",

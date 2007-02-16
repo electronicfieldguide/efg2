@@ -91,8 +91,6 @@ project.efg.util.EFGDisplayObject
 				font-size: .8em;
 				color: #666;
 				background-color: #fee;
-				
-				width: 200px;
 			}			
 			input.formInputText:hover {
 				background-color: #ccffff;

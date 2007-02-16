@@ -77,9 +77,12 @@ public class EFG2PDFConverter extends EFGServlet {
 	    		if(efgDoc == null || xslPage == null){
 	    			throw new Exception("Error in Generating pdf. XslPage and efgDoc request attributes must be present!!");
 	    		}
+	    		//comment me out
+	    		
 				java.io.Writer stringw = new StringWriter();
 				xslPage.marshal(stringw);
-			
+				System.out.println(stringw.toString());
+				
 				response.setHeader("Expires", "0");
 				response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
 				response.setHeader("Pragma", "public");

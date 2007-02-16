@@ -77,74 +77,75 @@ java.util.List
 			characterLabel= tp.getCurrentCharacterLabel(name);
 			characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.FONT;
 		 %>
-
-		<span class="configitem">Font:</span> 
-		<select name="<%=name%>"><!-- Show built in fonts? -->
-		<% 
-		for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
-			fieldName = PDFGUIConstants.FONTS_NAME[j];%>
-			<option value="<%=fieldName%>">                                                                  <%=fieldName%>
-			</option>
+		<p class="captionline">
+			<span class="configitem">Font:</span> 
+			<select name="<%=name%>"><!-- Show built in fonts? -->
+			<% 
+			for(int j = 0; j < PDFGUIConstants.FONTS_NAME.length; j++){
+				fieldName = PDFGUIConstants.FONTS_NAME[j];%>
+				<option value="<%=fieldName%>">                                                                  <%=fieldName%>
+				</option>
+			
+			<%} %>
+			</select>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			 <%
+			 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+				fieldValue ="10";	
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.SIZE;
+			 %>							
+			<span class="configitem">Size</span> 
+			<span class="note">(6 to 100 pt):</span> 
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/> 
+			 <%
+			 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+				fieldValue ="";
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
+				indexCaps + PDFGUIConstants.BOLD;
+			 %>		
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			<input type="checkbox" name="<%=name%>"  value="<%=PDFGUIConstants.BOLD%>" title="bold"/>
 		
-		<%} %>
-		</select>
-		<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-		 <%
-		 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-			fieldValue ="10";	
-			characterLabel= tp.getCurrentCharacterLabel(name);
-			characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.SIZE;
-		 %>							
-		<span class="configitem">Size</span> 
-		<span class="note">(6 to 100 pt):</span> 
-		<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-		<input type="text" name="<%=name%>" size="2" maxlength="3" value="<%=fieldValue%>"  onKeyDown="resetBackgroundColor(this,'');" onMouseDown="resetBackgroundColor(this,'');" onBlur="checkNumeric(this,6,100,'');"/> 
-		 <%
-		 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-			fieldValue ="";
-			characterLabel= tp.getCurrentCharacterLabel(name);
-			characterLabelValue =PDFGUIConstants.CAPTION_TEXT + 
-			indexCaps + PDFGUIConstants.BOLD;
-		 %>		
-		<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-		<input type="checkbox" name="<%=name%>"  value="<%=PDFGUIConstants.BOLD%>"/>
-	
-		<span class="boldcheck"><%=PDFGUIConstants.BOLD%></span> 
-		 <%
-		 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-			fieldValue ="";
-			
-			characterLabel= tp.getCurrentCharacterLabel(name);		
-			characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.ITALICS;		
-		 %>
-		<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-		<input type="checkbox" name="<%=name%>" value="<%=PDFGUIConstants.ITALICS%>" />
-										 							
-		<span class="italicscheck"><%=PDFGUIConstants.ITALICS%></span> 
-		 <%
-		 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-			fieldValue ="";
-			characterLabel= tp.getCurrentCharacterLabel(name);
-			characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.UNDER_LINE;
-			
-		 %>
-		<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-		<input type="checkbox" name="<%=name%>" value="<%=PDFGUIConstants.UNDER_LINE%>" />								
-		<span class="underlinecheck"><%=PDFGUIConstants.UNDER_LINE%></span>
-		<span class="configitem">Align:</span> 
-		<%
-		 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-			fieldValue ="";
-			characterLabel= tp.getCurrentCharacterLabel(name);
-			characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.ALIGN;
-		 %>
-		<input type="hidden"  name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
-		<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
-		<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>" CHECKED />
-		<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
-		<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
-		<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>
-		<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
+			<span class="boldcheck" title="bold">B</span> 
+			 <%
+			 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+				fieldValue ="";
+				
+				characterLabel= tp.getCurrentCharacterLabel(name);		
+				characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.ITALICS;		
+			 %>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			<input type="checkbox" name="<%=name%>" value="<%=PDFGUIConstants.ITALICS%>" title="italics"/>
+											 							
+			<span class="italicscheck" title="italics">i</span> 
+			 <%
+			 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+				fieldValue ="";
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.UNDER_LINE;
+				
+			 %>
+			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			<input type="checkbox" name="<%=name%>" value="<%=PDFGUIConstants.UNDER_LINE%>" title="underline"/>								
+			<span class="underlinecheck" title="underline">u</span>
+			<span class="configitem">Align:</span> 
+			<%
+			 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+				fieldValue ="";
+				characterLabel= tp.getCurrentCharacterLabel(name);
+				characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.ALIGN;
+			 %>
+			<input type="hidden"  name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+			<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_LEFT%>" CHECKED />
+			<span class="align"><%=PDFGUIConstants.ALIGN_LEFT%></span>
+			<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_CENTER%>"/>
+			<span class="align"><%=PDFGUIConstants.ALIGN_CENTER%></span> 
+			<input type="radio" name="<%=name%>" value="<%=PDFGUIConstants.ALIGN_RIGHT%>"/>	
+			<span class="align"><%=PDFGUIConstants.ALIGN_RIGHT%></span>			
+		</p>
 	</td>
 </tr>
 
