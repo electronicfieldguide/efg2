@@ -61,7 +61,7 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig {
 			.getParameter(EFGImportConstants.IS_SAVE_PDF);
 			if(isSavePDF != null && 
 					!isSavePDF.trim().equals("")){//we are not saving we are doing testing
-				this.forwardPage(req,res,true,true);
+				this.forwardPage(req,res,true,false);
 				return;
 			}
 			String dsName = req
@@ -103,6 +103,11 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig {
 				req.setAttribute(EFGImportConstants.DISPLAY_NAME_COL, displayName);
 				this.add2Groups(req, xslPage);
 				//allow writing to streams also
+				String authors = findAuthors(dsName);
+				if(authors == null){
+					authors ="";
+				}
+				req.setAttribute("authors", authors);
 				req.setAttribute("xslPage", xslPage);
 				req.setAttribute("efgDoc", efgDoc);
 				//come with forward page as parameter
@@ -121,6 +126,10 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig {
 
 			}
 		}
+	}
+	private String findAuthors(String dsName){
+		
+		return "";
 	}
 	/**
 	 * @param xml
@@ -213,11 +222,13 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig {
 		RequestDispatcher dispatcher = null;
 
 		try {
+			
 			if(isError){//forward to error page
 				dispatcher = getServletContext().getRequestDispatcher(
 						EFGImportConstants.TEMPLATE_ERROR_PAGE);
 			}
 			else if (isSave) {
+				
 				dispatcher = getServletContext().getRequestDispatcher(
 						EFGImportConstants.TEMPLATE_CONFIG_PAGE);
 			}

@@ -17,7 +17,7 @@ public interface EFG2PDFInterface {
 
 
 	public abstract void writePdfToStream(project.efg.efgDocument.EFGDocument efgdoc,
-			XslPage xslPage,OutputStream output,File mediaResourcesDirectory);
+			XslPage xslPage,OutputStream output,File mediaResourcesDirectory, String authors);
 
 	
 }

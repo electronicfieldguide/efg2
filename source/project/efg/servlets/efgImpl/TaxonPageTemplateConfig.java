@@ -44,7 +44,6 @@ public class TaxonPageTemplateConfig extends EFGTemplateConfig {
 	 */
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
-		//realPath = getServletContext().getRealPath("/");
 	}
 	/**
 	 * Get the HttpServletRequest parameters and return the value.
@@ -60,44 +59,59 @@ public class TaxonPageTemplateConfig extends EFGTemplateConfig {
 		
 			String dsName = req
 					.getParameter(EFGImportConstants.DATASOURCE_NAME);
-		
+	
+			if(dsName == null || dsName.trim().equals("")){
+				dsName =(String)req.getAttribute(EFGImportConstants.DATASOURCE_NAME);
+			}
+			//log.debug("dsName :" + dsName);
 			String displayName = req
 					.getParameter(EFGImportConstants.DISPLAY_NAME);
-		
+			if(displayName == null || displayName.trim().equals("")){
+				displayName = (String)req.getAttribute(EFGImportConstants.DISPLAY_NAME); 
+			}
+			//log.debug("displayName :" + displayName);
 			TaxonPageTemplates tps = this.getTaxonPageTemplateRoot(dsName);
 
 			if (tps == null) {
 				throw new Exception("Datasource File not found");
 			}
-
+			//log.debug("TPS is not :" + displayName);
 			XslPage xslPage = getXSLPageParams(req, tps);
 			if (xslPage == null) {
+				
 				throw new Exception("xslPage is null");
 			}
+			//log.debug("XSL Page is not null");
 			String guid = xslPage.getGuid();
 			if ((guid != null) && (!guid.trim().equals("")) ){
+				
 				req.setAttribute(EFGImportConstants.GUID,guid);
 			}
+			//log.debug("guid :" + guid);
 			String uniqueName = xslPage.getDisplayName();
 			if ((uniqueName != null) && (!uniqueName.trim().equals("")) ){
 				req.setAttribute(EFGImportConstants.TEMPLATE_UNIQUE_NAME,uniqueName);
 			}
+			//log.debug("uniqueName :" + uniqueName);
 			GroupsType groups = xslPage.getGroups();
 			if (groups == null) {
+				//log.debug("groups is null");
 				throw new Exception("Groups is null");
 			}
+			//log.debug("Groups is not null");
 
 			req.setAttribute(EFGImportConstants.DATASOURCE_NAME, dsName);
 			req.setAttribute(EFGImportConstants.DISPLAY_NAME_COL, displayName);
 			EFGFieldObject field = this.add2Groups(req, xslPage);
 			//allow writing to streams also
 			boolean done = this.writeFile(dsName, tps);
-			//log.debug("Done writing");
+			////log.debug("Done writing");
 			if (done) {
 				if (field != null) {
 					req.setAttribute("fieldName", field.getFieldName());
 					req.setAttribute("fieldValue", field.getFieldValue());
 				}
+				//log.debug("About to forward again");
 				this.forwardPage(req, res, false);
 			} else {
 				throw new Exception("Error occured during saving of file");
@@ -120,6 +134,7 @@ public class TaxonPageTemplateConfig extends EFGTemplateConfig {
 		try {
 			// forward to TestConfigPage.jsp
 			if (!isError) {
+				//log.debug("Is not error");
 				String searchType = req
 				.getParameter(EFGImportConstants.SEARCH_TYPE_STR);
 				//log.debug("No errors");
@@ -151,8 +166,8 @@ public class TaxonPageTemplateConfig extends EFGTemplateConfig {
 					}
 					else if (EFGImportConstants.SEARCH_PDFS_TYPE
 							.equalsIgnoreCase(searchType)) {
-						req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
-								EFGImportConstants.SEARCH_PDFS_TYPE);
+						//log.debug("Forwarding to 1: " +
+							//	EFGImportConstants.PDF_SUCCESS_PAGE );
 						dispatcher = getServletContext().getRequestDispatcher(
 								EFGImportConstants.PDF_SUCCESS_PAGE);
 					}
@@ -164,24 +179,23 @@ public class TaxonPageTemplateConfig extends EFGTemplateConfig {
 					dispatcher = getServletContext().getRequestDispatcher(
 							EFGImportConstants.TEST_SEARCH_CONFIG_PAGE);
 					}
-					else{
-						if (EFGImportConstants.SEARCH_PDFS_TYPE
-								.equalsIgnoreCase(searchType)) {
-							req.setAttribute(EFGImportConstants.SEARCH_TYPE_STR,
-									EFGImportConstants.SEARCH_PDFS_TYPE);
-							dispatcher = getServletContext().getRequestDispatcher(
-									EFGImportConstants.PDF_SUCCESS_PAGE);
-						}
-						else{
+					else{						
 						dispatcher = getServletContext().getRequestDispatcher(
 								EFGImportConstants.TEMPLATE_ERROR_PAGE);
-						}
 					}
 
 				} else {
-					//log.debug("Forward to Test taxon page");
-					dispatcher = getServletContext().getRequestDispatcher(
-							EFGImportConstants.TEST_TAXON_CONFIG_PAGE);
+					if (EFGImportConstants.SEARCH_PDFS_TYPE
+							.equalsIgnoreCase(searchType)) {
+						//log.debug("Forwarding to 2: " +
+							//	EFGImportConstants.PDF_SUCCESS_PAGE );
+						dispatcher = getServletContext().getRequestDispatcher(
+								EFGImportConstants.PDF_SUCCESS_PAGE);
+					}
+					else{
+						dispatcher = getServletContext().getRequestDispatcher(
+								EFGImportConstants.TEST_TAXON_CONFIG_PAGE);
+					}
 				}
 			} else {
 				//log.debug("Forward to error page1");

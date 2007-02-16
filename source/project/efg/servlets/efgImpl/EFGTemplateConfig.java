@@ -87,6 +87,7 @@ public abstract class EFGTemplateConfig extends HttpServlet {
 	 */
 	public void doPost(HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
+		
 		this.processParams(req, res);
 	}
 	/**
@@ -593,7 +594,9 @@ public abstract class EFGTemplateConfig extends HttpServlet {
 	protected XslPage getXSLPageParams(HttpServletRequest req, TaxonPageTemplates tps) {
 		String dsName = req
 				.getParameter(EFGImportConstants.DATASOURCE_NAME);
-	
+		if(dsName == null || dsName.trim().equals("")){
+			dsName =(String)req.getAttribute(EFGImportConstants.DATASOURCE_NAME);
+		}
 		String xslName = req
 				.getParameter(EFGImportConstants.XSL_STRING);
 		//log.debug("xslName: " + xslName);

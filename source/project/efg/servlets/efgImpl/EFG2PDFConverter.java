@@ -5,7 +5,6 @@ package project.efg.servlets.efgImpl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.StringWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -73,15 +72,15 @@ public class EFG2PDFConverter extends EFGServlet {
 		 try {
 	        	EFGDocument efgDoc = (EFGDocument)req.getAttribute("efgDoc");
 	    		XslPage xslPage = (XslPage)req.getAttribute("xslPage");
-	    		
+	    		String authors = (String)req.getAttribute("authors");
 	    		if(efgDoc == null || xslPage == null){
 	    			throw new Exception("Error in Generating pdf. XslPage and efgDoc request attributes must be present!!");
 	    		}
 	    		//comment me out
 	    		
-				java.io.Writer stringw = new StringWriter();
-				xslPage.marshal(stringw);
-				System.out.println(stringw.toString());
+				//java.io.Writer stringw = new StringWriter();
+				//xslPage.marshal(stringw);
+				//System.out.println(stringw.toString());
 				
 				response.setHeader("Expires", "0");
 				response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
@@ -90,7 +89,12 @@ public class EFG2PDFConverter extends EFGServlet {
 				response.setContentType("application/pdf");
 				out =  response.getOutputStream();
 	    		EFG2PDFInterface efg2pdf = new EFG2PDF();
-	    		 efg2pdf.writePdfToStream(efgDoc,xslPage,out,this.mediaResourceDirectory);
+	    		 efg2pdf.writePdfToStream(
+	    				 efgDoc,
+	    				 xslPage,
+	    				 out,
+	    				 this.mediaResourceDirectory, 
+	    				 authors);
 	    		 out.flush();
 	    		 out.close();
 		 }

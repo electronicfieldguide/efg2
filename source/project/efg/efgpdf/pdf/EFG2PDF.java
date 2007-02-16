@@ -80,21 +80,23 @@ public class EFG2PDF implements EFG2PDFInterface {
 	private File footerImagesDirectory;
 	private File mediaResourcesDirectory;
 	
-	private static int left_margin = 
-		EFG2PDFConstants.DEFAULT_LEFT_MARGIN;
 
-	static int right_margin=
-		EFG2PDFConstants.DEFAULT_RIGHT_MARGIN;
-
-	static int top_margin= 
-		EFG2PDFConstants.DEFAULT_TOP_MARGIN;
-
-	static int bottom_margin = 
-		EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN;
+	/**
+	 * 
+	 * @param output
+	 * @param configFile
+	 */
+	public EFG2PDF(
+			) {
+		this.allCaptions = new ArrayList();	
+		this.numberOfCellsCounter = 0;
+		this.taxonEntryMap = new HashMap();
+	}
 	static float isUnderline_thickness = 
 		EFG2PDFConstants.DEFAULT_UNDERLINE_THICKNESS;
 	static float isUnderline_y_position= 
 		EFG2PDFConstants.DEFAULT_UNDERLINE_Y_POSITION;
+
 	
 	static {
 		initProperties();
@@ -115,55 +117,8 @@ public class EFG2PDF implements EFG2PDFInterface {
 				!property.trim().equals("")){
 			isUnderline_y_position = 
 				Float.parseFloat(property);
-		}
-		property =
-			EFGImportConstants.EFGProperties.getProperty(
-			"pdf.left.margin");
-		if(property != null && 
-				!property.trim().equals("")){
-			left_margin = 
-				Integer.parseInt(property);
-		}
-	
-		property =
-			EFGImportConstants.EFGProperties.getProperty(
-			"pdf.right.margin");
-		if(property != null && 
-				!property.trim().equals("")){
-			right_margin = 
-				Integer.parseInt(property);
-		}
-
-		property =
-			EFGImportConstants.EFGProperties.getProperty(
-			"pdf.top.margin");
-		if(property != null && 
-				!property.trim().equals("")){
-			top_margin = 
-				Integer.parseInt(property);
-		}
-
-		property =
-			EFGImportConstants.EFGProperties.getProperty(
-			"pdf.bottom.margin");
-		if(property != null && 
-				!property.trim().equals("")){
-			 bottom_margin = 
-				Integer.parseInt(property);
-		}
+		}	
 	}
-	/**
-	 * 
-	 * @param output
-	 * @param configFile
-	 */
-	public EFG2PDF(
-			) {
-		this.allCaptions = new ArrayList();	
-		this.numberOfCellsCounter = 0;
-		this.taxonEntryMap = new HashMap();
-	}
-
 	public static Phrase writeMessage(String message){
 		String mutex ="";
 			synchronized (mutex) {
@@ -171,12 +126,13 @@ public class EFG2PDF implements EFG2PDFInterface {
 						new Font(Font.HELVETICA,15f,Font.BOLD,Color.RED));
 	
 			}
-		}
+	}
 	/* (non-Javadoc)
 	 * @see project.efg.efgpdf.pdf.EFG2PDFInterface#readData(java.io.Reader)
 	 */
 	public void writePdfToStream(project.efg.efgDocument.EFGDocument efgdoc,
-			XslPage xslPage,OutputStream output,File mediaResourcesDirectory) {
+			XslPage xslPage,
+			OutputStream output,File mediaResourcesDirectory, String authors) {
 		
 		try{
 			/*FileOutputStream foutput =
@@ -185,7 +141,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 			this.mediaResourcesDirectory = mediaResourcesDirectory;
 			this.footerImagesDirectory = 
 				computeFooterImagesDirectory(this.mediaResourcesDirectory);
-			this.initDocument(output,xslPage);
+			this.initDocument(output,xslPage,authors);
 			if(efgdoc == null){
 				throw new Exception("EFGDocument is null");
 			}
@@ -456,7 +412,9 @@ public class EFG2PDF implements EFG2PDFInterface {
 	 * 
 	 *
 	 */
-	private void initDocument(OutputStream output,XslPage xslPage)throws Exception{	
+	private void initDocument(OutputStream output,
+			XslPage xslPage, 
+			String authors)throws Exception{	
 		
 		try{
 			this.readConfig(xslPage);
@@ -464,13 +422,17 @@ public class EFG2PDF implements EFG2PDFInterface {
 		catch(Exception ee){
 			throw new Exception("XslPage configuration is null. " +
 					"Please consult the EFG team for help");
-		}	
-		this.document = new Document(
+		}
+		this.document = EFG2PDFDocumentMetadata.createDocumentMetadata(
+				this.pdfMaker,
+				this.getClass().getName(), 
+				authors);
+		/*this.document = new Document(
 				this.pdfMaker.getPaperSize(),
 				left_margin,
 				right_margin,
 				top_margin,
-				bottom_margin);
+				bottom_margin);*/
 		
 		try{
 			this.writer = 

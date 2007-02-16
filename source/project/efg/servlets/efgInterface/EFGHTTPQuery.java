@@ -129,6 +129,7 @@ public abstract class EFGHTTPQuery {
 	public EFGDocument getEFGDocument(){
 		return this.efgDocument;	
 	}
+
 	/**
 	 * Factory methods
 	 * @param req - The request to parse into the appropriate query

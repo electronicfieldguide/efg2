@@ -9,7 +9,7 @@ pageids[1] = "platequerydata";
 pageids[2] = "platedesignform";
 pageids[3] = "platesaveorprint";
 var FORM_SEARCH_ID='form_search_id';
-var SAVE_URL='/efg2pdfconfig';
+
 var DATASOURCE_NAME='dataSourceName';
 var SEARCH_QUERY_XML_RESULTS='searchqueryresultsxml';
 var SEARCH_QUERY_XML_RESULTS_1='searchqueryresultsxml1';
@@ -266,7 +266,7 @@ Ajax.Responders.register(myGlobalHandlers);
 
 function reportError(request)
 {
-	alert("Error");
+  alert("Error " + request.responseText);
    popHideHyper();	
    // $(deleteMessageID).innerHTML = '<div class="error"><b>Error communicating with server. Please try again.</b></div>';
 }
@@ -414,37 +414,52 @@ function processDesignQuery(loader, obj){
 	
 }
 function saveConfig(myTableId){
-	alert("Working on it :)");
+
+	alert("Work in Progress");
 	return;
-/*	var tempU = $(TEMPLATE_UNIQUE_NAME).value;
-		var promptAnswer = callPrompt(tempU);
+	var tempU = $(TEMPLATE_UNIQUE_NAME).value;
+	var promptAnswer = callPrompt(tempU);
 	if(promptAnswer == null){		
 		return;
 	}
 	else if(promptAnswer == ''){
 		return;
 	}
-
-	$(TEMPLATE_UNIQUE_NAME).value = promptAnswer;
-	var myTable = $(myTableId);
-	var queryToSave = requestPDFSavePage(myTable);
 	
+	$(TEMPLATE_UNIQUE_NAME).value = promptAnswer;
+
+	var queryToSave = requestPDFSavePage(myTableId);	
 	var id=THIRD_DIV;
 	message_id = THIRD_DIV;
-	doPosts(SAVE_URL,queryToSave,processSave);
-	resetGlobalQuery();*/
-	//do ajax here
+	doPosts(PDF_SERVER_URL,queryToSave,processSave);
 }
 function processSave(loader,obj){
-	alert(req.responseText);
+	popHideHyper();
+	alert(loader.responseText);
 }
-function requestPDFSavePage(myTable){
-	/*findInputsRecursively(myTable);
+function requestPDFSavePage(myTableID){
+
+	var parameters = Form.serialize($(myTableID));
+ 	//parameters = parameters + "&" + constructQuery(false);
+ 	var paramurl = NUMBER_OF_RESULTS+ "=" + $(NUMBER_OF_TAXA).value;
+
+	var tempU = $(TEMPLATE_UNIQUE_NAME).value;
 	
-	var queryStr = query2 + "&" + constructQuery(false);
-	resetGlobalQuery();
- 	queryStr=queryStr+"&xslName=xslName.xsl&jsp=defaultJSP.jsp&isDefault=true&searchType=pdfs&search=search";
- 	return queryStr;*/
+	paramurl = paramurl + "&templateUniqueName=" + tempU;
+
+	var guidN = $(tempU);
+	if(guidN != null){
+		var guid = guidN.value;
+		paramurl = paramurl + "&" + GUID + "=" + guid;
+		
+	}
+	
+	paramurl=  paramurl+ "&" + $(MAIN_TABLE_CONSTANT).value;
+ 	parameters=parameters+
+ 	"&xslName=xslName.xsl&jsp=defaultJSP.jsp" + 
+ 	"&isDefault=true&searchType=pdfs&search=search" + 
+ 	"&savepdf=savepdf" + paramurl;
+ 	return parameters;
 }
 function constructQuery(addDatasourceName){	
 

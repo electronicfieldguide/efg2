@@ -169,7 +169,7 @@ public class PDFMaker implements PDFGUIConstants{
 	private void setPortraitOrientation(boolean isPortrait ){
 		this.isPortrait = isPortrait;
 	}
-	private boolean isPortraitOrientation(){
+	public boolean isPortraitOrientation(){
 		return this.isPortrait;
 	}	
 	public int getVerticalAlignmentForImages(){
@@ -1256,7 +1256,7 @@ public class PDFMaker implements PDFGUIConstants{
 		 */
 		public boolean equals(Object o) {
 			CaptionFontObject co = (CaptionFontObject) o;
-			return this.getCaption().equals(co.getCaption()) && this.getRank()==co.getRank();
+			return this.getCaption().equals(co.getCaption());
 		}
 
 		/**

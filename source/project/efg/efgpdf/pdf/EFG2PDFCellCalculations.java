@@ -280,11 +280,20 @@ public class EFG2PDFCellCalculations {
 	}
 	private void doCellComputations() {
 		log.debug("Paper size Height From pdf Maker: " + this.pdfMaker.getPaperSize().height());
+		if(this.pdfMaker.isPortraitOrientation()){
+			this.totalTableHeight = 
+				this.pdfMaker.getPaperSize().height()-
+			(EFG2PDFConstants.DEFAULT_TOP_MARGIN + 
+					EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN);
+	
+		}
+		else{
+			this.totalTableHeight = 
+				this.pdfMaker.getPaperSize().height()-
+			(EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN + 
+					EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN);
 
-		this.totalTableHeight = 
-			this.pdfMaker.getPaperSize().height()-
-		(EFG2PDFConstants.DEFAULT_TOP_MARGIN + 
-				EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN);
+		}
 		log.debug("Total Height Before compute: " + this.totalTableHeight);
 
 		//add the space for headers and footers
