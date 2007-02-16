@@ -79,7 +79,19 @@ public class EFG2PDF implements EFG2PDFInterface {
 	private HeaderAndFooterHandler hd;
 	private File footerImagesDirectory;
 	private File mediaResourcesDirectory;
-	
+	static StringBuffer errorBuffer;
+	static{
+	errorBuffer= new StringBuffer("Error occured during processing of document\n"); 
+	errorBuffer.append("---------\n");
+	errorBuffer.append("Possible Causes:\n\n");
+
+	errorBuffer.append("- Images are missing. If you intended to print a file with no images,\n");
+	errorBuffer.append("please go back and make sure the box next to \n");
+	errorBuffer.append("'Always display captions' in the Data Display Settings is checked.\n\n");
+
+	errorBuffer.append("- some other error that causes this page to " +
+			"get generated that we do not know about, please report this to us\n");
+	}
 
 	/**
 	 * 
@@ -242,11 +254,10 @@ public class EFG2PDF implements EFG2PDFInterface {
 						);
 			}
 			else if(this.numberOfCellsCounter == 0){
-				String message = "The selections you chose returns " + 
-				"0 results. Please review them. And try again";			
-				this.writeErrorMessages(message, this.fixedCellHeight);
+					this.writeErrorMessages(errorBuffer.toString(), this.fixedCellHeight);
 			}
 			document.add(pdfTable);
+			
 		} catch (Exception e) {
 			log.error(e.getMessage());
 			try {
@@ -269,17 +280,14 @@ public class EFG2PDF implements EFG2PDFInterface {
 					document.open();
 				}
 				if(e == null || e.getMessage().trim().equals("")){
-					
-					this.document.add(writeMessage("An error occured " +
-					"during the processing of pdf document."));	
+					this.document.add(writeMessage(errorBuffer.toString()));	
+					log.error(e.getMessage());
 				}
 				else{
-				
-					this.document.add(writeMessage("ERROR: " + e.getMessage()));
+					log.error(e.getMessage());
+					this.document.add(writeMessage(errorBuffer.toString()));	
 				}
 			} catch (DocumentException e1) {
-				
-				
 				e1.printStackTrace();
 			}
 			
@@ -367,7 +375,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 	}
 	private void writeErrorMessages(String message,
 			float cellHeight){
-		if(message != null && !message.trim().equals("")){
+		if(message == null || message.trim().equals("")){
 			message = "Error occured during processing of document";
 		}
 		PdfPCell cell = new PdfPCell();

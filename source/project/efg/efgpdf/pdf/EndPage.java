@@ -57,11 +57,7 @@ public class EndPage extends PdfPageEventHelper implements EFG2PDFConstants{
         		document.open();
         	}
         	try {
-				document.add(EFG2PDF.writeMessage("Please review your selections and try again.\n" +
-						" If for instance you indicated that images should not be skipped and\n " +
-						"there are no images for the selected datasource this error message " +
-						"will be produced. If that does not resolve the issue then please\n" +
-						" contact the EFG team"));
+				document.add(EFG2PDF.writeMessage(EFG2PDF.errorBuffer.toString()));
 			} catch (DocumentException e1) {
 				throw new ExceptionConverter(e);
 			}	
