@@ -46,7 +46,7 @@ java.util.List
 	<td class="captionrow">
 	<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>	
 	
-		<span class="configitem">Text to Display:</span> 
+		<span class="configitemfield">Field:</span> 
 		<select name="<%=name%>"  onChange="JavaScript:checkSelected(this);">
 		<%
 		int ii = 0;
@@ -91,7 +91,7 @@ java.util.List
 			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 			 <%
 			 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
-				fieldValue ="10";	
+				fieldValue ="8";	
 				characterLabel= tp.getCurrentCharacterLabel(name);
 				characterLabelValue =PDFGUIConstants.CAPTION_TEXT + indexCaps + PDFGUIConstants.SIZE;
 			 %>							

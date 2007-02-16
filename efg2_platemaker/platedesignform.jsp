@@ -520,7 +520,7 @@ java.io.File
 						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
 							fieldValue = (String)groupTable.get(name);
 							if(fieldValue == null){
-								fieldValue ="10";
+								fieldValue ="8";
 							}
 							characterLabel= tp.getCurrentCharacterLabel(name);
 							characterLabelValue = (String)groupTable.get(characterLabel);
@@ -800,7 +800,7 @@ java.io.File
 						 	name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
 							fieldValue = (String)groupTable.get(name);
 							if(fieldValue == null){
-								fieldValue ="10";
+								fieldValue ="8";
 							}
 							characterLabel= tp.getCurrentCharacterLabel(name);
 							characterLabelValue = (String)groupTable.get(characterLabel);
@@ -1000,7 +1000,7 @@ java.io.File
 			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
 			fieldValue = (String)groupTable.get(name);
 			if(fieldValue == null){
-				fieldValue ="10";
+				fieldValue =PDFGUIConstants.TITLE_FONT_SIZE[i];
 			}
 			characterLabel= tp.getCurrentCharacterLabel(name);
 			characterLabelValue = (String)groupTable.get(characterLabel);
@@ -1141,97 +1141,7 @@ java.io.File
 		<!-- <input type="file" name="logo2" size="25" /><br /> -->
 		<!-- <input type="file" name="logo3" size="25" /></td> -->
 		<!-- </tr> -->	
-		<!--<tr>
 
-		<td class="formitem">White space around image: 
-		<%
-			name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
-			fieldValue = (String)groupTable.get(name);
-			if(fieldValue == null){
-				fieldValue ="";
-			}
-			groupLabel= tp.getCurrentGroupLabel(name);
-			groupLabelValue = (String)groupTable.get(groupLabel);
-			if(groupLabelValue == null){
-				groupLabelValue =PDFGUIConstants.IMAGE_WHITE_SPACES;
-			}
-			characterLabel= tp.getCurrentCharacterLabel(name);
-			characterLabelValue = (String)groupTable.get(characterLabel);
-			if(characterLabelValue == null){
-				characterLabelValue =PDFGUIConstants.IMAGE_WHITE_SPACE;
-			}
-		%>
-		<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
-			<select name="<%=name%>">						
-			<% 
-			for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
-				fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
-				String fieldN = fieldName;
-				if(i==0){
-						fieldN = "0 (none)"; 
-				}
-				if(fieldName.equals(fieldValue)){
-					%>
-				<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
-				</option>
-					<%
-				}
-				else{
-					%>
-					<option value="<%=fieldName%>">                                                            <%=fieldN%>
-					</option>
-					<%
-				}
-			}%>
-			</select>
-			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-		</td>
-		<td class="formitem">White space between elements 
-			<span class="note">(image plus captions):</span> 
-			<%
-			name =tp.getCharacter(PDFGUIConstants.isNew,PDFGUIConstants.isNew);
-			fieldValue = (String)groupTable.get(name);
-			if(fieldValue == null){
-				fieldValue ="";
-			}
-			groupLabel= tp.getCurrentGroupLabel(name);
-			groupLabelValue = (String)groupTable.get(groupLabel);
-			if(groupLabelValue == null){
-				groupLabelValue =PDFGUIConstants.ELEMENT_WHITE_SPACES;
-			}
-			characterLabel= tp.getCurrentCharacterLabel(name);
-			characterLabelValue = (String)groupTable.get(characterLabel);
-			if(characterLabelValue == null){
-				characterLabelValue =PDFGUIConstants.ELEMENT_WHITE_SPACE;
-			}
-			%>
-			<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
-			<select name="<%=name%>">						
-			<% 
-			for(int i =0; i < PDFGUIConstants.NUMBER_OPTIONS.length;i++) {
-				fieldName = PDFGUIConstants.NUMBER_OPTIONS[i];
-				String fieldN = fieldName;
-				if(i==0){
-						fieldN = "0 (none)"; 
-				}
-				if(fieldName.equals(fieldValue)){
-				%>
-				<option selected="selected" value="<%=fieldName%>">                                                            <%=fieldN%>
-				</option>
-				<%
-				}
-				else{
-					%>
-				<option value="<%=fieldName%>">                                                            <%=fieldN%>
-				</option>
-				<%
-				}
-			}%>
-			</select>
-			<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/> 												
-		</td>		
-	</tr>	
-	-->
 	<tr>
 		<td class="formitem">Frame around image:<br />
 			<br />

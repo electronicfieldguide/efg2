@@ -117,7 +117,12 @@ public interface PDFGUIConstants {
 			"creditstitle1size",
 			"creditstitle2size"
 	};
-
+	String[] TITLE_FONT_SIZE = {
+			"18",
+			"12",
+			"10",
+			"10"
+	};
 	String[] TITLE_FORMAT = {
 			"titleformat",
 			"subtitleformat",
