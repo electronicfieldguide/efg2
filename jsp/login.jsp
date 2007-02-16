@@ -3,7 +3,7 @@
 	<head>
 	 	<%@ include file="Header.jsp"%>	
 		<title>The EFG Project - Electronic Field Guides</title>
-		<link rel="stylesheet" href="efg2web.css" type="text/css"/>
+		<link rel="stylesheet" href="<%=context%>/efg2web.css" type="text/css"/>
 	</head>
 	<body>
 		<%@ include file="EFGTableHeader.jsp"%>	
@@ -15,7 +15,7 @@
 							<td colspan="2" class="logintitle">You must log in to access this resource.
 							</td>
 						</tr>
-						<form action="j_security_check" method="post">
+						<form action="<%=context%>/j_security_check" method="post">
 								<tr>
 									<td class="logintext">User name: <input type="text" name="j_username"/></td>
 								</tr>

@@ -13,8 +13,7 @@ project.efg.util.EFGDisplayObject
  	String advancedString = "/efg2/templateJSP/ConfigurePage.jsp?" +  mainTableConstant.toString(); 
 
    	String forwardPage="NoDatasource.jsp";
-   	String context = request.getContextPath();
-	String mainTableConstantStr ="&" + mainTableConstant.toString();
+ 	String mainTableConstantStr ="&" + mainTableConstant.toString();
 	boolean found = false;
 	ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
 	servFactory.setMainDataTableName(mainTableName);	

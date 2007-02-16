@@ -2,19 +2,19 @@
 <table class="header">
 	<tr>
 		<td class="minilogo">
-			<a href="index.html"><img src="/efg2/efgpagelogomini.jpg" width="410" height="38" border="0" alt="The Electronic Field Guide Project" title="The Electronic Field Guide Project" align="left" /></a>
+			<a href="index.html"><img src="<%=context%>/efgpagelogomini.jpg" width="410" height="38" border="0" alt="The Electronic Field Guide Project" title="The Electronic Field Guide Project" align="left" /></a>
 		</td>
 		<td>
 			<table class="iconbar">
 				<tr>
 					<td class="iconbar">
 						<a href="<%=typePageFile %>">
-							<img src="/efg2/viewiconmini.jpg" width="41" border="0" alt="View Sample EFGs" title="View Sample EFGs" />
+							<img src="<%=context%>/viewiconmini.jpg" width="41" border="0" alt="View Sample EFGs" title="View Sample EFGs" />
 						</a>
 					</td>
 					<td class="iconbar">
 						<a href="<%=linksFile %>">
-							<img src="/efg2/configiconmini.jpg" width="41" border="0" alt="Configure Your EFG" title="Configure Your EFG - Login Required" />
+							<img src="<%=context%>/configiconmini.jpg" width="41" border="0" alt="Configure Your EFG" title="Configure Your EFG - Login Required" />
 						</a>
 					</td>
 					<td class="iconbar">

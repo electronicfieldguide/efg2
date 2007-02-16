@@ -1,5 +1,7 @@
 <%@page import="project.efg.util.EFGImportConstants" %>
 <% 
+	String context = request.getContextPath();
+
  	String mainTable = EFGImportConstants.EFG_RDB_TABLES;
  	String ALL_TABLE_NAME = EFGImportConstants.ALL_TABLE_NAME;
  		
@@ -8,6 +10,6 @@
  			  mainTableName = mainTable;
  	}
  	StringBuffer mainTableConstant =new StringBuffer(ALL_TABLE_NAME + "=" + mainTableName);		   
- 	String linksFile = "Links.html"; 
- 	String typePageFile = "TypePage.jsp?"+ mainTableConstant.toString();
+ 	String linksFile = context+ "/Links.html"; 
+ 	String typePageFile =context +  "/TypePage.jsp?"+ mainTableConstant.toString();
 %>
