@@ -6,48 +6,43 @@ project.efg.util.EFGDisplayObjectList,
 project.efg.util.EFGDisplayObject
 " %>
 <html>	
-<head>
- 	<%@ include file="Header.jsp"%>	
- 	<%				
- 	String beginString = "/efg2/templateJSP/ConfigurePageBegin.jsp?" +  mainTableConstant.toString(); 
- 	String advancedString = "/efg2/templateJSP/ConfigurePage.jsp?" +  mainTableConstant.toString(); 
-
-   	String forwardPage="NoDatasource.jsp";
- 	String mainTableConstantStr ="&" + mainTableConstant.toString();
-	boolean found = false;
-	ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
-	servFactory.setMainDataTableName(mainTableName);	
+	<head>
+	 	<%@ include file="Header.jsp"%>	
+	 	<%				
+	 	String beginString = "/efg2/templateJSP/ConfigurePageBegin.jsp?" +  mainTableConstant.toString(); 
+	 	String advancedString = "/efg2/templateJSP/ConfigurePage.jsp?" +  mainTableConstant.toString(); 
 	
-	String searchPageStr = context + "/SearchPage.jsp?pageType=option" + mainTableConstantStr + "&displayFormat=HTML&displayName=";
-	String searchLists = context + "/search?maxDisplay=100&displayFormat=HTML" + mainTableConstantStr + "&searchType=lists&displayName=";
-	String searchPlates =context + "/search?maxDisplay=100&displayFormat=HTML"+ mainTableConstantStr + "&searchType=plates&displayName=";
-	String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
-
-	EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
-	boolean isEmpty = false;
-	if(listInter != null){
-		if(listInter.getCount() < 1){
-		isEmpty = true;
-		}
-	}
-	else{
-		isEmpty = true;
-	}
-	%>
-		<title>The EFG Project - Electronic Field Guides</title>
-		<link rel="stylesheet" href="efg2web.css" type="text/css"/>
-</head>
-	
-  <body>
-		<%@ include file="EFGTableHeader.jsp"%>	
+	   	String forwardPage="NoDatasource.jsp";
+	 	String mainTableConstantStr ="&" + mainTableConstant.toString();
+		boolean found = false;
+		ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
+		servFactory.setMainDataTableName(mainTableName);	
 		
+		String searchPageStr = context + "/SearchPage.jsp?pageType=option" + mainTableConstantStr + "&displayFormat=HTML&displayName=";
+		String searchLists = context + "/search?maxDisplay=100&displayFormat=HTML" + mainTableConstantStr + "&searchType=lists&displayName=";
+		String searchPlates =context + "/search?maxDisplay=100&displayFormat=HTML"+ mainTableConstantStr + "&searchType=plates&displayName=";
+		String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
+	
+		EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
+		boolean isEmpty = false;
+		if(listInter != null){
+			if(listInter.getCount() < 1){
+			isEmpty = true;
+			}
+		}
+		else{
+			isEmpty = true;
+		}
+		%>
+			<title>The EFG Project - Electronic Field Guides</title>
+			<link rel="stylesheet" href="efg2web.css" type="text/css"/>
+	</head>	
+  	<body>
+		<%@ include file="EFGTableHeader.jsp"%>			
 		<table class="frame">
 			<tr>
 				<td>
 					<table class="main">
-						 <% 
-						  if(!isEmpty){
-						%>
 						<tr>
 							<td colspan="5" class="title">Search/Browse EFG Datasources</td>
 						</tr>
@@ -78,20 +73,11 @@ project.efg.util.EFGDisplayObject
 						</tr>
 						<% 
 						}//end while
-						if(!found){%>
-							<h3> No datasources uploaded by author(s)</h3>
-						<%}
-						}//end outer if 
-						else{
-							RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/templateJSP/" + forwardPage);
-							dispatcher.forward(request, response);
-						}
-						 %>
+						%>
 						<tr>
 							<td class="" />
 							<td class="horizspacer" />
-							<td class="" />
-						
+							<td class="" />						
 							<td class="horizspacer" />
 							<td class="logos">
 								<a href="http://efg.cs.umb.edu">

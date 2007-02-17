@@ -146,12 +146,12 @@ public class UnZipImport implements ZipInterface {
 		IOUtils.copy(in,out);
 		out.flush();
 	}
-	
-
-
-
-
-	private void copyListFiles(File[] filesToCopy, File destFile) {
+	/**
+	 * Copy files to a destination directory
+	 * @param filesToCopy
+	 * @param destFile
+	 */
+	public void copyListFiles(File[] filesToCopy, File destFile) {
 		if(filesToCopy != null) {
 			for(int j = 0; j < filesToCopy.length; ++j) {
 				copyFile(filesToCopy[j], destFile);

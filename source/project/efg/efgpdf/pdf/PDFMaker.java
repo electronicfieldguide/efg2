@@ -266,16 +266,14 @@ public class PDFMaker implements PDFGUIConstants{
 		return false;
 	}
 	private CaptionFontObject getDefaultSortingField(){
-		List list = new ArrayList();
+		CaptionFontObject fontObject = null;
 		if(this.getCaptionsBelow().size() > 0){
-			list.addAll(this.getCaptionsBelow());
-			return (CaptionFontObject)list.get(0);
+			fontObject = (CaptionFontObject)this.getCaptionsBelow().first();
 		}
 		if(this.getCaptionsAbove().size() > 0){
-			list.addAll(this.getCaptionsAbove());
-			return (CaptionFontObject)list.get(0);
+			fontObject = (CaptionFontObject)this.getCaptionsAbove().last();
 		}
-		return null;
+		return fontObject;
 	}
 	/**
 	 * 
@@ -286,7 +284,6 @@ public class PDFMaker implements PDFGUIConstants{
 			CaptionFontObject cfo = getDefaultSortingField();			
 			if(cfo != null){
 				this.sortingList.add(cfo.getCaption());
-
 			}
 			else{
 				if(this.getImage2DisplayFields().size() > 0){
@@ -325,14 +322,14 @@ public class PDFMaker implements PDFGUIConstants{
 	 * 
 	 * @return
 	 */
-	public Set getCaptionsBelow() {
+	public SortedSet getCaptionsBelow() {
 		return this.captionsBelowSet;
 	}
 	/**
 	 * 
 	 * @return
 	 */
-	public Set getCaptionsAbove() {
+	public SortedSet getCaptionsAbove() {
 		return this.captionsAboveSet;
 	}
 	/**

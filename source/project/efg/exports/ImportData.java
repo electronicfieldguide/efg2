@@ -24,7 +24,7 @@ import java.io.UnsupportedEncodingException;
 import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import project.efg.Imports.efgImportsUtil.EFGDBMetadata;
+//import project.efg.Imports.efgImportsUtil.EFGDBMetadata;
 import project.efg.servlets.rdb.EFGRDBUtils;
 
 	/**
@@ -39,7 +39,7 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 		private JdbcTemplate jdbcTemplate;
 		
 		
-		private EFGDBMetadata dbMetadata;
+		//private EFGDBMetadata dbMetadata;
 		static Logger log = null;
 		static {
 			try {

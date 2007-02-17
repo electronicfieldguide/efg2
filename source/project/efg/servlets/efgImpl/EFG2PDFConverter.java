@@ -80,7 +80,6 @@ public class EFG2PDFConverter extends EFGServlet {
 	    		
 				//java.io.Writer stringw = new StringWriter();
 				//xslPage.marshal(stringw);
-				//System.out.println(stringw.toString());
 				
 				response.setHeader("Expires", "0");
 				response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");

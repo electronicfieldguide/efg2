@@ -11,7 +11,7 @@ java.util.Iterator" %>
   <head>
   <%@ include file="Header.jsp"%>	
   	<%
-		String serverName = request.getScheme() +
+ 		String serverName = request.getScheme() +
 		"://"
 		+ request.getServerName() + 
 		":" + request.getServerPort();
@@ -51,7 +51,7 @@ java.util.Iterator" %>
 								<table summary="">	
 									<tr>
 										<td class="efglisttitle"><span class="datasourcehead">EFG Title</span></td>
-										<td class="efglistlinks"><span class="datasourcehead">Template Name</span></td>
+										<td class="efglistlinksdirecturl"><span class="datasourcehead">Template Name</span></td>
 										<td class="datatype"><span class="datasourcehead">Type</span></td>
 										<td class="datasourcename"><span class="datasourcehead">Datasource Name</span></td>
 										<td class="actionlinks"><span class="datasourcehead">Options</span></td>
@@ -97,7 +97,7 @@ java.util.Iterator" %>
 									%>							
 									<tr>
 										<td class="efglisttitle"><%=displayName%></td>
-										<td class="efglistlinks">
+										<td class="efglistlinksdirecturl">
 											<a class="efglist" href="<%=serverName + key%>"><%=templateName%></a>
 										</td>
 										<td class="datatype">
@@ -109,7 +109,7 @@ java.util.Iterator" %>
 										<td class="actionlinks">
 											<% 
 											if(key.toLowerCase().indexOf(EFGImportConstants.DEFAULT_SEARCH_FILE.toLowerCase()) == -1){%>
-												<a href="<%=toEdit + buff.toString()%>">Edit</a> , <a href="<%=toDelete + buff.toString()%>">Delete</a> 
+												<a class="efglist" href="<%=toEdit + buff.toString()%>">Edit</a> , <a class="efglist" href="<%=toDelete + buff.toString()%>">Delete</a> 
 											<%}
 											%>
 										</td>

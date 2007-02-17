@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
@@ -60,7 +61,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 		fontFamilyMap = FontHandler.LoadFonts();
 	}
 	
-	private Set sortBySet;
+	private SortedSet sortBySet;
 	private Map taxonEntryMap;
 	private Document document; 
 	private PdfPTable pdfTable; 
@@ -176,10 +177,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 					if(its != null){				
 						character = its.getName();
 						
-						if(this.sortBy.contains(character)){//depends 
-							
-							
-							
+						if(this.sortBy.contains(character)){//depends 							
 							//on position of the character in the sortby list
 							for(int j = 0; j < its.getItemCount(); j++){
 								Item item = its.getItem(j);
@@ -340,7 +338,6 @@ public class EFG2PDF implements EFG2PDFInterface {
 		List displayList = new ArrayList();
 		for (Iterator iter = this.sortBySet.iterator(); iter.hasNext();) {
 			Set states = ((CharacterObject)iter.next()).getStates();
-			
 			for(Iterator iter1 = states.iterator(); iter1.hasNext();){
 				String key = (String)iter1.next();
 				if(key == null){
@@ -822,8 +819,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 			DisplayObject object = (DisplayObject) iter.next();
 			Set images = object.getImagesSet();	
 			
-			if(images.size() == 0){		
-				
+			if(images.size() == 0){						
 				if(writeTableRow(object,null,numberOnpage,row)){					
 					++row;
 				}
@@ -1019,6 +1015,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 			CharacterObject sorter2 = 
 				(CharacterObject)o2;
 			String character2 = sorter2.getCharacter();
+
 			int index2 = this.sortingObjects.indexOf(character2);
 			if(index1 == index2){
 				return compareSets(sorter1.getStates(),sorter2.getStates());
@@ -1027,23 +1024,19 @@ public class EFG2PDF implements EFG2PDFInterface {
 				return 1;
 			}
 			return -1;
-
 		}
 	}
-	private int compareSets(Set set1, Set set2){
-		if(set1.size()!= set2.size()){
-			return -1;
-		}
-		for (Iterator iter = set2.iterator(); iter.hasNext();) {
-			String element = (String) iter.next();
-			if(!set1.contains(element)){
-				return -1;
+	private int compareSets(SortedSet set1, SortedSet set2){
+		
+		
+		if(set1 != null && set2 != null){
+			if(set1.size() > 0 &&  set2.size() > 0){
+				String set1State = (String)set1.first();
+				String set2State = (String)set2.first();
+				return set1State.compareToIgnoreCase(set2State);
 			}
-		}
-		for (Iterator iter = set1.iterator(); iter.hasNext();) {
-			String element = (String) iter.next();
-			if(!set2.contains(element)){
-				return -1;
+			else if(set1.size() > 0){
+				return 1;
 			}
 		}
 		return 0;
@@ -1052,7 +1045,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 	class CharacterObject extends EFGRankObject{
 		private String character;
 		
-		private Set states;
+		private SortedSet states;
 		public CharacterObject() {
 			super();
 			this.states = new TreeSet();
@@ -1064,7 +1057,10 @@ public class EFG2PDF implements EFG2PDFInterface {
 		}
 		public boolean equals(Object object1){
 			CharacterObject obj = (CharacterObject)object1;
-			return this.getStates().equals(obj.getStates());
+			String currentState = (String)this.getStates().first();
+			String objState = (String)obj.getStates().first();
+			
+			return currentState.equals(objState);
 		}
 		public int hashCode(){
 			return this.getStates().hashCode();
@@ -1075,7 +1071,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 		public void setCharacter(String character) {
 			this.character = character;
 		}
-		public Set getStates() {
+		public SortedSet getStates() {
 			return this.states;
 		}
 		public void addState(String state) {
