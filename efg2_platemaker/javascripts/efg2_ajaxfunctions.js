@@ -411,6 +411,8 @@ function getDesignForm(query){
 function processDesignQuery(loader, obj){
 	
 	makeColorSelectors();
+	var el = $('pdfFillFormID');
+	el.scrollTop = 0;
 	
 }
 function saveConfig(myTableId){
