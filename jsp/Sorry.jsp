@@ -4,19 +4,30 @@
     Handles situations where an error occurs during the processing of a request
  -->
 	<head>
+	<%@ include file="Header.jsp"%>	
       <%
       String title = "An error occured during the processing of your request!!";
       StringBuffer buf = new StringBuffer();
-      buf.append("An error occured during the processing of your request!!\n");
       buf.append("Please report the error to the Electronic Field guide Group at efg'at'cs.umb.edu");
-      %>		
-		<title><%=title%></title>
+      %>		  
+  	<title>The EFG Project - Electronic Field Guides</title>
+	<link rel="stylesheet" href="efg2web.css" type="text/css"/>
 	</head>
-    <body bgcolor="#FDF5E6">
-      <h2><%=title%></h2>
-      <p><%=buf.toString()%></p> 
-      <br/>
-	<a href="index.html"> Go Back To Front Page</a>
+    <body>
+    <%@ include file="EFGTableHeader.jsp"%>	
+    	<table class="frame" summary="">
+			<tr>
+				<td>
+					<table class="directurl" summary="">					 
+						<tr>
+							<td colspan="5" class="title"><%=title%><br/>
+								<span class="subtitle"><%=buf.toString()%></span>
+							</td>
+						</tr>		
+   					</table>
+   				</td>
+   			</tr>
+   		</table>
      </body>
 </html>
 
