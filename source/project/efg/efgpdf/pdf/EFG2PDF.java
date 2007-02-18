@@ -80,6 +80,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 	private HeaderAndFooterHandler hd;
 	private File footerImagesDirectory;
 	private File mediaResourcesDirectory;
+	private float tableCellWidth;
 	static StringBuffer errorBuffer;
 	static{
 	errorBuffer= new StringBuffer("Error occured during processing of document\n"); 
@@ -145,7 +146,8 @@ public class EFG2PDF implements EFG2PDFInterface {
 	 */
 	public void writePdfToStream(project.efg.efgDocument.EFGDocument efgdoc,
 			XslPage xslPage,
-			OutputStream output,File mediaResourcesDirectory, String authors) {
+			OutputStream output,
+			File mediaResourcesDirectory, String authors) {
 		
 		try{
 			/*FileOutputStream foutput =
@@ -182,7 +184,10 @@ public class EFG2PDF implements EFG2PDFInterface {
 							for(int j = 0; j < its.getItemCount(); j++){
 								Item item = its.getItem(j);
 								String state = item.getContent();
-								if(state != null && !state.trim().equals("")){
+								if(state == null || state.trim().equals("")){
+									state = "";
+								}
+								if(state != null){
 									CharacterObject charactero = new CharacterObject();
 									charactero.setCharacter(character);
 									charactero.addState(state);
@@ -190,6 +195,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 									isFound = addToSet(state,te); 
 									break;							
 								}
+								
 								
 							}
 						}
@@ -216,15 +222,13 @@ public class EFG2PDF implements EFG2PDFInterface {
 					}
 					if(ets != null){
 						character = ets.getName();
-						if(this.sortBy.contains(character)){
-							
-							
+						if(this.sortBy.contains(character)){						
 							//depends 
 							//on position of the character in the sortby list
 							for(int j = 0; j < ets.getEFGListCount(); j++){
 								EFGType item = ets.getEFGList(j);
 								String state = item.getContent();
-								if(state != null && !state.trim().equals("")){
+								if(state != null){
 									CharacterObject charactero = new CharacterObject();
 									charactero.setCharacter(character);
 									charactero.addState(state);
@@ -344,7 +348,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 					continue;
 				}
 				Set set = (Set)taxonEntryMap2.get(key);
-				if(set == null){			
+				if(set == null){
 					continue;
 				}
 			
@@ -352,7 +356,9 @@ public class EFG2PDF implements EFG2PDFInterface {
 					TaxonEntryType ttype  = (TaxonEntryType) iterator.next();
 					List list = writeTaxonEntry(ttype);
 					if(list != null){
-						displayList.addAll(list);
+						if(list.size() > 0){
+							displayList.addAll(list);
+						}	
 					}
 				}
 			}
@@ -432,6 +438,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 				this.pdfMaker,
 				this.getClass().getName(), 
 				authors);
+		this.tableCellWidth = this.getCellWidth();
 		/*this.document = new Document(
 				this.pdfMaker.getPaperSize(),
 				left_margin,
@@ -472,6 +479,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 				new PdfPTable(this.pdfMaker.getNumberColumns());
 			
 			this.pdfTable.setWidthPercentage(100);
+			//this.computeMaxTableWidth(this.pdfTable.getAbsoluteWidths());
 			if(hd.isHeader() || hd.isFooter()){
 				this.writeEmptyHeaderFooterCells();
 			}
@@ -490,6 +498,8 @@ public class EFG2PDF implements EFG2PDFInterface {
 			throw ee;
 		}
 	}
+
+
 	/**
 	 * 
 	 * @param numberToWrite
@@ -612,35 +622,48 @@ public class EFG2PDF implements EFG2PDFInterface {
 		}
 		return null;
 	}
+	private float getCellWidth(){
+		if(this.document == null){
+			return 0;
+		}
+	   float cellWidth = this.document.getPageSize().width() - 
+		this.document.leftMargin() - 
+		this.document.rightMargin(); 
+	   cellWidth = cellWidth/this.pdfMaker.getNumberColumns();
+	  return cellWidth;
+	}
 	private Paragraph addCaptionsToParagraph(Set states,CaptionFontObject co){
 		
 		Font font = co.getFont();
 		Phrase ph = null;
-		
-		
+		StringBuffer buffer = new StringBuffer();
+		int i = 0;
 		for(Iterator iter = states.iterator(); iter.hasNext();){
 			String state = (String)iter.next();
-			if(ph == null){
-				Chunk chunk = new Chunk(state,font);
-				if(co.isUnderLine()){
-					chunk.setUnderline(isUnderline_thickness,
-							isUnderline_y_position);
-				}
-				ph = new Phrase(chunk);
+			if(i > 0){
+				buffer.append(", ");
 			}
-			else{
-				Chunk chunk = new Chunk(state + ",",font);
-				if(co.isUnderLine()){
-					chunk.setUnderline(isUnderline_thickness,
-							isUnderline_y_position);
-				}
-				ph.add(chunk);
-			}
-			
+			buffer.append(state);
+			i++;
 		}
-
+		String state = this.cellCalculus.truncateText(co, 
+				buffer.toString(),
+				this.tableCellWidth);	
+	
+		if(state == null || state.trim().equals("")){
+			state="\n";
+		}
+	
+		Chunk chunk = new Chunk(state,font);
+		if(co.isUnderLine()){
+			chunk.setUnderline(isUnderline_thickness,
+					isUnderline_y_position);
+		}
+		ph = new Phrase(chunk);
+	
 		Paragraph p = 
 			new Paragraph(ph);
+		
 		p.setAlignment(co.getAlignment());
 		return p;
 	}
@@ -666,13 +689,12 @@ public class EFG2PDF implements EFG2PDFInterface {
 				this.getCaptionObject(captions,
 						characterObject.getCharacter()
 						);
-			
 			if(co != null){	
 				Set states = characterObject.getStates();
 				textCell.addElement(addCaptionsToParagraph(states,co));
 			}
 		}	
-		
+	
 		return textCell;
 	}
 	/**
@@ -681,15 +703,19 @@ public class EFG2PDF implements EFG2PDFInterface {
 	 * @return
 	 */
 	private Set sortCharacters(List captionsCharacterList, Set captions) {
+		
 		Set set = new TreeSet(new EFGRankObjectSortingCriteria());
+		
 		for (Iterator iter = captionsCharacterList.iterator(); iter.hasNext();) {
 			CharacterObject characterObject = (CharacterObject)iter.next();
 			CaptionFontObject co = 
 				this.getCaptionObject(captions,
 						characterObject.getCharacter()
 						);
+			
 			if(co != null){
 				characterObject.setRank(co.getRank());
+
 				set.add(characterObject);
 			}
 		}
@@ -835,6 +861,15 @@ public class EFG2PDF implements EFG2PDFInterface {
 			}
 		}
 	}
+	private List getAllCaptions(){
+		List list = new ArrayList();
+		for (int i = 0; i < this.allCaptions.size();i++) {
+			CaptionFontObject element = (CaptionFontObject)this.allCaptions.get(i);
+			String character = element.getCaption();
+			list.add(new String(character));
+		}
+		return list;
+	}
 	/**
 	 * 
 	 * @param ttype
@@ -844,10 +879,9 @@ public class EFG2PDF implements EFG2PDFInterface {
 		List displayList = new ArrayList();
 		int current_count = ttype.getTaxonEntryTypeItemCount();
 		DisplayObject ds = new DisplayObject();
-		for(int index1 = 0; index1 < current_count; ++index1){
-			
-			TaxonEntryTypeItem titem = ttype.getTaxonEntryTypeItem(index1);
-			
+		List captionsL = this.getAllCaptions();
+		for(int index1 = 0; index1 < current_count; ++index1){			
+			TaxonEntryTypeItem titem = ttype.getTaxonEntryTypeItem(index1);			
 			ItemsType its = titem.getItems();
 			MediaResourcesType mts= titem.getMediaResources();
 			EFGListsType ets = titem.getEFGLists();
@@ -857,29 +891,46 @@ public class EFG2PDF implements EFG2PDFInterface {
 				character = its.getName();
 				if(character != null){
 					if(isCaption(character)){	
+						captionsL.remove(character);
 						CharacterObject co = new CharacterObject();
 						co.setCharacter(character);
 						ds.addCaption(co);
+						boolean isAbsent = false;
 						for(int j = 0; j < its.getItemCount(); j++){
 							Item item = its.getItem(j);
-							String state = item.getContent();	
+							String state = item.getContent();
+							if(state == null){
+								state = "";
+							}
 							co.addState(state);
+							isAbsent = true;
+						}
+						if(!isAbsent ){
+							co.addState("");
 						}
 					}
+					
 				}
 			}
 			if(ets != null){
 				character = ets.getName();
 				if(character != null){
 					if(isCaption(character)){	
+						captionsL.remove(character);
 						CharacterObject co = new CharacterObject();
 						co.setCharacter(character);
 						ds.addCaption(co);
+						boolean isAbsent = false;
 						for(int j = 0; j < ets.getEFGListCount(); j++){
 							EFGType item = ets.getEFGList(j);
 							String state = item.getContent();	
 							co.addState(state);
+							isAbsent = true;
+						}						
+						if(!isAbsent ){
+							co.addState("");
 						}
+
 					}
 				}
 			}
@@ -903,7 +954,16 @@ public class EFG2PDF implements EFG2PDFInterface {
 					}
 				}
 			}
-		}	
+		}
+		if(captionsL.size() > 0 ){
+			for(int z = 0 ; z < captionsL.size();z++){
+				CharacterObject co = new CharacterObject();
+				co.setCharacter((String)captionsL.get(z));
+				co.addState("");
+				ds.addCaption(co);
+			}
+		}
+
 		if(ds.getCaptionsList().size() > 0 ||
 			ds.getImagesSet().size() > 0){		
 			displayList.add(ds);

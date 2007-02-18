@@ -226,6 +226,56 @@ public class EFG2PDFCellCalculations {
 		BaseFont bf = font.getCalculatedBaseFont(false);
 		return bf.getWidthPoint(cfo1.getCaption(), cfo1.getFontSize());
 	}
+	/**
+	 * 
+	 * @param co  - The object holding the font information
+	 * @param state - The string to be truncated if it does 
+	 * not fit
+	 * @param availableWidth - The available width for the cell
+	 * @return the truncated state if it does not fit,
+	 *  the state if it fits
+	 */
+   public String truncateText(CaptionFontObject co,String state, float availableWidth) {
+       
+	   if(state == null || state.trim().equals("")){
+		   return "\n";
+	   }
+	    int currentPosition = 0;
+	    float currentWidth = 0;
+	    
+		Font font = co.getFont();
+		
+		BaseFont bf = font.getCalculatedBaseFont(false);
+	   if(this.pdfMaker.getWEIGHT_BOUNDING_BOX() > 0 ||
+        		this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE() > 0){	
+			availableWidth = availableWidth - 2*this.pdfMaker.getWEIGHT_BOUNDING_BOX() - 
+			2*this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE();
+        }
+	   else{					  
+			float offset =  bf.getWidthPoint(state.trim().charAt(0), co.getFontSize());
+			availableWidth = availableWidth - (2 * offset);
+
+	   }
+	   float swidth =  bf.getWidthPoint(state, co.getFontSize());
+	   //no need computing just return
+	   if (swidth < availableWidth) {
+            return state;
+        }
+
+        int length = state.length();
+        char character;
+        while (currentPosition < length) {
+            // the width of every character is added to the currentWidth
+            character = state.charAt(currentPosition);
+            currentWidth += bf.getWidthPoint(character,co.getFontSize());
+            if (currentWidth > availableWidth){
+            	break;
+            }
+            currentPosition++;
+        }
+       return state.substring(0, currentPosition);      
+    }
+
 	private Rectangle computeFooterImageDimensions(List list){
 		float imageHeight = 0;
 		float imageWidth = 0;

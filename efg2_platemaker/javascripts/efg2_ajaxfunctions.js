@@ -72,6 +72,23 @@ var POP_UP_MESSAGE = "Please wait while your request is processed..";
 *"The $() function is a handy shortcut to the all-too-frequent 
 *document.getElementById() function of the DOM.."
 */
+
+
+/**
+* use this for pop up messages
+*/
+
+function windowOpener(message) {
+   msgWindow=window.open("","MessageWindow","menubar=no,scrollbars=no,status=no,width=300,height=300")
+   msgWindow.document.write("<html><head><title>Message window<\/title><\/head><body>")
+   msgWindow.document.write(message+ '<br>');
+   msgWindow.document.write('<\/body><\/html>');     
+   msgWindow.moveTo(0,0)       
+}
+function processSave(loader,obj){
+	popHideHyper();
+	windowOpener(loader.responseText);
+}
 /**
 *
 */
@@ -101,7 +118,6 @@ function deleteTemplate(templateid){
 	}
 	else{	
 		var guid= $(templatename).value;
-		//var guid= $F(templatename);
 		var ds=$(DATASOURCE_NAME).value;
 		//var ds=$F(DATASOURCE_NAME);
 		 //DELETE_TEMPLATE_URL + "?" +
@@ -110,10 +126,8 @@ function deleteTemplate(templateid){
 		  			 GUID + "=" + guid + "&" + "templateUniqueName=" + templatename;
 		doPosts(DELETE_TEMPLATE_URL,url,processDeleteQuery);
 	}
-	
 }
 function processDeleteQuery(loader,obj){
-
 		var responseDoc = $(DELETE_MESSAGE_ID);
 		responseDoc.innerHTML = loader.responseText;
 		alert(responseDoc.innerHTML );
@@ -411,8 +425,8 @@ function getDesignForm(query){
 function processDesignQuery(loader, obj){
 	
 	makeColorSelectors();
-	var el = $('pdfFillFormID');
-	el.scrollTop = 0;
+	window.scrollTo(0,0);
+
 	
 }
 function saveConfig(myTableId){
@@ -435,10 +449,7 @@ function saveConfig(myTableId){
 	message_id = THIRD_DIV;
 	doPosts(PDF_SERVER_URL,queryToSave,processSave);
 }
-function processSave(loader,obj){
-	popHideHyper();
-	alert(loader.responseText);
-}
+
 function requestPDFSavePage(myTableID){
 
 	var parameters = Form.serialize($(myTableID));
