@@ -1,7 +1,9 @@
 <%@page import="project.efg.util.EFGImportConstants,project.efg.util.EFGMediaResourceSearchableObject,project.efg.servlets.factory.ServletAbstractFactoryImpl,project.efg.servlets.efgInterface.ServletAbstractFactoryInterface"%>
 <html>
   <head>
-  <%@ include file="TestHeader.jsp" %>
+   <head>
+   <%@ include file="../Header.jsp" %>
+   <%@ include file="TestHeader.jsp" %>
   <% 
     ServletAbstractFactoryInterface servFact = new ServletAbstractFactoryImpl();
   	servFact.setMainDataTableName(alldbname);
@@ -50,18 +52,23 @@
 	querySearch.append(EFGImportConstants.SEARCH_TAXON_TYPE);
    %>
 	<title>Test Taxon Page Configuration</title>
+	<link rel="stylesheet" href="<%=context%>/efg2web.css" type="text/css"/>
   </head>
-  <body bgcolor="#ffffff">
-  	<center>
-		<% if(fieldName != null){%>
-			<H3>The Datasource "<%=displayName%>" has been configured successfully!!!.</H3>
-			<p align="center"><a href="javascript:history.back()">Go back to configuration Page</a></p><br/><br/>
-			
-			<p align="center"> <a href="<%=querySearch.toString()%>"  target="TestWindow">Test taxon Page</a></p><br/><br/>
-		<%} else { %>
-			<H3>The Datasource "<%=dsName%>" could not be configured!!!!.</H3>
-			<p align="center"><a href="javascript:history.back()">Go back to configuration Page</a></p><br/><br/>
-		<%}%>
-  	</center>
+   <body>
+	  	<%@ include file="../EFGTableHeader.jsp"%>	
+	  	<table class="frame" summary="">
+				<tr>
+					<td>
+						<table class="directurl" summary="">					 
+							<tr>
+								<td colspan="5" class="title">The Datasource "<%=displayName%>" has been configured successfully!!!.<br/>
+									<span class="subtitle"><a href="<%=querySearch.toString()%>"  target="TestWindow">Test taxon Page</a></span>
+								</td>
+							</tr>
+							<tr>
+						</table>
+					</td>
+				</tr>
+		</table>		  	
   </body>
-</html>
+ </html>

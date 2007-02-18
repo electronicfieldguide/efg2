@@ -1,8 +1,8 @@
 <%@page import="project.efg.util.EFGImportConstants,java.io.File,project.efg.util.TemplateMapObjectHandler,project.efg.util.TemplateObject,project.efg.util.EFGDisplayObject" %>
 <html>
   <head>
-  <%@ include file="TestHeader.jsp" %>
-  
+   <%@ include file="../Header.jsp" %>
+   <%@ include file="TestHeader.jsp" %>
   <%
 	StringBuffer querySearch = new StringBuffer();
 	String testDisp = "=10";
@@ -52,12 +52,23 @@
 	}
    %>
 	<title>Test Search Page Configuration</title>
+	<link rel="stylesheet" href="<%=context%>/efg2web.css" type="text/css"/>
   </head>
-  <body bgcolor="#ffffff">
-  	<center>
-			<h3>The Datasource "<%=displayName%>" has been configured successfully!!!.</h3>
-			<p align="center"><a href="javascript:history.back()">Go back to configuration Page</a></p><br/><br/>
-			<p align="center"> <a href="<%=testString.toString()%>"  target="TestWindow">Test Search Page</a></p><br/><br/>
-  	</center>
+  <body>
+	  	<%@ include file="../EFGTableHeader.jsp"%>	
+	  	<table class="frame" summary="">
+				<tr>
+					<td>
+						<table class="directurl" summary="">					 
+							<tr>
+								<td colspan="5" class="title">The Datasource "<%=displayName%>" has been configured successfully!!!.<br/>
+									<span class="subtitle"><a href="<%=testString.toString()%>"  target="TestWindow">Test Search Page</a></span>
+								</td>
+							</tr>
+							<tr>
+						</table>
+					</td>
+				</tr>
+		</table>		  	
   </body>
 </html>

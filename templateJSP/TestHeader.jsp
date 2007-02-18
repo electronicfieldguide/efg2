@@ -1,7 +1,7 @@
 <%@page import="project.efg.util.EFGImportConstants"%>
 <%@ include file="allTableName.jsp"%>
 <%
-	String context = request.getContextPath();
+	//String context = request.getContextPath();
 	
 	String xslName = (String)request.getAttribute(EFGImportConstants.XSL_STRING);
 	
