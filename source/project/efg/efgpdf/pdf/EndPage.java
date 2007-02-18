@@ -149,7 +149,7 @@ public class EndPage extends PdfPageEventHelper implements EFG2PDFConstants{
 	private void writeHeader(Document document,PdfWriter writer) {
 	
 		if(this.headerFooter.isHeader()){	
-		Rectangle page = document.getPageSize();
+		Rectangle pageSize = document.getPageSize();
 		float totalWidth = document.getPageSize().width() - 
 		document.leftMargin() - 
 		document.rightMargin();
@@ -157,11 +157,13 @@ public class EndPage extends PdfPageEventHelper implements EFG2PDFConstants{
     	PdfPTable headerTable = new PdfPTable(1);
     	headerTable.setWidthPercentage(100);
     	headerTable.setTotalWidth(totalWidth);
-    	this.headerFooter.addHeaders(headerTable, this.cellCalculus);
+    	this.headerFooter.addHeaders(headerTable, 
+    			this.cellCalculus,
+    			totalWidth);
 		headerTable.writeSelectedRows(0,
     			-1, 
     			document.leftMargin(),
-    			page.height() - document.topMargin(),
+    			pageSize.height() - document.topMargin(),
     			writer.getDirectContent()
     	);
 

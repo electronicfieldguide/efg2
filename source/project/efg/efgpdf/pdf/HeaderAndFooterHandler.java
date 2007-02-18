@@ -137,33 +137,54 @@ public class HeaderAndFooterHandler {
 		return this.isFooter;
 	}
 	public void addHeaders(PdfPTable datatable,
-			EFG2PDFCellCalculations cellCalculus){	
-		if(!isHeader()){
-			
+			EFG2PDFCellCalculations cellCalculus,float availableWidth){	
+
+		if(!isHeader()){		
 			return;
 		}
-		// The header starts with a cell that spans 10 columns
-		Chunk ck = new Chunk(
-				this.pdfMaker.getMainTitle().getCaption(), 
-				this.pdfMaker.getMainTitle().getFont());
-		if(this.pdfMaker.getMainTitle().isUnderLine()){
-			ck.setUnderline(isUnderline_header_thickness,isUnderline_header_y_position);
+		Phrase ph = null;
+		if(this.pdfMaker.getMainTitle() != null){	
+			String title = this.pdfMaker.getMainTitle().getCaption();
+			String titleCaption = 
+				cellCalculus.truncateText(
+						this.pdfMaker.getMainTitle(),
+						title,
+						availableWidth);
+			// The header starts with a cell that spans 10 columns
+			Chunk ck = new Chunk(
+					titleCaption, 
+					this.pdfMaker.getMainTitle().getFont());
+			if(this.pdfMaker.getMainTitle().isUnderLine()){
+				ck.setUnderline(isUnderline_header_thickness,
+						isUnderline_header_y_position);
+			}
+			ph = new Phrase(ck);
+				
+			ph.add(Chunk.NEWLINE);
+			ph.add(Chunk.NEWLINE);
 		}
-		Phrase ph = new Phrase(ck);
-			
-		ph.add(Chunk.NEWLINE);
-		ph.add(Chunk.NEWLINE);
 		
 		if(this.pdfMaker.getSubTitle() != null){
 			String subtitle = this.pdfMaker.getSubTitle().getCaption();
 			if(subtitle != null && !subtitle.trim().equals("")){
-				ck = new Chunk(
-						this.pdfMaker.getSubTitle().getCaption(),
+			String titleCaption = 
+					cellCalculus.truncateText(
+							this.pdfMaker.getSubTitle(),
+							subtitle,
+							availableWidth);
+			Chunk ck = new Chunk(
+						titleCaption,
 						this.pdfMaker.getSubTitle().getFont());
 				if(this.pdfMaker.getSubTitle().isUnderLine()){
-					ck.setUnderline(isUnderline_header_thickness,isUnderline_header_y_position);
-				}	
-				ph.add(new Phrase(ck));
+					ck.setUnderline(isUnderline_header_thickness,
+							isUnderline_header_y_position);
+				}
+				if(ph == null){
+					ph = new Phrase(ck);
+				}
+				else{
+					ph.add(new Phrase(ck));
+				}
 			}
 		}
 		PdfPCell headerCell = new PdfPCell(ph);

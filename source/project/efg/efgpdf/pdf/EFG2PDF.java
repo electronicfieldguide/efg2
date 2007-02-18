@@ -632,7 +632,8 @@ public class EFG2PDF implements EFG2PDFInterface {
 	   cellWidth = cellWidth/this.pdfMaker.getNumberColumns();
 	  return cellWidth;
 	}
-	private Paragraph addCaptionsToParagraph(Set states,CaptionFontObject co){
+	private Paragraph addCaptionsToParagraph(Set states,
+			CaptionFontObject co){
 		
 		Font font = co.getFont();
 		Phrase ph = null;

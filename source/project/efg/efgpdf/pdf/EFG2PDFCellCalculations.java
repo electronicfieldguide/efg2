@@ -52,6 +52,18 @@ public class EFG2PDFCellCalculations {
 
 	private float headerTextWidth=-1;
 	
+	private HeaderAndFooterHandler headerFootHandler;
+	private File footerImagesDirectory;
+	public EFG2PDFCellCalculations(PDFMaker pdfMaker, 
+			HeaderAndFooterHandler headerFootHandler, File footerImagesDirectory) {
+		this.pdfMaker = pdfMaker;
+		this.headerFootHandler = headerFootHandler;
+		this.footerImagesDirectory = footerImagesDirectory;
+		this.doCellComputations();
+	
+	}
+
+
 	public float getFooterImagesHeight() {
 		if(this.footerImagesHeight < 0){
 			Rectangle rect = 
@@ -86,6 +98,7 @@ public class EFG2PDFCellCalculations {
 		
 		return this.footerImagesWidth;
 	}
+
 	public float getHeaderTextHeight() {
 		if(this.headerTextHeight < 0){
 			Rectangle rect = 
@@ -100,6 +113,11 @@ public class EFG2PDFCellCalculations {
 			}
 		}
 		return headerTextHeight;
+	}
+
+	public float getFooterWidth() {
+		return this.getFooterImagesWidth()+  this.getFooterTextWidth();
+	
 	}
 
 	public float getHeaderTextWidth() {
@@ -117,6 +135,7 @@ public class EFG2PDFCellCalculations {
 		}
 		return this.headerTextWidth;
 	}
+
 	public float getFooterTextHeight() {
 		if(this.footerTextHeight < 0){
 			Rectangle rect = 
@@ -130,8 +149,15 @@ public class EFG2PDFCellCalculations {
 				this.footerTextWidth = rect.width();
 			}
 		}
-
+	
 		return footerTextHeight;
+	}
+
+	public float getFooterHeight() {
+		if(this.getFooterTextHeight() > this.getFooterImagesHeight()){
+			return this.getFooterTextHeight();
+		}
+		return this.getFooterImagesHeight();
 	}
 
 	public float getFooterTextWidth() {
@@ -149,17 +175,106 @@ public class EFG2PDFCellCalculations {
 		}
 		return this.footerTextWidth;
 	}
-	private HeaderAndFooterHandler headerFootHandler;
-	private File footerImagesDirectory;
-	public EFG2PDFCellCalculations(PDFMaker pdfMaker, 
-			HeaderAndFooterHandler headerFootHandler, File footerImagesDirectory) {
-		this.pdfMaker = pdfMaker;
-		this.headerFootHandler = headerFootHandler;
-		this.footerImagesDirectory = footerImagesDirectory;
-		this.doCellComputations();
-	
+
+	public float getFixedCellHeight() {
+		return fixedCellHeight;
 	}
 
+
+	public float getImageHeight() {
+		return imageHeight;
+	}
+
+
+	public float getTextHeightBelowImage() {
+		return textHeightBelowImage;
+	}
+
+
+	public float getTextHeightAboveImage() {
+		return textHeightAboveImage;
+	}
+
+
+	public float getTotalTableHeight() {
+		return totalTableHeight;
+	}
+
+
+	public PDFMaker getPdfMaker() {
+		return pdfMaker;
+	}
+
+
+	/**
+		 * 
+		 * @param co  - The object holding the font information
+		 * @param state - The string to be truncated if it does 
+		 * not fit
+		 * @param availableWidth - The available width for the cell
+		 * @return the truncated state if it does not fit,
+		 *  the state if it fits
+		 */
+	   public String truncateText(CaptionFontObject co,
+			   String state, float availableWidth) {
+	       
+		   if(state == null || state.trim().equals("")){
+			   return "\n";
+		   }
+		    int currentPosition = 0;
+		    float currentWidth = 0;
+		    
+			Font font = co.getFont();
+			
+			BaseFont bf = font.getCalculatedBaseFont(false);
+		   if(this.pdfMaker.getWEIGHT_BOUNDING_BOX() > 0 ||
+	        		this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE() > 0){	
+				availableWidth = availableWidth - 2*this.pdfMaker.getWEIGHT_BOUNDING_BOX() - 
+				2*this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE();
+	        }
+		   else{					  
+				float offset =  bf.getWidthPoint(state.trim().charAt(0), co.getFontSize());
+				availableWidth = availableWidth - (2 * offset);
+	
+		   }
+		   float swidth =  bf.getWidthPoint(state, co.getFontSize());
+		   //no need computing just return
+		   if (swidth < availableWidth) {
+	            return state;
+	        }
+	
+	        int length = state.length();
+	        char character;
+	        while (currentPosition < length) {
+	            // the width of every character is added to the currentWidth
+	            character = state.charAt(currentPosition);
+	            currentWidth += bf.getWidthPoint(character,co.getFontSize());
+	            if (currentWidth > availableWidth){
+	            	break;
+	            }
+	            currentPosition++;
+	        }
+	       return state.substring(0, currentPosition);      
+	    }
+
+	public void setFixedCellHeight(float fixedCellHeight) {
+		this.fixedCellHeight = fixedCellHeight;
+	}
+	public void setImageHeight(float imageHeight) {
+		this.imageHeight = imageHeight;
+	}
+	public void setPdfMaker(PDFMaker pdfMaker) {
+		this.pdfMaker = pdfMaker;
+	}
+	public void setTextHeightAboveImage(float textHeightAboveImage) {
+		this.textHeightAboveImage = textHeightAboveImage;
+	}
+	public void setTextHeightBelowImage(float textHeightBelowImage) {
+		this.textHeightBelowImage = textHeightBelowImage;
+	}
+	public void setTotalTableHeight(float totalTableHeight) {
+		this.totalTableHeight = totalTableHeight;
+	}
 
 	private Rectangle computeHeaderTextDimensions() {
 		CaptionFontObject cfo1 = this.pdfMaker.getMainTitle();
@@ -186,6 +301,7 @@ public class EFG2PDFCellCalculations {
 		}
 		return new Rectangle(width2,height);
 	}
+
 	private Rectangle computeFooterTextDimensions() {
 		CaptionFontObject cfo1 = this.pdfMaker.getCopyRight1();
 		CaptionFontObject cfo2 =this.pdfMaker.getCopyRight2();
@@ -214,6 +330,7 @@ public class EFG2PDFCellCalculations {
 		
 		return new Rectangle(width,height);
 	}
+
 	private float computeTextWidth(CaptionFontObject cfo1) {
 		if(cfo1 == null){
 			return 0;
@@ -226,55 +343,6 @@ public class EFG2PDFCellCalculations {
 		BaseFont bf = font.getCalculatedBaseFont(false);
 		return bf.getWidthPoint(cfo1.getCaption(), cfo1.getFontSize());
 	}
-	/**
-	 * 
-	 * @param co  - The object holding the font information
-	 * @param state - The string to be truncated if it does 
-	 * not fit
-	 * @param availableWidth - The available width for the cell
-	 * @return the truncated state if it does not fit,
-	 *  the state if it fits
-	 */
-   public String truncateText(CaptionFontObject co,String state, float availableWidth) {
-       
-	   if(state == null || state.trim().equals("")){
-		   return "\n";
-	   }
-	    int currentPosition = 0;
-	    float currentWidth = 0;
-	    
-		Font font = co.getFont();
-		
-		BaseFont bf = font.getCalculatedBaseFont(false);
-	   if(this.pdfMaker.getWEIGHT_BOUNDING_BOX() > 0 ||
-        		this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE() > 0){	
-			availableWidth = availableWidth - 2*this.pdfMaker.getWEIGHT_BOUNDING_BOX() - 
-			2*this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE();
-        }
-	   else{					  
-			float offset =  bf.getWidthPoint(state.trim().charAt(0), co.getFontSize());
-			availableWidth = availableWidth - (2 * offset);
-
-	   }
-	   float swidth =  bf.getWidthPoint(state, co.getFontSize());
-	   //no need computing just return
-	   if (swidth < availableWidth) {
-            return state;
-        }
-
-        int length = state.length();
-        char character;
-        while (currentPosition < length) {
-            // the width of every character is added to the currentWidth
-            character = state.charAt(currentPosition);
-            currentWidth += bf.getWidthPoint(character,co.getFontSize());
-            if (currentWidth > availableWidth){
-            	break;
-            }
-            currentPosition++;
-        }
-       return state.substring(0, currentPosition);      
-    }
 
 	private Rectangle computeFooterImageDimensions(List list){
 		float imageHeight = 0;
@@ -310,6 +378,7 @@ public class EFG2PDFCellCalculations {
 		
 		return new Rectangle(imageWidth, imageHeight);
 	}
+
 	private float computeCellHeight(float totalheight2) {
 		float numberOfRows = this.pdfMaker.getNumberRows();
 		if(this.headerFootHandler.isFooter() && this.headerFootHandler.isHeader()){
@@ -328,6 +397,7 @@ public class EFG2PDFCellCalculations {
 		return totalheight2;
 		
 	}
+
 	private void doCellComputations() {
 		log.debug("Paper size Height From pdf Maker: " + this.pdfMaker.getPaperSize().height());
 		if(this.pdfMaker.isPortraitOrientation()){
@@ -342,17 +412,17 @@ public class EFG2PDFCellCalculations {
 				this.pdfMaker.getPaperSize().height()-
 			(EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN + 
 					EFG2PDFConstants.DEFAULT_BOTTOM_MARGIN);
-
+	
 		}
 		log.debug("Total Height Before compute: " + this.totalTableHeight);
-
+	
 		//add the space for headers and footers
 		this.totalTableHeight = this.computeCellHeight(this.totalTableHeight); 
 		log.debug("Total Height After compute: " + this.totalTableHeight);
-
+	
 		this.textHeightBelowImage = this.computeTextHeight(this.textHeightBelowImage,this.pdfMaker.getCaptionsBelow());
 		log.debug("Height Below Image: " + this.textHeightBelowImage);
-
+	
 		log.debug("% Text For Column Height: " +((this.textHeightBelowImage/getFixedCellHeight()) * 100));
 		log.debug("Fixed Height: " + getFixedCellHeight());
 		this.maxFontSizeBelow = this.maxFontSize;
@@ -373,16 +443,6 @@ public class EFG2PDFCellCalculations {
 		this.fixedCellHeight = this.fixedCellHeight - DEFAULT_LEADING;
 	}
 
-	public float getFooterHeight() {
-		if(this.getFooterTextHeight() > this.getFooterImagesHeight()){
-			return this.getFooterTextHeight();
-		}
-		return this.getFooterImagesHeight();
-	}
-	public float getFooterWidth() {
-		return this.getFooterImagesWidth()+  this.getFooterTextWidth();
-	
-	}
 	private void computeImageCellHeight() {
 		this.imageHeight = this.fixedCellHeight-
 		this.textHeightBelowImage-
@@ -393,7 +453,7 @@ public class EFG2PDFCellCalculations {
 		
 		float weight_around_image = 
 			TWO * this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE();
-
+	
 		float white_space_around_image = 
 			TWO * this.pdfMaker.getWEIGHT_WHITE_SPACE_AROUND_IMAGE();
 			
@@ -404,8 +464,9 @@ public class EFG2PDFCellCalculations {
 		}
 		log.debug("Image Height: " + this.imageHeight);
 		log.debug("% Image For Column Height: " +((this.imageHeight/getFixedCellHeight()) * 100));
-
+	
 	}
+
 	private float computeTextHeight(CaptionFontObject co ){
 		if(co != null){
 			float fontSize = co.getFontSize();
@@ -421,11 +482,12 @@ public class EFG2PDFCellCalculations {
 			float descent =bf.getFontDescriptor(BaseFont.DESCENT, fontSize);
 			
 			float height = (ascent - descent) + currentLeading;
-
+	
 			return height;
 		}
 		return 0;
 	}
+
 	private float computeTextHeight(float textHeight,Collection captions2) {
 		if(captions2 == null || captions2.size() == 0){
 			return 0;
@@ -438,41 +500,5 @@ public class EFG2PDFCellCalculations {
 			}
 		}		
 		return textHeight;
-	}
-	public float getFixedCellHeight() {
-		return fixedCellHeight;
-	}
-	public void setFixedCellHeight(float fixedCellHeight) {
-		this.fixedCellHeight = fixedCellHeight;
-	}
-	public float getImageHeight() {
-		return imageHeight;
-	}
-	public void setImageHeight(float imageHeight) {
-		this.imageHeight = imageHeight;
-	}
-	public PDFMaker getPdfMaker() {
-		return pdfMaker;
-	}
-	public void setPdfMaker(PDFMaker pdfMaker) {
-		this.pdfMaker = pdfMaker;
-	}
-	public float getTextHeightAboveImage() {
-		return textHeightAboveImage;
-	}
-	public void setTextHeightAboveImage(float textHeightAboveImage) {
-		this.textHeightAboveImage = textHeightAboveImage;
-	}
-	public float getTextHeightBelowImage() {
-		return textHeightBelowImage;
-	}
-	public void setTextHeightBelowImage(float textHeightBelowImage) {
-		this.textHeightBelowImage = textHeightBelowImage;
-	}
-	public float getTotalTableHeight() {
-		return totalTableHeight;
-	}
-	public void setTotalTableHeight(float totalTableHeight) {
-		this.totalTableHeight = totalTableHeight;
 	}
 }
