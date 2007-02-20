@@ -43,8 +43,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 
-
-
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.efgDocument.EFGDocument;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
@@ -83,6 +81,9 @@ public class ApplyXSLInterface {
 
 			
 			try {
+				//Properties props = LocalConfiguration.getInstance().getProperties();					
+				//props.setProperty(Configuration.Property.Indent, "true");
+
 				srcDoc.marshal(writer);
 				Reader reader = new StringReader(writer.getBuffer().toString());			
 				return new StreamSource(reader);

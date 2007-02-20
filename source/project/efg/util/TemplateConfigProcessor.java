@@ -9,6 +9,10 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
+
+import org.exolab.castor.util.Configuration;
+import org.exolab.castor.util.LocalConfiguration;
 
 import project.efg.servlets.efgImpl.EFGContextListener;
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
@@ -83,6 +87,9 @@ public class TemplateConfigProcessor {
 			synchronized (mute) {
 				try {
 					writer = new FileWriter(fileLocation);
+					Properties props = LocalConfiguration.getInstance().getProperties();					
+					props.setProperty(Configuration.Property.Indent, "true");
+
 					this.tps.marshal(writer);
 					writer.flush();
 					writer.close();

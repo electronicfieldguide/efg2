@@ -89,9 +89,10 @@ private  void generateThumbs(File srcFile, File destFile){
 				 String destDir = destFile.getParent();
 
 				
-				 boolean isTemp = false;
+				
 				 try{
-					isTemp = generate(srcDir,destDir,fileName);
+					generate(srcDir,destDir,fileName);
+					
 				 }
 				 catch(Exception ee){
 					// ee.printStackTrace();

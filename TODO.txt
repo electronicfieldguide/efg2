@@ -1,28 +1,26 @@
-1. Fix Save and delete
-2. Add top table to all efg jsp/html files
-
-Handle file size ..
-Add an authors field to the metadata - implement later
+3. Remove top level SampleData directory
+4. Remove imports directory
 
 
-Fix long name in efg.sql file
-Write script for efg2 imports
-Remove efg2 imports from tab and add the fonts selection to tab.
+	
+
+  
+  
 
 
-Browser ask users to set type in browser and not
-use Firefox plugin for pdfs.
 
-1. Remove imports and replace with a script
-3. Jenns bug about going back to top of back after search..
+1. Fix Save and delete - enhancement
+2. Add top table to all efg jsp/html files  - enhancement
 
-
-4. Use get to get pdf with a 
+Add an authors field to the metadata - implement later as enhancement
+for plate maker
+3. Use get to get pdf with a 
 session id after using post to generate it.
 If content length is a big deal
-do we need page numbers?
+do we need page numbers? -enhancement
 
 
+Enhancement
 Using Fonts:
 
 1. Create a fonts directory

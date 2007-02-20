@@ -28,9 +28,9 @@ import java.util.Set;
  * USA
  */
 public interface EFGImportConstants {
-	Properties EFGProperties =project.efg.Imports.rdb.EFGRDBImportUtils.getProperties();
+	Properties EFGProperties = project.efg.Imports.rdb.EFGRDBImportUtils.getProperties();
 
-	String ZIP_EXT = ".zip";
+	
 	String ILLEGALCHARACTER_TEXT="efg_illegalcharacter";
 	String SAMPLE_MEDIA_RESOURCE_FIELD = "SampleMediaResourceFields";
 	String SAMPLE_SEARCHABLE_FIELD = "SampleSearchableFields";
@@ -63,7 +63,7 @@ public interface EFGImportConstants {
 	String HTML_EXT = ".html";
 	String XML_EXT = ".xml";
 	String XSL_EXT = ".xsl";
-	String ZIP_FILE_EXTENSION =".zip";
+	String ZIP_EXT = ".zip";
 	String SQL_EXT = ".sql";
 		
 		
@@ -361,6 +361,10 @@ public interface EFGImportConstants {
 	String TEMPLATE_CONFIG_PAGE = "/configTaxonPage";
 
 	String PDF_SUCCESS_PAGE ="/PDFSuccessPage.html";
+
+
+	String MEDIUMTEXT = "mediumtext (16277215)";
+	String TEXT = "TEXT";
 
 
 

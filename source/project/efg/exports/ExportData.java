@@ -3,16 +3,17 @@
  */
 package project.efg.exports;
 
-/**
- * @author kasiedu
- *
- */
+
 
 	/**
 	 * Copyright Isocra Ltd 2004
-	 * You can use, modify and freely distribute this file as long as you credit Isocra Ltd.
-	 * There is no explicit or implied guarantee of functionality associated with this file, 
+	 * You can use, modify and freely distribute 
+	 * this file as long as you credit Isocra Ltd.
+	 * There is no explicit or implied guarantee of 
+	 * functionality associated with this file, 
 	 * use it at your own risk.
+	 * 
+	 * Modified for EFG by Kasiedu
 	 */
 
 
@@ -31,9 +32,11 @@ import project.efg.Imports.factory.EFGRowMapperFactory;
 import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.Imports.rdb.EFGRowMapperInterface;
 import project.efg.servlets.rdb.EFGRDBUtils;
+import project.efg.util.EFGImportConstants;
 
 	/**
-	 * This class connects to a database and dumps all the tables and contents out to stdout in the 
+	 * This class connects to a database and dumps all 
+	 * the tables and contents out to stdout in the 
 	 * form of
 	 * a set of SQL executable statements
 	 */
@@ -53,18 +56,14 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 		/**
 		 * 
 		 */
-		public ExportData(DBObject dbObject) {
-			
+		public ExportData(DBObject dbObject) {			
 			this.rowMapper = EFGRowMapperFactory.getRowMapper();
 			this.jdbcTemplate = EFGRDBImportUtils.getJDBCTemplate(dbObject);
 		}
-		public ExportData() {
-			
+		public ExportData() {			
 			this.rowMapper = EFGRowMapperFactory.getRowMapper();
 			this.jdbcTemplate = new JdbcTemplate(EFGRDBUtils.getDatasource());
 		}
-	
-
 		/**
 		 * @param string
 		 * @return
@@ -84,13 +83,9 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 	    public  String dumpDB(String tableName) {
 	    	
 	    	dbMetadata = new EFGDBMetadata(tableName);
-	        // Default to not having a quote character
-	        String columnNameQuote = "";
-	       
+	        // Default to not having a quote character	       
 	        try {
 	        	StringBuffer result = new StringBuffer();
-              
-
 	        	result.append(
 	        			(String)JdbcUtils.extractDatabaseMetaData
 	        			(
@@ -100,17 +95,14 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 	        			);
 	        	String query = "SELECT * FROM "+tableName;
 	        	result.append(dumpTable(tableName, query));
-	        	 return result.toString();
+	        	return result.toString();
 	  
 	        }
 	        catch (Exception e) {
 	           log.error(e.getMessage());
-	        }
-	      
+	        }	      
 	        return null;
 	    }
-
-
 		/**
 		 * 
 		 * @param metaData
@@ -161,7 +153,7 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 
 	            // Now we can output the actual data
 	           
-	            result.append("\nLOCK TABLES " + tableName + " WRITE;");
+	            result.append("\nLOCK TABLES " + tableName + " WRITE;\n");
 	           
 	            while (rs.next()) {
 	                result.append("INSERT INTO ");
@@ -190,8 +182,20 @@ import project.efg.servlets.rdb.EFGRDBUtils;
 	               
 	            }
 	            result.append("\nUNLOCK TABLES;");
-	            return result.toString();
+	           
+	            return replaceString(result.toString());
 		    }
+		/**
+		 * @param queryN
+		 * @param text
+		 * @return
+		 */
+		private String replaceString(
+				String queryN) {
+			return queryN.replaceAll(
+					EFGImportConstants.MEDIUMTEXT,
+					EFGImportConstants.MEDIUMTEXT);
+		}	
 	}
 
 

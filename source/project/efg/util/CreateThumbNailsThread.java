@@ -61,16 +61,16 @@ implements EFGImportConstants,WindowListener{
 	 public CreateThumbNailsThread( DnDFileBrowser browser,File srcFile, File destFile) {
 		 this(browser,srcFile,destFile,null);
 	 }
-	 private static Set supportedImageTpes;  	
+	 private static Set supportedImageTypes;  	
 		static {
 			try {
 				log = Logger.getLogger(CreateThumbNailsThread.class);
-				supportedImageTpes = new HashSet();
+				supportedImageTypes = new HashSet();
 				String formats = 
 					EFGImportConstants.EFGProperties.getProperty("supported_images_format");
 				String[] formatsArr = formats.split(RegularExpresionConstants.COMMASEP);
 				for(int i = 0; i < formatsArr.length;i++) {
-					supportedImageTpes.add(formatsArr[i]);
+					supportedImageTypes.add(formatsArr[i]);
 				}
 				
 			} catch (Exception ee) {
@@ -104,11 +104,7 @@ implements EFGImportConstants,WindowListener{
 		 }
 		 catch (Exception e) {
 			 this.maxDim =200;
-		}
-		
-		
-		
-		
+		}		
 		//do spring stuff here
 		//this.thm = ThumbNailGeneratorInterface.Factory.newInstance();
 		this.thm = this.doSpring();
@@ -338,7 +334,7 @@ implements EFGImportConstants,WindowListener{
 			//use a factory here
 			//supportedImageTpes
 			//get the file format
-			boolean justCopy = false;
+			
 			ImageInfo imageInfo = new ImageInfo();
 			try {
 				imageInfo.setInput(new FileInputStream(new File(srcDir,fileName)));
@@ -349,7 +345,7 @@ implements EFGImportConstants,WindowListener{
 			if(imageInfo.check()) {
 				String format = imageInfo.getFormatName();
 				if(format != null && !format.trim().equals("")) {
-					if(supportedImageTpes.contains(format.toLowerCase())) {//this is an image copy it
+					if(supportedImageTypes.contains(format.toLowerCase())) {//this is an image copy it
 						return this.thm.generateThumbNail(srcDir, destDir,fileName, this.maxDim);
 					}
 				}

@@ -6,12 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-
 
 import project.efg.templates.taxonPageTemplates.CharacterValue;
 import project.efg.templates.taxonPageTemplates.GroupType;
@@ -293,13 +291,6 @@ public class PDFMaker implements PDFGUIConstants{
 				}
 			}
 		}
-		else{
-			if(this.getImage2DisplayFields().size() > 0){
-				String images = 
-					(String)this.getImage2DisplayFields().get(0);
-				this.sortingList.add(images);
-			}
-		}		
 		return this.sortingList;
 	}
 

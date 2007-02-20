@@ -67,7 +67,7 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 				return true;
 			} 
 		} catch (Exception ee) {
-			LoggerUtilsServlet.logErrors(ee);
+			//LoggerUtilsServlet.logErrors(ee);
 		}
 		return false;
 	}
@@ -85,7 +85,7 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 			return this.lists.add(datasource);	
 			
 		} catch (Exception ee) {
-			LoggerUtilsServlet.logErrors(ee);
+			//LoggerUtilsServlet.logErrors(ee);
 		}
 		datasource.setState(this.stateFactory.getFailureObject());
 		return false;
@@ -106,7 +106,7 @@ public class EFGDatasourcesList extends EFGDatasourceObjectListInterface {
 			 return true;
 			}
 		} catch (Exception ee) {
-			LoggerUtilsServlet.logErrors(ee);
+			//LoggerUtilsServlet.logErrors(ee);
 		}
 		return false;
 	}

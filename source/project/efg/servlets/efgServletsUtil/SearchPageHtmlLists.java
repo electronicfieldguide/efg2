@@ -30,8 +30,6 @@ package project.efg.servlets.efgServletsUtil;
 import java.util.Map;
 import java.util.Properties;
 
-
-
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.EFGMediaResourceSearchableObject;

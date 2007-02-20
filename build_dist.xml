@@ -3,7 +3,7 @@ Th parent build file for this application.
 to make a distribution call makeImport:
 
 -->
-<project name="Electronic Field Guide" default="makeImport" basedir=".">	
+<project name="Electronic Field Guide" default="makeImport" basedir=".">
 	<property environment="myenv"/>
 	<property name="app.name" value="efg2"/>
 	<property name="app.name.war" value="efg2.war"/>
@@ -13,7 +13,6 @@ to make a distribution call makeImport:
 	<property name="efg2.properties.home" value="${efg2.home}/properties"/>
 	<property name="ant.home" value="${myenv.ANT_HOME}"/>
 	<property name="dist.war" value="${app.name}.war"/>
-	
 	<property name="efg2.lib.home" value="${efg2.home}/lib"/>
 	<property name="efg2.dist.home" value="${efg2.home}/dist"/>
 	<property name="efg2.css.home" value="${efg2.home}/css"/>
@@ -31,13 +30,12 @@ to make a distribution call makeImport:
 	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
 	<property name="dist.src" value="${app.name}.jar"/>
 	<property name="efg2.fedSchema.home" value="fedSchema"/>
-		
 	<property name="compile.home" value="${efg2.home}/compiled"/>
 	<property name="efg2.dist.home" value="${efg2.home}/dist"/>
 	<property name="deploy.home" value="${app.name}"/>
 	<!--  src files are copied to this temporal location before compilation-->
 	<property name="src.temp.home" value="${efg2.home}/temp"/>
-	<!-- Main class path required by all classes-->	
+	<!-- Main class path required by all classes-->
 	<path id="compile.class.path">
 		<!-- all compile-time jars should be the same as the runtime jars.... ram -->
 		<!-- For Tomcat 5.0 and upwards-->
@@ -57,14 +55,11 @@ to make a distribution call makeImport:
 			<include name="**.*"/>
 		</fileset>
 	</path>
-	
 	<target name="prepare">
 		<mkdir dir="${app.name}"/>
 		<mkdir dir="${compile.home}"/>
 		<mkdir dir="${src.temp.home}"/>
 	</target>
-	
-	
 	<!-- deployImages -->
 	<target name="deployEFGIcons">
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
@@ -73,9 +68,6 @@ to make a distribution call makeImport:
 			<fileset dir="${icons.home}/"/>
 		</copy>
 	</target>
-
-	
-	
 	<!-- Make preparations for deployment-->
 	<target name="deployResources">
 		<mkdir dir="${deploy.home}"/>
@@ -95,11 +87,9 @@ to make a distribution call makeImport:
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
 		<mkdir dir="${deploy.home}/efg2efg2export"/>
-
 		<copy todir="${deploy.home}/efg2efg2export">
 			<fileset dir="${efg2.home}/efg2efg2export"/>
 		</copy>
-
 		<copy todir="${deploy.home}/EFGImages/Het">
 			<fileset dir="${efg2.home}/sampleImages/Het" includes="*.*"/>
 		</copy>
@@ -112,8 +102,6 @@ to make a distribution call makeImport:
 		<copy todir="${deploy.home}/css">
 			<fileset dir="${efg2.css.home}"/>
 		</copy>
-		
-		
 		<copy todir="${deploy.home}/templateCSSDirectory">
 			<fileset dir="${efg2.templatecss.home}"/>
 		</copy>
@@ -136,14 +124,21 @@ to make a distribution call makeImport:
 			<fileset dir="templateConfigFiles"/>
 		</copy>
 	</target>
-	<target name="prepareDeploy" depends="deployEFGIcons, deployResources">
+	<target name="deployPlates">
+		<mkdir dir="${deploy.home}/plateConfiguration"/>
+		<copy todir="${deploy.home}/plateConfiguration">
+					<fileset dir="${efg2_platemaker.home}"/>
+			</copy>
+	</target>
+
+	<target name="prepareDeploy" depends="deployEFGIcons, deployPlates,deployResources">
+		<mkdir dir="${deploy.home}/EFGImages"/>
 		<mkdir dir="${deploy.home}/EFGImages"/>
 		<mkdir dir="${deploy.home}/WEB-INF"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes/project"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes/properties"/>
 		<mkdir dir="${deploy.home}/WEB-INF/fedSchema"/>
-		
 		<mkdir dir="${deploy.home}/WEB-INF/lib"/>
 		<copy todir="${deploy.home}/WEB-INF/fedSchema">
 			<fileset dir="${efg2.fedSchema.home}"/>
@@ -151,8 +146,6 @@ to make a distribution call makeImport:
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.home}" includes="*.html"/>
 		</copy>
-		
-		
 		<copy todir="${deploy.home}/WEB-INF/classes/properties">
 			<fileset dir="properties" excludes="log4j*.*"/>
 		</copy>
@@ -164,43 +157,41 @@ to make a distribution call makeImport:
 		</delete>
 		<copy file="${efg2.properties.home}/log4j_server.properties" todir="${deploy.home}/WEB-INF/classes/project/efg/util/"/>
 		<move file="${deploy.home}/WEB-INF/classes/project/efg/util/log4j_server.properties" tofile="${deploy.home}/WEB-INF/classes/project/efg/util/log4j.properties"/>
-
-	
 	</target>
-	
 	<target name="deploy" depends="compile, prepareDeploy">
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="deploy"/>
 		<copy todir="${deploy.home}/WEB-INF/classes/project">
 			<fileset dir="compiled/project"/>
 		</copy>
 	</target>
-	
 	<target name="war" depends="deploy">
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.website.home}" includes="*.html, *.css, *.gif, *.jpg, *.js, *.png,*.jsp"/>
 		</copy>
-			<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
-				<fileset dir="${deploy.home}"/>
-			</war>
-		</target>
+		<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
+			<fileset dir="${deploy.home}"/>
+		</war>
+	</target>
 	<!-- Compile main sources-->
-			<target name="compileMain" depends="prepare">
-				<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
-				<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
-				<copy todir="${src.temp.home}">
-					<fileset dir="${efg2.source.home}"/>
-				</copy>
-			</target>
-	
-
+	<target name="compileMain" depends="prepare">
+		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
+		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
+		<copy todir="${src.temp.home}">
+			<fileset dir="${efg2.source.home}"/>
+		</copy>
+	</target>
 	<!-- Compile RDB sources with main sources-->
 	<target name="compile" depends="compileMain">
 		<javac srcdir="${src.temp.home}" destdir="compiled" debug="on" optimize="off" deprecation="on">
 			<classpath refid="compile.class.path"/>
 		</javac>
 	</target>
-
 	<target name="jarImport" depends="compile">
+		<delete dir="compiled/project/efg/digir"/>
+		<delete dir="compiled/project/efg/unitTests"/>
+		<delete dir="compiled/project/efg/servlets/unitTests"/>
+		
+		
 		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
@@ -220,10 +211,10 @@ to make a distribution call makeImport:
 	</target>
 	<target name="clean">
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
-				<delete dir="${efg2.dist.home}/resource" quiet="true"/>
-				<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
-	</target>	
-	<target name="makeImport" depends="clean,jarImport, war">
+		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
+		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
+	</target>
+	<target name="makeImport" depends="clean,war,jarImport ">
 		<mkdir dir="${efg2.dist.home}"/>
 		<mkdir dir="${efg2.dist.home}/resource"/>
 		<mkdir dir="${efg2.dist.home}/resource/logs"/>
@@ -235,25 +226,23 @@ to make a distribution call makeImport:
 		<mkdir dir="${efg2.dist.home}/resource/EFGLocalRepository/templateConfigFiles/xml"/>
 		<mkdir dir="${efg2.dist.home}/resource/icons"/>
 		<mkdir dir="${efg2.dist.home}/resource/help"/>
+		<!--
 		<mkdir dir="${efg2.dist.home}/sampleData"/>
+-->
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>
-		
 		<copy todir="${efg2.dist.home}/resource/properties">
 			<fileset dir="${efg2.lib.home.properties}"/>
 		</copy>
-		
 		<copy todir="${efg2.dist.home}/resource/icons">
 			<fileset dir="${efg2.lib.home}/Icons"/>
 		</copy>
-		
 		<copy todir="${efg2.dist.home}/resource/help">
 			<fileset dir="${efg2.lib.home}/help"/>
 		</copy>
-		
 		<copy todir="${efg2.dist.home}/resource">
-			<fileset dir="${efg2.lib.home}"/>
+			<fileset dir="${efg2.lib.home}" excludes="batik.jar,avalon.jar,xmlgraphics-commons-1.0.jar,serializer-2.7.0.jar,jakarta-oro-2.0.5.jar,commons-httpclient-3.0.1.jar,itext-src-1.4.8.zip, castor-0.9.5-src.zip,xalan.jar, jdom.jar, itext-1.4.8.jar, fop.jar, fileupload-ext.jar,commons-fileupload-1.1.1.jar,commons-cli-1.0.jar"/>
 		</copy>
 		<delete file="${efg2.dist.home}/resource/Tidy.jar" quiet="true"/>
 		<delete file="${efg2.dist.home}/resource/junit.jar" quiet="true"/>
@@ -264,19 +253,17 @@ to make a distribution call makeImport:
 			<fileset dir="${efg2.dist.home}/resource/properties" includes="*.dat, *_old"/>
 		</delete>
 		<delete dir="${efg2.dist.home}/resource/HandlingLists_files"/>
-		
 		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource"/>
+		<!--
 		<copy file="${efg2.lib.home}/sampleData/HetaerinaData3may05.mer" todir="${efg2.dist.home}/sampleData"/>
+-->
 		<copy file="${efg2.lib.home}/login.bat" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/efg2.xml" todir="${efg2.dist.home}/resource"/>
-
 		<copy file="${efg2.home}/efg2.war" todir="${efg2.dist.home}/resource"/>
-	
-		<zip zipfile="${efg2.home}/efg2.zip" basedir="${efg2.dist.home}"/> 
+		<zip zipfile="${efg2.home}/efg2.zip" basedir="${efg2.dist.home}"/>
 		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
 		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
 	</target>
-	
 </project>

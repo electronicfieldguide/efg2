@@ -56,12 +56,12 @@ public class DnDFileBrowserMain extends JDialog {
 	 *
 	 */
 	public class MagickHomeListener implements ActionListener {
-		private DnDFileBrowserMain main;
+		//private DnDFileBrowserMain main;
 		/**
 		 * @param main
 		 */
 		public MagickHomeListener(DnDFileBrowserMain main) {
-			this.main = main;
+			//this.main = main;
 		}
 
 		/* (non-Javadoc)
@@ -125,9 +125,9 @@ public class DnDFileBrowserMain extends JDialog {
 	final private JButton deleteBtn = new JButton(EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.deleteBtn"));
 
-	final private JButton doneBtn = new JButton(EFGImportConstants.EFGProperties
+	/*final private JButton doneBtn = new JButton(EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.doneBtn"));
-
+*/
 	JProgressBar progressBar = new JProgressBar();
 
 	JComponent imageView;
@@ -324,7 +324,7 @@ public class DnDFileBrowserMain extends JDialog {
 	private void setDefaultThumbnailDimensions() {
 	
 			String[] dimensions = WorkspaceResources.getDefaultDimensions();
-			String maxDim = null;
+			//String maxDim = null;
 			StringBuffer buffer = new StringBuffer();
 			for(int i= dimensions.length;i > 0;i--) {
 
@@ -570,12 +570,12 @@ public class DnDFileBrowserMain extends JDialog {
 
 	
 	class ThumbsListener implements ActionListener {
-		private DnDFileBrowserMain dnd;
+		//private DnDFileBrowserMain dnd;
 		/**
 		 * 
 		 */
 		public ThumbsListener(DnDFileBrowserMain dnd) {
-			this.dnd = dnd;
+			//this.dnd = dnd;
 		}
 		/* (non-Javadoc)
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

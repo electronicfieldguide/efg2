@@ -263,6 +263,22 @@ public class WorkspaceResources {
 						"efg.data.last.file",null));
 				buffer.append("\n");
 			}
+			if(EFGImportConstants.EFGProperties.getProperty(
+					"efg.previous.zipfile.location") != null) {
+				buffer.append("efg.previous.zipfile.location=");	
+				buffer.append(EFGImportConstants.EFGProperties.getProperty(
+						"efg.previous.zipfile.location",null));
+				buffer.append("\n");
+			}
+			if(EFGImportConstants.EFGProperties.getProperty(
+					"efg.efg2efg.imports.home") != null) {
+				buffer.append("efg.efg2efg.imports.home=");	
+				buffer.append(EFGImportConstants.EFGProperties.getProperty(
+						"efg.efg2efg.imports.home",null));
+				buffer.append("\n");
+			}
+			
+			
 			
        		buffer.append("efg.serverlocation.checked=");	
 			buffer.append(EFGImportConstants.EFGProperties.getProperty(
@@ -292,7 +308,7 @@ public class WorkspaceResources {
 			buffer.append(EFGImportConstants.EFGProperties.getProperty(
 					"efg.showchangedirectorymessage.checked",EFGImportConstants.EFG_TRUE));
 			buffer.append("\n");  
-			
+						
 			File file = getWorkspaceFileName();
 			FileWriter writer = new FileWriter(file);
 			writer.write(buffer.toString());
@@ -313,7 +329,7 @@ public class WorkspaceResources {
 			EFGImportConstants.EFGProperties.getProperty("workspace.file");
 
 		
-		String dir = null;
+		
 		try {
 			URL url = WorkspaceResources.class.getResource(workspaceFileName);
 			return new File(URLDecoder.decode(url.getFile(), "UTF-8"));

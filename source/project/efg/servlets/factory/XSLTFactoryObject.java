@@ -30,7 +30,6 @@ package project.efg.servlets.factory;
 
 
 import project.efg.servlets.efgInterface.XSLTFactoryInterface;
-import project.efg.servlets.efgServletsUtil.XSLTObjectInterface;
 import project.efg.util.EFGImportConstants;
 
 
@@ -51,7 +50,7 @@ public class XSLTFactoryObject {
 	 * @param searchType - The type of search - list,plates,taxonpages
 	 * @return an XSLTObjectInterface 
 	 */
-	public static  synchronized XSLTObjectInterface getInstance(int taxonSize, 
+	public static  synchronized project.efg.servlets.efgServletsUtil.XSLTObjectInterface getInstance(int taxonSize, 
 			String searchType){
 			
 			if(xsltFactory == null){

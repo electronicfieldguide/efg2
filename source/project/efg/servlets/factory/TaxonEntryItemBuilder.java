@@ -63,9 +63,6 @@ public class TaxonEntryItemBuilder {
 		this.handleStats = new HandleStatInput(stats);//use Spring
 	}
 
-	private void initSpring() {
-		
-	}
 	/**
 	 * 
 	 * @param userValues - if null no parsing will be done. Elements will be created with the

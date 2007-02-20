@@ -30,6 +30,7 @@ import project.efg.efgDocument.TaxonEntryTypeItem;
 import project.efg.efgpdf.pdf.PDFMaker.CaptionFontObject;
 import project.efg.templates.taxonPageTemplates.XslPage;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.RegularExpresionConstants;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Chunk;
@@ -83,16 +84,34 @@ public class EFG2PDF implements EFG2PDFInterface {
 	private float tableCellWidth;
 	static StringBuffer errorBuffer;
 	static{
-	errorBuffer= new StringBuffer("Error occured during processing of document\n"); 
-	errorBuffer.append("---------\n");
-	errorBuffer.append("Possible Causes:\n\n");
+		String errorProps =EFGImportConstants.EFGProperties.getProperty("pdferrormessage");
+		if(errorProps != null && !errorProps.trim().equals("")){
+			errorBuffer= new StringBuffer(); 
 
-	errorBuffer.append("- Images are missing. If you intended to print a file with no images,\n");
-	errorBuffer.append("please go back and make sure the box next to \n");
-	errorBuffer.append("'Always display captions' in the Data Display Settings is checked.\n\n");
-
-	errorBuffer.append("- some other error that causes this page to " +
-			"get generated that we do not know about, please report this to us\n");
+			 String[] props = errorProps.split(RegularExpresionConstants.PIPESEP);
+			 for(int i = 0; i < props.length;i++){
+				 String prop = props[i];
+				 if(prop.trim().equals("")){
+					 errorBuffer.append("\n");
+				 }
+				 else{
+					 errorBuffer.append(prop);
+				 }
+				 errorBuffer.append("\n");
+			 }
+		}
+		else{
+		errorBuffer= new StringBuffer("Error occured during processing of document\n"); 
+		errorBuffer.append("---------\n");
+		errorBuffer.append("Possible Causes:\n\n");
+	
+		errorBuffer.append("- Images are missing. If you intended to print a file with no images,\n");
+		errorBuffer.append("please go back and make sure the box next to \n");
+		errorBuffer.append("'Always display captions' in the Data Display Settings is checked.\n\n");
+	
+		errorBuffer.append("- some other error that causes this page to " +
+				"get generated that we do not know about, please report this to us\n");
+		}
 	}
 
 	/**
@@ -150,6 +169,8 @@ public class EFG2PDF implements EFG2PDFInterface {
 			File mediaResourcesDirectory, String authors) {
 		
 		try{
+			/*- some other error that causes this page to get generated that I do not know
+			about*/
 			/*FileOutputStream foutput =
 				new FileOutputStream(new File(mediaResourcesDirectory,"Test.pdf"));
 			*/
@@ -388,11 +409,8 @@ public class EFG2PDF implements EFG2PDFInterface {
 		else{
 			cell.setColspan(1);
 		}
-		if(cellHeight <= 0){
-			cellHeight = 1f;
-		}
 		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-		cell.setFixedHeight(cellHeight);
+		
 		cell.setBorder(0);
 		cell.addElement(writeMessage(message));
 		if(this.pdfTable == null){

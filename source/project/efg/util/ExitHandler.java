@@ -51,6 +51,6 @@ public class ExitHandler {
 		}		
 	}
 	public static void main(String[] args) {
-		ExitHandler exit = new ExitHandler();
+		//ExitHandler exit = new ExitHandler();
 	}
 }

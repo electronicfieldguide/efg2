@@ -52,7 +52,7 @@ public class UnicodeToASCIIFilter implements EFGImportConstants{
 		   
 		      BufferedReader in = new BufferedReader(r);
 		      PrintWriter out = new PrintWriter(new BufferedWriter(w));
-		      boolean bool = false;
+		     
 		      int c;
 		      while((c = in.read()) != -1) {
 		           if(!isValidXMLChar(c)) {

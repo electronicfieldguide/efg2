@@ -25,6 +25,7 @@ import java.util.zip.ZipFile;
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
+import project.efg.Imports.efgImpl.DBObject;
 import project.efg.util.EFGImportConstants;
 
 public class UnZipImport implements ZipInterface {
@@ -36,11 +37,88 @@ public class UnZipImport implements ZipInterface {
 		}
 	}
 	private File sqlDirectory;
+	private File zipFile, importsDirectory, destinationOnServer;
+	private DBObject dbObject;
+	/**
+	 * @param object 
+	 * 
+	 */
+	public UnZipImport(DBObject dbObject, File zipFile, 
+			File importsDirectory, 
+			File destinationOnServer) {
+		this.dbObject = dbObject;
+		this.zipFile = zipFile;
+		this.importsDirectory = importsDirectory;
+		this.destinationOnServer = destinationOnServer;
+	}
 
 	/**
 	 * 
+	 * @param zipFile - The name of the zip file
+	 * @param importsDirectory - The directory where the zip file will be unzipped
+	 * @param destinationOnServer - Where the unzipped files will be copied to.
+	 * @throws IOException
 	 */
-	public UnZipImport() {
+	public synchronized void processZipFile(
+			) throws IOException {
+		
+		
+		ZipFile zip = new ZipFile(this.zipFile);
+		Set directoryNames =Collections.synchronizedSet(new HashSet());
+		try {
+			Enumeration zipEntriesEnum = zip.entries();
+			
+			while (zipEntriesEnum.hasMoreElements()) {
+				ZipEntry entry = (ZipEntry) zipEntriesEnum.nextElement();
+				File file = (importsDirectory != null) ? new File(this.importsDirectory, entry
+						.getName()) : new File(entry.getName());
+				
+				if (entry.isDirectory()) {
+					
+					if(!file.exists()) {
+					if (!file.mkdirs()) {
+						
+						throw new IOException("Error creating directory: "
+								+ file);
+					}
+					}
+				} else {
+					File parent = file.getParentFile();	
+					if (parent != null && !parent.exists()) {
+						if (!parent.mkdirs()) {
+							throw new IOException("Error creating directory: "
+									+ parent);
+						}
+					}
+					if(parent.isDirectory()) {
+						findRootDirectoryOfZip(parent,directoryNames);
+					}
+						
+					InputStream in = zip.getInputStream(entry);
+					try {
+						OutputStream out = new BufferedOutputStream(
+								new FileOutputStream(file), BUF_SIZE);
+					
+						try {
+							copy(in, out, BUF_SIZE);
+						} finally {
+							out.close();
+						}
+	
+					} finally {
+						in.close();
+					}
+				}
+			}
+		} finally {
+			zip.close();
+		}
+		
+		moveToDestinationOnServer(
+				this.importsDirectory,
+				new ArrayList(directoryNames),
+				this.destinationOnServer);
+		importIntoDatabase();
 	}
 	/**
 	 * @param sandBoxDirectory
@@ -146,96 +224,17 @@ public class UnZipImport implements ZipInterface {
 		IOUtils.copy(in,out);
 		out.flush();
 	}
-	/**
-	 * Copy files to a destination directory
-	 * @param filesToCopy
-	 * @param destFile
-	 */
-	public void copyListFiles(File[] filesToCopy, File destFile) {
-		if(filesToCopy != null) {
-			for(int j = 0; j < filesToCopy.length; ++j) {
-				copyFile(filesToCopy[j], destFile);
-			}
-		}
-	}
-	public File getSqlDirectory() {
+
+	private File getSqlDirectory() {
 		return this.sqlDirectory;
-	}
-	/**
-	 * 
-	 * @param zipFile - The name of the zip file
-	 * @param importsDirectory - The directory where the zip file will be unzipped
-	 * @param destinationOnServer - Where the unzipped files will be copied to.
-	 * @throws IOException
-	 */
-	public synchronized void unzipFile(
-			File zipFile, 
-			File importsDirectory, 
-			File destinationOnServer) throws IOException {
-		
-		
-		ZipFile zip = new ZipFile(zipFile);
-		Set directoryNames =Collections.synchronizedSet(new HashSet());
-		try {
-			Enumeration zipEntriesEnum = zip.entries();
-			
-			while (zipEntriesEnum.hasMoreElements()) {
-				ZipEntry entry = (ZipEntry) zipEntriesEnum.nextElement();
-				File file = (importsDirectory != null) ? new File(importsDirectory, entry
-						.getName()) : new File(entry.getName());
-				
-				if (entry.isDirectory()) {
-					
-					if(!file.exists()) {
-					if (!file.mkdirs()) {
-						throw new IOException("Error creating directory: "
-								+ file);
-					}
-					}
-				} else {
-					File parent = file.getParentFile();	
-					if (parent != null && !parent.exists()) {
-						if (!parent.mkdirs()) {
-							throw new IOException("Error creating directory: "
-									+ parent);
-						}
-					}
-					if(parent.isDirectory()) {
-						findRootDirectoryOfZip(parent,directoryNames);
-					}
-						
-					InputStream in = zip.getInputStream(entry);
-					try {
-						OutputStream out = new BufferedOutputStream(
-								new FileOutputStream(file), BUF_SIZE);
-	
-						try {
-							copy(in, out, BUF_SIZE);
-						} finally {
-							out.close();
-						}
-	
-					} finally {
-						in.close();
-					}
-				}
-			}
-		} finally {
-			zip.close();
-		}
-		
-		moveToDestinationOnServer(
-				importsDirectory,
-				new ArrayList(directoryNames),
-				destinationOnServer);
-		importIntoDatabase();
 	}
 	/**
 	 * @throws FileNotFoundException 
 	 * @throws UnsupportedEncodingException 
 	 * 
 	 */
-	private void importIntoDatabase() throws UnsupportedEncodingException, FileNotFoundException {
+	private void importIntoDatabase() throws UnsupportedEncodingException, 
+	FileNotFoundException {
 		File sqlDirectory = this.getSqlDirectory();
 		if(sqlDirectory != null) {
 			
@@ -244,7 +243,7 @@ public class UnZipImport implements ZipInterface {
 				for(int i = 0; i < sqlFiles.length; i++) {
 					BufferedReader in = new BufferedReader(
 							new InputStreamReader(new FileInputStream(sqlFiles[i]), "UTF8"));
-					ImportData data = new ImportData();
+					ImportData data = new ImportData(this.dbObject);
 					data.importData(in);
 				}
 			}
@@ -272,12 +271,17 @@ public class UnZipImport implements ZipInterface {
 	}
 
 	public static void main(String[] args) {
-		UnZipImport unzip = new UnZipImport();
+		
+		
 		File zipFile = new File("C:\\Program Files\\Apache Software Foundation\\Tomcat 5.0\\webapps\\efg2\\exports\\test.zip");
 		File sandBoxDirectory = new File("C:\\Program Files\\Apache Software Foundation\\Tomcat 5.0\\webapps\\efg2\\imports");
 		File destinationOnServer = new File("C:\\Program Files\\Apache Software Foundation\\Tomcat 5.0\\webapps\\efg2");
 		try {
-			unzip.unzipFile(zipFile, sandBoxDirectory, destinationOnServer);
+			UnZipImport unzip = new UnZipImport(
+					null,zipFile, 
+					sandBoxDirectory, 
+					destinationOnServer);
+			unzip.processZipFile();
 			
 		} catch (IOException e) {
 		

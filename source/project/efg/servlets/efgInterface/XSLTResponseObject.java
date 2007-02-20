@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 
 import project.efg.efgDocument.EFGDocument;
-import project.efg.servlets.efgServletsUtil.XSLProperties;
 import project.efg.servlets.efgServletsUtil.XSLTObjectInterface;
 import project.efg.util.EFGImportConstants;
 
@@ -105,7 +104,7 @@ public class XSLTResponseObject extends ResponseObject {
 			String xslFileLocation = realPath + EFGImportConstants.TEMPLATES_FOLDER_NAME + File.separator;
 			
 			//log.debug("call xslProps");
-			XSLProperties xslProps = xslType.getXSLProperties(mapNew, xslFileLocation);
+			project.efg.servlets.efgServletsUtil.XSLProperties xslProps = xslType.getXSLProperties(mapNew, xslFileLocation);
 			//log.debug("Done xslProps");
 			if (xslProps == null) {
 				throw new Exception(

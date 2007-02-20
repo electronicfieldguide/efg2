@@ -70,15 +70,7 @@ public class EFGComboBox extends JComboBox {
 		}
 
 
-		/**
-		 * 
-		 */
-		private void useDefaults() {
-			String[] dimensions = WorkspaceResources.getDefaultDimensions();
-			for(int i= dimensions.length;i > 0;i--) {
-				this.add(dimensions[i-1]);
-			}
-		}
+	
 
 	
 	}
