@@ -32,6 +32,10 @@ import project.efg.util.ServerLocator;
  */
 public class PreferencesHandler extends JDialog implements ItemListener {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
 	 * @author kasiedu
 	 *
 	 */

@@ -173,9 +173,6 @@ public class SynopticKeyTreeMain extends JDialog {
 	private void addMenus(){
 		JMenu fileMenu = new JMenu("File");
 		JMenu helpMenu = new JMenu("Help");
-		String property = 
-			EFGImportConstants.EFGProperties.getProperty("efg.mac.ismac","false");
-
 		
 		editMetadataMenu.addActionListener(new DataManipulatorListener(this,
 				this.getEditManipulator()));

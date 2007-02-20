@@ -30,6 +30,10 @@ package project.efg.Imports.efgImportsUtil;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.Properties;
+
+import org.exolab.castor.util.Configuration;
+import org.exolab.castor.util.LocalConfiguration;
 
 import project.efg.Imports.efgImpl.DBObject;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
@@ -306,7 +310,13 @@ public class TaxonPageDefaultConfig {
 					// suppress the printing of xsi:type
 					marshaller.setMarshalExtendedType(false);
 					marshaller.setSuppressXSIType(true);
+					//marshaller.set
+					//org.exolab.castor.indent=true
+					Properties props = LocalConfiguration.getInstance().getProperties();					
+					props.setProperty(Configuration.Property.Indent, "true");
+					
 					marshaller.marshal(tps);
+					
 					writer.flush();
 					writer.close();
 
@@ -399,6 +409,9 @@ public class TaxonPageDefaultConfig {
 
 }
 // $Log$
+// Revision 1.5  2007/02/20 16:32:56  kasiedu
+// no message
+//
 // Revision 1.4  2007/01/21 02:07:18  kasiedu
 // no message
 //

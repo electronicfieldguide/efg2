@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
-import project.efg.util.CacheStarter;
-
 /**
  * @author kasiedu
  *
@@ -74,7 +72,7 @@ public class CacheServlet extends HttpServlet {
 	private void doInit(String url) {
 		//log.debug("About to execute cache starter");
 		//String url = getServletURL(req);
-		CacheStarter cacheStarter = new CacheStarter();
+		
 		////log.debug("url: " + url);
 		//cacheStarter.executeCache(url);
 		//log.debug("cache starter execution done");

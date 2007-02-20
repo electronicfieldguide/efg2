@@ -7,12 +7,16 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.exolab.castor.util.Configuration;
+import org.exolab.castor.util.LocalConfiguration;
 
 import project.efg.servlets.efgServletsUtil.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.CharacterValue;
@@ -135,6 +139,9 @@ public abstract class EFGTemplateConfig extends HttpServlet {
 					// suppress the printing of xsi:type
 					marshaller.setMarshalExtendedType(false);
 					marshaller.setSuppressXSIType(true);
+					Properties props = LocalConfiguration.getInstance().getProperties();					
+					props.setProperty(Configuration.Property.Indent, "true");
+
 					marshaller.marshal(tps);
 					done = true;
 
@@ -182,6 +189,9 @@ public abstract class EFGTemplateConfig extends HttpServlet {
 			synchronized (mute) {
 				try {
 					writer = new FileWriter(fileLocation);
+					Properties props = LocalConfiguration.getInstance().getProperties();					
+					props.setProperty(Configuration.Property.Indent, "true");
+
 					done = this.marshal(writer, tps);
 					writer.flush();
 					writer.close();

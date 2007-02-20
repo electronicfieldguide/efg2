@@ -45,12 +45,17 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
+
+import org.exolab.castor.util.Configuration;
+import org.exolab.castor.util.LocalConfiguration;
 
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.rdb.EFGRDBImportUtils;
@@ -177,9 +182,6 @@ public class EFGContextListener implements ServletContextListener {
 		}
 		
 	}
-	private void removeImportExportFiles() {
-		
-	}
 	private void writeTemplatesToDisk() {
 		StringBuffer fileLocationBuffer = new StringBuffer();
 		fileLocationBuffer.append(servletContext.getRealPath("/"));
@@ -285,6 +287,9 @@ public class EFGContextListener implements ServletContextListener {
 					// suppress the printing of xsi:type
 					marshaller.setMarshalExtendedType(false);
 					marshaller.setSuppressXSIType(true);
+					Properties props = LocalConfiguration.getInstance().getProperties();					
+					props.setProperty(Configuration.Property.Indent, "true");
+
 					marshaller.marshal(tps);
 					done = true;
 
@@ -672,6 +677,9 @@ public class EFGContextListener implements ServletContextListener {
 }
 
 // $Log$
+// Revision 1.7  2007/02/20 16:34:01  kasiedu
+// no message
+//
 // Revision 1.6  2007/02/14 02:44:40  kasiedu
 // no message
 //

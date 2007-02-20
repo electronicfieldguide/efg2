@@ -45,11 +45,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
 import org.apache.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.efgImportsUtil.ResourceWarning;
 import project.efg.Imports.efgInterface.LoginListenerInterface;
 import project.efg.Imports.factory.LoginListenerFactory;
+import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.util.CreateSampleDataThread;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.RegularExpresionConstants;
@@ -70,7 +72,8 @@ public class LoginDialog extends JDialog {
 				StringBuffer buffer,
 				String pathToServer) {
 			String current = 
-				EFGImportConstants.EFGProperties.getProperty("efg.serverlocations.current");
+				EFGImportConstants.EFGProperties.getProperty(
+						"efg.serverlocations.current");
 			 int j = 0;
 			 boolean isFound = false;
 			 for(int i = 0 ; i < properties.length;i++) {
@@ -528,10 +531,12 @@ public class LoginDialog extends JDialog {
 				LoginDialog dlg = new LoginDialog(null); //create a new dialog
 				dlg.setVisible(true);//make it visible
 				if (dlg.isSuccess()) {//if user name and password are correct
-					String urldb = EFGImportConstants.EFGProperties.getProperty("dburl");
+					String urldb = 
+						EFGImportConstants.EFGProperties.getProperty("dburl");
 					//log.debug("url: " + url);
 					
-					DBObject dbObject = new DBObject(urldb, dlg.getLoginName(),
+					DBObject dbObject = new DBObject(
+							urldb, dlg.getLoginName(),
 							dlg.getPassword());
 					
 					dlg.setServerRoot(serverRoot,isDefault);
@@ -562,23 +567,58 @@ public class LoginDialog extends JDialog {
 			log.error(ee.getMessage());
 		} 
 	}
+	private boolean alreadyLoaded(DBObject dbObject) {
+		JdbcTemplate jdbcTemplate =  EFGRDBImportUtils.getJDBCTemplate(dbObject);
+		String displayName= readSampleDataDisplayName();
+		StringBuffer query = new StringBuffer();
+		query.append("SELECT DS_METADATA");
+		query.append(" FROM ");
+		query.append(EFGImportConstants.EFG_RDB_TABLES);
+		query.append(" WHERE DISPLAY_NAME = \"");
+		query.append(displayName);
+		query.append("\"");
+		try {
+			java.util.List list = 
+				EFGRDBImportUtils.executeQueryForList(
+					jdbcTemplate, query.toString(), 1);
+			if(list == null || list.size()== 0){
+				return false;
+			}
+			
+		} catch (Exception e) {
+			log.error(e.getMessage());
+			return false;
+			//e.printStackTrace();
+		}
+		
+		return true;
+	}
+	/**
+	 * 
+	 */
+	private String readSampleDataDisplayName() {
+		return EFGImportConstants.EFGProperties
+				.getProperty(EFGImportConstants.SAMPLE_NEW_DISPLAY_NAME);
 
+	}
 	/**
 	 * 
 	 */
 	private void loadSampleData(DBObject dbObject) {
-		String property =
-			EFGImportConstants.EFGProperties.getProperty(
-					"efg.sampledata.loaded", EFGImportConstants.EFG_FALSE
-					);
-		if(property.equals(EFGImportConstants.EFG_FALSE)) {
-			//put progress bar here
-			CreateSampleDataThread dataT =
-				new CreateSampleDataThread(this.frame,dbObject);
-			 dataT .start();
-			 EFGImportConstants.EFGProperties.setProperty(
-						"efg.sampledata.loaded", EFGImportConstants.EFG_TRUE
+		if(!alreadyLoaded(dbObject)){
+			String property =
+				EFGImportConstants.EFGProperties.getProperty(
+						"efg.sampledata.loaded", EFGImportConstants.EFG_FALSE
 						);
+			if(property.equals(EFGImportConstants.EFG_FALSE)) {
+				//put progress bar here
+				CreateSampleDataThread dataT =
+					new CreateSampleDataThread(this.frame,dbObject);
+				 dataT .start();
+				 EFGImportConstants.EFGProperties.setProperty(
+							"efg.sampledata.loaded", EFGImportConstants.EFG_TRUE
+							);
+			}
 		}
 	}
 	public static void main(String args[]) {

@@ -42,6 +42,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.net.URI;
 import java.net.URL;
 import java.util.Hashtable;
@@ -50,6 +51,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -64,6 +66,7 @@ import org.apache.log4j.Logger;
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.LoggerUtils;
 import project.efg.Imports.efgImportsUtil.PreferencesListener;
+import project.efg.exports.UnZipImport;
 import project.efg.util.DnDFileBrowserMain;
 import project.efg.util.EFGImportConstants;
 import project.efg.util.ExitHandler;
@@ -102,7 +105,7 @@ public class ImportMenu extends JFrame {
 	DnDFileBrowserMain fileBrowser;
 	
 	private DBObject dbObject;
-	private boolean browserreload=false;
+	
   
 	static Logger log = null;
 	static {
@@ -180,7 +183,9 @@ public class ImportMenu extends JFrame {
 		     JOptionPane.OK_CANCEL_OPTION);
 		   JDialog dialog = optionPane.createDialog(
 		       this, "Confirm Exit");
-		   dialog.show();
+		   
+		   dialog.setVisible(true);
+		   
 		   Object value = optionPane.getValue();
 		   if (value == null || !(value instanceof Integer)) {
 		     //do nothing
@@ -246,7 +251,9 @@ public class ImportMenu extends JFrame {
     	String title=EFGImportConstants.EFGProperties.getProperty(
     			"HandleDatasourceListener.SynopticKeyTreeMain.title");
 		addNewDatasourceBtn.addActionListener(new HandleDatasourceListener(
-				this.dbObject, this,title));
+				this.dbObject, this,title,EFGImportConstants.EFGProperties.getProperty(
+						"HandleDatasourceListener.buffermessage.1")	
+				));
     	
 		title = EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.glossary.title");
     	 JButton addNewGlossaryBtn =this.createButton(
@@ -255,7 +262,8 @@ public class ImportMenu extends JFrame {
  			EFGImportConstants.EFGProperties.getProperty(
  					"ImportMenu.addNewGlossaryBtn.tooltip"));
     	 addNewGlossaryBtn.addActionListener(new HandleDatasourceListener(
- 				this.dbObject, this,title));
+ 				this.dbObject, this,title,EFGImportConstants.EFGProperties.getProperty(
+				"HandleDatasourceListener.buffermessage.1")	));
 
     	JButton deployImagesBtn = this.createButton(
     			EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn"),
@@ -263,7 +271,18 @@ public class ImportMenu extends JFrame {
 		deployImagesBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		deployImagesBtn.addActionListener(new DeployImagesListener(this));
 		
-		
+    	JButton importEFGBtn = this.createButton(
+    			EFGImportConstants.EFGProperties.getProperty("ImportMenu.importEFGBtn"),
+		EFGImportConstants.EFGProperties.getProperty("ImportMenu.importEFG.tooltipText"));
+    	importEFGBtn.setHorizontalAlignment(SwingConstants.CENTER);
+    	title=EFGImportConstants.EFGProperties.getProperty(
+		"ImportEFGListener.SynopticKeyEFG2EFGTreeMain.title");
+    	importEFGBtn.addActionListener(new ImportEFGListener(this.dbObject, 
+    			this,
+    			title,
+    			EFGImportConstants.EFGProperties.getProperty(
+		"ImportEFGListener.buffermessage.1")	));
+	
 		JButton manageResourceHomeBtn =
 			this.createButton("Preferences",
 					"Click to change preferences.");
@@ -279,11 +298,6 @@ public class ImportMenu extends JFrame {
 		efgUserBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		efgUserBtn.addActionListener(new CreateUserListener(
 				this.dbObject, this));
-		
-	
-		
-		
-		
 		
 		JButton helpBtn = this.createButton(
 				EFGImportConstants.EFGProperties.getProperty("ImportMenu.helpBtn"),
@@ -306,6 +320,7 @@ public class ImportMenu extends JFrame {
     	
     	selection.add(addNewDatasourceBtn);
     	selection.add(deployImagesBtn);
+    	selection.add(importEFGBtn);
     	selection.add(addNewGlossaryBtn);
     	selection.add(manageResourceHomeBtn);
     	selection.add(efgUserBtn);
@@ -527,47 +542,140 @@ public class ImportMenu extends JFrame {
 			
 		}
 	}
+	
+	class ZipFileFilter extends javax.swing.filechooser.FileFilter{
+		/* (non-Javadoc)
+		 * @see java.io.FileFilter#accept(java.io.File)
+		 */	
+			public boolean accept(File f) {
+			    if (f.isDirectory()) {
+			    	return false;
+			    }
 
-	class HandleDatasourceListener implements ActionListener{
-		private DBObject dbObject;
-		private String title;
-		private JFrame frame;
-		private String mainTableName;
+			   
+			    if(f.getAbsolutePath().toLowerCase().endsWith(EFGImportConstants.ZIP_EXT)){
+			    	return true;
+			    }
+			    return false;
+			}
+		    //The description of this filter
+		    public String getDescription() {
+		        return "Just Zip Files";
+		    }
+	}
+	
+	class ImportEFGListener extends DatasourceListener {
+		private File previousZipFileLocation;
+		private File importLocation;
+		private File serverHome;
 		
-		public final String getMainTableName() {
-			return this.mainTableName;
+		/* (non-Javadoc)
+		 * @see project.efg.Imports.efgImpl.DatasourceListener#getMainTableName()
+		 */
+		
+		public ImportEFGListener(DBObject dbObject, 
+				JFrame frame, String title, String errorMessage) {
+			super(dbObject,frame,title,errorMessage); 
 		}
-		public final DBObject getDBObject() {
-			return this.dbObject;
+		private void computeHelperHome(){
+			String cathome= 
+				EFGImportConstants.EFGProperties.getProperty(
+			 "efg.serverlocations.current");
+			if(cathome != null){
+				this.serverHome = new File(cathome);
+			}
+			String prevziphome = 
+				EFGImportConstants.EFGProperties.getProperty(
+			 "efg.previous.zipfile.location");
+			if(prevziphome != null){
+				this.previousZipFileLocation = new File(prevziphome);
+			}
+			else{
+				this.previousZipFileLocation = new File(".");
+			}
+			String importLoc = 
+				EFGImportConstants.EFGProperties.getProperty(
+			 "efg.efg2efg.imports.home");
+			if(importLoc == null || importLoc.trim().equals("")){
+				importLoc = getDefaultImportsLocation();
+			}
+			this.importLocation = new File(importLoc);
 		}
-		public final JFrame getFrame() {
-			return this.frame;
-		}
-		public HandleDatasourceListener(DBObject dbObject, 
-				JFrame frame, String title) {
-			this.dbObject = dbObject;
-			this.frame = frame;
-			this.title = title;
+		
+		/**
+		 * @return
+		 */
+		private String getDefaultImportsLocation() {
 			
+			return "imports";
 		}
-		protected void handleInput(){
+		protected void handleInput(String str){
 			try {
-				if (this.getDBObject() == null) {
-					StringBuffer buffer = new StringBuffer(
-						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
-						"\n");
-					buffer
-							.append(EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
-							"\n");
-					JOptionPane.showMessageDialog(this.frame, buffer.toString(),
-								"Error Message", JOptionPane.ERROR_MESSAGE);
-					log.error(buffer.toString());
-					return;
-				}
+				this.computeHelperHome();
+				
+	            JFileChooser chooser = new JFileChooser();
+	            chooser.setFileHidingEnabled(false);
+	            //chooser.setFileSelectionMode(JFileChooser.);
+	            chooser.setFileFilter(new ZipFileFilter());
+	            chooser.setMultiSelectionEnabled(false);
+	            chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+	            chooser.setDialogTitle("Choose your EFG2 zip file...");
+	            chooser.setCurrentDirectory(this.previousZipFileLocation);
+	            if (
+	                chooser.showOpenDialog(
+	                		this.frame)
+	                == JFileChooser.APPROVE_OPTION
+	                ) {
+	            	File targetFile = chooser.getSelectedFile();
+	                if(targetFile != null && 
+	                		!targetFile.toString().trim().equals("")) {
+	                	EFGImportConstants.EFGProperties.setProperty(
+	               			 "efg.previous.zipfile.location",
+	               			 targetFile.toURI().toString());
+	                	
+	                	File file = new File(this.serverHome,"webapps/efg2");
+	                	if(!this.importLocation.exists()){
+	                		this.importLocation.mkdirs();
+	                	}
+	            		
+            			UnZipImport unzip = new UnZipImport(this.dbObject,
+            					targetFile, 
+            					this.importLocation, 
+            					file);
+            			EFG2EFGImportThread efg2Import = 
+            				new EFG2EFGImportThread(unzip,this.getFrame(),this.title);
+            			efg2Import.start();
+	                }                        
+	            }
+
+			} catch (Exception ee) {
+				log.error(ee.getMessage());
+				JOptionPane.showMessageDialog(this.getFrame(), ee.getMessage(),
+						"Error Message", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		}
 		
-				EFGUtils.setTableName(this.getMainTableName());
+			
+		
+	}
+	class HandleDatasourceListener extends DatasourceListener{
+	
+		public HandleDatasourceListener(DBObject dbObject, 
+				JFrame frame, String title, String errorMessage) {
+			super(dbObject, frame, title, errorMessage);
+		}
+		protected void handleInput(String buttonString){
+			try {
+		
+					String propName =EFGImportConstants.EFGProperties
+					.getProperty(buttonString.toLowerCase()); 
+					String mainTableName = EFGImportConstants.EFGProperties
+					.getProperty(propName);
+				EFGUtils.setTableName(mainTableName);
 				//run this in another thread?
-				SynopticKeyTreeMain ftb = new SynopticKeyTreeMain(this.getFrame(),this.title, true, this.getDBObject());
+				JDialog ftb = 
+					new SynopticKeyTreeMain(this.getFrame(),this.title, true, this.getDBObject());
 				ftb.setVisible(true);
 			} catch (Exception ee) {
 				log.error(ee.getMessage());
@@ -576,21 +684,7 @@ public class ImportMenu extends JFrame {
 				return;
 			}
 		}
-		
-		
-		/* (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(ActionEvent e) {
-			String buttonString = e.getActionCommand();
-			String propName =EFGImportConstants.EFGProperties
-			.getProperty(buttonString.toLowerCase()); 
-			this.mainTableName = EFGImportConstants.EFGProperties
-			.getProperty(propName);
-			this.handleInput();
-			
-			
-		}
+
 	}
 
 	class ExitListener implements ActionListener {

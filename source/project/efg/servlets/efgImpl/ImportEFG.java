@@ -71,14 +71,22 @@ public class ImportEFG extends UploadServlet implements EFGImportConstants {
 	 * @param servletPath
 	 * @throws Exception
 	 */
-	private void importFiles(File zipFile, File repository, File servletPath)throws Exception {
-		UnZipImport unzip = new UnZipImport();
-		unzip.unzipFile(zipFile, repository, servletPath);
+	private void importFiles(File zipFile, 
+			File repository, 
+			File servletPath)throws Exception {
+		//FIXME
+		UnZipImport unzip = 
+			new UnZipImport(null,
+				zipFile, 
+				repository, 
+				servletPath);
+		unzip.processZipFile();
 	}	
 	/**
 	 * 
 	 */
-	public void doCustomProcessing(HttpServletResponse response,File[] files) {
+	public void doCustomProcessing(HttpServletResponse response,
+			File[] files) {
 	
 		if(files == null || files.length == 0) {
 			
@@ -119,6 +127,9 @@ public class ImportEFG extends UploadServlet implements EFGImportConstants {
 	}
 }
 //$Log$
+//Revision 1.3  2007/02/20 16:34:01  kasiedu
+//no message
+//
 //Revision 1.2  2007/02/03 00:04:27  kasiedu
 //*** empty log message ***
 //

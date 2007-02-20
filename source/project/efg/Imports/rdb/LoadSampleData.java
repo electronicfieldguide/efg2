@@ -48,6 +48,8 @@ public class LoadSampleData {
 
 	private StringBuffer messageBuffer;
 	private boolean isError = false;
+
+	
 	static Logger log = null;
 	static {
 		try {
@@ -77,14 +79,13 @@ public class LoadSampleData {
 	}
 	private boolean createGlossaryTable() {
 		
-			try {
-			
-					StringBuffer query = new StringBuffer();
+			try {			
+				StringBuffer query = new StringBuffer();
 					
 					// PUT IN PROPERTIES FILE
-					query.append("CREATE TABLE IF NOT EXISTS ");
-					query.append(EFGImportConstants.EFGProperties.getProperty("ALL_EFG_GLOSSARY_TABLES"));
-					query.append("( DS_DATA VARCHAR(255) not null,"
+				query.append("CREATE TABLE IF NOT EXISTS ");
+				query.append(EFGImportConstants.EFGProperties.getProperty("ALL_EFG_GLOSSARY_TABLES"));
+				query.append("( DS_DATA VARCHAR(255) not null,"
 							+ "ORIGINAL_FILE_NAME TEXT, "
 							+ "DS_METADATA VARCHAR(255) not null, "
 							+ "DISPLAY_NAME VARCHAR(255) unique not null, "
@@ -150,7 +151,12 @@ public class LoadSampleData {
 			this.jdbcTemplate = EFGRDBImportUtils
 					.getJDBCTemplate(this.dbObject);
 		}
+		//find out if file already exists and bail out if it does
+		
+		
+		
 		if(this.loadFile()){
+			this.readNewDisplayName();
 			this.createGlossaryTable();
 			this.list = EFGDatasourceObjectListFactory
 				.getEFGObjectList(this.dbObject);
@@ -164,7 +170,7 @@ public class LoadSampleData {
 				behaviorType
 				);
 		
-			this.readNewDisplayName();
+			
 			this.readFields();
 			
 		}
@@ -195,6 +201,7 @@ public class LoadSampleData {
 	}
 
 	public boolean loadData() {
+		
 		if(this.list == null){
 			this.isError = true;
 			return false;
