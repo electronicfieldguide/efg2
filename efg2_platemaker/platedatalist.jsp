@@ -51,5 +51,5 @@ while(iter.hasNext()) {
 <!--
 <input type="submit" name="submit" value="Delete" onclick="JavaScript:deleteTemplate('guidx');"/>
 -->
-<input type="submit" name="submit" value="Go" onclick="JavaScript:platedatalistResponse('platequerydata','guidx');"/>
+<input type="submit" name="submit" id="platedatalistsubmitID" value="Go" onclick="JavaScript:platedatalistResponse('platequerydata','guidx');"/>
 </div>

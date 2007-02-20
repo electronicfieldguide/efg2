@@ -1282,7 +1282,7 @@ java.io.File
 	<input type="hidden"   name="<%=EFGImportConstants.JSP_NAME%>"  value="platedesignform.jsp"/>	
 	<input type="hidden" name="<%=EFGImportConstants.ALL_TABLE_NAME%>" value="<%=whichDatabase%>"/>	
 	</table>
-	<input type="submit"  name="submit" value="Click to submit" align="middle"/>
+	<input type="submit"  name="submit" id="platedesignformsubmitID" value="Click to submit" align="middle"/>
 
 </form>
 

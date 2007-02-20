@@ -1,4 +1,5 @@
 @ECHO OFF
+
 cd .\resource
 
 call login.bat

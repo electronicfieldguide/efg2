@@ -74,6 +74,20 @@ var POP_UP_MESSAGE = "Please wait while your request is processed..";
 */
 
 
+function disableAllSubmitButtons(){
+ 	var e=document.getElementsByName("submit");
+
+	for(var i=0;i<e.length;i++){
+		e[i].disabled = true;
+	}
+}
+function enableAllSubmitButtons(){
+  	var e=document.getElementsByName("submit");
+
+	for(var i=0;i<e.length;i++){
+		e[i].disabled = false;
+	}
+}
 /**
 * use this for pop up messages
 */
@@ -264,12 +278,14 @@ var myGlobalHandlers = {
 	onCreate: function(){
 	//search for all buttons and disable them
 	 	//$(SUBMIT_BUTTON_ID).disabled = true;
+	 	disableAllSubmitButtons();
 		showProgressMessage(message_id);
 	},
 
 	onComplete: function() {
 		if(Ajax.activeRequestCount == 0){
 			popHideHyper();	
+			enableAllSubmitButtons();
 			//search for all buttons and enable them
 			//$(SUBMIT_BUTTON_ID).disabled = false;
 		}

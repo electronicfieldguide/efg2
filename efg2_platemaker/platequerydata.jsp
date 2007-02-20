@@ -36,8 +36,7 @@ project.efg.util.StatisticalMeasureTypeSorter
 	   if(datasourceName == null){
 		datasourceName=doSearches.getDatasourceName();		
 	   }
-  }
-   
+  } 
 %>	
 <form id="form_search_id">
 	<table class="searchpage">
@@ -153,7 +152,7 @@ project.efg.util.StatisticalMeasureTypeSorter
 	
  	</form>
  	<%  if(doSearches != null){	%>
-	<input type="submit" name="submit" value="Go"  onclick="javascript:postSearch('searchPageID','platedesignform','form_search_id')";/>
+	<input type="submit" name="submit" id="platequerydatasubmitID" value="Go"  onclick="javascript:postSearch('searchPageID','platedesignform','form_search_id')";/>
  	<%}
  	else{%>
  	<table id="searchPageID"><tr><td>The selected datasource has no searchable characters</td></tr><table>

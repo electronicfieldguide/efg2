@@ -8,7 +8,7 @@
 		<script src="../js/prototype.js" language="JavaScript" type="text/javascript"></script>
 		<script src="../js/popUps.js" language="JavaScript" type="text/javascript"></script>
 		
-		<script language="JavaScript">
+		<script language="JavaScript" type="text/javascript">
 		<!--
 		var POP_UP_MESSAGE = 'The response to your requests may take a long time.Please be patient..';
 		var SUBMIT_BUTTON_ID="efg_submit_id_11";
@@ -206,6 +206,8 @@
 	<body>
 		<h3>Select resources to export</h3>
 		<hr/>	
+		<div id="popUpMessageParent"><div id="popUpMessage" class="popUp"> Loading.. </div></div>
+		
 		<div id="datasources">
 		</div>
 		<div id="glossaries">
@@ -220,7 +222,6 @@
 			<div id="exportData"></div>
 			<br/>
 			<p id="errorMessages" class="errorMessage"></p>
-			<div id="popUpMessageParent"><div id="popUpMessage" class="popUp"> Loading.. </div></div>
 			
 			<input name="submit" id="efg_submit_id_11" type="button" value="Get Data" onclick="javascript:submitForm('exportData');"/>
 	

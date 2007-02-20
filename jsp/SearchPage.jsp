@@ -254,9 +254,10 @@ function evalAnySelectedValue(field)
           	<%
 		}
 		%>
-        </table>
-        <p>
-        					<select name="<%=EFGImportConstants.SEARCH_TYPE_STR%>" size="1" 
+			    <tr>
+		<td align="right"><b> Display search results as : </b></td>
+		<td>
+       					<select name="<%=EFGImportConstants.SEARCH_TYPE_STR%>" size="1" 
 						id="lastSelect" onchange="toggleDisplayFormat(this,'firstSelect');" 
 						onkeyup="toggleDisplayFormat(this,'firstSelect');">
 						<option value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>">Thumbnails</option>
@@ -268,7 +269,10 @@ function evalAnySelectedValue(field)
 						onkeyup="toggleMax(this,'firstMatch');"/>
           <input type="submit" value="Search"/>
           <input type="reset" value="Clear all"/>          
-        </p>
+            </td>
+	    </tr>
+		
+        </table>
       </form>
     </center>
   </body>
