@@ -394,6 +394,12 @@ public class EFG2PDFCellCalculations {
 		}
 		this.fixedCellHeight = 
 			(totalheight2/numberOfRows);
+	   if(this.pdfMaker.getWEIGHT_BOUNDING_BOX() > 0 ||
+        		this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE() > 0){	
+		   this.fixedCellHeight  = this.fixedCellHeight  - 2*this.pdfMaker.getWEIGHT_BOUNDING_BOX() - 
+			2*this.pdfMaker.getWEIGHT_FRAME_AROUND_IMAGE();
+        }
+
 		return totalheight2;
 		
 	}
