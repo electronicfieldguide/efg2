@@ -18,36 +18,10 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
- *$Name$
+File installImageMagick.nsh
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
+;Call DetectMAGICK
 
-!include "headers\GetJRE.nsh"
-
-!define EFG2_ABOUT_EXECUTABLE "AboutBox.exe"
-
-!define CLASS "project/efg/drivers/AboutDriver"
-
-
-Name "AboutBox"
-Caption "About Box Java Launcher"
-OutFile "AboutBox.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
-
-Section ""
-  Call GetJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS}'
-  SetOutPath $EXEDIR
-  Exec $0
-
-SectionEnd
-
-
-
+!define INSTALL_HOME "http://efg.cs.umb.edu/EFGsoftware/"

@@ -464,10 +464,33 @@ public class LoginDialog extends JDialog {
 								JOptionPane.WARNING_MESSAGE);
 				System.exit(1);
 			}
-			catalina_home = args[0];
+			try {
+				catalina_home = args[0];
+			}
+			catch(Exception eex) {
+				
+			}
 			
 			String serverRoot = EFGImportConstants.EFGProperties.getProperty(
 							"efg.serverlocations.current");
+
+			
+			
+			
+			if((serverRoot != null && 
+					!serverRoot.trim().equals(""))){
+				serverRoot = parseServerRoot(serverRoot);
+				EFGImportConstants.EFGProperties.setProperty(
+				"efg.serverlocations.current",serverRoot);
+			}
+		
+			if((catalina_home == null || 
+					catalina_home.trim().equals(""))){
+				if((serverRoot != null && 
+						!serverRoot.trim().equals(""))){
+					catalina_home = serverRoot;
+				}
+			}
 			File file = new File(catalina_home);
 			boolean isCatExists = true;
 			boolean isDefault = false;
@@ -497,7 +520,7 @@ public class LoginDialog extends JDialog {
 					serverRoot.trim().equals("")) && 
 					(!isCatExists)) {
 				
-				//bail out
+				throw new Exception("Application could not find the Tomcat server.");
 			}
 			else if((serverRoot == null ||
 					serverRoot.trim().equals("")) && 
@@ -565,7 +588,32 @@ public class LoginDialog extends JDialog {
 		} catch (Exception ee) {
 			releaseLock(lock);
 			log.error(ee.getMessage());
+			JOptionPane
+			.showMessageDialog(
+					null,
+					ee.getMessage(),
+					"Error Message",
+					JOptionPane.ERROR_MESSAGE);
 		} 
+	}
+	/**
+	 * @param serverRoot
+	 * @return
+	 */
+	private static String parseServerRoot(String serverRoot) {
+		if(serverRoot != null) {
+			serverRoot = serverRoot.trim();
+			int index = serverRoot.lastIndexOf(RegularExpresionConstants.FORWARD_SLASH);
+			if(index > -1) {
+				if(index >= (serverRoot.length()-1)) {
+					serverRoot = serverRoot.substring(0,index);
+					serverRoot = serverRoot.trim();
+					serverRoot = serverRoot + RegularExpresionConstants.FORWARD_SLASH;
+				}
+			}
+		}
+		
+		return serverRoot;
 	}
 	private boolean alreadyLoaded(DBObject dbObject) {
 		JdbcTemplate jdbcTemplate =  EFGRDBImportUtils.getJDBCTemplate(dbObject);

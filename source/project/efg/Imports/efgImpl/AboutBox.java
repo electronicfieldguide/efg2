@@ -107,7 +107,7 @@ public class AboutBox extends JDialog implements EFGToolsUtils {
 		getContentPane().add(p, BorderLayout.CENTER);
 		p = new JPanel();
 
-		final JButton btOK = new JButton(project.efg.util.EFGImportConstants.EFGProperties.getProperty("AboutBox.okbtn"));
+		final JButton btOK = new JButton("OK");
 		ActionListener lst = new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

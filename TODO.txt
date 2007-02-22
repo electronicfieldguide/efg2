@@ -1,13 +1,4 @@
-3. Remove top level SampleData directory
-4. Remove imports directory
-
-
-	
-
-  
-  
-
-
+Problems starting Tomcat
 
 1. Fix Save and delete - enhancement
 2. Add top table to all efg jsp/html files  - enhancement

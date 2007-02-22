@@ -226,9 +226,6 @@ to make a distribution call makeImport:
 		<mkdir dir="${efg2.dist.home}/resource/EFGLocalRepository/templateConfigFiles/xml"/>
 		<mkdir dir="${efg2.dist.home}/resource/icons"/>
 		<mkdir dir="${efg2.dist.home}/resource/help"/>
-		<!--
-		<mkdir dir="${efg2.dist.home}/sampleData"/>
--->
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>
@@ -246,6 +243,7 @@ to make a distribution call makeImport:
 		</copy>
 		<delete file="${efg2.dist.home}/resource/Tidy.jar" quiet="true"/>
 		<delete file="${efg2.dist.home}/resource/junit.jar" quiet="true"/>
+
 		<delete>
 			<fileset dir="${efg2.dist.home}/resource" includes="*.bat, *.fp5,*.css, *.html"/>
 		</delete>
@@ -254,16 +252,22 @@ to make a distribution call makeImport:
 		</delete>
 		<delete dir="${efg2.dist.home}/resource/HandlingLists_files"/>
 		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource"/>
-		<!--
-		<copy file="${efg2.lib.home}/sampleData/HetaerinaData3may05.mer" todir="${efg2.dist.home}/sampleData"/>
--->
 		<copy file="${efg2.lib.home}/login.bat" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/efg2.xml" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/efg2.war" todir="${efg2.dist.home}/resource"/>
-		<zip zipfile="${efg2.home}/efg2.zip" basedir="${efg2.dist.home}"/>
-		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
-		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
+	</target>
+
+	<target name="makeImportNSIS" depends="makeImport">
+		<delete file="${efg2.dist.home}/resource/login.bat" quiet="true"/>
+		<delete file="${efg2.dist.home}/resource/login.sh" quiet="true"/>
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+	</target>
+	<target name="zipImport" depends="makeImport">
+		<zip zipfile="${efg2.home}/efg2.zip" basedir="${efg2.dist.home}"/>
+		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+		<delete dir="${efg2.home}/efg2" quiet="true"/>
+		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
+		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
 	</target>
 </project>

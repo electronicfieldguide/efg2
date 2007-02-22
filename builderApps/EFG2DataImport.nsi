@@ -18,46 +18,46 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
+ *$Name$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
-*
-* ReadMe Launcher
-*--------------
-*$Id$
-*Written by Jacob K. Asiedu for EFG project
 */
-!addincludedir .
-!include efgHeaders.nsh
+;Java Launcher
+;--------------
+
+!include "headers\GetJRE.nsh"
 
 
+!define CLASS "project/efg/Imports/efgImpl/LoginDialog"
+!define TOMCAT_VERSION "5.0"
 
-Name "TomcatUsers"
-Caption "Launch Tomcat users installation"
-OutFile "Tomcatusers.exe"
+Name "EFG2DataImport"
+Caption "EFG2 Data Import Java Launcher"
+OutFile "EFG2DataImporter.exe"
 
 SilentInstall silent
 AutoCloseWindow true
 ShowInstDetails nevershow
 
-
 Section ""
-  Pop $R0
-  Push $R0
-  ClearErrors
-  ReadRegStr $R0 HKLM "${PRODUCT_UNINST_KEY}" "EFGHOME"
-  StrCmp $R0 "" 0 openReadMe
-  Pop $R0
-  Push $R0
-  ClearErrors
-  ReadRegStr $R0 HKCU "${PRODUCT_UNINST_KEY}" "EFGHOME"
-  StrCmp $R0 "" 0 openReadMe
-  Goto end
- openReadMe: 
-  SetOutPath $EXEDIR
- ExecShell "open" "manual.html"
- Goto end
-end: 
+  ReadRegStr $2 HKLM "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}" "InstallPath"
+  StrLen $9 "$2"
+  IntCmp $9 0 NoService NoService 0
   
+  Call GetJRE
+  Pop $R0
+  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS}'
+  SetOutPath $EXEDIR
+  Exec $0
+  GoTo End  
+ 
+  NoService:
+     MessageBox MB_OK "Tomcat 5 must be installed as a service"
+     Quit
+      
+    
+  End:
+    
 
 SectionEnd
 

@@ -21,33 +21,12 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
-!include "WordFunc.nsh"
 
-;include common defines
-!addincludedir .
-!include "efgHeaders.nsh"
+; Where the current directory is
+!define MUI_ICON icons\EFGKeyConfig32x32.ico
 
+!define CLASSPATH "xercesImpl.jar;xerces.jar;xalan.jar;xml-apis.jar;commons-io-1.2.jar;log4j-1.2.8.jar;oscache-2.3.jar;castor-0.9.5.2.jar;commons-logging.jar;commons-codec-1.3.jar;mysqldriver.jar;rdbImport.jar;spring.jar;rowset.jar;servlet-api.jar;ostermillerutils_1_05_00_for_java_1_4.jar;springConfig;."
 
-!define CLASS "project.efg.Import.LoginDialog"
-
-!define ARGS "args"
-
-
-
-Name "DataImporter"
-Caption "Java Launcher"
-OutFile "Importer.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
-
-
-Section ""
-  Call ExecuteImporter
-SectionEnd
 Function GetJRE
   Push $R0
   Push $R1
@@ -55,7 +34,7 @@ Function GetJRE
   ClearErrors
   ReadRegStr $R1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
   ReadRegStr $R0 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$R1" "JavaHome"
-  IfErrors 0 JreFound
+   IfErrors 0 JreFound
  ;look inside HKCU
   Pop $R0
   Pop $R1
@@ -73,53 +52,13 @@ Function GetJRE
   ifErrors error1 JreExec
 
  JreExec:
- Pop $R1
+  Pop $R1
   Exch $R0
  Goto end
  
  error1:
-   MessageBox MB_OK " The java runtime cannot be found on your computer. Please install version 1.4 and try again"
+   MessageBox MB_OK " The java runtime cannot be found on your computer. Please install version 1.5 and try again"
    Abort    
  end:
 
 FunctionEnd
-/**
-* Get the CATALINA_HOME variable
-*/
-Function GetCatalina
- Pop $R1
- Push $R1
- ReadEnvStr $R1 CATALINA_HOME
- StrCmp $R1 "" 0 end
- Pop $R1
- Push $R1
- ClearErrors
- ReadRegStr $R1 HKLM "${PRODUCT_UNINST_KEY}" "CATALINA_HOME"
- StrCmp $R1 "" 0 end
- Pop $R1
- Push $R1
- ClearErrors
- ReadRegStr $R1 HKCU "${PRODUCT_UNINST_KEY}" "CATALINA_HOME"
-
-end:
-FunctionEnd
-Function ExecuteImporter
-
- Call GetJRE
- Pop $R0
- Call GetCATALINA
- Pop $R1
- StrCmp $R1 "" 0 foundwebapps 
- StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS}'
- Goto execute
- foundwebapps:
-    StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS} "$R1"'
-    Goto execute
-
-execute: 
-  SetOutPath $EXEDIR
-  Exec $0
-
-FunctionEnd
-
-

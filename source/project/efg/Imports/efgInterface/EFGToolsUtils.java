@@ -26,7 +26,11 @@
 */
 package project.efg.Imports.efgInterface;
 
+import java.util.Properties;
+
+
 public interface EFGToolsUtils {
+	Properties properties = project.efg.Imports.rdb.EFGRDBImportUtils.getProperties();
 
 	// The name of the efg logo image
 	String ABOUT_ICON = "/icons/efglogo.jpg";
@@ -35,9 +39,9 @@ public interface EFGToolsUtils {
 
 	// The EFG Contact information
 	String EFG_CONTACT_MESSAGE = "Contact us: www.cs.umb.edu/efg";
-
+	String version = properties.getProperty("efg2.version");
 	// The application specific copyright Message.
-	String COPYRIGHT_MESSAGE = "EFG2 Data Import application Version 1.0 (c) UMASS Boston, 2006";
+	String COPYRIGHT_MESSAGE = "EFG2 Data Import application Version " + version + " (c) UMASS Boston, 2006";
 
 	// The application specific Message
 	String ABOUT_MESSAGE = "About EFG2 Data Import Tool";

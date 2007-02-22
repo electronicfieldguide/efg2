@@ -27,6 +27,21 @@ public class WorkspaceResources {
 	}
 	}
 	private static String[] defaultDimensions;
+	private static String parseServerRoot(String serverRoot) {
+		if(serverRoot != null) {
+			serverRoot = serverRoot.trim();
+			int index = serverRoot.lastIndexOf(RegularExpresionConstants.FORWARD_SLASH);
+			if(index > -1) {
+				if(index >= (serverRoot.length()-1)) {
+					serverRoot = serverRoot.substring(0,index);
+					serverRoot = serverRoot.trim();
+					serverRoot = serverRoot + RegularExpresionConstants.FORWARD_SLASH;
+				}
+			}
+		}
+		
+		return serverRoot;
+	}
 	public static void computeTemplatesHome() {
 		
 		String mutex = "";
@@ -46,9 +61,9 @@ public class WorkspaceResources {
 				
 				return;
 			}
-			
+			applicationHome = parseServerRoot(applicationHome);
 			StringBuffer tmpFile = new StringBuffer();
-			tmpFile.append(applicationHome);
+			tmpFile.append(applicationHome.trim());
 			tmpFile.append(File.separator);
 			tmpFile.append(EFGImportConstants.EFG_WEB_APPS);
 			tmpFile.append(File.separator);
@@ -68,6 +83,7 @@ public class WorkspaceResources {
 			if(!f.exists()) {
 				f.mkdirs();
 			}
+			newFile = parseServerRoot(newFile);
 			EFGImportConstants.EFGProperties.setProperty("efg.templates.home.current",newFile);
 		}
 		
@@ -90,9 +106,9 @@ public class WorkspaceResources {
 				
 				return;
 			}
-			
+			applicationHome = parseServerRoot(applicationHome);
 			StringBuffer tmpFile = new StringBuffer();
-			tmpFile.append(applicationHome);
+			tmpFile.append(applicationHome.trim());
 			tmpFile.append(File.separator);
 			tmpFile.append(EFGImportConstants.EFG_WEB_APPS);
 			tmpFile.append(File.separator);
@@ -103,6 +119,7 @@ public class WorkspaceResources {
 				f.mkdirs();
 			}
 			String imagesHome = EFGImportConstants.EFGProperties.getProperty("efg.images.home");
+			
 			tmpFile.append(File.separator);
 			tmpFile.append(imagesHome);
 	
@@ -112,6 +129,7 @@ public class WorkspaceResources {
 			if(!f.exists()) {
 				f.mkdirs();
 			}
+			newFile = parseServerRoot(newFile);
 			EFGImportConstants.EFGProperties.setProperty("efg.mediaresources.home.current",newFile);
 		}
 		
@@ -187,7 +205,7 @@ public class WorkspaceResources {
 
        		if(property != null && !property.trim().equals("")) {
 	       		buffer.append("efg.serverlocations.lists=");
-	       		buffer.append(property);
+	       		buffer.append(property.trim());
 	       		buffer.append("\n");
        		}
         	/**
@@ -198,7 +216,8 @@ public class WorkspaceResources {
 					"efg.serverlocations.current");
        		if(property != null && !property.trim().equals("")) {
 				buffer.append("efg.serverlocations.current=");
-				buffer.append(property);
+				property = parseServerRoot(property.trim());
+				buffer.append(property.trim());
 				buffer.append("\n");
        		}
 			/*
@@ -210,8 +229,8 @@ public class WorkspaceResources {
 			"efg.mediaresources.home.current");
        		if(property != null && !property.trim().equals("")) {
 				buffer.append("efg.mediaresources.home.current=");
-				buffer.append(EFGImportConstants.EFGProperties.getProperty(
-						"efg.mediaresources.home.current"));
+				property = parseServerRoot(property.trim());
+				buffer.append(property);
 				buffer.append("\n"); 
        		}
 
@@ -225,8 +244,8 @@ public class WorkspaceResources {
 			"efg.templates.home.current");
        		if(property != null && !property.trim().equals("")) {	
 				buffer.append("efg.templates.home.current=");
-				buffer.append(EFGImportConstants.EFGProperties.getProperty(
-						"efg.templates.home.current"));
+				property = parseServerRoot(property.trim());
+				buffer.append(property);
 				buffer.append("\n");
 	       	}
        		
@@ -240,19 +259,19 @@ public class WorkspaceResources {
        		
 			buffer.append("efg.thumbnails.dimensions.lists=");
 			buffer.append(EFGImportConstants.EFGProperties.getProperty(
-			"efg.thumbnails.dimensions.lists"));
+			"efg.thumbnails.dimensions.lists").trim());
 			buffer.append("\n");
 			
 			//true if sample is loaded, false otherwise
 			buffer.append("efg.sampledata.loaded=");
 			buffer.append(EFGImportConstants.EFGProperties.getProperty(
-					"efg.sampledata.loaded"));
+					"efg.sampledata.loaded").trim());
 			buffer.append("\n");
 			
 
 			buffer.append("efg.thumbnails.dimensions.current=");
 			buffer.append(EFGImportConstants.EFGProperties.getProperty(
-					"efg.thumbnails.dimensions.current"));
+					"efg.thumbnails.dimensions.current").trim());
 			buffer.append("\n");
        		
 			
@@ -260,21 +279,21 @@ public class WorkspaceResources {
 					"efg.data.last.file") != null) {
 				buffer.append("efg.data.last.file=");	
 				buffer.append(EFGImportConstants.EFGProperties.getProperty(
-						"efg.data.last.file",null));
+						"efg.data.last.file",null).trim());
 				buffer.append("\n");
 			}
 			if(EFGImportConstants.EFGProperties.getProperty(
 					"efg.previous.zipfile.location") != null) {
 				buffer.append("efg.previous.zipfile.location=");	
 				buffer.append(EFGImportConstants.EFGProperties.getProperty(
-						"efg.previous.zipfile.location",null));
+						"efg.previous.zipfile.location",null).trim());
 				buffer.append("\n");
 			}
 			if(EFGImportConstants.EFGProperties.getProperty(
 					"efg.efg2efg.imports.home") != null) {
 				buffer.append("efg.efg2efg.imports.home=");	
 				buffer.append(EFGImportConstants.EFGProperties.getProperty(
-						"efg.efg2efg.imports.home",null));
+						"efg.efg2efg.imports.home",null).trim());
 				buffer.append("\n");
 			}
 			

@@ -1,4 +1,4 @@
-/**
+**
 *$Name$
 *$Id$
 * Header file for efg2 headers..
