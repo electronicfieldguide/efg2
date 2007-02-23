@@ -3,13 +3,24 @@
 ;$Name$
 ;include local headers
 ;Version information on properties tab
-VIAddVersionKey  "ProductName" "${PRODUCT_NAME}"
+VIProductVersion "${ProductVersion}"
+VIAddVersionKey ProductName "EFG2DataImporter"
+VIAddVersionKey ProductVersion "${VERSION}"
+VIAddVersionKey CompanyName "${COMPANY}"
+VIAddVersionKey CompanyWebsite "${URL}"
+VIAddVersionKey FileVersion "${ProductVersion}"
 VIAddVersionKey  "Comments" "Installer for EFG Data Importer Application"
-VIAddVersionKey  "CompanyName" "Electronic Field Guide Project"
 VIAddVersionKey  "LegalTrademarks" "University of Massachusetts, Boston,MA"
 VIAddVersionKey  "LegalCopyright" "© UMASS Boston"
 VIAddVersionKey  "FileDescription" "Installer Executable"
-VIAddVersionKey  "FileVersion" "${EFG2_CURRENT_VERSION_NUMBER}"
-VIProductVersion "${EFG2_CURRENT_VERSION_NUMBER}"
+
+Function writeProductVersion
+
+   ;on update also update this file
+    FileOpen $9 "$INSTDIR\${EFG2_RESOURCE_HOME}\properties\version.properties" w  ;Opens a Empty File an fills it
+    FileWrite $9 "efg2.version=${ProductVersion} $\r$\n"   
+    FileClose $9   
+
+FunctionEnd
 
   

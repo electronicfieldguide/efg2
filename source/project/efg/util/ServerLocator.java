@@ -187,8 +187,12 @@ public class ServerLocator extends JDialog {
 					 WorkspaceResources.computeTemplatesHome();
 		    	}
 		    }
+		    String fileproperty = 
+				EFGImportConstants.EFGProperties.getProperty(
+						"ServerLocator.button.message",
+						"<html><p>Change Tomcat Home...</p></html>"); 
 		    this.cmbURL = new JComboBox(cmbURLModel);
-		    cmbURL.setToolTipText("Select your Folder");
+		    cmbURL.setToolTipText(fileproperty);
 		    cmbURL.setEditable(true);
 		    cmbURL.setSelectedIndex(0);
 		    
@@ -209,15 +213,12 @@ public class ServerLocator extends JDialog {
 		    
 		    
 		   this.okBtn = new JButton("OK");
-		     
+		  
 		   this.btnSelectFile = 
-		    	new JButton(
-		    		"<html><p>Set Home...</p></html>");
+		    	new JButton(fileproperty);
 		    this.btnSelectFile.addActionListener(
-		    		new FileChooserListener(serverLocator)
-		    		);
-	
-		
+		    		new FileChooserListener(serverLocator,fileproperty)
+		    		);		
 		    okBtn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ae) {
 					close();
@@ -285,11 +286,13 @@ public class ServerLocator extends JDialog {
 		
 		class FileChooserListener implements ActionListener{
 			private String serverLocation;
+			private String message;
 			/**
 			 * 
 			 */
-			public FileChooserListener(String serverLocation) {
+			public FileChooserListener(String serverLocation, String message) {
 				this.serverLocation = serverLocation;
+				this.message = message;
 			}
 			/* (non-Javadoc)
 			 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -300,7 +303,7 @@ public class ServerLocator extends JDialog {
 	            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	            chooser.setMultiSelectionEnabled(false);
 	            chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-	            chooser.setDialogTitle("Choose your Folder...");
+	            chooser.setDialogTitle(this.message);
 	            chooser.setCurrentDirectory(new File(this.serverLocation));
 	            if (
 	                chooser.showOpenDialog(

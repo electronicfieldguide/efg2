@@ -25,7 +25,7 @@ File installImageMagick.nsh
 
 ;Depends on InstallVersions.nsh
 
-!define MAGICK_KEY "SOFTWARE\ImageMagick\6.3.0\${MAGICK_VERSION}"
+!define MAGICK_KEY "SOFTWARE\ImageMagick\Current"
 !define MYSQL_KEY "SOFTWARE\MySQL AB\${MYSQL_VERSION}"
 !define TOMCAT_KEY "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}"
 !define JRE_KEY "SOFTWARE\JavaSoft\Java Runtime Environment"

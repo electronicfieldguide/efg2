@@ -24,7 +24,7 @@ File installImageMagick.nsh
 */
 
 
-!define MAGICK_VERSION "Q:16"
+!define MAGICK_VERSION "6.3.2"
 !define MYSQL_VERSION "MySQL Server 5.0"
 !define TOMCAT_VERSION "5.0"
 !define JRE_VERSION "1.5"

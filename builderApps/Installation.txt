@@ -1,5 +1,10 @@
-Offer options based on what user already has.
-Older version of java may cause problmes ask users to navigate to the java _07 home
+
+
+
+Ask user for all installed components
+Write installed components to a File
+And use file to prompt user for uninstallation
+
 
 Installation requirements
 1. jdk 1.4
@@ -8,10 +13,9 @@ Installation requirements
 4. MySQL find version
 5. Tomcat 5.0.28
 
-Install application
 
-DeployWebapps - restart tomcat for a 
-minute and shut down if not already started
+
+
 
 
 

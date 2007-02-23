@@ -34,7 +34,7 @@ Function addMagickToInstalls
 FunctionEnd
 Function GetMAGICK
       !ifdef FullInstall    
- MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
+        MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
                             installed." 
             StrCpy $2 "$INSTDIR\${magick_exec}"
             ExecWait $2
@@ -57,13 +57,16 @@ FunctionEnd
  
  
 Function DetectMAGICK
-  ReadRegStr $2 HKLM "${MAGICK_KEY}" "BinPath"              
+  ReadRegStr $2 HKLM "${MAGICK_KEY}" "Version"              
   StrLen $0 "$2"
-  IntCmp $0 0 magick magick done
+  IntCmp $0 0 versioncomp versioncomp done
   
+   versioncomp:
+    ${VersionCompare} "${MAGICK_VERSION}" "$2" $1
+    IntCmp $1 1  magick done done  
+ 
   magick:
      Call GetMAGICK          
-  
-  
+ 
   done:
 FunctionEnd
