@@ -21,19 +21,23 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-
+;Depends on Installversion,Install URLs and CommonRegKeys.nsh
 ; Where the current directory is
 !define MUI_ICON icons\EFGKeyConfig32x32.ico
 
 !define CLASSPATH "xercesImpl.jar;xerces.jar;xalan.jar;xml-apis.jar;commons-io-1.2.jar;log4j-1.2.8.jar;oscache-2.3.jar;castor-0.9.5.2.jar;commons-logging.jar;commons-codec-1.3.jar;mysqldriver.jar;rdbImport.jar;spring.jar;rowset.jar;servlet-api.jar;ostermillerutils_1_05_00_for_java_1_4.jar;springConfig;."
+!define ABOUT_CLASS "project/efg/drivers/AboutDriver"
+!define DATA_IMPORTER_CLASS "project/efg/Imports/efgImpl/LoginDialog"
 
-Function GetJRE
+
+
+Function FindJRE
   Push $R0
   Push $R1
 
   ClearErrors
-  ReadRegStr $R1 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
-  ReadRegStr $R0 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\$R1" "JavaHome"
+  ReadRegStr $R1 HKLM "${JRE_KEY}" "CurrentVersion"
+  ReadRegStr $R0 HKLM "${JRE_KEY}\$R1" "JavaHome"
    IfErrors 0 JreFound
  ;look inside HKCU
   Pop $R0
@@ -41,8 +45,8 @@ Function GetJRE
   Push $R0
   Push $R1
   ClearErrors
-  ReadRegStr $R1 HKCU "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
-  ReadRegStr $R0 HKCU "SOFTWARE\JavaSoft\Java Runtime Environment\$R1" "JavaHome"
+  ReadRegStr $R1 HKCU "${JRE_KEY}" "CurrentVersion"
+  ReadRegStr $R0 HKCU "${JRE_KEY}\$R1" "JavaHome"
   IfErrors error1 JreFound
 
  JreFound:
@@ -62,3 +66,8 @@ Function GetJRE
  end:
 
 FunctionEnd
+
+ 
+ 
+
+

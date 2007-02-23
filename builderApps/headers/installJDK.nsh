@@ -21,38 +21,50 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
+!define jdk_exec "j2sdk-1_4_2_08-windows-i586-p.exe"
 
+!define JDK_SOURCE "C:\downloads\j2sdk-1_4_2_08-windows-i586-p.exe"
 
-!define JDK_VERSION "1.4"
-!define JDK_URL "$INSTALL_HOME/java/"
-
+Function addJDKToInstalls
+    !ifdef FullInstall
+        SetOutPath $INSTDIR
+        File ${JDK_SOURCE} 
+    !endif
+FunctionEnd
+;Depends on InstallURLsHeader,CommonRegKey
 Function GetJDK
-         MessageBox MB_OK "$(^Name) uses J2SDK 1.4, it will now \
-                         be downloaded and installed.\
-                         An internet connection is required."
- 
-        StrCpy $2 "$TEMP\Java Development Kit Environment.exe"
-        nsisdl::download /TIMEOUT=30000 ${JDK_URL} $2
-        Pop $R0 ;Get the return value
-                StrCmp $R0 "success" +3
-                MessageBox MB_OK "Download failed: $R0"
-                Quit
-        ExecWait $2
-        Delete $2
+
+       !ifdef FullInstall           
+            MessageBox MB_OK "$(^Name) uses J2SDK 1.4, it will now \
+                            installed."
+     
+            StrCpy $2 "$INSTDIR\${jdk_exec}"
+            ExecWait $2
+            Delete $2
+        !else
+             MessageBox MB_OK "$(^Name) uses J2SDK 1.4, it will now \
+                             be downloaded and installed.\
+                             An internet connection is required."
+     
+            StrCpy $2 "$TEMP\Java Development Kit Environment.exe"
+            nsisdl::download /TIMEOUT=30000 ${JDK_URL} $2
+            Pop $R0 ;Get the return value
+             StrCmp $R0 "success" +3
+            MessageBox MB_OK "Download failed: $R0"
+            Quit
+       !endif  
+        
+       
 FunctionEnd
  
  
 Function DetectJDK
- 
-  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Development Kit\1.4" "JavaHome"
-            
+ ;IntCmp $0 5 is5 lessthan5 morethan5
+  ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"        
   StrLen $0 "$2"
-  IntCmp $0 0 jdk jdk done
+ IntCmp $0 0 jdk jdk done
   
-  jdk:
+   jdk:
     Call GetJDK
-  
-  
-  
   done:
 FunctionEnd

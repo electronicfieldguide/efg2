@@ -18,47 +18,15 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
- *$Name$
+File installImageMagick.nsh
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
-
-!include "headers\GetJRE.nsh"
 
 
-!define CLASS "project/efg/Imports/efgImpl/LoginDialog"
+!define MAGICK_VERSION "Q:16"
+!define MYSQL_VERSION "MySQL Server 5.0"
 !define TOMCAT_VERSION "5.0"
-
-Name "EFG2DataImport"
-Caption "EFG2 Data Import Java Launcher"
-OutFile "EFG2DataImporter.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
-
-Section ""
-  ReadRegStr $2 HKLM "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}" "InstallPath"
-  StrLen $9 "$2"
-  IntCmp $9 0 NoService NoService 0
-  
-  Call GetJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${CLASS}'
-  SetOutPath $EXEDIR
-  Exec $0
-  GoTo End  
- 
-  NoService:
-     MessageBox MB_OK "Tomcat 5 must be installed as a service"
-     Quit
-      
-    
-  End:
-    
-
-SectionEnd
-
+!define JRE_VERSION "1.5"
+!define JDK_VERSION "1.4"
 

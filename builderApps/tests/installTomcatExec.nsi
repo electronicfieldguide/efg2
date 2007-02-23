@@ -18,35 +18,28 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
- *$Name$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
+!addincludedir ..\headers
+!define FullInstall
+!include "InstallVersions.nsh"
+!include "CommonRegKeys.nsh"
+!include "InstallTomcat.nsh"
+Name "InstallTomcat"
+Caption "InstallTomcat"
 
-!include "headers\InstallVersions.nsh"
-!include "headers\CommonRegKeys.nsh"
-!include "headers\JavaClassHeader.nsh"
-
-!define EFG2_ABOUT_EXECUTABLE "AboutBox.exe"
-
-Name "AboutBox"
-Caption "About Box Java Launcher"
-OutFile "AboutBox.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
+!ifdef FullInstall  
+    OutFile "InstallTomcatFull.exe"
+!else
+    !Include "InstallURLsHeader.nsh" 
+    OutFile "InstallTomcat.exe"
+!endif
 
 Section ""
-  Call FindJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${ABOUT_CLASS}'
-  SetOutPath $EXEDIR
-  Exec $0
-
+   !ifdef FullInstall
+        Call addTomcatToInstalls
+   !endif 
+    Call DetectTOMCAT
 SectionEnd
-
-
 

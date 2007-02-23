@@ -21,85 +21,43 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Call DetectTOMCAT
+;Depends on InstallURLsHeader and CommonRegKeys.nsh
 
-!define TOMCAT_VERSION "5.0"
-!define TOMCAT_URL "http://www.mirrorgeek.com/apache.org/tomcat/tomcat-5/v5.0.28/bin/jakarta-tomcat-5.0.28.exe"
+!define tomcat_exec "jakarta-tomcat-5.0.30.exe"
+!define TOMCAT_SOURCE "C:\downloads\jakarta-tomcat-5.0.30.exe"
 
+Function addTomcatToInstalls
+    !ifdef FullInstall
+        SetOutPath $INSTDIR
+        File ${TOMCAT_SOURCE} 
+    !endif
+FunctionEnd
 Function GetTOMCAT
-        MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now \
+clearErrors
+  !ifdef FullInstall  
+    MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now be installed."     
+    StrCpy $2 "$INSTDIR\${tomcat_exec}"  
+    ExecWait $2
+   Delete $2  
+  !else
+    MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now \
                          be downloaded and installed.\
                          An internet connection is required."
-        StrCpy $2 "$TEMP\TomcatExecutable.exe"
-        nsisdl::download /TIMEOUT=30000 ${TOMCAT_URL} $2
-        Pop $R0 ;Get the return value
-                StrCmp $R0 "success" +3
-                MessageBox MB_OK "Download failed: $R0"
-                Quit
-        ExecWait $2
-        Delete $2
-FunctionEnd
-
-
-;
-; Deploy webapps
-;
-Function deploywebapps
-   ReadRegStr $2 HKLM "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}" "InstallPath"
-   StrLen $0 "$2"
-   IntCmp $0 0 NoService NoService 0
-    ClearErrors
-    IfFileExists "$2\bin\tomcat5.exe" 0 NoService
-    ClearErrors
-    ExecWait 'cmd /C net stop "Apache Tomcat"'   
-    IfErrors  tcnotrunning 
-        ;Sleep 500
-        Call CopyWebApps
-        sleep 200
-        ExecWait 'cmd /C net start "Apache Tomcat"'
-        Sleep 500
-        Goto End
-        
-    tcnotrunning:
-        Call CopyWebApps
-        sleep 200
-        ExecWait 'cmd /C net start "Apache Tomcat"'
-        Sleep 500
-        ExecWait 'cmd /C net stop "Apache Tomcat"'
-        Sleep 500
-        Goto End    
-
- NoService:
-        MessageBox MB_OK "Tomcat 5 must be installed as a service"
-        Quit
-
-  End:
-   ClearErrors
-FunctionEnd
-Function CopyWebApps
-      ReadRegStr $3 HKLM "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}" "InstallPath"
+    StrCpy $2 "$TEMP\TomcatExecutable.exe"
+    nsisdl::download /TIMEOUT=30000 ${TOMCAT_URL} $2
+    Pop $R0 ;Get the return value
+    StrCmp $R0 "success" +3
+    MessageBox MB_OK "Download failed: $R0"
+    Quit
+    ExecWait $2
+   Delete $2  
     
-    SetOutPath "$3\conf\Catalina\localhost" 
-    SetOverwrite try
-    File ..\dist\resource\efg2.xml
-      
-    ;copy mysql driver
-    SetOutPath "$3\common\lib" 
-    SetOverwrite try
-    File ..\dist\resource\mysqldriver.jar
+   !endif
     
-    ;Copy war file to webapps
-    SetOutPath "$3\webapps"
-    SetOverwrite try
-    File ..\dist\resource\efg2.war
- 
-  
- FunctionEnd
-
-
+FunctionEnd
 
 Function DetectTOMCAT
-  ReadRegStr $2 HKLM "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}" "InstallPath"
+  ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
              
   StrLen $0 "$2"
   IntCmp $0 0 tomcat tomcat done

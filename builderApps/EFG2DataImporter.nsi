@@ -18,10 +18,42 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
-File installImageMagick.nsh
+ *$Name$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Call DetectMAGICK
+;Java Launcher
+;--------------
+!include "headers\InstallVersions.nsh"
+!include "headers\CommonRegKeys.nsh"
+!include "headers\JavaClassHeader.nsh"
 
-!define INSTALL_HOME "http://efg.cs.umb.edu/EFGsoftware/"
+Name "EFG2DataImport"
+Caption "EFG2 Data Import Java Launcher"
+OutFile "EFG2DataImporter.exe"
+
+SilentInstall silent
+AutoCloseWindow true
+ShowInstDetails nevershow
+
+Section ""
+  ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
+  StrLen $9 "$2"
+  IntCmp $9 0 NoService NoService 0
+  
+  Call FindJRE
+  Pop $R0
+  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" "${DATA_IMPORTER_CLASS}" $2'
+  SetOutPath $EXEDIR
+  Exec $0
+  GoTo End  
+ 
+  NoService:
+     MessageBox MB_OK "Tomcat 5 must be installed as a service"
+     Quit    
+  End:
+    
+
+SectionEnd
+
+

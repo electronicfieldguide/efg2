@@ -22,13 +22,25 @@ File installImageMagick.nsh
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Call DetectMAGICK
+;Depends on InstallURLsHeader and CommonRegKeys.nsh
+!define magick_exec "ImageMagick-6.3.2-8-Q16-windows-dll.exe"
+!define IMAGE_MAGICK_SOURCE "C:\downloads\ImageMagick-6.3.2-8-Q16-windows-dll.exe"
 
-!define MAGICK_VERSION "Q:16"
-!define MAGICK_URL "$INSTALL_HOME/mysql/Setup.exe"
-
+Function addMagickToInstalls
+    !ifdef FullInstall
+        SetOutPath $INSTDIR
+        File ${IMAGE_MAGICK_SOURCE} 
+    !endif
+FunctionEnd
 Function GetMAGICK
-        MessageBox MB_OK "We strongly recommend that you install Image Magick, it will now \
+      !ifdef FullInstall    
+ MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
+                            installed." 
+            StrCpy $2 "$INSTDIR\${magick_exec}"
+            ExecWait $2
+            Delete $2      
+      !else
+         MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
                          be downloaded and installed.\
                          An internet connection is required."
  
@@ -39,13 +51,13 @@ Function GetMAGICK
                 MessageBox MB_OK "Download failed: $R0"
                 Quit
         ExecWait $2
-        Delete $2
+        Delete $2     
+      !endif
 FunctionEnd
  
  
 Function DetectMAGICK
-  ReadRegStr $2 HKLM "SOFTWARE\ImageMagick\6.3.0\${MAGICK_VERSION}" "BinPath"
-               
+  ReadRegStr $2 HKLM "${MAGICK_KEY}" "BinPath"              
   StrLen $0 "$2"
   IntCmp $0 0 magick magick done
   

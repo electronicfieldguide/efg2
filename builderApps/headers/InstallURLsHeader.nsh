@@ -18,35 +18,14 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
- *$Name$
+File installImageMagick.nsh
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
 
-!include "headers\InstallVersions.nsh"
-!include "headers\CommonRegKeys.nsh"
-!include "headers\JavaClassHeader.nsh"
-
-!define EFG2_ABOUT_EXECUTABLE "AboutBox.exe"
-
-Name "AboutBox"
-Caption "About Box Java Launcher"
-OutFile "AboutBox.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
-
-Section ""
-  Call FindJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${ABOUT_CLASS}'
-  SetOutPath $EXEDIR
-  Exec $0
-
-SectionEnd
-
-
+!define MAGICK_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/imagemagick/ImageMagick-6.3.2-8-Q16-windows-dll.exe"
+!define MYSQL_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/mysql/MySQLSetup.exe"
+!define JRE_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/java/jre-1_5_0_08-windows-i586-p.exe"
+!define JDK_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/java/j2sdk-1_4_2_10-windows-i586-p.exe"
+!define TOMCAT_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/tomcat/jakarta-tomcat-5.0.28.exe"
 

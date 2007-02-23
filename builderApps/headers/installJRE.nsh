@@ -21,35 +21,45 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Call DetectJRE
+;Depends on InstallURLsHeader,CommonRegKey
+;
+!define jre_exec "jre-1_5_0_04-windows-i586-p.exe"
+!define JRE_SOURCE "C:\downloads\jre-1_5_0_04-windows-i586-p.exe"
 
-!define JRE_VERSION "1.5"
-!define JRE_URL "http://dlc.sun.com/jdk/jre-1_5_0_01-windows-i586-p.exe"
-
-
-
-
+Function addJREToInstalls
+    !ifdef FullInstall
+        SetOutPath $INSTDIR
+        File ${JRE_SOURCE} 
+    !endif
+FunctionEnd
 Function GetJRE
-        MessageBox MB_OK "$(^Name) uses Java Runtime 1.5, it will now \
-                         be downloaded and installed.\
-                         An internet connection is required."
- 
-        StrCpy $2 "$TEMP\Java Runtime Environment.exe"
-        nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
-        Pop $R0 ;Get the return value
-                StrCmp $R0 "success" +3
-                MessageBox MB_OK "Download failed: $R0"
-                Quit
-        ExecWait $2
-        Delete $2
+       !ifdef FullInstall           
+            MessageBox MB_OK "$(^Name) uses Java Runtime 1.5, it will now be installed."
+            StrCpy $2 "$INSTDIR\${jre_exec}"
+            ExecWait $2
+            Delete $2
+        !else
+            MessageBox MB_OK "$(^Name) uses Java Runtime 1.5, it will now \
+                             be downloaded and installed.\
+                             An internet connection is required."
+     
+            StrCpy $2 "$TEMP\Java Runtime Environment.exe"
+            nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
+            Pop $R0 ;Get the return value
+                    StrCmp $R0 "success" +3
+                    MessageBox MB_OK "Download failed: $R0"
+                    Quit
+            ExecWait $2
+            Delete $2
+        !endif
 FunctionEnd
  
  
 Function DetectJRE
-  ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "CurrentVersion"
+  ReadRegStr $2 HKLM "${JRE_KEY}" "CurrentVersion"
  
   StrLen $0 "$2"
-   IntCmp $0 0 jre jre versioncomp
+  IntCmp $0 0 jre jre versioncomp
     ; "[Version1]"      First version
   ;"[Version2]"       Second version
     ;$var                ; Result:
@@ -66,8 +76,7 @@ Function DetectJRE
     
     jre:
         Call GetJRE
-        Goto done
-   
+        Goto done  
   done:
    
 FunctionEnd

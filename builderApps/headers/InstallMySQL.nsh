@@ -21,12 +21,27 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Call DetectMYSQL
+;Depends on InstallURLsHeader and CommonRegKeys.nsh
 
-!define MYSQL_VERSION "MySQL Server 5.0"
-!define MYSQL_URL "http://dev.mysql.com/get/Downloads/MySQL-5.0/mysql-essential-5.0.27-win32.msi/from/http://www.stathy.com/mysql/"
+!define mysqlexec "Setup.exe"
 
+!define MYSQL_SOURCE "C:\downloads\mysql-5.0.16-win32\Setup.exe"
+
+Function addMySQLToInstalls
+    !ifdef FullInstall
+        SetOutPath $INSTDIR
+        File ${MYSQL_SOURCE} 
+    !endif
+FunctionEnd
 Function GetMYSQL
+    !ifdef FullInstall
+         MessageBox MB_OK "$(^Name) uses MySQL Server 5.0, it will now \
+                         be installed."
+ 
+        StrCpy $2 "$INSTDIR\${mysqlexec}"
+        ExecWait $2
+        Delete $2    
+    !else
          MessageBox MB_OK "$(^Name) uses MySQL Server 5.0, it will now \
                          be downloaded and installed.\
                          An internet connection is required."
@@ -38,12 +53,13 @@ Function GetMYSQL
                 MessageBox MB_OK "Download failed: $R0"
                 Quit
         ExecWait $2
-        Delete $2
+        Delete $2    
+    !endif
 FunctionEnd
  
  
 Function DetectMYSQL
-  ReadRegStr $2 HKLM "SOFTWARE\MySQL AB\${MYSQL_VERSION}" "Version"
+  ReadRegStr $2 HKLM "${MYSQL_KEY}" "Version"
              
    StrLen $0 "$2"
   IntCmp $0 0 mysql mysql done

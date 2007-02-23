@@ -18,35 +18,29 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
- *$Name$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
+!define FullInstall
+!addincludedir ..\headers
 
-!include "headers\InstallVersions.nsh"
-!include "headers\CommonRegKeys.nsh"
-!include "headers\JavaClassHeader.nsh"
+!include "InstallVersions.nsh"
+!include "CommonRegKeys.nsh"
+!include "InstallJDK.nsh"
+Name "InstallJDK"
+Caption "InstallJDK"
 
-!define EFG2_ABOUT_EXECUTABLE "AboutBox.exe"
-
-Name "AboutBox"
-Caption "About Box Java Launcher"
-OutFile "AboutBox.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
+!ifdef FullInstall  
+    OutFile "InstallJDKFull.exe"
+!else
+    !Include "InstallURLsHeader.nsh"
+    OutFile "InstallJDK.exe"
+!endif
 
 Section ""
-  Call FindJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${ABOUT_CLASS}'
-  SetOutPath $EXEDIR
-  Exec $0
-
+   !ifdef FullInstall
+        Call addJDKToInstalls
+   !endif 
+    Call DetectJDK
 SectionEnd
-
-
 

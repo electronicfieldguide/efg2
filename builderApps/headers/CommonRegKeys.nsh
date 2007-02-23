@@ -18,35 +18,15 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
- *$Name$
+File installImageMagick.nsh
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
 
-!include "headers\InstallVersions.nsh"
-!include "headers\CommonRegKeys.nsh"
-!include "headers\JavaClassHeader.nsh"
+;Depends on InstallVersions.nsh
 
-!define EFG2_ABOUT_EXECUTABLE "AboutBox.exe"
-
-Name "AboutBox"
-Caption "About Box Java Launcher"
-OutFile "AboutBox.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
-
-Section ""
-  Call FindJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${ABOUT_CLASS}'
-  SetOutPath $EXEDIR
-  Exec $0
-
-SectionEnd
-
-
-
+!define MAGICK_KEY "SOFTWARE\ImageMagick\6.3.0\${MAGICK_VERSION}"
+!define MYSQL_KEY "SOFTWARE\MySQL AB\${MYSQL_VERSION}"
+!define TOMCAT_KEY "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}"
+!define JRE_KEY "SOFTWARE\JavaSoft\Java Runtime Environment"
+!define JDK_KEY "SOFTWARE\JavaSoft\Java Development Kit\1.4"
