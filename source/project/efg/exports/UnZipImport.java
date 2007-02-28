@@ -146,13 +146,16 @@ public class UnZipImport implements ZipInterface {
 		  FileChannel destinationChannel = null;
 		  
 		 try{
-		
+			
 			 destFile = new File(destFile,srcFile.getName()); 
 			 if(destFile.getName().equals(SQL_DIR) || 
 					 destFile.getParent().equalsIgnoreCase(SQL_DIR)) {
 				
 				 return;
 			 }
+			log.debug("src: " + srcFile.getAbsolutePath());
+			log.debug("dest: " + destFile.getAbsolutePath());
+		 
 			 if(srcFile.isDirectory()){	
 				 destFile.mkdirs();
 				 File[] list = srcFile.listFiles();
@@ -178,6 +181,7 @@ public class UnZipImport implements ZipInterface {
 			 }
 		 }
 		 catch(Exception ee){
+			 ee.printStackTrace();
 			 log.error(ee.getMessage());
 			return;
 			 
@@ -246,9 +250,6 @@ public class UnZipImport implements ZipInterface {
 					ImportData data = new ImportData(this.dbObject);
 					data.importData(in);
 				}
-			}
-			else {
-				log.error("Files zero!!");
 			}
 		}
 		

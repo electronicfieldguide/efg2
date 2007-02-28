@@ -615,7 +615,7 @@ public class ImportMenu extends JFrame {
 				
 	            JFileChooser chooser = new JFileChooser();
 	            chooser.setFileHidingEnabled(false);
-	            //chooser.setFileSelectionMode(JFileChooser.);
+	            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 	            chooser.setFileFilter(new ZipFileFilter());
 	            chooser.setMultiSelectionEnabled(false);
 	            chooser.setDialogType(JFileChooser.OPEN_DIALOG);

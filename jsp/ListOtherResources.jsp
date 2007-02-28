@@ -14,10 +14,19 @@
 			buffer.append(realPath);
 			buffer.append(File.separator);
 			
-			
-			
-             String[] titles ={"Select css files to export","Select javascript files to export","Select images files to export"}; 
-             String[] directories ={"templateCSSDirectory","templateJavascriptDirectory","templateImagesDirectory"}; 
+            String[] titles =new String[3]; 
+	
+			if(isClassExists){
+	            titles[0] ="Select css files to delete";
+	            titles[1] = "Select javascript files to delete";
+	            titles[2]="Select images files to delete"; 
+			}
+			else{
+	          titles[0] ="Select css files to export";
+	          titles[1] = "Select javascript files to export";
+	          titles[2]="Select images files to export"; 
+			}
+              String[] directories ={"templateCSSDirectory","templateJavascriptDirectory","templateImagesDirectory"}; 
 			 
              
              

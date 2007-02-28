@@ -207,7 +207,16 @@ public class MediaResourceDataChecker extends DataChecker {
 							if (!file.exists()) {
 								mSet.add(imageName);
 							}
-							
+							else {
+								try {
+									if(!file.getCanonicalPath().equals(file.getAbsolutePath()) ){
+										mSet.add(imageName);
+									}
+								}
+								catch(Exception ee) {
+									mSet.add(imageName);
+								}
+							}							
 						}
 						
 					}

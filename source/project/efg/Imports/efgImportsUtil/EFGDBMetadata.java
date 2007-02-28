@@ -10,6 +10,8 @@ import java.sql.SQLException;
 import org.springframework.jdbc.support.DatabaseMetaDataCallback;
 import org.springframework.jdbc.support.MetaDataAccessException;
 
+import project.efg.util.EFGImportConstants;
+
 /**
  * @author kasiedu
  *
@@ -103,6 +105,16 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
             }
             String columnName = tableMetaData.getString("COLUMN_NAME");
             String columnType = tableMetaData.getString("TYPE_NAME");
+            boolean isMedium = false;
+            if(columnType.equalsIgnoreCase(EFGImportConstants.MEDIUMTEXT)) {
+            	columnType = "TEXT";
+            	isMedium = true;
+            }
+            else if(columnType.toLowerCase().indexOf("medium") > -1) {
+            	int ind = columnType.toLowerCase().indexOf("medium");
+            	columnType = columnType.substring(ind+6,columnType.length());
+            	isMedium = true;
+            }
             // WARNING: this may give daft answers for some types on some 
             //databases (eg JDBC-ODBC link)
             int columnSize = tableMetaData.getInt("COLUMN_SIZE");
@@ -116,10 +128,13 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
             resultsColumn.append(columnName);
             resultsColumn.append(columnNameQuote);
             resultsColumn.append(" ");
+            
             resultsColumn.append(columnType);
-            resultsColumn.append(" (");
-            resultsColumn.append(columnSize);
-            resultsColumn.append(")");
+            if(!isMedium) {
+            	resultsColumn.append(" (");
+            	resultsColumn.append(columnSize);
+            	resultsColumn.append(")");
+            }
             resultsColumn.append(" ");
             resultsColumn.append(nullString);
         }

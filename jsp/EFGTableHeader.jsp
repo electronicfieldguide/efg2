@@ -2,7 +2,7 @@
 <table class="header">
 	<tr>
 		<td class="minilogo">
-			<a href="index.html"><img src="<%=context%>/efgpagelogomini.jpg" width="410" height="38" border="0" alt="The Electronic Field Guide Project" title="The Electronic Field Guide Project" align="left" /></a>
+			<a href="<%=context%>/index.html"><img src="<%=context%>/efgpagelogomini.jpg" width="410" height="38" border="0" alt="The Electronic Field Guide Project" title="The Electronic Field Guide Project" align="left" /></a>
 		</td>
 		<td>
 			<table class="iconbar">

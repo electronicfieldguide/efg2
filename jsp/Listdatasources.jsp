@@ -24,7 +24,7 @@ project.efg.util.EFGDisplayObject
 			EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
 			boolean isEmpty = false;
 			if(listInter != null){
-				if(listInter.getCount() < 1){
+				if(listInter.getCount() <= 1){
 				isEmpty = true;
 				}
 			}
@@ -38,9 +38,14 @@ project.efg.util.EFGDisplayObject
 		<% 
 		if(!isEmpty){
 			Iterator dsNameIter = listInter.getIterator(); 
+			String sampleDisplayName = 
+				EFGImportConstants.EFGProperties.getProperty("EFG2SampleDisplayName");
 			while (dsNameIter.hasNext()) { 
 				EFGDisplayObject obj = (EFGDisplayObject)dsNameIter.next();
 				String displayName = obj.getDisplayName();
+				if(displayName.equalsIgnoreCase(sampleDisplayName)){
+					continue;// don't display this
+				}
 				String datasourceName = obj.getDatasourceName();
 				String id = "EFG_" + EFGUniqueID.getID();
 				

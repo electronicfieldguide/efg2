@@ -5,9 +5,6 @@
 http://www.springframework.org/schema/beans spring-beans-2.0.xsd">
  	<bean id="thumbsGenerator" class="project.efg.util.ImageMagickGenerator">
    			<description>Configure the Thumbnail Generator here</description>
-   		<constructor-arg>
-			<value>MAGICK_HOME</value>
-		</constructor-arg> 
   	</bean>
   	<bean id="csvProcessor" class="project.efg.Imports.rdb.EFGCSVDataExtractorImpl">
   		<description>Configure the csv file processor here</description>

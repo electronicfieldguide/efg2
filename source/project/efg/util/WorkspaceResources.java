@@ -29,18 +29,28 @@ public class WorkspaceResources {
 	private static String[] defaultDimensions;
 	private static String parseServerRoot(String serverRoot) {
 		if(serverRoot != null) {
-			serverRoot = serverRoot.trim();
-			int index = serverRoot.lastIndexOf(RegularExpresionConstants.FORWARD_SLASH);
-			if(index > -1) {
-				if(index >= (serverRoot.length()-1)) {
-					serverRoot = serverRoot.substring(0,index);
-					serverRoot = serverRoot.trim();
-					serverRoot = serverRoot + RegularExpresionConstants.FORWARD_SLASH;
+			serverRoot = removeLastSpaceFromPath(serverRoot); 
+		}		
+		return serverRoot;
+	}
+	public static String removeLastSpaceFromPath(String path) {
+		String mutex= "";
+		synchronized (mutex) {
+			if(path != null) {
+				path = path.trim();
+				int index = path.lastIndexOf(RegularExpresionConstants.FORWARD_SLASH);
+				if(index > -1) {
+					if(index >= (path.length()-1)) {
+						path = path.substring(0,index);
+						path = path.trim();
+						path = path+ RegularExpresionConstants.FORWARD_SLASH;
+					}
 				}
 			}
+			return path;
+
 		}
-		
-		return serverRoot;
+
 	}
 	public static void computeTemplatesHome() {
 		
@@ -220,6 +230,27 @@ public class WorkspaceResources {
 				buffer.append(property.trim());
 				buffer.append("\n");
        		}
+       		property =
+       			EFGImportConstants.EFGProperties.getProperty("efg.imagemagicklocation.lists");
+       		
+      		if(property != null && !property.trim().equals("")) {
+	       		buffer.append("efg.imagemagicklocation.lists=");
+	       		buffer.append(property.trim());
+	       		buffer.append("\n");
+       		}
+        	/**
+       		 * The image magick location chosen by user
+       		 */
+       		property = EFGImportConstants.EFGProperties.getProperty(
+       				"efg.imagemagicklocation.current");
+       		if(property != null && !property.trim().equals("")) {
+				buffer.append("efg.imagemagicklocation.current=");
+				property = parseServerRoot(property.trim());
+				buffer.append(property.trim());
+				buffer.append("\n");
+       		}
+
+       		
 			/*
 			 * Write the current media resources home
 			 * this depends on the current server root 

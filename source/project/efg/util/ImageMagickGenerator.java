@@ -7,9 +7,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+//import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
+//import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgInterface.ThumbNailGeneratorInterface;
 
@@ -36,20 +38,38 @@ public class ImageMagickGenerator extends ThumbNailGeneratorInterface {
 	private ThumbNailGeneratorInterface defaultGenerator;
 
 	public ImageMagickGenerator(String environmentalVariable) {
+		//read from properties file
+		
 		
 		this.init(environmentalVariable);
+
+	}
+	public ImageMagickGenerator() {
+		this.init(null);
 
 	}
 
 	private void init(String environmentalVariable) {
 		//read from properties files where the image magick home is
 		
-		Properties props = EFGUtils.getEnvVars();
-		if (props != null) {
-			this.magicHome = props.getProperty(environmentalVariable);
+		//read from properties first
+		
+		if(environmentalVariable == null) {	
+			this.magicHome = EFGImportConstants.EFGProperties.getProperty(
+					"efg.imagemagicklocation.current");
+			if(this.magicHome != null) {
+				this.magicHome = WorkspaceResources.removeLastSpaceFromPath(this.magicHome);
+				File f = new File(this.magicHome);
+				this.magicHome = f.getAbsolutePath();
+				log.debug("Magic home is: " + this.magicHome);
+			}
 		}
-	
-	
+		else {
+			Properties props = EFGUtils.getEnvVars();
+			if (props != null) {
+				this.magicHome = props.getProperty(environmentalVariable);
+			}			
+		}	
 		if (this.magicHome == null || this.magicHome.trim().equals("")) {
 			this.defaultGenerator = new ThumbNailGenerator();
 		} else {

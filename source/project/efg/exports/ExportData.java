@@ -194,7 +194,7 @@ import project.efg.util.EFGImportConstants;
 				String queryN) {
 			return queryN.replaceAll(
 					EFGImportConstants.MEDIUMTEXT,
-					EFGImportConstants.MEDIUMTEXT);
+					EFGImportConstants.TEXT);
 		}	
 	}
 

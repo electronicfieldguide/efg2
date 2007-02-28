@@ -190,7 +190,7 @@ public class ServerLocator extends JDialog {
 		    String fileproperty = 
 				EFGImportConstants.EFGProperties.getProperty(
 						"ServerLocator.button.message",
-						"<html><p>Change Tomcat Home...</p></html>"); 
+						"<html><p>Change Location...</p></html>"); 
 		    this.cmbURL = new JComboBox(cmbURLModel);
 		    cmbURL.setToolTipText(fileproperty);
 		    cmbURL.setEditable(true);
