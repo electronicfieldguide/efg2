@@ -30,6 +30,7 @@
 # Defines
 !define VERSION 1.0
 !define REGKEY "SOFTWARE\EFG\$(^Name)\${VERSION}"
+
 !define COMPANY "Electronic Field Guide Project UMASS Boston"
 !define URL http://efg.cs.umb.edu
 !define EFG2_IMPORTER_LOGS_NAME efg2.log
@@ -60,7 +61,10 @@
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 Name "EFG2DataImporter"
 
-
+Function GetMySQLMessage
+      MessageBox MB_OK "If you are in the middle of a MYSQL installation, $\r$\n\ 
+        then make sure to complete it before you install any other application."
+FunctionEnd 
 
 
 

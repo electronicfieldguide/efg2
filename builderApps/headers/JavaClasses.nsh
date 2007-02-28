@@ -18,52 +18,19 @@
  * Boston, MA 02111-1307
  * USA
  *$Id$
- *$Name$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
-!AddIncludeDir headers
-!include "JavaClassHeader.nsh"
-
-Name "EFG2DataImport"
-Caption "EFG2 Data Import Java Launcher"
-OutFile "EFG2DataImporter.exe"
-
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
-
-var CLASSPATH  
-var DATA_IMPORTER_CLASS 
+;Depends on Installversion,Install URLs and CommonRegKeys.nsh
+; Where the current directory is
+;change this definition when software changes
+;probably best to read it off the file system
+!define CLASSPATH "xercesImpl.jar;xerces.jar;xalan.jar;xml-apis.jar;commons-io-1.2.jar;log4j-1.2.8.jar;oscache-2.3.jar;castor-0.9.5.2.jar;commons-logging.jar;commons-codec-1.3.jar;mysqldriver.jar;rdbImport.jar;spring.jar;rowset.jar;servlet-api.jar;ostermillerutils_1_05_00_for_java_1_4.jar;springConfig;."
+!define ABOUT_CLASS "project/efg/drivers/AboutDriver"
+!define DATA_IMPORTER_CLASS "project/efg/Imports/efgImpl/LoginDialog"
 
 
-Section ""
-  ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
-  StrLen $9 "$2"
-  IntCmp $9 0 NoService NoService 0
-  
-   ReadRegStr $R1 HKLM "${REGKEY}\Java" "ClassPath"
-   Pop $R1
-   StrCpy $CLASSPATH $R1
-   ReadRegStr $R2 HKLM "${REGKEY}\Java" "ImporterClass"
-   StrCpy $DATA_IMPORTER_CLASS $R2
-   Pop $R2
-  
-  Call FindJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "$CLASSPATH" "$DATA_IMPORTER_CLASS" $2'
-  SetOutPath $EXEDIR
-  Exec $0
-  GoTo End  
  
-  NoService:
-     MessageBox MB_OK "Tomcat 5 must be installed as a service"
-     Quit    
-  End:
-    
-
-SectionEnd
+ 
 
 

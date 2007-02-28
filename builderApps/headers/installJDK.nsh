@@ -21,37 +21,62 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-!define jdk_exec "j2sdk-1_4_2_08-windows-i586-p.exe"
-
-!define JDK_SOURCE "C:\downloads\j2sdk-1_4_2_08-windows-i586-p.exe"
-
 Function addJDKToInstalls
     !ifdef FullInstall
         SetOutPath $INSTDIR
         File ${JDK_SOURCE} 
     !endif
 FunctionEnd
+Function checkJDKInstalled
+    StrCmp  $isJDKInstalled "true" 0 done
+    ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"        
+    StrLen $0 "$2"
+    IntCmp $0 0 done  done writereg 
+ 
+ ;add to components to uninstall
+     writereg:
+        ReadRegStr $1 HKLM "${JDK_UNINSTALLER_KEY}" "UninstallString"  
+        WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" jdk_uninstaller "$1"
+ 
+ 
+ done:
+    
+FunctionEnd
 ;Depends on InstallURLsHeader,CommonRegKey
 Function GetJDK
-
+      
        !ifdef FullInstall           
             MessageBox MB_OK "$(^Name) uses J2SDK 1.4, it will now \
                             installed."
-     
+            StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1     
+            printMySQLMessage1:
+                Call  GetMYSQLMessage    
+            continue1:    
             StrCpy $2 "$INSTDIR\${jdk_exec}"
             ExecWait $2
             Delete $2
+            StrCpy $isJDKInstalled "true"
+            StrCpy $isMySQLInstall "false"
         !else
              MessageBox MB_OK "$(^Name) uses J2SDK 1.4, it will now \
                              be downloaded and installed.\
                              An internet connection is required."
-     
+             StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2     
+            printMySQLMessage2:
+                Call  GetMYSQLMessage    
+            continue2:       
             StrCpy $2 "$TEMP\Java Development Kit Environment.exe"
             nsisdl::download /TIMEOUT=30000 ${JDK_URL} $2
             Pop $R0 ;Get the return value
-             StrCmp $R0 "success" +3
-            MessageBox MB_OK "Download failed: $R0"
+             StrCmp $R0 "success" execT
+             DetailPrint 'download failed from "${JDK_URL}": $R0'
+             MessageBox MB_OK "Download failed: $R0"
             Quit
+            execT:           
+            ExecWait $2
+            Delete $2  
+            StrCpy $isJDKInstalled "true" 
+            StrCpy $isMySQLInstall "false"         
        !endif  
         
        
@@ -65,6 +90,6 @@ Function DetectJDK
  IntCmp $0 0 jdk jdk done
   
    jdk:
-    Call GetJDK
+       Call GetJDK
   done:
 FunctionEnd

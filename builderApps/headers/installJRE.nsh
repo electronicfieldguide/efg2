@@ -23,8 +23,6 @@
 */
 ;Depends on InstallURLsHeader,CommonRegKey
 ;
-!define jre_exec "jre-1_5_0_04-windows-i586-p.exe"
-!define JRE_SOURCE "C:\downloads\jre-1_5_0_04-windows-i586-p.exe"
 
 Function addJREToInstalls
     !ifdef FullInstall
@@ -32,25 +30,62 @@ Function addJREToInstalls
         File ${JRE_SOURCE} 
     !endif
 FunctionEnd
+
+Function checkJREInstalled
+    StrCmp  $isJREInstalled "true" 0 done
+    ReadRegStr $2 HKLM "${JRE_KEY}" "CurrentVersion"        
+    StrLen $0 "$2"
+    IntCmp $0 0 done  done writereg
+ 
+ ;add to components to uninstall
+     writereg:
+        ReadRegStr $1 HKLM "${JRE_UNINSTALLER_KEY}" "UninstallString"  
+        WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" jre_uninstaller "$1"
+ 
+ 
+ done:
+    
+FunctionEnd
 Function GetJRE
+
+    
        !ifdef FullInstall           
             MessageBox MB_OK "$(^Name) uses Java Runtime 1.5, it will now be installed."
+              StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1
+               
+              printMySQLMessage1:
+                 Call  GetMYSQLMessage      
+              continue1:
+
             StrCpy $2 "$INSTDIR\${jre_exec}"
+            
             ExecWait $2
+          
             Delete $2
+            StrCpy $isJREInstalled "true"
+            StrCpy $isMySQLInstall "false"
         !else
             MessageBox MB_OK "$(^Name) uses Java Runtime 1.5, it will now \
                              be downloaded and installed.\
                              An internet connection is required."
-     
-            StrCpy $2 "$TEMP\Java Runtime Environment.exe"
+              
+              StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2               
+              printMySQLMessage2:
+                 Call  GetMYSQLMessage      
+              continue2:
+           StrCpy $2 "$TEMP\Java Runtime Environment.exe"
             nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
             Pop $R0 ;Get the return value
-                    StrCmp $R0 "success" +3
-                    MessageBox MB_OK "Download failed: $R0"
-                    Quit
-            ExecWait $2
+            StrCmp $R0 "success" execT
+             DetailPrint 'download failed from "${JRE_URL}": $R0'
+             MessageBox MB_OK "Download failed: $R0"
+            Quit
+            execT:
+            
+            ExecWait $2          
             Delete $2
+            StrCpy $isJREInstalled "true"
+            StrCpy $isMySQLInstall "false"
         !endif
 FunctionEnd
  

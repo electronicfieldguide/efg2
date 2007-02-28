@@ -23,9 +23,6 @@
 */
 ;Depends on InstallURLsHeader and CommonRegKeys.nsh
 
-!define mysqlexec "Setup.exe"
-
-!define MYSQL_SOURCE "C:\downloads\mysql-5.0.16-win32\Setup.exe"
 
 Function addMySQLToInstalls
     !ifdef FullInstall
@@ -34,13 +31,17 @@ Function addMySQLToInstalls
     !endif
 FunctionEnd
 Function GetMYSQL
+    StrCpy $isMySQLInstall "true"
     !ifdef FullInstall
          MessageBox MB_OK "$(^Name) uses MySQL Server 5.0, it will now \
                          be installed."
  
         StrCpy $2 "$INSTDIR\${mysqlexec}"
+        ;DetailPrint " Waiting for MySQL Installation"  
+        
         ExecWait $2
-        Delete $2    
+        Delete $2 
+        StrCpy $isMySQLInstalled "true"   
     !else
          MessageBox MB_OK "$(^Name) uses MySQL Server 5.0, it will now \
                          be downloaded and installed.\
@@ -49,14 +50,32 @@ Function GetMYSQL
         StrCpy $2 "$TEMP\MYSQLExecutable.exe"
         nsisdl::download /TIMEOUT=30000 ${MYSQL_URL} $2
         Pop $R0 ;Get the return value
-                StrCmp $R0 "success" +3
-                MessageBox MB_OK "Download failed: $R0"
-                Quit
-        ExecWait $2
-        Delete $2    
+                           
+              StrCmp $R0 "success" execT
+             DetailPrint 'download failed from "${MYSQL_URL}": $R0'
+             MessageBox MB_OK "Download failed: $R0"
+            Quit
+            execT:                   
+                    ExecWait $2                   
+                    Delete $2
+                     StrCpy $isMySQLInstalled "true"
     !endif
 FunctionEnd
+Function checkMySQLInstalled
+    StrCmp  $isMySQLInstalled "true" 0 done
+    ReadRegStr $2 HKLM "${MYSQL_KEY}" "Version"              
+    StrLen $0 "$2"   
+    IntCmp $0 0 done  done writereg
  
+ ;add to components to uninstall
+     writereg:
+        ReadRegStr $1 HKLM "${MYSQL_UNINSTALLER_KEY}" "UninstallString"  
+        WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" mysql_uninstaller "$1"
+ 
+ 
+ done:
+    
+FunctionEnd
  
 Function DetectMYSQL
   ReadRegStr $2 HKLM "${MYSQL_KEY}" "Version"
@@ -64,7 +83,7 @@ Function DetectMYSQL
    StrLen $0 "$2"
   IntCmp $0 0 mysql mysql done
   
-  mysql:
+  mysql: 
     Call GetMYSQL
  
   done:

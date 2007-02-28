@@ -23,12 +23,14 @@
 */
 ;Depends on Installversion,Install URLs and CommonRegKeys.nsh
 ; Where the current directory is
-!define MUI_ICON icons\EFGKeyConfig32x32.ico
-
-!define CLASSPATH "xercesImpl.jar;xerces.jar;xalan.jar;xml-apis.jar;commons-io-1.2.jar;log4j-1.2.8.jar;oscache-2.3.jar;castor-0.9.5.2.jar;commons-logging.jar;commons-codec-1.3.jar;mysqldriver.jar;rdbImport.jar;spring.jar;rowset.jar;servlet-api.jar;ostermillerutils_1_05_00_for_java_1_4.jar;springConfig;."
-!define ABOUT_CLASS "project/efg/drivers/AboutDriver"
-!define DATA_IMPORTER_CLASS "project/efg/Imports/efgImpl/LoginDialog"
-
+;change this definition when software changes
+;probably best to read it off the file system
+!define REGKEY "SOFTWARE\EFG\EFG2DataImporter\1.0"
+!AddIncludeDir headers
+;needs other keys
+!include "InstallVersions.nsh"
+;needs jre_key
+!include "CommonRegKeys.nsh"
 
 
 Function FindJRE

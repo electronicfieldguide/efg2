@@ -24,10 +24,8 @@
 */
 ;Java Launcher
 ;--------------
-
-!include "headers\InstallVersions.nsh"
-!include "headers\CommonRegKeys.nsh"
-!include "headers\JavaClassHeader.nsh"
+!AddIncludeDir headers
+!include "JavaClassHeader.nsh"
 
 !define EFG2_ABOUT_EXECUTABLE "AboutBox.exe"
 
@@ -38,13 +36,22 @@ OutFile "AboutBox.exe"
 SilentInstall silent
 AutoCloseWindow true
 ShowInstDetails nevershow
+var CLASSPATH  
+var ABOUT_CLASS 
 
 Section ""
-  Call FindJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "${CLASSPATH}" ${ABOUT_CLASS}'
-  SetOutPath $EXEDIR
-  Exec $0
+    ReadRegStr $R1 HKLM "${REGKEY}\Java" "ClassPath"
+    Pop $R1
+  
+    StrCpy $CLASSPATH $R1
+    ReadRegStr $R2 HKLM "${REGKEY}\Java" "AboutClass"
+    StrCpy $ABOUT_CLASS $R2
+    Pop $R2
+    Call FindJRE
+    Pop $R0    
+    StrCpy $0 '"$R0" -classpath "$CLASSPATH" $ABOUT_CLASS'
+    SetOutPath $EXEDIR
+    Exec $0
 
 SectionEnd
 

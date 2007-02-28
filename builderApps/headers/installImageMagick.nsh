@@ -23,8 +23,6 @@ File installImageMagick.nsh
 *Written by Jacob K. Asiedu for EFG project
 */
 ;Depends on InstallURLsHeader and CommonRegKeys.nsh
-!define magick_exec "ImageMagick-6.3.2-8-Q16-windows-dll.exe"
-!define IMAGE_MAGICK_SOURCE "C:\downloads\ImageMagick-6.3.2-8-Q16-windows-dll.exe"
 
 Function addMagickToInstalls
     !ifdef FullInstall
@@ -33,28 +31,57 @@ Function addMagickToInstalls
     !endif
 FunctionEnd
 Function GetMAGICK
+
       !ifdef FullInstall    
         MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
                             installed." 
-            StrCpy $2 "$INSTDIR\${magick_exec}"
+            StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1     
+            printMySQLMessage1:
+                Call  GetMYSQLMessage    
+            continue1:                                
+            StrCpy $2 "$INSTDIR\${magick_exec}"            
             ExecWait $2
-            Delete $2      
+            Delete $2 
+            StrCpy $isMagickInstalled "true"     
+            StrCpy $isMySQLInstall "false"
       !else
          MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
                          be downloaded and installed.\
                          An internet connection is required."
- 
+          StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2     
+            printMySQLMessage2:
+                Call  GetMYSQLMessage    
+            continue2:       
+    
         StrCpy $2 "$TEMP\ImageMagickExecutable.exe"
         nsisdl::download /TIMEOUT=30000 ${MAGICK_URL} $2
         Pop $R0 ;Get the return value
-                StrCmp $R0 "success" +3
-                MessageBox MB_OK "Download failed: $R0"
-                Quit
-        ExecWait $2
-        Delete $2     
+         StrCmp $R0 "success" execT
+         DetailPrint 'download failed from "${MAGICK_URL}": $R0'
+         MessageBox MB_OK "Download failed: $R0"
+           Quit
+        execT:
+            ExecWait $2            
+            Delete $2
+            StrCpy $isMagickInstalled "true"
+            StrCpy $isMySQLInstall "false"
       !endif
 FunctionEnd
+Function checkMagickInstalled
+    StrCmp  $isMagickInstalled "true" 0 done
+    ReadRegStr $2 HKLM "${MAGICK_KEY}" "Version"              
+    StrLen $0 "$2"   
+    IntCmp $0 0 done done writereg
  
+ ;add to components to uninstall
+     writereg:
+        ReadRegStr $1 HKLM "${MAGICK_UNINSTALLER_KEY}" "UninstallString"  
+        WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" magick_uninstaller "$1"
+ 
+ 
+ done:
+    
+FunctionEnd 
  
 Function DetectMAGICK
   ReadRegStr $2 HKLM "${MAGICK_KEY}" "Version"              

@@ -1,6 +1,9 @@
 #$Id$
 1. Configure Thumbnail configurator using Spring config file lib/springconfig/springconfig.xml
-2. Set MAGICK_HOME classpath variable to point to your Image magic home.
-3. Default is to use efg thumbnail generator which does not generate sharp images.
-4. Extend ThumbNailGeneratorInterface with your own custom thumbnail generator
+2. Extend ThumbNailGeneratorInterface with your own custom thumbnail generator
 and configure appropriately with Spring.(see springconfig.xml)
+3. To make an installer, first run buid_dist.xml with the makeImportNSIS
+4. Then go to the builderApps directory, run About.nsi, 
+then EFGDataImporter.nsi and then finally EFGDataImporterInstaller.nsi to 
+make rthe executable.
+Make sure that you have NSIS on your machine or the EclipseNSIS plugin.

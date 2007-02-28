@@ -168,9 +168,12 @@ to make a distribution call makeImport:
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.website.home}" includes="*.html, *.css, *.gif, *.jpg, *.js, *.png,*.jsp"/>
 		</copy>
+		<!--
 		<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
 			<fileset dir="${deploy.home}"/>
 		</war>
+		-->
+	
 	</target>
 	<!-- Compile main sources-->
 	<target name="compileMain" depends="prepare">
@@ -226,6 +229,7 @@ to make a distribution call makeImport:
 		<mkdir dir="${efg2.dist.home}/resource/EFGLocalRepository/templateConfigFiles/xml"/>
 		<mkdir dir="${efg2.dist.home}/resource/icons"/>
 		<mkdir dir="${efg2.dist.home}/resource/help"/>
+		<mkdir dir="${efg2.dist.home}/resource/efg2"/>
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>
@@ -254,13 +258,21 @@ to make a distribution call makeImport:
 		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.lib.home}/login.bat" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/efg2.xml" todir="${efg2.dist.home}/resource"/>
+		<!--
 		<copy file="${efg2.home}/efg2.war" todir="${efg2.dist.home}/resource"/>
+		-->	
+		<copy todir="${efg2.dist.home}/resource/efg2">
+			<fileset dir="${deploy.home}"/>
+		</copy>
+
 	</target>
 
 	<target name="makeImportNSIS" depends="makeImport">
 		<delete file="${efg2.dist.home}/resource/login.bat" quiet="true"/>
 		<delete file="${efg2.dist.home}/resource/login.sh" quiet="true"/>
+		
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
+	
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
 	</target>
 	<target name="zipImport" depends="makeImport">

@@ -23,8 +23,15 @@
 */
 ;Depends on InstallURLsHeader and CommonRegKeys.nsh
 
-!define tomcat_exec "jakarta-tomcat-5.0.30.exe"
-!define TOMCAT_SOURCE "C:\downloads\jakarta-tomcat-5.0.30.exe"
+Var current14home
+
+Var currentJREVersion
+Var currentJavaHome
+Var currentRuntime
+
+;Var current14JREVersion
+Var current14JavaHome
+Var current14Runtime
 
 Function addTomcatToInstalls
     !ifdef FullInstall
@@ -33,16 +40,33 @@ Function addTomcatToInstalls
     !endif
 FunctionEnd
 Function GetTOMCAT
-clearErrors
+  clearErrors
+  
+  
+  
   !ifdef FullInstall  
-    MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now be installed."     
+    MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now be installed." 
+      StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1   
+  printMySQLMessage1:
+     Call  GetMYSQLMessage   
+  continue1:      
+    Call SetJDKForTomcat   
     StrCpy $2 "$INSTDIR\${tomcat_exec}"  
     ExecWait $2
-   Delete $2  
+    Delete $2  
+    Call ResetJDKForTomcat
+     StrCpy $isMySQLInstall "false"
+     StrCpy $isTomcatInstalled "true"
   !else
     MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now \
                          be downloaded and installed.\
                          An internet connection is required."
+   StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2   
+  printMySQLMessage2:
+     Call  GetMYSQLMessage   
+  continue2:      
+                         
+     Call SetJDKForTomcat
     StrCpy $2 "$TEMP\TomcatExecutable.exe"
     nsisdl::download /TIMEOUT=30000 ${TOMCAT_URL} $2
     Pop $R0 ;Get the return value
@@ -50,12 +74,85 @@ clearErrors
     MessageBox MB_OK "Download failed: $R0"
     Quit
     ExecWait $2
-   Delete $2  
-    
+  
+    Delete $2  
+   Call ResetJDKForTomcat
+     StrCpy $isMySQLInstall "false"
+      StrCpy $isTomcatInstalled "true"
    !endif
     
 FunctionEnd
+    ; Set the JDK compatible for the EFG Tonmcat version
+Function SetJDKForTomcat
 
+    ClearErrors 
+   
+     ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"
+     StrCpy $current14home "$2" 
+     
+    ReadRegStr $2 HKLM "${JRE_KEY}" "CurrentVersion"
+    StrCpy $currentJREVersion "$2"  
+    ;replace it with the efg jdk version
+    WriteRegStr HKLM "${JRE_KEY}" CurrentVersion "${JDK_VERSION}"
+    
+    ;read the java home of the jer
+    ReadRegStr $2 HKLM "${JRE_KEY}\$currentJREVersion" "JavaHome"
+    StrCpy $currentJavaHome "$2" 
+    
+     ReadRegStr $2 HKLM "${JRE_KEY}\${JDK_VERSION}" "JavaHome"
+     StrCpy $current14JavaHome "$2" 
+    ;write efg2 java path
+    WriteRegStr HKLM "${JRE_KEY}" JavaHome "$current14home"
+    WriteRegStr HKLM "${JRE_KEY}\${JDK_VERSION}" JavaHome "$current14Home"
+    
+    ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment" "RuntimeLib"
+    StrCpy $currentRuntime "$2" 
+    ReadRegStr $2 HKLM "SOFTWARE\JavaSoft\Java Runtime Environment\${JDK_VERSION}" "RuntimeLib"
+     StrCpy $current14Runtime "$2" 
+     
+       StrCpy $2 "$current14home\bin\hotspot\jvm.dll"
+      IfFileExists "$2" FoundJvmDll
+     StrCpy $2 "$current14home\bin\server\jvm.dll"
+     IfFileExists "$2" FoundJvmDll
+      StrCpy $2 "$current14home\bin\client\jvm.dll"  
+      IfFileExists "$2" FoundJvmDll
+     StrCpy $2 "$current14home\bin\classic\jvm.dll"
+     
+    IfFileExists "$2" FoundJvmDll
+   FoundJvmDll:
+    WriteRegStr HKLM "${JRE_KEY}" RuntimeLib "$2"
+   WriteRegStr HKLM "${JRE_KEY}\${JDK_VERSION}" RuntimeLib "$2"
+   
+    
+FunctionEnd
+; Reset the Tomcat installer to point to the original one
+Function ResetJDKForTomcat
+    ClearErrors
+    Strlen $0 "$currentJREVersion"
+    IntCmp $0 0  done done writeReg
+    pop $0
+ 
+    writeReg:
+    WriteRegStr HKLM "${JRE_KEY}" CurrentVersion "$currentJREVersion" 
+    WriteRegStr HKLM "${JRE_KEY}" RuntimeLib "$currentRuntime"
+    WriteRegStr HKLM "${JRE_KEY}\${JDK_VERSION}" RuntimeLib "$current14Runtime"
+    WriteRegStr HKLM "${JRE_KEY}" JavaHome "$currentJavaHome"
+    WriteRegStr HKLM "${JRE_KEY}\${JDK_VERSION}" JavaHome "$current14JavaHome"
+    done:
+FunctionEnd
+Function checkTomcatInstalled
+    StrCmp  $isTomcatInstalled "true" 0 done
+   ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"             
+    StrLen $0 "$2"   
+    IntCmp $0 0 done  done writereg
+ 
+ ;add to components to uninstall
+     writereg:
+        ReadRegStr $1 HKLM "${TOMCAT_UNINSTALLER_KEY}" "UninstallString"  
+        WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" tomcat_uninstaller "$1"
+ done:
+    
+FunctionEnd
 Function DetectTOMCAT
   ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
              

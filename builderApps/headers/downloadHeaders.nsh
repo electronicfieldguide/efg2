@@ -22,48 +22,51 @@
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
-;Java Launcher
-;--------------
-!AddIncludeDir headers
-!include "JavaClassHeader.nsh"
+/**
+*$Name$
+*$Id$
+* Header file for efg2 
+*/
+# Defines
+!define mysqlexec "MySQLSetup.exe"
+!define MYSQL_SOURCE "C:\downloads\efg2_downloads\MySQLSetup.exe"
 
-Name "EFG2DataImport"
-Caption "EFG2 Data Import Java Launcher"
-OutFile "EFG2DataImporter.exe"
+!define jdk_exec "j2sdk-1_4_2_10-windows-i586-p.exe"
+!define JDK_SOURCE "C:\downloads\efg2_downloads\j2sdk-1_4_2_10-windows-i586-p.exe"
 
-SilentInstall silent
-AutoCloseWindow true
-ShowInstDetails nevershow
-
-var CLASSPATH  
-var DATA_IMPORTER_CLASS 
+!define magick_exec "ImageMagick-6.3.2-8-Q16-windows-dll.exe"
+!define IMAGE_MAGICK_SOURCE "C:\downloads\efg2_downloads\ImageMagick-6.3.2-8-Q16-windows-dll.exe"
 
 
-Section ""
-  ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
-  StrLen $9 "$2"
-  IntCmp $9 0 NoService NoService 0
+!define jre_exec "jre-1_5_0_08-windows-i586-p.exe"
+!define JRE_SOURCE "C:\downloads\efg2_downloads\jre-1_5_0_08-windows-i586-p.exe"
+
+
+!define tomcat_exec "jakarta-tomcat-5.0.28.exe"
+!define TOMCAT_SOURCE "C:\downloads\efg2_downloads\jakarta-tomcat-5.0.28.exe"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
-   ReadRegStr $R1 HKLM "${REGKEY}\Java" "ClassPath"
-   Pop $R1
-   StrCpy $CLASSPATH $R1
-   ReadRegStr $R2 HKLM "${REGKEY}\Java" "ImporterClass"
-   StrCpy $DATA_IMPORTER_CLASS $R2
-   Pop $R2
-  
-  Call FindJRE
-  Pop $R0
-  StrCpy $0 '"$R0" -classpath "$CLASSPATH" "$DATA_IMPORTER_CLASS" $2'
-  SetOutPath $EXEDIR
-  Exec $0
-  GoTo End  
- 
-  NoService:
-     MessageBox MB_OK "Tomcat 5 must be installed as a service"
-     Quit    
-  End:
-    
-
-SectionEnd
-
-
