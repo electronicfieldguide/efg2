@@ -198,8 +198,17 @@ public class SynopticKeyTreeMain extends JDialog {
 		
 		JMenu checkMenu = new JMenu("Check Data For Errors");
 		//sub menus
-		JMenuItem checkMediaMenu = new JMenuItem("Check Images");
-		checkMediaMenu.setToolTipText("Check if images in data exists on server");
+		String propItem = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"SynopticKeyTreeMain.checkimagesmenuitem","Check Images"
+					);
+		JMenuItem checkMediaMenu = new JMenuItem(propItem);
+		propItem = 
+			EFGImportConstants.EFGProperties.getProperty(
+					"SynopticKeyTreeMain.checkimagesmenuitem.tooltip",
+					"verify image files"
+					);
+		checkMediaMenu.setToolTipText(propItem);
 		checkMediaMenu.addActionListener(
 				new CheckListener(
 				this.dbObject,

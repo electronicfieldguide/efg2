@@ -38,13 +38,17 @@ public interface EFGToolsUtils {
 	String HELP_DIR = "help";
 
 	// The EFG Contact information
-	String EFG_CONTACT_MESSAGE = "Contact us: www.cs.umb.edu/efg";
+	String EFG_CONTACT_MESSAGE = "Contact us: " +  properties.getProperty("efg2.url","http://efg.cs.umb.edu");
 	String version = properties.getProperty("efg2.version");
 	// The application specific copyright Message.
-	String COPYRIGHT_MESSAGE = "EFG2 Data Import application Version " + version + " (c) UMASS Boston, 2006";
+	String COPYRIGHT_MESSAGE = 
+		"EFG2 Data Import application Version " +
+		version +  properties.getProperty("efg2.copyright",
+				" (c) UMASS Boston, 2007");
 
 	// The application specific Message
-	String ABOUT_MESSAGE = "About EFG2 Data Import Tool";
+	String ABOUT_MESSAGE =properties.getProperty("efg2.about.message",
+			"About EFG2 Data Import Tool");
 
 	// Java specific information
 	String JAVA_MESSAGE = "JVM version " + System.getProperty("java.version")
