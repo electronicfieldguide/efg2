@@ -8,7 +8,16 @@ project.efg.util.EFGDisplayObject
 <html>	
 	<head>
 	 	<%@ include file="Header.jsp"%>	
-	 	<%				
+	 	<%		
+	 	
+		String searchPageStr = "";//context + "/SearchPage.jsp?pageType=option" + mainTableConstantStr + "&displayFormat=HTML&displayName=";
+		String searchLists = "";//context + "/search?maxDisplay=100&displayFormat=HTML" + mainTableConstantStr + "&searchType=lists&displayName=";
+		String searchPlates ="";//context + "/search?maxDisplay=100&displayFormat=HTML"+ mainTableConstantStr + "&searchType=plates&displayName=";
+		String dsName = "";//"&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
+	
+		EFGDisplayObjectList listInter = null;
+		boolean isEmpty = false;
+
 	 	String beginString = "/efg2/templateJSP/ConfigurePageBegin.jsp?" +  mainTableConstant.toString(); 
 	 	String advancedString = "/efg2/templateJSP/ConfigurePage.jsp?" +  mainTableConstant.toString(); 
 	
@@ -16,15 +25,16 @@ project.efg.util.EFGDisplayObject
 	 	String mainTableConstantStr ="&" + mainTableConstant.toString();
 		boolean found = false;
 		ServletAbstractFactoryInterface servFactory = ServletAbstractFactoryCreator.getInstance();
-		servFactory.setMainDataTableName(mainTableName);	
+		if(servFactory != null){
+			servFactory.setMainDataTableName(mainTableName);	
+			
+			searchPageStr = context + "/SearchPage.jsp?pageType=option" + mainTableConstantStr + "&displayFormat=HTML&displayName=";
+			searchLists = context + "/search?maxDisplay=100&displayFormat=HTML" + mainTableConstantStr + "&searchType=lists&displayName=";
+			searchPlates =context + "/search?maxDisplay=100&displayFormat=HTML"+ mainTableConstantStr + "&searchType=plates&displayName=";
+			dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
 		
-		String searchPageStr = context + "/SearchPage.jsp?pageType=option" + mainTableConstantStr + "&displayFormat=HTML&displayName=";
-		String searchLists = context + "/search?maxDisplay=100&displayFormat=HTML" + mainTableConstantStr + "&searchType=lists&displayName=";
-		String searchPlates =context + "/search?maxDisplay=100&displayFormat=HTML"+ mainTableConstantStr + "&searchType=plates&displayName=";
-		String dsName ="&"+ EFGImportConstants.DATASOURCE_NAME + "=";	  
-	
-		EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
-		boolean isEmpty = false;
+			listInter = servFactory.getListOfDatasources();
+		}
 		if(listInter != null){
 			if(listInter.getCount() < 1){
 			isEmpty = true;
@@ -47,6 +57,7 @@ project.efg.util.EFGDisplayObject
 							<td colspan="5" class="title">Search/Browse EFG Datasources</td>
 						</tr>
 						<%
+						if(!isEmpty){
 						Iterator dsNameIter = listInter.getIterator(); 
 						while (dsNameIter.hasNext()) { 
 							EFGDisplayObject obj = (EFGDisplayObject)dsNameIter.next();
@@ -73,6 +84,21 @@ project.efg.util.EFGDisplayObject
 						</tr>
 						<% 
 						}//end while
+						}
+						else{%>
+						<tr>
+							<td colspan="5">
+								<table>
+									<tr>
+										<td class="efglisttitle">No Datasources uploaded</td>
+										<td class="efglistlinks">
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>							
+							
+						<%}
 						%>
 						<tr>
 							<td class="" />
