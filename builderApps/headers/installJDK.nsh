@@ -31,7 +31,13 @@ Function checkJDKInstalled
     StrCmp  $isJDKInstalled "true" 0 done
     ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"        
     StrLen $0 "$2"
-    IntCmp $0 0 done  done writereg 
+    ${If} $0 <= 0
+        GoTo done
+    ${Else}
+        GoTo writereg
+    ${EndIf}
+    
+    ;IntCmp $0 0 done  done writereg 
  
  ;add to components to uninstall
      writereg:
@@ -87,7 +93,14 @@ Function DetectJDK
  ;IntCmp $0 5 is5 lessthan5 morethan5
   ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"        
   StrLen $0 "$2"
- IntCmp $0 0 jdk jdk done
+  
+  ${If} $0 <= 0
+    GoTo jdk
+  ${Else}
+    GoTo done
+  ${EndIf}
+  
+ ;IntCmp $0 0 jdk jdk done
   
    jdk:
        Call GetJDK

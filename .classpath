@@ -7,7 +7,7 @@
 	<classpathentry kind="src" path="source"/>
 	<classpathentry exported="true" kind="lib" path="lib/avalon.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/batik.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/castor-0.9.5.2.jar" sourcepath="lib/castor-0.9.5-src.zip"/>
+	<classpathentry exported="true" sourcepath="lib/castor-0.9.5-src.zip" kind="lib" path="lib/castor-0.9.5.2.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-fileupload-1.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-httpclient-3.0.1.jar"/>
@@ -30,7 +30,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlgraphics-commons-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/fileupload-ext.jar"/>
-	<classpathentry kind="lib" path="lib/itext-1.4.8.jar" sourcepath="C:/cvscheckout/Itext/lib/itext-src-1.4.8.zip"/>
+	<classpathentry sourcepath="C:/cvscheckout/Itext/lib/itext-src-1.4.8.zip" kind="lib" path="lib/itext-1.4.8.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.0.jar"/>

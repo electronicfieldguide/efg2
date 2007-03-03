@@ -25,7 +25,7 @@
 ; Where the current directory is
 ;change this definition when software changes
 ;probably best to read it off the file system
-!define CLASSPATH "xercesImpl.jar;xerces.jar;xalan.jar;xml-apis.jar;commons-io-1.2.jar;log4j-1.2.8.jar;oscache-2.3.jar;castor-0.9.5.2.jar;commons-logging.jar;commons-codec-1.3.jar;mysqldriver.jar;rdbImport.jar;spring.jar;rowset.jar;servlet-api.jar;ostermillerutils_1_05_00_for_java_1_4.jar;springConfig;."
+!define CLASSPATH "xercesImpl.jar;xerces.jar;xalan.jar;xml-apis.jar;commons-lang-2.3.jar;commons-io-1.2.jar;log4j-1.2.8.jar;oscache-2.3.jar;castor-0.9.5.2.jar;commons-logging.jar;commons-codec-1.3.jar;mysqldriver.jar;rdbImport.jar;spring.jar;rowset.jar;servlet-api.jar;ostermillerutils_1_05_00_for_java_1_4.jar;springConfig;."
 !define ABOUT_CLASS "project/efg/drivers/AboutDriver"
 !define DATA_IMPORTER_CLASS "project/efg/Imports/efgImpl/LoginDialog"
 

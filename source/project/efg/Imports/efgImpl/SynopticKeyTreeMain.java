@@ -106,6 +106,8 @@ public class SynopticKeyTreeMain extends JDialog {
 
 	private DBObject dbObject;
 
+	private String bkgdImageName;
+
 	
 	static Logger log = null;
 	static {
@@ -116,13 +118,13 @@ public class SynopticKeyTreeMain extends JDialog {
 	}
 
 	public SynopticKeyTreeMain(JFrame frame, boolean modal, DBObject db) {
-		this(frame, "", modal, db);
+		this(frame, "", modal, db,null);
 	}
 
 	public SynopticKeyTreeMain(JFrame frame, String title, boolean modal,
-			DBObject dbObject) {
+			DBObject dbObject, String bkgdImageName) {
 		super(frame, title, modal);
-	
+		this.bkgdImageName= bkgdImageName;
 		this.parentFrame = frame;
 	
 		setSize(new Dimension(400, 400));
@@ -168,7 +170,7 @@ public class SynopticKeyTreeMain extends JDialog {
 	} // SynoptcKeyTreeMain constructor
 
 	public SynopticKeyTreeMain(DBObject db, JFrame frame, String mainTableName) {
-		this(frame, "", true, db);
+		this(frame, "", true, db,null);
 	}
 	private void addMenus(){
 		JMenu fileMenu = new JMenu("File");
@@ -296,7 +298,8 @@ public class SynopticKeyTreeMain extends JDialog {
 	}
 
 	private JPanel addPanel() {
-		ImagePanel iPanel = new ImagePanel(EFGImportConstants.KEY_DROP_BACKGROUND_IMAGE);
+		ImagePanel iPanel = 
+			new ImagePanel(this.bkgdImageName);
 		iPanel.setLayout(new BorderLayout());
 		iPanel.add(this.tree,BorderLayout.CENTER);
 		iPanel.setBackground(Color.white);

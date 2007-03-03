@@ -71,7 +71,13 @@ Function checkMagickInstalled
     StrCmp  $isMagickInstalled "true" 0 done
     ReadRegStr $2 HKLM "${MAGICK_KEY}" "Version"              
     StrLen $0 "$2"   
-    IntCmp $0 0 done done writereg
+   ${If} $0 <= 0
+    GoTo done
+  ${Else}
+    GoTo writereg
+  ${EndIf}
+    
+    ;IntCmp $0 0 done done writereg
  
  ;add to components to uninstall
      writereg:
@@ -86,11 +92,22 @@ FunctionEnd
 Function DetectMAGICK
   ReadRegStr $2 HKLM "${MAGICK_KEY}" "Version"              
   StrLen $0 "$2"
-  IntCmp $0 0 versioncomp versioncomp done
+  ${If} $0 <= 0
+    GoTo versioncomp
+  ${Else}
+    GoTo done
+  ${EndIf}
+ ; IntCmp $0 0 versioncomp versioncomp done
   
    versioncomp:
     ${VersionCompare} "${MAGICK_VERSION}" "$2" $1
-    IntCmp $1 1  magick done done  
+   ${If} $1 = 1
+    GoTo magick
+  ${Else}
+    GoTo done
+  ${EndIf}
+    
+   ; IntCmp $1 1  magick done done  
  
   magick:
      Call GetMAGICK          

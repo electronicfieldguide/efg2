@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.log4j.Logger;
+//import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import project.efg.Imports.efgImpl.DBObject;
@@ -123,8 +124,9 @@ import project.efg.util.EFGImportConstants;
 				if(queryN.indexOf(EFGImportConstants.MEDIUMTEXT) > -1){
 					queryN = replaceString(queryN);
 				}
-
-				this.jdbcTemplate.execute(query);
+			//	query = StringEscapeUtils.escapeSql(query);
+				//this.jdbcTemplate.execute(query);
+				this.jdbcTemplate.update(query);
 				
 			}
 			catch(Exception ee) {
@@ -139,6 +141,6 @@ import project.efg.util.EFGImportConstants;
 		private String replaceString(
 				String queryN) {
 			return queryN.replaceAll(EFGImportConstants.MEDIUMTEXT,
-					EFGImportConstants.MEDIUMTEXT);
+					EFGImportConstants.TEXT);
 		}	
 	}

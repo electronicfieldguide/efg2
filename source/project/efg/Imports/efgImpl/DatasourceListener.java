@@ -31,7 +31,8 @@ public abstract class DatasourceListener implements ActionListener{
 	}
 
 	public DatasourceListener(DBObject dbObject, 
-			JFrame frame, String title, String errorMessage) {
+			JFrame frame, String title, 
+			String errorMessage) {
 		this.dbObject = dbObject;
 		this.frame = frame;
 		this.title = title;

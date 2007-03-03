@@ -74,6 +74,9 @@ public class LoginDialog extends JDialog {
 			String current = 
 				EFGImportConstants.EFGProperties.getProperty(
 						"efg.serverlocations.current");
+			if(current != null) {
+				current = WorkspaceResources.removeLastSpaceFromPath(current.trim());
+			}
 			 int j = 0;
 			 boolean isFound = false;
 			 for(int i = 0 ; i < properties.length;i++) {
@@ -404,7 +407,9 @@ public class LoginDialog extends JDialog {
 				EFGImportConstants.EFGProperties.getProperty(
 						"efg.serverlocations.lists"
 						);
-		
+		if(pathToServer != null ) {
+			pathToServer = WorkspaceResources.removeLastSpaceFromPath(pathToServer);
+		}
 		 if(propertyStr != null && 
 				 !propertyStr.trim().equalsIgnoreCase("")) {
 			 
@@ -419,6 +424,7 @@ public class LoginDialog extends JDialog {
 			 if(j > 0) {//if we already added something to the buffer
 				 buffer.append(","); 
 			 }
+			 
 			 buffer.append(WorkspaceResources.convertFileNameToURLString(pathToServer));
 			 EFGImportConstants.EFGProperties.setProperty(
 						"efg.serverlocations.current",
@@ -480,6 +486,7 @@ public class LoginDialog extends JDialog {
 			if((serverRoot != null && 
 					!serverRoot.trim().equals(""))){
 				serverRoot = parseServerRoot(serverRoot);
+				serverRoot = WorkspaceResources.removeLastSpaceFromPath(serverRoot);
 				EFGImportConstants.EFGProperties.setProperty(
 				"efg.serverlocations.current",serverRoot);
 			}
@@ -536,14 +543,6 @@ public class LoginDialog extends JDialog {
 				 * variable is checked
 				*/
 		
-			
-			//find the current home and call with it
-			//if it does not exist
-			//find catalina home if absent use default
-			//if it does not exists use the application home
-			//EFGImportConstants.EFGProperties.setProperty(
-			//		"efg.serverlocations.current"
-			
 
 			 
 			if ((serverRoot != null) &&

@@ -156,6 +156,7 @@
 		
 		function removeElement(currentDivId,datasourceName) {	
 			clearErrorMessages();
+			
 			 var d = document.getElementById(currentDivId);
 			 var olddiv = document.getElementById(datasourceName);
 			 d.removeChild(olddiv);
@@ -183,8 +184,29 @@
 			}		
 		}
 		function clearAllExportData(){
-			isLoaded = false;
-			loadInputs(1);
+			clearErrorMessages();
+			var zipsId = document.getElementById('placezipHere');
+	   		zipsId.innerHTML='';
+			
+			var inputs = document.getElementsByTagName("input");
+			var obj = new Array();
+			var j = 0;
+			for (i = 0; i < inputs.length; i++) {
+		       	var myCheckBox = inputs[i];	       	
+		       	switch (myCheckBox.type) {
+		               case 'checkbox':
+		               if(myCheckBox.checked){		               		
+		               		myCheckBox.checked = false;
+		               		obj[j] = myCheckBox;
+		               		j = j + 1;
+						}
+						break;
+		        }
+	   		}
+	   		for (z = 0; z < obj.length; z++) {
+	   			var ob = obj[z];
+	   			checkClick(ob,'exportData');
+	   		}
 		}
 		function deleteResources(deleteresources){
 			$('defg_submit_id_11').disabled = true;

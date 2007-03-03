@@ -33,6 +33,7 @@ import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.Imports.rdb.EFGRowMapperInterface;
 import project.efg.servlets.rdb.EFGRDBUtils;
 import project.efg.util.EFGImportConstants;
+import project.efg.util.SQLEscapeCharacters;
 
 	/**
 	 * This class connects to a database and dumps all 
@@ -72,9 +73,23 @@ import project.efg.util.EFGImportConstants;
 			if (string == null) {
 				return null;
 			}
+			
 			return string.trim().replaceAll("\"", "\\\\\"");
 		}
-
+		public String escapeCharacters(String string) {
+			if (string == null) {
+				return null;
+			}
+			//string = escapeQuotes(string);
+			for(int i = 0; i < SQLEscapeCharacters.keyCharacters.size();i++) {
+				String current = (String)SQLEscapeCharacters.keyCharacters.get(i);
+				string = string.replaceAll(current, "\\\\"+current);
+			}
+			//string = string.replaceAll("\\(", "\\\\(");
+		//	string = string.replaceAll("\\)", "\\\\)");
+			return string;
+		}
+	
 		/**
 		 * 
 		 * @param props
@@ -173,9 +188,11 @@ import project.efg.util.EFGImportConstants;
 	                    } else {
 	                        String outputValue = value.toString();
 	                        outputValue = escapeQuotes(outputValue);
+	                       
 	                        result.append("\"");
 	                        result.append(outputValue);
 	                        result.append("\"");
+	                        
 	                    }
 	                }
 	                result.append(");\n");

@@ -247,12 +247,14 @@ public class ImportMenu extends JFrame {
     				"ImportMenu.addNewDatasourceBtn"),
     			EFGImportConstants.EFGProperties.getProperty(
     					"ImportMenu.addNewDatasourceBtn.tooltip"));
-    	  
+			String prop = 
+				EFGImportConstants.EFGProperties.getProperty("synoptickey_drop_background_image");
+
     	String title=EFGImportConstants.EFGProperties.getProperty(
     			"HandleDatasourceListener.SynopticKeyTreeMain.title");
 		addNewDatasourceBtn.addActionListener(new HandleDatasourceListener(
 				this.dbObject, this,title,EFGImportConstants.EFGProperties.getProperty(
-						"HandleDatasourceListener.buffermessage.1")	
+						"HandleDatasourceListener.buffermessage.1"),prop	
 				));
     	
 		title = EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.SynopticKeyTreeMain.glossary.title");
@@ -261,9 +263,11 @@ public class ImportMenu extends JFrame {
  				"ImportMenu.addNewGlossaryBtn"),
  			EFGImportConstants.EFGProperties.getProperty(
  					"ImportMenu.addNewGlossaryBtn.tooltip"));
+    	 prop = EFGImportConstants.EFGProperties.getProperty("glossary_drop_background_image");
+		 		
     	 addNewGlossaryBtn.addActionListener(new HandleDatasourceListener(
  				this.dbObject, this,title,EFGImportConstants.EFGProperties.getProperty(
-				"HandleDatasourceListener.buffermessage.1")	));
+				"HandleDatasourceListener.buffermessage.1"),prop));
 
     	JButton deployImagesBtn = this.createButton(
     			EFGImportConstants.EFGProperties.getProperty("ImportMenu.deployImagesBtn"),
@@ -581,7 +585,9 @@ public class ImportMenu extends JFrame {
 			String cathome= 
 				EFGImportConstants.EFGProperties.getProperty(
 			 "efg.serverlocations.current");
+			
 			if(cathome != null){
+				cathome = WorkspaceResources.removeLastSpaceFromPath(cathome);
 				this.serverHome = new File(cathome);
 			}
 			String prevziphome = 
@@ -660,10 +666,13 @@ public class ImportMenu extends JFrame {
 		
 	}
 	class HandleDatasourceListener extends DatasourceListener{
-	
+		private String bkgdImageName;
 		public HandleDatasourceListener(DBObject dbObject, 
-				JFrame frame, String title, String errorMessage) {
+				JFrame frame, String title, 
+				String errorMessage, 
+				String bkgdImageName) {
 			super(dbObject, frame, title, errorMessage);
+			this.bkgdImageName = bkgdImageName;
 		}
 		protected void handleInput(String buttonString){
 			try {
@@ -674,8 +683,14 @@ public class ImportMenu extends JFrame {
 					.getProperty(propName);
 				EFGUtils.setTableName(mainTableName);
 				//run this in another thread?
+				//set the background image here
+				
+				
 				JDialog ftb = 
-					new SynopticKeyTreeMain(this.getFrame(),this.title, true, this.getDBObject());
+					new SynopticKeyTreeMain(this.getFrame(),
+							this.title, 
+							true, 
+							this.getDBObject(),this.bkgdImageName);
 				ftb.setVisible(true);
 			} catch (Exception ee) {
 				log.error(ee.getMessage());
