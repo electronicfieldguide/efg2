@@ -63,10 +63,13 @@ to make a distribution call makeImport:
 	<!-- deployImages -->
 	<target name="deployEFGIcons">
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+		<!--
+		
 		<mkdir dir="${deploy.home}/EFGIcons"/>
 		<copy todir="${deploy.home}/EFGIcons">
 			<fileset dir="${icons.home}/"/>
 		</copy>
+		-->
 	</target>
 	<!-- Make preparations for deployment-->
 	<target name="deployResources">
@@ -133,7 +136,7 @@ to make a distribution call makeImport:
 
 	<target name="prepareDeploy" depends="deployEFGIcons, deployPlates,deployResources">
 		<mkdir dir="${deploy.home}/EFGImages"/>
-		<mkdir dir="${deploy.home}/EFGImages"/>
+		
 		<mkdir dir="${deploy.home}/WEB-INF"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes"/>
 		<mkdir dir="${deploy.home}/WEB-INF/classes/project"/>
@@ -215,6 +218,7 @@ to make a distribution call makeImport:
 	<target name="clean">
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
 		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
+		<delete dir="${efg2.dist.home}/samples/images" quiet="true"/>
 		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
 	</target>
 	<target name="makeImport" depends="clean,war,jarImport ">
@@ -230,6 +234,11 @@ to make a distribution call makeImport:
 		<mkdir dir="${efg2.dist.home}/resource/icons"/>
 		<mkdir dir="${efg2.dist.home}/resource/help"/>
 		<mkdir dir="${efg2.dist.home}/resource/efg2"/>
+		<mkdir dir="${efg2.dist.home}/samples/images/Het"/>
+		<copy todir="${efg2.dist.home}/samples/images/Het">
+			<fileset dir="${efg2.home}/sampleImages/Het" includes="*.*"/>
+		</copy>
+
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>
@@ -268,7 +277,9 @@ to make a distribution call makeImport:
 	</target>
 
 	<target name="makeImportNSIS" depends="makeImport">
+		<!--
 		<delete file="${efg2.dist.home}/resource/login.bat" quiet="true"/>
+		-->
 		<delete file="${efg2.dist.home}/resource/login.sh" quiet="true"/>
 		
 		<delete dir="${efg2.home}/efg2" quiet="true"/>

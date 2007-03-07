@@ -37,16 +37,16 @@ Var isJDKInstalled
 Var isJREInstalled
 Var isTomcatInstalled
 Var isMySQLInstalled
-!include "efg2Headers.nsh" 
-!addincludedir headers
-
-!include "downloadHeaders.nsh"
 
 # Included files
 !include Sections.nsh
 !include "logiclib.nsh"
 !include MUI.nsh
 !include WordFunc.nsh
+!include "efg2Headers.nsh" 
+!addincludedir headers
+
+!include "downloadHeaders.nsh"
 
 # Installer attributes
 !ifdef FullInstall  
@@ -55,7 +55,7 @@ Var isMySQLInstalled
     !Include "InstallURLsHeader.nsh"
     OutFile "EFG2Installer.exe"
 !endif
-
+!include "TextLog.nsh"
 !insertmacro VersionCompare
 
 
@@ -80,8 +80,14 @@ ReserveFile "${NSISDIR}\Plugins\AdvSplash.dll"
 Var StartMenuGroup
 Var /Global UnselCount /* counts unselected components in the uninstaller.*/
 Var /Global BoxCount /* Counts the components available in the uninstaller.*/
+;Var /GLOBAL diskspace
+;Var /GLOBAL availdiskspace 
 
 # Installer pages
+!define MUI_COMPONENTSPAGE_TEXT_TOP " "
+
+
+
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_LICENSE license\license.txt
 !insertmacro MUI_PAGE_DIRECTORY
@@ -89,7 +95,7 @@ Var /Global BoxCount /* Counts the components available in the uninstaller.*/
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
- !insertmacro MUI_UNPAGE_COMPONENTS
+!insertmacro MUI_UNPAGE_COMPONENTS
 !insertmacro MUI_UNPAGE_INSTFILES
 
   
@@ -97,19 +103,32 @@ Var /Global BoxCount /* Counts the components available in the uninstaller.*/
 !insertmacro MUI_LANGUAGE English
 
 
+;!insertmacro MUI_COMPONENTSPAGE_TEXT_COMPLIST text
+;Text to display on next to the components list.
+
+;!insertmacro MUI_COMPONENTSPAGE_TEXT_INSTTYPE text
+;Text to display on next to the installation type combo box.
+
+;Text to display on the of the top of the description box.
 
 
+;Text to display inside the description box when no section is selected.
+
+
+
+
+;SpaceTexts "$diskspace" "$availdiskspace"
 
 InstallDir "$PROGRAMFILES\EFG2DataImporter"
 CRCCheck on
 XPStyle on
-ShowInstDetails show
+ShowInstDetails hide
 
 !include "efg2VersionHeaders.nsh"
 
 
 InstallDirRegKey HKLM "${REGKEY}" Path
-ShowUninstDetails show
+ShowUninstDetails hide
 
 
 ;compile with local dependcy files
@@ -119,27 +138,52 @@ Section -Main SEC0000
    ; CHECK FOR JRE AFTER JDK INSTALL BEFORE TOMCAT
    ; IM INSTALLED TWICE
     ;TOMCAT NOT INSTALLED AT ALL
+    
+    IfFileExists "$INSTDIR\${INSTALLATION_LOGS}" nocreate createD
+    
+    createD:
+    CreateDirectory "$INSTDIR"
+    
+    
+    nocreate:
+    CreateDirectory "$INSTDIR\${EFG2_SAMPLES_HOME}"
+     ${LogSetFileName} "$INSTDIR\${INSTALLATION_LOGS}"
+    ${LogSetOn}
+    Call writeTime
+    ${LogText} "Inside -Main . Initializing global variables" 
     StrCpy $isMySQLInstall "false"
     StrCpy $isMagickInstalled "false"
     StrCpy $isJDKInstalled "false"
     StrCpy $isJREInstalled "false"
     StrCpy $isTomcatInstalled "false"
     StrCpy $isMySQLInstalled "false"
-    
-    
+  
+    ${LogText} "Calling CheckVersion"
     Call CheckVersion
     Call InstallDependencies
     SetOutPath $INSTDIR
     SetOverwrite on
+    ${LogText} "OutPutpath set to $INSTDIR" 
     File ${EFG2_LOCAL_DISTRIBUTION_PATH}\${EFG2_HELP_FILE}
+    ${LogText} "Copied ${EFG2_LOCAL_DISTRIBUTION_PATH}\${EFG2_HELP_FILE}" 
     ;remove me
     File icons\${EFG_SMALL_ICON}
+    ${LogText} "Copied icons\${EFG_SMALL_ICON}" 
     File icons\${EFG_BIG_ICON}
+    ${LogText} "Copied icons\${EFG_BIG_ICON}" 
+    SetOutPath $INSTDIR\${EFG2_SAMPLES_HOME}
+     ${LogText} "OutPutpath set to $INSTDIR\${EFG2_SAMPLES_HOME}" 
+     File /r ${EFG2_LOCAL_DISTRIBUTION_PATH}\${EFG2_SAMPLES_HOME}\*
     SetOutPath $INSTDIR\${EFG2_RESOURCE_HOME}
-   File /r ${EFG2_LOCAL_DISTRIBUTION_PATH}\${EFG2_RESOURCE_HOME}\* 
+    ${LogText} "OutPutpath set to $INSTDIR\${EFG2_RESOURCE_HOME}" 
+    File /r ${EFG2_LOCAL_DISTRIBUTION_PATH}\${EFG2_RESOURCE_HOME}\* 
+    ${LogText} "Copied ${EFG2_LOCAL_DISTRIBUTION_PATH}\${EFG2_RESOURCE_HOME}" 
     File ${ABOUT_EXECUTABLE}
+    ${LogText} "Copied ${ABOUT_EXECUTABLE}" 
     File ${EFG2_IMPORTER_EXECUTABLE}
+    ${LogText} "Copied ${EFG2_IMPORTER_EXECUTABLE}" 
     ;call the headers
+    ${LogText} "${EFG2_IMPORTER_EXECUTABLE}"
     Call doHouseKeeping
     WriteRegStr HKLM "${REGKEY}\Components" Main 1
  
@@ -151,26 +195,29 @@ Section -post SEC0001
     RMDir /r "$INSTDIR\${EFG2_RESOURCE_HOME}\efg2"
     
     WriteRegStr HKLM "${REGKEY}" Path $INSTDIR
-    
+    ;WriteIniStr "$INSTDIR\EFGKeys${PRODUCT_VERSION}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
+    WriteIniStr "$INSTDIR\${EFG2_WEB_HOME_LINK}" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
     SetOutPath $INSTDIR
     WriteUninstaller $INSTDIR\${EFG2_IMPORTER_UNINSTALLER}
     !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
     
     SetOutPath $SMPROGRAMS\$StartMenuGroup
     CreateShortCut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" "$INSTDIR\${EFG2_RESOURCE_HOME}\${EFG2_IMPORTER_EXECUTABLE}" "" "$INSTDIR\${EFG_SMALL_ICON}"
+    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\About.lnk" "$INSTDIR\${EFG2_RESOURCE_HOME}\${ABOUT_EXECUTABLE}" "" "$INSTDIR\${EFG_SMALL_ICON}"
+    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\EFG2 Samples.lnk" "$INSTDIR\${EFG2_SAMPLES_HOME}"
     
     CreateShortCut "$SMPROGRAMS\$StartMenuGroup\manual.lnk" "$INSTDIR\${EFG2_HELP_FILE}"
-    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\Website.lnk" "$INSTDIR\$(^Name).url" "" "$INSTDIR\${EFG_SMALL_ICON}"
+    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\Website.lnk" "$INSTDIR\${EFG2_WEB_HOME_LINK}"
+    
+   
     FileOpen $4 "$INSTDIR\${EFG2_RESOURCE_HOME}\logs\${EFG2_IMPORTER_LOGS_NAME}" w
     FileClose $4
     sleep 50
-    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\Logs.lnk" "$INSTDIR\${EFG2_RESOURCE_HOME}\logs\${EFG2_IMPORTER_LOGS_NAME}" 
-    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\About.lnk" "$INSTDIR\${EFG2_RESOURCE_HOME}\${ABOUT_EXECUTABLE}" "" "$INSTDIR\${EFG_SMALL_ICON}"
-   
-    CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\${EFG2_IMPORTER_UNINSTALLER}
-    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk" "$INSTDIR\${EFG2_RESOURCE_HOME}\${EFG2_IMPORTER_EXECUTABLE}" "" "$INSTDIR\${EFG_BIG_ICON}"
-
-    !insertmacro MUI_STARTMENU_WRITE_END
+    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\EFG2 DataImporter Logs.lnk" "$INSTDIR\${EFG2_RESOURCE_HOME}\logs\${EFG2_IMPORTER_LOGS_NAME}" 
+    CreateShortCut "$SMPROGRAMS\$StartMenuGroup\View EFG2 Installation Logs.lnk" "$INSTDIR\${INSTALLATION_LOGS}" 
+    
+     CreateShortcut "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk" $INSTDIR\${EFG2_IMPORTER_UNINSTALLER}
+     !insertmacro MUI_STARTMENU_WRITE_END
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayName "$(^Name)"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" DisplayVersion "${VERSION}"
     WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" Publisher "${COMPANY}"
@@ -190,43 +237,91 @@ Section -post SEC0001
     Call checkJREInstalled
     Call checkJDKInstalled
     Call removeInstalledApps
+    Call CleanUp
    ; Call startDataImporter
 SectionEnd
+# Installer functions
+Function .onInit
+  System::Call "kernel32::CreateMutexA(i 0, i 0, t '$(^Name)') i .r0 ?e"
+ Pop $0
+ StrCmp $0 0 launch
+  StrLen $0 "$(^Name)"
+  IntOp $0 $0 + 1
+ loop:
+   FindWindow $1 '#32770' '' 0 $1
+   IntCmp $1 0 +4
+   System::Call "user32::GetWindowText(i r1, t .r2, i r0) i."
+   StrCmp $2 "$(^Name)" 0 loop
+   System::Call "user32::SetForegroundWindow(i r1) i."
+   Abort
+   Goto end
+ launch:
+    InitPluginsDir
+    Push $R1
+    File /oname=$PLUGINSDIR\spltmp.bmp icons\EFGKeyConfig32x32.bmp
+    advsplash::show 1000 1000 1000 -1 $PLUGINSDIR\spltmp
+    Pop $R1
+    Pop $R1
+  
+  ; strcpy  $diskspace "Required Disk Space: "
+  
+   ;strcpy $availdiskspace "Available Disk Space: "
+  end: 
+
+
+FunctionEnd
+/*Function ShowInstallLog
+    ExecShell "open" "$INSTDIR\${INSTALLATION_LOGS}"
+FunctionEnd*/
+ 
+Function CleanUp
+    ${LogText} "Closing log file $INSTDIR\${INSTALLATION_LOGS}"
+    ${LogSetOff}
+FunctionEnd
 Function WriteJavaClassPath
     WriteRegStr HKLM "${REGKEY}\Java" ClassPath "${CLASSPATH}"
     WriteRegStr HKLM "${REGKEY}\Java" AboutClass "${ABOUT_CLASS}"
     WriteRegStr HKLM "${REGKEY}\Java" ImporterClass "${DATA_IMPORTER_CLASS}"
 FunctionEnd
 Function deploywebapps
+${LogText} "Inside deploywebapps"
    ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
    StrLen $0 "$2"
-   IntCmp $0 0 NoService NoService 0
+    ${If} $0 <= 0
+   ${LogText} 'Tomcat cannot be found on Machine' 
+   MessageBox MB_OK "Tomcat 5 cannot be found on machine. Aborting installation"
+    Quit
+   ${EndIf}
+    ${LogText} 'Tomcat found Machine' 
+   
+   ; IntCmp $0 0 NoService NoService 0
     ClearErrors
     IfFileExists "$2\bin\tomcat5.exe" 0 NoService
     ClearErrors
+    ${LogText} "About to stop Tomcat"
     ExecWait 'cmd /C net stop "Apache Tomcat"'   
     IfErrors  tcnotrunning 
-        ;Sleep 500
-       
+        Sleep 500
+         ${LogText} "Tomcat stopped"
+        ${LogText} "About to Copy web application to Server"
         Call CopyWebApps
         sleep 200
-        
+        ${LogText} "About to start Tomcat"
         ExecWait 'cmd /C net start "Apache Tomcat"'
         DetailPrint "Starting Tomcat.Please wait"
+        
         sleep 200
+        ${LogText} "Tomcat started"
         Goto End
         
     tcnotrunning:
+        ${LogText} "About to Copy web application to Server"
         Call CopyWebApps
         sleep 200
-        ExecWait 'cmd /C net start "Apache Tomcat"'
-        DetailPrint "Starting Tomcat.Please wait"
-        sleep 200
-        ExecWait 'cmd /C net stop "Apache Tomcat"'
-        Sleep 200
         Goto End    
 
  NoService:
+    ${LogText} "Tomcat 5 must be installed as a service"
         MessageBox MB_OK "Tomcat 5 must be installed as a service"
         Quit
 
@@ -236,44 +331,43 @@ FunctionEnd
 
 ;Copy to webapps
 Function CopyWebApps
+    ${LogText} "Inside CopyWebApps"
    ReadRegStr $3 HKLM "${TOMCAT_KEY}" "InstallPath"
     
     SetOutPath "$3\conf\Catalina\localhost" 
     SetOverwrite on
     File ${EFG2_LOCAL_RESOURCE_PATH}\efg2.xml
-      
+    ${LogText} "Copied efg2.xml to  '$3\conf\Catalina\localhost'"
     ;copy mysql driver
     SetOutPath "$3\common\lib" 
     SetOverwrite on
     File ${EFG2_LOCAL_RESOURCE_PATH}\mysqldriver.jar
-   
+   ${LogText} "Copied mysqldriver.jar to Copied '$3\common\lib'"
     ;Copy war file to webapps
     clearErrors
     DetailPrint 'About to install EFG2 Web application'
+    ${LogText} "About to install EFG2 Web application"
     MessageBox MB_OK "About to install EFG2 Web application. This may take a while."
     
-    
-    IfErrors warnUser
+    clearErrors
+    ;IfErrors warnUser
     CreateDirectory "$3\webapps\efg2"
+    ${LogText} "Created directory '$3\webapps\efg2'"
     SetOutPath "$3\webapps"
    
     SetOverwrite on
    ; File /r ${EFG2_LOCAL_RESOURCE_PATH}\efg2.war 
      ;copy all files to efg2
      File /r ${EFG2_LOCAL_RESOURCE_PATH}\efg2
-   ; ${Touch} "$3\webapps\efg2.war"
+     ${LogText} "Copied efg2 to '$3\webapps\efg2'"
+ 
      Push $0
-   
-    Goto end
-    warnUser:
-       DetailPrint 'The EFG2 Web application could not be installed'
-       MessageBox MB_OK "The EFG2 Web application could not be installed"
+     
     
     
-    end:
    
  FunctionEnd
-Function startDataImporter
+/*Function startDataImporter
    ClearErrors
     MessageBox MB_OK "About to Import Sample Data.$\r$\n\
     Your user name is root and your password is$\r$\n \
@@ -282,14 +376,20 @@ Function startDataImporter
     is successfully imported."
     StrCpy $2 "$INSTDIR\${EFG2_RESOURCE_HOME}\${EFG2_IMPORTER_EXECUTABLE}"
     ExecWait $2
-FunctionEnd
+FunctionEnd*/
 Function removeInstalledApps
-!ifdef FullInstall  
-    Delete /REBOOTOK "$INSTDIR\${jdk_exec}"
+!ifdef FullInstall 
+    ${LogText} "Removing executables. If they cannot be removed a reboot will remove them" 
+    Delete  /REBOOTOK "$INSTDIR\${jdk_exec}"
+     ${LogText} "Removed '$INSTDIR\${jdk_exec}'"
     Delete /REBOOTOK "$INSTDIR\${jre_exec}"
+     ${LogText} "Removed '$INSTDIR\${jre_exec}'"
     Delete /REBOOTOK "$INSTDIR\${mysqlexec}"
+     ${LogText} "Removed '$INSTDIR\${mysqlexec}'"
     Delete /REBOOTOK "$INSTDIR\${tomcat_exec}"
+     ${LogText} "Removed '$INSTDIR\${tomcat_exec}'"
     Delete /REBOOTOK "$INSTDIR\${magick_exec}"
+     ${LogText} "Removed '$INSTDIR\${magick_exec}'"
 !endif
 
 FunctionEnd
@@ -298,20 +398,21 @@ FunctionEnd
 ; Check the installed version to the new version
 ; and prompt user with appropriate message
 Function CheckVersion
-
+     ${LogText} "Inside Checkversion"
 ;read version from unistalled location
     ReadRegStr $2 HKLM "${REGKEY}" "Version"
     StrLen $0 "$2"
-    
+    ${LogText} "Current Importer version is:  '$2'"
     IntCmp $0 0 install install versioncomp
     
     versioncomp:
-   ${VersionCompare} "${ProductVersion}" "$2" $1
-  
+    ${LogText} "Comparing System Importer version:  '$2' to this version: '${ProductVersion}'"
+    ${VersionCompare} "${ProductVersion}" "$2" $1
     IntCmp $1 1  install sameVersion installedVersionisNewer  
    
   
   installedVersionisNewer:
+    ${LogText} "The installed version is newer"
     MessageBox MB_YESNO|MB_ICONQUESTION  "The current version of the EFGDataImporter $\r$\n \
                                 installed on your machine $\r$\n \
                              is newer than the version you are about to install. $\r$\n \
@@ -319,20 +420,24 @@ Function CheckVersion
                              
     
   sameVersion:
+  ${LogText} "Versions are the same"
      MessageBox MB_YESNO|MB_ICONQUESTION  "The current version of the EFGDataImporter $\r$\n \
                               installed on your machine $\r$\n \
                              is the same version as the one you are about to install. $\r$\n \
                              Would you still like to overwrite it? " IDYES install IDNO quitinstall
                              
   quitinstall:
+  ${LogText} "User chose to quit installation"
    Quit
    
   install:
+     ${LogText} "Getting ready to install DataImporter"
 FunctionEnd
 
 Function InstallDependencies
  
     !ifdef FullInstall
+        ${LogText} "This is a full installation"
         Call addJDKToInstalls
         Call addJREToInstalls
         Call addTomcatToInstalls
@@ -340,14 +445,15 @@ Function InstallDependencies
         Call addMagickToInstalls
    !endif 
     Call DetectMYSQL
-    StrCmp $isMySQLInstall "true" printMySQLMessage continue
+   ; StrCmp $isMySQLInstall "true" printMySQLMessage continue
    
-   printMySQLMessage:
-   DetailPrint "MySQL installation is still in progress..Please wait.."
-   Call GetMySQLMessage  
-   Sleep 30000
+  ; printMySQLMessage:
+   ;Call GetMySQLMessage  
+   ;DetailPrint "MySQL installation is still in progress..Please wait.."
+   
+   ;Sleep 30000
     
-  continue:   
+
     Call DetectJDK
     Call DetectJRE
     Call DetectTOMCAT
@@ -355,16 +461,21 @@ Function InstallDependencies
 FunctionEnd
 # Write scripts, deployweb application
 Function doHouseKeeping
+ ${LogText} "Inside doHousekeeping"
   Call WriteApplicationVariables
   Call deploywebapps
+  ${LogText} "doHousekeeping done"
 FunctionEnd
 
 
 
 
 Function WriteApplicationVariables
+    ${LogText} "Inside WriteApplicationVariables"
+    ${LogText} "Writing variable in '$INSTDIR\${EFG2_RESOURCE_HOME}\properties\envvars.properties'"
     FileOpen $9 "$INSTDIR\${EFG2_RESOURCE_HOME}\properties\envvars.properties" a  ; Opens a Empty File an fills it
     FileSeek $9 0 END #go to end
+   
     ;write java home
     ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"     
     Push $2 
@@ -372,7 +483,7 @@ Function WriteApplicationVariables
     Call StrSlash
     Pop $R0
     FileWrite $9 "$\r$\n" 
-    FileWrite $9 "JAVAHOME=/$R0/ $\r$\n" 
+    FileWrite $9 "JAVAHOME=/$R0/$\r$\n" 
     
  
     ;write mysql home
@@ -381,7 +492,7 @@ Function WriteApplicationVariables
     Push "${BACK_SLASH}"
     Call StrSlash
     Pop $R0
-    FileWrite $9 "MYSQL_HOME=/$R0 $\r$\n"  ;text to write to file 
+    FileWrite $9 "MYSQL_HOME=/$R0$\r$\n"  ;text to write to file 
     FileClose $9  
     
     FileOpen $9 "$INSTDIR\${EFG2_RESOURCE_HOME}\properties\workspace.configs.properties" a  ;Opens a Empty File an fills it
@@ -393,8 +504,8 @@ Function WriteApplicationVariables
     Call StrSlash
     Pop $R0
     
-    FileWrite $9 "efg.imagemagicklocation.current=/$R0 $\r$\n"  ;text to write to file 
-    FileWrite $9 "efg.imagemagicklocation.lists=/$R0 $\r$\n"  ;text to write to file 
+    FileWrite $9 "efg.imagemagicklocation.current=/$R0$\r$\n"  ;text to write to file 
+    FileWrite $9 "efg.imagemagicklocation.lists=/$R0$\r$\n"  ;text to write to file 
     
     ;write catalina home
     ReadRegStr $2 HKLM "SOFTWARE\Apache Software Foundation\Tomcat\${TOMCAT_VERSION}" "InstallPath"
@@ -405,11 +516,13 @@ Function WriteApplicationVariables
     Pop $R0
    
     ; to url
-    FileWrite $9 "efg.serverlocations.current=/$R0 $\r$\n"  ;text to write to file 
-    FileWrite $9 "efg.serverlocations.lists=/$R0 $\r$\n"  ;text to write to file    
+    FileWrite $9 "efg.serverlocations.current=/$R0$\r$\n"  ;text to write to file 
+    FileWrite $9 "efg.serverlocations.lists=/$R0$\r$\n"  ;text to write to file    
     FileClose $9  
+   ${LogText} "Done variable in '$INSTDIR\${EFG2_RESOURCE_HOME}\properties\envvars.properties'"
    
     Call writeProductVersion
+     ${LogText} "WriteApplicationVariables done"
 FunctionEnd
 
 
@@ -450,33 +563,7 @@ done:
   Pop $R1
   Exch $R3
 FunctionEnd
-# Installer functions
-Function .onInit
-  System::Call "kernel32::CreateMutexA(i 0, i 0, t '$(^Name)') i .r0 ?e"
- Pop $0
- StrCmp $0 0 launch
-  StrLen $0 "$(^Name)"
-  IntOp $0 $0 + 1
- loop:
-   FindWindow $1 '#32770' '' 0 $1
-   IntCmp $1 0 +4
-   System::Call "user32::GetWindowText(i r1, t .r2, i r0) i."
-   StrCmp $2 "$(^Name)" 0 loop
-   System::Call "user32::SetForegroundWindow(i r1) i."
-   Abort
-   Goto end
- launch:
-    InitPluginsDir
-    Push $R1
-    File /oname=$PLUGINSDIR\spltmp.bmp icons\EFGKeyConfig32x32.bmp
-    advsplash::show 1000 1000 1000 -1 $PLUGINSDIR\spltmp
-    Pop $R1
-    Pop $R1
-   
-  end: 
 
-
-FunctionEnd
 
 
 
@@ -501,23 +588,29 @@ Section /o -un.Main UNSEC0000
 SectionEnd
 
 Function un.removeTomcat
+
+
      ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "tomcat_uninstaller"  
      ExecWait $1
  
 FunctionEnd
 Function un.removeMagick
+
    ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "magick_uninstaller" 
     ExecWait $1
 FunctionEnd
 Function un.removeMySQL
+
    ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "mysql_uninstaller"    
    ExecWait $1
 FunctionEnd
 Function un.removeJRE
+;${LogText} "Removing JRE"
    ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "jre_uninstaller"     
    ExecWait $1
 FunctionEnd
 Function un.removeJDK
+
    ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "jdk_uninstaller"   
    ExecWait $1
 FunctionEnd
@@ -526,19 +619,19 @@ Section un.Tomcat un_Tomcat
 SectionGetFlags "${un_Tomcat}" $R0
 
     ${If} $R0 == 1
-        Call un.removeTomcat
+       ; Call un.removeTomcat
    ${EndIf}
 Sectionend
 Section un.Magick un_Magick
     SectionGetFlags "${un_Magick}" $R0
   ${If} $R0 == 1
-   Call un.removeMagick
+   ;Call un.removeMagick
   ${EndIf}
 
 Sectionend
 Section un.MySQL un_MySQL
    ${If} $R0 == 1
-   Call un.removeMySQL
+  ; Call un.removeMySQL
   ${EndIf}
 
 Sectionend
@@ -546,7 +639,7 @@ Sectionend
 Section un.JRE un_JRE
    SectionGetFlags "${un_JRE}" $R0
    ${If} $R0 == 1  
-   Call un.removeJRE
+  ; Call un.removeJRE
    ${EndIf}
 
 Sectionend
@@ -554,14 +647,14 @@ Sectionend
 Section un.JDK un_JDK
    SectionGetFlags "${un_JDK}" $R0
    ${If} $R0 == 1  
-   Call un.removeJDK
+   ;Call un.removeJDK
    ${EndIf}
 Sectionend
 
 Section un.EFGWebapps un_EFGWebapps 
   SectionGetFlags "${un_EFGWebapps}" $R0
  ${If} $R0 == 1 
-  Call un.removewebapps 
+ ; Call un.removewebapps 
  ${EndIf}
 
 Sectionend
@@ -572,47 +665,56 @@ Section "un.All" unAll
  SectionGetFlags "${un_EFGWebapps}" $R0
  ${If} $R0 == 1 
   Call un.removewebapps 
+  Sleep 3000
  ${EndIf}
    
    
   SectionGetFlags "${un_Tomcat}" $R0
   ${If} $R0 == 1
    Call un.removeTomcat
+   Sleep 3000
   ${EndIf}
    
   SectionGetFlags "${un_MySQL}" $R0
   ${If} $R0 == 1
    Call un.removeMySQL
+   Sleep 3000
   ${EndIf}
    
   SectionGetFlags "${un_Magick}" $R0
   ${If} $R0 == 1
    Call un.removeMagick
+   Sleep 3000
   ${EndIf}
   
   
    SectionGetFlags "${un_JRE}" $R0
    ${If} $R0 == 1  
    Call un.removeJRE
+   Sleep 3000
    ${EndIf}
    
    SectionGetFlags "${un_JDK}" $R0
    ${If} $R0 == 1  
    Call un.removeJDK
+   Sleep 3000
    ${EndIf}
 SectionEnd
 
 Section -un.post UNSEC0001   
     Call un.deleteRegistry
     Call un.deleteFiles
+    Call un.clean
 SectionEnd
 
+  
 !insertmacro MUI_UNFUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${un_tomcat} "remove Tomcat"
-  !insertmacro MUI_DESCRIPTION_TEXT ${un_mysql} "remove MySQL"
-  !insertmacro MUI_DESCRIPTION_TEXT ${un_magick} "remove ImageMagick"
-   !insertmacro MUI_DESCRIPTION_TEXT ${un_jre} "remove JRE"
-    !insertmacro MUI_DESCRIPTION_TEXT ${un_jdk} "remove JDK"
+!insertmacro MUI_DESCRIPTION_TEXT ${un_efgwebapps} "EFG2 Web Application"
+  !insertmacro MUI_DESCRIPTION_TEXT ${un_tomcat} "Apache Tomcat ${TOMCAT_VERSION}"
+  !insertmacro MUI_DESCRIPTION_TEXT ${un_mysql} "${MYSQL_VERSION}"
+  !insertmacro MUI_DESCRIPTION_TEXT ${un_magick} "Image Editing software"
+   !insertmacro MUI_DESCRIPTION_TEXT ${un_jre} "Java Runtime Environment"
+    !insertmacro MUI_DESCRIPTION_TEXT ${un_jdk} "Java Ddevelopment Kit"
   !insertmacro MUI_UNFUNCTION_DESCRIPTION_END
 Function un.onSelChange
 
@@ -645,7 +747,9 @@ Function un.onSelChange
 FunctionEnd
 ;delete values from registry
 Function un.deleteRegistry
+  ;  ${LogText} "Deleting registry values"
     DeleteRegValue HKLM "${REGKEY}\Components" Main
+    
     DeleteRegKey HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)"
  
     DeleteRegValue HKLM "${REGKEY}" StartMenuGroup
@@ -662,28 +766,56 @@ Function un.deleteRegistry
  FunctionEnd
 ; delete all files and folders
 Function un.deleteFiles  
+    ;${LogText} "Deleting files"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\manual.lnk"
+     ;${LogText} "$SMPROGRAMS\$StartMenuGroup\manual.lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Website.lnk"
-    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Logs.lnk" 
+    ;${LogText} "$SMPROGRAMS\$StartMenuGroup\Website.lnk"
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\EFG2 DataImporter Logs.lnk" 
+    
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\View EFG2 Installation Logs.lnk" 
+    
+    ;${LogText} "$SMPROGRAMS\$StartMenuGroup\Logs.lnk" 
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\About.lnk"  
-  
+  ;${LogText} "$SMPROGRAMS\$StartMenuGroup\About.lnk"
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk"  
+    Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\EFG2 Samples.lnk" 
+   ;${LogText} "$SMPROGRAMS\$StartMenuGroup\$(^Name).lnk"  
     Delete /REBOOTOK "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
-    Delete /REBOOTOK $INSTDIR\${EFG2_IMPORTER_UNINSTALLER}
-    Delete /REBOOTOK $INSTDIR\${EFG_SMALL_ICON}
-    Delete /REBOOTOK $INSTDIR\${EFG_BIG_ICON}
+   
+   
+   ;${LogText} "$SMPROGRAMS\$StartMenuGroup\Uninstall $(^Name).lnk"
+    
+    
+     RmDir /r /REBOOTOK  "$INSTDIR\${EFG2_SAMPLES_HOME}"
+      RmDir /r /REBOOTOK  "$INSTDIR\${INSTALLATION_LOGS}"
+   ;${LogText} "$INSTDIR\${EFG2_IMPORTER_UNINSTALLER}"
+    Delete /REBOOTOK "$INSTDIR\${EFG_SMALL_ICON}"
+   ;${LogText} "$INSTDIR\${EFG_SMALL_ICON}"
+    Delete /REBOOTOK "$INSTDIR\${EFG_BIG_ICON}"
+   ;${LogText} "$INSTDIR\${EFG_BIG_ICON}"
     Delete $INSTDIR\$(^Name).url
+   ;${LogText} "$INSTDIR\$(^Name).url"
     Delete /REBOOTOK "$DESKTOP\$(^Name).lnk"
-    Delete /REBOOTOK $INSTDIR\${EFG2_HELP_FILE}
-     
-    RmDir /r /REBOOTOK $INSTDIR\${EFG2_RESOURCE_HOME}
-    RmDir /REBOOTOK $SMPROGRAMS\$StartMenuGroup
-    RmDir /REBOOTOK $INSTDIR
+   ;${LogText} "$DESKTOP\$(^Name).lnk"
+    Delete /REBOOTOK "$INSTDIR\${EFG2_HELP_FILE}"
+    ;${LogText} "$INSTDIR\${EFG2_HELP_FILE}"
+    RmDir /r /REBOOTOK "$INSTDIR\${EFG2_RESOURCE_HOME}"
+    ;${LogText} "$INSTDIR\${EFG2_RESOURCE_HOME}"
+    RmDir /REBOOTOK "$SMPROGRAMS\$StartMenuGroup"
+    ;${LogText} "$SMPROGRAMS\$StartMenuGroup"
+    Delete /REBOOTOK "$INSTDIR\${EFG2_IMPORTER_UNINSTALLER}"
+    RmDir /r /REBOOTOK $INSTDIR
+    
 FunctionEnd
 
-
+Function un.clean
+    ;${LogText} "In Section -CleanUp"
+   ; ${LogSetOff}
+FunctionEnd
 
 Function un.removewebapps
+    ;${LogText} "Remove webapps"
     ClearErrors
     ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
     StrLen $0 "$2"
@@ -694,12 +826,14 @@ Function un.removewebapps
     IfErrors  tcnotrunning 0
     Sleep 30000
     RmDir /r /REBOOTOK "$2/webapps/efg2"   
+    ;${LogText} "'$2/webapps/efg2' removed"
+     Sleep 3000
     ExecWait 'cmd /C net start "Apache Tomcat"'
     Goto End
         
     tcnotrunning:
-       Delete /REBOOTOK "$2/webapps/efg2.war"
        RmDir /r /REBOOTOK "$2/webapps/efg2"
+       ;${LogText} "'$2/webapps/efg2' removed"
        Goto End    
   End:
    ClearErrors
@@ -731,12 +865,20 @@ System::Call "kernel32::CreateMutexA(i 0, i 0, t '$(^Name)') i .r0 ?e"
  launch: 
   MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2|MB_TOPMOST "Are you sure you want to completely remove $(^Name) and all of its components?" IDYES +2
   Quit
+    ; StrCpy $diskspace "'none'"
+    ;StrCpy $availdiskspace 'none'
+  
    ReadRegStr $INSTDIR HKLM "${REGKEY}" Path
     !insertmacro MUI_STARTMENU_GETFOLDER Application $StartMenuGroup
     !insertmacro SELECT_UNSECTION Main ${UNSEC0000}
      SectionSetText ${unAll} ""
+      SectionSetText ${un_EFGWebapps} "EFGWebApps"
       StrCpy $UnselCount "0"
-  StrCpy $BoxCount "0"
+    StrCpy $BoxCount "0"
+    
+    ;SpaceTexts 'none' " "
+  ;  ${LogSetFileName} "$INSTDIR\uninstalllogs.txt"
+   ; ${LogSetOn}
     Call un.checkSelectedSections
  efg_installed:
  
@@ -744,33 +886,31 @@ FunctionEnd
 Function un.checkSelectedSections
 
 ;hide section unAll
-  /*SectionSetText ${unAll} ""
-  SectionSetText ${un_Tomcat} "Remove Tomcat"
-  SectionSetText ${un_MySQL} "Remove MySQL"
-  SectionSetText ${un_JRE} "Remove JRE"
-  SectionSetText ${un_JDK} "Remove JDK"
-  SectionSetText ${un_Magick}  "Remove Image Magick"*/
-;
  
-  
+ 
+  ;${LogText} "Inside checkSelectedSections"
   ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "tomcat_uninstaller"  
   StrLen $0 "$1"
   IntCmp $0 0 noTomcat noTomcat isTomcat
   isTomcat:
-  SectionSetText ${un_tomcat} "Remove Tomcat"
-    IntOp $BoxCount $BoxCount + 1
+  SectionSetText ${un_tomcat} "Tomcat ${TOMCAT_VERSION}"
+    ;IntOp $BoxCount $BoxCount + 1
+    SectionSetFlags ${un_Tomcat} 0
     Goto checkMagick
   noTomcat:
     SectionSetText ${un_Tomcat} ""
     SectionSetFlags ${un_Tomcat} 0
   
  checkMagick:
+  ;${LogText} "Check Magic"
+ 
    ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "magick_uninstaller"  
    StrLen $0 "$1"
    IntCmp $0 0 noMagick noMagick isMagick
   isMagick:
-    SectionSetText ${un_magick} "Remove Image Magick"
-    IntOp $BoxCount $BoxCount + 1
+    SectionSetText ${un_magick} "ImageMagick ${MAGICK_VERSION}"
+    SectionSetFlags ${un_magick} 0
+    ;IntOp $BoxCount $BoxCount + 1
     Goto checkMySQL
   noMagick:
     SectionSetText ${un_magick} ""
@@ -781,18 +921,22 @@ Function un.checkSelectedSections
      StrLen $0 "$1"
    IntCmp $0 0 noMySQL noMySQL isMySQL
    isMySQL:
-    IntOp $BoxCount $BoxCount + 1
+    SectionSetText ${un_mysql} "${MYSQL_VERSION}"
+    ;IntOp $BoxCount $BoxCount + 1
+    SectionSetFlags ${un_mysql} 0
     Goto checkJRE
   noMySQL:
     SectionSetText ${un_mysql} ""
     SectionSetFlags ${un_mysql} 0
   
   checkJRE:
-      ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "jre_uninstaller"     
+    ReadRegStr $1 HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" "jre_uninstaller"     
     StrLen $0 "$1"
    IntCmp $0 0 noJRE noJRE isJRE
   isJRE:
-    IntOp $BoxCount $BoxCount + 1
+    SectionSetText ${un_jre} "Java Runtime Environment ${JRE_VERSION}"
+    ;IntOp $BoxCount $BoxCount + 1
+    SectionSetFlags ${un_jre} 0
     Goto checkJDK
   noJRE:
     SectionSetText ${un_jre} ""
@@ -803,7 +947,10 @@ Function un.checkSelectedSections
     StrLen $0 "$1"
    IntCmp $0 0 noJDK noJDK isJDK
    isJDK:
-    IntOp $BoxCount $BoxCount + 1
+    SectionSetText ${un_jdk} "Java Development Kit ${JDK_VERSION}"
+    ;IntOp $BoxCount $BoxCount + 1
+    SectionSetFlags ${un_jdk} 0
+    
     Goto end
   noJDK:
     SectionSetText ${un_jdk} ""

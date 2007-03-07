@@ -184,7 +184,7 @@ public abstract class UploadServlet extends HttpServlet
 
     if(fileUploadStats != null && fileUploadStats.getBytesRead() == fileUploadStats.getTotalSize())
     {
-      response.getWriter().println("<b>Upload complete.Processing files. Please wait till the submit button is enabled to continue</b>");
+      response.getWriter().println("<b>Upload complete.</b>");
     }
   }
 

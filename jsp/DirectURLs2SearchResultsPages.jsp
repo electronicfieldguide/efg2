@@ -40,7 +40,7 @@ java.util.Iterator" %>
 					<table class="directurl" summary="">					 
 						<tr>
 							<td colspan="5" class="title">The following are direct links to configured EFG pages. <br/>
-								<span class="subtitle">Right-click on the name to copy (Control-Click for Mac)</span>
+								<span class="subtitle">Right-click on Template Name to copy the URL (Control-Click for Mac)</span>
 							</td>
 						</tr>
 						<tr>

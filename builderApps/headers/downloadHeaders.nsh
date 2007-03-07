@@ -42,8 +42,8 @@
 !define JRE_SOURCE "C:\downloads\efg2_downloads\jre-1_5_0_08-windows-i586-p.exe"
 
 
-!define tomcat_exec "jakarta-tomcat-5.0.28.exe"
-!define TOMCAT_SOURCE "C:\downloads\efg2_downloads\jakarta-tomcat-5.0.28.exe"
+!define tomcat_exec "jakarta-tomcat-5.0.30.exe"
+!define TOMCAT_SOURCE "C:\downloads\efg2_downloads\jakarta-tomcat-5.0.30.exe"
 
 
 

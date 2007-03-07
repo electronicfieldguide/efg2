@@ -165,9 +165,21 @@ public class EFGThumbNailDimensions  extends JDialog{
         this.loadComboBox();
    
         //Set up the UI for selecting a pattern.
-        JLabel dimensionsLabel1 = new JLabel("Enter the maximum");
-        JLabel dimensionsLabel2 = new JLabel("dimension or");
-        JLabel dimensionsLabel3 = new JLabel("select one from the list:");
+        String propLabel = 
+        	EFGImportConstants.EFGProperties.getProperty(
+        			"thumbnails.label1",
+        			"Enter the maximum dimension");
+        JLabel dimensionsLabel1 = new JLabel(propLabel);
+        propLabel = 
+        	EFGImportConstants.EFGProperties.getProperty(
+        			"thumbnails.label2",
+        			"for your thumbnails (in pixels) or");
+        JLabel dimensionsLabel2 = new JLabel(propLabel);
+        propLabel = 
+        	EFGImportConstants.EFGProperties.getProperty(
+        			"thumbnails.label3",
+        			"select one from the list:");
+        JLabel dimensionsLabel3 = new JLabel(propLabel);
 
         comboBoxItems = new JComboBox(comboBoxItemsSet.toArray());
         comboBoxItems.setEditable(true);

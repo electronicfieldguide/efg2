@@ -1,4 +1,4 @@
-<Context path="/efg2" docBase="efg2" debug="5" reloadable="true" crossContext="false">
+<Context path="/efg2" docBase="efg2" debug="5" reloadable="false" crossContext="false">
 	<Logger className="org.apache.catalina.logger.FileLogger" prefix="localhost_efg2_log." suffix=".txt" timestamp="true"/>
 	<Resource name="jdbc/efgMySQL" auth="Container" type="javax.sql.DataSource"/>
 	<ResourceParams name="jdbc/efgMySQL">

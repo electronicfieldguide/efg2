@@ -32,13 +32,13 @@ Function addJREToInstalls
 FunctionEnd
 
 Function checkJREInstalled
-    StrCmp  $isJREInstalled "true" 0 done
-    ReadRegStr $2 HKLM "${JRE_KEY}" "CurrentVersion"        
-    StrLen $0 "$2"
-    IntCmp $0 0 done  done writereg
- 
- ;add to components to uninstall
+    ${LogText} 'Checking if JRE${JRE_VERSION} was installed by EFG2Installer'
+    StrCmp  $isJREInstalled "true" writereg done
+   
+    ;add to components to uninstall
      writereg:
+        ${LogText} 'JRE ${JRE_VERSION} was installed by EFG2Installer'
+        ${LogText} 'Writing JRE ${JRE_VERSION} path in registry'    
         ReadRegStr $1 HKLM "${JRE_UNINSTALLER_KEY}" "UninstallString"  
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" jre_uninstaller "$1"
  
@@ -49,23 +49,26 @@ FunctionEnd
 Function GetJRE
 
     
-       !ifdef FullInstall           
-            MessageBox MB_OK "$(^Name) uses Java Runtime 1.5, it will now be installed."
+       !ifdef FullInstall 
+        ${LogText}   "$(^Name) uses Java Runtime ${JRE_VERSION}, it will now be installed."       
+            MessageBox MB_OK "$(^Name) uses Java Runtime ${JRE_VERSION}, it will now be installed."
               StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1
                
               printMySQLMessage1:
                  Call  GetMYSQLMessage      
               continue1:
-
+            ${LogText} "About to install JRE${JRE_VERSION}"   
             StrCpy $2 "$INSTDIR\${jre_exec}"
             
             ExecWait $2
-          
-            Delete $2
             StrCpy $isJREInstalled "true"
             StrCpy $isMySQLInstall "false"
+             ${LogText} "JRE${JRE_VERSION} Installed"
         !else
-            MessageBox MB_OK "$(^Name) uses Java Runtime 1.5, it will now \
+            ${LogText} "$(^Name) uses Java Runtime ${JRE_VERSION}, it will now \
+                             be downloaded and installed.\
+                             An internet connection is required."
+            MessageBox MB_OK "$(^Name) uses Java Runtime ${JRE_VERSION}, it will now \
                              be downloaded and installed.\
                              An internet connection is required."
               
@@ -73,12 +76,16 @@ Function GetJRE
               printMySQLMessage2:
                  Call  GetMYSQLMessage      
               continue2:
-           StrCpy $2 "$TEMP\Java Runtime Environment.exe"
+              ${LogText} "About to install JRE${JRE_VERSION}"         
+              StrCpy $2 "$TEMP\Java Runtime Environment.exe"
             nsisdl::download /TIMEOUT=30000 ${JRE_URL} $2
             Pop $R0 ;Get the return value
             StrCmp $R0 "success" execT
              DetailPrint 'download failed from "${JRE_URL}": $R0'
              MessageBox MB_OK "Download failed: $R0"
+             ${LogText} "download failed from '${JRE_URL}': $R0"
+            ${LogText} 'Quitting installation'
+
             Quit
             execT:
             
@@ -86,32 +93,39 @@ Function GetJRE
             Delete $2
             StrCpy $isJREInstalled "true"
             StrCpy $isMySQLInstall "false"
+            ${LogText} "JRE${JRE_VERSION} Installed"       
         !endif
 FunctionEnd
  
  
 Function DetectJRE
+ ${LogText} 'Checking if JRE${JRE_VERSION} is installed'
   ReadRegStr $2 HKLM "${JRE_KEY}" "CurrentVersion"
  
   StrLen $0 "$2"
-  IntCmp $0 0 jre jre versioncomp
-    ; "[Version1]"      First version
-  ;"[Version2]"       Second version
-    ;$var                ; Result:
-    ;    $var=0  Versions are equal
-    ;    $var=1  Version1 is newer
-    ;    $var=2  Version2 is newer
-  
- ;val1 val2 jump_if_equal [jump_if_val1_less] [jump_if_val1_more]
- 
+  ${If} $0 <= 0
+   ${LogText} 'JRE${JRE_VERSION} does not exists.EFG2Installer will install it.' 
+    GoTo jre
+  ${Else}
+    GoTo versioncomp
+  ${EndIf}
  
  versioncomp:
+     ${LogText} "EFG2 requires at least version: '${JRE_VERSION}'"
+     ${LogText} "Version on machine is:'$2' "
     ${VersionCompare} "${JRE_VERSION}" "$2" $1
-    IntCmp $1 1  jre done done  
-    
+  
+  ${If} $1 = 1 
+     ${LogText} "JRE version on machine is not adequate to run EFG2."
+       ${LogText} "Installer will install '${JRE_VERSION}'"
+    GoTo jre
+  ${Else}
+  ${LogText} "JRE version on machine is adequate"
+    GoTo done
+  ${EndIf}    
     jre:
+         ${LogText} "Function call GetJRE"
         Call GetJRE
-        Goto done  
   done:
    
 FunctionEnd

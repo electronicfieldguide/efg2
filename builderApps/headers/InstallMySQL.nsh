@@ -33,17 +33,17 @@ FunctionEnd
 Function GetMYSQL
     StrCpy $isMySQLInstall "true"
     !ifdef FullInstall
-         MessageBox MB_OK "$(^Name) uses MySQL Server 5.0, it will now \
+         MessageBox MB_OK "$(^Name) uses ${MYSQL_VERSION}, it will now \
                          be installed."
  
         StrCpy $2 "$INSTDIR\${mysqlexec}"
-        ;DetailPrint " Waiting for MySQL Installation"  
-        
-        ExecWait $2
-        Delete $2 
+        DetailPrint "MySQL installation is still in progress..Please wait.."
+        ExecWait $2       
+        Call GetMySQLMessage  
+        Sleep 30000
         StrCpy $isMySQLInstalled "true"   
     !else
-         MessageBox MB_OK "$(^Name) uses MySQL Server 5.0, it will now \
+         MessageBox MB_OK "$(^Name) uses ${MYSQL_VERSION}, it will now \
                          be downloaded and installed.\
                          An internet connection is required."
  
@@ -62,13 +62,14 @@ Function GetMYSQL
     !endif
 FunctionEnd
 Function checkMySQLInstalled
-    StrCmp  $isMySQLInstalled "true" 0 done
-    ReadRegStr $2 HKLM "${MYSQL_KEY}" "Version"              
-    StrLen $0 "$2"   
-    IntCmp $0 0 done  done writereg
+    ${LogText} 'Checking if ${MYSQL_VERSION} was installed by EFG2Installer'
+    StrCmp  $isMySQLInstalled "true" writereg done
  
  ;add to components to uninstall
      writereg:
+        ${LogText} '${MYSQL_VERSION} was installed by EFG2Installer'
+        ${LogText} 'Writing ${MYSQL_VERSION} path in registry'    
+     
         ReadRegStr $1 HKLM "${MYSQL_UNINSTALLER_KEY}" "UninstallString"  
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" mysql_uninstaller "$1"
  
@@ -78,12 +79,21 @@ Function checkMySQLInstalled
 FunctionEnd
  
 Function DetectMYSQL
+    ${LogText} 'Checking for existence of ${MYSQL_VERSION} on machine' 
   ReadRegStr $2 HKLM "${MYSQL_KEY}" "Version"
              
    StrLen $0 "$2"
-  IntCmp $0 0 mysql mysql done
+   ${If} $0 <= 0
+   ${LogText} '${MYSQL_VERSION} does not exists on machine and will be installed' 
+    GoTo mysql
+  ${Else}
+     ${LogText} '${MYSQL_VERSION} already exists on machine' 
+    GoTo done
+  ${EndIf}
+  ;IntCmp $0 0 mysql mysql done
   
   mysql: 
+   ${LogText} "Function call GetMYSQL"
     Call GetMYSQL
  
   done:

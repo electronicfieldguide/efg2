@@ -11,7 +11,7 @@
 		</xsl:variable>
 		<b>Ceated: </b>
 		<xsl:value-of select="$today"/>
-		<b>  Updated:</b>
+		<b>  Updated: </b>
 		<xsl:value-of select="$today"/>
 	</xsl:template>
 </xsl:stylesheet>

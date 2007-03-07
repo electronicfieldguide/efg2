@@ -27,5 +27,5 @@ File installImageMagick.nsh
 !define MYSQL_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/mysql/MySQLSetup.exe"
 !define JRE_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/java/jre-1_5_0_08-windows-i586-p.exe"
 !define JDK_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/java/j2sdk-1_4_2_10-windows-i586-p.exe"
-!define TOMCAT_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/tomcat/jakarta-tomcat-5.0.28.exe"
+!define TOMCAT_URL "http://efg.cs.umb.edu/EFGsoftware/efg2Applications/tomcat/jakarta-tomcat-5.0.30.exe"
 

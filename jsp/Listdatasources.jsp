@@ -12,9 +12,11 @@ project.efg.util.EFGDisplayObject
 	  		String classname = "datasources"; 
 		   	String context = request.getContextPath();
 		  	String mainTableName =request.getParameter(EFGImportConstants.ALL_TABLE_NAME);
+		  	
 		  	if(mainTableName.equalsIgnoreCase(EFGImportConstants.EFG_GLOSSARY_TABLES)){
 		  		title = "Select glossaries to export";
 		  		classname = "glossaries"; 
+		  		
 		  		
 		  	}
 
@@ -24,7 +26,7 @@ project.efg.util.EFGDisplayObject
 			EFGDisplayObjectList listInter = servFactory.getListOfDatasources();
 			boolean isEmpty = false;
 			if(listInter != null){
-				if(listInter.getCount() <= 1){
+				if(listInter.getCount() < 1){
 				isEmpty = true;
 				}
 			}

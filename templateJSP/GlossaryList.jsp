@@ -66,7 +66,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 		<table class="about">
 			<tr>
 				<td class="alphastrip">
-					<a class="glossary" href="#a">TODO Jenn</a> | <a class="glossary" href="#b">TODO Jenn</a>
+					<a class="glossary" href="#a"></a> | <a class="glossary" href="#b"></a>
 				</td>
 			</tr>
 		</table>
@@ -75,7 +75,7 @@ project.efg.Imports.efgInterface.EFGQueueObjectInterface
 				<td>
 					<dl class="alphaheader">
 						<dt class="alphaheader">
-							<a name="a"></a>- TODO Jenn -</dt>
+							<a name="a"></a></dt>
 					</dl>
 					<dl class="glossary">
 						<%

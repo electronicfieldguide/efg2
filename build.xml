@@ -62,10 +62,12 @@ to compile/deploy/clean with:
 	</path>
 	<!-- deployImages -->
 	<target name="deployEFGIcons">
+		<!--
 		<mkdir dir="${deploy.home}/EFGIcons"/>
 		<copy todir="${deploy.home}/EFGIcons">
 			<fileset dir="${icons.home}/"/>
 		</copy>
+		-->
 	</target>
 	<target name="prepare">
 		<mkdir dir="${compile.home}"/>

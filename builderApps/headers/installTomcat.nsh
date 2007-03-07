@@ -45,46 +45,60 @@ Function GetTOMCAT
   
   
   !ifdef FullInstall  
-    MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now be installed." 
+  ${LogText} "$(^Name) uses Tomcat ${TOMCAT_VERSION}, it will now be installed." 
+    MessageBox MB_OK "$(^Name) uses Tomcat ${TOMCAT_VERSION}, it will now be installed." 
       StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1   
   printMySQLMessage1:
      Call  GetMYSQLMessage   
-  continue1:      
+  continue1: 
+    ${LogText} "About to setJDKForTomcat"     
     Call SetJDKForTomcat   
     StrCpy $2 "$INSTDIR\${tomcat_exec}"  
     ExecWait $2
-    Delete $2  
-    Call ResetJDKForTomcat
+     ${LogText} "Tomcat installation successful" 
+      ${LogText} "About to resetJDKForTomcat"     
+      Call ResetJDKForTomcat
      StrCpy $isMySQLInstall "false"
      StrCpy $isTomcatInstalled "true"
+     ${LogText} "ResetJDKForTomcat done"   
   !else
-    MessageBox MB_OK "$(^Name) uses Tomcat 5.0, it will now \
-                         be downloaded and installed.\
-                         An internet connection is required."
-   StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2   
-  printMySQLMessage2:
-     Call  GetMYSQLMessage   
-  continue2:      
-                         
-     Call SetJDKForTomcat
-    StrCpy $2 "$TEMP\TomcatExecutable.exe"
-    nsisdl::download /TIMEOUT=30000 ${TOMCAT_URL} $2
-    Pop $R0 ;Get the return value
-    StrCmp $R0 "success" +3
-    MessageBox MB_OK "Download failed: $R0"
-    Quit
-    ExecWait $2
-  
-    Delete $2  
-   Call ResetJDKForTomcat
-     StrCpy $isMySQLInstall "false"
-      StrCpy $isTomcatInstalled "true"
+        ${LogText} "$(^Name) uses Tomcat ${TOMCAT_VERSION}, it will now \
+                             be downloaded and installed.\
+                             An internet connection is required."
+                             
+        MessageBox MB_OK "$(^Name) uses Tomcat ${TOMCAT_VERSION}, it will now \
+                             be downloaded and installed.\
+                             An internet connection is required."
+        StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2   
+        printMySQLMessage2:
+        Call  GetMYSQLMessage   
+      
+      continue2: 
+       ${LogText} "About to setJDKForTomcat"     
+                                   
+        Call SetJDKForTomcat
+        
+        ${LogText} "About to download Tomcat from ${TOMCAT_URL}"     
+        StrCpy $2 "$TEMP\TomcatExecutable.exe"
+        nsisdl::download /TIMEOUT=30000 ${TOMCAT_URL} $2
+        Pop $R0 ;Get the return value
+        StrCmp $R0 "success" +3
+        MessageBox MB_OK "Download failed: $R0"
+        Quit
+        ExecWait $2     
+        Delete $2 
+        ${LogText} "Tomcat installation successful" 
+        ${LogText} "About to resetJDKForTomcat"      
+       Call ResetJDKForTomcat
+       StrCpy $isMySQLInstall "false"
+        StrCpy $isTomcatInstalled "true"
+         ${LogText} "ResetJDKForTomcat done"   
    !endif
     
 FunctionEnd
     ; Set the JDK compatible for the EFG Tonmcat version
 Function SetJDKForTomcat
-
+  ${LogText} 'Setting JDK version for Tomcat installation'
     ClearErrors 
    
      ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"
@@ -120,19 +134,29 @@ Function SetJDKForTomcat
      
     IfFileExists "$2" FoundJvmDll
    FoundJvmDll:
+    ${LogText} "FoundJvmDll and it is set to $2"
     WriteRegStr HKLM "${JRE_KEY}" RuntimeLib "$2"
-   WriteRegStr HKLM "${JRE_KEY}\${JDK_VERSION}" RuntimeLib "$2"
+    WriteRegStr HKLM "${JRE_KEY}\${JDK_VERSION}" RuntimeLib "$2"
    
     
 FunctionEnd
 ; Reset the Tomcat installer to point to the original one
 Function ResetJDKForTomcat
+    ${LogText} 'Reset JDK version to previous after Tomcat installation'
+
     ClearErrors
     Strlen $0 "$currentJREVersion"
-    IntCmp $0 0  done done writeReg
-    pop $0
+    ${If} $0 <= 0
+        ${LogText} "The variable currentJREVersion cannot be found"
+        GoTo done
+    ${Else}
+        GoTo writeReg
+    ${EndIf}
+    ;IntCmp $0 0  done done 
+    ;pop $0
  
     writeReg:
+    ${LogText} 'Writing registry values to reset jdk values'
     WriteRegStr HKLM "${JRE_KEY}" CurrentVersion "$currentJREVersion" 
     WriteRegStr HKLM "${JRE_KEY}" RuntimeLib "$currentRuntime"
     WriteRegStr HKLM "${JRE_KEY}\${JDK_VERSION}" RuntimeLib "$current14Runtime"
@@ -141,25 +165,34 @@ Function ResetJDKForTomcat
     done:
 FunctionEnd
 Function checkTomcatInstalled
-    StrCmp  $isTomcatInstalled "true" 0 done
-   ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"             
-    StrLen $0 "$2"   
-    IntCmp $0 0 done  done writereg
- 
- ;add to components to uninstall
+    ${LogText} 'Checking if Tomcat${TOMCAT_VERSION} was installed by EFG2Installer'
+    StrCmp  $isTomcatInstalled "true" writereg done
+  
      writereg:
+       ${LogText} 'Tomcat ${TOMCAT_VERSION} was installed by EFG2Installer'
+        ${LogText} 'Writing Tomcat ${TOMCAT_VERSION} path in registry'    
+     
         ReadRegStr $1 HKLM "${TOMCAT_UNINSTALLER_KEY}" "UninstallString"  
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" tomcat_uninstaller "$1"
  done:
     
 FunctionEnd
 Function DetectTOMCAT
+ ${LogText} 'Checking for existence of Tomcat ${TOMCAT_VERSION} on machine' 
   ReadRegStr $2 HKLM "${TOMCAT_KEY}" "InstallPath"
-             
   StrLen $0 "$2"
-  IntCmp $0 0 tomcat tomcat done
+  
+  ;IntCmp $0 0 tomcat tomcat done
+   ${If} $0 <= 0
+   ${LogText} 'Tomcat${TOMCAT_VERSION} does not exists on machine and will be installed' 
+    GoTo tomcat
+  ${Else}
+     ${LogText} 'Tomcat${TOMCAT_VERSION} already exists on machine' 
+    GoTo done
+  ${EndIf}
   
   tomcat:
+   ${LogText} "Function call GetTOMCAT"
    Call GetTOMCAT
   done:
 FunctionEnd

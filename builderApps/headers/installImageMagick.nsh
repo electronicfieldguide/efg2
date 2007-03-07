@@ -32,55 +32,60 @@ Function addMagickToInstalls
 FunctionEnd
 Function GetMAGICK
 
-      !ifdef FullInstall    
-        MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
-                            installed." 
+      !ifdef FullInstall  
+        ${LogText} "$(^Name) uses Image Magic ImageMagick${MAGICK_VERSION}, it will now be installed."
+        
+        MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick${MAGICK_VERSION}, it will now \
+                            be installed." 
             StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1     
-            printMySQLMessage1:
+            printMySQLMessage1:               
                 Call  GetMYSQLMessage    
-            continue1:                                
+            continue1: 
+              ${LogText} "About to install Image Magick${MAGICK_VERSION}"
+                                           
             StrCpy $2 "$INSTDIR\${magick_exec}"            
             ExecWait $2
-            Delete $2 
-            StrCpy $isMagickInstalled "true"     
+             StrCpy $isMagickInstalled "true"     
             StrCpy $isMySQLInstall "false"
+             ${LogText} "Image Magick Installed"
       !else
-         MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick-6.3.2-8-Q16, it will now \
+         MessageBox MB_OK "$(^Name) uses Image Magic ImageMagick${MAGICK_VERSION}, it will now \
                          be downloaded and installed.\
                          An internet connection is required."
           StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2     
             printMySQLMessage2:
                 Call  GetMYSQLMessage    
             continue2:       
-    
+        ${LogText} "About to install Image Magick${MAGICK_VERSION}"
         StrCpy $2 "$TEMP\ImageMagickExecutable.exe"
         nsisdl::download /TIMEOUT=30000 ${MAGICK_URL} $2
         Pop $R0 ;Get the return value
          StrCmp $R0 "success" execT
          DetailPrint 'download failed from "${MAGICK_URL}": $R0'
          MessageBox MB_OK "Download failed: $R0"
-           Quit
+          ${LogText} "download failed from '${MAGICK_URL}': $R0"
+          ${LogText} 'Quitting installation'
+          Quit
         execT:
             ExecWait $2            
             Delete $2
             StrCpy $isMagickInstalled "true"
             StrCpy $isMySQLInstall "false"
+             ${LogText} "Image Magick${MAGICK_VERSION} Installed"
       !endif
 FunctionEnd
 Function checkMagickInstalled
-    StrCmp  $isMagickInstalled "true" 0 done
-    ReadRegStr $2 HKLM "${MAGICK_KEY}" "Version"              
-    StrLen $0 "$2"   
-   ${If} $0 <= 0
-    GoTo done
-  ${Else}
-    GoTo writereg
-  ${EndIf}
+    ${LogText} "Checking if image magick${MAGICK_VERSION} was installed by EFG2Installer"
+    StrCmp  $isMagickInstalled "true" writereg done
+
     
     ;IntCmp $0 0 done done writereg
  
  ;add to components to uninstall
      writereg:
+         ${LogText} 'Image magick ${MAGICK_VERSION} was installed by EFG2Installer'
+        ${LogText} 'Writing Image magick path in registry'
+     
         ReadRegStr $1 HKLM "${MAGICK_UNINSTALLER_KEY}" "UninstallString"  
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" magick_uninstaller "$1"
  
@@ -90,26 +95,35 @@ Function checkMagickInstalled
 FunctionEnd 
  
 Function DetectMAGICK
+ ${LogText} 'Checking for existence of Image magick  on machine'
   ReadRegStr $2 HKLM "${MAGICK_KEY}" "Version"              
   StrLen $0 "$2"
   ${If} $0 <= 0
-    GoTo versioncomp
+      ${LogText} 'Image magick does not exists on machine' 
+     GoTo magick
   ${Else}
-    GoTo done
+    ${LogText} 'Image magick exists on machine. Checking if it is the version needed by EFG2'
+    GoTo versioncomp
   ${EndIf}
  ; IntCmp $0 0 versioncomp versioncomp done
   
    versioncomp:
+    ${LogText} "EFG2 requires at least version: '${MAGICK_VERSION}' "
+    ${LogText} "Version on machine is: '$2'"
     ${VersionCompare} "${MAGICK_VERSION}" "$2" $1
+    
    ${If} $1 = 1
+    ${LogText} "Image magick version on machine is not adequate to run EFG2. Installer will install '${MAGICK_VERSION}'"
     GoTo magick
   ${Else}
+      ${LogText} "Image magick version on machine is adequate"
     GoTo done
   ${EndIf}
     
    ; IntCmp $1 1  magick done done  
  
   magick:
+     ${LogText} "Function call GetMAGICK"
      Call GetMAGICK          
  
   done:

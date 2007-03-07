@@ -15,11 +15,13 @@ VIAddVersionKey  "LegalCopyright" "© UMASS Boston"
 VIAddVersionKey  "FileDescription" "Installer Executable"
 
 Function writeProductVersion
+    ${LogText} "Writing variables in '$INSTDIR\${EFG2_RESOURCE_HOME}\properties\version.properties'"
 
    ;on update also update this file
     FileOpen $9 "$INSTDIR\${EFG2_RESOURCE_HOME}\properties\version.properties" w  ;Opens a Empty File an fills it
     FileWrite $9 "efg2.version=${ProductVersion} $\r$\n"   
     FileClose $9   
+ ${LogText} "Done writing variables in '$INSTDIR\${EFG2_RESOURCE_HOME}\properties\version.properties'"
 
 FunctionEnd
 

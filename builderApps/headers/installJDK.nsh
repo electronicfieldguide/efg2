@@ -28,19 +28,13 @@ Function addJDKToInstalls
     !endif
 FunctionEnd
 Function checkJDKInstalled
-    StrCmp  $isJDKInstalled "true" 0 done
-    ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"        
-    StrLen $0 "$2"
-    ${If} $0 <= 0
-        GoTo done
-    ${Else}
-        GoTo writereg
-    ${EndIf}
-    
-    ;IntCmp $0 0 done  done writereg 
- 
+    ${LogText} 'Checking if JDK${JDK_VERSION} was installed by EFG2Installer'
+    StrCmp  $isJDKInstalled "true" writereg done
+  
  ;add to components to uninstall
      writereg:
+        ${LogText} 'JDK ${JDK_VERSION} was installed by EFG2Installer'
+        ${LogText} 'Writing ${JDK_VERSION} path in registry'
         ReadRegStr $1 HKLM "${JDK_UNINSTALLER_KEY}" "UninstallString"  
         WriteRegStr HKLM "SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\$(^Name)" jdk_uninstaller "$1"
  
@@ -51,38 +45,50 @@ FunctionEnd
 ;Depends on InstallURLsHeader,CommonRegKey
 Function GetJDK
       
-       !ifdef FullInstall           
-            MessageBox MB_OK "$(^Name) uses J2SDK 1.4, it will now \
+       !ifdef FullInstall   
+             ${LogText} "$(^Name) uses J2SDK ${JDK_VERSION}, it will now \
+                            installed."       
+            MessageBox MB_OK "$(^Name) uses J2SDK ${JDK_VERSION}, it will now \
                             installed."
             StrCmp $isMySQLInstall "true" printMySQLMessage1 continue1     
             printMySQLMessage1:
                 Call  GetMYSQLMessage    
-            continue1:    
+            continue1: 
+             ${LogText} "About to install JDK1.4"   
             StrCpy $2 "$INSTDIR\${jdk_exec}"
             ExecWait $2
-            Delete $2
-            StrCpy $isJDKInstalled "true"
+             StrCpy $isJDKInstalled "true"
             StrCpy $isMySQLInstall "false"
+            ${LogText} "JDK${JDK_VERSION} Installed"
         !else
-             MessageBox MB_OK "$(^Name) uses J2SDK 1.4, it will now \
+             ${LogText} "$(^Name) uses J2SDK ${JDK_VERSION}, it will now \
+                             be downloaded and installed.\
+                             An internet connection is required."
+                             
+             MessageBox MB_OK "$(^Name) uses J2SDK ${JDK_VERSION}, it will now \
                              be downloaded and installed.\
                              An internet connection is required."
              StrCmp $isMySQLInstall "true" printMySQLMessage2 continue2     
             printMySQLMessage2:
                 Call  GetMYSQLMessage    
-            continue2:       
+            continue2: 
+             ${LogText} "About to install JDK${JDK_VERSION}"         
             StrCpy $2 "$TEMP\Java Development Kit Environment.exe"
             nsisdl::download /TIMEOUT=30000 ${JDK_URL} $2
             Pop $R0 ;Get the return value
              StrCmp $R0 "success" execT
              DetailPrint 'download failed from "${JDK_URL}": $R0'
              MessageBox MB_OK "Download failed: $R0"
+             ${LogText} "download failed from '${JDK_URL}': $R0"
+            ${LogText} 'Quitting installation'
+             
             Quit
             execT:           
             ExecWait $2
             Delete $2  
             StrCpy $isJDKInstalled "true" 
-            StrCpy $isMySQLInstall "false"         
+            StrCpy $isMySQLInstall "false"  
+             ${LogText} "JDK1.4 Installed"       
        !endif  
         
        
@@ -90,19 +96,23 @@ FunctionEnd
  
  
 Function DetectJDK
+  ${LogText} 'Checking if JDK${JDK_VERSION} is installed'
  ;IntCmp $0 5 is5 lessthan5 morethan5
   ReadRegStr $2 HKLM "${JDK_KEY}" "JavaHome"        
   StrLen $0 "$2"
   
   ${If} $0 <= 0
+    ${LogText} 'JDK${JDK_VERSION} does not exists.EFG2Installer will install it.' 
     GoTo jdk
   ${Else}
+    ${LogText} 'JDK${JDK_VERSION} exists' 
     GoTo done
   ${EndIf}
   
  ;IntCmp $0 0 jdk jdk done
   
    jdk:
+    ${LogText} "Function call GetJDK"
        Call GetJDK
   done:
 FunctionEnd
