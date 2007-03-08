@@ -38,8 +38,8 @@
 !define EFG2_IMPORTER_LOGS_NAME efg2.log
 !define EFG2_IMPORTER_EXECUTABLE EFG2DataImporter.exe
 !define ABOUT_EXECUTABLE AboutBox.exe
-!define EFG_SMALL_ICON EFG_32x32.ico
-!define EFG_BIG_ICON EFG_48x48.ico
+!define EFG_SMALL_ICON EFG2_32x32.ico
+!define EFG_BIG_ICON EFG2_48x48.ico
 !define EFG2_IMPORTER_UNINSTALLER EFG2UnInstaller.exe
 !define EFG2_LOCAL_DISTRIBUTION_PATH ..\dist
 !define EFG2_RESOURCE_HOME resource
