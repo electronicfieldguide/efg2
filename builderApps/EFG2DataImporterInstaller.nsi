@@ -258,7 +258,7 @@ Function .onInit
  launch:
     InitPluginsDir
     Push $R1
-    File /oname=$PLUGINSDIR\spltmp.bmp icons\EFGKeyConfig32x32.bmp
+    File /oname=$PLUGINSDIR\spltmp.bmp icons\EFG_32x32.bmp
     advsplash::show 1000 1000 1000 -1 $PLUGINSDIR\spltmp
     Pop $R1
     Pop $R1

@@ -10,14 +10,14 @@ Name "Dependencies Installer"
 !define URL http://efg.cs.umb.edu
 
 # MUI defines
-!define MUI_ICON icons\EFGKeyConfig32x32.ico
+!define MUI_ICON icons\EFG_32x32.ico
 !define MUI_FINISHPAGE_NOAUTOCLOSE
 !define MUI_STARTMENUPAGE_REGISTRY_ROOT HKLM
 !define MUI_STARTMENUPAGE_NODISABLE
 !define MUI_STARTMENUPAGE_REGISTRY_KEY ${REGKEY}
 !define MUI_STARTMENUPAGE_REGISTRY_VALUENAME StartMenuGroup
 !define MUI_STARTMENUPAGE_DEFAULTFOLDER "Dependencies Installer"
-!define MUI_UNICON icons\EFGKeyConfig32x32.ico
+!define MUI_UNICON icons\EFG_32x32.ico
 !define MUI_UNFINISHPAGE_NOAUTOCLOSE
 
 # Included files
@@ -138,7 +138,7 @@ SectionEnd
 Function .onInit
     InitPluginsDir
     Push $R1
-    File /oname=$PLUGINSDIR\spltmp.bmp icons\EFGKeyConfig32x32.bmp
+    File /oname=$PLUGINSDIR\spltmp.bmp icons\EFG_32x32.bmp
     advsplash::show 1000 1000 1000 -1 $PLUGINSDIR\spltmp
     Pop $R1
     Pop $R1

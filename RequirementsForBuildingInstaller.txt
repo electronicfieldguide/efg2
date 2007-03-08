@@ -10,8 +10,7 @@ A) The following frameworks are required:
 B) Modules needed from CVS
 	1.efg2_platemaker
 	2.efg2_skins
-	3.EFGIcons
-	4.efg2_website
+	3.efg2_website
 	All of these must be at the same directory level with efg2 module.
 
 	Ant targets:
@@ -39,7 +38,8 @@ C) Building the Installer
 	III) Partial Installer ( Dependent components are fetched from the internet)
 		Just compile  builderApps/EFG2DataImporterInstaller.nsi
 		EFG2Installer.exe is produced. That is the installer you need to distribute.
-
+	IV) If version of software/installer changes edit the variable 'ProductVersion'
+		in builderApps/efg2Headers.nsh to refelct this change.
 
 
 

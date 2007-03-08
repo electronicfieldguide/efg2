@@ -83,8 +83,11 @@ public class ExportEFG extends HttpServlet implements EFGImportConstants {
 	private String exportFiles(String[] datasources,String[] glossaries,String[] mediaresources,String[] otherResources, String context) {
 		try {
 		
-			
-		   	checkNull(mergeDatasourcesAndGlossaries(datasources, glossaries),mediaresources,otherResources);
+			String[] ds = mergeDatasourcesAndGlossaries(
+   					datasources, 
+   					glossaries
+   					);
+		   	checkNull(ds,mediaresources,otherResources);
 		   	String exports_dir = EFGImportConstants.EFGProperties.getProperty("exports_directory");
 		   	File serverDirectory = new File(realPath);
 			File exportDirectory = new File(realPath,
@@ -94,7 +97,7 @@ public class ExportEFG extends HttpServlet implements EFGImportConstants {
 				String zipFileName = this.zip.zipExports(
 							serverDirectory,
 							exportDirectory,
-							datasources, 
+							ds, 
 							mediaresources, 
 							otherResources);
 				StringBuffer successMessage = new StringBuffer();
@@ -202,6 +205,9 @@ public class ExportEFG extends HttpServlet implements EFGImportConstants {
 
 }
 //$Log$
+//Revision 1.2  2007/03/08 13:36:40  kasiedu
+//*** empty log message ***
+//
 //Revision 1.1  2007/01/12 15:04:04  kasiedu
 //no message
 //
