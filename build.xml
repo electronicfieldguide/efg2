@@ -40,6 +40,12 @@ to compile/deploy/clean with:
 	<property name="webapps.home" value="${tomcat.home}/webapps"/>
 	<!--  src files are copied to this temporal location before compilation-->
 	<property name="src.temp.home" value="${efg2.home}/temp"/>
+	
+	<property name="mainclass" value="project.efg.Imports.efgImpl.LoginDialog.class"/>
+		<property name="title" value="EFG2DataImporterJar"/>
+		<property name="version" value="1.0.0.0"/>
+		<property name="copyright" value="Electronic Field Guide Project, UMASS Boston"/>
+
 	<!-- Main class path required by all classes-->
 	<path id="compile.class.path">
 		<!-- all compile-time jars should be the same as the runtime jars.... ram -->
@@ -56,7 +62,7 @@ to compile/deploy/clean with:
 		<fileset dir="${efg2.lib.home}">
 			<include name="*.jar"/>
 		</fileset>
-		<fileset dir="${efg2.lib.home.properties}">
+		<fileset dir="${efg2.properties.home}">
 			<include name="**.*"/>
 		</fileset>
 	</path>
@@ -194,6 +200,28 @@ to compile/deploy/clean with:
 		</delete>
 	</target>
 	<target name="jarImport" depends="compile">
+		<copy todir="${efg2.lib.home.properties}">
+					<fileset dir="${efg2.properties.home}"/>
+				</copy>
+				<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg2.lib.home}"/>
+	
+				<pathconvert property="mf.classpath" pathsep=" ">
+						<path refid="rdb.import.class.path"/>
+						<mapper>
+							<chainedmapper>
+						<flattenmapper/>
+								<globmapper from="*.properties" to="properties/*.properties"/>
+								<globmapper from="*.jar" to="*.jar"/>
+								</chainedmapper>
+									</mapper>
+					</pathconvert>
+		
+		
+				<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled"  manifest="bin/META-INF/MANIFEST.MF">
+
+
+					</jar>
+		<!--
 		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
@@ -202,13 +230,11 @@ to compile/deploy/clean with:
 				</section>
 			</manifest>
 		</jar>
+		-->
 		<mkdir dir="${efg2.lib.home.logs}"/>
 		<mkdir dir="${efg2.lib.home.properties}"/>
 		<!-- COPY FROM rdb properties location -->
-		<copy todir="${efg2.lib.home.properties}">
-			<fileset dir="${efg2.properties.home}"/>
-		</copy>
-		<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg2.lib.home}"/>
+		
 		<delete dir="temp"/>
 	</target>
 	<!-- Compile RDB sources with main sources-->

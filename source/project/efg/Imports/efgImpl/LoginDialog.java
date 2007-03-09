@@ -498,31 +498,39 @@ public class LoginDialog extends JDialog {
 					catalina_home = serverRoot;
 				}
 			}
-			File file = new File(catalina_home);
+			File file = null;
+			try {
+			file = new File(catalina_home);
+			}
+			catch(Exception ee) {
+				
+			}
 			boolean isCatExists = true;
 			boolean isDefault = false;
 			URL url = null;
-			if(!file.exists()) {//suplied args does not exists
-				isCatExists = false;
-				try {
-					String property = 
-						EFGImportConstants.EFGProperties.getProperty("efg.local.repository",
-								EFGImportConstants.EFG_LOCAL_REPOSITORY);
-					
-					url = 
-						LoginDialog.class.getResource(property);
-					catalina_home  = URLDecoder.decode(url.getFile(), "UTF-8");
-					file = new File(catalina_home);
-					if(file.exists()) {//if default exists
-						isCatExists = true;
-						isDefault = true;
+		
+				if(file == null || !file.exists()) {//suplied args does not exists
+					isCatExists = false;
+					try {
+						String property = 
+							EFGImportConstants.EFGProperties.getProperty("efg.local.repository",
+									EFGImportConstants.EFG_LOCAL_REPOSITORY);
+						
+						url = 
+							LoginDialog.class.getResource(property);
+						catalina_home  = URLDecoder.decode(url.getFile(), "UTF-8");
+						file = new File(catalina_home);
+						if(file.exists()) {//if default exists
+							isCatExists = true;
+							isDefault = true;
+						}
 					}
-				}
-				catch(Exception ee) {
+					catch(Exception ee) {
+						
+					}
 					
 				}
-				
-			}
+			
 			if((serverRoot == null ||
 					serverRoot.trim().equals("")) && 
 					(!isCatExists)) {
@@ -537,7 +545,7 @@ public class LoginDialog extends JDialog {
 				
 			}
 			
-				
+			
 				/*
 				 * see if catalina_home environment
 				 * variable is checked
@@ -586,6 +594,7 @@ public class LoginDialog extends JDialog {
 			}
 		} catch (Exception ee) {
 			releaseLock(lock);
+			ee.printStackTrace();
 			log.error(ee.getMessage());
 			JOptionPane
 			.showMessageDialog(
