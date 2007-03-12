@@ -43,8 +43,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Hashtable;
 
 import javax.swing.JButton;
@@ -564,7 +567,7 @@ public class ImportMenu extends JFrame {
 			}
 		    //The description of this filter
 		    public String getDescription() {
-		        return "Just Zip Files";
+		        return "*.zip";
 		    }
 	}
 	
@@ -594,7 +597,16 @@ public class ImportMenu extends JFrame {
 				EFGImportConstants.EFGProperties.getProperty(
 			 "efg.previous.zipfile.location");
 			if(prevziphome != null){
-				this.previousZipFileLocation = new File(prevziphome);
+				//this.previousZipFileLocation = new File(prevziphome);
+				
+				try {
+					this.previousZipFileLocation= new File(URLDecoder.decode(prevziphome, "UTF-8"));
+				} catch (UnsupportedEncodingException e) {
+					// FIXME Auto-generated catch block
+					//e.printStackTrace();
+				}
+	        
+	          
 			}
 			else{
 				this.previousZipFileLocation = new File(".");
@@ -626,18 +638,19 @@ public class ImportMenu extends JFrame {
 	            chooser.setMultiSelectionEnabled(false);
 	            chooser.setDialogType(JFileChooser.OPEN_DIALOG);
 	            chooser.setDialogTitle("Choose your EFG2 zip file...");
-	            chooser.setCurrentDirectory(this.previousZipFileLocation);
-	            if (
-	                chooser.showOpenDialog(
+	            chooser.setCurrentDirectory( this.previousZipFileLocation);    
+	            if(	chooser.showOpenDialog(
 	                		this.frame)
 	                == JFileChooser.APPROVE_OPTION
 	                ) {
 	            	File targetFile = chooser.getSelectedFile();
 	                if(targetFile != null && 
 	                		!targetFile.toString().trim().equals("")) {
+	                	File parentFile = targetFile.getParentFile();
+	                	;
 	                	EFGImportConstants.EFGProperties.setProperty(
 	               			 "efg.previous.zipfile.location",
-	               			 targetFile.toURI().toString());
+	               			URLEncoder.encode(parentFile.getAbsolutePath(), "UTF-8"));
 	                	
 	                	File file = new File(this.serverHome,"webapps/efg2");
 	                	if(!this.importLocation.exists()){

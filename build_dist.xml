@@ -221,6 +221,22 @@ to make a distribution call makeImport:
 		<delete dir="${efg2.dist.home}/samples/images" quiet="true"/>
 		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
 	</target>
+	<target name="makePatch" depends="clean,war,jarImport">
+		<mkdir dir="${efg2.dist.home}"/>
+		<mkdir dir="${efg2.dist.home}/resource"/>
+		<mkdir dir="${efg2.dist.home}/resource/efg2"/>
+		<mkdir dir="${efg2.dist.home}/resource/properties"/>
+
+		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource"/>
+		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource/properties"/>
+		<copy file="${efg2.lib.home}/rdbImport.jar" todir="${efg2.dist.home}/resource"/>
+
+		<copy file="${efg2.home}/efg2/WEB-INF/classes/project/efg/exports/ZipExport.class" 
+		todir="${efg2.dist.home}/resource/efg2"/>
+		<delete file="${efg2.dist.home}/resource/login.sh" quiet="true"/>
+		<delete dir="${efg2.home}/efg2" quiet="true"/>
+		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+	</target>
 	<target name="makeImport" depends="clean,war,jarImport ">
 		<mkdir dir="${efg2.dist.home}"/>
 		<mkdir dir="${efg2.dist.home}/resource"/>
@@ -238,7 +254,6 @@ to make a distribution call makeImport:
 		<copy todir="${efg2.dist.home}/samples/images/Het">
 			<fileset dir="${efg2.home}/sampleImages/Het" includes="*.*"/>
 		</copy>
-
 		<copy todir="${efg2.dist.home}/resource/metadataHeader">
 			<fileset dir="${efg2.lib.home}/metadataHeader"/>
 		</copy>

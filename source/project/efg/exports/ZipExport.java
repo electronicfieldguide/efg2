@@ -338,10 +338,10 @@ public class ZipExport implements ZipInterface{
 			buffer.append(export.dumpDB(datasource.toLowerCase()));
 			buffer.append(export.dumpDB(metadatasource.toLowerCase()));
 			
-			
+			String templatesTable = EFGImportConstants.EFGProperties.getProperty(
+			"efg_template_table_name");
 			StringBuffer query = new StringBuffer( "SELECT * FROM ");
-			query.append(EFGImportConstants.EFGProperties.getProperty(
-					EFGImportConstants.TEMPLATE_TABLE));
+			query.append(templatesTable);
 			query.append(" WHERE ");
 			query.append(EFGImportConstants.DATASOURCE_NAME);
 			query.append("='");
@@ -349,11 +349,13 @@ public class ZipExport implements ZipInterface{
 			query.append("'");
 			
 			try {
+				System.out.println("About to get template");
+				System.out.println("Query is: " + query.toString());
 				buffer.append(export.dumpTable(
-						EFGImportConstants.EFGProperties.getProperty(
-						EFGImportConstants.TEMPLATE_TABLE),
+						templatesTable,
 						query.toString()));
 			} catch (Exception e) {
+				System.out.println(e.getMessage());
 			}
 			
 			query = new StringBuffer(

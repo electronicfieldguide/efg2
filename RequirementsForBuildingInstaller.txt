@@ -11,8 +11,11 @@ B) Modules needed from CVS
 	1.efg2_platemaker
 	2.efg2_skins
 	3.efg2_website
+	4.EFGsoftware/efg2
 	All of these must be at the same directory level with efg2 module.
-
+	The generated EFG2Installer will be placed in the EFGsoftware/efg2 folder.
+	You then need to edit EFGsoftware/index.html to add the relevant info for
+	the created installer.
 	Ant targets:
 		run ant build_dist.xml with the "makeImportNSIS" target.
 
