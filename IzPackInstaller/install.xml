@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<!-- 
+    A efg2 installation file.
+    
+    
+    To compile it :
+    - go in the bin directory where you installed IzPack
+    - call "compile ../efg2/install.xml -b ../efg2"
+-->
+
+<installation version="1.0">
+
+    <!-- 
+        The info section.
+        The meaning of the tags should be natural ...
+    -->
+    <info>
+        <appname>EFG2DataImporter</appname>
+        <appversion>1.0.0.2</appversion>
+        <authors>
+            <author name="kasiedu" email="kasiedu@cs.umb.edu"/>
+         </authors>
+        <url>http://efg.cs.umb.edu</url>
+        <javaversion>1.5</javaversion>
+      </info>
+    <variables>
+    	<variable name="InstallerFrame.logfilePath" value="$INSTALL_PATH/My-install.log"/> 
+	  	<variable name="app-version" value="1.0.0.2"/>
+	  	<variable name="released-on" value="03/08/2007"/>	  
+	</variables>
+    <!-- 
+        The gui preferences indication.
+        Sets the installer window to 640x480. It will not be able to change the size.
+    -->
+    <guiprefs width="640" height="480" resizable="no"/>
+    
+    <!-- 
+        The locale section.
+        Asks here to include the English and French langpacks.
+    -->
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+    
+    <!-- 
+        The resources section.
+        The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
+    -->
+    <resources>
+        <res id="LicencePanel.licence" src="builderApps/license/license.txt"/>
+        <res id="Installer.image" src="lib/icons/efglogo_tiny.jpg" />
+        <res id="InfoPanel.info" src="IzPackInstaller/docs/requirements.txt"/>
+        <res id="HTMLInfoPanel.info" src="IzPackInstaller/docs/postinstall.html"/>
+        <res id="userInputSpec.xml" src="IzPackInstaller/efgpanels/userInputSpec.xml"/>
+        <res id="ProcessPanel.Spec.xml" src="IzPackInstaller/efgpanels/ProcessPanel.Spec.xml"/>
+     </resources>
+    
+    <!-- 
+        The panels section.
+        We indicate here which panels we want to use.
+         The order will be respected.
+         Add a panel that displays what they should have
+         installed and configured.
+         Warn them that the application will not work unless
+         they have these applications installed.
+         And environmental variables set
+         Provide a list of applications and where they can 
+         find them
+    -->
+    <panels>   	
+        <panel classname="HelloPanel"/>
+         <panel classname="InfoPanel"/>  
+        <panel classname="LicencePanel"/>
+        <panel classname="UserInputPanel"/>
+        <panel classname="TargetPanel"/>         
+        <panel classname="PacksPanel"/>       
+        <panel classname="InstallPanel"/> 
+        <!--
+        <panel classname="ProcessPanel"/>  
+       
+         <panel classname="XInfoPanel"/>   
+          -->   
+        <panel classname="HTMLInfoPanel"/>  
+        <panel classname="SimpleFinishPanel"/>
+    </panels>
+
+    <!-- 
+        The packs section.
+        We specify here our packs.
+        Separate packs into windows and then (mac,unix)
+    -->
+    <packs>
+        <pack name="EFG2" required="yes">
+            <description>The base files</description>
+            <fileset dir="IzPackInstaller/EFG2Installer" targetdir="$INSTALL_PATH" override="true"/>
+            
+            <fileset dir="IzPackInstaller/docs" targetdir="$INSTALL_PATH"/>
+   			<fileset dir="IzPackInstaller/properties" targetdir="$INSTALL_PATH/resource/properties" override="true"/>
+   			<fileset dir="IzPackInstaller/scripts" targetdir="$INSTALL_PATH"  override="true" excludes="login.sh"/>
+            <file targetdir="$INSTALL_PATH" src="../EFGsoftware/efg2/efg2doc.html" override="true"/>
+            <file targetdir="$INSTALL_PATH/resource" src="IzPackInstaller/scripts/login.sh" override="true"/>    
+     		<parsable targetfile="$INSTALL_PATH/deploywebapps.sh" type="shell"/>     
+     		<parsable targetfile="$INSTALL_PATH/resource/properties/workspace.configs.properties" type="javaprop"/>     
+ 		    <parsable targetfile="$INSTALL_PATH/resource/properties/version.properties" type="javaprop"/>        
+		    <parsable targetfile="$INSTALL_PATH/postinstall.html" type="plain"/>        
+      		<parsable targetfile="$INSTALL_PATH/resource/login.sh" type="shell"/>        
+           	<executable targetfile="$INSTALL_PATH/deploywebapps.sh" type="shell" stage="postinstall" keep="true" failure="warn"/> 
+   	     </pack> 
+      </packs>  
+</installation>

@@ -40,9 +40,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -51,6 +54,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
@@ -63,9 +67,7 @@ import project.efg.Imports.factory.DataManipulatorFactory;
 import project.efg.Imports.factory.StateObjectFactory;
 import project.efg.Imports.factory.SynopticKeyTreeFactory;
 import project.efg.util.EFGImportConstants;
-import project.efg.util.FileNameSelector;
 import project.efg.util.HelpEFG2ItemListener;
-import project.efg.util.RegularExpresionConstants;
 import project.efg.util.WorkspaceResources;
 
 /**
@@ -107,7 +109,7 @@ public class SynopticKeyTreeMain extends JDialog {
 	private DBObject dbObject;
 
 	private String bkgdImageName;
-
+	private String isLinux = "windowsflavor";
 	
 	static Logger log = null;
 	static {
@@ -126,8 +128,8 @@ public class SynopticKeyTreeMain extends JDialog {
 		super(frame, title, modal);
 		this.bkgdImageName= bkgdImageName;
 		this.parentFrame = frame;
-	
-		setSize(new Dimension(400, 400));
+		this.isLinux = EFGImportConstants.EFGProperties.getProperty("efg2.system.os","windowsflavor");
+			setSize(new Dimension(400, 400));
 	
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -175,6 +177,39 @@ public class SynopticKeyTreeMain extends JDialog {
 	private void addMenus(){
 		JMenu fileMenu = new JMenu("File");
 		JMenu helpMenu = new JMenu("Help");
+		if(this.isLinux.equalsIgnoreCase("islinuxflavor")){
+            String property = 
+            	EFGImportConstants.EFGProperties.getProperty(
+            			"efg.data.last.file",null);
+ 
+            if(property != null) {
+            	String[] properties = {property};
+            	properties = WorkspaceResources.convertURIToString(properties);
+            	if(properties != null) {
+            		property = properties[0];
+            	}
+            }
+            else{
+            	property = ".";
+            }
+			//if it is a linux like thing show new import
+			final JMenuItem newLinuxMenu = new JMenuItem(EFGImportConstants.EFGProperties
+					.getProperty("new.linux.menu"));
+		
+			newLinuxMenu.addActionListener(
+					new NoDragDropHandler(
+							this.tree,
+							this.parentFrame,
+							property,
+							EFGImportConstants.EFGProperties.getProperty(
+									"efg.file.csv.message")));
+				
+			fileMenu.add(newLinuxMenu);	
+			fileMenu.addSeparator();
+		}
+
+		
+		//FileChooser
 		
 		editMetadataMenu.addActionListener(new DataManipulatorListener(this,
 				this.getEditManipulator()));
@@ -298,8 +333,19 @@ public class SynopticKeyTreeMain extends JDialog {
 	}
 
 	private JPanel addPanel() {
-		ImagePanel iPanel = 
-			new ImagePanel(this.bkgdImageName);
+		
+		
+		JPanel iPanel = null;
+			//new ImagePanel(this.bkgdImageName);
+		
+		
+		if(this.isLinux.equalsIgnoreCase("islinuxflavor")){
+			iPanel = new JPanel();
+			
+		}
+		else{
+			iPanel = new ImagePanel(this.bkgdImageName);
+		}
 		iPanel.setLayout(new BorderLayout());
 		iPanel.add(this.tree,BorderLayout.CENTER);
 		iPanel.setBackground(Color.white);
@@ -429,70 +475,75 @@ public class SynopticKeyTreeMain extends JDialog {
 	 * @author kasiedu
 	 *
 	 */
-	public class NoDragDropHandler implements ActionListener {
-		private SynopticKeyTreeInterface tree;
-		private StateObjectFactory stateFactory;
+	
+	class NoDragDropHandler implements ActionListener{
 		
-		
-			
-		/**
-		 * @param tree
-		 */
-		public NoDragDropHandler(SynopticKeyTreeInterface tree) {
-			this.tree = tree;
-			this.stateFactory = new StateObjectFactory();
-		}
 
-		/* (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
-		public void actionPerformed(ActionEvent e) {
+			private String previousFileLocation;
+			private String title;
+			private JFrame parent;
 			
-			//select files
-			List data = chooseFiles();
-			if((data != null) && (data.size() > 0)) {
-				//need a progress bar too
-				HandleDataImport.handleImport(this.tree, data, this.stateFactory);
+			private JTree tree;
+			/**
+			 * 
+			 */
+			public NoDragDropHandler(JTree tree,
+					JFrame parent,
+					String previousFileLocation, 
+					String title) {
+				this.tree = tree;
+				this.previousFileLocation = previousFileLocation;
+				this.title = title;
+				this.parent = parent;
 			}
-
-		}
-		private List chooseFiles() {
-			
-            String property = 
-            	EFGImportConstants.EFGProperties.getProperty(
-            			"efg.data.last.file",null);
- 
-            if(property != null) {
-            	String[] properties = {property};
-            	properties = WorkspaceResources.convertURIToString(properties);
-            	if(properties != null) {
-            		property = properties[0];
-            	}
-            }
-            //String datafileext = ""
-            FileNameSelector selector = 
-            	new FileNameSelector(this.tree,property);
-            String prompt = 
-            	EFGImportConstants.EFGProperties.getProperty(
-            			"efg.datafiles.prompt","Select Data Files to Import");
-            String extensionDefaults ="mer,csv";
-            String extensions =EFGImportConstants.EFGProperties.getProperty(
-        			"efg.datafiles.extension",extensionDefaults);
-            
-            String[] extn =extensions.split(RegularExpresionConstants.COMMASEP);
-			selector.setExtension(extn);
-            List data =  selector.selectFiles(prompt);
-            if((data != null) && (data.size() > 0)) {
-            	String path = selector.getDirectoryPath();
-            	if(path != null && !path.trim().equals("")) {
-            		EFGImportConstants.EFGProperties.setProperty(
-            				"efg.data.last.file",
-            				WorkspaceResources.convertFileNameToURLString(path));
-            	}
-            }
-           return data;
-		}
-
+			/* (non-Javadoc)
+			 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+			 */
+			public void actionPerformed(ActionEvent e) {
+	            JFileChooser chooser = new JFileChooser();
+	            chooser.setFileHidingEnabled(false);
+	            chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+	            chooser.setMultiSelectionEnabled(true);
+	            chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+	            chooser.setDialogTitle(this.title);
+	            chooser.setCurrentDirectory(new File(this.previousFileLocation));
+	            if (
+	                chooser.showOpenDialog(
+	                		this.parent)
+	                == JFileChooser.APPROVE_OPTION
+	                ) {
+	                File[] files = chooser.getSelectedFiles();
+	            	if(files != null && files.length > 0){
+	            		log.debug("Number Files Selected: " + files.length);
+	                		                	
+	            		List data = convertFilesToList(files);
+	            	
+	            			EFGImportConstants.EFGProperties.setProperty(
+	                				"efg.data.last.file",
+	                				WorkspaceResources.convertFileNameToURLString(
+	                						files[0].getParentFile().getAbsolutePath()));
+	            			HandleDataImport.handleImport((SynopticKeyTreeInterface)this.tree, data, new StateObjectFactory());
+	            	
+	             	}
+	            	else{
+	            		log.debug("No Files Selected");
+	            	}
+	            }
+				
+			}
+			/**
+			 * @param files
+			 * @return
+			 */
+			private List convertFilesToList(File[] files) {
+				List list = new ArrayList(files.length);
+				for (int i = 0; i < files.length; i++) {
+					log.debug("Adding File: " + files[i].getAbsolutePath() );
+					list.add(files[i]);
+				}
+				return list;
+			}
 	}
+
 
 } // SynopticKeyTreeMain

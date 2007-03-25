@@ -314,6 +314,14 @@ public class WorkspaceResources {
 				buffer.append("\n");
 			}
 			if(EFGImportConstants.EFGProperties.getProperty(
+					"efg.images.last.file") != null) {
+				buffer.append("efg.images.last.file=");	
+				buffer.append(EFGImportConstants.EFGProperties.getProperty(
+				"efg.images.last.file",null).trim());
+				buffer.append("\n");
+			}
+			
+			if(EFGImportConstants.EFGProperties.getProperty(
 					"efg.previous.zipfile.location") != null) {
 				buffer.append("efg.previous.zipfile.location=");	
 				buffer.append(EFGImportConstants.EFGProperties.getProperty(

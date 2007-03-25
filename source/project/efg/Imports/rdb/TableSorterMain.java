@@ -93,7 +93,7 @@ public class TableSorterMain extends TableSorterMainInterface {
 			}
 			ArrayList buttonTable = new ArrayList();
 			StringBuffer query = new StringBuffer();
-			query.append("SELECT * FROM " + tableName + " ORDER BY " + EFGImportConstants.ORDER);
+			query.append("SELECT * FROM " + tableName.toLowerCase() + " ORDER BY " + EFGImportConstants.ORDER);
 
 			org.springframework.jdbc.support.rowset.SqlRowSet rowset = 
 				this.jdbcTemplate
@@ -214,7 +214,7 @@ public class TableSorterMain extends TableSorterMainInterface {
 		}
 		
 		StringBuffer startQuery = new StringBuffer("UPDATE ");
-		startQuery.append(tableName);
+		startQuery.append(tableName.toLowerCase());
 		startQuery.append(" SET ");
 
 		boolean isDone = true;

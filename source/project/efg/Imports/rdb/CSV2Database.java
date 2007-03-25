@@ -366,7 +366,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 * @return the name of the database table created for the current data
 	 */
 	public String getDataTableName() {
-		return this.tableName;
+		return this.tableName.toLowerCase();
 	}
 
 	/**
@@ -374,7 +374,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 *         data.
 	 */
 	public String getMetadataTableName() {
-		return this.metadataTableName;
+		return this.metadataTableName.toLowerCase();
 	}
 
 	public int getCount(String metaName){
@@ -518,9 +518,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					log.debug("About to drop table : " + this.tableName
 							+ " if it exists!!");
 					this.executeStatement("DROP TABLE IF EXISTS "
-							+ this.tableName);
+							+ this.tableName.toLowerCase());
 
-					String st = "CREATE TABLE " + this.tableName + "( "
+					String st = "CREATE TABLE " + this.tableName.toLowerCase() + "( "
 							+ query.toString() + ")";
 					log.debug("Query: " + st);
 					this.executeStatement(st);
@@ -564,7 +564,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 							if (query.length() > 0) {
 								if (exists) {
 									String stmtQuery = "INSERT INTO "
-											+ this.tableName + " VALUES("
+											+ this.tableName.toLowerCase() + " VALUES("
 											+ query.toString() + ")";
 									log.debug("Insert query: " + stmtQuery);
 									this.executeStatement(stmtQuery);
@@ -786,7 +786,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			}
 
 			query = new StringBuffer("SELECT LEGALNAME FROM ");
-			query.append(this.metadataTableName);
+			query.append(this.metadataTableName.toLowerCase());
 			list = this.executeQueryForList(query.toString(), 1);
 
 			boolean isDone = true;
@@ -917,7 +917,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					query.append(new Integer(counter));
 					++counter;
 					
-					String stmtQuery = "INSERT INTO " + this.metadataTableName + " " +  this.getMetadataHeadQuery()
+					String stmtQuery = "INSERT INTO " + this.metadataTableName.toLowerCase() + " " +  this.getMetadataHeadQuery()
 							+ " VALUES(" + query.toString() + ")";
 					log.debug("Insert query: " + stmtQuery);
 					this.executeStatement(stmtQuery);
@@ -1093,7 +1093,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					query.append(this.efgRDBTable);
 					query.append(" VALUES( ");
 					query.append("\"");
-					query.append(EFGUtils.parse240(this.tableName));
+					query.append(EFGUtils.parse240(this.tableName.toLowerCase()));
 					query.append("\"");
 					query.append(",");
 					query.append("\"");
@@ -1102,7 +1102,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					query.append("\"");
 					query.append(",");
 					query.append("\"");
-					query.append(EFGUtils.parse240(this.metadataTableName));
+					query.append(EFGUtils.parse240(this.metadataTableName.toLowerCase()));
 					query.append("\"");
 					query.append(",");
 					query.append("\"");
@@ -1167,13 +1167,13 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		log.debug("Table to clone: " + metadataTableToClone);
 		log.debug("Metadata table Name: " + this.metadataTableName);
 
-		boolean isDone = this.createMetadataTableHeader(this.metadataTableName,
+		boolean isDone = this.createMetadataTableHeader(this.metadataTableName.toLowerCase(),
 				fieldNames, legalNames);
 		try {
 			if (isDone) {
 				StringBuffer query = new StringBuffer();
 				query.append("INSERT INTO ");
-				query.append(this.metadataTableName);
+				query.append(this.metadataTableName.toLowerCase());
 				query.append("( SELECT * FROM " + metadataTableToClone);
 				query.append(")");
 				log.debug("Insert query: " + query.toString());
@@ -1350,7 +1350,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 */
 	private boolean createMetadataTable(String[] fieldNames, String[] legalNames) {
 
-		boolean isDone = this.createMetadataTableHeader(this.metadataTableName,
+		boolean isDone = this.createMetadataTableHeader(this.metadataTableName.toLowerCase(),
 				fieldNames, legalNames);
 		try {
 			if (isDone) {
@@ -1419,7 +1419,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					}
 					if (query.length() > 0) {
 						String stmtQuery = "INSERT INTO "
-								+ this.metadataTableName + " VALUES("
+								+ this.metadataTableName.toLowerCase() + " VALUES("
 								+ query.toString() + ")";
 						log.debug("Insert query: " + stmtQuery);
 						this.executeStatement(stmtQuery);

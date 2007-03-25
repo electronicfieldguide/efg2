@@ -232,7 +232,7 @@ public class ZipExport implements ZipInterface{
 					zipFile,
 					exportDirectory, 
 					destinationDirectory.listFiles(),
-					File.separatorChar);
+					'/');
 			return currentExportName;
 		} catch (IOException e) {
 		
@@ -338,7 +338,8 @@ public class ZipExport implements ZipInterface{
 			buffer.append(export.dumpDB(datasource.toLowerCase()));
 			buffer.append(export.dumpDB(metadatasource.toLowerCase()));
 			
-			String templatesTable = EFGImportConstants.EFGProperties.getProperty(
+			String templatesTable = 
+				EFGImportConstants.EFGProperties.getProperty(
 			"efg_template_table_name");
 			StringBuffer query = new StringBuffer( "SELECT * FROM ");
 			query.append(templatesTable);
@@ -349,13 +350,13 @@ public class ZipExport implements ZipInterface{
 			query.append("'");
 			
 			try {
-				System.out.println("About to get template");
-				System.out.println("Query is: " + query.toString());
+				//log.debug("About to get template");
+				//log.debug("Query is: " + query.toString());
 				buffer.append(export.dumpTable(
 						templatesTable,
 						query.toString()));
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				//System.out.println(e.getMessage());
 			}
 			
 			query = new StringBuffer(
@@ -364,7 +365,7 @@ public class ZipExport implements ZipInterface{
 								"ALL_EFG_RDB_TABLES"),
 							datasource, metadatasource));
 			try {
-				buffer.append(export.dumpTable(
+			buffer.append(export.dumpTable(
 						EFGImportConstants.EFGProperties.getProperty(
 						"ALL_EFG_RDB_TABLES"),query.toString()));
 			} catch (Exception e) {
@@ -392,11 +393,11 @@ public class ZipExport implements ZipInterface{
 		query.append(" WHERE ");
 		query.append(EFGImportConstants.DS_DATA_COL);
 		query.append("='");
-		query.append(datasource);
+		query.append(datasource.toLowerCase());
 		query.append("' AND ");
 		query.append(EFGImportConstants.DS_METADATA_COL); 
 		query.append("='");
-		query.append(metadatasource);
+		query.append(metadatasource.toLowerCase());
 		query.append("'");
 		return query.toString();
 	}

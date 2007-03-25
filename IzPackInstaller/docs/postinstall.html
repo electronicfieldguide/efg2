@@ -1,0 +1,26 @@
+<html>
+<head>
+<!--
+$Id$
+-->
+<title>Post Installation Notes</title></head>
+<body>
+<h1> Follow these instructions after installation.</h1>
+<h4>Note: $INSTALL_PATH is where the application was installed.<br/>
+	$catalina_home is the full path to where your Tomcat server was installed.
+	
+</h4>
+<ul>
+<li>Look in $catalina_home/webapps and make sure efg2.war is present.
+If it is not, physically copy $INSTALL_PATH/resource/efg2.war to that location
+or run $INSTALL_PATH/deploywebapps.sh. 
+You may need to set the necessary file permissions to execute the script.</li>
+<li>Restart Tomcat</li>
+<li>Run $INSTALL_PATH/efgImport.sh to start up the EFG2 Data Importer</li>
+<li>To uninstall application, execute java -jar $INSTALL_PATH/Uninstaller/uninstall.jar</li>
+<li>For further instructions see <a href="efg2doc.html">Manual</a></li>
+
+</ul>
+
+</body>
+</html>

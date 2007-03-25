@@ -12,6 +12,8 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -19,6 +21,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -38,8 +41,6 @@ import org.apache.log4j.Logger;
 
 import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
 import project.efg.Imports.efgImpl.ImagePanel;
-
-
 import project.efg.Imports.efgImportsUtil.EFGUtils;
 import project.efg.Imports.efgImportsUtil.PreferencesListener;
 
@@ -135,7 +136,7 @@ public class DnDFileBrowserMain extends JDialog {
 	JLabel imageLabel;
 	JPanel displayPanel;
 	URL helpURL;
-	private ImagePanel iPanel;
+	private JPanel iPanel;
 
 	//JEditorPane htmlPane;
 	Vector userItems = new Vector();
@@ -153,6 +154,7 @@ public class DnDFileBrowserMain extends JDialog {
 
 
 	private JScrollPane browserPane;
+	private String isLinux;
 	/**
 	 * 
 	 * @param frame
@@ -167,15 +169,20 @@ public class DnDFileBrowserMain extends JDialog {
 		thumsStr = 
 			EFGImportConstants.EFGProperties.getProperty("maximum_dimension_string");
 		//always set to false
+
+		//switch
+		this.isLinux = EFGImportConstants.EFGProperties.getProperty("efg2.system.os","windowsflavor");
 	
 		this.currentImagesDirectory = 
 			this.computeCurrentMediaResourceDirectory();
+		
+		//fix me
 		this.setTitle("Drag and Drop Image Folders here");
 		this.setModal(true);
 		imageView = addImageDisplayPanel();	
 		initHelp();
 		this.progressBar.setSize(300, 300);
-		
+			
 		this.iPanel = this.addTreeBkgdImagePanel();
 		this.browserPane = new JScrollPane(this.iPanel);
 		JScrollPane imageViewPane = new JScrollPane(this.imageView);
@@ -228,7 +235,7 @@ public class DnDFileBrowserMain extends JDialog {
 
 
 
-	private ImagePanel addTreeBkgdImagePanel() {
+	private JPanel addTreeBkgdImagePanel() {
 
 		this.browser = DnDFileBrowser.getFileBrowser(this.currentImagesDirectory,
 				progressBar,this.importMenu);
@@ -240,8 +247,16 @@ public class DnDFileBrowserMain extends JDialog {
 		
 		this.browser.expandRow(0);
 
-		ImagePanel iPanel = 
-			new ImagePanel(EFGImportConstants.IMAGE_DROP_BACKGROUND_IMAGE);
+		JPanel iPanel = null;
+			
+			if(this.isLinux.equalsIgnoreCase("islinuxflavor")){
+				iPanel = new JPanel();
+				
+			}
+			else{
+				iPanel =new ImagePanel(EFGImportConstants.IMAGE_DROP_BACKGROUND_IMAGE);
+			}
+			
 		iPanel.setLayout(new BorderLayout());
 		iPanel.add(this.browser,BorderLayout.CENTER);
 		iPanel.setBackground(Color.white);
@@ -258,6 +273,8 @@ public class DnDFileBrowserMain extends JDialog {
 	 *
 	 */
 	private void addMenus(){
+		
+		
 		JMenu fileMenu = 
 			new JMenu("File");		
 		JMenu helpMenu = 
@@ -281,6 +298,43 @@ public class DnDFileBrowserMain extends JDialog {
 		magickHomeMenu.addActionListener(new MagickHomeListener(this));
 		preferencesMenu.addActionListener(new PreferencesListener(this.importMenu, false, true));
 		
+		
+		if(this.isLinux.equalsIgnoreCase("islinuxflavor")){
+            String property = 
+            	EFGImportConstants.EFGProperties.getProperty(
+            			"efg.image.last.file",null);
+ 
+            if(property != null) {
+            	String[] properties = {property};
+            	properties = WorkspaceResources.convertURIToString(properties);
+            	if(properties != null) {
+            		property = properties[0];
+            	}
+            }
+            else{
+            	property = ".";
+            }
+			//if it is a linux like thing show new import
+			final JMenuItem newLinuxMenu = new JMenuItem(EFGImportConstants.EFGProperties
+					.getProperty("new.linux.menu"));
+		
+			newLinuxMenu.addActionListener(
+					new ImageFileListener(
+							(DnDFileBrowser)this.browser,
+							this.importMenu,
+							property, 
+							EFGImportConstants.EFGProperties.getProperty(
+									"efg.file.images.message")));
+					/*new FileChooserListener(
+							this.browser,
+							this.importMenu,
+							property,
+							EFGImportConstants.EFGProperties.getProperty("efg.file.images.message"),
+							JFileChooser.FILES_AND_DIRECTORIES));*/
+			fileMenu.add(newLinuxMenu);	
+			fileMenu.addSeparator();
+		}
+
 		fileMenu.add(thumbNailMenu);
 		fileMenu.add(magickHomeMenu);
 		fileMenu.add(preferencesMenu);
@@ -591,6 +645,75 @@ public class DnDFileBrowserMain extends JDialog {
 			DnDFileBrowserMain.setCurrentDimLabel(currentDim);
 		}
 	}
+	class ImageFileListener implements ActionListener{
+		
 
+		private String previousFileLocation;
+		private String title;
+		private JFrame parent;
+		private DnDFileBrowser tree;
+		
+		/**
+		 * 
+		 */
+		public ImageFileListener(DnDFileBrowser tree,
+				JFrame parent,
+				String previousFileLocation, 
+				String title) {
+			this.tree = tree;
+			this.previousFileLocation = previousFileLocation;
+			this.title = title;
+			this.parent = parent;
+		
+			
+		}
+		/* (non-Javadoc)
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+		 */
+		public void actionPerformed(ActionEvent e) {
+            JFileChooser chooser = new JFileChooser();
+            chooser.setFileHidingEnabled(false);
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            chooser.setMultiSelectionEnabled(true);
+            chooser.setDialogType(JFileChooser.OPEN_DIALOG);
+            chooser.setDialogTitle(this.title);
+            chooser.setCurrentDirectory(new File(this.previousFileLocation));
+            if (
+                chooser.showOpenDialog(
+                		this.parent)
+                == JFileChooser.APPROVE_OPTION
+                ) {
+	            File[] files = chooser.getSelectedFiles();
+            	if(files != null && files.length > 0){
+            		log.debug("Number Files Selected: " + files.length);
+                		                	
+            		List data = convertFilesToList(files);
+
+               			EFGImportConstants.EFGProperties.setProperty(
+                				"efg.images.last.file",
+                				WorkspaceResources.convertFileNameToURLString(
+                						files[0].getParentFile().getAbsolutePath()));
+               		this.tree.handleSelectedImages(data,
+               				null);	
+            	}
+            	else{
+            		log.debug("No Files Selected");
+            	}
+            }
+			
+		}
+		/**
+		 * @param files
+		 * @return
+		 */
+		private List convertFilesToList(File[] files) {
+			List list = new ArrayList(files.length);
+			for (int i = 0; i < files.length; i++) {
+				log.debug("Adding File: " + files[i].getAbsolutePath() );
+				list.add(files[i]);
+			}
+			return list;
+		}
+}
 
 }

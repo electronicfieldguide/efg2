@@ -33,7 +33,7 @@ public class PreferencesListener implements ActionListener {
 					true, 
 					this.showResourceLocator,
 					this.showChangeThumbDimensions);
-		preferences.show();
+		preferences.setVisible(true);
 	}
 
 }

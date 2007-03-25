@@ -20,14 +20,20 @@ package project.efg.exports;
 
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-//import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import project.efg.Imports.efgImpl.DBObject;
+import project.efg.Imports.efgInterface.EFGQueueObjectInterface;
 import project.efg.Imports.rdb.EFGRDBImportUtils;
 import project.efg.util.EFGImportConstants;
 
@@ -63,13 +69,124 @@ import project.efg.util.EFGImportConstants;
 		  try {
 		       String str=null;			        
 		       while ((str = in.readLine()) != null) {
-		        processQuery(str);
+		    	   processQuery(str);
 		       }
+		      this.changeTableNamesInRDBTableToLowerCase();
 		    } catch (UnsupportedEncodingException e) {
 		    	log.error(e.getMessage());
 		    } catch (IOException e) {
 		    	log.error(e.getMessage());
 		    }
+		}
+		/**
+		 * 
+		 */
+		private void changeTableNamesInRDBTableToLowerCase() {
+			String property = EFGImportConstants.EFGProperties.getProperty("efg.rdb.tolowercase","");
+			if(property.trim().equals("")){
+				try {
+					List listOfDataTableNames = EFGRDBImportUtils.executeQueryForList(
+							this.jdbcTemplate, getRDBQuery(), 2);
+					for (java.util.Iterator iter = listOfDataTableNames.iterator(); iter
+							.hasNext();) {
+						EFGQueueObjectInterface field = (EFGQueueObjectInterface) iter
+								.next();
+						String ds_data = field.getObject(0);
+						String ds_metadata = field.getObject(1);
+						
+						String query = makeQuery(ds_data,ds_metadata);
+						try{
+						 this.jdbcTemplate.update(query);
+						}
+						catch(Exception ccc){
+						
+						} 
+					}
+					EFGImportConstants.EFGProperties.setProperty(
+							"efg.rdb.tolowercase","done");
+					writeToFile();					
+				} catch (Exception e) {
+					log.error(e.getMessage());
+				}
+			}
+		}
+		/**
+		 * 
+		 */
+		private void writeToFile() {
+			
+				try{
+				 	URL propsURL = 
+						this.getClass().getResource("/properties");
+				
+					String dir = URLDecoder.decode(propsURL.getFile(),"UTF-8");
+			
+					File file = new File(dir);		
+					if(!file.isDirectory()){
+						throw new Exception("Properties directory could not be found!!");
+					}
+					 BufferedWriter out = null;
+					   try {
+						   String filename = EFGImportConstants.EFGProperties.getProperty(
+									"efg.rdb.tolowercase.file","efgrdblowercase.properties");
+
+							File f = new File(dir,filename);
+					       out = new BufferedWriter(
+					        		new FileWriter(f));
+					        out.write("efg.rdb.tolowercase=done");
+					        out.write("\n");
+					        out.flush();
+					        out.close();
+					    } catch (IOException e) {
+					    	try{
+					    		if(out != null ){
+					    			out.close();
+					    		}
+					    	}
+					    	catch(Exception ee){
+					    		
+					    	}
+					    	log.error(e.getMessage());
+					    }					
+				}
+				catch(Exception ee){
+					log.error(ee.getMessage());
+				}
+		}
+		/**
+		 * @param ds_data
+		 * @param ds_metadata
+		 * @return
+		 */
+		private String makeQuery(
+				String ds_data, 
+				String ds_metadata) {
+			StringBuffer buffer = 
+				new StringBuffer();
+			
+			buffer.append("UPDATE ");
+			buffer.append(
+					EFGImportConstants.EFGProperties.getProperty(
+			"ALL_EFG_RDB_TABLES"));			
+			buffer.append(" Set DS_DATA='");
+			buffer.append(ds_data.toLowerCase());			
+			buffer.append("',DS_METADATA='");
+			buffer.append(ds_metadata.toLowerCase());
+			buffer.append("'");
+			buffer.append(" WHERE DS_DATA='");
+			buffer.append(ds_data);
+			buffer.append("'");
+			return buffer.toString();
+		}
+		/**
+		 * @return
+		 */
+		private String getRDBQuery() {
+			StringBuffer buffer = new StringBuffer();
+			buffer.append("SELECT DISTINCT DS_DATA,DS_METADATA FROM ");
+			buffer.append(EFGImportConstants.EFGProperties.getProperty(
+			"ALL_EFG_RDB_TABLES"));
+			return buffer.toString();
 		}
 		/**
 		 * @param str
@@ -124,8 +241,6 @@ import project.efg.util.EFGImportConstants;
 				if(queryN.indexOf(EFGImportConstants.MEDIUMTEXT) > -1){
 					queryN = replaceString(queryN);
 				}
-			//	query = StringEscapeUtils.escapeSql(query);
-				//this.jdbcTemplate.execute(query);
 				this.jdbcTemplate.update(query);
 				
 			}

@@ -272,7 +272,7 @@ public class SearchableImpl extends SearchableInterface {
 		if ((displayName == null) || (displayName.trim().equals(""))) {
 			str1 = "DISPLAY_NAME";
 			str2 = "DS_DATA";
-			str3 = datasourceName;
+			str3 = datasourceName.toLowerCase();
 		}
 
 		String efgRDBTable = null;

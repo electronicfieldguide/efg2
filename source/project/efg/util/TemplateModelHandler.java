@@ -30,7 +30,7 @@ public abstract class TemplateModelHandler{
 
 	public TemplateModelHandler() {
 		this.templateName = 
-			EFGImportConstants.TEMPLATE_TABLE;
+			EFGImportConstants.TEMPLATE_TABLE.toLowerCase();
 		
 	}
 	
@@ -61,7 +61,7 @@ public abstract class TemplateModelHandler{
 		query.append(EFGImportConstants.DATASOURCE_NAME);
 		query.append("=");
 		query.append("\"");
-		query.append(datasourceName);
+		query.append(datasourceName.toLowerCase());
 		query.append("\"");
 		try{
 			this.executeStatement(query.toString());
@@ -85,12 +85,12 @@ public abstract class TemplateModelHandler{
 		}
 		StringBuffer query = new StringBuffer();
 		query.append("DELETE FROM ");
-		query.append(this.templateName);
+		query.append(this.templateName.toLowerCase());
 		query.append(" WHERE ");
 		query.append(EFGImportConstants.DATASOURCE_NAME);
 		query.append("=");
 		query.append("\"");
-		query.append(datasourceName);
+		query.append(datasourceName.toLowerCase());
 		query.append(" and ");
 		query.append(EFGImportConstants.DISPLAY_NAME);
 		query.append("=");
@@ -128,7 +128,7 @@ public abstract class TemplateModelHandler{
 		
 		StringBuffer query = new StringBuffer();
 		query.append("UPDATE ");
-		query.append(this.templateName);
+		query.append(this.templateName.toLowerCase());
 		query.append(" SET ");
 		query.append(EFGImportConstants.DISPLAY_NAME);
 		query.append("=");
@@ -162,7 +162,7 @@ public abstract class TemplateModelHandler{
 			
 			// PUT IN PROPERTIES FILE
 			query.append("CREATE TABLE IF NOT EXISTS ");
-			query.append(templateName);
+			query.append(templateName.toLowerCase());
 		
 			query.append("( ");
 			query.append(EFGImportConstants.TEMPLATE_KEY);
@@ -230,7 +230,7 @@ public abstract class TemplateModelHandler{
 		createEFG2TemplatesTable();
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO ");
-		query.append(this.templateName); 
+		query.append(this.templateName.toLowerCase()); 
 		query.append(" "); 
 		query.append("( ");
 		query.append(getHeaderQuery());
@@ -249,7 +249,7 @@ public abstract class TemplateModelHandler{
 		query.append("\"");
 		query.append(",");
 		query.append("\"");
-		query.append(datasourceName);
+		query.append(datasourceName.toLowerCase());
 		query.append("\"");
 		query.append(",");
 		query.append("\"");
@@ -359,7 +359,7 @@ public abstract class TemplateModelHandler{
 		
 		StringBuffer query = new StringBuffer();
 		query.append("INSERT INTO ");
-		query.append(this.templateName); 
+		query.append(this.templateName.toLowerCase()); 
 		query.append(" "); 
 		query.append("( ");
 		query.append(getHeaderQuery());
@@ -378,7 +378,7 @@ public abstract class TemplateModelHandler{
 		query.append("\"");
 		query.append(",");
 		query.append("\"");
-		query.append(datasourceName);
+		query.append(datasourceName.toLowerCase());
 		query.append("\"");
 		query.append(",");
 		query.append("\"");
@@ -408,7 +408,7 @@ public abstract class TemplateModelHandler{
 
 		StringBuffer query = new StringBuffer();
 		query.append("DELETE FROM ");
-		query.append(this.templateName);
+		query.append(this.templateName.toLowerCase());
 		query.append(" WHERE ");
 		query.append(EFGImportConstants.GUID);
 		query.append("='");
@@ -432,7 +432,7 @@ public abstract class TemplateModelHandler{
 		query.append("SELECT ");
 		query.append(getHeaderQuery());
 		query.append(" FROM ");
-		query.append(this.templateName);
+		query.append(this.templateName.toLowerCase());
 		query.append(" ORDER BY ");
 		query.append(EFGImportConstants.DISPLAY_NAME);
 		Hashtable table = new Hashtable();

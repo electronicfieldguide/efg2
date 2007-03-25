@@ -85,8 +85,6 @@ import project.efg.util.SQLEscapeCharacters;
 				String current = (String)SQLEscapeCharacters.keyCharacters.get(i);
 				string = string.replaceAll(current, "\\\\"+current);
 			}
-			//string = string.replaceAll("\\(", "\\\\(");
-		//	string = string.replaceAll("\\)", "\\\\)");
 			return string;
 		}
 	
@@ -172,7 +170,7 @@ import project.efg.util.SQLEscapeCharacters;
 	           
 	            while (rs.next()) {
 	                result.append("INSERT INTO ");
-	                result.append(tableName);
+	                result.append(tableName.toLowerCase());
 	                result.append(" (");
 	                result.append(columnNames);
 	                result.append(") ");

@@ -34,7 +34,6 @@ import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -45,8 +44,7 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import project.efg.Imports.efgImpl.EFGThumbNailDimensions;
-import project.efg.Imports.efgImportsUtil.EFGUtils;
+import project.efg.Imports.efgImpl.ImageTransferHandler;
 
 
 /**
@@ -199,17 +197,6 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 	public void dropActionChanged(DropTargetDragEvent dropTargetDragEvent) {
 
 	}
-	private boolean isThumbNailsPromptCheckBoxSelected(){
-		String property = 
-			EFGImportConstants.EFGProperties.getProperty(
-					"efg.thumbnails.dimensions.checked", 
-					EFGImportConstants.EFG_TRUE);
-
-		if(property.trim().equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
-			return true;
-		}
-		return false;
-	}
 
 	
 	/**
@@ -263,12 +250,12 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				String path = (String) tr
 						.getTransferData(DataFlavor.stringFlavor);
 				List objectsToDrop = new ArrayList();
-				DropFileObject dropObject = dropFile(path,
-						dropTargetDropEvent);
-				if(dropObject != null){
-					objectsToDrop.add(dropObject);
+				
+				if(path != null && !path.trim().equals("")){
+					objectsToDrop.add(path);
+					this.handleSelectedImages(objectsToDrop,dropTargetDropEvent);
 				}
-				this.prepareAndShow(objectsToDrop);
+				
 					
 			} else if (tr.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 				//
@@ -278,18 +265,8 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				List list = (List) tr
 						.getTransferData(DataFlavor.javaFileListFlavor);
 				//do in a new thread
-				Iterator iter = list.iterator();
-				List objectsToDrop = new ArrayList();
-				while (iter.hasNext()) {
-					File file = (File)iter.next();
-				    String path = file.getAbsolutePath();
-					DropFileObject dropObject = dropFile(path,
-							dropTargetDropEvent);
-					if(dropObject != null){
-						objectsToDrop.add(dropObject);
-					}
-				}
-				this.prepareAndShow(objectsToDrop);
+				
+				this.handleSelectedImages(list,dropTargetDropEvent);
 				
 
 			} else {
@@ -304,65 +281,28 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 		}	
 	}
 
-	private void prepareAndShow(List objectsToDrop) {
-		if(objectsToDrop.size() > 0){
+	protected void  handleSelectedImages(List list,
+			DropTargetDropEvent dropTargetDropEvent) {
 		
-			if(isMediaMagickPromptCheckBoxSelected()) {
-				Properties props = EFGUtils.getEnvVars();
-				String property = null;
-				if (props != null) {
-					String propertyToUse = 
-						EFGImportConstants.EFGProperties.getProperty(
-								"efg.images.magickhome.variable"
-								);
-					property = props.getProperty(propertyToUse);
-				}
-				String pathToServer = 
-					EFGImportConstants.EFGProperties.getProperty(
-							"efg.imagemagicklocation.lists",
-							property);
-				ServerLocator locator = new ServerLocator(
-						importMenu,
-						pathToServer,
-						true,
-						"efg.imagemagicklocation.lists",
-						"efg.imagemagicklocation.current",
-						"efg.imagemagicklocation.checked",
-						"Prompt Me For Image Magick Location Every Time");
-					locator.setVisible(true);
+		Iterator iter = list.iterator();
+		List objectsToDrop = new ArrayList();
+		while (iter.hasNext()) {
+			File file = (File)iter.next();
+		    String path = file.getAbsolutePath();
+			DropFileObject dropObject = dropFile(path,
+					dropTargetDropEvent);
+			if(dropObject != null){
+				objectsToDrop.add(dropObject);
+			}
+		}
+		this.copyOverExistingFiles =  
+			ImageTransferHandler.importSelectedImages(this,this.importMenu,
+					objectsToDrop,
+					this.progressBar);
+
+
+	}
 	
-			}
-				
-			if(isThumbNailsPromptCheckBoxSelected()){
-				EFGThumbNailDimensions thd = 
-					new EFGThumbNailDimensions(this.importMenu,"Enter Max Dimension",true);
-				thd.setVisible(true);
-				
-				String currentDim = EFGImportConstants.EFGProperties.getProperty(
-				"efg.thumbnails.dimensions.current");
-				DnDFileBrowserMain.setCurrentDimLabel(currentDim);
-
-			}
-		    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(this,objectsToDrop,this.progressBar);
-		    copyFiles.start();
-		    copyOverExistingFiles = false;
-		}
-
-	}
-	/**
-	 * @return
-	 */
-	private boolean isMediaMagickPromptCheckBoxSelected() {
-		String property = 
-			EFGImportConstants.EFGProperties.getProperty(
-					"efg.imagemagicklocation.checked", 
-					EFGImportConstants.EFG_TRUE);
-
-		if(property.trim().equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
-			return true;
-		}
-		return false;
-	}
 	public void copyFile(File srcFile, File destFile) {
 		  FileChannel sourceChannel = null;
 		  FileChannel destinationChannel = null;
@@ -569,9 +509,9 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 						break;
 					}
 					if (isReturn) {
-						dropTargetDropEvent.dropComplete(false);
 						String msg = "File " + newFile.getName() + " exists";
-						JOptionPane.showMessageDialog(this, msg);
+						this.dropError(msg,dropTargetDropEvent);
+					
 						return null;
 					}
 				}	
@@ -581,20 +521,13 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 				isRename = false;
 			}
 			else{
-				if (dropTargetDropEvent.getDropAction() == DnDConstants.ACTION_MOVE) {
-					isRename = srcFile.renameTo(newFile);
-					//rename directory in thumbnails folder
-					
-					 String thumbSrc = this.replace(srcFile.getAbsolutePath(),
-							images_home, 
-							thumbshome);
-					 String thumbDest = this.replace(
-							 newFile.getAbsolutePath(),images_home, 
-							thumbshome);
-					 File thumbSrcFile = new File(thumbSrc);
-					 File thumbDestFile = new File(thumbDest);
-					 thumbSrcFile.renameTo(thumbDestFile);
-					//for internal moves , move thumbnails too..
+				if(dropTargetDropEvent != null){
+					if (dropTargetDropEvent.getDropAction() == DnDConstants.ACTION_MOVE) {
+						isRename = renameFile(srcFile,newFile);
+					}
+				}
+				else{
+					isRename = renameFile(srcFile,newFile);
 				}
 			}
 			
@@ -614,8 +547,8 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 						newFile,srcFile,dropTargetDropEvent);
 			} else {
 				//physically copy files
-				//String msg = "An error occured while copying or moving files";
-				//this.dropError(msg,dropTargetDropEvent);
+				String msg = "An error occured while copying or moving files";
+				this.dropError(msg,dropTargetDropEvent);
 				return null;
 			}
 		} else {
@@ -625,7 +558,22 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 		}
 		return null;
 	}
-
+	private boolean renameFile(File srcFile, File newFile){
+		boolean isRename = srcFile.renameTo(newFile);
+		//rename directory in thumbnails folder
+		
+		 String thumbSrc = this.replace(srcFile.getAbsolutePath(),
+				images_home, 
+				thumbshome);
+		 String thumbDest = this.replace(
+				 newFile.getAbsolutePath(),images_home, 
+				thumbshome);
+		 File thumbSrcFile = new File(thumbSrc);
+		 File thumbDestFile = new File(thumbDest);
+		 thumbSrcFile.renameTo(thumbDestFile);
+		//for internal moves , move thumbnails too..
+		 return isRename;
+	}
 
 	/**
 	 * Find the node relative to the given file.
@@ -658,7 +606,9 @@ public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
 
 	private void addNode(FileNode destNode, FileNode sourceNode, boolean external,
 			File destFile,File srcFile,DropTargetDropEvent dropTargetDropEvent){
-		dropTargetDropEvent.dropComplete(true);
+		if(dropTargetDropEvent != null){
+			dropTargetDropEvent.dropComplete(true);
+		}
 		FileNode newNode = new FileNode(this, destNode, destFile);
 		addNode(destNode, newNode);
 		// not owner
@@ -703,7 +653,9 @@ private FileNode getSelectedDirectory(){
 }
 
 private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
-	   dropTargetDropEvent.dropComplete(false);
+		if( dropTargetDropEvent != null){
+			dropTargetDropEvent.dropComplete(false);
+		}
 		
 		JOptionPane.showMessageDialog(this.importMenu, message, "Error",
 				JOptionPane.ERROR_MESSAGE); 
@@ -813,4 +765,5 @@ private void dropError(String message,DropTargetDropEvent dropTargetDropEvent){
 		
 		
 	}
+	
 }

@@ -181,7 +181,11 @@ public abstract class SynopticKeyTreeInterface extends JTree{
 		this.setSelectionPath(path);
 
 		setDragEnabled(false);
-		setTransferHandler(HandlerFactory.getTransferHandler());
+		//read properties
+		String isLinux = EFGImportConstants.EFGProperties.getProperty("efg2.system.os","windowsflavor");
+		if(!isLinux.equalsIgnoreCase("islinuxflavor")){
+			setTransferHandler(HandlerFactory.getTransferHandler());
+		}
 		addTreeExpansionListener(HandlerFactory.getTreeExpansionListener());
 	}
 }

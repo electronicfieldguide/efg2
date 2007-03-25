@@ -64,7 +64,7 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 		this.stateFactory = new StateObjectFactory();
 	}
 	public boolean importData(JComponent comp, Transferable t) {
-		String message = "";
+		
 		// Make sure we have the right starting points
 		if (!(comp instanceof JTree)) {
 			log.error("Returning false");
@@ -82,7 +82,7 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 		
 			data = (List)t.getTransferData(DataFlavor.javaFileListFlavor);
 			if(data == null || data.size() == 0) {
-				log.error("Empty lists");
+				log.debug("Empty lists");
 			}
 			return HandleDataImport.handleImport(tree, 
 					data, this.stateFactory);
@@ -99,12 +99,16 @@ public class SynopticKeyTransferHandler extends TransferHandler {
 	public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
 		if (comp instanceof SynopticKeyTreeInterface) {
 			for (int i = 0; i < transferFlavors.length; i++) {
-				
+				log.debug(i + " :" + transferFlavors[i]);
 				if (transferFlavors[i].equals(DataFlavor.javaFileListFlavor)) {
+					log.debug("Found:  " + i + " :" + transferFlavors[i]);
 					
 					return true;
 				}
 			}
+		}
+		else{
+			log.debug("Old. Component not a SynopticKeyTreeInterface");
 		}
 		return false;
 	}

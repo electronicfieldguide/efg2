@@ -30,7 +30,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/xmlgraphics-commons-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/fileupload-ext.jar"/>
-	<classpathentry sourcepath="C:/cvscheckout/Itext/lib/itext-src-1.4.8.zip" kind="lib" path="lib/itext-1.4.8.jar"/>
+	<classpathentry sourcepath="lib/itext-src-1.4.8.zip" kind="lib" path="lib/itext-1.4.8.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.0.jar"/>

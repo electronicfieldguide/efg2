@@ -9,6 +9,7 @@ to make a distribution call makeImport:
 	<property name="app.name.war" value="efg2.war"/>
 	<property name="tomcat.home" value="${myenv.CATALINA_HOME}"/>
 	<property name="efg2.home" value="."/>
+	<property name="linuxmacInstaller.home" value="${efg2.home}/IzPackInstaller"/>
 	<property name="rdb.src.home" value="${efg2.home}/efgRDB"/>
 	<property name="efg2.properties.home" value="${efg2.home}/properties"/>
 	<property name="ant.home" value="${myenv.ANT_HOME}"/>
@@ -63,13 +64,6 @@ to make a distribution call makeImport:
 	<!-- deployImages -->
 	<target name="deployEFGIcons">
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
-		<!--
-		
-		<mkdir dir="${deploy.home}/EFGIcons"/>
-		<copy todir="${deploy.home}/EFGIcons">
-			<fileset dir="${icons.home}/"/>
-		</copy>
-		-->
 	</target>
 	<!-- Make preparations for deployment-->
 	<target name="deployResources">
@@ -171,12 +165,10 @@ to make a distribution call makeImport:
 		<copy todir="${deploy.home}">
 			<fileset dir="${efg2.website.home}" includes="*.html, *.css, *.gif, *.jpg, *.js, *.png,*.jsp"/>
 		</copy>
-		<!--
+	
 		<war destfile="efg2.war" webxml="${deploy.home}/WEB-INF/web.xml">
 			<fileset dir="${deploy.home}"/>
 		</war>
-		-->
-	
 	</target>
 	<!-- Compile main sources-->
 	<target name="compileMain" depends="prepare">
@@ -217,6 +209,12 @@ to make a distribution call makeImport:
 	</target>
 	<target name="clean">
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
+		<delete dir="EFG2Installer" quiet="true"/>
+		<delete dir="IzPackInstaller/EFG2Installer" quiet="true"/>
+		<delete dir="IzPackInstaller/EFG2Installer_1_0_0_2_ For_Linux" quiet="true"/>
+		<delete dir="IzPackInstaller/EFG2Installer_1_0_0_2_ For_Mac" quiet="true"/>
+		<delete dir="IzPackInstaller/EFG2Installer_1_0_0_2_ For_Linux.zip" quiet="true"/>
+		<delete dir="IzPackInstaller/EFG2Installer_1_0_0_2_ For_Mac.zip" quiet="true"/>
 		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
 		<delete dir="${efg2.dist.home}/samples/images" quiet="true"/>
 		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
@@ -237,7 +235,7 @@ to make a distribution call makeImport:
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
 	</target>
-	<target name="makeImport" depends="clean,war,jarImport ">
+	<target name="makeImport" depends="clean,war,jarImport">
 		<mkdir dir="${efg2.dist.home}"/>
 		<mkdir dir="${efg2.dist.home}/resource"/>
 		<mkdir dir="${efg2.dist.home}/resource/logs"/>
@@ -282,24 +280,35 @@ to make a distribution call makeImport:
 		<copy file="${efg2.home}/properties/RDBprops.properties" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.lib.home}/login.bat" todir="${efg2.dist.home}/resource"/>
 		<copy file="${efg2.home}/efg2.xml" todir="${efg2.dist.home}/resource"/>
-		<!--
+		
 		<copy file="${efg2.home}/efg2.war" todir="${efg2.dist.home}/resource"/>
-		-->	
+		
 		<copy todir="${efg2.dist.home}/resource/efg2">
 			<fileset dir="${deploy.home}"/>
 		</copy>
-
 	</target>
 
-	<target name="makeImportNSIS" depends="makeImport">
-		<!--
-		<delete file="${efg2.dist.home}/resource/login.bat" quiet="true"/>
-		-->
-		<delete file="${efg2.dist.home}/resource/login.sh" quiet="true"/>
-		
+	<target name="makeImportNSIS" depends="makeImport">		
+		<delete file="${efg2.dist.home}/resource/login.bat" quiet="true"/>		
+		<delete file="${efg2.dist.home}/resource/login.sh" quiet="true"/>		
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
-	
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+	</target>
+	<target name="makeImportLinux" depends="makeImport">	
+	
+ 	 	<delete dir="${efg2.dist.home}/resource/efg2" quiet="true"/>		
+		<delete dir="${efg2.home}/efg2" quiet="true"/>		
+		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+
+		<ant antfile="${linuxmacInstaller.home}/build.xml" inheritAll="true" target="makeLinuxInstaller"/>
+	</target>
+		<target name="makeImportMac" depends="makeImport">	
+	
+ 	 	<delete dir="${efg2.dist.home}/resource/efg2" quiet="true"/>		
+		<delete dir="${efg2.home}/efg2" quiet="true"/>		
+		<delete file="${efg2.home}/efg2.war" quiet="true"/>
+
+		<ant antfile="${linuxmacInstaller.home}/build.xml" inheritAll="true" target="makeMacInstaller"/>
 	</target>
 	<target name="zipImport" depends="makeImport">
 		<zip zipfile="${efg2.home}/efg2.zip" basedir="${efg2.dist.home}"/>

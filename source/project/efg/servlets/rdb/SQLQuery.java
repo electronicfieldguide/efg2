@@ -411,7 +411,7 @@ public class SQLQuery extends EFGHTTPQuery {
 			} else if ((this.datasourceName != null)
 					&& (!this.datasourceName.trim().equals(""))) {
 				queryBuffer.append(" WHERE DS_DATA =\"");
-				queryBuffer.append(this.datasourceName);
+				queryBuffer.append(this.datasourceName.toLowerCase());
 				queryBuffer.append("\"");
 			}
 			//log.debug("Query: " + queryBuffer.toString());

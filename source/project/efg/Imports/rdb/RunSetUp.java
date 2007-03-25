@@ -129,7 +129,29 @@ public class RunSetUp {
 				jdbcTemplate=
 					EFGRDBImportUtils.getJDBCTemplate(db);
 			}
-			jdbcTemplate.execute(queryBuffer.toString());
+			try{
+				jdbcTemplate.execute(queryBuffer.toString());
+				}
+				catch(Exception eex){
+					
+				}
+			
+			queryBuffer = new StringBuffer();
+			queryBuffer.append("CREATE USER '");
+			queryBuffer.append(superuserInfo.getUserName());
+			queryBuffer.append("'@'localhost' IDENTIFIED BY '");
+			queryBuffer.append(superuserInfo.getPassword());
+			queryBuffer.append("'");
+			if(jdbcTemplate == null){
+				jdbcTemplate=
+					EFGRDBImportUtils.getJDBCTemplate(db);
+			}
+			try{
+				jdbcTemplate.execute(queryBuffer.toString());
+				}
+				catch(Exception eex){
+					throw eex;
+				}
 			
 		} catch (Exception ee) {
 			log.error(ee.getMessage());
@@ -149,23 +171,69 @@ public class RunSetUp {
 				jdbcTemplate=
 					EFGRDBImportUtils.getJDBCTemplate(db);
 			}
-			jdbcTemplate.execute(queryBuffer.toString());
+			try{
+				jdbcTemplate.execute(queryBuffer.toString());
+				}
+				catch(Exception eex){
+					
+				}
 			flushPrivileges(db);
 		
+			queryBuffer.append(EFGImportConstants.EFGProperties.getProperty(
+			"grantsuperusermysqlcmd"));
+	queryBuffer.append( " '" );
+	queryBuffer.append(superuserInfo.getUserName());
+	queryBuffer.append( "'@'localhost'" );
+	queryBuffer.append(" WITH GRANT OPTION ");
+	if(jdbcTemplate == null){
+		jdbcTemplate=
+			EFGRDBImportUtils.getJDBCTemplate(db);
+	}
+	try{
+		jdbcTemplate.execute(queryBuffer.toString());
+		}
+		catch(Exception eex){
 			
+		}
+	flushPrivileges(db);
 			
-			queryBuffer = new StringBuffer();
-			queryBuffer.append(EFGImportConstants.EFGProperties.getProperty("grantsuperusercmd"));
-			queryBuffer.append( " " );
-			queryBuffer.append(superuserInfo.getUserName());
-			queryBuffer.append(" WITH GRANT OPTION ");
+	queryBuffer = new StringBuffer();
+	queryBuffer.append(EFGImportConstants.EFGProperties.getProperty("grantsuperusercmd"));
+	queryBuffer.append( " " );
+	queryBuffer.append(superuserInfo.getUserName());
+	queryBuffer.append(" WITH GRANT OPTION ");
+	
+	if(jdbcTemplate == null){
+		jdbcTemplate=
+			EFGRDBImportUtils.getJDBCTemplate(db);
+	}
+	try{
+		jdbcTemplate.execute(queryBuffer.toString());
+		}
+		catch(Exception eex){
 			
-			if(jdbcTemplate == null){
-				jdbcTemplate=
-					EFGRDBImportUtils.getJDBCTemplate(db);
-			}
-			jdbcTemplate.execute(queryBuffer.toString());
-			flushPrivileges(db);
+		}
+		flushPrivileges(db);
+
+	queryBuffer = new StringBuffer();
+	queryBuffer.append(EFGImportConstants.EFGProperties.getProperty("grantsuperusercmd"));
+	queryBuffer.append( " '" );
+	queryBuffer.append(superuserInfo.getUserName());
+	queryBuffer.append( "'@'localhost'" );
+	queryBuffer.append(" WITH GRANT OPTION ");
+	
+	if(jdbcTemplate == null){
+		jdbcTemplate=
+			EFGRDBImportUtils.getJDBCTemplate(db);
+	}
+	try{
+	jdbcTemplate.execute(queryBuffer.toString());
+	}
+	catch(Exception eex){
+		
+	}
+	flushPrivileges(db);
+
 			
 			queryBuffer = new StringBuffer();
 			queryBuffer.append(
@@ -178,9 +246,12 @@ public class RunSetUp {
 				jdbcTemplate=
 					EFGRDBImportUtils.getJDBCTemplate(db);
 			}
-			jdbcTemplate.execute(queryBuffer.toString());
-			flushPrivileges(db);
-
+			try{
+				jdbcTemplate.execute(queryBuffer.toString());
+				}
+				catch(Exception eex){
+					
+				}
 		}
 		catch (Exception ee) {
 			log.error(ee.getMessage());
@@ -242,6 +313,17 @@ public class RunSetUp {
 			queryBuffer.append( "'");
 			jdbcTemplate.execute(queryBuffer.toString());
 			flushPrivileges(db);
+			
+			queryBuffer.append("DROP USER '");
+			queryBuffer.append(userName);
+			queryBuffer.append( "'@'localhost'");
+			try{
+			jdbcTemplate.execute(queryBuffer.toString());
+			flushPrivileges(db);
+			}catch (Exception ee) {
+				
+			}
+			
 			String message = "The user : '" + userName + 
 			"' \n successfully deleted from system!!";
 			JOptionPane.showMessageDialog(null, message, "Success Message",
@@ -398,6 +480,15 @@ public class RunSetUp {
 				
 			}
 			try{
+				query = EFGImportConstants.EFGProperties.getProperty("createlocalusercmd");
+				jdbcTemplate.execute(query);
+			}
+			catch (Exception ee) {
+				log.error("Warning: user probably already exists");
+				
+			}
+
+			try{
 				query = EFGImportConstants.EFGProperties.getProperty("grantcmd");
 				jdbcTemplate.execute(query);
 			}
@@ -489,6 +580,9 @@ public class RunSetUp {
 
 }
 // $Log$
+// Revision 1.6  2007/03/25 14:06:13  kasiedu
+// *** empty log message ***
+//
 // Revision 1.5  2007/01/25 23:46:48  kasiedu
 // no message
 //

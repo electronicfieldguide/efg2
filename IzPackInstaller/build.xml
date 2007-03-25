@@ -1,0 +1,57 @@
+<project name="Electronic Field Guide" default="makeImportLinux" basedir=".">
+	<!-- $Id$	-->
+	<property name="efg2.current.home" value="${efg2.home}"/>
+	<property name="izpack.basedir" value="${efg2.home}/IzPackInstaller"/>
+		
+	<property name="linux.dir" value="EFG2Installer_1_0_0_2_ For_Linux"/>
+	<property name="mac.dir" value="EFG2Installer_1_0_0_2_ For_Mac"/>
+	<property name="installer.dir" value="EFG2Installer"/>
+	<property name="linux.home" value="${izpack.basedir}/${linux.dir}"/>
+	<property name="mac.home" value="${izpack.basedir}/${mac.dir}"/>
+	<property name="linuxmac.home" value="${izpack.basedir}/${installer.dir}"/>
+	
+	
+	<property name="efg2.current.build.home" value="${efg2.current.home}/dist"/>
+	<taskdef name="izpack" classpath="${izpack.basedir}/lib/standalone-compiler.jar"
+         classname="com.izforge.izpack.ant.IzPackTask"/>
+	<target name="makeImportL">
+		<mkdir dir="${linuxmac.home}"/>
+		<copy todir="${linuxmac.home}">
+			<fileset dir="${efg2.current.build.home}" excludes="**/*.bat, **/*.sh"/>
+		</copy>
+
+	</target>
+	<target name="makeImportLinux" depends="makeImportL">		
+		<copy file="${efg2.current.home}/linuxProperties/linux.properties" todir="${linuxmac.home}/resource/properties"/>		
+	</target>
+	<target name="makeImportMac" depends="makeImportL"/>
+	
+	<target name="makeLinuxInstaller" depends="makeImportLinux">
+		<mkdir dir="${linux.home}"/>
+		<echo message="Makes the linux/unix installer using IzPack"/>
+		<izpack input="${izpack.basedir}/install.xml"
+        output="${linux.home}/${linux.dir}.installer.jar"
+        installerType="standard"
+        basedir="."/>
+        <copy file="${izpack.basedir}/ReadMe/Readme.txt" todir="${linux.home}"/>		
+        <zip zipfile="${linux.home}.zip" basedir="${linux.home}"/>	
+	</target>
+	
+	<target name="makeMacInstaller" depends="makeImportMac">
+		<mkdir dir="${mac.home}"/>	
+		<mkdir dir="${mac.home}/mac"/>			 	
+		<echo message="Makes the mac installer using IzPack"/>
+		<izpack input="${izpack.basedir}/install.xml"
+        output="${izpack.basedir}/${mac.home}/${mac.home}.installer.jar"
+        installerType="standard"
+        basedir="${efg2.current.home}"/>
+        <copy file="${izpack.basedir}/ReadMe/Readme.txt" todir="${mac.home}"/>	
+       	<copy todir="${mac.home}/mac">
+			<fileset dir="${izpack.basedir}/mac"/>
+		</copy>
+        
+       <zip zipfile="${mac.home}.zip" basedir="${mac.home}"/>	
+	</target>
+	<target name="makeAllInstaller" depends="makeMacInstaller,makeLinuxInstaller"/>       
+	
+</project>

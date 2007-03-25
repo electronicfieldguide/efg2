@@ -4,7 +4,7 @@
 package project.efg.Imports.efgImpl;
 
 import java.io.File;
-import java.net.URI;
+//import java.net.URI;
 import java.util.Iterator;
 import java.util.List;
 
@@ -64,7 +64,7 @@ public class HandleDataImport {
 				//find out if this is a valid uri
 				//write to a temp file and then 
 				//upload the temp file instead
-				URI uri = f.toURI();
+				
 			
 				obj = tree.importIntoDatabase(f.toURI());
 
