@@ -15,6 +15,7 @@ you intend to make.
 
 For Macs we have added some dmg packages
 located in the IzPackInstaller/mac folder. 
+
 This folder also contains a readme file for mac users.
 The main readme file for mac/linux users can be found in 
 IzPackInstaller/ReadMe folder 
