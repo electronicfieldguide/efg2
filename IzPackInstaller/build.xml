@@ -3,8 +3,8 @@
 	<property name="efg2.current.home" value="${efg2.home}"/>
 	<property name="izpack.basedir" value="${efg2.home}/IzPackInstaller"/>
 		
-	<property name="linux.dir" value="EFG2Installer_1_0_0_2_ For_Linux"/>
-	<property name="mac.dir" value="EFG2Installer_1_0_0_2_ For_Mac"/>
+	<property name="linux.dir" value="EFG2Installer_1_0_0_2_For_Linux"/>
+	<property name="mac.dir" value="EFG2Installer_1_0_0_2_For_Mac"/>
 	<property name="installer.dir" value="EFG2Installer"/>
 	<property name="linux.home" value="${izpack.basedir}/${linux.dir}"/>
 	<property name="mac.home" value="${izpack.basedir}/${mac.dir}"/>
