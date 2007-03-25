@@ -42,9 +42,9 @@
 		<mkdir dir="${mac.home}/mac"/>			 	
 		<echo message="Makes the mac installer using IzPack"/>
 		<izpack input="${izpack.basedir}/install.xml"
-        output="${izpack.basedir}/${mac.home}/${mac.home}.installer.jar"
+        output="${mac.home}/${mac.dir}.installer.jar"
         installerType="standard"
-        basedir="${efg2.current.home}"/>
+        basedir="."/>
         <copy file="${izpack.basedir}/ReadMe/Readme.txt" todir="${mac.home}"/>	
        	<copy todir="${mac.home}/mac">
 			<fileset dir="${izpack.basedir}/mac"/>
