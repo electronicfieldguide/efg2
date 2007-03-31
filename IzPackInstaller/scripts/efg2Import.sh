@@ -2,7 +2,7 @@
 cd ./resource
 sh login.sh
 
-if [ -d "resource"] ; then
+if [ -d "resource" ] ; then
     echo " "
 else
     cd ../

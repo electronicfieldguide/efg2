@@ -2,8 +2,6 @@
 
 <!-- 
     A efg2 installation file.
-    
-    
     To compile it :
     - go in the bin directory where you installed IzPack
     - call "compile ../efg2/install.xml -b ../efg2"
@@ -94,18 +92,25 @@
         <pack name="EFG2" required="yes">
             <description>The base files</description>
             <fileset dir="IzPackInstaller/EFG2Installer" targetdir="$INSTALL_PATH" override="true"/>
-            
             <fileset dir="IzPackInstaller/docs" targetdir="$INSTALL_PATH"/>
-   			<fileset dir="IzPackInstaller/properties" targetdir="$INSTALL_PATH/resource/properties" override="true"/>
-   			<fileset dir="IzPackInstaller/scripts" targetdir="$INSTALL_PATH"  override="true" excludes="login.sh"/>
+	    <fileset dir="../EFG2MacLauncher" targetdir="$INSTALL_PATH" os="mac"/>
+	    <fileset dir="IzPackInstaller/properties" targetdir="$INSTALL_PATH/resource/properties" override="true"/>
+	    <fileset dir="IzPackInstaller/scripts" targetdir="$INSTALL_PATH"  override="true" excludes="login.sh"/>
             <file targetdir="$INSTALL_PATH" src="../EFGsoftware/efg2/efg2doc.html" override="true"/>
             <file targetdir="$INSTALL_PATH/resource" src="IzPackInstaller/scripts/login.sh" override="true"/>    
-     		<parsable targetfile="$INSTALL_PATH/deploywebapps.sh" type="shell"/>     
-     		<parsable targetfile="$INSTALL_PATH/resource/properties/workspace.configs.properties" type="javaprop"/>     
- 		    <parsable targetfile="$INSTALL_PATH/resource/properties/version.properties" type="javaprop"/>        
-		    <parsable targetfile="$INSTALL_PATH/postinstall.html" type="plain"/>        
-      		<parsable targetfile="$INSTALL_PATH/resource/login.sh" type="shell"/>        
-           	<executable targetfile="$INSTALL_PATH/deploywebapps.sh" type="shell" stage="postinstall" keep="true" failure="warn"/> 
-   	     </pack> 
+	    <parsable targetfile="$INSTALL_PATH/deploywebapps.sh" type="shell"/>     
+	    <parsable targetfile="$INSTALL_PATH/resource/properties/workspace.configs.properties" type="javaprop"/>     
+	    <parsable targetfile="$INSTALL_PATH/resource/properties/version.properties" type="javaprop"/>        
+	    <parsable targetfile="$INSTALL_PATH/postinstall.html" type="plain"/>        
+	    <parsable targetfile="$INSTALL_PATH/resource/login.sh" type="shell"/>        
+	    <executable targetfile="$INSTALL_PATH/chmod.sh" type="shell" stage="postinstall" keep="false"/> 
+	    <executable targetfile="$INSTALL_PATH/efg2Import.sh" type="shell" stage="never" keep="true"/> 
+	    <executable targetfile="$INSTALL_PATH/resource/login.sh" type="shell" stage="never" keep="true"/> 
+	    <executable targetfile="$INSTALL_PATH/deploywebapps.sh" type="shell" stage="postinstall" keep="true" failure="warn"/> 
+	    <executable targetfile="$INSTALL_PATH/EFG2Launcher.app/Contents/MacOS/JavaApplicationStub" stage="never" keep="true" os="mac"/> 
+	    <executable targetfile="$INSTALL_PATH/EFG2Launcher.app/Contents/Info.plist" stage="never" keep="true" os="mac"/>
+	    <executable targetfile="$INSTALL_PATH/EFG2Launcher.app/Contents/PkgInfo" stage="never" keep="true" os="mac"/> 
+	     <executable targetfile="$INSTALL_PATH//EFG2Launcher.app/Contents/Resources/Java/EFG2Launcher.jar" stage="never" keep="true" os="mac"/> 
+	</pack> 
       </packs>  
 </installation>

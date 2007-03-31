@@ -2,16 +2,19 @@
 	<!-- $Id$	-->
 	<property name="efg2.current.home" value="${efg2.home}"/>
 	<property name="izpack.basedir" value="${efg2.home}/IzPackInstaller"/>
-		
 	<property name="linux.dir" value="EFG2Installer_1_0_0_2_For_Linux"/>
 	<property name="mac.dir" value="EFG2Installer_1_0_0_2_For_Mac"/>
 	<property name="installer.dir" value="EFG2Installer"/>
 	<property name="linux.home" value="${izpack.basedir}/${linux.dir}"/>
 	<property name="mac.home" value="${izpack.basedir}/${mac.dir}"/>
 	<property name="linuxmac.home" value="${izpack.basedir}/${installer.dir}"/>
-	
-	
+	<property name="mac.packages" value="${efg2.home}/../efg2macpackages"/>
 	<property name="efg2.current.build.home" value="${efg2.current.home}/dist"/>
+	<property name="efg2.mac.launcher.home" value="${efg2.home}/../EFG2MacLauncher"/>
+
+	<!-- IzPack taskdef 
+	Add IzPackInstaller/lib/standalone-compiler to your ant class path
+	-->
 	<taskdef name="izpack" classpath="${izpack.basedir}/lib/standalone-compiler.jar"
          classname="com.izforge.izpack.ant.IzPackTask"/>
 	<target name="makeImportL">
@@ -22,36 +25,92 @@
 
 	</target>
 	<target name="makeImportLinux" depends="makeImportL">		
-		<copy file="${efg2.current.home}/linuxProperties/linux.properties" todir="${linuxmac.home}/resource/properties"/>		
+		<copy file="${efg2.current.home}/linuxProperties/linux.properties" 
+		todir="${linuxmac.home}/resource/properties"/>		
 	</target>
-	<target name="makeImportMac" depends="makeImportL"/>
-	
+	<target name="makeImportMac" depends="makeImportL">
+	<delete file="${linuxmac.home}/resource/properties/linux.properties" quiet="true"/>		
+	</target>
 	<target name="makeLinuxInstaller" depends="makeImportLinux">
+	
 		<mkdir dir="${linux.home}"/>
-		<echo message="Makes the linux/unix installer using IzPack"/>
+		<echo>Makes a linux/unix installer using IzPack. 
+		Make sure to add IzPackInstaller/lib/standalone-compiler.jar 
+		to your ant class pathInclude
+		</echo>
 		<izpack input="${izpack.basedir}/install.xml"
         output="${linux.home}/${linux.dir}.installer.jar"
         installerType="standard"
         basedir="."/>
-        <copy file="${izpack.basedir}/ReadMe/Readme.txt" todir="${linux.home}"/>		
-        <zip zipfile="${linux.home}.zip" basedir="${linux.home}"/>	
+		<copy todir="${linux.home}">
+			<fileset dir="${izpack.basedir}/ReadMe"/>
+		</copy>
+		<echo>Creating linux installer as a tar and then gzip file: ${linux.home}.zip</echo>
+		<tar tarfile="${linux.home}.tar" basedir="${linux.home}"/>
+		<gzip zipfile="${linux.home}.tar.gz" src="${linux.home}.tar"/>
+		<!--
+		<zip zipfile="${linux.home}.zip" basedir="${linux.home}"/>
+		-->	
+		<delete file="${linux.home}.tar" quiet="true"/>
 	</target>
 	
 	<target name="makeMacInstaller" depends="makeImportMac">
 		<mkdir dir="${mac.home}"/>	
 		<mkdir dir="${mac.home}/mac"/>			 	
 		<echo message="Makes the mac installer using IzPack"/>
+		<mkdir dir="${izpack.basedir}/temp"/>
+		
+
+		<copy file="${izpack.basedir}/properties/linux.properties" todir="${izpack.basedir}/temp"/>	
+	
+
+		<chmod dir="${izpack.basedir}" perm="ugo+rwx" 
+		       includes="**/*.sh"/>
+		<delete file="${izpack.basedir}/properties/linux.properties" quiet="true"/>
+
+
+	<echo>Makes a mac installer using IzPack. 
+		Make sure to add IzPackInstaller/lib/standalone-compiler.jar 
+		to your ant class pathInclude
+		</echo>
 		<izpack input="${izpack.basedir}/install.xml"
         output="${mac.home}/${mac.dir}.installer.jar"
         installerType="standard"
         basedir="."/>
-        <copy file="${izpack.basedir}/ReadMe/Readme.txt" todir="${mac.home}"/>	
-       	<copy todir="${mac.home}/mac">
+		<copy todir="${mac.home}">
+		<fileset dir="${izpack.basedir}/ReadMe"/>
+		</copy>
+  			<copy todir="${izpack.basedir}/mac">
+					<fileset dir="${mac.packages}"/>
+		</copy>
+
+	
+	
+		<copy todir="${mac.home}/mac">
 			<fileset dir="${izpack.basedir}/mac"/>
 		</copy>
-        
-       <zip zipfile="${mac.home}.zip" basedir="${mac.home}"/>	
+        <echo>Creating Mac Os X installer as a gzip file: ${mac.home}.zip</echo>
+	<!--<tar tarfile="${mac.home}.tar" basedir="${mac.home}"/>
+	<gzip zipfile="${mac.home}.tar.gz" src="${mac.home}.tar"/>
+	-->
+	<zip zipfile="${mac.home}.zip" basedir="${mac.home}"/>	
+		<copy file="${izpack.basedir}/temp/linux.properties" todir="${izpack.basedir}/properties"/>	
+		<delete dir="${izpack.basedir}/temp" quiet="true"/>
+	<delete file="${mac.home}.tar" quiet="true"/>
+
 	</target>
 	<target name="makeAllInstaller" depends="makeMacInstaller,makeLinuxInstaller"/>       
 	
+	<target name="clean">
+		<echo message="Clean linux/mac"/>
+			
+		<delete dir="${linux.home}" quiet="true"/>
+		<delete dir="${izpack.basedir}/mac/Image Magick" quiet="true"/>
+		<delete dir="${izpack.basedir}/mac/mysql" quiet="true"/>
+		<delete dir="${izpack.basedir}/mac/Tomcat" quiet="true"/>
+				
+		<delete dir="${mac.home}" quiet="true"/>
+		<delete file="${mac.home}.tar.gz" quiet="true"/>
+		<delete file="${linux.home}.tar.gz" quiet="true"/>
+	</target>	
 </project>

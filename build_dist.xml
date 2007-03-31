@@ -190,12 +190,10 @@ to make a distribution call makeImport:
 		<delete dir="compiled/project/efg/servlets/unitTests"/>
 		
 		
-		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
+		<jar destfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
 			<manifest>
 				<attribute name="Built-By" value="${user.name}"/>
-				<section name="project.efg2.Imports.efgImpl.LoginDialog.class">
-					<attribute name="Sealed" value="false"/>
-				</section>
+				<attribute name="Main-Class" value="project.efg2.Imports.efgImpl.LoginDialog.class"/>
 			</manifest>
 		</jar>
 		<mkdir dir="${efg2.lib.home.logs}"/>
@@ -209,6 +207,7 @@ to make a distribution call makeImport:
 	</target>
 	<target name="clean">
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
+		
 		<delete dir="EFG2Installer" quiet="true"/>
 		<delete dir="IzPackInstaller/EFG2Installer" quiet="true"/>
 		<delete dir="IzPackInstaller/EFG2Installer_1_0_0_2_ For_Linux" quiet="true"/>
@@ -218,6 +217,8 @@ to make a distribution call makeImport:
 		<delete dir="${efg2.dist.home}/resource" quiet="true"/>
 		<delete dir="${efg2.dist.home}/samples/images" quiet="true"/>
 		<delete dir="${efg2.dist.home}/sampleData" quiet="true"/>
+		<ant antfile="${linuxmacInstaller.home}/build.xml" inheritAll="true" target="clean"/>
+		<ant antfile="${efg2.home}/build.xml" inheritAll="true" target="cleanAll"/>
 	</target>
 	<target name="makePatch" depends="clean,war,jarImport">
 		<mkdir dir="${efg2.dist.home}"/>
@@ -303,7 +304,7 @@ to make a distribution call makeImport:
 		<ant antfile="${linuxmacInstaller.home}/build.xml" inheritAll="true" target="makeLinuxInstaller"/>
 	</target>
 		<target name="makeImportMac" depends="makeImport">	
-	
+		
  	 	<delete dir="${efg2.dist.home}/resource/efg2" quiet="true"/>		
 		<delete dir="${efg2.home}/efg2" quiet="true"/>		
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>

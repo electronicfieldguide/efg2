@@ -14,7 +14,9 @@ on the OS that corresponds to the installer
 you intend to make.
 
 For Macs we have added some dmg packages
-located in the IzPackInstaller/mac folder. 
+Check out the module efg2macpackages
+and make sure it is at the same level with efg2 folder.
+
 
 This folder also contains a readme file for mac users.
 The main readme file for mac/linux users can be found in 
