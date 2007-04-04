@@ -1,17 +1,19 @@
-Mac Users: Additional Instructions For Mac OS X 10.4.x
+EFG Data Importer Installation for Mac Users: Additional Instructions For Mac OS X 10.4.x
 $Id $
 
 Note: Experienced users may find that they can skip these instructions.
 
-Below are instructions for Mac users to get everything up and running prior to installing the EFG2 software. The installation folder for EFG2 contains a directory called "mac" that contains all the files the typical user would need to follow the instructions below.
+Below are instructions for Mac users to get everything up and running prior to installing the EFG Data Importer software. The installation folder for EFG Data Importer contains a directory called "mac" that contains all the files the typical user would need to follow the instructions below.
 
-Applications required prior to EFG2 installation:
+Applications required prior to EFG Data Importer installation:
 
-1) Java Runtime environment 1.5 
+1) Java Runtime Environment (JRE) 1.5 
 2) Jakarta-Tomcat 5.0, from the Apache Jakarta project. 
-**EFG2 requires that Tomcat 5.0 is run with JDK 1.4. You must also have write privileges to the Jakarta-Tomcat 5.0 folder**
-3) Image Magick 6.1 or later
+**The EFG Data Importer requires that Tomcat 5.0 is run with JDK 1.4 (Not the same as the JRE!). You must also have write privileges to the Tomcat 5.0 folder**
+3) ImageMagick 6.1 or later
 4) MySQL Server 5.0 or later (must be at port 3306)
+
+*********
 
 I) Check the version of Java Runtime Environment running on your machine
 
@@ -88,14 +90,15 @@ IV) MySQL Post Installation
 
 V) ImageMagick Installation
 
-EFG2 uses ImageMagick to generate high-quality thumbnails.
+The EFG Data Importer uses ImageMagick to generate high-quality thumbnails.
 
    1) Double click on the imagemagick-6.1.7.pkg, located in the
       /mac/Image Magick folder, to install ImageMagick at /usr/local/bin
 
-VI) Proceed with EFG2 installation
+VI) Proceed with EFG Data Importer installation
 
-Congratulations! You have now successfully installed all of the prerequisites to run EFG2. Refer back to the main documentation to install EFG2.
+Congratulations! You have now successfully installed all of the prerequisites to run EFG Data Importer.
+Refer back to the main documentation to install the EFG Data Importer.
 
 
 
