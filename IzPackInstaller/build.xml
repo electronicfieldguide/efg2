@@ -39,18 +39,18 @@
 		to your ant class pathInclude
 		</echo>
 		<izpack input="${izpack.basedir}/install.xml"
-        output="${linux.home}/${linux.dir}.installer.jar"
+        output="${linux.home}/EFG2Installer.jar"
         installerType="standard"
         basedir="."/>
 		<copy todir="${linux.home}">
 			<fileset dir="${izpack.basedir}/ReadMe"/>
 		</copy>
 		<echo>Creating linux installer as a tar and then gzip file: ${linux.home}.zip</echo>
-		<tar tarfile="${linux.home}.tar" basedir="${linux.home}"/>
+		<!--<tar tarfile="${linux.home}.tar" basedir="${linux.home}"/>
 		<gzip zipfile="${linux.home}.tar.gz" src="${linux.home}.tar"/>
-		<!--
-		<zip zipfile="${linux.home}.zip" basedir="${linux.home}"/>
 		-->	
+		<zip zipfile="${linux.home}.zip" basedir="${linux.home}"/>
+		
 		<delete file="${linux.home}.tar" quiet="true"/>
 	</target>
 	
@@ -74,7 +74,7 @@
 		to your ant class pathInclude
 		</echo>
 		<izpack input="${izpack.basedir}/install.xml"
-        output="${mac.home}/${mac.dir}.installer.jar"
+        output="${mac.home}/EFG2Installer.jar"
         installerType="standard"
         basedir="."/>
 		<copy todir="${mac.home}">
