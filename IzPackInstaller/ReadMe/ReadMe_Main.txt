@@ -1,6 +1,6 @@
 EFG Data Importer Installation Instructions for Mac and Linux users
 
-$Id $ 
+$Id$ 
 
 ***************
 Mac Users: Please refer to the special instructions in the ReadMe_MacUsers.txt file if 
@@ -65,8 +65,8 @@ necessary to have sufficient privileges to write in some directories managed by 
 (e.g. webapps). Alternatively, if you execute as root, you will need to adjust the 
 permissions of some of the install scripts.
  
-   2) If you haven't already, download EFG2Installer_1_0_0_2_ For_Linux.zip or 
-EFG2Installer_1_0_0_2_ For_Mac.zip and unzip it. (Note: Please be aware that the 
+   2) If you haven't already, download EFG2Installer_1_0_0_2_For_Linux.zip or 
+EFG2Installer_1_0_0_2_For_Mac.zip and unzip it. (Note: Please be aware that the 
 contents of the Linux zip file currently DO NOT unpack into their own directory. We 
 recommend you create a folder, move the zip file there, and then unpackage it.)
 
