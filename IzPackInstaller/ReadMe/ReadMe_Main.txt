@@ -1,4 +1,4 @@
-Installation Instructions for Mac and Linux users
+EFG Data Importer Installation Instructions for Mac and Linux users
 
 $Id $ 
 
@@ -6,14 +6,14 @@ $Id $
 Mac Users: Please refer to the special instructions in the ReadMe_MacUsers.txt file if 
 you need assistance! 
 
-Linux and Unix Users: The EFG2 software has been successfully tested on Fedora Core 
+Linux and Unix Users: The EFG2 Data Importer has been successfully tested on Fedora Core 
 5. If you use a different operating system, configuration will likely be tricky. For those of 
 you not using a recent version of Fedora/Red Hat, we recommend that you download and 
 install the applications listed below directly from the product websites rather than using 
 any packaged versions your specific your operating system may provide.
 ***************
 
-*NOTE* Do not proceed with the EFG2 installation until you verify that all of the 
+*NOTE* Do not proceed with the EFG Data Importer installation until you verify that all of the 
 following applications are installed on the server:  
 
 1) Java Runtime Environment 1.5 or later
@@ -28,7 +28,7 @@ change the application path for you. You will need to make sym links to /usr/loc
 to your own preferred path.
 
 2) Jakarta-Tomcat 5.0 (from the Apache Jakarta project)
-   - EFG2 requires that Tomcat 5.0 is run with JDK 1.4 (This is not the same as the JRE!).
+   - The EFG Data Importer requires that Tomcat 5.0 is run with JDK 1.4 (This is not the same as the JRE!).
    - You must have write privileges to the Tomcat folder
 
 3) MySQL Server 5.0 or later (must be at port 3306) 
@@ -37,8 +37,9 @@ to your own preferred path.
 
 ------
 I) Additional MySQL Instructions: 
-You must have root privileges on localhost and % on your MySQL database server to use 
-the EFG2 Application. To verify this: 
+
+You must have MySQL root privilege on the installation host complete the installation of the EFG Data Importer.
+To verify this:
    1) Log into MySQL: 
    /usr/local/mysql/bin/mysql -u root 
 
@@ -46,20 +47,20 @@ the EFG2 Application. To verify this:
    GRANT ALL PRIVILEGES ON *.* TO root; 
    GRANT ALL PRIVILEGES ON *.* To 'root'@'localhost'; 
 
-   3) Note: root user can be replaced with any username of your choice but it must be the 
-username that you will use to log into MySQL via the EFG2 DataImporter (see manual 
-for more info). Do Not create a user called "efg" - that user name is reserved by the EFG2 
-software. 
+   3) Note: The MySQL root user can be replaced with any username of your choice but it must be the 
+username that you will use to log into MySQL via the EFG Data Importer (see manual 
+for more info). However, DO NOT create a user called "efg" - that user name is reserved by the EFG 
+Data Importer. 
 
    4) Quit from MySQL 
 
    5) Restart the MySQL server 
 
 ------
-II) Download and Install EFG2
+II) Download and Install the EFG Data Importer
 
    1) *A special note about permissions*: We advise that, if possible, you run the install as 
-the same user who executes tomcat. The EFG2 install includes some steps where it is 
+the same user who executes tomcat. The EFG Data Importer installation includes some steps where it is 
 necessary to have sufficient privileges to write in some directories managed by Tomcat 
 (e.g. webapps). Alternatively, if you execute as root, you will need to adjust the 
 permissions of some of the install scripts.
@@ -78,9 +79,9 @@ the installation.
 
    4) When prompted for Tomcat home, enter the path to the root of your Tomcat 
 installation (if you followed our instructions for mac users it is /usr/local/tomcat). 
-   -   Note once again that you need Tomcat 5.0. EFG2 relies on the directory structure 
+   -   Note once again that you need Tomcat 5.0. The EFG Data Importer relies on the directory structure 
 from the version of the distribution provided by Apache. Other install packages that do 
-not have the same directory structure will likely not work with EFG2. 
+not have the same directory structure will likely not work with the EFG Data Importer. 
 
    5) When prompted for the ImageMagick home, enter the path to where the 
 ImageMagick 'convert' command can be found. If you followed our instructions for mac 
@@ -90,7 +91,7 @@ users it is /usr/local/bin.
    - Open a terminal window and go to the Tomcat folder named webapps (For the 
 standard Mac install, you can type: cd /usr/local/tomcat/webapps and then type the 
 command "ls" to see a list of files.). 
-   - If the efg2.war file is missing, open a terminal window to the EFG2 installation folder 
+   - If the efg2.war file is missing, open a terminal window to the EFG Data Importer installation folder 
 and execute the deploywebapps.sh script: 
      sh deploywebapps.sh 
    - If you get an error trying to run deploywebapps.sh, you may have to change the 
@@ -100,17 +101,17 @@ executes this script has write privileges for that directory (you may need to be
 root/admin). 
 
    7) Start Tomcat, or if it was already running, you *must* Restart it before launching the 
-EFG2 software!
+EFG Data Importer!
 
-   8) To launch the EFG2 software: 
+   8) To launch the EFG Data Importer: 
    - Mac users can double-click on the EFG2Launcher.app in the install folder, or drag 
 that file onto the dock and it will create a shortcut that you can click on to start the 
 application. 
-   - Else open a command window to the path where the EFG2 software was installed and 
+   - Else open a command window to the path where the EFG Data Importer software was installed and 
 execute efg2Import.sh (You must have the correct privileges to execute this script): 
      sh efg2Import.sh  
 
-   9) For further assistance, see the EFG2 manual (efg2doc.html in the folder where EFG2 
+   9) For further assistance, see the EFG Data Importer manual (efg2doc.html in the folder where the EFG Data Importer 
 was installed). 
 
 ------
@@ -119,11 +120,11 @@ Troubleshooting
 Q: What if the java version in my path is not JRE 1.5 or later? 
 A: The EFG2 application assumes that JRE 1.5 or later is in the user's path. If it is not, 
 then edit INSTALL_PATH/resource/login.sh appropriately so that JRE 1.5 or later is 
-used in the script to launch the EFG2 application (INSTALL_PATH is where EFG2 is 
+used in the script to launch the EFG2 application (INSTALL_PATH is where the EFG Data Importer is 
 installed.). 
 
 Q: Why does clicking on 'View EFGs' show a 'No datasource uploaded' message? 
-A: This probably means that the user created by the EFG2 DataImporter does not have 
+A: This probably means that the user created by the EFG Data Importer does not have 
 enough privileges. If so, do the following: 
    - Open a command window to MySQL and type:  
      use mysql 
@@ -133,7 +134,7 @@ enough privileges. If so, do the following:
      flush privileges; 
    - Exit MySQL and restart it, then restart Tomcat.
 
-Q: The EFG2 software requires me to log in the first time I run it, how is that possible?
-A: The EFG2 software uses your MySQL account user name and password for the login. 
-For the first time you log in, this is likely the root mysql user. Please refer to the EFG2 
+Q: The EFG Data Importer requires me to log in the first time I run it, how is that possible?
+A: The EFG Data Importer uses your MySQL account user name and password for the login. 
+For the first time you log in, this is likely the MySQL root user. Please refer to the EFG Data Importer 
 manual for more information.
