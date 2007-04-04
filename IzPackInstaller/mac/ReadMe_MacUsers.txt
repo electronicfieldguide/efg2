@@ -1,5 +1,5 @@
 EFG Data Importer Installation for Mac Users: Additional Instructions For Mac OS X 10.4.x
-$Id $
+$Id$
 
 Note: Experienced users may find that they can skip these instructions.
 
