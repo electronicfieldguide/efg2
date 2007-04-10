@@ -236,6 +236,31 @@ to make a distribution call makeImport:
 		<delete dir="${efg2.home}/efg2" quiet="true"/>
 		<delete file="${efg2.home}/efg2.war" quiet="true"/>
 	</target>
+	<target name="makePatch1002" depends="clean,compile">
+		<echo> Making a patch with version 1_0_0_2 </echo>
+		<mkdir dir="${efg2.dist.home}"/>
+		<mkdir dir="${efg2.dist.home}/resource"/>
+		<mkdir dir="${efg2.dist.home}/resource/exports"/>
+		
+		<delete dir="compiled/project/efg/digir"/>
+		<delete dir="compiled/project/efg/unitTests"/>
+		<delete dir="compiled/project/efg/servlets/unitTests"/>
+		
+		
+		<jar destfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled">
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Main-Class" value="project.efg2.Imports.efgImpl.LoginDialog.class"/>
+			</manifest>
+		</jar>
+
+		<copy file="${efg2.lib.home}/rdbImport.jar" todir="${efg2.dist.home}/resource"/>
+
+		
+		<copy todir="${efg2.dist.home}/resource/exports">
+			<fileset dir="${efg2.home}/compiled/project/efg/exports"/>
+		</copy>
+	</target>
 	<target name="makeImport" depends="clean,war,jarImport">
 		<mkdir dir="${efg2.dist.home}"/>
 		<mkdir dir="${efg2.dist.home}/resource"/>
