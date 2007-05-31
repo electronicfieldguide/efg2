@@ -24,7 +24,7 @@ var CONFIGURE_PAGE_TYPE="searchType=pdfs";
 var DELETE_TEMPLATE= JSP_ROOT + "DeleteTemplate.jsp?";	
 		
 var PROGRESS_MESSAGE = "Please wait while your requests is processed....";
-var NO_TEMPLATE_MESSAGE = "Please select a template or new if configuring a new plate..Fix Me";
+var NO_TEMPLATE_MESSAGE = "Please select a template or new if configuring a new plate";
 var current_template_list;
 
 
@@ -42,7 +42,7 @@ var PDF_SERVER_URL="/efg2/efg2pdfconfig";
 var CONFIGURE_PAGE = "/efg2/configTaxonPage";
 var DATASOURCE_NAME="dataSourceName";
 var DISPLAY_NAME = "displayName";
-var TEMPLATE_ALERT_MESSAGE="Please select a template or enter the name for a new one..[Fix Me]";
+var TEMPLATE_ALERT_MESSAGE="Please select a template or enter the name for a new one..";
 var DEFAULT_DATA_LIST_VALUE = "[Enter or select a template]";
 var FIRST_DIV="firstdiv";
 var ZEROTH_DIV="zerothdiv";
@@ -117,7 +117,8 @@ function AddCaptionRow(currenturl,
  	caption =  $(numberofcaptionsid);
 	params = params + "&" + caption.name + "=" + caption.value;
 	
-	doPostsUpdater(currentU,params,doNothingHandler,spanid,Insertion.Before);		
+	doPostsUpdater(currentU,params,doNothingHandler,spanid,Insertion.Before);	
+	enableAllSubmitButtons();	
 }
 /**
 *
