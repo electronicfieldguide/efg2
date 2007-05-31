@@ -297,9 +297,26 @@ java.io.File
 					<input type="checkbox" name="<%=name%>" value="<%=PDFGUIConstants.SHOW_CAPTIONS%>" /> Always display captions (default is to skip if no image is available)
 				<%}%>
 				 </span>
-				<%	
-				} 		
-				%>
+					<%	
+					} else{
+						name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
+						fieldValue = (String)groupTable.get(name);
+						if(fieldValue == null){
+							fieldValue ="";
+						}
+						characterLabel= tp.getCurrentCharacterLabel(name);
+						characterLabelValue = (String)groupTable.get(characterLabel);
+						if(characterLabelValue == null){
+							characterLabelValue =PDFGUIConstants.GENERAL_SETTING_SHOW_CAPTIONS;
+						}
+					
+					%>
+					<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
+					
+					<input type="checkbox" name="<%=name%>" value="<%=PDFGUIConstants.SHOW_CAPTIONS%>" checked="checked"/> Always display captions (default is to skip if no image is available)
+					<%
+					}		
+					%>
 			</td>
 		</tr>	
 		<tr>
