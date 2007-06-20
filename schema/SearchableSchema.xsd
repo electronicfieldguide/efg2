@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp1 (http://www.altova.com) by University of Massachusetts Boston (University of Massachusetts Boston) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:element name="Searchables">
+		<xs:annotation>
+			<xs:documentation>Comment describing your root element</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Searchable" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="fieldName" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="dbFieldName" use="required">
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:minLength value="1"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:attribute>
+						<xs:attribute name="order" type="xs:int" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="datasourceName" type="xs:string"/>
+		</xs:complexType>
+		<xs:unique name="fieldName_unique">
+			<xs:selector xpath="Searchable"/>
+			<xs:field xpath="@fieldName"/>
+		</xs:unique>
+		<xs:unique name="dbFieldName_unique">
+			<xs:selector xpath="Searchable"/>
+			<xs:field xpath="@dbFieldName"/>
+		</xs:unique>
+	</xs:element>
+</xs:schema>
