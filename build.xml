@@ -15,7 +15,6 @@ to compile/deploy/clean with:
 	<property name="efg2.properties.home" value="${efg2.home}/properties"/>
 	<property name="ant.home" value="${myenv.ANT_HOME}"/>
 	<property name="dist.war" value="${app.name}.war"/>
-	
 	<property name="efg2.lib.home" value="${efg2.home}/lib"/>
 	<property name="efg2.css.home" value="${efg2.home}/css"/>
 	<property name="efg2.templatecss.home" value="${efg2.home}/templateCSSDirectory"/>
@@ -30,22 +29,18 @@ to compile/deploy/clean with:
 	<property name="efg2.source.home" value="${efg2.home}/source"/>
 	<property name="efg2.images.home" value="${efg2.home}/../EFGImages"/>
 	<property name="icons.home" value="${efg2.home}/../EFGIcons"/>
-
 	<property name="efg2.website.home" value="${efg2.home}/../efg2_website"/>
 	<property name="dist.src" value="${app.name}.jar"/>
 	<property name="efg2.fedSchema.home" value="fedSchema"/>
-	
 	<property name="compile.home" value="${efg2.home}/compiled"/>
 	<property name="deploy.home" value="${tomcat.home}/webapps/${app.name}"/>
 	<property name="webapps.home" value="${tomcat.home}/webapps"/>
 	<!--  src files are copied to this temporal location before compilation-->
 	<property name="src.temp.home" value="${efg2.home}/temp"/>
-	
 	<property name="mainclass" value="project.efg.Imports.efgImpl.LoginDialog.class"/>
-		<property name="title" value="EFG2DataImporterJar"/>
-		<property name="version" value="1.0.0.0"/>
-		<property name="copyright" value="Electronic Field Guide Project, UMASS Boston"/>
-
+	<property name="title" value="EFG2DataImporterJar"/>
+	<property name="version" value="1.0.0.0"/>
+	<property name="copyright" value="Electronic Field Guide Project, UMASS Boston"/>
 	<!-- Main class path required by all classes-->
 	<path id="compile.class.path">
 		<!-- all compile-time jars should be the same as the runtime jars.... ram -->
@@ -82,8 +77,8 @@ to compile/deploy/clean with:
 	<!-- Compile main sources-->
 	<target name="compileMain" depends="prepare">
 		<ant antfile="${efg2.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>
-		
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="generate"/>
+		<ant antfile="${efg2.home}/generateSearchableDocument.xml" inheritAll="true" target="generate"/>
 		<copy todir="${src.temp.home}">
 			<fileset dir="${efg2.source.home}"/>
 		</copy>
@@ -100,8 +95,8 @@ to compile/deploy/clean with:
 	<target name="deployPlates">
 		<mkdir dir="${deploy.home}/plateConfiguration"/>
 		<copy todir="${deploy.home}/plateConfiguration">
-					<fileset dir="${efg2_platemaker.home}"/>
-				</copy>
+			<fileset dir="${efg2_platemaker.home}"/>
+		</copy>
 	</target>
 	<target name="deployResources">
 		<mkdir dir="${deploy.home}"/>
@@ -118,7 +113,6 @@ to compile/deploy/clean with:
 		<mkdir dir="${deploy.home}/templateConfigFiles"/>
 		<mkdir dir="${deploy.home}/templateConfigFiles/xml"/>
 		<mkdir dir="${deploy.home}/efg2efg2export"/>
-		
 		<copy todir="${deploy.home}/efg2efg2export">
 			<fileset dir="${efg2.home}/efg2efg2export"/>
 		</copy>
@@ -128,8 +122,6 @@ to compile/deploy/clean with:
 		<copy todir="${deploy.home}/css">
 			<fileset dir="${efg2.css.home}"/>
 		</copy>
-
-	
 		<copy todir="${deploy.home}/templateCSSDirectory">
 			<fileset dir="${efg2.templatecss.home}"/>
 		</copy>
@@ -173,8 +165,6 @@ to compile/deploy/clean with:
 		<copy todir="${deploy.home}/WEB-INF/fedSchema">
 			<fileset dir="${efg2.fedSchema.home}"/>
 		</copy>
-		
-		
 		<copy todir="${deploy.home}/WEB-INF/classes/properties">
 			<fileset dir="properties" excludes="log4j*.*"/>
 		</copy>
@@ -201,23 +191,20 @@ to compile/deploy/clean with:
 	</target>
 	<target name="jarImport" depends="compile">
 		<copy todir="${efg2.lib.home.properties}">
-					<fileset dir="${efg2.properties.home}"/>
-				</copy>
-				<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg2.lib.home}"/>
-	
-				<pathconvert property="mf.classpath" pathsep=" ">
-						<path refid="rdb.import.class.path"/>
-						<mapper>
-							<chainedmapper>
-						<flattenmapper/>
-								<globmapper from="*.properties" to="properties/*.properties"/>
-								<globmapper from="*.jar" to="*.jar"/>
-								</chainedmapper>
-									</mapper>
-					</pathconvert>
-		
-		
-				<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled"  manifest="bin/META-INF/MANIFEST.MF">
+			<fileset dir="${efg2.properties.home}"/>
+		</copy>
+		<copy file="${rdb.src.home}/lib/mysqldriver.jar" todir="${efg2.lib.home}"/>
+		<pathconvert property="mf.classpath" pathsep=" ">
+			<path refid="rdb.import.class.path"/>
+			<mapper>
+				<chainedmapper>
+					<flattenmapper/>
+					<globmapper from="*.properties" to="properties/*.properties"/>
+					<globmapper from="*.jar" to="*.jar"/>
+				</chainedmapper>
+			</mapper>
+		</pathconvert>
+		<jar jarfile="${efg2.home}/lib/rdbImport.jar" basedir="compiled" manifest="bin/META-INF/MANIFEST.MF">
 
 
 					</jar>
@@ -234,7 +221,6 @@ to compile/deploy/clean with:
 		<mkdir dir="${efg2.lib.home.logs}"/>
 		<mkdir dir="${efg2.lib.home.properties}"/>
 		<!-- COPY FROM rdb properties location -->
-		
 		<delete dir="temp"/>
 	</target>
 	<!-- Compile RDB sources with main sources-->
@@ -246,7 +232,6 @@ to compile/deploy/clean with:
 	<target name="cleanSource">
 		<ant antfile="${efg2.home}/buildTemplates.xml" inheritAll="true" target="clean"/>
 	</target>
-
 	<target name="cleanAll" depends="cleanSource">
 		<delete dir="${src.temp.home}" quiet="true"/>
 		<delete dir="${compile.home}" quiet="true"/>
@@ -259,10 +244,8 @@ to compile/deploy/clean with:
 		</delete>
 		<delete file="${efg2.home}/lib/rdbImport.jar" quiet="true"/>
 		<delete file="${efg2.home}/lib/checkBox.out" quiet="true"/>
-
 	</target>
 	<target name="clean">
-		
 		<ant antfile="${rdb.src.home}/build.xml" inheritAll="true" target="clean"/>
 	</target>
 	<target name="cleandeploy">
