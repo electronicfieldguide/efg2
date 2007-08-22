@@ -1,2 +1,0 @@
-$Id$
-#An empty file so that CVS loads this directory on checkout
