@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xslPage fileName="/search/SearchPage.xsl" guid="1184772231953" displayName="Some display Name" jspName="search/search.jsp" isDefault="false">
+	<groups>
+		<group rank="1" label="titles" id="1">
+			<characterValue rank="1" label="field_n" value="Invasive Species on Nantucket"/>
+		</group>
+		<group rank="2" label="taxonomy" id="2">
+			<characterValue rank="1" label="mainHeader" value="Family"/>
+			<characterValue rank="2" label="subHeader" value="Scientific Name"/>
+			<characterValue rank="3" label="subHeader" value="Common Name"/>
+		</group>
+		<group rank="3" label="descriptions"  id="3">
+			<characterValue rank="1" label="field" value="Synonyms"/>
+			<characterValue rank="2" label="field" value="THE PLANT"/>
+			<characterValue rank="3" label="field" value="THE LEAVES"/>
+			<characterValue rank="4" label="field" value="THE STEM"/>
+			<characterValue rank="5" label="field" value="THE FLOWERS"/>
+			<characterValue rank="6" label="field" value="THE FRUITS"/>
+			<characterValue rank="7" label="field" value="THE HABITAT"/>
+			<characterValue rank="8" label="field" value="DISPERSAL METHODS"/>
+			<characterValue rank="9" label="field" value="KEY ID FEATURES"/>
+			<characterValue rank="10" label="field" value="SIMILAR SPECIES"/>
+			<characterValue rank="11" label="field" value="NOTES"/>
+			<characterValue rank="12" label="field" value="Growth Form"/>
+			<characterValue rank="13" label="field" value="ORIGIN"/>
+			<characterValue rank="14" label="field" value="Degree of invasiveness on Nantucket"/>
+			<characterValue rank="15" label="field" value="Degree of invasiveness in Massachusetts"/>
+			<characterValue rank="16" label="field" value="Prohibited in Massachusetts?"/>
+		</group>
+		<group rank="5" label="mediaresources" id="5">
+			<characterValue rank="1" label="mediaresource" value="Extra (IMG)"/>
+			<characterValue rank="2" label="displayallimages" value="no"/>
+		</group>
+		<group rank="16" label="mediaresources" id="6">
+			<characterValue rank="1" label="mediaresource"/>
+			<characterValue rank="2" label="displayallimages" value="no"/>
+		</group>
+		<group rank="17" label="mediaresources" id="7">
+			<characterValue rank="1" label="mediaresource" value="Stem (IMG)"/>/>
+			<characterValue rank="2" label="displayallimages" value="no"/>
+		</group>
+		<group rank="18" label="mediaresources" id="8">
+			<characterValue rank="1" label="mediaresource" value="Leaf (IMG)"/>
+			<characterValue rank="2" label="displayallimages" value="no"/>
+		</group>
+		<group rank="19" label="mediaresources" id="9">
+			<characterValue rank="1" label="mediaresource" value="Fruit (IMG)"/>
+			<characterValue rank="2" label="displayallimages" value="no"/>
+		</group>
+		<group rank="20" label="mediaresources" id="10">
+			<characterValue rank="1" label="mediaresource" value="Macro (IMG)"/>
+			<characterValue rank="2" label="displayallimages" value="no"/>
+		</group>
+		<group rank="21" label="mediaresources" id="11">
+			<characterValue rank="1" label="mediaresource" value="Plant (IMG)"/>
+			<characterValue rank="2" label="displayallimages" value="no"/>
+		</group>
+		
+		<!-- Page configuration -->
+		<group rank="5" label="sort" id="15">
+			<characterValue rank="1" value="Family"/>
+			<!-- Sort alphabetically if the rank is not listed-->
+		</group>
+		
+		<group rank="7" label="numberofcolumns" id="17">
+			<characterValue rank="1" value="2"/>
+		</group>
+	
+	</groups>
+</xslPage>

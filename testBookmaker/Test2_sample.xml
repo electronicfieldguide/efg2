@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EFGDocument>
+	<datasources>
+		<datasource name="nantucketspppgsdec_1184281945406" efgKey="1"/>
+	</datasources>
+	<TaxonEntries>
+			<TaxonEntry recordID="1184281945414">
+			<Items name="Family" databaseName="family" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Liliaceae</Item>
+			</Items>
+			<Items name="Genus" databaseName="genus" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Allium</Item>
+			</Items>
+			<Items name="Species" databaseName="species" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">vineale</Item>
+			</Items>
+			<Items name="Common Name" databaseName="common_name" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Wild garlic</Item>
+			</Items>
+			<MediaResources name="Plant (IMG)" databaseName="plant__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_6322 copy.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Macro (IMG)" databaseName="macro__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/AlliumVinealeFlower_JusticeSI.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Habitat (IMG)" databaseName="habitat__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_6319 copy.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Fruit (IMG)" databaseName="fruit__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_7333 copy.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_7334 copy.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_7337 copy.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Leaf (IMG)" databaseName="leaf__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_6404 copy.jpg</MediaResource>
+			</MediaResources>
+			<Items name="Petal Number (SYN)" databaseName="petal_number__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">6</Item>
+			</Items>
+			<Items name="Flower Color (SYN)" databaseName="flower_color__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">White</Item>
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Green</Item>
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Purple</Item>
+			</Items>
+			<Items name="Fruit Color (SYN)" databaseName="fruit_color__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Black</Item>
+			</Items>
+			<Items name="Leaf Arrangement (SYN)" databaseName="leaf_arrangement__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Basal</Item>
+			</Items>
+			<Items name="Leaf/Leaflet Shape (SYN)" databaseName="leaf_leaflet_shape__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Linear</Item>
+			</Items>
+			<Items name="Leaf Margins (SYN)" databaseName="leaf_margins__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Entire</Item>
+			</Items>
+			<Items name="Leaf Grouping (SYN)" databaseName="leaf_grouping__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Simple</Item>
+			</Items>
+			<Items name="Leaf Venation (SYN)" databaseName="leaf_venation__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Parallel</Item>
+			</Items>
+			<Items name="Growth Form" databaseName="growth_form" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Herb</Item>
+			</Items>
+			<Items name="Degree of invasiveness on Nantucket" databaseName="degree_of_invasiveness_on_nantucket" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Do not list at this time</Item>
+			</Items>
+			<Items name="Degree of invasiveness in Massachusetts" databaseName="degree_of_invasiveness_in_massachusetts" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Not evaluated</Item>
+			</Items>
+			<Items name="Prohibited in Massachusetts?" databaseName="prohibited_in_massachusetts_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">no</Item>
+			</Items>
+			<EFGLists name="Synonyms" databaseName="synonyms">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">Wild onion, Field garlic, Crow garlic</EFGList>
+			</EFGLists>
+			<EFGLists name="DISPERSAL METHODS" databaseName="dispersal_methods">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">by seed</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">asexually by bulbils that form in place of fruits in the flower head</EFGList>
+			</EFGLists>
+			<EFGLists name="REPRODUCTION TYPE (SYN)" databaseName="reproduction_type__syn_">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">seed, vegetative, bulbils</EFGList>
+			</EFGLists>
+			<EFGLists name="ORIGIN" databaseName="origin">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">Europe, North Africa, West Asia</EFGList>
+			</EFGLists>
+			<EFGLists name="NOTES" databaseName="notes">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">More information about the invasiveness of this species elsewhere is required to determine whether it might be a potential threat.</EFGList>
+			</EFGLists>
+			<EFGLists name="KEY ID FEATURES" databaseName="key_id_features">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">Plant parts all emit a strong garlic odor.</EFGList>
+			</EFGLists>
+		</TaxonEntry>
+	
+		<TaxonEntry recordID="1184281945407">
+			<Items name="Family" databaseName="family" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Aceraceae</Item>
+			</Items>
+			<Items name="Genus" databaseName="genus" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Acer</Item>
+			</Items>
+			<Items name="Species" databaseName="species" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">platanoides</Item>
+			</Items>
+			<Items name="Common Name" databaseName="common_name" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Norway Maple</Item>
+			</Items>
+			<MediaResources name="Plant (IMG)" databaseName="plant__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_6384_1.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Macro (IMG)" databaseName="macro__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_6375_1.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_6381_1.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Fruit (IMG)" databaseName="fruit__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_6860_1.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_6859_1.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Leaf (IMG)" databaseName="leaf__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_2773_1.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Stem (IMG)" databaseName="stem__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_4320_1.jpg</MediaResource>
+			</MediaResources>
+			<MediaResources name="Extra (IMG)" databaseName="extra__img_">
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_2766_1.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">cbeaton1/IMG_2764_1.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_6397 copy.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_6376_06.jpg</MediaResource>
+				<MediaResource resourceLink="" caption="" annotation="" efgKeyRef="1" type="Image">CherylNantucketDec06/IMG_6855 copy.jpg</MediaResource>
+			</MediaResources>
+			<Items name="Petal Number (SYN)" databaseName="petal_number__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">5</Item>
+			</Items>
+			<Items name="Flower Color (SYN)" databaseName="flower_color__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Yellow</Item>
+			</Items>
+			<Items name="Fruit Color (SYN)" databaseName="fruit_color__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Green</Item>
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Brown</Item>
+			</Items>
+			<Items name="Leaf Arrangement (SYN)" databaseName="leaf_arrangement__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Opposite</Item>
+			</Items>
+			<Items name="Leaf/Leaflet Shape (SYN)" databaseName="leaf_leaflet_shape__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Star-shaped</Item>
+			</Items>
+			<Items name="Leaf Margins (SYN)" databaseName="leaf_margins__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Lobed</Item>
+			</Items>
+			<Items name="Leaf Grouping (SYN)" databaseName="leaf_grouping__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Simple</Item>
+			</Items>
+			<Items name="Leaf Venation (SYN)" databaseName="leaf_venation__syn_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Palmate</Item>
+			</Items>
+			<Items name="Growth Form" databaseName="growth_form" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Tree</Item>
+			</Items>
+			<Items name="Degree of invasiveness on Nantucket" databaseName="degree_of_invasiveness_on_nantucket" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Likely Invasive</Item>
+			</Items>
+			<Items name="Degree of invasiveness in Massachusetts" databaseName="degree_of_invasiveness_in_massachusetts" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">Invasive</Item>
+			</Items>
+			<Items name="Prohibited in Massachusetts?" databaseName="prohibited_in_massachusetts_" itemType="categorical">
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">importation ban July 2006</Item>
+				<Item resourceLink="" caption="" annotation="" efgKeyRef="1">propagation ban January 2009</Item>
+			</Items>
+			<EFGLists name="Synonyms" databaseName="synonyms">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">none</EFGList>
+			</EFGLists>
+			<EFGLists name="THE PLANT" databaseName="the_plant">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">A medium to large deciduous shade tree with a rounded crown. Densely branched, typically 40-60 feet tall (max 90 feet). Tends to be wider than tall when growing in an open area.</EFGList>
+			</EFGLists>
+			<EFGLists name="THE LEAVES" databaseName="the_leaves">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">opposite</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">5-lobed</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">dark green</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">4-7 inches wide</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">exudes milky sap when petiole is broken</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">late fall color</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">some cultivars have dark red leaves</EFGList>
+			</EFGLists>
+			<EFGLists name="THE STEM" databaseName="the_stem">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">grayish-black</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">shallow ridges and furrows</EFGList>
+			</EFGLists>
+			<EFGLists name="THE FLOWERS" databaseName="the_flowers">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">Small yellow flowers with five petals. Buds are large and green to maroon. Blooms in April.</EFGList>
+			</EFGLists>
+			<EFGLists name="THE FRUITS" databaseName="the_fruits">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">samaras</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">green maturing to tan</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">1.5-2 inches long</EFGList>
+			</EFGLists>
+			<EFGLists name="THE HABITAT" databaseName="the_habitat">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">many different soils</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">full sun</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">tolerant of urban conditions</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">creates dense shade</EFGList>
+			</EFGLists>
+			<EFGLists name="DISPERSAL METHODS" databaseName="dispersal_methods">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">wind</EFGList>
+			</EFGLists>
+			<EFGLists name="DISPERSAL VECTORS (SYN)" databaseName="dispersal_vectors__syn_">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">wind</EFGList>
+			</EFGLists>
+			<EFGLists name="REPRODUCTION TYPE (SYN)" databaseName="reproduction_type__syn_">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">seed</EFGList>
+			</EFGLists>
+			<EFGLists name="ORIGIN" databaseName="origin">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">Europe</EFGList>
+			</EFGLists>
+			<EFGLists name="SIMILAR SPECIES" databaseName="similar_species">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">Sugar maple (Acer saccharum) has clear sap, thick, irregular plated bark, seed wings at a 120 degree angle and seeds that are thick in cross section</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">Norway Maple has white sap, regularly grooved bark, a 180 degree angle to its seed wings, and seeds that are thin in cross-section.</EFGList>
+			</EFGLists>
+			<EFGLists name="NOTES" databaseName="notes">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">The dense shade produced by Norway Maple inhibits the growth of other vegetation under its canopy. The fact that seeds are wind dispersed allows them to spread far from the parent plant.</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">On Nantucket, fruits are observed dropping from the trees in mid-June, and seem small, suggesting they may not be developing fully. Seeds do germinate but plants don't persist. Most adults are from known plantings.</EFGList>
+			</EFGLists>
+			<EFGLists name="KEY ID FEATURES" databaseName="key_id_features">
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">large shade tree</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">deciduous</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">opposite leaves</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">5-lobed</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">white milky sap when broken</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">gray-black bark</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">shallow ridges</EFGList>
+				<EFGList resourceLink="" caption="" annotation="" efgKeyRef="1">large green-maroon buds</EFGList>
+			</EFGLists>
+		</TaxonEntry>
+	</TaxonEntries>
+</EFGDocument>
