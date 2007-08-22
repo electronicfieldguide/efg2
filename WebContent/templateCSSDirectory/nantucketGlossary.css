@@ -1,0 +1,530 @@
+/*  main style code for Nantucket skin */
+body {
+background-color: #458040;
+font-family: helvetica, verdana, arial;
+}
+table {
+width: 165px;
+padding: 0px;
+border: solid 1px #919664;
+border-collapse: collapse;
+}
+td {
+color: #000;
+font-size: 8pt;
+}
+td.logo {
+vertical-align: center;
+padding-bottom: 5px;
+align: left;
+background-color: #003300;
+padding: 5px;
+}
+td.frametitle {
+text-align: center;
+color: #F2E7BA;
+padding: 3px;
+padding-bottom: 10px;
+font-size: 9pt;
+background-color: #003300;
+}
+td.linkbullet {
+padding-right: 5px;
+vertical-align: center;
+padding-bottom: 5px;
+}
+td.link {
+vertical-align: center;
+padding-bottom: 5px;
+background-color: #ddeeff;
+}
+td.line {
+vertical-align: center;
+border-bottom-style: groove;
+border-bottom-color: #006400;
+border-bottom-width: 2px;
+align: left;
+}
+a {
+color: #8496b9;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+}
+a:hover {
+background-color: #003300;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+}
+caption {
+text-align: center;
+vertical-align: bottom;
+color: #efe022;
+font-family: helvetica, verdana, arial;
+font-weight: bold;
+font-size: 10pt;
+}
+ul {
+list-style: none;
+margin: 0;
+padding: 0;
+}
+img {
+border: none;
+}
+.clearboth {
+clear: both;
+}
+.credits {
+margin-top: 5px;
+width: 165px;
+text-align: left;
+}
+p.copyrightframe {
+color: #F2E7BA;
+padding-top: 3px;
+margin-top: 0px;
+margin-bottom: 0px;
+font-size: 8pt;
+margin-left: 2px;
+text-decoration: none;
+}
+a.copyrightframe {
+color: #F2E7BA;
+font-size: 8pt;
+text-decoration: none;
+}
+a.copyrightframe:hover {
+color: #F2E7BA;
+font-size: 8pt;
+text-decoration: underline;
+}
+
+
+/* start of style code for vertical menu bar */
+/*- Menu 1--------------------------- */
+/*- source: www.exploding-boy.com */
+
+#menu1 {
+width: 170px;
+margin: 0px;
+margin-top: 5px;
+border-style: solid solid none solid;
+border-color: #3D261D;
+border-size: 1px;
+border-width: 1px;
+}
+#menu1 li a {
+height: 32px;
+  voice-family: "\"}\""; 
+  voice-family: inherit;
+  height: 24px;
+text-decoration: none;
+font-size: 8pt;
+border-bottom: 1px solid black;
+}
+#menu1 li a:link, #menu1 li a:visited {
+color: #000;
+display: block;
+background:  url(menu1.gif);
+padding: 8px 0 0 10px;
+}
+#menu1 li a:hover {
+color: #000;
+background:  url(menu1.gif) 0 -32px;
+padding: 8px 0 0 10px;
+}
+#menu1 li.nolink span {
+height: 32px;
+voice-family: "\"}\""; 
+voice-family: inherit;
+height: 24px;
+text-decoration: none;
+font-size: 8pt;
+}
+#menu1 li.nolink span, #menu1 li.nolink {
+color: #000;
+display: block;
+background:  url(menu1.gif);
+padding: 8px 0 0 10px;
+font-size: 8pt;
+font-weight: bold;
+}
+#menu1 li.nolink span {
+color: #000;
+background:  url(menu1.gif);
+padding: 8px 0 0 10px;
+font-size: 8pt;
+font-weight: bold;
+}
+#menu1 li a.subcat {
+height: 32px;
+  voice-family: "\"}\""; 
+  voice-family: inherit;
+  height: 24px;
+text-decoration: none;
+font-size: 8pt;
+padding-left: 30px;
+}
+#menu1 li a.subcat:link, #menu1 li a.subcat:visited {
+color: #000;
+display: block;
+background:  url(menu1.gif);
+padding: 8px 0 0 10px;
+padding-left: 30px;
+}
+#menu1 li a.subcat:hover {
+color: #000;
+background:  url(menu1.gif) 0 -32px;
+padding: 8px 0 0 10px;
+padding-left: 30px;
+}
+/* end of style code for vertical menu bar */
+
+/* Style code unique to main frame starts here */
+body.main {
+background-color: #DDEEFF;
+font-family: helvetica, verdana, arial;
+}
+table.main {
+border: 0px;
+color: #000;
+}
+td.main {
+color: #000;
+font-family: helvetica, verdana, arial;
+font-size: 8pt;
+padding-left: 10px;
+}
+td.logomain {
+height: 200px;
+vertical-align: center;
+padding-left: 5px;
+align: left;
+padding-left: 10px;
+}
+td.linkmain {
+vertical-align: center;
+padding-bottom: 5px;
+padding-left: 10px;
+}
+a.main {
+color: #000000;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+}
+a.main:hover {
+color: #1c86ee;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: underline;
+}
+a.logo:hover {
+background-color: #DDEEFF;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+}
+td.maintitle {
+font-size: 26px;
+font-weight: bold;
+padding-left: 15px;
+color: #000;
+}
+td.mainsplash {
+padding-left: 10px;
+padding-top: 10px;
+padding-bottom: 15px;
+}
+td.maincredits {
+font-size: 16px;
+font-weight: normal;
+color: #000;
+padding-left: 10px;
+padding-bottom: 10px;
+}
+
+/* style code for About, Acknowledgement, FAQ and Glossary pages starts here */
+
+body.about {
+color: #000000;
+background-color: #ddeeff;
+}
+table.about {
+width: 600px;
+border: 0px black solid;
+margin-left: 15px;
+margin-top: 10px;
+}
+td.abouttitle {
+color: #000000;
+font-family: arial, helvetica, verdana;
+font-size: 20pt;
+text-align: left;
+font-weight: bold;
+padding-bottom: 10px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: darkblue;
+}
+td.alphastrip {
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: normal;
+text-align: left;
+padding-bottom: 10px;
+margin-bottom: 100px;
+border-bottom-style: solid;
+border-bottom-width: 2px;
+border-bottom-color: darkblue;
+}
+td.spacer {
+height: 25px;
+}
+dt.alphaheader {
+font-family: arial, helvetica, verdana;
+font-size: 12pt;
+font-weight: bold;
+color: darkblue;
+text-align: left;
+border-bottom: solid 1px darkblue;
+padding-left: 0px;
+}
+dl.glossary {
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: normal;
+color: #000000;
+text-align: left;
+padding-left: 10px;
+}
+dt.glossary {
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: bold;
+color: #000000;
+text-align: left;
+padding-left: 0px;
+}
+dd.glossary {
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: normal;
+color: #000000;
+padding-left: 10px;
+}
+dl.topofpage {
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+font-weight: normal;
+text-align: right;
+color: darkblue;
+}
+a.about {
+color: #000000;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+font-weight: bold;
+text-align: left;
+text-decoration: none;
+}
+a.about:hover {
+color: #1c86ee;
+background-color: #ddeeff;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: underline;
+}
+a.glossary {
+color: #3F62BE;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+padding-left: 2px;
+padding-right: 2px;
+padding-top: 5px;
+padding-bottom: 5px;
+}
+a.glossary:hover {
+color: #ffffff;
+background-color: #3F62BE;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+}
+a.topofpage {
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+font-weight: normal;
+text-align: right;
+color: darkblue;
+background-color: #DDEEFF;
+text-decoration: none;
+}
+a.topofpage:hover {
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+font-weight: normal;
+text-align: right;
+color: darkblue;
+background-color: #DDEEFF;
+text-decoration: none;
+}
+ul.about {
+list-style: disc;
+color: #000000;
+font-family: arial, helvetica, verdana;
+font-size: 10pt;
+text-align: left;
+padding-left: 20px;
+margin-left: 12px;
+}
+li.about {
+padding-bottom: 5px;
+}
+.listheader {
+text-decoration: underline;
+}
+p.about {
+color: #000000;
+font-family: arial, helvetica, verdana;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+padding-left: 15px;
+}
+p.aboutheader {
+color: #000000;
+font-family: arial, helvetica, verdana;
+font-size: 12pt;
+font-weight: bold;
+text-align: left;
+text-decoration: none;
+}
+p.subscript {
+color: #000000;
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+text-align: left;
+text-decoration: none;
+}
+/* end of style code for About, Acknowledgement, FAQ and Glossary pages */
+
+/* style code for Search page starts here */
+body.search {
+	font-family: arial, verdana, helvetica;
+	background-color: #DDEEFF;
+	margin-left: 20px;
+}
+table.search {
+	width: 100%;
+	margin-bottom: 0px;
+	border: 0px;
+}
+table.searchmodule {
+	width: 70%;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	border-collapse: collapse;
+	border: 0px;
+}
+tr.section {
+	background-color: #FFFFFF;
+}
+th.search {
+	color: #09600F;
+	text-align: left;
+	font-size: 1em;
+	width: 30%;
+}
+td.submitsearch {
+	font-size: .8em;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-top: solid 1px #003399;
+	border-bottom: solid 1px #003399;
+}
+td.spacer {
+	height: 15px;
+}
+td.padder {
+	height: 3px;
+	background-color: #FFFFFF;
+}
+td.paddertopleft {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-top : solid 1px green;
+	border-left : solid 1px green;
+}
+td.paddertopright {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-top : solid 1px green;
+	border-right : solid 1px green;
+}
+td.padderbottomleft {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-bottom : solid 1px green;
+	border-left : solid 1px green;
+}
+td.padderbottomright {
+	height: 3px;
+	background-color: #FFFFFF;
+	border-bottom : solid 1px green;
+	border-right : solid 1px green;
+}
+td.sectionleft {
+	background-color: #FFFFFF;
+	font-size: .9em;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-left : solid 1px green;
+	text-align: right;
+}
+td.sectionright {
+	background-color: #FFFFFF;
+	font-size: .9em;
+	font-weight: 100;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-right : solid 1px green;
+}
+p.searchtitle {
+	font-size: 1.4em;
+	color: #003399;
+	font-weight: bold;
+}
+p.instruct {
+	font-size: .8em;
+	color: #003399;
+	font-weight: normal;
+	padding-bottom: 7px;
+}
+.searchdisplay {
+	padding-right: 10px;
+	font-size: .9em;
+	font-weight: normal;
+}
+.searchmatches {
+	padding-right: 15px;
+	font-size: .9em;
+	font-weight: normal;
+}
+.search {
+	padding-right: 5px;
+}
+.clear {
+}
+

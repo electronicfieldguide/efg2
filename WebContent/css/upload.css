@@ -1,0 +1,86 @@
+.prog-border {
+	 height: 15px;
+	 width: 205px;
+	 background: #fff;
+	 border: 1px solid #000;
+	 margin: 0;
+	 padding: 0;
+ }
+
+.prog-bar {
+	 height: 11px;
+	 margin: 2px;
+	 padding: 0px;
+	 background: #00ff00;
+}
+
+.errorMessage{
+	font:small-caps bold  italic  Georgia, 'Times New Roman', times, serif;
+	color: red;
+}
+h2 {
+	font:small-caps bold  italic  Georgia, 'Times New Roman', times, serif;
+	color: red;
+}
+ul {
+	margin-top: 0px;
+	padding-top: 0px;
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+
+#menu1,#menu2,#menu3 {
+	display: none
+	}
+
+.menuHead {
+	color: #c00;
+	font-size: 14px;
+	font-family: Arial, Helvetica, Geneva, sans-serif;
+	font-weight: bold;
+	text-decoration: none;
+	}
+
+.menuOption {
+	display: block;
+	color: #f00;
+	font-size: 12px;
+	font-family: Arial, Helvetica, Geneva, sans-serif;
+	}
+	
+.menu {
+	width: 98%;
+}
+
+.menu li {
+	list-style: none;
+	margin-left: -20px;
+}
+	
+.menu a {
+	font-size: .7em;
+	display: block;
+	text-decoration: none;
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+	padding: 4px;
+	background-color: #999;
+	color: #fff;
+	margin-left: 2px;
+}
+
+.menu a:hover {
+	font-size: .7em;
+	display: block;
+	text-decoration: none;
+	border-top: 1px solid #666;
+	border-bottom: 1px solid #666;
+	padding: 4px;
+	background-color: #666;
+	color: #f99;
+}
+div.bold {
+	font: bold;
+	font-size: 2.0em;
+	color: black;
+}

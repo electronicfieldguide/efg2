@@ -1,0 +1,92 @@
+<html>
+<head>
+<title>EFG Search</title>
+	<link type="text/css" rel="stylesheet" href="../../templateCSSDirectory/nantucket_forest.css" />
+</head>
+	<body class="search">
+		<form method="post" action="/efg2/Redirect.jsp" name="myform">
+			<input type="hidden" name="displayName" value="invasives" /> 
+			<input type="hidden" name="displayFormat" value="HTML" /> 
+			<input type="hidden" name="dataSourceName" value="NantucketSppPgs_1149868625336" /> 
+			<table class="searchmodule">
+				<tr>
+					<th class="search">
+					<input type="text" name="groupLabel" value="Group Label goes here" size="50"/>
+					</th>
+				</tr>		
+				<tr>
+					<td class="paddertopleft"></td>
+					<td class="paddertopright"></td>
+				</tr>
+				<tr>
+					<td class="sectionleft"><input type="text" name="name" value="Field Label goes here" size="45"/>:</td>
+					<td class="sectionright">
+						<select name="genus">
+							<option></option>
+							<option>Field One</option>
+							<option>Field Two</option>
+						</select>
+					</td>
+				</tr>
+				<tr class="section">
+					<td class="sectionleft"><input type="text" name="name" value="Field Label goes here" size="45"/>:</td>
+					<td class="sectionright">
+						<select name="family">
+							<option></option>
+							<option>Field One</option>
+							<option>Field Two</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="padderbottomleft"></td>
+					<td class="padderbottomright"><input type="button" value="Add another category" size="50"/></td>
+				</tr>
+				<tr>
+					<td class="spacer"></td>
+				</tr>
+				<tr>
+					<th class="search">
+					<input type="text" name="groupLabel" value="Group Label goes here" size="50"/>
+					
+				<!-- Each block of search categories can have as many as 4, or as few as 1. The number of blocks on the template should be determined by the formula (number of searchable fields)/3 to give the author some wiggle room, but the template should display 4 blank fields in each block -->
+				</th>
+				</tr>		
+				<tr>
+					<td class="paddertopleft"></td>
+					<td class="paddertopright"></td>
+				</tr>
+				<tr id="2">
+					<td class="sectionleft"><input type="text" name="name" value="Field Label goes here" size="45"/>:</td>
+					<td class="sectionright">
+						<select name="genus">
+							<option></option>
+							<option>Field One</option>
+							<option>Field Two</option>
+						</select>
+					</td>
+				</tr>
+				<tr class="section">
+					<td class="sectionleft"><input type="text" name="name" value="Field Label goes here" size="45"/>:</td>
+					<td class="sectionright">
+						<select name="family">
+							<option></option>
+							<option>Field One</option>
+							<option>Field Two</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="padderbottomleft"></td>
+					<td class="padderbottomright"><input type="button" value="Add another category"/></td>
+				</tr>
+				<tr>
+					<td class="spacer"><input type="button" value="Create a new group"/></td>
+				</tr>
+				<!-- Put in another file -->
+				
+
+			</table>		
+		</form>
+	</body>
+</html>

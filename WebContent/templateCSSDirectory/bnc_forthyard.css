@@ -1,0 +1,947 @@
+/*  main style code for BNC skin */
+body.topmenu {
+background-color: #89c5ae;
+margin: 0px;
+}
+body.main {
+background-color: #ecffb8;
+margin: 0px;
+}
+table.menubar {
+background-color: #89c5ae;
+margin-top: 10px;
+margin-left: 20px;
+vertical-align: bottom;
+}
+table.efgtitle {
+background-color: #89c5ae;
+width: 100%;
+margin-top: 20px;
+padding-bottom: 2px;
+white-space: nowrap;
+}
+table.barbottom {
+border-collapse: collapse;
+background-color: #89c5ae;
+width: 100%;
+margin: 0px;
+padding: 0px;
+height: 25px;
+vertical-align: bottom;
+}
+table.bottommenubar {
+background-color: #ecffb8;
+margin-top: 10px;
+margin-left: 20px;
+vertical-align: bottom;
+}
+td.topmenutext
+{
+background-color: #89c5ae;
+color: #89c5ae;
+font-family: sans-serif;
+font-weight: 800;
+font-stretch: narrower;
+font-size: 80%;
+text-transform: lowercase;
+}
+td.topmenubar
+{
+background-color: #89c5ae;
+color: #0080ae;
+width: 2px;
+padding-left: 1px;
+padding-right: 1px;
+vertical-align: top;
+font-size: 70%;
+}
+td.bottommenutext
+{
+background-color: #ecffb8;
+color: #89c5ae;
+font-family: sans-serif;
+font-weight: 800;
+font-stretch: narrower;
+font-size: 80%;
+text-transform: lowercase;
+}
+td.bottommenubar
+{
+background-color: #ecffb8;
+color: #1b6c00;
+width: 2px;
+padding-left: 1px;
+padding-right: 1px;
+vertical-align: top;
+font-size: 70%;
+}
+td.efgtitle {
+font-family: sans, arial, helvetica;
+font-size: 225%;
+font-variant: normal;
+font-weight: bold;
+color: #002f5d;
+text-align: center;
+}
+td.barbottom {
+background-image: url("menubarbg.jpg");
+background-position: bottom;
+background-repeat: repeat-x;
+}
+td.frameedge {
+background-color: #ecffb8;
+margin: 0px;
+padding: 0px;
+}
+a.topmenutext {
+background-color: #89c5ae;
+color: #0065cd;
+font-family: sans-serif;
+font-weight: 800;
+font-stretch: narrower;
+font-size: 100%;
+text-transform: lowercase;
+text-decoration: none;
+padding: 5px;
+/*  text-transform set to lowercase overrides whether menu items are capitalized or not in the HTML */
+}
+a.topmenutext:hover {
+color: #002f5d;
+font-family: sans-serif;
+font-weight: 800;
+font-stretch: narrower;
+font-size: 100%;
+text-transform: lowercase;
+text-decoration: underline;
+padding: 5px;
+}
+a.bottommenutext {
+background-color: #ecffb8;
+color: #002f5d;
+font-family: sans-serif;
+font-weight: 800;
+font-stretch: narrower;
+font-size: 100%;
+text-transform: lowercase;
+text-decoration: none;
+padding: 5px;
+/*  text-transform set to lowercase overrides whether menu items are capitalized or not in the HTML */
+}
+a.bottommenutext:hover {
+background-color: #ecffb8;
+color: #89c5ae;
+font-family: sans-serif;
+font-weight: 800;
+font-stretch: narrower;
+font-size: 100%;
+text-transform: lowercase;
+text-decoration: none;
+padding: 5px;
+}
+/*  end of main style code for BNC skin */
+
+
+/* style code for About, Acknowledgement, FAQ and Glossary pages starts here */
+body.about {
+color: #362A1C;
+background-color: #ecffb8;
+}
+table.about {
+width: 90%;
+border: 0px gray solid;
+margin-left: 15px;
+margin-top: 10px;
+}
+td.abouttitle {
+color: #002f5d;
+font-family: arial, helvetica, verdana;
+font-size: 16pt;
+text-align: left;
+font-weight: bold;
+padding-bottom: 0px;
+padding-top: 3px;
+padding-left: 3px;
+border-bottom: solid 0px #808080;
+}
+td.alphastrip {
+color: #727813;
+background-color: #FFFFCC;
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: bold;
+text-align: left;
+padding-top: 8px;
+padding-bottom: 8px;
+padding-left: 10px;
+border-top: solid 3px #408080;
+border-bottom: solid 3px #408080;
+}
+td.spacer {
+height: 25px;
+}
+dt.alphaheader {
+font-family: arial, helvetica, verdana;
+font-size: 12pt;
+font-weight: bold;
+color: #fcffff;
+text-align: left;
+border-bottom: solid 1px #406080;
+padding-left: 0px;
+background-color: #002f5d;
+}
+dl.glossary {
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: normal;
+text-align: left;
+padding-left: 10px;
+}
+dt.glossary {
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: bold;
+color: #408080;
+text-align: left;
+padding-left: 0px;
+}
+dd.glossary {
+font-family: arial, helvetica, verdana;
+font-size: 9pt;
+font-weight: normal;
+color: #002f5d;
+padding-left: 10px;
+}
+dl.topofpage {
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+font-weight: normal;
+text-align: right;
+color: #4E67F5;
+}
+a.about {
+color: #408080;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+font-weight: bold;
+text-align: left;
+text-decoration: underline;
+}
+a.about:hover {
+color: #003300;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+}
+a.glossary {
+color: #0065cd;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+padding-left: 2px;
+padding-right: 2px;
+padding-top: 5px;
+padding-bottom: 5px;
+}
+a.glossary:hover {
+color: #FFFFCC;
+font-family: helvetica, verdana, arial;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+background-color: #0065cd;
+}
+a.topofpage {
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+font-weight: normal;
+text-align: right;
+color: #154a0e;
+background-color: #ecffb8;
+text-decoration: underline;
+}
+a.topofpage:hover {
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+font-weight: normal;
+text-align: right;
+color: #154a0e;
+text-decoration: none;
+}
+ul.about {
+list-style: disc;
+color: #452111;
+font-family: arial, helvetica, verdana;
+font-size: 10pt;
+text-align: left;
+padding-left: 20px;
+margin-left: 12px;
+}
+li.about {
+padding-bottom: 5px;
+}
+.listheader {
+text-decoration: underline;
+}
+p.about {
+color: #002f5d;
+font-family: arial, helvetica, verdana;
+font-size: 10pt;
+text-align: left;
+text-decoration: none;
+padding-left: 15px;
+}
+p.aboutheader {
+color: #408080;
+font-family: arial, helvetica, verdana;
+font-size: 12pt;
+font-weight: bold;
+text-align: left;
+text-decoration: none;
+padding-left: 5px;
+}
+p.subscript {
+color: #336600;
+font-family: arial, helvetica, verdana;
+font-size: 8pt;
+text-align: left;
+text-decoration: none;
+}
+div.glossaryicon {
+float: left;
+padding-top: 1px;
+padding-right: 5px;
+}
+/* end of style code for About, Acknowledgement, FAQ and Glossary pages */
+
+/* style code for Search page starts here */
+body.search {
+	font-family: arial, verdana, helvetica;
+	background-color: #ecffb8;
+	margin-left: 20px;
+}
+table.search {
+	width: 100%;
+	margin-bottom: 0px;
+	border: 0px;
+}
+table.searchmodule {
+	width: 70%;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	border-collapse: collapse;
+	border: 0px;
+}
+tr.section {
+	background-color: #a0c0e0;
+}
+th.search {
+	color: #002f5d;
+	text-align: left;
+	font-size: 1em;
+	width: 30%;
+}
+td.submitsearch {
+	font-size: .8em;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-top: solid 2px #808080;
+	border-bottom: solid 2px #808080;
+	background-color: #eeffff;
+	color: #f0f0f0;
+}
+td.spacer {
+	height: 15px;
+}
+td.padder {
+	height: 3px;
+	background-color: #a0c0e0;
+}
+td.paddertopleft {
+	height: 3px;
+	background-color: #4d91f5;
+	border-top : solid 1px #4d91f5;
+	border-left : solid 1px #4d91f5;
+}
+td.paddertopright {
+	height: 3px;
+	background-color: #4d91f5;
+	border-top : solid 1px #4d91f5;
+	border-right : solid 1px #4d91f5;
+}
+td.padderbottomleft {
+	height: 3px;
+	background-color: #4d91f5;
+	border-bottom : solid 1px #4d91f5;
+	border-left : solid 1px #4d91f5;
+}
+td.padderbottomright {
+	height: 3px;
+	background-color: #4d91f5;
+	border-bottom : solid 1px #4d91f5;
+	border-right : solid 1px #4d91f5;
+}
+td.sectionleft {
+	font-size: .9em;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-left : solid 1px #002f5d;
+	text-align: right;
+	color: #2a4292;
+	background-color: #ADD6D6;
+}
+td.sectionright {
+	font-size: .9em;
+	font-weight: 100;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	border-right : solid 1px #002f5d;
+	background-color: #ADD6D6;
+}
+p.searchtitle {
+	font-size: 1.4em;
+	font-weight: bold;
+	color: #002f5d;
+}
+p.instruct {
+	font-size: .8em;
+	color: #002f5d;
+	font-weight: normal;
+	padding-bottom: 7px;
+}
+.searchdisplay {
+	padding-left: 5px;
+	padding-right: 10px;
+	font-size: .9em;
+	font-weight: normal;
+	color: #408080;
+}
+.searchmatches {
+	padding-right: 15px;
+	font-size: .9em;
+	font-weight: normal;
+	color: #408080;
+}
+.search {
+	padding-right: 5px;
+}
+.clear {
+}
+/* style code for Search page ends here */
+
+/* style code for Search Results starts here */
+body.searchresults {
+	background-color: #ecffb8;
+}
+table.resultsdisplay {
+	border: 0px;
+	border-collapse: collapse;
+	margin: 0px;
+	margin-left: 20px;
+}
+td.resultsthumb {
+	vertical-align: bottom;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-bottom: 0px;
+	padding-top: 3px;
+	padding-bottom: 4px;
+	text-align: center;
+	border-left: 10px solid #ecffb8;
+	border-right: 10px solid #ecffb8;
+}
+td.resultscaption {
+	font-family: arial, helvetica, sans;
+	color: #f0f0f0;
+	padding-right: 10px;
+	padding-left: 10px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	text-align: center;
+	margin-right: 0px;
+	font-size: 12px;
+	background-color: #B7DBDB;
+	border-left: 10px solid #ecffb8;
+	border-right: 10px solid #ecffb8;
+	border-bottom: 8px solid #ecffb8;
+}
+td.rowspacer {
+	height: 20px;	
+}
+a.resultscaption {
+	color: #362A1C;
+	background-color: #B7DBDB;
+	text-decoration: none;
+}
+a.resultscaption:hover {
+	color: #452111;
+	background-color: #B7DBDB;
+	text-decoration: underline;
+}
+#numresults {
+	font-family: arial, helvetica, sans;
+	font-weight: bold;
+	font-size: 15px;
+	color: #002f5d;
+	padding-bottom: 10px;
+	border-bottom: 2px solid #452111;
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+.num {
+	background-color: #002f5d;
+	color: #ccffff;
+	padding: 2px;
+	font-weight: bold;
+	text-align: center;
+}
+img.searchresults {
+	border: 1px solid #452111;
+}
+/* style code for Search Results page ends here */
+
+/* style code for List pages starts here */
+table.header {
+	  margin-left: 20px;
+	  margin-right: 0px;
+	  border-collapse: collapse;
+	  border: 0px;
+}
+table.specieslist {
+	  width: 100%;
+	  margin-left: 0px;
+	  margin-right: 0px;
+	  border-collapse: collapse; 
+	  border: 0px;
+}
+table.pagenum {
+	width: 100%;
+	margin-left:auto;
+	margin-right:auto;
+	border: 0px;
+	border-top: 2px solid #002f5d;
+	margin-top: 30px;
+}
+td.descrip {
+	  color: #362a1c;
+	  font-family: arial, sans, helvetica, verdana;
+	  font-size: 8pt;
+	  font-weight: normal;
+	  padding-bottom: 15px;
+	  padding-top: 25px;
+	  padding-left: 3px;
+}
+td.famheader {
+	color: #002F5D;
+	font-family: helvetica, verdana, arial;
+	font-size: 10pt;
+	font-weight: bold;
+	padding-left: 0px;
+	padding-top: 16px;
+	padding-bottom: 2px;
+	text-transform: uppercase;
+	border-bottom: 1px #362A1C solid;
+}
+td.commonheader {
+	   color: #CFE3AE;
+	   background-color: #002f5d;
+	   font-family: times-roman new, times, serif;
+	   font-size: 14pt;
+	   font-weight: bold;
+	   border-bottom-style: solid 1px #a0c0e0;
+	   padding-right: 25px;
+	   padding-left: 30px;
+}
+td.sciheader {
+	   color: #CFE3AE;
+	   background-color: #002f5d;
+	   font-family: times-roman new, times, serif;
+	   font-size: 14pt;
+	   font-weight: bold;
+	   font-style: italic;
+	   border-bottom-style: solid 1px #e0e0e0;
+	   padding-left: 30px;
+}
+td.spacerheight {
+   height: 10px;
+}
+td.commonname {
+    color: #336600;
+    font-family: helvetica, verdana, arial;
+    font-size: 10pt;
+    padding-bottom: 7px;
+    padding-left: 3px;
+    padding-right: 35px;
+}
+td.sciname {
+    color: #a0602c;
+    font-family: helvetica, verdana, arial;
+    font-style: italic;
+    font-size: 10pt;
+    padding-bottom: 7px;
+    padding-left: 3px;
+    padding-right: 35px;
+}
+td.previous {
+   color: #f0f0f0;
+   font-family: helvetica, verdana, arial;
+   font-size: 9pt;
+   text-align: right;
+   width: 50%;
+   padding: 0px;
+   padding-top: 9px;
+   vertical-align: bottom;
+}
+td.next {
+   color: #f0f0f0;
+   font-family: helvetica, verdana, arial;
+   font-size: 9pt;
+   text-align: left;
+   width: 50%;
+   padding: 0px;
+   padding-top: 9px;
+   vertical-align: bottom;
+}
+td.pagenum {
+   font-family: helvetica, verdana, arial;
+   font-size: 10pt;
+   color: #002f5d;
+   margin: 0px;
+   padding-top: 10px;
+   padding-right: 8px;
+   padding-left: 8px;
+   padding-bottom: 0px;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: bottom;
+}
+a.commonname1st {
+	  color: #0066cc;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-size: 10pt;
+	  font-weight: bold;
+	  text-align: left;
+	  text-decoration: none;
+}
+a.commonname1st:hover {
+	  color: #408080;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-size: 10pt;
+	  font-weight: bold;
+	  text-align: left;
+	  text-decoration: underline;
+}
+a.sciname1st {
+	  color: #0066cc;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-style: italic;
+	  font-size: 10pt;
+	  font-weight: bold;
+	  text-align: left;
+	  text-decoration: none;
+}
+a.sciname1st:hover {
+	  color: #408080;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-style: italic;
+	  font-size: 10pt;
+	  font-weight: bold;
+	  text-align: left;
+	  text-decoration: underline;
+}
+a.sciname2nd {
+	  color: #002f5d;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-style: italic;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: none;
+}
+a.sciname2nd:hover {
+	  color: #002f5d;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-style: italic;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: underline;
+}
+a.commonname2nd {
+	  color: #002f5d;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: none;
+}
+a.commonname2nd:hover {
+	  color: #002f5d;
+	  background-color: #ecffb8;
+	  font-family: helvetica, verdana, arial;
+	  font-size: 10pt;
+	  text-align: left;
+	  text-decoration: underline;
+}
+a.prevnext {
+   color: #408080;
+   font-weight: bold;
+   text-decoration: none;
+   background-color: #ecffb8;
+}
+a.prevnext:hover {
+   color: #002f5d;
+   font-weight: bold;
+   text-decoration: underline;
+   background-color: #ecffb8;
+}
+span.sciname {
+	   color: #452111;
+	   font-family: helvetica, verdana, arial;
+	   font-style: italic;
+	   font-size: 10pt;
+}
+span.pagenum {
+   color: #002f5d;
+   font-weight: bold;
+}
+/* style code for List pages ends here */
+
+/* style code for Taxon pages starts here */
+body.taxonpage {
+	color: #362A1C;
+	background-color: #ecffb8;
+}
+table.taxontitle {
+	border: ridge 2px #5a9bff;
+	background-color: #cfe3ae;
+	margin-left: 4px;
+	margin-bottom: 20px;
+	width: 600px;
+}
+table.outerimageframe {
+	width: 600px;
+	vertical-align: top;
+	border: 0px;;
+}
+table.imageframe {
+	color: #362A1C;
+	width: 600px;
+	background-color: #E1FFE1;
+	border: groove 3px #5a9bff;
+	margin-left: 2px;
+}
+table.images {
+	border: 0px;
+	text-align: left;
+}
+table.details {
+	color: #452111;
+	width: 600px;
+	background-color: #EEFFFF;
+	border: groove 3px #5a9bff;
+	margin-left: 2px;
+} 
+table.simfam {
+	margin-left: 20px;
+	border-collapse: collapse;
+	border: solid 1px black;
+	width: 90%;
+}	
+table.taxoncredits {
+	width: 600px;
+	color: #362A1C;
+	background-color: #cfe3ae;
+	border: groove 2px #5a9bff;
+	margin-left: 2px;
+	vertical-align: middle;
+}
+td.comnametaxon {
+	border-style: none;
+	font-family: "Arial", Verdana, sans-serif;
+	font-weight: bold;
+	font-size: 20pt;
+	padding-top: 10px;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	color: #002f5d;
+	align: left;
+	text-align: left;
+}
+td.scinametaxon {
+	border-style: none;
+	font-family: "Times New Roman", Times, serif;
+	font-size:18pt;
+	padding-bottom: 5px;
+	padding-left: 10px;
+	color: #002f5d;
+	align: left;
+	text-align: left;
+}
+td.famname {
+	border-style: none;
+	font-family: "Arial", Verdana, sans-serif;
+	font-size:14pt;
+	color: #002f5d;
+	padding-right: 10px;
+	text-align: right;
+}
+td.simfam {
+	padding-top: 5px;
+	padding-bottom: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11pt; 
+}
+td.thumb {
+	background-color: #E1FFE1;
+	padding-bottom: 0px;
+	padding-top: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	vertical-align: bottom;
+}
+td.id_text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: normal;
+	text-align: top;
+	color: #452111;
+	padding-top: 0px;
+	padding-bottom: 30px;
+	padding-left: 8px;
+}
+img.taxon {
+	vertical-align: text-bottom;
+	border: ridge 2px #452111;
+}
+img.thumb {
+	padding: 0px;
+}
+.identification_td {
+	background-color: #CFE3AE;
+	padding-top: 5px;
+	padding-left: 5px;
+}
+.id_strong {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 11pt;
+}
+.sc_name {
+	font-family: Arial, Helvetica, sans-serif;
+	font-style:italic;
+	font-size: 11pt;
+}
+.detail_text {
+	color: #002f5d;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-top: 5px;
+} 
+.photocred {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size:8pt;
+	color: #002f5d;
+	text-align: right;
+	padding-right: 3px;
+	padding-bottom: 10px;
+}
+div.thumb {
+	padding-bottom: 0px;
+	padding-top: 4px;
+	padding-left: 4px;
+	padding-right: 4px;
+	border: groove 0px #000;
+	background-color: #E1FFE1;
+}
+.odd {
+		background-color: #c0c0c0;
+}
+.even {
+		background-color: #f0f0f0;
+} 
+.odd2 {
+		background-color: #c0c0c0;
+}
+.even2 {
+		background-color: #f0f0f0;
+}
+p.taxoncredits { 
+		font-family: Arial, Helvetica, sans-serif;
+		font-size:9pt;
+		text-align: left;
+		padding-top: 4px;
+		margin-top: 0px;
+		padding-bottom: 10px;
+		padding-left: 5px;
+		color: #002f5d;
+}
+ul.taxon {
+		list-style: disc;
+		margin: 20px;
+		margin-top: 5px;
+		padding: 0px;
+		padding-left: 10px;
+		color: #002f5d;
+}
+li {
+		font-family: Arial, Helvetica, sans-serif;
+		font-size: 10pt;
+}
+hr {
+		color: #002f5d;
+		width: 98%;
+}
+p.link {
+padding-left: 10px;
+}
+a.link, a.link:visited, a.link:active {
+background-color: #e1ffe1;
+color: #000000;
+font-family: Arial, Helvetica, sans-serif;
+font-weight: bold;
+font-size: 13px;
+padding: 3px;
+text-decoration: none;
+margin-right: 10px;
+border-top: 2px solid #cccccc;
+border-left: 2px solid #cccccc;
+border-bottom: 2px solid #4a4a4a;
+border-right: 2px solid #4a4a4a;
+}
+a.link:hover {
+background-color: #D9FDC4;
+color: #000000;
+font-weight: bold;
+padding: 3px;
+border-bottom: 2px solid #cccccc;
+border-right: 2px solid #cccccc;
+border-top: 2px solid #4a4a4a;
+border-left: 2px solid #4a4a4a;
+}
+input.addlink {
+background-color: #ecffb8;
+border: 0px #333333 groove;
+font-weight: bold;
+font-size: 10pt;
+text-decoration: underline;
+margin-bottom: -3px;
+color: #006633;
+}
+input.addlink:hover {
+color: #009933;
+background-color: #ecffb8;
+border: 0px groove #333333;
+outline: 0px solid #333333;
+text-decoration: none;
+}
+/* style code for Taxon pages ends here */

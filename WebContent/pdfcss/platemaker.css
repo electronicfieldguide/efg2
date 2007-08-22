@@ -1,0 +1,272 @@
+body {
+background-color: #f5fff1;
+}
+table.menubarcase {
+width: 100%;
+margin-top: 8px;
+margin-bottom: 10px;
+}
+table.menubar {
+padding: 0px;
+}
+table.menubartitle {
+padding: 0px;
+padding-left: 8px;
+margin: 0px;
+}
+table.searchpage {
+background-color: #dfffba;
+border: #9C9C9C solid 1px;
+margin-bottom: 15px;
+}
+table.viewpage {
+background-color: #dfffba;
+border: #9C9C9C solid 1px;
+margin-bottom: 15px;
+}
+table.pdfpage {
+border: #9C9C9C solid 0px;
+}
+table.form {
+background-color: #dfffba;
+border: #9C9C9C solid 0px;
+margin-bottom: 15px;
+}
+table.pdfchoices {
+margin-left: 6px;
+}
+table.captions {
+width: 95%;
+background-color: #ffffff;
+border: 3px solid black;
+}
+td.menubartitle {
+font-size: 1.2em;
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+color: #305a1b;
+padding: 0px;
+padding-right: 3px;
+margin: 0px;
+vertical-align: bottom;
+}
+td.menubarsubtitle {
+font-size: .85em;
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+padding: 0px;
+padding-bottom: 1px;
+padding-right: 15px;
+margin: 0px;
+vertical-align: bottom;
+}
+td.menubartext {
+font-size: .75em;
+font-weight: bold;
+font-family: sans, helvetica, verdana, arial;
+background-color: #ccff8f;
+border: #9C9C9C solid 0px;
+padding: 5px;
+}
+td.menubartextactive {
+font-size: .75em;
+font-weight: bold;
+font-family: sans, helvetica, verdana, arial;
+background-color: #ccff8f;
+border: #9C9C9C groove 2px;
+padding: 5px;
+}
+td.menubaricon {
+padding-left: 8px;
+padding-right: 8px;
+}
+td.datalist {
+padding-top: 30px;
+padding-left: 10px;
+}
+td.formitem {
+font-family: sans, helvetica, verdana, arial;
+padding-top: 30px;
+padding-left: 10px;
+vertical-align: top;
+}
+td.formitemcaption {
+margin: 20px;
+font-family: sans, helvetica, verdana, arial;
+padding-top: 5px;
+padding-left: 10px;
+vertical-align: top;
+border: 0px solid darkgreen;
+}
+td.uploadnote {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: 1em;
+padding-left: 10px;
+padding-top: 2px;
+margin-top: 10px;
+}
+td.datasourcename {
+font-family: sans, helvetica, verdana, arial;
+padding-top: 10px;
+padding-left: 10px;
+font-weight: bold;
+}
+td.instructions {
+font-family: sans, helvetica, verdana, arial;
+padding-top: 30px;
+padding-left: 10px;
+padding-bottom: 20px;
+font-weight: normal;
+font-size: .75em;
+border-bottom: 3px solid black;
+}
+td.subheading {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: 1em;
+padding-left: 10px;
+padding-top: 10px;
+}
+td.pdfheading {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: 1em;
+padding-left: 6px;
+padding-top: 6px;
+padding-bottom: 16px;
+}
+td.pdfitem {
+font-family: sans, helvetica, verdana, arial;
+padding: 6px;
+margin-bottom: 30px;
+background-color: white;
+border: #9C9C9C solid 1px;
+}
+td.sampleimage {
+text-align: center;
+padding-top: 15px;
+padding-bottom: 15px;
+background-color: #FFFFCC;
+}
+td.captionrow {
+padding-top: 15px;
+padding-left: 8px;
+}
+td.captionbutton {
+text-align: right;
+padding-right: 80px;
+padding-top: 10px;
+padding-bottom: 10px;
+}
+a {
+color: #003300;
+text-decoration: none;
+}
+a:hover {
+color: #000000;
+text-decoration: underline;
+}
+a.upload {
+color: #003300;
+text-decoration: underline;
+font-weight: bold;
+}
+a.upload:hover {
+color: #000000;
+text-decoration: underline;
+font-weight: bold;
+}
+a.pdf {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: .8em;
+text-decoration: none;
+color: green;
+}
+a.pdf:hover {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: .8em;
+text-decoration: underline;
+color: black;
+}
+p.captionline {
+margin-top: 2px;
+padding-top: 0px;
+padding-left: 40px;
+padding-bottom: 0px;
+}
+.configitemfield {
+font-family: sans, helvetica, verdana, arial;
+font-weight: bold;
+font-size: .9em;
+padding-left: 8px;
+}
+.configitem {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .75em;
+padding-left: 20px;
+}
+.subconfigitem {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .7em;
+padding-left: 5px;
+}
+.formitemtitle {
+font-size: 12px;
+font-weight: bold;
+padding-right: 4px;
+}
+.boldcheck {
+font-family: serif, times;
+font-weight: bold;
+font-size: 1.1em;
+padding-left: 0px;
+}
+.italicscheck {
+font-family: serif, times;
+font-weight: normal;
+font-style: italic;
+font-size: 1.1em;
+padding-left: 0px;
+}
+.underlinecheck {
+font-family: serif, times;
+font-weight: normal;
+text-decoration: underline;
+font-size: 1.1em;
+padding-left: 0px;
+}
+.note {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .70em;
+}
+.align {
+font-family: sans, helvetica, verdana, arial;
+font-weight: normal;
+font-size: .7em;
+padding: 0px;
+vertical-align: bottom;
+}
+hr {
+border-top: solid 1px #000;
+}
+input.addrow {
+background-color: #f5fff1;
+border: 2px #333333 groove;
+font-weight: bold;
+font-size: 8pt;
+padding: 3px;
+color: #006633;
+}
+input.addrow:hover
+{
+color: #f5fff1;
+background-color: #006633;
+border: 2px groove #333333;
+outline: 1px solid #333333;
+}
