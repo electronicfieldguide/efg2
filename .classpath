@@ -1,38 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="properties"/>
+	<classpathentry kind="src" path="properties/client"/>
+	<classpathentry kind="src" path="SpringConfigurations/server"/>
+	<classpathentry kind="src" path="SpringConfigurations/util"/>
 	<classpathentry kind="src" path="unitTests"/>
-	<classpathentry kind="src" path="lib/springConfig"/>
 	<classpathentry excluding="springConfig/" kind="src" path="lib"/>
 	<classpathentry kind="src" path="source"/>
-	<classpathentry exported="true" kind="lib" path="lib/avalon.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/batik.jar"/>
-	<classpathentry exported="true" sourcepath="lib/castor-0.9.5-src.zip" kind="lib" path="lib/castor-0.9.5.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-fileupload-1.1.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-httpclient-3.0.1.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-io-1.2.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/commons-logging.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/fop.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jakarta-oro-2.0.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jdom.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/junit.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.8.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/mysqldriver.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/oscache-2.3.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/ostermillerutils_1_05_00_for_java_1_4.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/rowset.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/serializer-2.7.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/servlet-api.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/spring.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xalan.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xerces.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xml-apis.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/xmlgraphics-commons-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/fileupload-ext.jar"/>
-	<classpathentry sourcepath="lib/itext-src-1.4.8.zip" kind="lib" path="lib/itext-1.4.8.jar"/>
-	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/commons-cli-1.0.jar"/>
+	<classpathentry kind="src" path="misc"/>
+	<classpathentry kind="lib" path="lib/client/commons-cli-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/client/ostermillerutils_1_05_00_for_java_1_4.jar"/>
+	<classpathentry kind="lib" path="lib/server/commons-fileupload-1.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/server/commons-httpclient-3.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/util/avalon.jar"/>
+	<classpathentry kind="lib" path="lib/util/batik.jar"/>
+	<classpathentry kind="lib" path="lib/util/castor-0.9.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/util/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/util/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/util/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/util/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/util/efgDocument.jar"/>
+	<classpathentry kind="lib" path="lib/util/efgTemplate.jar"/>
+	<classpathentry kind="lib" path="lib/util/jakarta-oro-2.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/util/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="lib/util/mysqldriver.jar"/>
+	<classpathentry kind="lib" path="lib/util/oscache-2.3.jar"/>
+	<classpathentry kind="lib" path="lib/util/rowset.jar"/>
+	<classpathentry kind="lib" path="lib/util/serializer-2.7.0.jar"/>
+	<classpathentry kind="lib" path="lib/util/spring.jar" sourcepath="lib/misc/spring-src.zip"/>
+	<classpathentry kind="lib" path="lib/util/xercesImpl.jar"/>
+	<classpathentry kind="lib" path="lib/util/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/util/xmlgraphics-commons-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/misc/junit.jar"/>
+	<classpathentry kind="lib" path="lib/misc/servlet-api.jar"/>
+	<classpathentry kind="lib" path="lib/util/efgSearchable.jar"/>
+	<classpathentry kind="lib" path="lib/server/efgSearchable.jar"/>
+	<classpathentry kind="lib" path="lib/server/fileupload-ext.jar"/>
+	<classpathentry kind="lib" path="lib/server/fop.jar"/>
+	<classpathentry kind="lib" path="lib/server/xalan.jar"/>
+	<classpathentry kind="lib" path="lib/util/ostermillerutils_1_05_00_for_java_1_4.jar"/>
+	<classpathentry kind="lib" path="lib/util/xerces.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2sdk1.4.2_10"/>
+	<classpathentry kind="lib" path="lib/util/itext-1.4.8.jar" sourcepath="lib/misc/itext-src-1.4.8.zip"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/catalina-deployer.jar"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/commons-el.jar"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/jasper-compiler.jar"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/jasper-runtime.jar"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/jsp-api.jar"/>
+	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="compiled"/>
 </classpath>
