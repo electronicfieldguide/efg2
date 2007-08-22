@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+           <bean id="statsComparator" class="project.efg.server.utils.StatisticalMeasureComparator" lazy-init="false" scope="prototype">
+  		<description>Configure Statistical Measure Comparator</description>
+   	</bean>   	
+   	<bean id="handleStatInput" class="project.efg.server.utils.HandleStatInput" lazy-init="false" scope="prototype">
+  		<description>Configure HandleStatInput</description>
+  		<constructor-arg>
+			<ref local="statsComparator"/>
+		</constructor-arg> 
+   	</bean>
+   	 <bean id="displayobjectlist" class="project.efg.server.utils.EFGDisplayObjectList" scope="prototype" lazy-init="false">
+    	<description>Create a DisplayObject</description>
+  	</bean>
+  	
+  	<bean id="servletabstractfactory" class="project.efg.server.impl.ServletAbstractFactoryImpl" lazy-init="false" scope="prototype"/>
+
+   	<bean id="createtaxonpage" class="project.efg.server.impl.TaxonPageHtml" scope="prototype" lazy-init="false">
+    	<description>Create a Taxon Page</description>
+  	</bean>
+  	
+  	  <bean id="createsearchpage" class="project.efg.server.impl.SearchPageHtml" scope="prototype" lazy-init="false">
+    	<description>Create a Search Page object</description>
+  	</bean>
+  	
+    <bean id="createsearchplatespage" class="project.efg.server.impl.SearchPageHtmlPlates" scope="prototype" lazy-init="false">
+    	<description>Create a Search Page Plate object</description>
+  	</bean>
+    	 <bean id="createsearchlistspage" class="project.efg.server.impl.SearchPageHtmlLists" scope="prototype" lazy-init="false">
+    	<description>Create a Search Page List object</description>
+  	</bean>
+  	
+  	 <bean id="efgdocumenttypesfactory" class="project.efg.server.utils.EFGDocumentTypesFactory" scope="prototype">
+    	<description>Create a DisplayObject</description>
+  	 </bean>
+  	 <bean id="datasourcehelper" class="project.efg.server.utils.EFGDataSourceHelperInterface" scope="prototype"/>
+  	  <bean id="zipexport" class="project.efg.server.exports.ZipExport" scope="prototype"/>
+   	  <bean id="efgsessionbean" class="project.efg.server.utils.EFGSessionBean" scope="prototype"/>
+   	  <bean id="searchpage" class="project.efg.server.impl.ApplySearchXSL" scope="prototype"/>
+   	  <bean id="notsearchpage" class="project.efg.server.impl.ApplyXSLOtherPagesImpl" scope="prototype"/>
+      <bean id="searchables" class="project.efg.server.rdb.SearchableImpl" scope="prototype"/>
+      <bean id="efgdataobject" class="project.efg.server.utils.EFGDataObjectImpl" scope="prototype"/>
+         </beans>
