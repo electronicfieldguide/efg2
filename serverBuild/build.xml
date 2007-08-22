@@ -1,0 +1,275 @@
+<!--  
+/**
+ * $Id: build.xml,v 1.1.1.1 2007/08/01 19:11:05 kasiedu Exp $
+ *
+ * Copyright (c) 2007  University of Massachusetts Boston
+ *
+ * Authors: Jacob K Asiedu
+ *
+ * This file is part of the UMB Electronic Field Guide.
+ * UMB Electronic Field Guide is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2, or
+ * (at your option) any later version.
+ *
+ * UMB Electronic Field Guide is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the UMB Electronic Field Guide; see the file COPYING.
+ * If not, write to:
+ * Free Software Foundation, Inc.
+ * 59 Temple Place, Suite 330
+ * Boston, MA 02111-1307
+ * USA
+ */
+ -->
+<project name="Electronic Field Guide" default="deploy" basedir=".">
+	
+	<!--  libraries -->
+	<property name="efg2.lib.util.home" value="${efg2.home}/lib/util"/>
+	<property name="efg2.spring.server" value="${efg2.home}/SpringConfigurations/server"/>
+	<property name="efg2.spring.util" value="${efg2.home}/SpringConfigurations/util"/>
+	<property name="efg2.lib.server.home" value="${efg2.home}/lib/server"/>
+	<property name="efg2.properties.server" value="${efg2.home}/properties/server"/>
+	<property name="efg2.properties.common" value="${efg2.home}/properties/util"/>
+	<property name="efg2.lib.misc.home" value="${efg2.home}/lib/misc"/>
+	<property name="efg2.src.home" value="${efg2.home}/source"/>
+	<property name="web.dir" value="${efg2.home}/WebContent"/>
+	<!-- Temporary home -->		
+	<property name="efg2.src.temp.home" value="${efg2.home}/server_src"/>
+	<!-- Compile home -->
+	<property name="compile.home" value="${efg2.home}/server_compiled"/>
+	
+	
+  <path id="tomcatmanager.tasks.path">
+    <fileset dir="${efg2.server.home}/tomcattasks/lib">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+	<!-- Main class path required by all classes-->
+	<path id="compile.class.path">
+		<fileset dir="${efg2.lib.util.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${efg2.lib.server.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${efg2.lib.misc.home}">
+			<include name="servlet-api.jar"/>
+		</fileset>
+	</path>
+
+	<target name="init">
+	
+		<mkdir dir="${compile.home}"/>
+		<mkdir dir="${efg2.src.temp.home}/project/efg/server"/>
+		<mkdir dir="${efg2.src.temp.home}/project/efg/util"/>
+		<copy todir="${efg2.src.temp.home}/project/efg/server">
+			<fileset dir="${efg2.src.home}/project/efg/server"/>
+		</copy>
+		<copy todir="${efg2.src.temp.home}/project/efg/util">
+			<fileset dir="${efg2.src.home}/project/efg/util"/>
+		</copy>	
+	
+	</target>
+
+  
+    <target name="deployWebApp" depends="compile" description="Deploy application">
+ 
+ 		<copy todir="${deploy.context.home}" preservelastmodified="true">
+          <fileset dir="webcontext">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy>
+       
+       
+       <copy todir="${compile.home}/project/efg/util" preservelastmodified="true">
+          <fileset dir="${efg2.properties.server}" includes="log4j.properties"/>
+        </copy>
+         <copy todir="${compile.home}/project/efg/server/factory" preservelastmodified="true">
+          <fileset dir="${efg2.spring.server}" includes="*.*"/>
+        </copy>
+         <copy todir="${compile.home}/project/efg/util/factory" preservelastmodified="true">
+          <fileset dir="${efg2.spring.util}" includes="*.*"/>
+        </copy>
+        <copy todir="${web.dir}/templateJSP" preservelastmodified="true">
+          <fileset dir="${efg2.skins.home}" excludes=".project, .classpath,*.txt,*.html"/>
+       </copy>  
+        <copy todir="${web.dir}/templateCSSDirectory" overwrite="true" flatten="true">
+           <fileset dir="${efg2.skins.home}" includes="**/*.css" />
+        </copy>   
+        <copy todir="${web.dir}/pdfcss" overwrite="true" flatten="true">
+           <fileset dir="${efg2.bookmaker.home}" includes="**/*.css" />
+        </copy>   
+         <copy todir="${web.dir}/pdfcss" overwrite="true" flatten="true">
+           <fileset dir="${efg2.platemaker.home}" includes="**/*.css" />
+        </copy>
+          <copy todir="${web.dir}/bookmaker" overwrite="true" flatten="true">
+           <fileset dir="${efg2.bookmaker.home}/images"/>
+        </copy>
+          
+       <copy todir="${web.dir}/WEB-INF/classes" preservelastmodified="true">
+          <fileset dir="${compile.home}">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy>   
+        <copy todir="${web.dir}/WEB-INF/classes" preservelastmodified="true">
+          <fileset dir="${compile.home}">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy>       
+        <copy todir="${web.dir}/WEB-INF/classes/properties" preservelastmodified="true">
+          <fileset dir="${efg2.properties.server}" excludes="log4j.properties"/>
+        </copy>
+        <copy todir="${web.dir}/WEB-INF/classes/properties" preservelastmodified="true">
+          <fileset dir="${efg2.properties.common}">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy>
+   
+       
+        <copy todir="${web.dir}/WEB-INF/lib" preservelastmodified="true">
+    	   <fileset dir="${efg2.lib.util.home}"  excludes="mysqldriver.jar"/>
+			<fileset dir="${efg2.lib.server.home}"/>
+    	</copy>
+    	<mkdir dir="${web.dir}/templateConfigFiles/xml"/>
+    	
+        <copy todir="${web.dir}/templateConfigFiles/xml" preservelastmodified="true">
+    	   <fileset dir="schema"  includes="TaxonPageTemplate.xsd"/>
+	   	</copy>
+    
+       <mkdir dir="${efg2.tomcat.home}/webapps/efg2"/>
+	   <copy todir="${efg2.tomcat.home}/webapps/efg2" preservelastmodified="true">
+	       <fileset dir="${web.dir}"  excludes="jsp"/>
+		</copy> 
+		 <copy todir="${efg2.tomcat.home}/common/lib" preservelastmodified="true">
+	       <fileset dir="${efg2.lib.util.home}"  includes="mysqldriver.jar"/>
+		</copy> 
+ 		<delete dir="${efg2.tomcat.home}/webapps/efg2/jsp" quiet="true"/>  
+		<copy todir="${efg2.tomcat.home}/webapps/efg2" preservelastmodified="true">
+         <fileset dir="${web.dir}/jsp"/>
+ 		 </copy>
+ 		<copy todir="${efg2.tomcat.home}/webapps/efg2" preservelastmodified="true">
+          <fileset dir="${efg2.website.home}" excludes=".project"/>
+        </copy> 
+ 		
+ 	<replace file="${efg2.tomcat.home}/webapps/efg2/WEB-INF/classes/properties/RDBprops.properties" token="3306" value="${efg2.mysql.port}"/>
+ 	<replace file="${deploy.context.home}/efg2.xml" token="3306" value="${efg2.mysql.port}"/>
+  		 
+       <delete dir="${web.dir}/templateConfigFiles/xml" quiet="true"/>
+       <delete dir="${web.dir}/WEB-INF/classes" quiet="true"/>
+       <delete dir="${web.dir}/WEB-INF/lib" quiet="true"/>
+      <delete dir="${compile.home}" quiet="true"/>
+       <delete dir="${efg2.src.temp.home}" quiet="true"/>
+       
+    </target>
+	<target name="deploy">
+     <antcall target="deployWebApp"/>
+   
+  	</target>
+    <target name="deploywar">
+       <antcall target="deploywarApp"/>
+      
+    </target>
+    <target name="deploywarApp" depends="compile" description="Deploy application as a WAR file">
+        <war destfile="${efg2.webapps.name}.war"
+             webxml="${web.dir}/WEB-INF/web.xml">
+            <fileset dir="${web.dir}">
+                <include name="**/*.*"/>
+            </fileset>
+        </war>
+        <copy todir="${deploy.path}" preservelastmodified="true">
+            <fileset dir=".">
+                <include name="*.war"/>
+            </fileset>
+        </copy>
+    </target>
+	<!-- Compile sources-->
+	<target name="compile" depends="init">
+		<javac srcdir="${efg2.src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on">
+			<classpath refid="compile.class.path"/>
+		</javac>
+	</target>
+	
+	<!-- Clean All -->
+	<target name="clean">
+		<delete dir="${compile.home}" quiet="true"/>
+		<delete dir="${efg2.src.temp.home}" quiet="true"/>
+	</target>
+	<!-- ============================================================== -->
+<!-- Tomcat tasks - remove these if you don't have Tomcat installed -->
+<!-- ============================================================== -->
+	<target name="setTomcatManagerTasks">
+		
+		<!-- check for catalina-ant.jar from Tomcat distribution -->
+		<condition property="tomcatmanager.task.jar">
+	      <available file="serverBuild/tomcattasks/lib/catalina-ant.jar"/>
+	    </condition>
+		
+		<fail message="Cannot find catalina-ant.jar for tomcat manager tasks in tomcattasks/lib" unless="tomcatmanager.task.jar"/>
+		<taskdef name="install" classname="org.apache.catalina.ant.InstallTask" classpathref="tomcatmanager.tasks.path"/>
+		<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask" classpathref="tomcatmanager.tasks.path"/>
+		<taskdef name="list" classname="org.apache.catalina.ant.ListTask" classpathref="tomcatmanager.tasks.path"/>
+		<taskdef name="start" classname="org.apache.catalina.ant.StartTask" classpathref="tomcatmanager.tasks.path"/>
+		<taskdef name="stop" classname="org.apache.catalina.ant.StopTask" classpathref="tomcatmanager.tasks.path"/>
+	</target>
+
+    <target name="install" description="Install application in Tomcat" depends="setTomcatManagerTasks">
+        <install url="${tomcat.manager.url}"
+                 username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}"
+                 path="/${efg2.webapps.name}"
+                 war="${efg2.webapps.name}.war" failonerror="false"/>
+    </target>
+
+    <target name="reload" description="Reload application in Tomcat" depends="setTomcatManagerTasks">
+        <reload url="${tomcat.manager.url}"
+                 username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}"
+                 path="/${efg2.webapps.name}" failonerror="false"/>
+    </target>
+
+    <target name="start" description="Start Tomcat application" depends="setTomcatManagerTasks">
+         <start url="${tomcat.manager.url}"
+                 username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}"
+                 path="/${efg2.webapps.name}" failonerror="false"/>
+    </target>
+
+    <target name="stop" description="Stop Tomcat application" depends="setTomcatManagerTasks">
+        <stop url="${tomcat.manager.url}"
+                 username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}"
+                 path="/${efg2.webapps.name}" failonerror="false"/>
+    </target>
+ 
+ 
+ 
+    <target name="list" description="List Tomcat applications" depends="setTomcatManagerTasks">
+        <list url="${tomcat.manager.url}"
+                 username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}" failonerror="false"/>
+    </target>
+    
+    
+    
+  <target name="war" description="Deploy web application">
+    <deploy url="${tomcat.manager.url}"  username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}"
+            path="${path}" war="${efg2.webapps.name}.war" update="true" />
+  </target>
+
+  <target name="undeploy" description="Undeploy web application">
+    <undeploy url="${tomcat.manager.url}"
+                 username="${tomcat.manager.username}"
+                 password="${tomcat.manager.password}" failonerror="false"/>
+  </target>
+
+
+ 
+<!-- End Tomcat tasks -->
+	
+</project>
