@@ -9,6 +9,9 @@
 			<xs:sequence>
 				<xs:element name="Searchable" maxOccurs="unbounded">
 					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="SearchableState" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						</xs:sequence>
 						<xs:attribute name="fieldName" use="required">
 							<xs:simpleType>
 								<xs:restriction base="xs:string">
