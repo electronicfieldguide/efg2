@@ -1,0 +1,34 @@
+<!-- $Id: generateSearchableDocument.xml,v 1.1.1.1 2007/08/01 19:06:47 kasiedu Exp $ -->
+<project name="generateSearchableDocument" default="generate" basedir=".">
+    <property file="generate.properties"/>
+	<!--  search page generation-->
+	<path id="generate.class.path">
+		<fileset dir="${jars.home}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+	<target name="generatesrc" depends="cleansrc">
+        <mkdir dir="searchablesrc"/>
+		<java fork="yes" classname="org.exolab.castor.builder.SourceGenerator">
+			<arg line="-verbose -i ../schema/SearchableSchema.xsd -package project.efg.searchableDocument -dest searchablesrc -types j2 -f"/>
+			<classpath refid="generate.class.path"/>
+		</java>
+	</target>
+
+    <target name="generate" depends="generatesrc" description="generates a jar file and puts it in ${efg.home}/lib/util">
+        <mkdir dir="searchablesrc_compiled"/>
+        <javac srcdir="searchablesrc" destdir="searchablesrc_compiled" debug="on" optimize="off" deprecation="on">
+            <classpath refid="generate.class.path"/>
+        </javac>
+        <jar jarfile="${efg.home}/lib/util/efgSearchable.jar" basedir="searchablesrc_compiled"/>
+        <antcall target="cleansrc"/>
+    </target>   
+	<target name="clean" depends="cleansrc">
+         <delete file="${efg.home}/lib/util/efgSearchable.jar" quiet="true"/> 
+	</target>
+    <target name="cleansrc">
+        <delete dir="searchablesrc_compiled" quiet="true"/> 
+        <delete dir="searchablesrc" quiet="true"/>          
+    </target>
+   
+</project>

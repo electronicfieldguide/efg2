@@ -1,0 +1,22 @@
+<!-- $Id: buildAllCastor.xml,v 1.1.1.1 2007/08/01 19:06:47 kasiedu Exp $ --><project name="generate" default="generateAll" basedir=".">	<property file="generate.properties"/>	<target name="generate" depends="cleanAll" if="generate.properties.exists">		<ant antfile="${build.home}/buildTemplates.xml" inheritAll="true" target="generate"/>		<ant antfile="${build.home}/generateEFGDocument.xml" inheritAll="true" target="generate"/>		<ant antfile="${build.home}/generateSearchableDocument.xml" inheritAll="true" target="generate"/>	</target>
+    <target name="donotGenerate"  unless="generate.properties.exists">
+        <echo>generate.properties is needed to run this script</echo>
+    </target>   
+    <target name="generatesrcs" depends="cleanAllSrcs" if="generate.properties.exists">
+        <ant antfile="${build.home}/buildTemplates.xml" inheritAll="true" target="generatesrc"/>
+        <ant antfile="${build.home}/generateEFGDocument.xml" inheritAll="true" target="generatesrc"/>
+        <ant antfile="${build.home}/generateSearchableDocument.xml" inheritAll="true" target="generatesrc"/>
+    </target>   	<target name="generateAll">		<condition property="generate.properties.exists">			<available file="generate.properties"/>		</condition>		<antcall target="generate"/>		<antcall target="donotGenerate"/>	</target>
+    <target name="generateAllsrcs">
+        <condition property="generate.properties.exists">
+            <available file="generate.properties"/>
+        </condition>
+        <antcall target="generatesrcs"/>
+        <antcall target="donotGenerate"/>
+    </target>   	<target name="cleanAll">     	<ant antfile="${build.home}/buildTemplates.xml" inheritAll="true" target="clean"/>		<ant antfile="${build.home}/generateEFGDocument.xml" inheritAll="true" target="clean"/>		<ant antfile="${build.home}/generateSearchableDocument.xml" inheritAll="true" target="clean"/>    </target>
+    <target name="cleanAllSrcs">
+        <ant antfile="${build.home}/buildTemplates.xml" inheritAll="true" target="cleansrc"/>
+        <ant antfile="${build.home}/generateEFGDocument.xml" inheritAll="true" target="cleansrc"/>
+        <ant antfile="${build.home}/generateSearchableDocument.xml" inheritAll="true" target="cleansrc"/>
+    </target>
+   </project>
