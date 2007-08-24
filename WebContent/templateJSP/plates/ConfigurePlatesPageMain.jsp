@@ -5,6 +5,7 @@ project.efg.util.interfaces.EFGImportConstants
 <html>
   <head>
     <title>Configuration of a Plate Template for <%=displayName%></title>
+    <link href="../../css/templates.css" rel="stylesheet" type="text/css" />
   </head>
   <body bgcolor="#ffffff">
     <h2 align="center">Configuration of a Plate Template for <%=displayName%></h2>

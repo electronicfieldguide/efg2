@@ -5,6 +5,8 @@
   <%@ include file="../commonTemplateCode/commonConfigureJSPCode.jsp" %>
   
     <title>Configuration of a Search Page Template for <%=displayName%></title>
+    	<link href="../../css/templates.css" rel="stylesheet" type="text/css" />
+    
   </head>
   <body bgcolor="#ffffff">
     <h2 align="center">Configuration of a Search Page Template for <%=displayName%></h2>

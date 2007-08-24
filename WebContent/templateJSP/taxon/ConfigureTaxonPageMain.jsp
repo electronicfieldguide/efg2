@@ -3,10 +3,11 @@ project.efg.util.interfaces.EFGImportConstants
 " %>
 <%@ include file="../commonTemplateCode/commonConfigureJSPCode.jsp" %>
 
-</html>
+<html>
   <head>
     <title>Configuration of a Taxon Page Template for <%=displayName%></title>
-  </head>
+ 	<link href="../../css/templates.css" rel="stylesheet" type="text/css" />
+   </head>
   <body bgcolor="#ffffff">
     <h2 align="center">Configuration of a Taxon Page Template for <%=displayName%></h2>
   	<center>
