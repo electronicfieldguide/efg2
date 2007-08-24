@@ -42,6 +42,7 @@ import org.apache.log4j.Logger;
 
 import project.efg.client.factory.gui.GUIFactory;
 import project.efg.client.interfaces.gui.LoginListenerInterface;
+import project.efg.client.rdb.gui.RunSetUp;
 import project.efg.util.interfaces.EFGImportConstants;
 import project.efg.util.utils.DBObject;
 
@@ -134,19 +135,22 @@ public JPanel addPanel(){
 	}
 	public final void showWarningMessage(){
 		if(!this.isSuccess()){
-		
-		int n = JOptionPane.showConfirmDialog(
-			    this.frame,
-			    "We strongly recommend that you create an EFG power user \n" + 
-			    "instead of using root to log into MySQL.\n" + " Would you like to create an EFG power user?"
-			    ,
-			    "Warning Message!!",
-			    JOptionPane.YES_NO_OPTION);
-		
-		if(n == JOptionPane.YES_OPTION){
-			return;
-		}
-		
+		//find out if a power user already exists
+			Object[] userList = RunSetUp.getEFGUsers(getDbObject());
+			if(userList != null && userList.length == 0){
+				int n = JOptionPane.showConfirmDialog(
+					    this.frame,
+					    "We strongly recommend that you create an EFG power user \n" + 
+					    "instead of using root to log into MySQL.\n" + 
+					    " Would you like to create an EFG power user?"
+					    ,
+					    "Warning Message!!",
+					    JOptionPane.YES_NO_OPTION);
+			
+				if(n == JOptionPane.YES_OPTION){
+					return;
+				}
+			}
 		}
 		this.dispose();
 	}
