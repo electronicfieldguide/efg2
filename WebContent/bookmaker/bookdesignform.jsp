@@ -269,6 +269,7 @@ project.efg.server.factory.EFGSpringFactory
 					<input type="text" name="<%=name%>" size="50" maxlength="150" value="<%=fieldValue%>"/>
 				</td>
 			</tr>
+			<!--  
 			<tr>
 			
 				<td class="formitem">
@@ -295,6 +296,7 @@ project.efg.server.factory.EFGSpringFactory
 					<input type="hidden" name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
 				</td>
 			</tr>
+			-->
 			<tr>
 				<td class="formitem">
 					<span class="configitem">Item header (ex. Scientific Name):</span> 
@@ -349,6 +351,7 @@ project.efg.server.factory.EFGSpringFactory
 						}
 					%>						
 					</select>
+					
 					<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
 				</td>
 			</tr>
