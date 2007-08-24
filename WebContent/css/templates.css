@@ -1,0 +1,28 @@
+.sampleheader {
+font-size: 1.25em;
+font-family: sans, helvetica, arial;
+padding-bottom: 5px;
+margin-bottom: 15px;
+text-align: center;
+border-bottom: solid black 1px;
+}
+.htmltemplate {
+font-size: .75em;
+font-family: arial, sans, helvetica;
+padding-bottom: 5px;
+text-align: left;
+font-weight: normal;
+}
+.centerlist {
+  align: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
+.colone {
+float: left;
+}
+.coltwo {
+float: right;
+}
