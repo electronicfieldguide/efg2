@@ -1,0 +1,10 @@
+<processing>
+<logfiledir>$INSTALL_PATH</logfiledir>
+  <job name="Update Database">
+    <os family="windows" />
+  	<executefile name="$INSTALL_PATH/resource/UpdateDB.exe">
+  	<arg>$dbLoginName</arg><arg>$dbPassword</arg>
+    </executefile>
+   </executefile>   
+  </job> 
+</processing>

@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<title>Documentation for EFG2</title>
+	<style>
+	body {
+	font-family: sans, helvetica, verdana;
+	font-size: 10pt;
+	width: 95%;
+	margin: 30px;
+	}
+	ul {
+	padding-bottom: 10px;
+	}
+	hr {
+	}
+	</style>
+</head>
+
+<body>
+<h1>EFG2 1.0.0.0 Documentation</h1>
+
+<p><i>This documentation is in beta, please contact us with any problems or feedback you have, and we will do our best to address your concerns in a timely manner.</i></p>
+
+<hr>
+<hr>
+
+<ul>
+<li><a href="#installation"><font size="+1">Installation</font></a>
+   <ul>
+   <li><a href="#newinstall">New Install</a></li>
+   <li><a href="#reinstall">Reinstall/Update</a></li>
+   </ul>
+</li>
+<li><a href="#createefg"><font size="+1">Creating an Electronic Field Guide</font></a>
+   <ul>
+   <li><a href="#prepareefg">Preparation</a></li>
+   <li><a href="#usedataimport">Using the Data Importer</a></li>
+   <li><a href="#configefg">Configure your EFG website</a></li>
+   </ul>
+</li>
+<li><a href="#tips"><font size="+1">Tips and Known Issues</font></a></li>
+</ul>
+
+<hr>
+<hr>
+
+<p><a name="installation"></a><font size="+1"><u>Installation</u></font></p>
+
+<p><a name="newinstall"></a><b>New Install:</b></p>
+
+<ol>
+<li>Download the latest EFG2 Installer from http://efg.cs.umb.edu/EFGsoftware.</li>
+<li>Proceed through the installer. The EFG2 software depends on several other software applications in order to run. The installer checks to see if you have these apps installed, and if you don’t, will install them for you. They all have their own separate installation programs, so expect to see several different windows appear on your desktop. The programs include:
+	<ul>
+	<li>J2SDK 1.4 (select the defaults for all settings) [default Windows location C:\j2sdk1.4.2_10]</li>
+	<li>Java Runtime 1.5 (select the defaults for all settings) [default Windows location C:\Program Files\Java\jre1.5.0_08]</li>
+	<li>Tomcat 5.0.30 [default Windows location C:\Program Files\Apache Software Foundation\Tomcat 5.0] – a web server
+		<ul>
+		<li>Note that the default Connector Port is 8080. This means that to view your EFG web pages, you need to append :8080 to the URL, in the format http://localhost:8080/efgwebpage.html</li>
+		<li>Do set an admin password!</li>
+		<li>When Tomcat prompts you for the Java Virtual Machine (JVM) path selection, it should automatically point to where your JDK is installed, but if you wish to verify, the folder name should look something like j2sdk1.4.2_10 (Users with Tomcat already installed should see the Tips section at the end of this document).</li>
+		</ul>
+	</li>
+	<li>MySQL Server 5.0 [default Windows location C:\Program Files\MySQL\MySQL Server 5.0] – database software
+		<ul>
+		<li>For Setup Type, select Complete.</li>
+		<li>For MySQL.com Sign-Up, select Skip Sign-Up.</li>
+		<li>When you Finish the MySQL setup, the MySQL Server Instance Config Wizard will start.</li>
+		<li>Proceed through the defaults until you are asked to choose a Server Type. Select Server Machine.</li>
+		<li>Proceed through the defaults for the next several windows, until you are asked to choose the default character set. Select Best Support for Multilingualism.</li>
+		<li>In the next window, make sure the boxes next to “Install As Windows Service” and “Include Bin Directory in Windows PATH are both checked.</li>
+		<li>In the security options window, DO set a password. It is a security risk to leave it blank. It is fairly complicated to recover if you forget this admin password, so try not to forget it :-).</li>
+		<li>Proceed to the “Execute button” to complete the install.</li>
+		<li>If you get an error message that says “Error Nr. 2203 Can’t connect…” then it is likely that your firewall settings are preventing MySQL server from being accessible. MySQL requires port 3306 to do this, so you will need to add an exception for this port in your firewall software in order for MySQL to work. If you use Windows Firewall, the steps are: Control Panel --> Windows Firewall --> Exceptions tab --> Add Port button --> Name: MySQL, Port Number: 3306 --> OK. Once you have done this, go back to the MySQL install and click the Retry button. (<b>Note:</b> If for some reason you have already configured the firewall to allow MySQL to use 3306, you may need to delete that port configuration and recreate it.) If for some reason you cannot use port 3306, please contact us for instructions on how to change the software to point to the correct MySQL port (this documentation will be included in the next release).</li>
+		</ul>
+	</li>
+	<li>ImageMagick 6.3.2 [default Windows location C:\Program Files\ImageMagick-6.3.2-Q16] - an image editing software package
+		<ul>
+		<li>Accept the license and proceed through the defaults.</li>
+		</ul>
+	</li>
+	</ul>
+</li>
+<li>Verify the Install
+	<ul>
+	<li><a name="startapp"></a>Start the Data Importer
+		<ul>
+		<li>Make sure the EFG2 Data Importer works by clicking on the desktop icon, or start it in Windows from its folder in the Start Menu.</li>
+		<li>Before the EFG Import Application starts, you will see a login screen from MySQL. Log in with the user name (default: root) and password you created during the MySQL install.</li>
+		<li>A warning window will appear regarding the setting of the default location for the folders in which your EFG files are stored. You can uncheck the box to prevent it from reappearing.</li>
+		<li>The next window asks for you to set the resource directory. While the default is for the software to save files directly in the Tomcat web server, we recognize that some users will not have Tomcat installed, or will have concerns about running a web server and simply wish to use the software to import EFGs. In those cases you will need to point the software to a different save folder. Otherwise, just stick with the default. We strongly recommend, unless you are an advanced user, that you keep the default. If you do not wish to do this, you can use the Browse button to point to your desired folder location.</li>
+		<li>The EFG2 Import Application should appear.</li>
+		<li>You may wish at this point to create an EFG User to access MySQL. See the <a href="#tips">Tips and Known Issues</a> section below for instructions.</li>
+		</ul>
+	</li>
+	<li>Verify that the web interface is working
+		<ul>
+		<li>To view EFG2 files on your webserver, first make sure that Tomcat is started (In Windows, double click on the Apache Tomcat icon in the Task Manager [typically bottom right hand corner of desktop] and click the Start button, or you may need to go to the Start menu Apache Tomcat 5.0 ' Configure).
+		</li>
+		<li>Point your browser to the default URL: <a href="http://localhost:8080/efg2">http://localhost:8080/efg2</a> (Advanced users may wish to change this URL). You should see the Electronic Field Guide front page, which at the time this document was created, matches <a href="http://efg.cs.umb.edu/efg2/">this</a>. 
+		</li>
+		</ul>
+	</li>
+	</ul>
+</li>
+</ol>
+
+
+<p><a name="reinstall"></a><b>Reinstall/Update:</b></p>
+
+<p>If you are replacing your instance of EFG2 with a new version for testing, or uninstalling it, please do the following:</p>
+
+<ol>
+<li>To preserve any EFGs you wish to keep, back up the following folders in Tomcat (webapps/efg2):
+	<ul>
+	<li>EFGImages</li>
+	<li>efgimagesthumbs</li>
+	<li>templateConfigFiles</li>
+	</ul>
+</li>
+<li>Uninstall the EFG Data Importer</li>
+</ol>
+
+<p>Following reinstallation of the EFG2 Data Importer, copy the folders backed up in step 1 to webapps/efg2</p>
+
+<hr>
+
+<p><a name="createefg"></a><font size="+1"><u>Creating an Electronic Field Guide</u></font></p>
+
+<p><a name="prepareefg"></a><b>Preparation:</b></p>
+
+<p>The EFG2 software comes with all the files you need to create a sample EFG. If you do not yet have your own data source, you can try out the EFG building process by using these raw files, which are located in the EFG2 folder under “Samples” [default Windows location is C:\Program Files\EFG2DataImporter\samples].</p>
+
+<p>Once you are ready to try EFG-building on your own, gather the following:</p>
+
+<ul>
+<li>Some text data (the “data source”), likely in a spreadsheet file or database, organized in a row-by-column format, where the columns are categories of data or “fields” and the rows are the entities you are categorizing (plants, restaurants, species, families, sports teams, etc.). For advice on EFG data source development, see <a href="http://wiki.cs.umb.edu/twiki/bin/view/BDEI/HowToBuildYourOwnEFG">our Wiki</a>.</li>
+<li>Some images, sound files, videos, etc. (“media resources”). While your EFG will work without these things, adding media resources will certainly enhance it. Put your media resources all together in a single folder (subfolder optional) and make sure that folder name is used whenever you refer to a media resource file in your data source (see <a href="http://wiki.cs.umb.edu/twiki/bin/view/BDEI/TakeSomePictures">our Wiki</a> for details). <b>Note:</b> We strongly recommend that you pay attention to case sensitivity when naming files and entering those names into your spreadsheet/database. While not all web servers care about case sensitivity, many do, and you will avoid problems by doing this.</li>
+</ul> 
+
+<p>We also recommend that you browse our <a href="http://wiki.cs.umb.edu/twiki/bin/view/BDEI/SummaryOFEFG2DataRequirements">technical documentation about the EFG2 data types</a>.</p>
+
+<p><a name="usedataimport"></a><b>Using the EFG2 Data Importer:</b></p>
+
+<ol>
+<li>Save your data source file in a comma-separated format
+<ul>
+<li>In Excel, save the data as a .csv file.</li>
+<li>In FileMaker, save the data as a merge file (.mer). While Filemaker will also let you choose .csv, .mer is a better choice.</li>
+<li>For other apps, save in .csv or other comma-separated format, as long as the tool used to generate the .csv file has column headers as the 1st row (consult the documentation of the application you wish to use for more information).</li>
+</ul>
+</li>
+<li>Start the EFG2 software (see <a href="#startapp">Start the Data Importer</a> above).</li><br><br>
+<li>Import your data source
+	<ul>
+	<li>Click on the Data button.</li>
+	<li>Drag your comma-separated file into the Data Importer Window. You get three import options:
+		<ol>
+		<li>Create a brand new EFG</li>
+		<li>Create a new EFG using an existing metadata table (for when you have multiple EFGs that all share the exact same data fields)</li>
+		<li>Update an existing EFG</li>
+		</ol>
+		(With options 2 and 3, you will be prompted to select the relevant data source from the list.)
+	</li>
+	<li>If you created your data source correctly, you should get a message of success from the Data Importer. If you get the message “The following datasources were not added because an error occurred…” it is likely due to one of the following reasons:
+		<ul style="padding-bottom:0px;">
+		<li>The file you tried to import was not a comma-separated file (accidental import of Excel xls files, for example).</li>
+		<li>There are odd characters or odd data in your file that the software cannot interpret (are their image files directly in your spreadsheet, for example, or did you cut and paste formatted text into Excel?). Try viewing the comma-separated version of the file to locate the odd data. If you continue to have problems, please report any failures to us and send a copy of the file as well.</li>
+		</ul>
+	</li>
+	<li>Now is a good time to give a proper title to your data source – this title is the one that shows up on the webpage that lists all EFGs on your server (the “View” link at http://localhost:8080/efg2). Click on the data source whose title you want to change and choose “Edit Title” from the File menu.</li>
+	<li>If you wish to delete a data source, click on it and select “Delete” from the File menu.</li>
+	</ul>
+</li>
+<li>Configure your data
+<ul>
+<li>Double click on any data source to bring up the configuration window. You will see a list of all of your data categories down the left side of the window, and a series of columns with checkboxes or radio buttons across the top. From this view, you can do the following:
+	<ul>
+	<li>Choose which categories appear on the Search page by marking them as “Searchable”</li>
+	<li>Mark a category as a special “List” field (for Similar Species, Associate Species, etc.)</li>
+	<li>Choose which categories appear on the Taxon page.</li>
+	<li>Choose the data type for each field:
+		<ol>
+		<li>Categorical (<b>all Searchable fields must be marked as Categorical!</b>)</li>
+		<li>Narrative (descriptive data - <b>the default assigned to all data fields</b>)</li>
+		<li>Numeric Value (1, 2, 3)</li>
+		<li>Numeric Range (1-10, 30-1000)</li>
+		<li>Media Resource (an image, sound clip or video)</li>
+		</ol>
+	</li>
+	<li>Drag categories around to change their order (the order they will appear on the Search page). By default sorting is turned off – activate it in the File menu.</li>
+	</ul>
+</li>
+<li>When you are done with the configuration, click Update. If the update is successful, then close the window.</li>
+</ul>
+</li>
+<li>Import your media resources
+<ul>
+<li>Click on the Media Resources button.</li>
+<li>Drag your image folder(s) into the left side of the window. Make sure “EFGImages” is highlighted before you let go of the mouse button. (<b>Note:</b> as of the release there is a bug where if you drag folders into the window they might accidentally be placed into one of the other image folders that already exists. If this happens, you can easily drag folders to move them to the correct location (directly in the EFGImages folder).</li>
+<li>The first time you import images, the software verifies the location of ImageMagick, the software used to create thumbnails from your images. Uncheck the box in this window if you don’t want to see the message again.</li>
+<li>The first time you import images, the software also asks you to set the Maximum Image Dimension. This number is the maximum width or length that a thumbnail can be – it ensures each set of thumbnails created is proportional. If you decide to suppress this window you can change thumbnail size (or reinstate the thumbnail option window) via the File menu.</li>
+<li>Once the thumbnail generation is done, you can verify that your images were imported by opening the folders in the left side of the import window and clicking on filenames – the thumbnail should appear on the right side of the window.</li>
+</ul>
+</li>
+<li>Check your data
+<ul>
+<li>Unless you are very confident, you will probably want to verify that there are no mistakes in the links to your media resources before you proceed. To do this, go to the main menu of the EFG2 Data Importer, click on Data, select an EFG, and go to the File menu and select Check Images (under Check Data for Errors). You will get a web page listing “broken” images (unless there are none) – errors here mean that an image you refer to does not exist (either a typo or you did not upload that image). <b>Note:</b> the Image Checker is case sensitive, so if your data source points to Flowers.jpg and the actual filename is flowers.jpg, it will report this as an error, regardless of whether the web server is case sensitive. Because of this, we strongly recommend that you match cases, but it is not required.</li>
+</ul>
+</li>
+<li>Create a Glossary (optional)
+<ul>
+<li>Glossary pages work pretty much the same as Taxon Data Pages. To create a Glossary you must provide a data source with (at minimum) a column for the glossary terms and a column for the definitions. As with all EFGs this data must be saved in comma-separated format (.csv or .mer). We have provided a sample glossary file of botanical terms for you in the folder of sample files.</li>
+<li>To import a Glossary file, follow the instructions above for <a href="#usedataimport">importing an EFG data source</a>.</li>
+</ul>
+</li>
+<li>EFG Share
+	<ul>
+	<li>The Data Importer is currently used to import an EFG or part of an EFG that some shares with you.</li>
+	<li>To use this feature, click on “EFG Share,” navigate to where you have saved the shared EFG on your hard drive, select the file, and click the Open button. The Importer is set to show only zip files by default, because our Exporter add-on (see below) saves everything in a compressed format (.zip) by default. If you have to navigate to a different folder to find the shared EFG, you will need to change “Files of Type” (at the bottom of the window) to “All Files” .</li>
+	</ul>
+</li>
+</ol>
+
+<hr>
+
+<p><a name="configefg"></a><b>Configure your EFG website:</b></p>
+
+<p>If you do not yet have your own EFG, we have provided you with a completed sample EFG (Hetaerina Damselflies of Costa Rica) that you can import onto your web server and use to test the template-building configurations.</p>
+
+<ul>
+<li>To configure any EFG once it has been imported, click on the “Configure” link on the EFG2 website (http://localhost:8080/efg2 by default).</li>
+<li>The configure page requires a login. In this beta version of the software the default user name and password are both "efg" (in lowercase and without the quotes).</li>
+<li>There are five sections on the Configure page:
+	<ol>
+	<li><a href="#taxondata">Taxon Data Pages</a> – tools for building your EFG web pages</li>
+	<li><a href="#glossary">Glossary Pages</a> – tools for building your glossary pages (currently the same as above)</li>
+	<li><a href="#upextra">Upload Extras</a> – the place to import your logos, style sheets, and other files to enhance the look of your EFG</li>
+	<li><a href="#links">Links</a> – Helpful pages that display information about your EFGs</li>
+	<li><a href="#addons">Add-Ons</a> – Platemaker and Export tools to use with your finished EFG</li>
+	</ol>
+</li>
+<li><a name="taxondata"></a>Taxon Data Pages
+	<ul>
+	<li>Currently there is very little difference between Beginner and Advanced modes –  <b>please use Advanced</b></li>
+	<li>These are the steps for creating a template:
+		<ol>
+		<li>Choose your data source</li>
+		<li>Choose one of three template types: <b>Plates</b> (thumbnails + captions), <b>Lists</b> (text list), or <b>Taxon Page</b> (the main page for your taxon/species)</li>
+		<li>Create a name for your template (so that you can go back and edit it later)</li>
+		<li>Choose a template (View them first via the links at the bottom of the page. We recommend you keep the sample webpage of the template you choose open to refer back to it while fitting your data to the template.)</li>
+		<li>You will get a blank version of the template page. Assign your categories of data to the different spots using the pulldown menus.
+			<ul>
+			<li>There is no mechanism to prevent you from assigning the same data field to multiple slots, so be sure to keep track if you have a lot of fields.</li>
+			<li>There are spots throughout each template where you can enter header, footers, titles, and static text (text that appears the same on every taxon page, for example the title of a field “Description:” or the caption under an image type “Fruit”).</li>
+			<li>If you do not fill in text or choose a field for a slot it will not appear on the webpage (may not be true for all templates).</li>
+			<li>Most of our templates have restricted slots where you can only put 1) images/other media resources or 2) list types (i.e. Similar Species or Associate Species data)</li>
+			<li>Some of the template config pages also have mouseover messages to help you decide what to put where.</li>
+			<li>You can change the default style sheet using the pull-down menu at the top of the template page (Advanced view only). Choose one of ours or if you have uploaded your own (see Upload Extras) it should appear on this list. Note that some style sheets we include were custom designed and may not render your chosen template correctly.</li>
+			<li>Some templates have slots for images such as logos that you may wish to have in your EFG. You must upload these images prior to the template design to have them available (see Upload Extras).</li>
+			<li><b>IMPORTANT:</b> If you want the template you have just designed to be the default, you must change the “Do not use as Default Template” box at the bottom of the page to “Use as Default Template.” Some users may wish to design several templates for each template type (a list view by Scientific Name and a second one by Common Name, for example).</li>
+			</ul>
+		</li>
+		<li>If you did everything right you should be taken to a “Success” page. <b>Note:</b> Please click on the “Config” button at the top of this page if you want to configure more templates. We will improve navigation in a future release.</li>
+		</ol>
+	</li>
+	<li>To delete a template you created, you must go to the "View URLs for all EFGs" page (see the <a href="#links">Links</a> section).</li>
+	</ul>
+</li>
+<li><a name="glossary"></a>Glossary Pages
+	<ul>
+	<li>Glossary page configuration works the same as Taxon Data Page configuration (see above).</li>
+	<li>In the current version of the software, we include only one template specifically for glossaries, and it is only available as a <b>Lists</b> template type.</li>
+	</ul>
+</li>
+<li><a name="upextra"></a>Upload Extras
+	<ul>
+	<li>Right now the upload interface is exactly the same for extra images, css (style code) and javascript.</li>
+	<li>Use the “Add” link if you want to upload more than one of a file type at once. The “Remove” link removes a file from the list before it is uploaded.</li>
+	<li>When you are done adding files click on the Upload resources button.</li>
+	<li>The software needs to process the files after uploading. When it is done, you’ll get a notification.</li>
+	<li>You have to navigate back to the Config page using your web browser – this will be fixed in the next release.</li>
+	</ul>
+</li>
+<li><a name="links"></a>Links
+	<ul>
+	<li><u>Front Page to Search</u> (sometimes referred to as the Type Page) – the home for all of your EFGs. Use this to get a quick list view of all of your data sources. Users who plan on creating a front end to serve their EFGs may wish to disable the ability for the public to view this page.</li>
+	<li><u>View URLs for all EFGs</u> – A list of every template you have configured. Use this page to delete templates, as a link to editing them, or to get the web address (URL) to link to a particular template on your own web page. Note that you cannot delete or edit the default templates!</li>
+	</ul>
+</li>
+<li><a name="addons"></a>Add-Ons
+	<ul>
+	<li>Platemaker – A tool you can use to build a printable Adobe Acrobat file (.pdf) using the data from any of your EFGs. The basic steps for platemaking are:
+		<ul>
+		<li>Pick a data source</li>
+		<li>Create/Edit a Plate Configuration (<b>Note:</b> we do not yet have the Edit capability enabled, please just select “NEW”)</li>
+		<li>Create Query: Select items from your data categories. The Platemaker will use this query to build your plate.</li>
+		<li>Configure the look of your plate</li>
+		<li>View the pdf</li>
+		<li>Save (to your own hard drive, for now!)</li>
+		</ul>
+	</li>
+	<li>Tips for using the Platemaker:
+		<ul>
+		<li>New users will find it takes a few tries to generate a good print. We have set some defaults that are meant for 8.5" x 11" paper, but keep in mind that author data is very variable!</li>
+		<li>NEW USERS: STICK WITH QUERIES THAT RETURN ***16*** OR FEWER RESULTS. Generating plates for large datasets typically takes a long time (5+ minutes) and produces large pdf files.</li>
+		<li>IMAGES TOO SMALL? TRY REDUCING NUMBER OF ROWS/COLUMNS. If the platemaker generates pages and the images are deemed to be too small, the easiest way to resolve this is to reduce the number of rows and columns per page. In the current version of the software, text is allotted a certain amount of space regardless of whether it is used. This may result in some whitespace authors might wish they could remove in order to generate a very compact plate. This issue may be addressed in a future release.</li>
+		<li>IMAGES STILL TOO SMALL? TRY REDUCING CAPTION FONT SIZE.</li>
+		<li>STANDARDIZED IMAGES AND TEXT WILL LOOK BEST. Authors that have standardized their images and text so that they all have the same proportions will find it much easier to generate a print they are happy with. Currently, the amount of space allotted for each taxon (species) is set to be equal, and the platemaker aligns the images and text in each row. If there is one image in the dataset that is twice as long as the others it may cause all the others to print smaller than the author would prefer. Also, a set of mixed images that are both portrait and landscape oriented will generate a lot of white space.</li>
+		<li>THERE IS NO TEXT WRAPPING OF CAPTIONS. Currently, captions are limited to **a single row of text**. We recommend that you do not use descriptive text fields to caption your images. If your caption is cut off, reduce the font size.</li>
+		<li>USE EITHER TOP OR BOTTOM CAPTIONS, NOT BOTH. Currently the software does not do a very good job dealing with the case where the author puts captions both above and below the image. The result is typically that the images get rendered very small. Authors that cannot resolve this may get better results by choosing to place captions either above *OR* below the image, but not both.</li>
+		<li>ERROR: OPENING OF PDF FILE FAILS. If you are using the Firefox web browser and you view Adobe Acrobat files with the Adobe Firefox plugin, viewing large pdf files may fail with an error message. If this problem occurs please download a standalone pdf viewer such as Foxit, or set your web browser to avoid the plugin with these instructions (for Firefox 2.x): Tools --> Options --> select Content tab --> click Manage button --> Find "PDF" in the left column, click on it and then click Change Action --> select "Open them with the default application"</li>
+		<li>To view sample pdfs created with Platemaker: <a href="http://www.cs.umb.edu/~jforman/sampleplates.html">http://www.cs.umb.edu/~jforman/sampleplates.html</a></li>
+		</ul>
+	</li>
+	<li>Exporter
+		<ul>
+		<li>Use the Exporter to transfer your EFG to another server that has the EFG software installed.</li>
+		<li>You will need to do your own packaging here – the software does not know which image folders or which style sheets go with which data sources. Also, you may wish to export only part of an efg (just your style sheets, for example).</li>
+		<li>Select all the files you wish to export and click the Export button. The software will create a zip file on your hard drive in the format “efg2_192.168.123.421173214740280.zip”. The numbers at the end are there to provide a semi-unique identifier for your file – we don’t want you to accidentally overwrite other exported files when you create new ones.</li>
+		<li><b>Note:</b> The add-on that imports these zip files is currently located in the EFG2 Data Importer app via the “EFG Share” button.</li>
+		</ul>
+	</li>
+	</ul>
+</li>
+</ul>
+
+<hr>
+<p><a name="tips"></a><font size="+1"><u>Tips and Known Issues</u></font></p>
+
+<ul>
+<li>Managing EFG Users: The EFG2 software allows you to create multiple users to access MySQL. The main reason to do this is that if the EFG software is accessed using MySQL’s root account, the EFG user will have access to any other non-EFG databases that are in MySQL, and could potentially edit/delete them. To manage users, simply click on the “Manage EFG Users” button. From the window that pops up, you can either Create or Delete user accounts. Note that even after you create special EFG accounts, the root account login will continue to work with the EFG2 software.</li>
+<li>Caching Issues: If you make changes to your EFG template configuration or to your images or thumbnails, and the changes do not appear to be showing up on the website, we recommend that you restart Tomcat. Sometimes the issue can also be resolved by a simple forced reload of your web browser.</li>
+<li>The right-mouse button menus in the Data Importer are a little flaky. This bug has been reported and we are working to fix it. All of those options are also available via the standard File menu pull-downs.</li>
+<li>The software renders all EFGs in a default template for web viewing. It is a very bare-bones table-style page design. If you notice that the template design you just configured is not showing up when you use your EFG, make sure you changed the option at the bottom of the template to “Use as Default Template.”</li>
+<li>If your jsp web pages won’t display (the "View" page that lists EFGs, for example), causing error messages to appear in your web browser, it is likely that you have a version of Tomcat that is not pointing to the Java Development Kit (JDK) that came with your EFG2 software. To fix this problem, edit your Java HOME environment variable to point to our JDK [In Windows, go to Control Panel --> System --> Advanced tab --> Environment Variables button --> System Variables (bottom section of window)]. <b>Note:</b> this may negatively impact any other applications that rely on Tomcat, and is recommended for advanced users only.</li>
+<li>Right now clicking on the standard View link on most pages will show you a list of EFGs but not the Glossary templates. We will fix this in the next release, in the meantime the easiest way to see a list of glossaries is to click on the “View URLs for all EFGs” link on the Config page.</li>
+<li>Currently there is only one real template for glossaries and it is text only. We have several glossary template designs and we will be adding more (including ones that can handle images and links to individual term pages) to the next release.</li>
+</ul>
+
+<hr>
+<hr>
+
+<p><font size="-1">The EFG2 software and this documentation are (c) 2007 <a href="http://efg.cs.umb.edu">Electronic Field Guide Project</a>. Documentation written by J. Forman Orth.</font></p>
+</body>
+</html>

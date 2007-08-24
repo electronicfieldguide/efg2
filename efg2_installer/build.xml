@@ -1,0 +1,120 @@
+<!-- 
+Th parent build file for this application.
+to make a distribution call makeImport:
+-->
+<project name="Electronic Field Guide" default="dist" basedir=".">
+	<property file="build.svn.properties"/>
+	<property file="build.properties"/>
+	
+	<!-- Main class path required by all classes-->
+	<target name="clean">
+		<ant antfile="${build.scripts.home}/build_server.xml" inheritAll="true" target="clean"/>
+		<ant antfile="${build.scripts.home}/build_Client.xml" inheritAll="true" target="clean"/>
+		<ant antfile="${build.scripts.home}/build_NSIS.xml" inheritAll="true" target="clean"/>
+		<ant antfile="${build.scripts.home}/build_IzPack.xml" inheritAll="true" target="clean"/>
+	</target>
+	<target name="dist">
+         <condition property="build.properties.exists">
+         <and>
+          <available file="build.properties"/>
+          <available file="${izpack.basedir}/lib/standalone-compiler.jar"/>
+          <available file="${efg2.home}" type="dir"/>     
+          <available file="${efg2.skins.home}" type="dir"/>     
+          <available file="${efg2.website.home}" type="dir"/>     
+         </and>
+        </condition>
+           <fail message="build.properties,${line.separator}${izpack.basedir}/lib/standalone-compiler.jar,${line.separator}${efg2.home}${line.separator}${efg2.skins.home},${line.separator} and ${efg2.website.home}${line.separator} must all exists.Follow instructions in ReadMe.txt ${line.separator}" unless="build.properties.exists"/>
+          <antcall target="build"/>
+           <antcall target="donotBuild"/>
+      
+	</target>
+    <target name="build" description="Build Installer for EFG2" if="build.properties.exists">
+        <ant antfile="${build.scripts.home}/build_client.xml" inheritAll="true" target="build"/>
+        <ant antfile="${build.scripts.home}/build_server.xml" inheritAll="true" target="build"/>
+        <ant antfile="${build.scripts.home}/build_NSIS.xml" inheritAll="true" target="build"/>
+         <ant antfile="${build.scripts.home}/build_IzPack.xml" inheritAll="true" target="build"/>
+     </target>
+    <target name="donotBuild" unless="build.properties.exists">
+        <echo message="build.properties,
+            ${izpack.basedir}/lib/standalone-compiler.jar,
+            ${efg2.home}, ${efg2.skins.home} and ${efg2.website.home} 
+            must all exist.Please follow instructions in ReadMe.txt" />
+    </target>
+ 
+	<!--
+	==============================================
+	SVN RELATED TASKS. PLEASE HAVE SVN COMMANDLINE INSTALLED AND ON YOUR CLASSPATH
+	==============================================
+	-->	
+	  <!-- path to the svnant libraries. Usually they will be located in ANT_HOME/lib -->
+	  <path id="svn.classpath">
+	    <pathelement location="${svnjavahl.jar}" /> 
+	    <pathelement location="${svnant.jar}" />
+	    <pathelement location="${svnClientAdapter.jar}" />
+	  </path>  
+	  
+	  <!-- load the svn task -->
+	  <taskdef resource="svntask.properties" classpathref="svn.classpath"/>
+	
+	   <target name="initSVN">
+	      <echo message="Please make sure that you have svn command line installed and on your classpath"/>
+
+	  	<!-- check for svn jars from binary distribution -->
+	 	<condition property="svntask.properties.javahl">
+	   		 <available file="${svnjavahl.jar}"/>
+	 	</condition>
+	 	<fail message="Cannot find ${svnjavahl.jar} which is required" unless="svntask.properties.javahl"/>
+	 	
+	 	<condition property="svntask.properties.adapter">
+	   		 <available file="${svnClientAdapter.jar}"/>
+	 	</condition>
+	 	<fail message="Cannot find ${svnClientAdapter.jar} which is required" unless="svntask.properties.adapter"/>
+	 	
+	 	<condition property="svntask.properties.ant">
+	   		 <available file="${svnant.jar}"/>
+	 	</condition>
+	    <fail message="Cannot find ${svnant.jar} which is required" unless="svntask.properties.ant"/>
+	    
+	    <condition property="build.properties.exists">
+	      <available file="build.properties"/>
+	    </condition>
+	     <fail message="Cannot find build.properties which is required" unless="svntask.properties.ant"/>
+	    
+	     <antcall target="cannotCheckOut"/>
+	  </target>
+	   <target name="cannotCheckOut" unless="build.properties.exists">
+		<echo message="build.properties and other svn jar files must exists.Follow instructions in README.txt" />
+	  </target>
+	<!--
+
+	 CHECKOUT CFG APPLICATIONS
+	 
+	-->
+	  <target name="checkoutskins" depends="initSVN" if="build.properties.exists">
+	      <echo message="About to check out efg2_skins from svn"/>
+	    <svn>
+	      <checkout url="${efg2.latest.url.efg2_skins}" revision="HEAD" destPath="${efg2.skins.checkout.home}"/>
+	    </svn>
+	  </target>
+	<target name="checkoutwebsite" depends="initSVN" if="build.properties.exists">
+	      <echo message="About to check out efg2_website from svn"/>
+
+		<svn>
+	      <checkout url="${efg2.latest.url.efg2_website}" revision="HEAD" destPath="${efg2.website.checkout.home}"/>
+	    </svn>
+	  </target>
+	  <target name="checkoutefg2" depends="initSVN" if="build.properties.exists">
+	      <echo message="About to check out efg2 from svn"/>
+	  	<svn>
+	      <checkout url="${efg2.latest.url.efg2}" revision="HEAD" destPath="${efg2.efg2.checkout.home}"/>
+	    </svn>
+	  </target>
+	
+	
+	
+	  <target name="checkoutall" depends="checkoutskins, checkoutefg2, checkoutwebsite"/>
+
+	
+	
+	
+</project>

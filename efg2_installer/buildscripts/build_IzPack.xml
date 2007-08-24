@@ -1,0 +1,22 @@
+<project name="Electronic Field Guide" default="build" basedir=".">
+	<!-- $Id$	-->
+	<property name="izpack.basedir" value="IzPackInstaller"/>
+	
+
+	<!-- IzPack taskdef 
+	Add IzPackInstaller/lib/standalone-compiler to your ant class path
+	-->
+	<taskdef name="izpack" classpath="${izpack.basedir}/lib/standalone-compiler.jar"
+         classname="com.izforge.izpack.ant.IzPackTask"/>
+
+
+	<target name="build" description="Build Installer for EFG2" if="build.properties.exists">
+		<izpack input="${izpack.basedir}/install.xml"
+        output="${efg2.installer.name}"
+        installerType="standard"
+        basedir="."/>
+	</target>
+	<target name="clean">
+		<delete file="${efg2.home}/${efg2.installer.name}" quiet="true"/>
+	</target>	
+</project>

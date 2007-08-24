@@ -1,0 +1,147 @@
+<!--  
+/**
+ * $Id$
+ *
+ * Copyright (c) 2007  University of Massachusetts Boston
+ *
+ * Authors: Jacob K Asiedu
+ *
+ * This file is part of the UMB Electronic Field Guide.
+ * UMB Electronic Field Guide is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2, or
+ * (at your option) any later version.
+ *
+ * UMB Electronic Field Guide is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the UMB Electronic Field Guide; see the file COPYING.
+ * If not, write to:
+ * Free Software Foundation, Inc.
+ * 59 Temple Place, Suite 330
+ * Boston, MA 02111-1307
+ * USA
+ */
+ -->
+<project name="Electronic Field Guide" default="build" basedir=".">
+	<!--  libraries -->
+	<property name="efg2.lib.util.home" value="${efg2.home}/lib/util"/>
+	<property name="efg2.spring.server" value="${efg2.home}/SpringConfigurations/server"/>
+	<property name="efg2.spring.util" value="${efg2.home}/SpringConfigurations/util"/>
+	<property name="efg2.lib.server.home" value="${efg2.home}/lib/server"/>
+	<property name="efg2.schema.server.home" value="${efg2.home}/schema"/>
+	<property name="efg2.properties.server" value="${efg2.home}/properties/server"/>
+	<property name="efg2.properties.common" value="${efg2.home}/properties/util"/>
+	<property name="efg2.lib.misc.home" value="${efg2.home}/lib/misc"/>
+	<property name="efg2.src.home" value="${efg2.home}/source"/>
+	<property name="web.dir" value="${efg2.home}/WebContent"/>
+	
+	<!-- Main class path required by all classes-->
+	<path id="compile.class.path">
+		<fileset dir="${efg2.lib.util.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${efg2.lib.server.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${efg2.lib.misc.home}">
+			<include name="servlet-api.jar"/>
+		</fileset>
+	</path>
+	<target name="initserver">
+		<mkdir dir="${server.compile.home}"/>
+		<mkdir dir="${efg2.src.client.temp.home}/project/efg/server"/>
+		<mkdir dir="${efg2.src.client.temp.home}/project/efg/util"/>
+		<copy todir="${efg2.src.client.temp.home}/project/efg/server">
+			<fileset dir="${efg2.src.home}/project/efg/server"/>
+		</copy>
+		<copy todir="${efg2.src.client.temp.home}/project/efg/util">
+			<fileset dir="${efg2.src.home}/project/efg/util"/>
+		</copy>	
+	</target>
+    <target name="build" depends="compile" description="Build Web Application" if="build.properties.exists">
+
+        <copy todir="${server.compile.home}/project/efg/util" preservelastmodified="true">
+          <fileset dir="${efg2.properties.server}" includes="log4j.properties"/>
+        </copy>
+         <copy todir="${server.compile.home}/project/efg/server/factory" preservelastmodified="true">
+          <fileset dir="${efg2.spring.server}" includes="*.*"/>
+        </copy>
+         <copy todir="${server.compile.home}/project/efg/util/factory" preservelastmodified="true">
+          <fileset dir="${efg2.spring.util}" includes="*.*"/>
+        </copy>
+        <copy todir="${web.dir}/templateJSP" preservelastmodified="true">
+          <fileset dir="${efg2.skins.home}" excludes=".project, .classpath,*.txt,*.html,*.css">
+        	</fileset>
+       </copy>   
+        <copy todir="${web.dir}/templateCSSDirectory" overwrite="true" flatten="true">
+           <fileset dir="${efg2.skins.home}" includes="**/*.css" />
+         </copy>
+       <copy todir="${web.dir}/WEB-INF/classes" preservelastmodified="true">
+          <fileset dir="${server.compile.home}">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy>   
+        <copy todir="${web.dir}/WEB-INF/classes" preservelastmodified="true">
+          <fileset dir="${server.compile.home}">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy>       
+        <copy todir="${web.dir}/WEB-INF/classes/properties" preservelastmodified="true">
+          <fileset dir="${efg2.properties.server}" excludes="log4j.properties"/>
+        </copy>
+        <copy todir="${web.dir}/WEB-INF/classes/properties" preservelastmodified="true">
+          <fileset dir="${efg2.properties.common}">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy>
+         <copy todir="${web.dir}/WEB-INF/lib" preservelastmodified="true">
+    	   <fileset dir="${efg2.lib.util.home}"  excludes="mysqldriver.jar"/>
+			<fileset dir="${efg2.lib.server.home}"/>
+    	</copy>
+    	<mkdir dir="${web.dir}/templateConfigFiles/xml"/>
+    	
+        <copy todir="${web.dir}/templateConfigFiles/xml" preservelastmodified="true">
+    	   <fileset dir="${efg2.schema.server.home}"  includes="TaxonPageTemplate.xsd"/>
+	   	</copy>
+    
+       <mkdir dir="${efg2.tomcat.home}/efg2"/>
+	   <copy todir="${efg2.tomcat.home}/efg2" preservelastmodified="true">
+	       <fileset dir="${web.dir}"  excludes="jsp"/>
+		</copy> 
+		 <copy todir="${efg2.tomcat.home}/common/lib" preservelastmodified="true">
+	       <fileset dir="${efg2.lib.util.home}"  includes="mysqldriver.jar"/>
+		</copy> 
+ 		<delete dir="${efg2.tomcat.home}/efg2/jsp" quiet="true"/>  
+		<copy todir="${efg2.tomcat.home}/efg2" preservelastmodified="true">
+         <fileset dir="${web.dir}/jsp"/>
+ 		 </copy>
+ 		<copy todir="${efg2.tomcat.home}/efg2" preservelastmodified="true">
+          <fileset dir="${efg2.website.home}" excludes=".project"/>
+        </copy> 
+ 		
+ 		<replace file="${efg2.tomcat.home}/efg2/WEB-INF/classes/properties/RDBprops.properties" token="3306" value="${efg2.mysql.port}"/>
+        <delete dir="${web.dir}/templateConfigFiles/xml" quiet="true"/>
+       <delete dir="${web.dir}/WEB-INF/classes" quiet="true"/>
+       <delete dir="${web.dir}/WEB-INF/lib" quiet="true"/>
+      <delete dir="${server.compile.home}" quiet="true"/>
+       <delete dir="${efg2.src.client.temp.home}" quiet="true"/>       
+    </target>
+   
+
+	<!-- Compile sources-->
+	<target name="compile" depends="initserver">
+		<javac srcdir="${efg2.src.client.temp.home}" destdir="${server.compile.home}" debug="on" optimize="off" deprecation="on">
+			<classpath refid="compile.class.path"/>
+		</javac>
+	</target>
+	
+	<!-- Clean All -->
+	<target name="clean">
+		<delete dir="${server.compile.home}" quiet="true"/>
+		<delete dir="${efg2.src.client.temp.home}" quiet="true"/>
+	</target>	
+</project>

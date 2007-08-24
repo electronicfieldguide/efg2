@@ -1,0 +1,24 @@
+$Id$
+Release Notes for EFG2 v. 1.1.0.0
+
+NOTE: Make sure that your Tomcat Server is shutdown before you continue with this
+installation.
+
+- Changed template names to be more descriptive
+- Updated old templates to add new features (previous and next page, ability
+to add static links, general enhancements to layout and style code)
+- Added new templates for Taxon pages, Plate view (now called 'Thumbnails'),
+List View (including one organized by subcategories) and Glossary.
+- Separated Glossary templates from List View Templates - Glossary templates
+no longer appear as a selection for List View templates and vice versa.
+- Added capability to create, edit and delete search page templates.
+- Added ability to save and delete pdf page configurations and queries.
+- Added the ability to view, edit and delete taxon page templates from
+the "View
+URLs for all EFG
+products<http://efg.cs.umb.edu/efg2/DirectURLs2SearchResultsPages.jsp>"
+page.
+- Took away "Beginner" and "Advanced mode" for Taxon and Glossary templates
+- now there is only one mode for all users.
+- User can no longer create a MySQL user called "efg" or "EFG" - that user
+is reserved for use by the software.

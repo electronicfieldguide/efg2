@@ -1,0 +1,20 @@
+<userInput>
+	<panel order="0">
+		<field type="rule" variable="dbLoginName">
+
+   			<spec txt="MySQL Admin User Name:" 
+        	layout="O:10:10" set="0:root" resultFormat="displayFormat"/>
+		       <validator class="com.izforge.izpack.util.NotEmptyValidator"
+             txt="The Login name is mandatory!" />
+  		</field>
+		<field type="space" />
+		<field type="divider"/>
+		<field type="rule" variable="dbPassword">
+		
+   			<spec txt="MySQL Admin Password:" 
+        	layout="O:10:10"  resultFormat="displayFormat"/>
+		       <validator class="com.izforge.izpack.util.NotEmptyValidator"
+             txt="The Password is mandatory!" />
+  		</field>
+	</panel>
+</userInput>
