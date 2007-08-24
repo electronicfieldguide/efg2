@@ -11,6 +11,8 @@
  */
  -->
 	<head>
+	
+		<link rel="stylesheet" href="../efg2web.css" type="text/css"/>
 		<%@ include file="../Header.jsp"%>	
 		<link href="../css/tabberMain.css" rel="stylesheet" type="text/css" media="screen"/>
 		<link href="../css/upload.css" rel="stylesheet" type="text/css" />	
