@@ -38,14 +38,13 @@ import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
+import org.apache.log4j.Logger;
+
 import project.efg.client.interfaces.gui.DataManipulatorInterface;
 import project.efg.client.interfaces.gui.SynopticKeyTreeInterface;
 import project.efg.client.interfaces.gui.SynopticKeyTreeModelInterface;
 import project.efg.client.interfaces.nogui.EFGDatasourceObjectInterface;
-import project.efg.client.utils.nogui.FlushServerCache;
 import project.efg.util.interfaces.EFGImportConstants;
-
-import org.apache.log4j.Logger;
 
 /**
  * @author kasiedu
