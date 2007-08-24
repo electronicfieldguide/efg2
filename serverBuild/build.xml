@@ -107,7 +107,7 @@
          <copy todir="${web.dir}/pdfcss" overwrite="true" flatten="true">
            <fileset dir="${efg2.platemaker.home}" includes="**/*.css" />
         </copy>
-          <copy todir="${web.dir}/bookmaker" overwrite="true" flatten="true">
+          <copy todir="${web.dir}/bookmaker/images" overwrite="true" flatten="true">
            <fileset dir="${efg2.bookmaker.home}/images"/>
         </copy>
           
