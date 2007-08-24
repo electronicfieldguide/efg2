@@ -6,7 +6,6 @@
 	<classpathentry kind="src" path="unitTests"/>
 	<classpathentry excluding="springConfig/" kind="src" path="lib"/>
 	<classpathentry kind="src" path="source"/>
-	<classpathentry kind="src" path="misc"/>
 	<classpathentry kind="lib" path="lib/client/commons-cli-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/client/ostermillerutils_1_05_00_for_java_1_4.jar"/>
 	<classpathentry kind="lib" path="lib/server/commons-fileupload-1.1.1.jar"/>
@@ -33,7 +32,6 @@
 	<classpathentry kind="lib" path="lib/misc/junit.jar"/>
 	<classpathentry kind="lib" path="lib/misc/servlet-api.jar"/>
 	<classpathentry kind="lib" path="lib/util/efgSearchable.jar"/>
-	<classpathentry kind="lib" path="lib/server/efgSearchable.jar"/>
 	<classpathentry kind="lib" path="lib/server/fileupload-ext.jar"/>
 	<classpathentry kind="lib" path="lib/server/fop.jar"/>
 	<classpathentry kind="lib" path="lib/server/xalan.jar"/>
