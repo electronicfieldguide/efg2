@@ -68,7 +68,12 @@ public class ConfigHandler {
 				handleTitle(group);
 			}
 			else if (PDFGUIConstants.FRONT_PAGE_TITLES.equalsIgnoreCase(label)) {
+				
 				handleFrontPageData(group,this.frontPageTitles);
+				if(this.frontPageTitles.size() > 0){//make this the title of
+					//all pages
+					this.title = (String)this.frontPageTitles.first();
+				}
 			}
 			else if (PDFGUIConstants.FRONT_PAGE_SUBTITLES.equalsIgnoreCase(label)) {
 				handleFrontPageData(group,this.frontPageSubTitles);
@@ -295,6 +300,9 @@ public class ConfigHandler {
 	 * @return
 	 */
 	public SortedSet getSortFields() {
+		if(this.sortFields.size() == 0){//sort by main header
+			this.sortFields.add(this.getMainHeader());
+		}
 		return this.sortFields;
 	}
 	/**
@@ -309,6 +317,7 @@ public class ConfigHandler {
 	 * @return
 	 */
 	public String getTitle() {
+		
 		return this.title;
 	}
 	/**
