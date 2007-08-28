@@ -43,7 +43,9 @@ project.efg.server.factory.EFGSpringFactory
 	Iterator it =null;
 	List table = dsHelper.getAllFields(displayName,datasourceName);
 	List mediaResourceFields = dsHelper.getMediaResourceFields(displayName,datasourceName);
-
+	if(mediaResourceFields == null){
+		mediaResourceFields = new ArrayList();
+	}
 	TemplatePopulator tpop = new  TemplatePopulator();
 	String name = null;
     String groupLabel= null;
@@ -56,7 +58,9 @@ project.efg.server.factory.EFGSpringFactory
 	boolean isTableExists = false;
 	int tableSize = table.size();
 	TemplateProducer tp = new TemplateProducer();
+	int NUMBER_OF_SUB_HEADERS=4;
 	
+
 	int ii = 0;
 	String searchquery = request.getParameter(PDFGUIConstants.searchqueryStr);
 
@@ -114,7 +118,7 @@ project.efg.server.factory.EFGSpringFactory
 %>
 <form name="pdfmakerform" method="post" action="<%=context%>/efg2pdfconfig" target="_blank" onsubmit="return insertQueryResultsXML();">	
 
-			<!-- start of code for bookmaking msg added 08/17/2007 by Jenn -->
+			<!-- Servlet inserts download message in the div -->
 			<div id="downloadMessageID">
 			
 			</div>
@@ -348,7 +352,7 @@ project.efg.server.factory.EFGSpringFactory
 							<%
 							}
 							ii++;
-						}
+						}// end while
 					%>						
 					</select>
 					
@@ -356,16 +360,21 @@ project.efg.server.factory.EFGSpringFactory
 				</td>
 			</tr>
 			<%
+						int countsubheaders = 0;
 						int ww = 0;
-						int numberOfSubHeaders = 4;
-						while(ww < numberOfSubHeaders){
+						for(ww = 0; ww < tableSize; ww++){
+							if(countsubheaders == (NUMBER_OF_SUB_HEADERS + 1)){
+								break;
+							}
+						//while(ww < numberOfSubHeaders){
 							EFGQueueObjectInterface queueObject1 = (EFGQueueObjectInterface)table.get(ww);
 							if(isImagesExists) {
 								if(mediaResourceFields.contains(queueObject1)){
+															
 									continue;
 								}
 							}// end is Images	
-							
+							++countsubheaders;
 							name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
 							
 							fieldValue = (String)groupTable.get(name);
@@ -395,6 +404,7 @@ project.efg.server.factory.EFGSpringFactory
 										EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
 										if(isImagesExists) {
 											if(mediaResourceFields.contains(queueObject)){
+												
 												continue;
 											}
 										}	
@@ -417,7 +427,7 @@ project.efg.server.factory.EFGSpringFactory
 				</td>
 			</tr>
 			<%
-				ww++;
+				
 			}//end while loop
 			%>	
 			<tr>
@@ -472,6 +482,7 @@ project.efg.server.factory.EFGSpringFactory
 								<option>
 								<%
 								}//end if ii =0 
+								ii++;
 								EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
 								if(isImagesExists) {
 									if(mediaResourceFields.contains(queueObject)){
@@ -489,7 +500,7 @@ project.efg.server.factory.EFGSpringFactory
 									<option><%=fieldName%></option>
 								<%
 								}//end else
-								ii++;
+								
 							}//end while	
 						%>
 					</select>
