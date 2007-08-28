@@ -21,6 +21,9 @@ project.efg.server.factory.EFGSpringFactory
 <%@page import="project.efg.util.pdf.interfaces.PDFGUIConstants;"%>
 <%
 	List PAPER_SIZE_LIST = new ArrayList();
+
+	//PDF plate maker paper size management
+	//TODO read from a properties file
 	PAPER_SIZE_LIST.add("EFG_LETTER");
 	PAPER_SIZE_LIST.add("EFG_LEGAL");
 	PAPER_SIZE_LIST.add("EFG_792_1224");
@@ -131,11 +134,12 @@ project.efg.server.factory.EFGSpringFactory
 	session.setAttribute("listFields",table);
 %>
 
-<form method="post" action="<%=context%>/efg2pdfconfig" target="_blank" onsubmit="return insertQueryResultsXML();">	
+<form method="post" action="<%=context%>/efg2pdfconfig" target="_blank" name="pdfmakerform" onsubmit="return insertQueryResultsXML();">	
 	<table class="form" id="pdfFillFormID">
 		<tr>
 			<td class="datasourcename" colspan="2"><%=selectedDS%> 
-				<input type="hidden"    name="searchqueryresultsxml" id="searchqueryresultsxml" value=""/>			
+				<input type="hidden" name="searchqueryresultsxml" 
+				id="searchqueryresultsxml" value=""/>			
 			</td>
 		</tr>	
 		<tr>
@@ -185,8 +189,8 @@ project.efg.server.factory.EFGSpringFactory
 					if(characterLabelValue == null){
 						characterLabelValue =PDFGUIConstants.GENERAL_SETTING_SORT;
 					}
-			%>
-			<input type="hidden" name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
+				%>
+				<input type="hidden" name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>											
 			</td>
 		</tr>	
 		<tr>
@@ -194,22 +198,22 @@ project.efg.server.factory.EFGSpringFactory
 			<!-- Make sure no lists/mediaresources are shown -->
 				<select name="<%=name%>">
 				<%
-						ii = 0;
-						it = table.iterator();
-						while (it.hasNext()) {
-							EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
-						 	if(isImagesExists) {
-						if(mediaResourceFields.contains(queueObject)){
-							continue;
-						}
-							}	
-							fieldName =queueObject.getObject(1);
-							if(ii==0){
+					ii = 0;
+					it = table.iterator();
+					while (it.hasNext()) {
+						EFGQueueObjectInterface queueObject = (EFGQueueObjectInterface)it.next();
+					 	if(isImagesExists) {
+							if(mediaResourceFields.contains(queueObject)){
+								continue;
+							}
+						}	
+						fieldName =queueObject.getObject(1);
+						if(ii==0){
 				%>
 					<option></option>
 					<%
-								}
-								if(fieldName.equals(fieldValue)){
+						}
+						if(fieldName.equals(fieldValue)){
 					%>
 						<option selected="selected"><%=fieldName%></option>
 					<%
@@ -388,15 +392,15 @@ project.efg.server.factory.EFGSpringFactory
  				 			name =tp.getCharacter(PDFGUIConstants.isOld,PDFGUIConstants.isOld);
  				 			fieldValue = (String)groupTable.get(name);
  				 			if(fieldValue == null){
- 				 		fieldValue ="";
+ 				 				fieldValue ="";
  				 			}
  				 			characterLabel= tp.getCurrentCharacterLabel(name);
  				 			characterLabelValue = (String)groupTable.get(characterLabel);
  				 			if(characterLabelValue == null){
- 				 		characterLabelValue =PDFGUIConstants.GENERAL_SETTING_PAPER_SIZE;
+ 				 				characterLabelValue =PDFGUIConstants.GENERAL_SETTING_PAPER_SIZE;
  				 			}
  				 %>
-				<select name="<%=name%>">
+					<select name="<%=name%>">
 					<%
 							for (int index1=0; index1 < PAPER_SIZE_LIST.size();index1++) {
 							fieldName = (String)PAPER_SIZE_LIST.get(index1);
@@ -413,7 +417,7 @@ project.efg.server.factory.EFGSpringFactory
 							</option>
 						<%
 									}
-									}
+							}
 						%>						
 				</select>
 				<input type="hidden"    name="<%=characterLabel%>" value="<%=characterLabelValue%>"/>
