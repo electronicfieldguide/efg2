@@ -50,6 +50,11 @@ tomcat.manager.username=YOUR_TOMCAT_USER_NAME
  #Replace MY_PASSWORD with your tomcat manager password
 tomcat.manager.password=YOUR_TOMCAT_PASSWORD
 
+**********************************************************
+SET THE PASSWORD FOR THE efg user HERE.
+TEMPLATE CONFIGURATION WILL NOT WORK OTHERWISE.
+**********************************************************
+efg.web.user.password=THE_EFG_USER
 
 #**************************************************************
 #DO NOT EDIT THE FOLLOWING VARIABLES UNLESS YOUR TOMCAT 'webapps' 

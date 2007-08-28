@@ -30,7 +30,11 @@ Build Client and Web applications
 	  	ii)Edit the efg.client.folder.name value if you wish to change
 	  		the name of the folder that will be holding the importer
 	  		application files.(The default is efg2Client).
+	  	iii) edit the value of efg.web.user.password to the password
+	  	that will be used by the 'efg' user.Templates cannot be configured until
+	  	this is done. The default password is 'efg'.
 	  	
+	  
 	  	Then run ant with the "buildclient" target.
 	  	ant buildclient
 	  	
@@ -43,16 +47,19 @@ Build Client and Web applications
 		    set efg2.tomcat.webapps.home to the full path to your webapps folder.
 		 ii) Edit efg2.xml if the webapps folder where efg2 will be deposited is not
 		    	directly under the tomcat server.
-		
-		iii) If you have tomcat manager enabled then make sure to set
+		iii) edit the value of efg.web.user.password to the password
+	  	that will be used by the 'efg' user.Templates cannot be configured until
+	  	this is done. The defaults is 'efg' without the single quote.
+	  	
+		iv) If you have tomcat manager enabled then make sure to set
 			 the values of tomcat.manager.username,tomcat.manager.password
 			 and tomcat.manager.url properties appropriately.
 			 
-		iv) Then run ant with the "deployserver" target.	 
+		v) Then run ant with the "deployserver" target.	 
 			ant deployserver
 			ant deployservertc if you have tomcat manager enabled
 			
-		v) To deploy a war file run ant with the deploywar target.
+		vi) To deploy a war file run ant with the deploywar target.
 			ant deploywar	
 			
 			ant deploywar if you have tomcat manager enabled		   			

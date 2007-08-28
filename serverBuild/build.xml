@@ -157,7 +157,10 @@
         </copy> 
  		
  	<replace file="${efg2.tomcat.home}/webapps/efg2/WEB-INF/classes/properties/RDBprops.properties" token="3306" value="${efg2.mysql.port}"/>
+ 	<replace file="${efg2.tomcat.home}/webapps/efg2/WEB-INF/classes/properties/RDBprops.properties" token="THE_EFG_USER" value="${efg.web.user.password}"/>
+ 
  	<replace file="${deploy.context.home}/efg2.xml" token="3306" value="${efg2.mysql.port}"/>
+  	<replace file="${deploy.context.home}/efg2.xml" token="THE_EFG_USER" value="${efg.web.user.password}"/>
   		 
        <delete dir="${web.dir}/templateConfigFiles/xml" quiet="true"/>
        <delete dir="${web.dir}/WEB-INF/classes" quiet="true"/>
