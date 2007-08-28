@@ -72,19 +72,16 @@ public class ConfigHandler {
 				handleFrontPageData(group,this.frontPageTitles);
 				if(this.frontPageTitles.size() > 0){//make this the title of
 					//all pages
-					this.title = (String)this.frontPageTitles.first();
+					this.title = ((EFGRankObject)this.frontPageTitles.first()).getName();
 				}
 			}
 			else if (PDFGUIConstants.FRONT_PAGE_SUBTITLES.equalsIgnoreCase(label)) {
 				handleFrontPageData(group,this.frontPageSubTitles);
 			}
 			else if (PDFGUIConstants.CREDITS1_TEXT.equalsIgnoreCase(label)) {
-				System.out.println("adding credits1");
 				handleFrontPageData(group,this.credits1);
 			}
 			else if (PDFGUIConstants.CREDITS2_TEXT.equalsIgnoreCase(label)) {
-				
-				System.out.println("adding credits2");
 				handleFrontPageData(group,this.credits2);
 			}
 			else if ("taxonomy".equalsIgnoreCase(label)) {
