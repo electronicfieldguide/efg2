@@ -174,6 +174,18 @@ public class BookMakerDriver{
 		
 		return null;
 	}
+	static String help(){
+		StringBuffer buffer = new StringBuffer();
+		 buffer.append("usage java BookMakerDriver URL datasourceName templateName glossary(true or false) [outputFileName]\n\n");
+
+		buffer.append("URL = url to server where configuration was done\n");
+		buffer.append("datasourceName = must be the datasourceName (identifier name)\n");
+		buffer.append("templateName = must be the template name (The one used to save the config)\n");
+		buffer.append("glossary = true if the datasource is a glossary- defaults to false\n");
+		buffer.append("outputFileName = The name of the output file defaults to PDFBook.pdf\n");
+		buffer.append("outputFileName is optional\n");
+		return buffer.toString();
+	}
 	/**
 	 * Generates a file with a header and a footer.
 	 * 
@@ -186,37 +198,48 @@ public class BookMakerDriver{
 		
 		System.out.println("-> Creates a PDF file");
 		System.out.println("-> files generated in /books subdirectory:");
-		
+		//args[0] = url to server
+		//args[1] = must be the datasourceName (identifier name)
+		//args[2] = must be the template name (The one used to save the config)
+		//args[3] = true if the datasource is a glossary false otherwise
+		//args[4] = The name of the output file defaults to PDFBook.pdf
 		String bookDirectory = "books";
 		File file = new File(bookDirectory);
 		if(!file.exists()){
 			file.mkdirs();
 		}
+		boolean isTest = false;
 		 if(args[0].equals("-test")){
 			args = new String[3];
 			
-			args[0] = "http://panda.cs.umb.edu/efg2/doc2xml?dataSourceName=bostonnaturecenterefg_1185631295755&ALL_TABLE_NAME=efg_rdb_tables";
-			args[1] = "Test BNC Book1";
-			args[2] = "BNCBook.pdf";
+			args[0] = "http://panda.cs.umb.edu/efg2"; 
+			args[1] = "bostonnaturecenterefg_1185631295755";
+			args[2] = "Test BNC Book1";
+			args[3] = "false";
+		
+		
+			//args[1] = ;
+			args[4] = "BNCBook.pdf";
+			isTest = true;
 		}
-		 else if(null != args || args.length < 2 || args.length > 3){
-			 System.out.println("usage java BookMakerDriver URL templateName [outputFileName]");
+		 else if(null != args || args.length < 3 || args.length > 4){
+			 help();
 			 return;
 		}
 		String fileName = null;
-		if(args.length == 2){
+		if(args.length == 3){
 			fileName= bookDirectory + "/PDFBook.pdf";
 		}
 		else{
-			fileName = bookDirectory + "/" + args[2];
+			fileName = bookDirectory + "/" + args[3];
 		}
 		LoggerUtils loggers = new LoggerUtils();
 		try {
 			String strURL = args[0];
-			String templateName = args[1];
-			System.out.println("URL: " + strURL);
-			System.out.println("Template Name: " + templateName);
-			System.out.println("PDF File Name: " + fileName);
+			String templateName = args[2];
+
+			
+			strURL = appendDOCURL(args[0], args[1], args[3]);
 			checkURL(strURL);
 			BookMakerDriver bookmaker = new BookMakerDriver(new URL(strURL),templateName);
 			bookmaker.makePDF(fileName);
@@ -224,6 +247,30 @@ public class BookMakerDriver{
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
 		}
+	}
+	/**
+	 * @param strURL
+	 * @return
+	 */
+	private static String appendDOCURL(String strURL, String datasourceName, String glossary) {
+		StringBuffer url = new StringBuffer();
+		url.append(strURL);
+		url.append("/doc2xml");
+		url.append("?");
+		url.append(EFGImportConstants.DATASOURCE_NAME);
+		url.append("=");
+		url.append(datasourceName);
+		url.append("&");
+		url.append(EFGImportConstants.ALL_TABLE_NAME);
+		url.append("=");
+		
+		if("false".equalsIgnoreCase(glossary)){
+			url.append(EFGImportConstants.EFG_RDB_TABLES);
+		}
+		else{
+			url.append(EFGImportConstants.EFG_GLOSSARY_TABLES);
+		}
+		return url.toString();
 	}
 	/**
 	 * @param strURL
