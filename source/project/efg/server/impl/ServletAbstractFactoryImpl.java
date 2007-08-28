@@ -254,9 +254,6 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface
 			LoggerUtilsServlet.logErrors(e);
 		}
 		return arrList;
-		
-		
-		
 	}
 	/**
 	 * 
