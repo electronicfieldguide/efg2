@@ -41,4 +41,4 @@
    	  <bean id="notsearchpage" class="project.efg.server.impl.ApplyXSLOtherPagesImpl" scope="prototype"/>
       <bean id="searchables" class="project.efg.server.rdb.SearchableImpl" scope="prototype"/>
       <bean id="efgdataobject" class="project.efg.server.utils.EFGDataObjectImpl" scope="prototype"/>
-         </beans>
+    </beans>
