@@ -5,6 +5,12 @@ project.efg.util.interfaces.EFGImportConstants"
 <%@page import="project.efg.server.servlets.EFGContextListener"%>
 <%@page import="java.util.Map"%>
 <%@page import="project.efg.server.utils.ServletCacheManager"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "
+http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd ">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+"http://www.w3.org/TR/html4/frameset.dtd">
 <html>	
 	<head>
 	 	<%@ include file="Header.jsp"%>	
@@ -19,15 +25,8 @@ project.efg.util.interfaces.EFGImportConstants"
 	 		 	String mainTableConstantStr ="&" + mainTableConstant.toString();
  			 	boolean found = false;
  			 	Map map = null;
- 			 	
- 				
- 			 	
- 			 	
-			 	map = ServletCacheManager.getDatasourceCache(mainTableName);
-			 	
-				 	
+ 			 	map = ServletCacheManager.getDatasourceCache(mainTableName);
   			 	if(map != null){
- 			 		
  			 		searchPageStr.append(context);
  			 		searchPageStr.append("/searchPageBuilder?displayFormat=HTML");
  			 		searchPageStr.append("&");
@@ -100,7 +99,7 @@ project.efg.util.interfaces.EFGImportConstants"
 						%>
 						<tr>
 							<td colspan="5">
-								<table>
+								<table class="rowcapsule">
 									<tr>
 										<td class="efglisttitle"><%=displayName%></td>
 										<td class="efglistlinks">
@@ -118,7 +117,7 @@ project.efg.util.interfaces.EFGImportConstants"
 						else{%>
 						<tr>
 							<td colspan="5">
-								<table>
+								<table class="rowcapsule">
 									<tr>
 										<td class="efglisttitle">No Datasources uploaded</td>
 										<td class="efglistlinks">
