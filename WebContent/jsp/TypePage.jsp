@@ -154,16 +154,6 @@ http://www.w3.org/TR/html4/strict.dtd">
 							to right: urtica, Myownbiggestfan, Auntie_P.
 							</td>
 						</tr>
-						<tr>
-							<td class="timestamp" colspan="5">
-								<script language="JavaScript"
-									type="text/javascript">
-									<!--
-									 document.write("Last Modified " + document.lastModified)
-									// -->
-								</script>
-							</td>
-						</tr>					
 					</table>
 				</td>
 			</tr>
