@@ -1,3 +1,6 @@
+<%@page import="java.util.SortedMap"%>
+<%@page import="java.util.TreeMap"%>
+<%@page import="project.efg.util.utils.CaseInsensitiveComparatorImpl"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="project.efg.util.interfaces.EFGImportConstants" %>
 <!-- $Id: allTableName.jsp,v 1.1.1.1 2007/08/01 19:11:39 kasiedu Exp $ -->
@@ -39,22 +42,28 @@ if(whichDatabase == null || whichDatabase.trim().equals("")){
 if(EFGImportConstants.EFG_GLOSSARY_TABLES.equalsIgnoreCase(whichDatabase)){
 	isGlossary = true;
 }
-Map map = null;
+Map map1 = null;
 boolean isEmpty = true;
 Iterator listInter = null;
-map = ServletCacheManager.getDatasourceCache(whichDatabase);
+map1 = ServletCacheManager.getDatasourceCache(whichDatabase);
 if(datasourceName != null){
 	if(displayName == null || "".equals(displayName)){
-		displayName = (String)map.get(datasourceName.toLowerCase());
+		displayName = (String)map1.get(datasourceName.toLowerCase());
 	}
 }
-
-if(map != null){
-	listInter = map.keySet().iterator();
+TreeMap map = new TreeMap(new CaseInsensitiveComparatorImpl());
+if(map1 != null){
+	listInter = map1.keySet().iterator();
 	if(listInter != null){
-		if(map.keySet().size() < 1){
+		if(map1.keySet().size() < 1){
 			isEmpty = false;
 		}
+		while (listInter.hasNext()) { 
+			String dsourceName = (String)listInter.next();
+			String dplayName =(String)map1.get(dsourceName.toLowerCase());
+			map.put(dplayName,dsourceName);
+		}
+		listInter = map.keySet().iterator();
 	}
 	else{
 		isEmpty = false;

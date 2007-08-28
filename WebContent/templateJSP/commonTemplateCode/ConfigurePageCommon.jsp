@@ -3,7 +3,7 @@ project.efg.util.interfaces.EFGImportConstants
 " %>
 <!-- $Id: ConfigurePageCommon.jsp,v 1.1.1.1 2007/08/01 19:11:39 kasiedu Exp $ -->
 
-	Select a Datasource:
+	Datasource:
   		<select name="<%=EFGImportConstants.DATASOURCE_NAME%>" title="Select a datasource from list below">
 	  		<% 	
 	  		
@@ -12,8 +12,8 @@ project.efg.util.interfaces.EFGImportConstants
 	  	  	String datasourceNameN="";
 	  		
 				while (listInter.hasNext()) { 
-					datasourceNameN = (String)listInter.next();
-					displayNameN =(String)map.get(datasourceNameN.toLowerCase());
+					displayNameN  = (String)listInter.next();
+					datasourceNameN =(String)map.get(displayNameN);
 			 %>
 				<option  value="<%=datasourceNameN%>"><%=displayNameN%></option>
 	  		<% 
@@ -21,13 +21,12 @@ project.efg.util.interfaces.EFGImportConstants
 	 		%>
 		</select>
 		<br/><br/>
-		Select a Configuration type:
+		Template type:
 		<select name="<%=EFGImportConstants.CONFIG_TYPE%>" title="Select the type of Page to Configure">
-			<option value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>">Thumbnails</option>
-			<option value="<%=EFGImportConstants.SEARCH_LISTS_TYPE%>">Text List</option>
-			<option value="<%=EFGImportConstants.SEARCH_TAXON_TYPE%>">Taxon page</option>
 			<option value="<%=EFGImportConstants.SEARCH_SEARCH_TYPE%>">Search page</option>
-
+			<option value="<%=EFGImportConstants.SEARCH_TAXON_TYPE%>">Taxon page</option>
+			<option value="<%=EFGImportConstants.SEARCH_LISTS_TYPE%>">Text List</option>
+			<option value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>">Thumbnail View</option>
 		</select><br/><br/>
 			<% 
 				listInter = map.keySet().iterator();
