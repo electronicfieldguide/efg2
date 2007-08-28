@@ -188,7 +188,7 @@ public class TaxonPageDefaultConfig {
 		
 		querySearch.append(EFGImportConstants.MAX_DISPLAY);
 		querySearch.append("=");
-		if(type == null){
+		if(EFGImportConstants.SEARCH_TAXON_TYPE.equals(type)){
 			querySearch.append("1");
 		}	
 		else{
@@ -225,7 +225,7 @@ public class TaxonPageDefaultConfig {
 			String plates = EFGImportConstants.SEARCH_PLATES_TYPE;
 			String lists = EFGImportConstants.SEARCH_LISTS_TYPE;
 			String search = EFGImportConstants.SEARCH_SEARCH_TYPE;
-			
+			String taxon = EFGImportConstants.SEARCH_TAXON_TYPE;
 			this.add2TemplateObject(datasourceName, 
 					displayName,
 					plates, 
@@ -246,7 +246,7 @@ public class TaxonPageDefaultConfig {
 			uniqueName = EFGImportConstants.DEFAULT_TAXON_DISPLAY;
 			this.add2TemplateObject(datasourceName, 
 					displayName,
-					null, 
+					taxon, 
 					uniqueName);
 			
 			//create the file here
