@@ -72,6 +72,7 @@ efg2.website.home=../efg2_website
 efg2.skins.home=../efg2_skins
 efg2.bookmaker.home=../efg2_bookmaker
 efg2.platemaker.home=../efg2_platemaker
+efg2.software.doc=../EFGsoftware/efg2/efg2doc.html
 
 #deploy.path The path to your  webapps directory of tomcat
 deploy.path=${efg2.tomcat.webapps.home}
