@@ -74,9 +74,8 @@
 		<copy todir="${efg2.client.dist.home}">
 			<fileset dir="${efg2.lib.util.home}"/>
 		</copy>
-		<copy todir="${efg2.client.dist.home}">
-			<fileset dir="${efg2.lib.client.home}"/>
-		</copy>
+		<copy file="${efg2.software.doc}" todir="${efg2.client.dist.home}"/>
+
 		<copy todir="${efg2.client.dist.properties.home}">
 			<fileset dir="${efg2.home}/properties/util"/>
 		</copy>
