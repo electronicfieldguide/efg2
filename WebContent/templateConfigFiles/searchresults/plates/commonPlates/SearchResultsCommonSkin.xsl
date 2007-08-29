@@ -224,6 +224,8 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:if test="not(string($uniqueID))=''">
+		
 		<td class="resultsthumb">
 			<a class="resultsthumb" href="{$linkURL}">
 				<xsl:choose>
@@ -244,5 +246,6 @@
 				</xsl:choose>
 			</a>
 		</td>
+		</xsl:if>
 	</xsl:template>
 </xsl:stylesheet>
