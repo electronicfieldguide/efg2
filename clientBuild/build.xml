@@ -96,6 +96,8 @@
 	<!-- jar compiled -->
 	<target name="jarClient" depends="compile">
 		<jar jarfile="${efg2.lib.client.home}/${client.jar.file}" basedir="${compile.home}"/>
+		<copy file="${efg2.lib.client.home}/${client.jar.file}" todir="${efg2.client.dist.home}"/>
+		
 	</target>
 	<!-- Compile sources-->
 	<target name="compile" depends="init">
