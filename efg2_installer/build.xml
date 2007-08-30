@@ -87,7 +87,7 @@ to make a distribution call makeImport:
 	  </target>
 	<!--
 
-	 CHECKOUT CFG APPLICATIONS
+	 CHECKOUT EFG APPLICATIONS
 	 
 	-->
 	  <target name="checkoutskins" depends="initSVN" if="build.properties.exists">
@@ -103,18 +103,25 @@ to make a distribution call makeImport:
 	      <checkout url="${efg2.latest.url.efg2_website}" revision="HEAD" destPath="${efg2.website.checkout.home}"/>
 	    </svn>
 	  </target>
-	  <target name="checkoutefg2" depends="initSVN" if="build.properties.exists">
-	      <echo message="About to check out efg2 from svn"/>
-	  	<svn>
-	      <checkout url="${efg2.latest.url.efg2}" revision="HEAD" destPath="${efg2.efg2.checkout.home}"/>
-	    </svn>
-	  </target>
-	
-	
-	
-	  <target name="checkoutall" depends="checkoutskins, checkoutefg2, checkoutwebsite"/>
 
-	
-	
-	
+	  <target name="checkoutbookmaker" depends="initSVN" if="build.properties.exists">
+	      <echo message="About to check out bookmaker from svn"/>
+	  	<svn>
+	      <checkout url="${efg2.latest.url.bookmaker}" revision="HEAD" destPath="${efg2.bookmaker.checkout.home}"/>
+	    </svn>
+	  </target>	
+	  	  <target name="checkoutplatemaker" depends="initSVN" if="build.properties.exists">
+	      <echo message="About to check out platemaker from svn"/>
+	  	<svn>
+	      <checkout url="${efg2.latest.url.platemaker}" revision="HEAD" destPath="${efg2.platemaker.checkout.home}"/>
+	    </svn>
+	  </target>	
+	  	  <target name="checkoutefgsoftware" depends="initSVN" if="build.properties.exists">
+	      <echo message="About to check out EFGsoftware from svn"/>
+	  	<svn>
+	      <checkout url="${efg2.latest.url.efgsoftware}" revision="HEAD" destPath="${efg2.efgsoftware.checkout.home}"/>
+	    </svn>
+	  </target>	
+	  
+	  <target name="checkoutall" depends="checkoutskins, checkoutbookmaker, checkoutplatemaker, checkoutefgsoftware,checkoutwebsite"/>
 </project>
