@@ -284,7 +284,8 @@ public class EFGUtils {
 	private static String encodeToJavaClassName(String origString) {
 		StringBuffer sb = new StringBuffer(origString);
 		int strLength = sb.length();
-
+		
+				
 		if (strLength > 0 && !Character.isJavaIdentifierStart(sb.charAt(0)))
 			sb.setCharAt(0, '_');
 
