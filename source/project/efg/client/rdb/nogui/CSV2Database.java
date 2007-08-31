@@ -157,7 +157,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			  {// we
 																						// are
 																						// doing
-																						// updates
+					//warn here																	// updates
 					log.debug("About to run an update");
 
 					isSuccess = this.createOrUpdateEFGTable();
@@ -312,6 +312,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						isSuccess = false;
 					}
 				} else if (this.isUpdate instanceof ImportBehaviorImplReplace) {
+					//warn here
 					isSuccess = this.updateMetadataEFGTable();
 					if (isSuccess) {// replace table
 						isSuccess = this.createDataTable();
