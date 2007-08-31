@@ -69,7 +69,7 @@ public class ImportBehaviorImplUpdate extends ImportBehavior {
 	public EFGDatasourceObjectStateInterface importIntoDatabase() {
 		String message = null;
 		EFGDatasourceObjectStateInterface state =
-			SpringGUIFactory.getFailureObject();//use a fctory
+			SpringGUIFactory.getFailureObject();//use a factory
 		
 		if (this.lists.getCount() > 0) {
 			String [] possibleValues = this.getAlphabeticallySortedList();
