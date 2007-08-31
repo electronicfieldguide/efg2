@@ -30,8 +30,8 @@ String LINK_URL_TEXT = "URL";
 	}
 %>
 <br/>
-<input type="text"    name="<%=characterLabel%>"  size="20" maxlength="19" value="<%=characterLabelValue%>" class="cleardefault"/>						
-<input type="text" name="<%=name%>" size="40" maxlength="39" value="<%=fieldValue%>" class="cleardefault"/>
+<input type="text"    name="<%=characterLabel%>"  size="20"  value="<%=characterLabelValue%>" class="cleardefault"/>						
+<input type="text" name="<%=name%>" size="40"  value="<%=fieldValue%>" class="cleardefault"/>
 
 
 					

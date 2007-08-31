@@ -603,18 +603,18 @@ project.efg.util.interfaces.EFGQueueObjectInterface
 				%>				
 				<input type="hidden"    name="<%=groupLabel%>" value="<%=groupLabelValue%>"/>	
 				<%if(characterLabelValue.equals(LINK_TEXT)){ %>
-				<input size="20" maxlength="19" type="text" title="" name="<%=characterLabel%>"
+				<input size="20"  type="text" title="" name="<%=characterLabel%>"
 				value="<%=characterLabelValue%>" class="cleardefault"/>
 			<%} else{ %>	
 				 <input type="text" name="<%=characterLabel%>" size="20"
-					maxlength="19" value="<%=characterLabelValue%>" />
+					 value="<%=characterLabelValue%>" />
 			<%}%>	
 			
 			<%if(fieldValue.equals(LINK_URL_TEXT)){ %>
-				<input size="40" maxlength="39" type="text" title="" name="<%=name%>"
+				<input size="40"  type="text" title="" name="<%=name%>"
 				value="<%=fieldValue%>" class="cleardefault"/>
 			<%} else{ %>	
-				 <input type="text" name="<%=name%>" size="40" maxlength="39" value="<%=fieldValue%>" />
+				 <input type="text" name="<%=name%>" size="40"  value="<%=fieldValue%>" />
 			<%}
 			    
 			   	boolean moreData = true;
@@ -638,18 +638,18 @@ project.efg.util.interfaces.EFGQueueObjectInterface
 					}
 					%>
 				<%if(characterLabelValue.equals(LINK_TEXT)){ %>
-				<input size="20" maxlength="19" type="text" title="" name="<%=characterLabel%>"
+				<input size="20"  type="text" title="" name="<%=characterLabel%>"
 				value="<%=characterLabelValue%>" class="cleardefault"/>
 			<%} else{ %>	
 				 <input type="text" name="<%=characterLabel%>" size="20"
-					maxlength="19" value="<%=characterLabelValue%>" />
+					 value="<%=characterLabelValue%>" />
 			<%}%>	
 			
 			<%if(fieldValue.equals(LINK_URL_TEXT)){ %>
-				<input size="40" maxlength="39" type="text" title="" name="<%=name%>"
+				<input size="40"  type="text" title="" name="<%=name%>"
 				value="<%=fieldValue%>" class="cleardefault"/>
 			<%} else{ %>	
-				 <input type="text" name="<%=name%>" size="40" maxlength="39" value="<%=fieldValue%>" />
+				 <input type="text" name="<%=name%>" size="40"  value="<%=fieldValue%>" />
 			<%}
 					
 			   	 }
