@@ -248,7 +248,7 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 						
 						</tr>
 						<tr>
-							<td class="copyright" colspan="5">&copy; 2006 EFG Group and UMass
+							<td class="copyright" colspan="5">&copy; EFG Group and UMass
 							Boston. This research is supported in part by the NSF.
 							</td>
 

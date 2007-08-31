@@ -145,13 +145,8 @@ http://www.w3.org/TR/html4/strict.dtd">
 						
 						</tr>
 						<tr>
-							<td class="copyright" colspan="5">&copy; 2006 EFG Group and UMass
+							<td class="copyright" colspan="5">&copy; EFG Group and UMass
 							Boston. This research is supported in part by the NSF.
-							</td>
-						</tr>
-						<tr>
-							<td class="credits" colspan="5">Icon photos via Flickr, from left
-							to right: urtica, Myownbiggestfan, Auntie_P.
 							</td>
 						</tr>
 					</table>
