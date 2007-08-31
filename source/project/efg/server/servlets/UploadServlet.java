@@ -169,7 +169,7 @@ public abstract class UploadServlet extends HttpServlet
 
       response.getWriter().println("<b>Upload Status:</b><br/>");
 
-      if(fileUploadStats.getBytesRead() != fileUploadStats.getTotalSize())
+      if(bytesProcessed != sizeTotal)
       {
         response.getWriter().println("<div class=\"prog-border\"><div class=\"prog-bar\" style=\"width: " + percentComplete + "%;\"></div></div>");
         response.getWriter().println("Uploaded: " + bytesProcessed + " out of " + sizeTotal + " bytes (" + percentComplete + "%) " + Math.round(uploadRate / 1024) + " Kbs <br/>");
@@ -178,13 +178,9 @@ public abstract class UploadServlet extends HttpServlet
       else
       {
         response.getWriter().println("Uploaded: " + bytesProcessed + " out of " + sizeTotal + " bytes<br/>");
-        response.getWriter().println("Complete.<br/>");
+        //response.getWriter().println("Complete.<br/>");
+        response.getWriter().println("<b>Upload complete.</b>");
       }
-    }
-
-    if(fileUploadStats != null && fileUploadStats.getBytesRead() == fileUploadStats.getTotalSize())
-    {
-      response.getWriter().println("<b>Upload complete.</b>");
     }
   }
 

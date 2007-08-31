@@ -1,6 +1,6 @@
 
 /* 
- * requires trimfunctions.jsso make sure to import it
+ * requires trimfunctions.js so make sure to import it
  */
 
  var EFG_SUBMIT_BUTTON = 'submitButton'; //id for a submit button on a page that gets 
@@ -47,7 +47,7 @@
   	var currentFileExtension = fileExtensionHandler[fieldName];
   
   	if(currentFileExtension == null){
-  		printMessage("Programmmer error.\n" + 
+  		printMessage("Programmer error.\n" + 
 		"Could not find component with name: '" + 
 		fieldName + "'");
 		return false;

@@ -10,7 +10,19 @@
 		  <!--
 		  var updater = null;
 		  var initNumber = 0;
-		  
+		  var myGlobalHandlers = {
+					onCreate: function(){
+						
+					},
+
+					onComplete: function() {
+						if(Ajax.activeRequestCount == 0){
+							$('submitButton').disabled = false;							
+						}
+					}
+				};
+
+		  Ajax.Responders.register(myGlobalHandlers);
 		  function validateForm(form){
 		  
 		  	var allowSubmit = false;
