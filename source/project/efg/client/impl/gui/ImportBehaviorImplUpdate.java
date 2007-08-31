@@ -78,6 +78,13 @@ public class ImportBehaviorImplUpdate extends ImportBehavior {
 					possibleValues[0]);
 			if (selectedValue != null) {
 				log.debug("Selectedvalue: " + selectedValue.toString());
+				int selected = JOptionPane.showConfirmDialog(null,
+						"The selected data source will be updated. Do you really want to update it?" , "Update Datasource", JOptionPane.YES_NO_OPTION);
+				if(selected == JOptionPane.NO_OPTION){
+					return state;
+				}
+
+				
 				this.obj.setTemplateDisplayName(selectedValue.toString()
 						.trim());
 				log.debug("DisplayName is: " + this.obj.getDisplayName());
