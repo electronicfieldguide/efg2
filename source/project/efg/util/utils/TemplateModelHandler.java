@@ -162,6 +162,11 @@ public abstract class TemplateModelHandler{
 			query.append(EFGImportConstants.DISPLAY_NAME);
 			query.append(" FROM ");
 			query.append(tableName);
+			query.append(" where ");
+			query.append(EFGImportConstants.DATASOURCE_NAME);
+			query.append('=');
+			query.append(datasourceName);
+			
 			list = this.executeQueryForList(query.toString(),1);
 			for(int i = 0; i < list.size(); i ++){
 				
@@ -206,7 +211,7 @@ public abstract class TemplateModelHandler{
 				replace.append( EFGImportConstants.DISPLAY_NAME);
 				replace.append(" = '");
 				replace.append(oldDisplayName);
-				replace.append("')");
+				replace.append("'");
 				this.executeStatement(replace.toString());
 			}
 		} catch (Exception e) {
