@@ -252,7 +252,8 @@ public abstract class TemplateModelHandler{
 		if(displayName == null){
 			displayName = "";
 		}
-		
+		System.out.println("Adding displayName: " + templateObject.getDisplayObject().getDisplayName());
+
 		createEFG2TemplatesTable();
 		return insertIntoDB(key,guid, 
 				displayName, 
@@ -688,8 +689,13 @@ PreparedStatementSetter p) throws Exception;
 					    ps.setString(5,templateName);
 					    
 					    ps.setString(6,textKey);
+					    System.out.println("Setting values: key=" + key + 
+					    		" guid=" + guid + " displayName=" + displayName + 
+					    		" dsName=" + datasourceName + 
+					    		" templateName=" + templateName);
 					}
 				  };
+				  System.out.println("Executing statement: " + query.toString());
 				  this.executePreparedStatement(query.toString(), p);
 			
 			return true;

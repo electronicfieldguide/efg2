@@ -226,6 +226,7 @@ public class TemplateMapObjectHandler {
 		synchronized (mutex) {
 			try {
 				TemplateModelHandler tempHandler = getHandler(dbObject);
+				log.debug("Adding displayName: " + templateObject.getDisplayObject().getDisplayName());
 				boolean bool = tempHandler.add2DB(key,templateObject);
 				if(!bool){
 					throw new Exception("Template not added successfully");
