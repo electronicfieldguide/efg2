@@ -11,27 +11,24 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
   <head>
   <%@ include file="Header.jsp"%>	
   	<%
-	  		  	String serverName = request.getScheme() +
-	  		  	"://"
-	  		  	+ request.getServerName() + 
-	  		  	":" + request.getServerPort();
-	  		  	Hashtable map = 
-	  		  		TemplateMapObjectHandler.getTemplateObjectMap(null);
-	  		  	Iterator it = null;
-	  		  	 Map sortedMap = Collections.synchronizedMap(new TreeMap());
-	  		  	if(map != null){
-	  		  		it = map.keySet().iterator();
-	  		  		while (it.hasNext()) {
-	  		  	String key = (String)it.next();		
-	  		  	TemplateObject templateObject = (TemplateObject)map.get(key);
-	  		  	sortedMap.put(templateObject,key);
-	  		  	
-	  		  		}//end while
-	  		  	}
-	  		  
-	  		 
-	  		  	
-	  	%> 
+		  	String serverName = request.getScheme() +
+		  	"://"
+		  	+ request.getServerName() + 
+		  	":" + request.getServerPort();
+		  	Hashtable map = 
+		  		TemplateMapObjectHandler.getTemplateObjectMap(null);
+		  	Iterator it = null;
+		  	 Map sortedMap = Collections.synchronizedMap(new TreeMap());
+		  	if(map != null){
+		  		it = map.keySet().iterator();
+		  		while (it.hasNext()) {
+		  	String key = (String)it.next();		
+		  	TemplateObject templateObject = (TemplateObject)map.get(key);
+		  	sortedMap.put(templateObject,key);
+		  	
+		  		}//end while
+		  	}
+	 %> 
 	<title>The EFG Project - Electronic Field Guides</title>
 	<link rel="stylesheet" href="efg2web.css" type="text/css"/>
 	<script language="JavaScript" src="js/prototype1.5.js" type="text/javascript"></script>
@@ -71,7 +68,7 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 														while (it.hasNext()) {
 															
 														TemplateObject templateObject  = (TemplateObject)it.next();
-														String templateType = null;
+														
 														String key = (String)sortedMap.get(templateObject);
 														EFGDisplayObject displayObject = templateObject.getDisplayObject();
 														String templateName = templateObject.getTemplateName();
@@ -81,6 +78,11 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 														if((displayName == null) || (displayName.trim().equals(""))){
 															displayName = datasourceName;
 														}//end if
+														StringBuffer glossaryString = 
+															new StringBuffer(EFGImportConstants.ALL_TABLE_NAME);
+														glossaryString.append("=");
+														glossaryString.append(EFGImportConstants.EFG_GLOSSARY_TABLES);
+														
 														if((datasourceName != null) && 
 														(templateName != null) && 
 														(key != null)){		
@@ -91,23 +93,32 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 															toDelete.append("/templateJSP/DeleteTemplate.jsp?");
 															StringBuffer toEdit =new StringBuffer();
 															//TODO HACK refactor
+															boolean isGlossary = false;
+															
+															String templateType = "";
+															String tempPrefix = "";
+															if(key.indexOf(glossaryString.toString()) > -1){
+																isGlossary = true;
+																tempPrefix = tempPrefix + EFGImportConstants.GLOSSARY_STRING;
+																
+															}
 															if(key.indexOf("=lists") > -1){
-																templateType = "Text List";
+																templateType =  tempPrefix + "Text List";
 															}
 															else if(key.indexOf("=plates") > -1){
-																templateType = "Thumbnails";
+																templateType =  tempPrefix + "Thumbnails";
 															}
 															else if(key.indexOf("=searches") > -1){
-																templateType = "Search Page";
+																templateType = tempPrefix + "Search Page";
 															}
 															else if(key.indexOf("=taxon") > -1){
-																templateType = "Taxon Page";
+																templateType =  tempPrefix + "Taxon Page";
 															}
 															else if(key.indexOf(EFGImportConstants.BOOK_FOLDER) > -1){
-																templateType = "PDF Book";
+																templateType =  tempPrefix + "PDF Book";
 															}
 															else{
-																templateType = "PDF Page";
+																templateType =  tempPrefix + "PDF Page";
 																
 															}	
 															
@@ -116,7 +127,7 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 																substr = key.substring(index+1,key.length());
 															}
 															StringBuffer pdfBuffer = new StringBuffer();
-															if(templateType.equals("PDF Page")){
+															if((tempPrefix + "PDF Page").equals(templateType)){
 																toEdit.append(context);
 																toEdit.append("/plateConfiguration/platequerydatawrapper.jsp?");
 																
@@ -159,7 +170,7 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 															buff.append("=");
 															buff.append(templateName);
 														boolean notDefault = false;
-														if("Search Page".equals(templateType)){	
+														if( (tempPrefix + "Search Page").equals(templateType)){	
 															if(key.toLowerCase().indexOf(EFGImportConstants.DEFAULT_SEARCH_PAGE_FILE.toLowerCase()) == -1){
 																notDefault = true;
 															}
@@ -177,7 +188,7 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 										<td class="efglisttitle"><%=displayName%></td>
 										<td class="efglistlinksdirecturl">
 											<% 
-												if(templateType.equals("PDF Page")) {
+												if((tempPrefix + "PDF Page").equals(templateType)) {
 													String js = request.getContextPath() + key.replaceAll("=xml","=HTML");
 											%>		
 													<a class="efglist" href="<%=js%>"><%=templateName%></a>
@@ -202,12 +213,12 @@ java.util.Map,java.util.TreeMap,java.util.Iterator" %>
 									  		  deleteMsg.append("deleteConfirmMsg('");
 									  			deleteMsg.append(templateName);
 									  		  deleteMsg.append("');return document.delete_returnValue");
-											if(templateType.equals("PDF Page")){%>
+											if((tempPrefix + "PDF Page").equals(templateType)){%>
 												<a class="efglist" href="<%=toEdit.toString()%>">Edit</a> ,
 												<a class="efglist" href="<%=toDelete.append(pdfBuffer.toString()).toString()%>" onclick="<%=deleteMsg.toString()%>">Delete</a> 
 	
 											<%}
-											else if(templateType.equalsIgnoreCase("PDF Book")){
+											else if((tempPrefix + "PDF Book").equalsIgnoreCase(templateType)){
 												//do nothing
 											}
 											else if(notDefault){
