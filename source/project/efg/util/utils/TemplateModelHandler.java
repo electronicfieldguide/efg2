@@ -164,8 +164,9 @@ public abstract class TemplateModelHandler{
 			query.append(tableName);
 			query.append(" where ");
 			query.append(EFGImportConstants.DATASOURCE_NAME);
-			query.append('=');
+			query.append(" ='");
 			query.append(datasourceName);
+			query.append("'");
 			
 			list = this.executeQueryForList(query.toString(),1);
 			for(int i = 0; i < list.size(); i ++){
