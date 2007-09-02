@@ -30,6 +30,7 @@ import project.efg.util.utils.EFGRDBImportUtils;
  * USA
  */
 public interface EFGImportConstants {
+	String GLOSSARY_STRING= "Gloss ";
 	String PDF_EXT=".pdf";
 	Properties EFGProperties = EFGRDBImportUtils.getProperties();
     Set SQL_KEY_WORDS =EFGRDBImportUtils.getSQLKeyWords();
