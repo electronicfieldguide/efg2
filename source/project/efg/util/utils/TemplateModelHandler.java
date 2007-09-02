@@ -190,18 +190,22 @@ public abstract class TemplateModelHandler{
 				replace.append("')");
 				this.executeStatement(replace.toString());
 				
+				
+				//use a real sql query here instead of a mysql
+				//Update efg.efg_template_tables set displayName='Trees' 
+				//where displayName='PITreesFinalJennEditDecember';
 				replace = new StringBuffer();
 				//MySQL Query
 				replace.append("UPDATE ");
 				replace.append(tableName);
 				replace.append(" SET ");
 				replace.append( EFGImportConstants.DISPLAY_NAME);
-				replace.append(" = replace (");
-				replace.append( EFGImportConstants.DISPLAY_NAME);
-				replace.append(",'");
-				replace.append(oldDisplayName);
-				replace.append("','");
+				replace.append(" = '");
 				replace.append(displayName);
+				replace.append( "' where ");
+				replace.append( EFGImportConstants.DISPLAY_NAME);
+				replace.append(" = '");
+				replace.append(oldDisplayName);
 				replace.append("')");
 				this.executeStatement(replace.toString());
 			}
@@ -252,8 +256,6 @@ public abstract class TemplateModelHandler{
 		if(displayName == null){
 			displayName = "";
 		}
-		System.out.println("Adding displayName: " + templateObject.getDisplayObject().getDisplayName());
-
 		createEFG2TemplatesTable();
 		return insertIntoDB(key,guid, 
 				displayName, 
@@ -689,13 +691,8 @@ PreparedStatementSetter p) throws Exception;
 					    ps.setString(5,templateName);
 					    
 					    ps.setString(6,textKey);
-					    System.out.println("Setting values: key=" + key + 
-					    		" guid=" + guid + " displayName=" + displayName + 
-					    		" dsName=" + datasourceName + 
-					    		" templateName=" + templateName);
 					}
 				  };
-				  System.out.println("Executing statement: " + query.toString());
 				  this.executePreparedStatement(query.toString(), p);
 			
 			return true;
