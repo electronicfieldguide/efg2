@@ -115,6 +115,7 @@ public class ApplyXSL extends HttpServlet
                 String serverContext = req.getContextPath();
                 String server = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort();
                 transformer.setParameter("ALL_TABLE_NAME", alldbname);
+                
                 transformer.setParameter(EFGImportConstants.XSL_STRING, xslName);
                 transformer.setParameter(EFGImportConstants.GUID, guid);
                 transformer.setParameter(EFGImportConstants.DATASOURCE_NAME, dsName.toLowerCase());
@@ -160,6 +161,7 @@ public class ApplyXSL extends HttpServlet
                 out.println("<H3>Error on Server side .Please consult systems administrator</H3>");
                 out.flush();
                 res.flushBuffer();
+                tce.printStackTrace();
                 LoggerUtilsServlet.logErrors(tce);
                 return;
             }
@@ -169,6 +171,7 @@ public class ApplyXSL extends HttpServlet
                 out.println("<H3>Error on Server side .Please consult systems administrator</H3>");
                 out.flush();
                 res.flushBuffer();
+                ex.printStackTrace();
                 LoggerUtilsServlet.logErrors(ex);
                 return;
             }
@@ -180,11 +183,13 @@ public class ApplyXSL extends HttpServlet
             }
             catch(TransformerException te)
             {
+            	
                 LoggerUtilsServlet.logErrors(te);
                 out = res.getWriter();
                 out.println("<H3>Error on Server side .Please consult systems administrator</H3>");
                 out.flush();
                 res.flushBuffer();
+               
                 return;
             }
             catch(Exception ee)
@@ -194,6 +199,7 @@ public class ApplyXSL extends HttpServlet
                 out.println("<H3>Error on Server side .Please consult systems administrator</H3>");
                 out.flush();
                 res.flushBuffer();
+                ee.printStackTrace();
                 return;
             }
             String result = sw.toString();

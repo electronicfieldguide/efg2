@@ -207,7 +207,7 @@
 			<xsl:param name="term"/>
 			<xsl:param name="definition"/>
 			<xsl:param name="taxonentry"/>
-		
+	
 	<xsl:variable name="imagename" select="$taxonentry[(Items[@name=$termChar]/Item=$term) and (Items[@name=$definitionChar]/Item=$definition)][1]/MediaResources[@name=$imageChar]/MediaResource"/>
 		<xsl:if test="not(string($imagename))=''">
 			<xsl:variable name="imageURL">

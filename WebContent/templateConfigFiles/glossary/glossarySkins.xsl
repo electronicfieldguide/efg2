@@ -7,6 +7,6 @@
 	<xalan:component prefix="glossaryObject" functions="setTerm addDefinition  addAlsoSee  addMediaresource getTerm getDefinitions getMediaResouces getAlsoSee">
 		<xalan:script lang="javaclass" src="xalan://project.efg.server.utils.GlossaryObject"/>
 	</xalan:component>
-	<xsl:include href="../searchresults/plates/commonPlates/xslPagePlate.xsl"/>
+	<xsl:include href="../searchresults/lists/commonLists/xslPageList.xsl"/>
 	<xsl:include href="GlossaryView.xsl"/>
 </xsl:stylesheet>

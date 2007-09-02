@@ -57,17 +57,20 @@ public class GlossaryMaker {
 	 * @param glossary
 	 */
 	public void addGlossaryObject(GlossaryObject glossary){
-	
-		this.addToAlphabets(glossary.getTerm());
+		String term = glossary.getTerm();
+		if(term == null | term.trim().equals("")){
+			return;
+		}
+		this.addToAlphabets(term.trim());
 		
-		if(this.table.containsKey(glossary.getTerm())){
+		if(this.table.containsKey(term.trim())){
 			GlossaryObject glossary1 = 
-				(GlossaryObject)this.table.get(glossary.getTerm());
+				(GlossaryObject)this.table.get(term.trim());
 			glossary1.addDefinitions(glossary.getDefinitions());
 			this.table.put(glossary1.getTerm(),glossary1);
 		}
 		else{
-			this.table.put(glossary.getTerm(),glossary);
+			this.table.put(term.trim(),glossary);
 		}
 	}
 	/*
@@ -183,6 +186,9 @@ public class GlossaryMaker {
 	 * @param term
 	 */
 	private void addToAlphabets(String term){
+		if(term == null || term.trim().equals("")){
+			return;
+		}
 		String alpha = term.substring(0,1).toUpperCase();
 		this.alphabetLists.add(alpha);
 	}

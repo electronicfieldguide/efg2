@@ -25,6 +25,7 @@ project.efg.util.interfaces.EFGQueueObjectInterface
 			String context = request.getContextPath();
 			String realPath = getServletContext().getRealPath("/");
 			EFGDataSourceHelperInterface dsHelper = EFGSpringFactory.getDatasourceHelper();
+			dsHelper.setMainDataTableName(EFGImportConstants.EFG_GLOSSARY_TABLES);
 			Iterator it =null;
 			List table = dsHelper.getTaxonPageFields(displayName,datasourceName);
 			List mediaResourceFields = dsHelper.getMediaResourceFields(displayName,datasourceName);
