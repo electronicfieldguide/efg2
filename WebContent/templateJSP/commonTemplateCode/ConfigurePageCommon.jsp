@@ -11,6 +11,7 @@ project.efg.util.interfaces.EFGImportConstants
 	  		 
 	  		String displayNameN = "";
 	  	  	String datasourceNameN="";
+	  	  	
 	  		
 				while (listInter.hasNext()) { 
 					displayNameN  = (String)listInter.next();
