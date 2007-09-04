@@ -31,7 +31,7 @@
 						
 					}
 					key = EFGUtils.constructCacheKey(ds, 
-					"_metadataName");
+					EFGImportConstants.METADATA_CACHE_NAME);
 					if(key != null){
 						flushFromCache(key);
 					}
