@@ -459,7 +459,7 @@ public class SynopticKeyTreeMain extends JDialog {
 				tree.getSelectionModel().setSelectionPath(path);
 				
 
-				popup.show(this.treeBrowser, e.getX(), e.getY());
+				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 
 		}
