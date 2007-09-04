@@ -28,7 +28,10 @@
 package project.efg.server.rdb;
 
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,7 +39,7 @@ import project.efg.server.factory.EFGSpringFactory;
 import project.efg.server.interfaces.ServletAbstractFactoryInterface;
 import project.efg.server.utils.LoggerUtilsServlet;
 import project.efg.util.interfaces.EFGImportConstants;
-import project.efg.util.utils.EFGUtils;
+import project.efg.util.interfaces.EFGQueueObjectInterface;
 
 
 public class MapQuery extends SQLQuery
@@ -87,6 +90,24 @@ public class MapQuery extends SQLQuery
 		}
 		return false;
     }
+    /**
+     * Map - map of fieldName as key and legal name as 
+     * value
+     * 
+     * @param datasourceName
+     * @return
+     */
+    private Map makeLegalNameMap(){
+    	Map map = new HashMap();
+    	List list = this.servFactory.getAllFields(this.displayName, this.datasourceName);
+    	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iterator.next();
+			String legalName = queue.getObject(0);
+			String key = queue.getObject(1);
+			map.put(key.toLowerCase(), legalName);
+		}
+    	return  map;
+    }
 	/**
 	 * This method builds a query from the request such as
 	 * /efg/servlet/search?Genus=Solanum&Species=chrysotrichum
@@ -102,29 +123,37 @@ public class MapQuery extends SQLQuery
 		.getParameter(EFGImportConstants.DATASOURCE_NAME);
     	this.displayName = req.getParameter(EFGImportConstants.DISPLAY_NAME);
 
-        if(!super.initQueryParameters())
+        if(!super.initQueryParameters()){
             return null;
+        }
         String maxDispStr = req.getParameter(EFGImportConstants.MAX_DISPLAY);
         int maxDisplay = getMaxDisplay(maxDispStr);
         StringBuffer querySB = new StringBuffer();
   
     		try {
     			querySB.append(this.getCommonQuery());
-
+    			
     			Enumeration paramEnum = req.getParameterNames();
     			int paramNo = 0;
-
+    			Map map = makeLegalNameMap();
+    			//make a sql query here
     			while (paramEnum.hasMoreElements()) {
-    				String legalName = (String) paramEnum.nextElement();
+    				String fieldName = (String) paramEnum.nextElement();
     				// log.debug("paramName: " + legalName);
-    				if (isIgnoreParam(legalName.toLowerCase())) {// ignore this parameter name
+    				if (isIgnoreParam(fieldName.toLowerCase())) {// ignore this parameter name
     					continue;
     				}
     				
-    				String[] paramValues = req.getParameterValues(legalName);
+    				
     				// log.debug("paramaValues length: " + paramValues.length);
-    				legalName = EFGUtils.encodeToJavaName(legalName);
-    			
+    				
+    				String legalName = (String)map.get(fieldName.toLowerCase());
+    				if(legalName == null){
+    					continue;
+    				}
+    				String[] paramValues = req.getParameterValues(fieldName);
+    				//String legalName = EFGUtils.encodeToJavaName(fieldName);
+    				 
     			//find a datasource with that field if is absent
     				//if this is a new nae find out if an old name has been found
     				//find out if th

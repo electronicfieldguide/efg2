@@ -28,8 +28,10 @@
 package project.efg.server.rdb;
 
 import java.io.StringReader;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import javax.servlet.ServletContext;
@@ -44,8 +46,8 @@ import project.efg.server.interfaces.ServletAbstractFactoryInterface;
 import project.efg.server.servlets.EFGContextListener;
 import project.efg.server.utils.LoggerUtilsServlet;
 import project.efg.util.interfaces.EFGImportConstants;
+import project.efg.util.interfaces.EFGQueueObjectInterface;
 import project.efg.util.interfaces.RegularExpresionConstants;
-import project.efg.util.utils.EFGUtils;
 
 /**
  * @author kasiedu
@@ -152,13 +154,31 @@ public class DiGIRQuery extends SQLQuery {
 		////log.debug("Inside Digir request: " + buf.toString());
 		return buf.toString();
 	}
+    /**
+     * Map - map of fieldName as key and legal name as 
+     * value
+     * 
+     * @param datasourceName
+     * @return
+     */
+    private Map makeLegalNameMap(){
+    	Map map = new HashMap();
+    	List list = this.servFactory.getAllFields(this.displayName, this.datasourceName);
+    	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
+			EFGQueueObjectInterface queue = (EFGQueueObjectInterface)iterator.next();
+			String legalName = queue.getObject(0);
+			String key = queue.getObject(1);
+			map.put(key.toLowerCase(), legalName);
+		}
+    	return  map;
+    }
 	protected String getSQLQuery(
 			String digirQuery,
 			String datasource) {
 
 		
 		StringBuffer queryString = new StringBuffer();
-		
+		Map map = makeLegalNameMap();
 		String arr[] = RegularExpresionConstants.spacePattern.split(digirQuery);
 		for (int i = 0; i < arr.length; i++) {
 			String keyword = (String) EFGContextListener.getKeyWordValue(arr[i]);
@@ -172,13 +192,18 @@ public class DiGIRQuery extends SQLQuery {
 																			// lop
 					queryString.append(" " + keyword + " ");
 				} else { // it is a cop operator
-					String legalName = arr[i - 1];
-					if (legalName.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
-						legalName = legalName.replaceAll(
+					String fieldName = arr[i - 1];
+					if (fieldName.indexOf(EFGImportConstants.SERVICE_LINK_FILLER) > -1) {
+						fieldName = fieldName.replaceAll(
 								EFGImportConstants.SERVICE_LINK_FILLER, " ");
 					}
 					//convert to javaIdentifier
-					legalName = EFGUtils.encodeToJavaName(legalName);
+					//make a sqlquery here
+					//String legalName = EFGUtils.encodeToJavaName(fieldName);
+    				String legalName = (String)map.get(fieldName.toLowerCase());
+    				if(legalName == null){
+    					continue;
+    				}
 					queryString.append("( ");
 					queryString.append(legalName);
 					queryString.append(" ");
