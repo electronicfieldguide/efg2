@@ -88,27 +88,28 @@
 		</div>
 	<%
 	} else {
-	%>
+	%>	
 		<div class="colone">
 			<div class="htmltemplate"><a href="../html/ListViewTemplateGlossary.html"
 				target="list1">Glossary Style</a></div>
 			<div class="htmltemplate"><a href="../BNCSkin-BananaRepub/glossary2.html"
-				target="list3">Glossary with Alpha Strip - Banana Republic Style</a></div>
-				
-			<div class="htmltemplate"><a href="../NantucketSkin/glossary2.html" target="list2">Glossary
-			with Alpha Strip - Nantucket Style</a></div>
-			<div class="htmltemplate"><a href="../BNCSkin-jennsyard/glossary2.html" target="list4">Glossary
-			with Alpha Strip - Summer Style</a></div>
-		</div>
-		<div class="coltwo">
+				target="list2">Glossary with Alpha Strip - Banana Republic Style</a></div>
 			<div class="htmltemplate"><a href="../NantucketSkin_Forest/glossary2.html"
 			target="list5">Glossary with Alpha Strip - Nantucket Forest
 			Style</a></div>
-			<div class="htmltemplate"><a href="../NantucketSkin_Nectarz/glossary2.html"
-			target="list6">Glossary with Alpha Strip - Nantucket NectarzStyle</a></div>
-  			<div class="htmltemplate"><a href="../NantucketSkin/glossary2.html" target="list7">Nantucket Style</a></div>
-  			<div class="htmltemplate"><a href="../NantucketSkin_Navy/glossary2.html" target="list8">Nantucket Navy Style</a></div>
- 		</div>
+		<div class="htmltemplate"><a href="../NantucketSkin_Navy/glossary2.html" target="list8">Glossary with Alpha Strip - Nantucket Navy Style</a></div>
+			
+		</div>
+		<div class="coltwo">
+		<div class="htmltemplate"><a href="../NantucketSkin_Nectarz/glossary2.html"
+			target="list6">Glossary with Alpha Strip - Nantucket Nectarz Style</a></div>
+				
+			<div class="htmltemplate"><a href="../NantucketSkin/glossary2.html" target="list3">Glossary
+			with Alpha Strip - Nantucket Style</a></div>
+			<div class="htmltemplate"><a href="../BNCSkin-jennsyard/glossary2.html" target="list4">Glossary
+			with Alpha Strip - Summer Style</a></div>
+			
+  		</div>
  	<%
 	}
 	%>

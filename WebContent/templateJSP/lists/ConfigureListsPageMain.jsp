@@ -51,12 +51,13 @@ project.efg.util.interfaces.EFGImportConstants
 				<%}
 				else{%>
 					<option value="<%=ListViewTemplateGlossary%>">Glossary Style</option>
-	 				<option value="<%=NantucketForestG%>">Nantucket Forest Style</option>
-	  				<option value="<%=NantucketNavyG%>">Nantucket Navy Style</option>
-	 				<option value="<%=NantucketNectarzG%>">Nantucket Nectarz Style</option>
-	 				<option value="<%=NantucketStyleG%>">Nantucket Style</option> 				
-	 				<option value="<%=BananaRepublicStyleG%>">Banana Republic Style</option>
-	 				<option value="<%=SummerStyleG%>">Summer Style</option>
+				 	<option value="<%=BananaRepublicStyleG%>">Glossary with Alpha Strip - Banana Republic Style</option>
+				 	<option value="<%=NantucketForestG%>">Glossary with Alpha Strip - Nantucket Forest Style</option>
+				  	<option value="<%=NantucketNavyG%>">Glossary with Alpha Strip - Nantucket Navy Style</option>
+	 				<option value="<%=NantucketNectarzG%>">Glossary with Alpha Strip - Nantucket Nectarz Style</option>
+		 			<option value="<%=NantucketStyleG%>">Glossary with Alpha Strip - Nantucket Style</option> 	
+			 		<option value="<%=SummerStyleG%>">Glossary with Alpha Strip - Summer Style</option>
+		 			
 				<%}
 				%>
 				
