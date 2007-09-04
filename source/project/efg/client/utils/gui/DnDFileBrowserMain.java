@@ -529,7 +529,7 @@ public class DnDFileBrowserMain extends JDialog {
 			TreePath path = browser.getPathForLocation(e.getX(), e.getY());
 			if (path != null) {
 				browser.getSelectionModel().setSelectionPath(path);
-				popup.show(this.treeBrowser, e.getX(), e.getY());
+				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		}
 		/**
