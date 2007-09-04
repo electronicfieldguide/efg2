@@ -415,7 +415,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface
 	private String getMetadataNameFromCache(String displayName, String datasourceName){
 		
 		String key = EFGUtils.constructCacheKey(datasourceName, 
-				"_metadataName");
+				EFGImportConstants.METADATA_CACHE_NAME);
 		String metaName = null;
 		GeneralCacheAdministrator cacheAdmin = 
 			EFGContextListener.getCacheAdmin();//get cache
@@ -432,7 +432,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface
 		    } catch (Exception ex) {
 		        // We have the current content if we want fail-over.
 		    	metaName = (String)nre.getCacheContent();
-		    	//log.debug("Object fail over obejct ");
+		    	//log.debug("Object fail over");
 		        // It is essential that cancelUpdate is called if the
 		        // cached content is not rebuilt
 		    	cacheAdmin.cancelUpdate(key);
