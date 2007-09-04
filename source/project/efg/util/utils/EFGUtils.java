@@ -126,7 +126,7 @@ public class EFGUtils {
 	}
 	/**
 	 * Return an identifier that can be used to create a Table name
-	 * this implementation removes all non-eglish alphabets in the String
+	 * this implementation removes all non-english alphabets in the String
 	 * but if the string length after that is 0 it supplies some generic string
 	 * Note that some random numbers are appended to the table names before 
 	 * they are created.
@@ -258,41 +258,45 @@ public class EFGUtils {
 	}
 	
 	/**
-	 * This method takes a String and returns an encoded version of the String
-	 * that can be used as a Java variable name.
+	 * This method takes a String and 
+	 * returns a returns a string that can be used as a field
+	 * name in a relational database.
 	 * 
 	 * @param origString
 	 *            the pre-encoded string
-	 * @return the encoded string to be used as a java variable
+	 * @return a string that can be used as
+	 * a relational database field name
 	 */
-	public static String encodeToJavaName(String origString) {
+	public static String encodeToFieldName(String origString) {
 		String str = origString;
 		while(EFGImportConstants.SQL_KEY_WORDS.contains(str.toLowerCase())){
 			str = str + "_";
 		}
-		return Introspector.decapitalize(encodeToJavaClassName(str));
+		return Introspector.decapitalize(toRDBFieldName(str));
 	}
 
 	/**
-	 * This method takes a String and returns an encoded version of the String
-	 * that can be used as a Java class name.
 	 * 
-	 * @param origString
-	 *            the pre-encoded string
-	 * @return the encoded string to be used as a java class name
+	 * Convert a string to a relational database field name
+	 * 
 	 */
-	private static String encodeToJavaClassName(String origString) {
+	private static String toRDBFieldName(String origString) {
 		StringBuffer sb = new StringBuffer(origString);
 		int strLength = sb.length();
 		
-				
-		if (strLength > 0 && !Character.isJavaIdentifierStart(sb.charAt(0)))
-			sb.setCharAt(0, '_');
-
-		for (int i = 1; i < strLength; i++)
-			if (!Character.isJavaIdentifierPart(sb.charAt(i)))
-				sb.setCharAt(i, '_');
-
+		//move the character to the end of the string		
+		if (strLength > 0 && !Character.isJavaIdentifierStart(sb.charAt(0))){
+			
+			//make a new field name and prepend a constant 'E' to it
+			long legalName = EFGUniqueID.getID();
+			//sb.setCharAt(0, '_');
+			sb = new StringBuffer();
+			sb.append(EFGImportConstants.FIELDS_BEGIN_CHAR + legalName);
+			return sb.toString();
+		}
+		//for (int i = 1; i < strLength; i++)
+			//if (!Character.isJavaIdentifierPart(sb.charAt(i)))
+				//sb.setCharAt(i, '_');
 		return sb.toString();
 	}
 

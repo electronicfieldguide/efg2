@@ -57,6 +57,9 @@ public class EFGUniqueID {
 	 */
 	public synchronized static long getID() {
 		//String id = "";
+		if((id + 1) == Long.MAX_VALUE){
+			id = -1;
+		}
 		if(id == -1){
 			try {
 				String id_str = new GregorianCalendar(TimeZone.getTimeZone("GMT"))
@@ -88,7 +91,6 @@ public class EFGUniqueID {
 		    catch (UnknownHostException e) {}
 		    return "efg2_"+localAddress+timeStamp;
 	}
-	
 }
 
 // $Log: EFGUniqueID.java,v $
