@@ -16,6 +16,7 @@ java.util.List, java.util.Enumeration" %>
   	Iterator iter   = null;
 %>		 
 <input type="hidden" id="templateUniqueNamex" name="templateUniqueNamex" value=""/>
+<div id="hide">
 Select an Existing Template Or New:<br/>
 <select name="templateUniqueNamex" id="guidx">
 	<option value="<%=New_Value%>"><%=New_Name%></option>
@@ -33,6 +34,13 @@ Select an Existing Template Or New:<br/>
 		%>
 </select>
 
+
+
+
+<input type="submit" name="submit" value="Delete" onclick="JavaScript:deleteTemplate('guidx');"/>
+
+<input type="submit" name="submit" id="datalistsubmitID" value="Go" onclick="JavaScript:datalistResponse('querydataid','guidx');"/>
+</div>
 <%
 iter = list.iterator();
 while(iter.hasNext()) {
@@ -47,9 +55,3 @@ while(iter.hasNext()) {
 }	
 %>		
 <br/>
-<div id="hide">
-
-<input type="submit" name="submit" value="Delete" onclick="JavaScript:deleteTemplate('guidx');"/>
-
-<input type="submit" name="submit" id="datalistsubmitID" value="Go" onclick="JavaScript:datalistResponse('querydataid','guidx');"/>
-</div>

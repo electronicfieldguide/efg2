@@ -233,7 +233,8 @@ function datalistResponse(nextPageID,guidxid){
 	doPostsUpdater(QUERY_DATA,url,doNothingHandler,SECOND_DIV); 
 	
 	actdeactClasses(nextPageID);	
-	$('hide').innerHTML ="";			
+	$('hide').innerHTML ="";	
+	$('zerothdiv').innerHTML ="";			
 }
 /**
 * Change the selected values into text messages
