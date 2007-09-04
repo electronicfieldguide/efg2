@@ -140,16 +140,16 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 		log.debug("File Name : " + this.datasource.getDataName());
 
-		boolean isSuccess = true;
-		this.format2efg();
-
+		boolean isSuccess = this.format2efg();
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 
 		TransactionStatus status = this.txManager.getTransaction(def);
+
 		try {
 
 			if (isSuccess) {
+
 				log.debug("About to import: "
 						+ this.datasource.getDataName().toString());
 
@@ -424,19 +424,50 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	/**
 	 * Start processing csv file
 	 */
-	private void format2efg() {
+	private boolean format2efg() {
 		try {
 			log.debug(this.compare.getClass().getName());
+			if(!this.isUniqueHeaders(this.dataHeaders)){
+				log.error("Field Names must be unique");
+				return false;
+			}
+			
 			this.legalNames = this.translateHeaders(this.dataHeaders);
-
+			return true;
 		} catch (Exception ee) {
 
 			log.error(" An error occured during importation of : "
 					+ this.datasource.getDataName() + "\n");
 
 		}
+		return false;
 	}
 
+	/**
+	 * Make sure field names are unique, in a case insensitive way.
+	 * @param fieldNames - Field names
+	 * @return - true if unique, false otherwise
+	 */
+	private boolean isUniqueHeaders(String[] fieldNames) {
+		boolean isUnique = true;
+		Set set = new HashSet();
+		for (int i = 0; i < fieldNames.length; i++) {
+			String fieldName = fieldNames[i].toLowerCase();
+			if(set.contains(fieldName)){
+				isUnique= false;
+				log.error("FieldName: " + fieldName +  " is a duplicate.");
+				break;
+			}
+			set.add(fieldName);
+		}
+		set = null;
+		return isUnique;
+	}
+	/**
+	 * 
+	 * @return a sorted list of field names
+	 * 	 
+	 */
 	private String[] getSortedLegalNames() {
 		String[] sortedLegalNames = this.translateHeaders(this.dataHeaders);
 		java.util.Arrays.sort(sortedLegalNames, this.compare);

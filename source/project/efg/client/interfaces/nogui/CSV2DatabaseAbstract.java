@@ -154,11 +154,16 @@ public abstract class CSV2DatabaseAbstract {
 			return null;
 		}
 		try {
+			//convert headers to a set
+			//perhaps this is where you should bale out
+			//need to make sure headers are unique
 			String[] meta = new String[headers.length];
 			for (int i = 0; i < headers.length; i++) {
 				String title = headers[i];
 				
-				String newTitle = EFGUtils.encodeToJavaName(title);
+				String newTitle = EFGUtils.encodeToFieldName(title);
+				
+				//make sure header does not already exists
 				meta[i] = newTitle.trim().toLowerCase();
 			}
 			return meta;
