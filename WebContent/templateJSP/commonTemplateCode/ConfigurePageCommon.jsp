@@ -22,12 +22,15 @@ project.efg.util.interfaces.EFGImportConstants
 	 		%>
 		</select>
 		<br/><br/>
+		<!-- TODO use Vinita's code to determine the types to put here -->
 		Template type:
 		<select name="<%=EFGImportConstants.CONFIG_TYPE%>" title="Select the type of Page to Configure">
 			<option value="<%=EFGImportConstants.SEARCH_SEARCH_TYPE%>">Search page</option>
 			<option value="<%=EFGImportConstants.SEARCH_TAXON_TYPE%>">Taxon page</option>
 			<option value="<%=EFGImportConstants.SEARCH_LISTS_TYPE%>">Text List</option>
+			<%if(!isGlossary){ %>
 			<option value="<%=EFGImportConstants.SEARCH_PLATES_TYPE%>">Thumbnail View</option>
+			<%}%>
 		</select><br/><br/>
 			<% 
 				listInter = map.keySet().iterator();
