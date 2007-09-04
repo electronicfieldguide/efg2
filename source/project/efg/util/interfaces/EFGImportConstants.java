@@ -30,6 +30,7 @@ import project.efg.util.utils.EFGRDBImportUtils;
  * USA
  */
 public interface EFGImportConstants {
+	String METADATA_CACHE_NAME = "_metadataName";
 	String GLOSSARY_STRING= "Gloss ";
 	String PDF_EXT=".pdf";
 	Properties EFGProperties = EFGRDBImportUtils.getProperties();
@@ -373,4 +374,5 @@ public interface EFGImportConstants {
 	String IS_PREVIEW = "isPreview";
 	int NUMBER_OF_PDF_PAGES_2_DISPLAY = 2;
 	String DOC_2_XML = "doc2xml";
+	String FIELDS_BEGIN_CHAR = "efg";
 }// EFGImportConstants
