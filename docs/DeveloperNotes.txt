@@ -3,3 +3,26 @@ $Id: DeveloperNotes.txt,v 1.1.1.1 2007/08/01 19:06:49 kasiedu Exp $
 Directory structure to be added
 
 TODO..
+
+
+Handling SQL Keywords
+
+	Sql keywords in field names are handled by 
+	appending an '_' to the name.
+
+Field Names	
+	The field names in efg2 are caseinsensitive.
+	An error is thrown if field names are duplicated.
+	Field names that start with numbers are re-mapped to
+	a random number preceded by the string 'efg'
+
+
+
+
+Registry For Templates
+
+Register templates based on category (list,plates,taxon,pdf,bookmaker)
+For Glossary and main datasources.
+Read this registry and populate pages.
+
+
