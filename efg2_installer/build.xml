@@ -14,19 +14,21 @@ to make a distribution call makeImport:
 		<ant antfile="${build.scripts.home}/build_IzPack.xml" inheritAll="true" target="clean"/>
 	</target>
 	<target name="dist">
-         <condition property="build.properties.exists">
+    	<condition property="build.properties.exists">
          <and>
           <available file="build.properties"/>
           <available file="${izpack.basedir}/lib/standalone-compiler.jar"/>
           <available file="${efg2.home}" type="dir"/>     
           <available file="${efg2.skins.home}" type="dir"/>     
-          <available file="${efg2.website.home}" type="dir"/>     
+          <available file="${efg2.website.home}" type="dir"/>   
+          <available file="${efg2.platemaker.home}" type="dir"/>
+		  <available file="${efg2.bookmaker.home}" type="dir"/>
+		  <available file="${efg2.efgsoftware.home}" type="dir"/>  
          </and>
-        </condition>
-           <fail message="build.properties,${line.separator}${izpack.basedir}/lib/standalone-compiler.jar,${line.separator}${efg2.home}${line.separator}${efg2.skins.home},${line.separator} and ${efg2.website.home}${line.separator} must all exists.Follow instructions in ReadMe.txt ${line.separator}" unless="build.properties.exists"/>
-          <antcall target="build"/>
-           <antcall target="donotBuild"/>
-      
+       </condition>
+       <fail message="build.properties,${line.separator}${izpack.basedir}/lib/standalone-compiler.jar,${line.separator}${efg2.home}${line.separator}${efg2.skins.home},${line.separator} and ${efg2.website.home}${line.separator} must all exists.Follow instructions in ReadMe.txt ${line.separator}" unless="build.properties.exists"/>
+       <antcall target="build"/>
+       <antcall target="donotBuild"/>
 	</target>
     <target name="build" description="Build Installer for EFG2" if="build.properties.exists">
         <ant antfile="${build.scripts.home}/build_client.xml" inheritAll="true" target="build"/>
@@ -37,7 +39,10 @@ to make a distribution call makeImport:
     <target name="donotBuild" unless="build.properties.exists">
         <echo message="build.properties,
             ${izpack.basedir}/lib/standalone-compiler.jar,
-            ${efg2.home}, ${efg2.skins.home} and ${efg2.website.home} 
+            ${efg2.platemaker.home},
+			${efg2.bookmaker.home},
+			${efg2.efgsoftware.home},
+            ${efg2.skins.home} and ${efg2.website.home} 
             must all exist.Please follow instructions in ReadMe.txt" />
     </target>
  
