@@ -72,7 +72,7 @@
 		<copy todir="${efg2.client.dist.home}">
 			<fileset dir="${efg2.lib.util.home}"/>
 		</copy>
-		 <copy file="old2newnames.properties" todir="${efg2.lib.client.home}"/>
+		 <copy file="old2newnames.properties" todir="${efg2.client.dist.home}"/>
 		<copy todir="${efg2.client.dist.home}">
 			<fileset dir="${efg2.lib.client.home}"/>
 		</copy>
