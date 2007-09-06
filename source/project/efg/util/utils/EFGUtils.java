@@ -294,9 +294,11 @@ public class EFGUtils {
 			sb.append(EFGImportConstants.FIELDS_BEGIN_CHAR + legalName);
 			return sb.toString();
 		}
-		//for (int i = 1; i < strLength; i++)
-			//if (!Character.isJavaIdentifierPart(sb.charAt(i)))
-				//sb.setCharAt(i, '_');
+		for (int i = 1; i < strLength; i++){
+			if (!Character.isJavaIdentifierPart(sb.charAt(i))){
+				sb.setCharAt(i, '_');
+			}
+		}
 		return sb.toString();
 	}
 
