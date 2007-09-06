@@ -19,9 +19,8 @@ import project.efg.client.utils.nogui.DropFileObject;
 
 
 /*
- * ProgressBarDemo.java is a 1.4 application that requires these files:
- *   LongTask.java
- *   SwingWorker.java
+ * Borrowed from ProgressBarDemo.java is a 1.4 
+ * application sample files distributed with the jDK.
  */
 public class EFGCopyFilesThread extends SwingWorker implements WindowListener{
     /**
@@ -80,7 +79,9 @@ public EFGCopyFilesThread(DnDFileBrowser browser,List objectsToDrop, JProgressBa
 	    this.frame.addWindowListener(this);
 	    this.frame.setSize(600, 600);
 	    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-	    this.frame.setLocationRelativeTo(this.browser);
+	   // this.frame.setLocationRelativeTo(this.browser);
+	    this.frame.setLocation(this.browser.getLocationOnScreen().x - (this.frame.getWidth()/2), this.browser.getLocationOnScreen().y);
+
 	    //Create and set up the content pane.
 	   
 	    panel.setOpaque(true); //content panes must be opaque

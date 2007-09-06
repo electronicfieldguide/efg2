@@ -128,7 +128,8 @@ implements EFGImportConstants,WindowListener{
 	    this.frame = new JFrame("Generating Thumbnails");
 	   
 	    this.frame.setSize(600,600);
-	    this.frame.setLocationRelativeTo(this.browser);
+	   // this.frame.setLocationRelativeTo(this.browser);
+	    this.frame.setLocation(this.browser.getLocationOnScreen().x - (this.frame.getWidth()/2), this.browser.getLocationOnScreen().y);
 	    frame.addWindowListener(this);
 	    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 	    //Create and set up the content pane.
