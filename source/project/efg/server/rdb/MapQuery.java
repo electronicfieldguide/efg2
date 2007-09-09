@@ -53,7 +53,16 @@ public class MapQuery extends SQLQuery
     {
         super(req);
     }
-
+	/**
+	 * Initialize the query factory
+	 */
+    private void initServerFactory(){
+		if (this.servFactory == null) {
+			this.servFactory = EFGSpringFactory
+					.getServletAbstractFactoryInstance();
+			this.servFactory.setMainDataTableName(this.getMainTableName());
+		}
+    }
 	/**
 	 * Set the datasourceName and the metadataSourceName if they were not passed
 	 * in the query request.
@@ -68,12 +77,7 @@ public class MapQuery extends SQLQuery
 			boolean bool = super.initQueryParameters();
 			if (!bool) {
 				if (this.datasourceName == null) {
-
-					if (this.servFactory == null) {
-						this.servFactory = EFGSpringFactory
-								.getServletAbstractFactoryInstance();
-						this.servFactory.setMainDataTableName(this.getMainTableName());
-					}
+					this.initServerFactory();
 					List dataSources = toLists(this.servFactory
 							.getListOfDatasources());
 					if (dataSources == null) {
@@ -98,6 +102,7 @@ public class MapQuery extends SQLQuery
      * @return
      */
     private Map makeLegalNameMap(){
+    	this.initServerFactory();
     	Map map = new HashMap();
     	List list = this.servFactory.getAllFields(this.displayName, this.datasourceName);
     	for (Iterator iterator = list.iterator(); iterator.hasNext();) {
@@ -123,7 +128,7 @@ public class MapQuery extends SQLQuery
 		.getParameter(EFGImportConstants.DATASOURCE_NAME);
     	this.displayName = req.getParameter(EFGImportConstants.DISPLAY_NAME);
 
-        if(!super.initQueryParameters()){
+        if(!this.initQueryParameters()){
             return null;
         }
         String maxDispStr = req.getParameter(EFGImportConstants.MAX_DISPLAY);

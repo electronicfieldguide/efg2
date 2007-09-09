@@ -64,7 +64,17 @@ public class DiGIRQuery extends SQLQuery {
 		super(req);
 	
 	}
+	/**
+	 * Initialize the query factory
+	 */
+    private void initServerFactory(){
+		if (this.servFactory == null) {
+			this.servFactory = EFGSpringFactory
+					.getServletAbstractFactoryInstance();
+			this.servFactory.setMainDataTableName(this.getMainTableName());
+		}
 
+    }
 	/* (non-Javadoc)
 	 * @see project.efg.servlets.efgInterface.EFGHTTPQuery#buildQuery(javax.servlet.http.HttpServletRequest)
 	 */
@@ -91,12 +101,8 @@ public class DiGIRQuery extends SQLQuery {
 																	// DataSources if
 																	// any
 				if (dataSources.size() == 0) {// means user did not specify any datasource
+					this.initServerFactory();
 					
-					if(this.servFactory == null){
-						this.servFactory =
-							EFGSpringFactory.getServletAbstractFactoryInstance();
-						this.servFactory.setMainDataTableName(this.getMainTableName());
-					}
 					dataSources = toLists(this.servFactory.getListOfDatasources());
 				}
 				
@@ -178,6 +184,7 @@ public class DiGIRQuery extends SQLQuery {
 
 		
 		StringBuffer queryString = new StringBuffer();
+		this.initServerFactory();
 		Map map = makeLegalNameMap();
 		String arr[] = RegularExpresionConstants.spacePattern.split(digirQuery);
 		for (int i = 0; i < arr.length; i++) {
