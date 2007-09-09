@@ -94,6 +94,7 @@ project.efg.server.factory.EFGSpringFactory
 %>	
 
 	<table class="searchpage">
+	<td class="datasourcename" colspan="2">EFG selected: <%=displayName%></td>
 		<tr>
 			<td>      
 		        <table id="searchPageID">
