@@ -1,6 +1,6 @@
 ; HM NIS Edit Wizard helper defines
-;$Id: efg2VersionHeaders.nsh,v 1.4 2007/03/07 19:56:19 kasiedu Exp $
-;$Name:  $
+;$Id$
+;$Name$
 ;include local headers
 ;Version information on properties tab
 VIProductVersion "${ProductVersion}"
@@ -24,4 +24,5 @@ Function writeProductVersion
  ${LogText} "Done writing variables in '$INSTDIR\${EFG2_RESOURCE_HOME}\properties\version.properties'"
 
 FunctionEnd
+
   
