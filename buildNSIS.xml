@@ -1,0 +1,84 @@
+<!--  
+/**
+ * $Id$
+ *
+ * Copyright (c) 2007  University of Massachusetts Boston
+ *
+ * Authors: Jacob K Asiedu
+ *
+ * This file is part of the UMB Electronic Field Guide.
+ * UMB Electronic Field Guide is free software; you can redistribute it
+ * and/or modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2, or
+ * (at your option) any later version.
+ *
+ * UMB Electronic Field Guide is distributed in the hope that it will be
+ * useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with the UMB Electronic Field Guide; see the file COPYING.
+ * If not, write to:
+ * Free Software Foundation, Inc.
+ * 59 Temple Place, Suite 330
+ * Boston, MA 02111-1307
+ * USA
+ */
+ -->
+<project name="Electronic Field Guide" default="doall" basedir=".">
+    <property file="buildNSIS.properties"/>   
+	<!-- Main class path required by all classes-->
+	<path id="compile.class.path">
+		<fileset dir="${efg2.lib.util.home}">
+			<include name="*.jar"/>
+		</fileset>
+		<fileset dir="${efg2.lib.client.home}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
+    <target name="checkclientproperties">
+        <condition property="build.client.exists">
+             <available file="buildNSIS.properties" type="file"/>
+          </condition>
+        <fail message="buildNSIS.properties file does not exists. 
+             Follow instructions in ReadMe.txt on how to create one." unless="build.client.exists"/>
+      </target> 
+     <target name="checkserverproperties">
+        <condition property="build.server.exists">
+        	<and>
+             <available file="buildNSIS.properties" type="file"/>
+        		<available file="${efg2.skins.home}" type="dir"/>
+        		<available file="${efg2.website.home}" type="dir"/>
+        		<available file="${efg2.bookmaker.home}" type="dir"/>
+        		<available file="${efg2.platemaker.home}" type="dir"/>
+        		</and>		
+          </condition>
+
+        <fail message="buildNSIS.properties,${efg2.skins.home},${efg2.bookmaker.home},${efg2.platemaker.home} and ${efg2.website.home} 
+        folder must exist. Please follow instructions ReadMeNSIS.txt" unless="build.server.exists"/>
+      </target>   
+          <target name="buildserver">
+         <antcall target="checkserverproperties" inheritAll="true"/>
+         <ant antfile="${efg2.server.home}/buildNSIS_server.xml" inheritAll="true"/>   
+     </target>  
+       
+	<target name="doall">
+        <antcall target="buildclient"/>
+        <antcall target="buildserver"/>      
+	</target>
+    <target name="buildclient">
+        <antcall target="checkclientproperties"/>
+        <ant antfile="${efg2.client.home}/build_NSIS_Client.xml" inheritAll="true"/>
+    </target>
+     <target name="cleanclient">
+        <ant antfile="${efg2.client.home}/build_NSIS_Client.xml" inheritAll="true" target="clean"/>
+    </target>
+    <target name="cleanserver">
+         <ant antfile="${efg2.server.home}/buildNSIS_server.xml" inheritAll="true" target="clean"/>   
+    </target>
+ 	<target name="cleanall">
+        <antcall target="cleanclient"/>    
+        <antcall target="cleanserver"/>       
+	</target>
+</project>
