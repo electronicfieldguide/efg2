@@ -30,6 +30,14 @@ by NSIS build script.
   b. EFG2DataImporter.nsi
   c.  EFG2DataImporterInstaller.nsi
 5. Copy the EFG2.0Installer.exe to where your clients can download them.
-  
+ 
+ 
+ Changing the Version Number
+ OPen efg2installer/efg2Headers.nsh
+ and replace VERSION X.0 and 
+ ProductVersion X.Y.Z.K
+ 
+with the version numbers.
+
   
 	
