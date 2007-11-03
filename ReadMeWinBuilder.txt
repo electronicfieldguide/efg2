@@ -25,11 +25,16 @@ Requirements
 by NSIS build script.
 
 4. Navigate to efg2_installer/winBuilder
- and execute the following the order stated>
+ and execute the following the order stated:
   a. About.nsi
   b. EFG2DataImporter.nsi
   c.  EFG2DataImporterInstaller.nsi
-5. Copy the EFG2.0Installer.exe to where your clients can download them.
+  
+  OR
+  set the NSIS_HOME environment variable to point to your NSIS home and run
+  efg2_installer/winBuilder/compileNSIS.bat
+  
+5. Copy the EFG2Installer2.0.exe to where your clients can download them.
    Also copy efg2doc.html and efg2_installer/winBuilder/releaseNotes.txt
    and link to them from your downloads page.
  
