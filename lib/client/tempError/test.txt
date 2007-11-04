@@ -1,2 +1,2 @@
-$Id: test.txt,v 1.1.1.1 2007/08/01 19:06:51 kasiedu Exp $
+$Id$
 #An empty file so that CVS loads this directory on checkout
