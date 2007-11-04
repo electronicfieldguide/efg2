@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.table.TableCellRenderer;
 
@@ -25,7 +26,7 @@ public MultiLineHeaderRenderer() {
 	setBackground(UIManager.getColor("TableHeader.background"));
 	setBorder(UIManager.getBorder("TableHeader.cellBorder"));
 	ListCellRenderer renderer = getCellRenderer();
-	((JLabel)renderer).setHorizontalAlignment(JLabel.CENTER);
+	((JLabel)renderer).setHorizontalAlignment(SwingConstants.CENTER);
 	setCellRenderer(renderer);
   }
 

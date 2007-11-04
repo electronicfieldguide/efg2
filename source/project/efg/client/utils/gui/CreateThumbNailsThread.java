@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.apache.commons.io.IOUtils;
@@ -131,7 +132,7 @@ implements EFGImportConstants,WindowListener{
 	   // this.frame.setLocationRelativeTo(this.browser);
 	    this.frame.setLocation(this.browser.getLocationOnScreen().x - (this.frame.getWidth()/2), this.browser.getLocationOnScreen().y);
 	    frame.addWindowListener(this);
-	    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	    this.frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	    //Create and set up the content pane.
 	   
 	    panel.setOpaque(true); //content panes must be opaque

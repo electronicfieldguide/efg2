@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.WindowConstants;
 
 import org.apache.log4j.Logger;
 
@@ -63,7 +64,7 @@ implements EFGImportConstants,WindowListener{
 	    this.frame.setSize(600,600);
 	    this.frame.setLocationRelativeTo(this.frame2);
 	    frame.addWindowListener(this);
-	    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	    this.frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	    //Create and set up the content pane.
 	   
 	    panel.setOpaque(true); //content panes must be opaque

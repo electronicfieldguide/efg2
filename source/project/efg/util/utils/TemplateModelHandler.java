@@ -262,7 +262,7 @@ public abstract class TemplateModelHandler{
 		if(displayName == null){
 			displayName = "";
 		}
-		createEFG2TemplatesTable();
+	
 		return insertIntoDB(key,guid, 
 				displayName, 
 				datasourceName.toLowerCase(), 
@@ -709,61 +709,7 @@ PreparedStatementSetter p) throws Exception;
 		return false;
 	}
 
-	private boolean createEFG2TemplatesTable() {
-			
-			if((this.templateName == null) || 
-					(this.templateName.trim().equals(""))){
-				
-				return false;
-			}
-				
-				StringBuffer query = new StringBuffer();
-				
-				
-				query.append("CREATE TABLE IF NOT EXISTS ");
-				query.append(templateName.toLowerCase());
-			
-				query.append("( ");
-				query.append(EFGImportConstants.TEMPLATE_KEY);
-				query.append(" VARCHAR(255) not null,");
-				query.append(EFGImportConstants.GUID);
-				query.append(" VARCHAR (255), ");
-				query.append(EFGImportConstants.DISPLAY_NAME);
-				query.append(" VARCHAR(255), ");
-				query.append(EFGImportConstants.DATASOURCE_NAME);
-				query.append(" VARCHAR(255), ");
-				query.append(EFGImportConstants.TEMPLATE_NAME);
-				query.append(" VARCHAR(255), "); 
-				query.append(EFGImportConstants.QUERY_STR);
-				query.append(" TEXT "); 
-				query.append(")");
-				try{
-					this.executeStatement(query.toString());
-					return true;
-				}
-				catch (Exception e) {
-					
-				}
-				return true;
-	}
-	/*private final String getDisplayNameChangePreparedStatement(String tableName){
-		
-		
-			
-		
-		StringBuffer query = new StringBuffer();
-		query.append("UPDATE ");
-		query.append(tableName);
-		query.append(" SET ");
-		query.append(EFGImportConstants.DISPLAY_NAME);
-		query.append("=");
-		query.append("? WHERE ");
-		query.append(EFGImportConstants.DATASOURCE_NAME);
-		query.append("=");
-		query.append("?");
 	
-		return query.toString();
-	}*/
 	/**
 	 * @return
 	 */

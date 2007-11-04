@@ -128,9 +128,7 @@ public class DnDFileBrowserMain extends JDialog {
 	final private JButton deleteBtn = new JButton(EFGImportConstants.EFGProperties
 			.getProperty("FileTreeBrowserMain.deleteBtn"));
 
-	/*final private JButton doneBtn = new JButton(EFGImportConstants.EFGProperties
-			.getProperty("FileTreeBrowserMain.doneBtn"));
-*/
+
 	JProgressBar progressBar = new JProgressBar();
 
 	JComponent imageView;
@@ -228,8 +226,8 @@ public class DnDFileBrowserMain extends JDialog {
 		this.progressBar.setStringPainted(true);
 		this.progressBar.setString(""); // but don't paint it
 		this.imageLabel = new JLabel(imageL, SwingConstants.CENTER);
-		this.imageLabel.setVerticalTextPosition(JLabel.BOTTOM);
-		this.imageLabel.setHorizontalTextPosition(JLabel.CENTER);
+		this.imageLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+		this.imageLabel.setHorizontalTextPosition(SwingConstants.CENTER);
 		this.displayPanel.add(this.imageLabel, BorderLayout.CENTER);
 	
 		return displayPanel;
@@ -412,7 +410,7 @@ public class DnDFileBrowserMain extends JDialog {
 			maxDim = 
 				EFGImportConstants.EFGProperties.getProperty("efg.thumbnails.dimensions.current");
 		}
-		currentDimLabel = new JLabel(thumsStr + " " + maxDim + " ", JLabel.LEADING);
+		currentDimLabel = new JLabel(thumsStr + " " + maxDim + " ", SwingConstants.LEADING);
 		currentDimLabel.setForeground(Color.blue);
 		JPanel btnPanel =  new JPanel(new GridLayout(0, 1));
 		
@@ -504,13 +502,13 @@ public class DnDFileBrowserMain extends JDialog {
 	}
 	class EditMouseListener extends MouseAdapter {
 
-		private DnDFileBrowserMain treeBrowser;
+		
 		/**
 		 * 
-		 * @param treeBrowser
+		 * 
 		 */
 		public EditMouseListener(DnDFileBrowserMain treeBrowser) {
-			this.treeBrowser = treeBrowser;
+			
 		}
 		/**
 		 * 

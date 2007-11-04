@@ -27,16 +27,12 @@
  */
 package project.efg.client.drivers.gui;
 
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 import java.util.Properties;
 
 import javax.swing.JOptionPane;
 
 import project.efg.client.drivers.nogui.TemplateLoader;
-import project.efg.util.factory.SpringFactory;
 import project.efg.util.factory.TemplateModelFactory;
 import project.efg.util.interfaces.EFGImportConstants;
 import project.efg.util.utils.DBObject;
@@ -64,48 +60,21 @@ protected static void updateDB(DBObject dbObject) {
 			
 			return;
 		}
-	} catch (Exception e1) {//HACK //FIXME
+	} catch (Exception e1) {//means the table is already updated
 		
 	}
-	
-	
-		 Properties map= new Properties();
-     try {
-    	 ClassLoader cl = ClassLoader.getSystemClassLoader();
-
-    	 URL url = cl.getResource("old2newnames.properties");
-    	 if (url == null)
-    	 {
-    		 throw new Exception("Could not find file: old2newnames.properties");
-    	 }
-
-    	 InputStream rf = url.openStream();
-    	 if (rf == null)
-    	 {
-    		 throw new Exception("Could not open an input stream");
-    	 }
-    	 map.load(rf);
-	} catch (Exception e) {
-		
-		e.printStackTrace();
-	}
-	
-	buffer = new StringBuffer();
-	buffer.append(EFGImportConstants.EFGProperties.getProperty("efg.templates.home.current"));
-	StringBuffer templateBuffer = new StringBuffer(buffer.toString());
-	
-
 	TemplateLoader tloader = new TemplateLoader(dbObject);
-	
-	tloader.loadTemplateFilesIntoDB(new File(templateBuffer.toString()), 
-			SpringFactory.getFileNameFilter(), map);
-	
+	tloader.run();
 }
-
-
-
 	public static void main(String[] args) {
 		//cause properties to load
+		String urldb1 = 
+			EFGImportConstants.EFGProperties.getProperty("dburl");
+		System.out.println("urldb: " + urldb1);
+		DBObject dbObject1 = new DBObject(
+				urldb1,"root",
+				"kw7679as");
+		TemplateUpdatesDriver.updateDB(dbObject1);
 		
 		
 		if(args.length == 2 ){
@@ -123,7 +92,7 @@ protected static void updateDB(DBObject dbObject) {
 		}
 		else{
 			JOptionPane.showMessageDialog(null, 
-					"Database updates failed. Please re-install application",
+				"Database updates failed. Please re-install application",
 					"Database update failure", JOptionPane.ERROR_MESSAGE);
 		}
 	}

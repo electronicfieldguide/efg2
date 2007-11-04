@@ -39,7 +39,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JRadioButton;
 import javax.swing.JTable;
 
-import project.efg.client.rdb.gui.TableSorterMain;
+import project.efg.client.interfaces.gui.TableSorterMainInterface;
 
 public class RadioButtonEditor extends DefaultCellEditor implements ItemListener {
 	static final long serialVersionUID = 1;
@@ -65,7 +65,7 @@ public class RadioButtonEditor extends DefaultCellEditor implements ItemListener
 	}
 
 	public void itemStateChanged(ItemEvent e) {
-		TableSorterMain.isChanged = true;
+		TableSorterMainInterface.isChanged = true;
 		super.fireEditingStopped();
 	}
 }

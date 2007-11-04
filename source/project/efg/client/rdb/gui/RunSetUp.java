@@ -26,6 +26,7 @@
  */
 
 package project.efg.client.rdb.gui;
+import java.io.File;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -34,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import project.efg.client.impl.gui.CreateEFGUserDialog;
+import project.efg.client.utils.gui.CreateSampleDataThread;
 import project.efg.util.interfaces.EFGImportConstants;
 import project.efg.util.utils.DBObject;
 import project.efg.util.utils.EFGRDBImportUtils;
@@ -325,13 +327,14 @@ public class RunSetUp {
 	 * Create all tables needed by application
 	 * @param dbObject
 	 */
-	private static void createUserTables(DBObject dbObject) {
+	private static DBObject createUserTables(DBObject dbObject) {
+		DBObject newDb = null; 
 		if(dbObject == null){
-			return;
+			return newDb;
 		}
 		
 		try{
-		DBObject newDb = dbObject.clone(
+		newDb = dbObject.clone(
 				EFGImportConstants.EFGProperties.getProperty("dburl"));
 		
 		JdbcTemplate newjdbcTemplate=
@@ -372,12 +375,12 @@ public class RunSetUp {
 		 query.append(EFGImportConstants.EFGProperties.getProperty("db_role"));
 		 query.append("')");	
 		 newjdbcTemplate.execute(query.toString());
-		
+		 
 		}
 		catch (Exception e) {
 			
 		}
-		
+		return newDb;
 		
 	}
 /**
@@ -385,8 +388,8 @@ public class RunSetUp {
  * @param dbObject
  */
 		private static void createHelperTables(DBObject dbObject) {
-			//creeate helper tables
-			createUserTables(dbObject);
+			//create helper tables
+			DBObject efg2DbObject = createUserTables(dbObject);
 			String query = null;
 			
 			
@@ -418,8 +421,91 @@ public class RunSetUp {
 				log.error(ee.getMessage());
 			
 			}
+			if(efg2DbObject == null){
+				log.error("Cannot get connection to efg database");
+			}
+			JdbcTemplate efgjdbcTemplate=
+				EFGRDBImportUtils.getJDBCTemplate(efg2DbObject);	
+			createEFG2TemplatesTable(efgjdbcTemplate);
+			createRDBTable(efgjdbcTemplate);
+			createGlossaryTable(efgjdbcTemplate);
+			loadSampleData(efg2DbObject);
 		}	
-	
+	private static boolean createEFG2TemplatesTable(JdbcTemplate efgjdbcTemplate) {
+		String templateName = 
+			EFGImportConstants.TEMPLATE_TABLE.toLowerCase();
+			if((templateName == null) || 
+					(templateName.trim().equals(""))){
+				
+				return false;
+			}
+				
+				StringBuffer query = new StringBuffer();
+				
+				
+				query.append("CREATE TABLE IF NOT EXISTS ");
+				query.append(templateName.toLowerCase());
+			
+				query.append("( ");
+				query.append(EFGImportConstants.TEMPLATE_KEY);
+				query.append(" VARCHAR(255) not null,");
+				query.append(EFGImportConstants.GUID);
+				query.append(" VARCHAR (255), ");
+				query.append(EFGImportConstants.DISPLAY_NAME);
+				query.append(" VARCHAR(255), ");
+				query.append(EFGImportConstants.DATASOURCE_NAME);
+				query.append(" VARCHAR(255), ");
+				query.append(EFGImportConstants.TEMPLATE_NAME);
+				query.append(" VARCHAR(255), "); 
+				query.append(EFGImportConstants.QUERY_STR);
+				query.append(" TEXT "); 
+				query.append(")");
+				try{
+					efgjdbcTemplate.execute(query.toString());
+					return true;
+				}
+				catch (Exception e) {
+					
+				}
+				return true;
+	}
+	private static boolean createRDBOrGlossaryTable(JdbcTemplate efgjdbcTemplate,String tableName){
+		try{
+			StringBuffer query = new StringBuffer();
+			
+			// PUT IN PROPERTIES FILE
+			query.append("CREATE TABLE IF NOT EXISTS ");
+			query.append(tableName);
+			query.append("( DS_DATA VARCHAR(255) not null,");
+			query.append("ORIGINAL_FILE_NAME TEXT, ");
+			query.append("DS_METADATA VARCHAR(255) not null, ");
+			query.append("DISPLAY_NAME VARCHAR(255) unique not null, ");
+			query.append("XSL_FILENAME_TAXON VARCHAR(255), ");
+			query.append("XSL_FILENAME_SEARCHPAGE_PLATES VARCHAR(255), ");
+			query.append("XSL_FILENAME_SEARCHPAGE_LISTS VARCHAR(255), ");
+			query.append("CSS_FILENAME VARCHAR(255), ");
+			query.append("JAVASCRIPT_FILENAME VARCHAR(255), ");
+			query.append("TEMPLATE_OBJECT BLOB ");
+			query.append(")");
+			log.debug("About to execute query : '" + query.toString());
+			efgjdbcTemplate.execute(query.toString());
+			log.debug("Query executed successfully!!");
+			return true;
+		}
+		catch(Exception ee){
+			log.debug(ee.getMessage());
+		}
+		log.debug("About to return false!!!");
+		return false;
+
+	}
+	private static boolean createRDBTable(JdbcTemplate efgjdbcTemplate){
+		return createRDBOrGlossaryTable(efgjdbcTemplate,EFGImportConstants.EFG_RDB_TABLES);
+	}
+	private static boolean createGlossaryTable(JdbcTemplate efgjdbcTemplate){
+		return createRDBOrGlossaryTable(efgjdbcTemplate,EFGImportConstants.EFG_GLOSSARY_TABLES);
+	}
+
 	/**
 	 * 
 	 * @param dbObject - contains enough information to connect to database
@@ -454,7 +540,9 @@ public class RunSetUp {
 			try {
 				//create the database
 				jdbcTemplate.execute(query);
-				createHelperTables(dbObject);
+				 createHelperTables(dbObject);
+				//Load the sample data here.
+				
 			} catch (Exception ee) {
 			
 				createHelperTables(dbObject);
@@ -466,6 +554,24 @@ public class RunSetUp {
 		
 		return true;
 	}
+	/**
+	 * 
+	 */
+	private static void loadSampleData(DBObject dbObject) {
+		try{
+	 			
+			File file = new File("loadsample.sample");
+			CreateSampleDataThread ct = new CreateSampleDataThread(null,dbObject);
+			ct.start();
+			if(!file.delete()){
+				file.deleteOnExit();
+			}
+		}
+		catch(Exception ee){
+			
+		}
+	}
+
 	/**
 	 * 
 	 * @param dbObject2

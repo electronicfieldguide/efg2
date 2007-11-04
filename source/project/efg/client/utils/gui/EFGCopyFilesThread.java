@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 import project.efg.client.utils.nogui.DropFileObject;
 
@@ -78,7 +79,7 @@ public EFGCopyFilesThread(DnDFileBrowser browser,List objectsToDrop, JProgressBa
 	    
 	    this.frame.addWindowListener(this);
 	    this.frame.setSize(600, 600);
-	    this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	    this.frame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 	   // this.frame.setLocationRelativeTo(this.browser);
 	    this.frame.setLocation(this.browser.getLocationOnScreen().x - (this.frame.getWidth()/2), this.browser.getLocationOnScreen().y);
 

@@ -63,6 +63,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
@@ -467,7 +468,7 @@ public abstract class TableSorterMainInterface  extends JDialog{
 		getContentPane().add(panel, BorderLayout.CENTER);
 		JLabel label = new JLabel(
 				EFGImportConstants.EFGProperties.getProperty("TableSorterMain.title"),
-				JLabel.CENTER);
+				SwingConstants.CENTER);
 		getContentPane().add(label, BorderLayout.NORTH);
 		
 		

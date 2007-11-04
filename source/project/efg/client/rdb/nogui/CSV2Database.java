@@ -1053,56 +1053,6 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		}
 
 	}
-	private boolean createHelperTable(String tableName){
-		try{
-			StringBuffer query = new StringBuffer();
-			log.debug("About to create table: '" + this.efgRDBTable
-					+ "' if it does not exists");
-			// PUT IN PROPERTIES FILE
-			query.append("CREATE TABLE IF NOT EXISTS ");
-			query.append(tableName);
-			query.append("( DS_DATA VARCHAR(255) not null,");
-			query.append("ORIGINAL_FILE_NAME TEXT, ");
-			query.append("DS_METADATA VARCHAR(255) not null, ");
-			query.append("DISPLAY_NAME VARCHAR(255) unique not null, ");
-			query.append("XSL_FILENAME_TAXON VARCHAR(255), ");
-			query.append("XSL_FILENAME_SEARCHPAGE_PLATES VARCHAR(255), ");
-			query.append("XSL_FILENAME_SEARCHPAGE_LISTS VARCHAR(255), ");
-			query.append("CSS_FILENAME VARCHAR(255), ");
-			query.append("JAVASCRIPT_FILENAME VARCHAR(255), ");
-			query.append("TEMPLATE_OBJECT BLOB ");
-			query.append(")");
-			log.debug("About to execute query : '" + query.toString());
-			this.executeStatement(query.toString());
-			log.debug("Query executed successfully!!");
-			return true;
-		}
-		catch(Exception ee){
-			this.logMessage(ee);
-		}
-		log.debug("About to return false!!!");
-		return false;
-	}
-	/**
-	 * Create EFGRDTable if it does not already exists
-	 * 
-	 * @return true if query executed successfully.
-	 */
-	private boolean createEFGRDBTable() {
-		try {
-			if (checkEFGRDBTable()) {
-				return createHelperTable(this.efgRDBTable);
-			}
-			
-		} catch (Exception ee) {
-			this.logMessage(ee);
-		}
-		log.debug("About to return false!!!");
-		return false;
-	}
-
-	
-
 	/**
 	 * Create helper table for Data and metadata tables
 	 * 
@@ -1117,7 +1067,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				this.datasource.setDisplayName(this.tableName);
 			}
 
-			isDone = createEFGRDBTable();
+			isDone = true;
 			if (isDone) {
 				StringBuffer query = new StringBuffer();
 				query = new StringBuffer("SELECT count(*) FROM ");

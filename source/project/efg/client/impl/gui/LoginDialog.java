@@ -240,7 +240,9 @@ public class LoginDialog extends JDialog implements LoginDialogInterface {
 							dlg.getPassword());
 					
 					dlg.setServerRoot(serverRoot,isDefault);
-					//dlg.loadSampleData(dbObject);
+					//find out if a file is present. If it is load sample data
+					
+
 					
 					menu = new ImportMenu(
 							EFGImportConstants.IMPORT_TITLE, 

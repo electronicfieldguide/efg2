@@ -77,36 +77,6 @@ public class LoadSampleData {
 		.getProperty("dburl");
 		return dbObject2.clone(url);
 	}
-private boolean createGlossaryTable() {
-	try{
-		StringBuffer query = new StringBuffer();
-	
-		// PUT IN PROPERTIES FILE
-		query.append("CREATE TABLE IF NOT EXISTS ");
-		query.append(EFGImportConstants.EFGProperties.getProperty("ALL_EFG_GLOSSARY_TABLES"));
-		query.append("( DS_DATA VARCHAR(255) not null,");
-		query.append("ORIGINAL_FILE_NAME TEXT, ");
-		query.append("DS_METADATA VARCHAR(255) not null, ");
-		query.append("DISPLAY_NAME VARCHAR(255) unique not null, ");
-		query.append("XSL_FILENAME_TAXON VARCHAR(255), ");
-		query.append("XSL_FILENAME_SEARCHPAGE_PLATES VARCHAR(255), ");
-		query.append("XSL_FILENAME_SEARCHPAGE_LISTS VARCHAR(255), ");
-		query.append("CSS_FILENAME VARCHAR(255), ");
-		query.append("JAVASCRIPT_FILENAME VARCHAR(255), ");
-		query.append("TEMPLATE_OBJECT BLOB ");
-		query.append(")");
-		
-		this.jdbcTemplate.update(query.toString());
-		
-		return true;
-	}
-	catch(Exception ee){
-		
-	}
-
-		return false;
-	
-}
 	public String getErrorBuffer(){
 		return this.messageBuffer.toString();
 	}
@@ -158,7 +128,6 @@ private boolean createGlossaryTable() {
 		
 		if(this.loadFile()){
 			this.readNewDisplayName();
-			this.createGlossaryTable();
 			this.list = NoGUIFactory
 				.getEFGObjectList(this.dbObject);
 			String behaviorType =
