@@ -1,5 +1,5 @@
 #!/bin/bash
-# $Id: chkenv.sh,v 1.2 2006/12/08 03:50:38 kasiedu Exp $
+# $Id$
 err=0
 echo " "
 

@@ -1,5 +1,5 @@
 @echo off
-REM $Id: chkenv.bat,v 1.2 2006/12/08 03:50:38 kasiedu Exp $
+REM $Id$
 
 echo.
 echo.Checking environment variables...

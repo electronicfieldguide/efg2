@@ -1,5 +1,5 @@
 @echo off
-REM $Id: deploywebapps.bat,v 1.2 2006/12/08 03:50:38 kasiedu Exp $
+REM $Id$
 REM run to copy war file to webapps
 
 if not exist ".\resource\logs\.setup" (

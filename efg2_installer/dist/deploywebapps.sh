@@ -1,5 +1,5 @@
 #!/bin/bash
-#$Id: deploywebapps.sh,v 1.2 2006/12/08 03:50:38 kasiedu Exp $
+#$Id$
 
 if [ -e "./resources/logs/.setup" ]
 then
