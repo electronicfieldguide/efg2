@@ -10,7 +10,7 @@
 	<xalan:component prefix="displayList" functions="sort addDisplay  getItemName getImageCaption getImageName getSize getUniqueID">
 		<xalan:script lang="javaclass" src="xalan://project.efg.server.utils.EFGPageDisplayList"/>
 	</xalan:component>
-	<!-- $Id: commonJavaFunctions.xsl,v 1.1.1.1 2007/08/01 19:11:35 kasiedu Exp $ -->
+	<!-- $Id$ -->
 	<xsl:template name="outputCaption">
 		<xsl:param name="cap1"/>
 		<xsl:param name="cap2"/>

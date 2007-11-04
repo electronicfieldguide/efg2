@@ -3,7 +3,7 @@
 <%@page import="project.efg.util.utils.CaseInsensitiveComparatorImpl"%>
 <%@page import="java.util.Iterator"%>
 <%@page import="project.efg.util.interfaces.EFGImportConstants" %>
-<!-- $Id: allTableName.jsp,v 1.1.1.1 2007/08/01 19:11:39 kasiedu Exp $ -->
+<!-- $Id$ -->
 
 <%@page import="project.efg.server.servlets.EFGContextListener"%>
 <%@page import="java.util.Map"%>

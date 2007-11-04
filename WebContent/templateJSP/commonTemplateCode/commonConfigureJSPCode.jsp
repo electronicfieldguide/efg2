@@ -1,5 +1,5 @@
 <%@page import="project.efg.util.interfaces.EFGImportConstants" %>
-<!-- $Id: commonConfigureJSPCode.jsp,v 1.1.1.1 2007/08/01 19:11:39 kasiedu Exp $ -->
+<!-- $Id$ -->
 <% 
    String context = request.getContextPath();
    String dsName = (String)request.getAttribute(EFGImportConstants.DATASOURCE_NAME);

@@ -1,6 +1,6 @@
 <%@page language="java" %>   
 <html>     
-<!-- $Id: ErrorPage.jsp,v 1.1.1.1 2007/08/01 19:11:32 kasiedu Exp $     Handles situations where an error occurs during the processing of a request  --> 	
+<!-- $Id$     Handles situations where an error occurs during the processing of a request  --> 	
 	<head>
 	<%@ include file="Header.jsp"%>	
       <%

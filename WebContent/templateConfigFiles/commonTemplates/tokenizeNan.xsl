@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- $Id: tokenizeNan.xsl,v 1.1.1.1 2007/08/01 19:11:35 kasiedu Exp $ -->
+<!-- $Id$ -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 	<xsl:template name="tokenize2">
 		<xsl:param name="toke"/>

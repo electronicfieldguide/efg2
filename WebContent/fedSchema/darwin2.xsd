@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Stanley D Blum (California Academy of Sciences) -->
-<!-- $Id: darwin2.xsd,v 1.1.1.1 2007/08/01 19:11:30 kasiedu Exp $ -->
+<!-- $Id$ -->
 <xsd:schema targetNamespace="http://www.namespaceTBD.org/darwin2" xmlns="http://www.namespaceTBD.org/darwin2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:digir="http://www.namespaceTBD.org/digir" elementFormDefault="qualified">
 	<xsd:annotation>
-		<xsd:documentation>$Id: darwin2.xsd,v 1.1.1.1 2007/08/01 19:11:30 kasiedu Exp $</xsd:documentation>
+		<xsd:documentation>$Id$</xsd:documentation>
 		<xsd:documentation/>
 		<xsd:documentation>XML Schema describing the Darwin Core V2 (http://tsadev.speciesanalyst.net/documentation/ow.asp?DarwinCoreV2) content model.  Uses and extends data elements from the DiGIR (http://digir.sourceforge.net) protocol.</xsd:documentation>
 	</xsd:annotation>

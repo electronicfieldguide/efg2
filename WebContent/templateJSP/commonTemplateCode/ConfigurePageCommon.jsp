@@ -1,7 +1,7 @@
 <%@page import="java.util.Iterator,
 project.efg.util.interfaces.EFGImportConstants
 " %>
-<!-- $Id: ConfigurePageCommon.jsp,v 1.1.1.1 2007/08/01 19:11:39 kasiedu Exp $ -->
+<!-- $Id$ -->
 
 
 	Datasource:

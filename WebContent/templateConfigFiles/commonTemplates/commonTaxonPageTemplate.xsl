@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2006 sp2 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:fo="http://www.w3.org/1999/XSL/Format">
-	<!-- $Id: commonTaxonPageTemplate.xsl,v 1.1.1.1 2007/08/01 19:11:35 kasiedu Exp $ -->
+	<!-- $Id$ -->
 	<xsl:param name="serverbase"/>
 	<!-- The name of the template configuration for the current datasource. Must be a path relative to the location of this XSL file-->
 	<xsl:param name="dataSourceName"/>

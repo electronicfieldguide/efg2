@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Stanley D Blum (California Academy of Sciences) -->
-<!-- $Id: metadataResponseExample.xml,v 1.1.1.1 2007/08/01 19:11:30 kasiedu Exp $ -->
+<!-- $Id$ -->
 <response xmlns="http://www.namespaceTBD.org/digir" xmlns:darwin="http://www.namespaceTBD.org/darwin2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.namespaceTBD.org/digir http://digir.sourceforge.net/prot/beta3/digir.xsd http://www.namespaceTBD.org/darwin2 http://digir.sourceforge.net/fed/beta3/darwin2.xsd">
 	<header>
 		<version>beta3</version>

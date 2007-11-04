@@ -1,5 +1,5 @@
 <%@ page language="java" %>
-<!-- $Id: jspName.jsp,v 1.1.1.1 2007/08/01 19:11:40 kasiedu Exp $ -->
+<!-- $Id$ -->
 <% 
 String templateJSPNamePkg = ".templateJSP.";
 String fullJSPName = this.getClass().getName();

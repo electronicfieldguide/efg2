@@ -4,7 +4,7 @@ project.efg.server.utils.EFGDisplayObjectList,
 project.efg.util.utils.EFGDisplayObject
 " %>
 <%@page import="project.efg.server.factory.EFGSpringFactory"%>
-<!-- $Id: ConfigurePageMain.jsp,v 1.1.1.1 2007/08/01 19:11:39 kasiedu Exp $ -->
+<!-- $Id$ -->
 <%@ include file="allTableName.jsp"%>
 <%
    String context = request.getContextPath();

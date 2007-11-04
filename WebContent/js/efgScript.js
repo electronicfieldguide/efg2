@@ -1,4 +1,4 @@
-//$Id: efgScript.js,v 1.1.1.1 2007/08/01 19:11:30 kasiedu Exp $
+//$Id$
 //look for all id elements in a table and color them in alternating colors
 function init(){
 

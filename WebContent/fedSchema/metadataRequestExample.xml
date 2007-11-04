@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Stanley D Blum (California Academy of Sciences) -->
-<!-- $Id: metadataRequestExample.xml,v 1.1.1.1 2007/08/01 19:11:30 kasiedu Exp $ -->
+<!-- $Id$ -->
 <request xmlns="http://digir.net/schema/protocol/2003/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://digir.net/schema/protocol/2003/1.0 http://digir.sourceforge.net/schema/protocol/2003/1.0/digir.xsd">
 	<header>
 		<version>1.0</version>

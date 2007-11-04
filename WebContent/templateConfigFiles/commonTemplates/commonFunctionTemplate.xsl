@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XMLSpy v2005 rel. 3 U (http://www.altova.com) by UMASS Boston CSLabs (UMASS Boston CSLabs) -->
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.1">
-	<!-- $Id: commonFunctionTemplate.xsl,v 1.1.1.1 2007/08/01 19:11:35 kasiedu Exp $ -->
+	<!-- $Id$ -->
 	<xsl:template name="substring-after-last">
 		<xsl:param name="string"/>
 		<xsl:param name="delimiter"/>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!-- edited with XML Spy v4.1 U (http://www.xmlspy.com) by Stanley D Blum (California Academy of Sciences) -->
-<!-- $Id: digir.xsd,v 1.1.1.1 2007/08/01 19:11:30 kasiedu Exp $ -->
+<!-- $Id$ -->
 <xsd:schema targetNamespace="http://digir.net/schema/protocol/2003/1.0" xmlns="http://digir.net/schema/protocol/2003/1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 	<xsd:annotation>
-		<xsd:documentation>$Id: digir.xsd,v 1.1.1.1 2007/08/01 19:11:30 kasiedu Exp $</xsd:documentation>
+		<xsd:documentation>$Id$</xsd:documentation>
 		<xsd:documentation>XML Schema specifying the DiGIR (http://digir.sourceforge.net) protocol.  In specific, request and response message formats are defined, as well as some base datatypes to be used when defining a federation (or content schema) that defines the data to be exchanged.</xsd:documentation>
 	</xsd:annotation>
 	<!--  <xsd:import namespace="http://www.w3.org/2001/XMLSchema" />  -->

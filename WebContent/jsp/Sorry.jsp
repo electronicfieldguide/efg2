@@ -1,6 +1,6 @@
 <%@page language="java" %>
   <html>
-    <!-- $Id: Sorry.jsp,v 1.1.1.1 2007/08/01 19:11:32 kasiedu Exp $
+    <!-- $Id$
     Handles situations where an error occurs during the processing of a request
  -->
 	<head>
