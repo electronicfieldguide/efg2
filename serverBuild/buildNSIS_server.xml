@@ -154,8 +154,7 @@
        <delete dir="${web.dir}/WEB-INF/lib" quiet="true"/>
       <delete dir="${compile.home}" quiet="true"/>
        <delete dir="${efg2.src.temp.home}" quiet="true"/>
-       
-    </target>
+     </target>
  	<!-- Compile sources-->
 	<target name="compile" depends="init">
 		<javac srcdir="${efg2.src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on">
@@ -167,7 +166,13 @@
 	<target name="clean">
 		<delete dir="${compile.home}" quiet="true"/>
 		<delete dir="${efg2.src.temp.home}" quiet="true"/>
-		
+		<delete dir="${web.dir}/bookmaker/images" quiet="true"/>
+        <delete dir="${web.dir}/templateJSP/BNCSkin-BananaRepub" quiet="true"/>
+        <delete dir="${web.dir}/templateJSP/BNCSkin-jennsyard" quiet="true"/>
+		<delete dir="${web.dir}/templateJSP/NantucketSkin" quiet="true"/>
+		<delete dir="${web.dir}/templateJSP/NantucketSkin_Forest" quiet="true"/>
+		<delete dir="${web.dir}/templateJSP/NantucketSkin_Navy" quiet="true"/>
+		<delete dir="${web.dir}/templateJSP/NantucketSkin_Nectarz" quiet="true"/>
 		<delete dir="${efg2.webapp.for.nsis}" quiet="true"/>
 		<delete dir="${efg2.webapp.for.nsis.context}" quiet="true"/>
 	</target>

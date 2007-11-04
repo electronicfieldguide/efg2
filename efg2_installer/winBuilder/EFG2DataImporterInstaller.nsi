@@ -168,7 +168,7 @@ Section -Main SEC0000
     ${LogText} "Copied icons\${EFG_BIG_ICON}" 
     SetOutPath $INSTDIR\${EFG2_SAMPLES_HOME}
      ${LogText} "OutPutpath set to $INSTDIR\${EFG2_SAMPLES_HOME}" 
-     File /r ..\dist\${EFG2_SAMPLES_HOME}\*
+     File /r ..\dist\samples\*
     SetOutPath $INSTDIR\${EFG2_RESOURCE_HOME}
     ${LogText} "OutPutpath set to $INSTDIR\${EFG2_RESOURCE_HOME}" 
     File /r ${EFG2_LOCAL_DISTRIBUTION_PATH}\* 

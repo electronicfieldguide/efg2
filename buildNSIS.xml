@@ -65,7 +65,8 @@
        
 	<target name="doall">
         <antcall target="buildclient"/>
-        <antcall target="buildserver"/>      
+        <antcall target="buildserver"/>  
+        <antcall target="buildNSIS"/>        
 	</target>
     <target name="buildclient">
         <antcall target="checkclientproperties"/>
@@ -77,8 +78,32 @@
     <target name="cleanserver">
          <ant antfile="${efg2.server.home}/buildNSIS_server.xml" inheritAll="true" target="clean"/>   
     </target>
- 	<target name="cleanall">
+ 	<target name="clean">
         <antcall target="cleanclient"/>    
-        <antcall target="cleanserver"/>       
+        <antcall target="cleanserver"/>  
+        <antcall target="cleanBuilder"/>     
 	</target>
+	
+    <target name="buildNSIS" description="Build NSIS Script">
+       <condition property="isWindows">
+           <os family="windows"/>
+       </condition>
+       <antcall target="addNSIS"/>
+        
+    </target>
+    <!-- Only build this if you are making installer on windows -->
+    <target name="addNSIS" if="isWindows" description="Only build this if you are making installer on windows">
+        <echo message="Edit ${builder.app.home}/compileNSIS.bat to point to your NSIS_HOME environment variable"/>
+        <exec dir="${builder.app.home}" executable="cmd" failonerror="true">
+            <arg line="/c compileNSIS.bat"/>
+        </exec>
+       <antcall target="cleanHelperExec"/>
+    </target>
+   <target name="cleanHelperExec">
+        <delete file="${builder.app.home}/AboutBox.exe" quiet="true"/>
+        <delete file="${builder.app.home}/EFG2DataImporter.exe" quiet="true"/>
+   </target> 
+    <target name="cleanBuilder" depends="cleanHelperExec">
+         <delete file="${builder.app.home}/EFG2Installer2.0.exe" quiet="true"/>
+     </target>
 </project>
