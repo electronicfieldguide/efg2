@@ -1,6 +1,6 @@
 package project.efg.client.impl.gui;
 /**
- * $Id: AboutListener.java,v 1.1.1.1 2007/08/01 19:11:14 kasiedu Exp $
+ * $Id$
  * $Name:  $
  * 
  * Copyright (c) 2003  University of Massachusetts Boston

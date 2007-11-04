@@ -6,7 +6,7 @@ import java.awt.Font;
 import javax.swing.UIManager;
 
 /**
- * @version $Revision: 1.1.1.1 $
+ * @version $Revision$
  * @author  Benoît Mahé (bmahe@w3.org)
  */
 public class Utils {

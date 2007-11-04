@@ -1,4 +1,4 @@
-/* $Id: EFGToolsUtils.java,v 1.1.1.1 2007/08/01 19:11:16 kasiedu Exp $
+/* $Id$
 * $Name:  $
 * Created: Tue Feb 28 13:14:19 2006
  * @author <a href="mailto:kasiedu@cs.umb.edu">Jacob K Asiedu</a>
@@ -39,9 +39,12 @@ public interface EFGToolsUtils {
 
 	String HELP_DIR = "help";
 
+	String version = properties.getProperty("efg2.version");
+	String SVN_HEAD_URL = "SVN  Release: " + 
+	properties.getProperty("efg2.svn.release",version) ;
 	// The EFG Contact information
 	String EFG_CONTACT_MESSAGE = "Contact us: " +  properties.getProperty("efg2.url","http://efg.cs.umb.edu");
-	String version = properties.getProperty("efg2.version");
+
 	// The application specific copyright Message.
 	String COPYRIGHT_MESSAGE = 
 		"EFG2 Data Import application Version " +

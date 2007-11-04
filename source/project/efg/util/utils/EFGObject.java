@@ -1,5 +1,5 @@
 /**
- * $Id: EFGObject.java,v 1.1.1.1 2007/08/01 19:11:27 kasiedu Exp $
+ * $Id$
  *
  * Copyright (c) 2005  University of Massachusetts Boston
  *

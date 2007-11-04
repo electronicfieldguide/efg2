@@ -1,7 +1,7 @@
 package project.efg.client.impl.gui;
 
 /**
- * $Id: SynopticKeyTreeMain.java,v 1.1.1.1 2007/08/01 19:11:15 kasiedu Exp $
+ * $Id$
  * $Name:  $
  * 
  * Copyright (c) 2003  University of Massachusetts Boston

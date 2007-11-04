@@ -2,7 +2,7 @@
  * This class was automatically generated with 
  * <a href="http://www.castor.org">Castor 0.9.5.2</a>, using an XML
  * Schema.
- * $Id: EFGSearchableTemplateDescriptor.java,v 1.1.1.1 2007/08/01 19:11:25 kasiedu Exp $
+ * $Id$
  */
 
 package project.efg.server.utils;
@@ -17,7 +17,7 @@ import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 /**
  * Class EFGSearchableTemplateDescriptor.
  * 
- * @version $Revision: 1.1.1.1 $ $Date: 2007/08/01 19:11:25 $
+ * @version $Revision$ $Date$
  */
 public class EFGSearchableTemplateDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 

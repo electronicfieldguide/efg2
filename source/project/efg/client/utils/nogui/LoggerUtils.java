@@ -1,6 +1,6 @@
 package project.efg.client.utils.nogui;
 /**
- * $Id: LoggerUtils.java,v 1.1.1.1 2007/08/01 19:11:20 kasiedu Exp $
+ * $Id$
  * $Name:  $
  * 
  * Copyright (c) 2003  University of Massachusetts Boston
@@ -31,7 +31,7 @@ package project.efg.client.utils.nogui;
  * implement equals and hashcode if it is used as part of a Collection.
  */
 /**
- *$Id: LoggerUtils.java,v 1.1.1.1 2007/08/01 19:11:20 kasiedu Exp $
+ *$Id$
  * Copyright (c) 2001  University of Massachusetts Boston
  *
  * Authors: Jacob K. Asiedu<kasiedu@cs.umb.edu>

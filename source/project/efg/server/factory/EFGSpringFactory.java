@@ -1,5 +1,5 @@
 /**
- * $Id: EFGSpringFactory.java,v 1.1.1.1 2007/08/01 19:11:21 kasiedu Exp $
+ * $Id$
  *
  * Copyright (c) 2007  University of Massachusetts Boston
  *

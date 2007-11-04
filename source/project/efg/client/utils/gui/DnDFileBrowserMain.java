@@ -48,7 +48,7 @@ import project.efg.util.utils.EFGUtils;
 
 
 /**
- * @version $Revision: 1.1.1.1 $
+ * @version $Revision$
  * @author Benoît Mahé (bmahe@w3.org)
  */
 public class DnDFileBrowserMain extends JDialog {

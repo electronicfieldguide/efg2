@@ -24,7 +24,7 @@ import javax.swing.tree.TreePath;
 
 
 /**
- * @version $Revision: 1.1.1.1 $
+ * @version $Revision$
  * @author Benoît Mahé (bmahe@w3.org)
  */
 public class FileBrowser extends JTree {

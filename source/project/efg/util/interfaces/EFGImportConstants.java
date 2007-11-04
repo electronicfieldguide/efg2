@@ -8,7 +8,7 @@ import java.util.Set;
 import project.efg.util.utils.EFGRDBImportUtils;
 
 /**
- * $Id: EFGImportConstants.java,v 1.1.1.1 2007/08/01 19:11:26 kasiedu Exp $
+ * $Id$
  * 
  * Copyright (c) 2005 University of Massachusetts Boston
  *  *

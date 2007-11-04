@@ -15,7 +15,7 @@ import project.efg.client.utils.nogui.Sorter;
 
 
 /**
- * @version $Revision: 1.1.1.1 $
+ * @version $Revision$
  * @author Benoît Mahé (bmahe@w3.org)
  */
 public class FileNode implements MutableTreeNode {

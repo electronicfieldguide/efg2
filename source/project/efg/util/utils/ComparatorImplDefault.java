@@ -1,6 +1,6 @@
 package project.efg.util.utils;
 /**
- * $Id: ComparatorImplDefault.java,v 1.1.1.1 2007/08/01 19:11:26 kasiedu Exp $
+ * $Id$
  * $Name:  $
  * 
  * Copyright (c) 2003  University of Massachusetts Boston

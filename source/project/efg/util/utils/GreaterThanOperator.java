@@ -1,5 +1,5 @@
 /**
- * $Id: GreaterThanOperator.java,v 1.1.1.1 2007/08/01 19:11:27 kasiedu Exp $
+ * $Id$
  * $Name:  $
  *
  * Copyright (c) 2006  University of Massachusetts Boston

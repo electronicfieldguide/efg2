@@ -1,4 +1,4 @@
-/* $Id: AboutBox.java,v 1.1.1.1 2007/08/01 19:11:14 kasiedu Exp $
+/* $Id$
 * $Name:  $
 * Created: Tue Feb 28 13:14:19 2006
  * @author <a href="mailto:kasiedu@cs.umb.edu">Jacob K Asiedu</a>
@@ -57,6 +57,7 @@ import project.efg.client.interfaces.nogui.EFGToolsUtils;
 public class AboutBox extends JDialog implements EFGToolsUtils {
 
 	static final long serialVersionUID = 1;
+	
 
 	public AboutBox(Frame owner) {
 		super(owner, ABOUT_MESSAGE, true);
@@ -96,6 +97,17 @@ public class AboutBox extends JDialog implements EFGToolsUtils {
 		p.add(txt);
 
 		txt = new JTextArea(EFG_CONTACT_MESSAGE);
+		txt.setBorder(new EmptyBorder(5, 10, 5, 10));
+		txt.setFont(new Font("Arial", Font.PLAIN, 12));
+		txt.setEditable(false);
+		txt.setLineWrap(true);
+		txt.setWrapStyleWord(true);
+		txt.setBackground(getBackground());
+		p.add(txt);
+		
+		
+		
+		txt = new JTextArea(SVN_HEAD_URL);
 		txt.setBorder(new EmptyBorder(5, 10, 5, 10));
 		txt.setFont(new Font("Arial", Font.PLAIN, 12));
 		txt.setEditable(false);

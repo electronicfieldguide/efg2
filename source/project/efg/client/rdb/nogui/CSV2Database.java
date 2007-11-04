@@ -41,7 +41,7 @@ import project.efg.util.utils.UnicodeToASCIIFilter;
 /**
  * CSV2Database.java
  * 
- * $Id: CSV2Database.java,v 1.1.1.1 2007/08/01 19:11:17 kasiedu Exp $
+ * $Id$
  * 
  * Created: Tue Feb 28 13:14:19 2006
  * 

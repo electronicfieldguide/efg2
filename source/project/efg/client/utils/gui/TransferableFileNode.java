@@ -10,7 +10,7 @@ import java.util.Vector;
 
 
 /**
- * @version $Revision: 1.1.1.1 $
+ * @version $Revision$
  * @author  Benoît Mahé (bmahe@w3.org)
  */
 public class TransferableFileNode implements Transferable {

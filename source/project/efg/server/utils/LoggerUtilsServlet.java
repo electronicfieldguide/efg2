@@ -1,5 +1,5 @@
 /**
- * $Id: LoggerUtilsServlet.java,v 1.1.1.1 2007/08/01 19:11:25 kasiedu Exp $
+ * $Id$
  *
  * Copyright (c) 2005  University of Massachusetts Boston
  *

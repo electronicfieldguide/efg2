@@ -1,4 +1,4 @@
-/* $Id: EFGDataExtractorInterface.java,v 1.1.1.1 2007/08/01 19:11:16 kasiedu Exp $
+/* $Id$
 * $Name:  $
 * Created: Tue Feb 28 13:14:19 2006
  * @author <a href="mailto:kasiedu@cs.umb.edu">Jacob K Asiedu</a>

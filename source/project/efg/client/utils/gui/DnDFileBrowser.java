@@ -50,7 +50,7 @@ import project.efg.util.interfaces.EFGImportConstants;
 
 
 /**
- * @version $Revision: 1.1.1.1 $
+ * @version $Revision$
  * @author Benoît Mahé (bmahe@w3.org)
  */
 public class DnDFileBrowser extends FileBrowser implements DragGestureListener,
