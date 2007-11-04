@@ -3,11 +3,5 @@
 		<xalan:script lang="javaclass" src="xalan://project.efg.server.utils.ImageDisplayList"/>
 	</xalan:component>
 	<xsl:import  href="NantucketSkinForNavNecTaxonPage.xsl"/>
-<!-- 
-	<xsl:template name="outputImageSrc">
-	<xsl:param name="src"/>
-	<xsl:param name="caption"/>
-				<img src="{$src}" alt="{$caption}" class="taxon"/>
-		</xsl:template>
-		 -->
+
 	</xsl:stylesheet>

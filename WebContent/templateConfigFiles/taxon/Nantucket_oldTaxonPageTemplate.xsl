@@ -6,6 +6,7 @@
 	<xsl:include href="../commonTemplates/commonFunctionTemplate.xsl"/>
 	<xsl:include href="../commonTemplates/commonJavaFunctions.xsl"/>
 	<xsl:include href="commonTaxa/xslPageTaxon.xsl"/>
+	<xsl:include href="commonTaxa/commonNantucketTaxonPage.xsl"/>
 	<xsl:variable name="defaultcss" select="'nantuckettaxonpage.css'"/>
 	<xsl:variable name="cssFile" select="$xslPage/groups/group[@label='styles']/characterValue/@value"/>
 	<xsl:variable name="css">
@@ -376,23 +377,23 @@
 				<ul>
 					<xsl:for-each select="$efglists[@name=$fieldName]">
 						<xsl:for-each select="EFGList">
-							<xsl:call-template name="outputList">
-								<xsl:with-param name="caption" select="."/>
-							</xsl:call-template>
+				            <xsl:variable name="resourcelink">
+				                <xsl:if test="not(string(@resourceLink))=''">
+				                    <xsl:value-of select="@resourceLink"/>
+				                </xsl:if>
+				            </xsl:variable>
+				            <xsl:call-template name="outputList">
+				                <xsl:with-param name="fieldValue" select="."/>
+				                <xsl:with-param name="resourcelink" select="$resourcelink"/>
+				                <xsl:with-param name="annotation" select="@annotation"/>
+				            </xsl:call-template>
 						</xsl:for-each>
 					</xsl:for-each>
 				</ul>
 			</xsl:if>
 		</p>
 	</xsl:template>
-	<xsl:template name="outputList">
-		<xsl:param name="caption"/>
-		<xsl:if test="not(string($caption))=''">
-			<li>
-				<xsl:value-of select="$caption"/>
-			</li>
-		</xsl:if>
-	</xsl:template>
+	
 	<xsl:template name="outputcharacter">
 		<xsl:param name="items"/>
 		<xsl:param name="caption"/>
