@@ -46,7 +46,7 @@
 !define EFG2_RESOURCE_HOME resource
 !define SAMPLE_DATA_FILE_EXISTS loadsample.sample
 !define EFG2_LOCAL_RESOURCE_PATH "${EFG2_LOCAL_DISTRIBUTION_PATH}"
-!define EFG2_SAMPLES_HOME "samples"
+!define EFG2_SAMPLES_HOME "${EFG2_RESOURCE_HOME}\samples"
 !define EFG2_HELP_FILE efg2doc.html
 !define EFG2_HELP_FILE_LOC ..\..\docs\${EFG2_HELP_FILE}
 
