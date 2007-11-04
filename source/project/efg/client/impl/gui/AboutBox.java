@@ -106,8 +106,11 @@ public class AboutBox extends JDialog implements EFGToolsUtils {
 		p.add(txt);
 		
 		
-		
-		txt = new JTextArea(SVN_HEAD_URL);
+		String revision = SVN_HEAD_URL;
+		revision = revision.replaceAll("HeadURL: http://gentoo.cs.umb.edu/svn/efg2/", "");
+		revision = revision.replaceAll("/source/project/efg/client/interfaces/nogui/EFGToolsUtils.java ","");
+		revision = revision.replaceAll("\\$","");
+		txt = new JTextArea(revision);
 		txt.setBorder(new EmptyBorder(5, 10, 5, 10));
 		txt.setFont(new Font("Arial", Font.PLAIN, 12));
 		txt.setEditable(false);
