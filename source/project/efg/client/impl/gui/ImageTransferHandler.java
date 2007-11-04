@@ -4,17 +4,12 @@
 package project.efg.client.impl.gui;
 
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 
 import project.efg.client.utils.gui.DnDFileBrowser;
-import project.efg.client.utils.gui.DnDFileBrowserMain;
 import project.efg.client.utils.gui.EFGCopyFilesThread;
-import project.efg.client.utils.gui.ServerLocator;
-import project.efg.util.interfaces.EFGImportConstants;
-import project.efg.util.utils.EFGUtils;
 
 /**
  * @author jacob.asiedu
@@ -27,7 +22,7 @@ public class ImageTransferHandler {
 			JProgressBar progressBar) {
 		if(objectsToDrop.size() > 0){
 		
-			if(isMediaMagickPromptCheckBoxSelected()) {
+			/*if(isMediaMagickPromptCheckBoxSelected()) {
 				Properties props = EFGUtils.getEnvVars();
 				String property = null;
 				if (props != null) {
@@ -61,7 +56,7 @@ public class ImageTransferHandler {
 				"efg.thumbnails.dimensions.current");
 				DnDFileBrowserMain.setCurrentDimLabel(currentDim);
 
-			}
+			}*/
 		    EFGCopyFilesThread copyFiles = new EFGCopyFilesThread(browser,
 		    		objectsToDrop,
 		    		progressBar);
@@ -70,7 +65,7 @@ public class ImageTransferHandler {
 		}
 		return true;
 	}
-	private static boolean isThumbNailsPromptCheckBoxSelected(){
+	/*private static boolean isThumbNailsPromptCheckBoxSelected(){
 		String property = 
 			EFGImportConstants.EFGProperties.getProperty(
 					"efg.thumbnails.dimensions.checked", 
@@ -80,11 +75,11 @@ public class ImageTransferHandler {
 			return true;
 		}
 		return false;
-	}
+	}*/
 	/**
 	 * @return
 	 */
-	public static boolean isMediaMagickPromptCheckBoxSelected() {
+	/*public static boolean isMediaMagickPromptCheckBoxSelected() {
 		String property = 
 			EFGImportConstants.EFGProperties.getProperty(
 					"efg.imagemagicklocation.checked", 
@@ -94,6 +89,6 @@ public class ImageTransferHandler {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 }

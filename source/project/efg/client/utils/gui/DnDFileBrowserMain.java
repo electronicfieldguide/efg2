@@ -59,31 +59,17 @@ public class DnDFileBrowserMain extends JDialog {
 	 *
 	 */
 	public class MagickHomeListener implements ActionListener {
-		//private DnDFileBrowserMain main;
 		/**
 		 * @param main
 		 */
 		public MagickHomeListener(DnDFileBrowserMain main) {
-			//this.main = main;
 		}
 
 		/* (non-Javadoc)
 		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
 		public void actionPerformed(ActionEvent e) {
- 			
- 			//	     			this.fileLocationProperty = 
- 			//	     			currentFileLocationProperty = 
- 			  //. isCurrentPropertyChecked = "efg.serverlocation.checked"
- 			 //prompt = "Prompt me for server location every time"  
- 			/*JFrame frame,
-			String serverLocator,
-			boolean modal,
-			String fileLocationProperty,
-			String currentFileLocationProperty, 
-			String isCurrentPropertyChecked,
-			String prompt*/
-			Properties props = EFGUtils.getEnvVars();
+ 			Properties props = EFGUtils.getEnvVars();
 			String property = null;
 			if (props != null) {
 				String propertyToUse = 
@@ -263,7 +249,7 @@ public class DnDFileBrowserMain extends JDialog {
 	
 		
 		this.browser.setOpaque(false);
-		this.browser.addMouseListener(new EditMouseListener(this));
+		this.browser.addMouseListener(new EditMouseListener());
 		iPanel.setOpaque(true);
 		return iPanel;
 	}
@@ -281,9 +267,6 @@ public class DnDFileBrowserMain extends JDialog {
 			new JMenu("Help");		
 		JMenuItem thumbNailMenu = 
 			new JMenuItem("Thumbnails");
-		JMenuItem magickHomeMenu = 
-			new JMenuItem("Reset Magick Home");
-		magickHomeMenu.setToolTipText("Set the directory where ImageMagick is located");
 		JMenuItem preferencesMenu = 
 			new JMenuItem("Change/View Preferences");
 
@@ -295,7 +278,6 @@ public class DnDFileBrowserMain extends JDialog {
 			new JMenuItem("Help Contents");
 
 		thumbNailMenu.addActionListener(new ThumbsListener(this));
-		magickHomeMenu.addActionListener(new MagickHomeListener(this));
 		preferencesMenu.addActionListener(new PreferencesListener(this.importMenu, false, true));
 		
 		
@@ -325,18 +307,12 @@ public class DnDFileBrowserMain extends JDialog {
 							property, 
 							EFGImportConstants.EFGProperties.getProperty(
 									"efg.file.images.message")));
-					/*new FileChooserListener(
-							this.browser,
-							this.importMenu,
-							property,
-							EFGImportConstants.EFGProperties.getProperty("efg.file.images.message"),
-							JFileChooser.FILES_AND_DIRECTORIES));*/
 			fileMenu.add(newLinuxMenu);	
 			fileMenu.addSeparator();
 		}
 
 		fileMenu.add(thumbNailMenu);
-		fileMenu.add(magickHomeMenu);
+		//fileMenu.add(magickHomeMenu);
 		fileMenu.add(preferencesMenu);
 		
 		deleteMenu.addActionListener(new DeleteListener(this.browser));
@@ -507,7 +483,7 @@ public class DnDFileBrowserMain extends JDialog {
 		 * 
 		 * 
 		 */
-		public EditMouseListener(DnDFileBrowserMain treeBrowser) {
+		public EditMouseListener() {
 			
 		}
 		/**

@@ -44,8 +44,6 @@ import org.apache.log4j.Logger;
 import project.efg.client.factory.gui.GUIFactory;
 import project.efg.client.interfaces.gui.LoginListenerInterface;
 import project.efg.client.interfaces.nogui.LoginDialogInterface;
-import project.efg.client.utils.gui.ResourceWarning;
-import project.efg.client.utils.gui.ServerLocator;
 import project.efg.client.utils.nogui.LoginDialogConstants;
 import project.efg.util.interfaces.EFGImportConstants;
 import project.efg.util.utils.DBObject;
@@ -291,10 +289,6 @@ public class LoginDialog extends JDialog implements LoginDialogInterface {
 		String buffer = 
 			LoginDialogConstants.checkServerRoot(pathToServer,isDefault);
 		if(buffer != null){
-			ResourceWarning rw = 
-				new ResourceWarning(frame,
-					"Changing Directory",buffer.toString(),true);
-			rw.setVisible(true);
 			isDefault = false;
 		}
 		
@@ -302,15 +296,6 @@ public class LoginDialog extends JDialog implements LoginDialogInterface {
 		if(isDefault) {
 			this.writeDefaultMessage();
 		}
-	
-		ServerLocator locator = new ServerLocator(frame,
-				pathToServer,
-				true,
-				"efg.serverlocations.lists",
-				"efg.serverlocations.current",
-				"efg.serverlocation.checked",
-				"Prompt me for server location every time");
-		locator.setVisible(true);	
 	}
 	/**
 	 * @param pathToServer

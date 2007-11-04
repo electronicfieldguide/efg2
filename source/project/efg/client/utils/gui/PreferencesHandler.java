@@ -65,14 +65,11 @@ public class PreferencesHandler extends JDialog implements ItemListener {
 		} catch (Exception ee) {
 		}
 	}
- 	JCheckBox serverRootButton;
-    JCheckBox thumbnailsButton;
-    JCheckBox confirmExitButton;
-    JCheckBox confimChangeDirectoryButton;
+     JCheckBox thumbnailsButton;
+   JCheckBox confirmExitButton;
     boolean showResourceLocator;
     boolean showChangeThumbDimensions;
     JFrame frame;
-	private JCheckBox imageMagickDirectoryDirectoryButton;
 	/**
 	 * @param showResourceLocator 
 	 * @param showChangeThumbDimensions 
@@ -90,8 +87,6 @@ public class PreferencesHandler extends JDialog implements ItemListener {
 		
         //Create the check boxes.
 		boolean isSelected = true;
-        serverRootButton = new JCheckBox("Prompt For Server Root");
-        serverRootButton.setMnemonic(KeyEvent.VK_S);
         
         String property =
         	EFGImportConstants.EFGProperties.getProperty(
@@ -100,8 +95,7 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         if(!property.trim().equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
         	isSelected = false;
         }
-        serverRootButton.setSelected(isSelected);
-        isSelected = true;
+         isSelected = true;
         
         thumbnailsButton = new JCheckBox("Prompt For Thumb nail Size");
         thumbnailsButton.setMnemonic(KeyEvent.VK_T);
@@ -115,7 +109,7 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         thumbnailsButton.setSelected(isSelected);
         isSelected = true;
        
-        confirmExitButton = new JCheckBox("Confirm Exit Prompt When Closing Window");
+       confirmExitButton = new JCheckBox("Confirm Exit Prompt When Closing Window");
         confirmExitButton.setMnemonic(KeyEvent.VK_E);
         property = EFGImportConstants.EFGProperties.getProperty(
         		"efg.showdismiss.checked",
@@ -128,10 +122,7 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         isSelected = true;
        
 
-        imageMagickDirectoryDirectoryButton = 
-        	new JCheckBox("Prompt When I Change Image Magick Location");
-        imageMagickDirectoryDirectoryButton.setMnemonic(KeyEvent.VK_I);
-        property = 
+         property = 
         	EFGImportConstants.EFGProperties.getProperty(
         		"efg.imagemagicklocation.checked",EFGImportConstants.EFG_TRUE
         		);
@@ -139,11 +130,7 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         	isSelected = false;
         	
         }
-        imageMagickDirectoryDirectoryButton.setSelected(isSelected);
-        isSelected = true;
-        
-        confimChangeDirectoryButton = new JCheckBox("Prompt When I Change Server Location");
-        confimChangeDirectoryButton.setMnemonic(KeyEvent.VK_P);
+          isSelected = true;
         property = 
         	EFGImportConstants.EFGProperties.getProperty(
         		"efg.showchangedirectorymessage.checked",EFGImportConstants.EFG_TRUE
@@ -152,28 +139,18 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         	isSelected = false;
         	
         }
-        confimChangeDirectoryButton.setSelected(isSelected);
         isSelected = true;
 
         //Register a listener for the check boxes.
-        serverRootButton.addItemListener(this);
-        thumbnailsButton.addItemListener(this);
-        confirmExitButton.addItemListener(this);
-        confimChangeDirectoryButton.addItemListener(this);
-        imageMagickDirectoryDirectoryButton.addItemListener(this);
-        
+         thumbnailsButton.addItemListener(this);
+         
         JButton closeBtn = new JButton("OK");
         closeBtn.addActionListener(new CloseButtonListener());
 
         //Put the check boxes in a column in a panel
         JPanel checkPanel = new JPanel(new GridLayout(0, 1));
-        checkPanel.add(serverRootButton);
-        checkPanel.add(thumbnailsButton);
-        checkPanel.add(confirmExitButton);
-        checkPanel.add(imageMagickDirectoryDirectoryButton);
-        checkPanel.add(confimChangeDirectoryButton);
-      //  checkPanel.add(closeBtn);
-        
+         checkPanel.add(thumbnailsButton);
+         checkPanel.add(confirmExitButton);
         checkPanel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
         this.getContentPane().add(checkPanel, BorderLayout.LINE_START);
         JPanel btnPanel = new JPanel();
@@ -195,52 +172,8 @@ public class PreferencesHandler extends JDialog implements ItemListener {
 	 */
 	public void itemStateChanged(ItemEvent e) {		  
         Object source = e.getItemSelectable();
-        if (source == serverRootButton) {
-            EFGImportConstants.EFGProperties.setProperty(
-            		"efg.serverlocation.checked",
-            		this.serverRootButton.isSelected()+"");
-           if(this.serverRootButton.isSelected()) {
-        	   if(showResourceLocator) {
-	            	 String pathToServer = EFGImportConstants.EFGProperties.getProperty(
-	            			 "efg.serverlocations.current");
-	     	       String property = 
-	    				EFGImportConstants.EFGProperties.getProperty(
-	    						"efg.showchangedirectorymessage.checked",
-	    						EFGImportConstants.EFG_TRUE);
 
-	     			if(property.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
-	    				StringBuffer buffer = new StringBuffer();
-	    				buffer.append("<html>");
-	    				buffer.append("<p>If the folder you are about to select is not the root</p>");
-	    				buffer.append("<p>of your Tomcat server , then be aware of the following: </p>");
-	    				buffer.append("<p>1. Application generated resources ( media resources,</p>");
-	    				buffer.append("<p>generated templates etc)</p>");
-	    				buffer.append("<p>will be placed in the folder you are about to select. </p>");
-	    				buffer.append("<p>2. You will have to physically copy these resources</p>" +
-	    						"<p> to an efg2 web application.</p>");
-	    				buffer.append("<p> See the docs on how to copy resources to the web application</p>"); 
-	    				buffer.append("</html>");
-	    				
-	    				ResourceWarning rw = 
-	    					new ResourceWarning(frame,
-	    						"Changing Directory",buffer.toString(),true);
-	    				rw.setVisible(true);	
-	    			} 
-
-	    			ServerLocator locator = new ServerLocator(frame,
-	    					pathToServer,
-	    					true,
-	    					"efg.serverlocations.lists",
-	    					"efg.serverlocations.current",
-	    					"efg.serverlocation.checked",
-	    					"Prompt me for server location every time");
-	    			
-	    	
-	    			locator.setVisible(true);
-        	   }
-            }
-            
-        } else if (source == thumbnailsButton) {
+        if (source == thumbnailsButton) {
         	EFGImportConstants.EFGProperties.setProperty(
         			"efg.thumbnails.dimensions.checked",
         			thumbnailsButton.isSelected()+"");
@@ -253,23 +186,7 @@ public class PreferencesHandler extends JDialog implements ItemListener {
         		}
         	}
         	
-        } else if (source == confimChangeDirectoryButton) {
-        	EFGImportConstants.EFGProperties.setProperty(
-        			"efg.showchangedirectorymessage.checked",
-        			confimChangeDirectoryButton.isSelected()+"");
-        } 
- 	   else if (source == imageMagickDirectoryDirectoryButton) {
- 	      	EFGImportConstants.EFGProperties.setProperty(
- 	      			"efg.imagemagicklocation.checked",
- 	      			imageMagickDirectoryDirectoryButton.isSelected()+"");
- 	      	
- 	    }
-	   else if (source == confirmExitButton) {
-      	EFGImportConstants.EFGProperties.setProperty(
-      			"efg.showdismiss.checked",
-      			confirmExitButton.isSelected()+"");
-      	
-      }
+        }
 	}
 	
 }
