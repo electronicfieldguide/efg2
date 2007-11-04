@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330
  * Boston, MA 02111-1307
  * USA
- *$Id: installMySQLExec.nsi 211 2007-02-23 04:00:12Z kasiedu $
+ *$Id$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */

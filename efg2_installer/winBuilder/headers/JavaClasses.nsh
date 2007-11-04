@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330
  * Boston, MA 02111-1307
  * USA
- *$Id: JavaClasses.nsh 217 2007-03-03 18:54:28Z kasiedu $
+ *$Id$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */

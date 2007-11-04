@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330
  * Boston, MA 02111-1307
  * USA
- *$Id: JavaClassHeader.nsh,v 1.2 2007/02/28 20:44:24 kasiedu Exp $
+ *$Id$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */

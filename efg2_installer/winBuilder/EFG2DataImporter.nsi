@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330
  * Boston, MA 02111-1307
  * USA
- *$Id: EFG2DataImporter.nsi,v 1.2 2007/02/28 20:47:10 kasiedu Exp $
+ *$Id$
  *$Name:  $
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project

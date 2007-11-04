@@ -17,14 +17,14 @@
  * 59 Temple Place, Suite 330
  * Boston, MA 02111-1307
  * USA
- *$Id: downloadHeaders.nsh 219 2007-03-07 19:58:43Z kasiedu $
+ *$Id$
  *$Name$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */
 /**
 *$Name$
-*$Id: downloadHeaders.nsh 219 2007-03-07 19:58:43Z kasiedu $
+*$Id$
 * Header file for efg2 
 */
 # Defines

@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330
  * Boston, MA 02111-1307
  * USA
- *$Id: DeployWebappsExec.nsi 212 2007-02-23 17:36:08Z kasiedu $
+ *$Id$
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
 */

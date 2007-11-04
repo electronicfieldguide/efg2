@@ -17,7 +17,7 @@
  * 59 Temple Place, Suite 330
  * Boston, MA 02111-1307
  * USA
- *$Id: CommonRegKeys.nsh 215 2007-02-28 20:51:30Z kasiedu $
+ *$Id$
 File installImageMagick.nsh
 *(c) UMASS,Boston, MA
 *Written by Jacob K. Asiedu for EFG project
