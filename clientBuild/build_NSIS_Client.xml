@@ -46,7 +46,7 @@
 		<copy todir="${efg2.src.temp.home}/project/efg/util">
 			<fileset dir="${efg2.src.home}/project/efg/util"/>
 		</copy>
-				<mkdir dir="${efg2.client.dist.home}"/>
+	   <mkdir dir="${efg2.client.dist.home}"/>
 		<mkdir dir="${efg2.client.dist.spring.home}"/>
 		<mkdir dir="${efg2.client.dist.properties.home}"/>
 		<mkdir dir="${efg2.client.dist.metadata.home}"/>
@@ -112,5 +112,7 @@
 	</target>
 	<target name="clean" depends="cleanBuildClient">
 		<delete dir="${efg2.client.dist.home}/${client.jar.file}" quiet="true"/>
+        <delete dir="${efg2.client.dist.home}" quiet="true"/>
+
 	</target>
 </project>
