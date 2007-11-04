@@ -40,8 +40,8 @@ public interface EFGToolsUtils {
 	String HELP_DIR = "help";
 
 	String version = properties.getProperty("efg2.version");
-	String SVN_HEAD_URL = "SVN  Release: " + 
-	properties.getProperty("efg2.svn.release",version) ;
+	String SVN_HEAD_URL = "SVN  Release: " + "$HeadURL$";
+	
 	// The EFG Contact information
 	String EFG_CONTACT_MESSAGE = "Contact us: " +  properties.getProperty("efg2.url","http://efg.cs.umb.edu");
 
