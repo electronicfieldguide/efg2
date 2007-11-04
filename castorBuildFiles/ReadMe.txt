@@ -1,4 +1,4 @@
-$Id: ReadMe.txt,v 1.1.1.1 2007/08/01 19:06:47 kasiedu Exp $
+$Id$
 The .xml files in this directory are needed to generate castor
 sources and jar files efg2.
 

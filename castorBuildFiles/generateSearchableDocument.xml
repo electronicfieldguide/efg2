@@ -1,4 +1,4 @@
-<!-- $Id: generateSearchableDocument.xml,v 1.1.1.1 2007/08/01 19:06:47 kasiedu Exp $ -->
+<!-- $Id$ -->
 <project name="generateSearchableDocument" default="generate" basedir=".">
     <property file="generate.properties"/>
 	<!--  search page generation-->
