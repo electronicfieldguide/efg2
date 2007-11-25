@@ -25,7 +25,7 @@
 ; Where the current directory is
 ;change this definition when software changes
 ;probably best to read it off the file system
-!define REGKEY "SOFTWARE\EFG\EFG2DataImporter\1.0"
+!define REGKEY "SOFTWARE\EFG\EFG2DataImporter\2.0"
 
 ;needs other keys
 !include "InstallVersions.nsh"
