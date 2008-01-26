@@ -73,8 +73,10 @@ ReserveFile "${NSISDIR}\Plugins\AdvSplash.dll"
 
 # Variables
 Var StartMenuGroup
-Var /Global UnselCount /* counts unselected components in the uninstaller.*/
-Var /Global BoxCount /* Counts the components available in the uninstaller.*/
+Var /Global UnselCount 
+# counts unselected components in the uninstaller.
+Var /Global BoxCount
+# Counts the components available in the uninstaller
 ;Var /GLOBAL diskspace
 ;Var /GLOBAL availdiskspace 
 
