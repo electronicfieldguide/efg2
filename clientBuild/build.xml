@@ -62,7 +62,7 @@
 		<copy todir="${efg2.src.temp.home}/project/efg/util">
 			<fileset dir="${efg2.src.home}/project/efg/util"/>
 		</copy>
-				<mkdir dir="${efg2.client.dist.home}"/>
+		<mkdir dir="${efg2.client.dist.home}"/>
 		<mkdir dir="${efg2.client.dist.spring.home}"/>
 		<mkdir dir="${efg2.client.dist.properties.home}"/>
 		<mkdir dir="${efg2.client.dist.metadata.home}"/>
@@ -73,7 +73,7 @@
 		
 	</target>
 	<target name="build" depends="jarClient" description="Build Client app">
-				<copy todir="${efg2.client.dist.home}">
+		<copy todir="${efg2.client.dist.home}">
 			<fileset dir="${efg2.lib.util.home}"/>
 		</copy>
 		
@@ -89,8 +89,12 @@
 
 
 		<copy file="${efg2.software.doc}" todir="${efg2.client.dist.home}"/>
+
 		<copy file="${efg2.lib.home}/client/login.bat" todir="${efg2.client.dist.home}"/>
 		<copy file="${efg2.lib.home}/client/login.sh" todir="${efg2.client.dist.home}"/>
+		<copy file="${efg2.lib.home}/client/efg2Login.sh" todir="${efg2.client.dist.home}"/>
+		<copy file="${efg2.lib.home}/client/efg2Developer.sh" todir="${efg2.client.dist.home}"/>
+		<copy file="${efg2.lib.home}/client/efg2Production.sh" todir="${efg2.client.dist.home}"/>
 
 		<copy todir="${efg2.client.dist.properties.home}">
 			<fileset dir="${efg2.home}/properties/util"/>
@@ -104,6 +108,7 @@
 		<copy todir="${efg2.client.dist.spring.home}">
 			<fileset dir="${efg2.home}/SpringConfigurations/client"/>
 		</copy>
+		<copy file="${efg2.client.dist.properties.home}/log4j_rdb.properties" todir="${efg2.client.dist.home}"/>
 		<replace file="${efg2.client.dist.properties.home}/RDBprops.properties" token="3306" value="${efg2.mysql.port}"/>
 		<replace file="${efg2.client.dist.properties.home}/workspace.configs.properties" token="http://localhost:8080/efg2" value="${efg2.cacheserver.url}"/>
 	 	<replace file="${efg2.client.dist.properties.home}/RDBprops.properties" token="THE_EFG_USER" value="${efg.web.user.password}"/>
