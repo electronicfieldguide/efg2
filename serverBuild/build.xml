@@ -192,7 +192,7 @@
     </target>
 	<!-- Compile sources-->
 	<target name="compile" depends="init">
-		<javac srcdir="${efg2.src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on">
+		<javac srcdir="${efg2.src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on" source="1.4" target="1.4">
 			<classpath refid="compile.class.path"/>
 		</javac>
 	</target>
