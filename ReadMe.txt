@@ -40,6 +40,7 @@ Build Client and Web applications
 	  	
 	  	Windows users should cd into the created application directory
 	  	and run login.bat, linux/unix/mac OS X users should run login.sh.
+		efg2 on bdei could run efg2Login.sh
 	  	
 	4. To build and deploy the server application only(the feg2 web apps)	
 		i) Set the value of efg2.mysql.port to your mysql port if it is not 3306 also
