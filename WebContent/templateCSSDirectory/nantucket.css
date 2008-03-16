@@ -417,11 +417,6 @@ font-size: 8pt;
 text-align: left;
 text-decoration: none;
 }
-div.glossaryicon {
-float: left;
-padding-top: 1px;
-padding-right: 5px;
-}
 /* end of style code for About, Acknowledgement, FAQ and Glossary pages */
 
 /* style code for Search page starts here */
@@ -441,9 +436,6 @@ table.searchmodule {
 	margin-bottom: 10px;
 	border-collapse: collapse;
 	border: 0px;
-}
-tr.section {
-	background-color: #FFFFFF;
 }
 th.search {
 	color: #09600F;
@@ -621,19 +613,9 @@ td.descrip {
 	  font-family: helvetica, verdana, arial;
 	  font-size: 11pt;
 	  font-weight: normal;
-	  padding-bottom: 15px;
+	  padding-bottom: 30px;
 	  padding-top: 30px;
 	  padding-left: 0px;
-}
-td.famheader {
-	color: #000000;
-	font-family: helvetica, verdana, arial;
-	font-size: 11pt;
-	font-weight: bold;
-	padding-left: 0px;
-	padding-top: 16px;
-	padding-bottom: 2px;
-	text-transform: uppercase;
 }
 td.commonheader {
 	   color: #000000;
@@ -644,7 +626,6 @@ td.commonheader {
 	   border-bottom-color: #000000;
 	   border-bottom-width: 1px;
 	   padding-right: 25px;
-	padding-left: 50px;
 }
 td.sciheader {
 	   color: #000000;
@@ -655,7 +636,6 @@ td.sciheader {
 	   border-bottom-style: solid;
 	   border-bottom-color: #000000;
 	   border-bottom-width: 1px;
-	padding-left: 50px;
 }
 td.spacerheight {
    height: 10px;
@@ -666,7 +646,6 @@ td.commonname {
     font-size: 10pt;
     padding-bottom: 7px;
     padding-right: 35px;
-	padding-left: 50px;
 }
 td.sciname {
     color: #000000;
@@ -675,7 +654,6 @@ td.sciname {
     font-size: 10pt;
     padding-bottom: 7px;
     padding-right: 35px;
-	padding-left: 50px;
 }
 td.previous {
    color: #336600;
@@ -965,45 +943,5 @@ ul.taxon {
 		margin-left: 10px;
 		padding: 0px;
 		padding-left: 20px;
-}
-p.link {
-padding-left: 10px;
-}
-a.link, a.link:visited, a.link:active {
-background-color: #FFFFCC;
-color: #000000;
-font-weight: bold;
-padding: 3px;
-margin-right: 10px;
-border-top: 2px solid #cecece;
-border-left: 2px solid #cecece;
-border-bottom: 2px solid #4a4a4a;
-border-right: 2px solid #4a4a4a;
-}
-a.link:hover {
-background-color: #DFF8FF;
-color: #000000;
-font-weight: bold;
-padding: 3px;
-border-bottom: 2px solid #cecece;
-border-right: 2px solid #cecece;
-border-top: 2px solid #4a4a4a;
-border-left: 2px solid #4a4a4a;
-}
-input.addlink {
-background-color: #F3F3F3;
-border: 0px #333333 groove;
-font-weight: bold;
-font-size: 10pt;
-text-decoration: underline;
-margin-bottom: -5px;
-color: #006633;
-}
-input.addlink:hover {
-color: #009933;
-background-color: #F3F3F3;
-border: 0px groove #333333;
-outline: 0px solid #333333;
-text-decoration: none;
 }
 /* style code for Taxon pages ends here */

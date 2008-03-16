@@ -68,6 +68,7 @@
         <ant antfile="${efg2.client.home}/build.xml" inheritAll="true"/>
     </target>
     <target name="deployserver">
+       <echo message="ant.java.version: ${ant.java.version}" />
          <antcall target="checkserverproperties" inheritAll="true"/>
          <ant antfile="${efg2.server.home}/build.xml" inheritAll="true"/>   
      </target>  
@@ -98,3 +99,7 @@
         <antcall target="cleanserver"/>       
 	</target>
 </project>
+
+
+
+
