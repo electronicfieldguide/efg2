@@ -63,6 +63,7 @@
 			<fileset dir="${efg2.src.home}/project/efg/util"/>
 		</copy>
 		<mkdir dir="${efg2.client.dist.home}"/>
+		<mkdir dir="${efg2.client.dist.home}/samples"/>
 		<mkdir dir="${efg2.client.dist.spring.home}"/>
 		<mkdir dir="${efg2.client.dist.properties.home}"/>
 		<mkdir dir="${efg2.client.dist.metadata.home}"/>
@@ -76,6 +77,9 @@
 		<copy todir="${efg2.client.dist.home}">
 			<fileset dir="${efg2.lib.util.home}"/>
 		</copy>
+		<copy todir="${efg2.client.dist.home}/samples">
+			<fileset dir="${efg2.home}/samples"/>
+		</copy>
 		
 		<copy todir="${efg2.client.dist.metadata.home}">
 			<fileset dir="${efg2.lib.home}/client/metadataHeader"/>
@@ -86,7 +90,7 @@
 		<copy todir="${efg2.client.dist.help.home}">
 			<fileset dir="${efg2.lib.home}/client/help"/>
 		</copy>
-
+		
 
 		<copy file="${efg2.software.doc}" todir="${efg2.client.dist.home}"/>
 
