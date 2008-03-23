@@ -37,7 +37,6 @@
 	<classpathentry kind="lib" path="lib/server/xalan.jar"/>
 	<classpathentry kind="lib" path="lib/util/ostermillerutils_1_05_00_for_java_1_4.jar"/>
 	<classpathentry kind="lib" path="lib/util/xerces.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/j2sdk1.4.2_10"/>
 	<classpathentry kind="lib" path="lib/util/itext-1.4.8.jar" sourcepath="lib/misc/itext-src-1.4.8.zip"/>
 	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/catalina-ant.jar"/>
 	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/catalina-deployer.jar"/>
@@ -47,5 +46,6 @@
 	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/jasper-runtime.jar"/>
 	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/jsp-api.jar"/>
 	<classpathentry kind="lib" path="serverBuild/tomcattasks/lib/servlet-api.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="compiled"/>
 </classpath>
