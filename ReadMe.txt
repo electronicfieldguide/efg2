@@ -11,7 +11,8 @@ Requirements
 	 and JRE 1.5 (or later) to run it (the client app), 
 	Image Magick 6.3.2, MySQL 5.0 or later and Ant 1.6.
 	It also requires that the following modules from SVN are at the same
-	level with the efg2 folder. (efg2_skins,efg2_bookmaker and efg2_website).
+	level with the efg2 folder. (efg2_skins,efg2_bookmaker
+	efg2_platemaker and efg2_website).
 	The application will fail to build if these folders are not present.
 
 Build Client and Web applications
@@ -30,43 +31,61 @@ Build Client and Web applications
 	  	ii)Edit the efg.client.folder.name value if you wish to change
 	  		the name of the folder that will be holding the importer
 	  		application files.(The default is efg2Client).
-	  	iii) edit the value of efg.web.user.password to the password
-	  	that will be used by the 'efg' user.Templates cannot be configured until
-	  	this is done. The default password is 'efg'.
-	  	
+	
 	  
 	  	Then run ant with the "buildclient" target.
 	  	ant buildclient
 	  	
-	  	Windows users should cd into the created application directory
-	  	and run login.bat, linux/unix/mac OS X users should run login.sh.
-		efg2 on bdei could run efg2Login.sh
-	  	
-	4. To build and deploy the server application only(the feg2 web apps)	
-		i) Set the value of efg2.mysql.port to your mysql port if it is not 3306 also
-		    change the value of efg2.tomcat.home to the full path of your tomcat root.
-		    set efg2.tomcat.webapps.home to the full path to your webapps folder.
-		 ii) Edit efg2.xml if the webapps folder where efg2 will be deposited is not
-		    	directly under the tomcat server.
-		iii) edit the value of efg.web.user.password to the password
-	  	that will be used by the 'efg' user.Templates cannot be configured until
+	4. To build and deploy the server application only(the efg2 web apps)	
+		i) Set the value of efg2.mysql.port to your mysql port
+		if it is not 3306 
+
+		ii)Change the value of efg2.tomcat.home to the full
+		path of your tomcat root. 
+
+		iii)Set efg2.tomcat.webapps.home to the full path to
+		your webapps folder. This is normally the webapps
+		folder under the tomcat home as specified in
+		efg2.tomcat.home 
+
+		iv) If the webapps folder where efg2 will be deposited
+		is not directly under the tomcat home, then edit the
+		file webcontext/efg2.xml. (webcontext/ is a sister
+		directory to the one containing this ReadMe.txt). In
+		that file, change the value of the docBase attribute
+		to the full path of the efg2 webapp, as implied in
+		build.properties. For example, if in build.properties
+		you had efg2.tomcat.webapps.home=/share/webapps then
+		the entry in efg2.xml must be /share/webapps/efg2.
+		
+
+
+		v) Edit the value of efg.web.user.password to the password
+	  	that will be used by the 'efg' user. Templates cannot be configured until
 	  	this is done. The defaults is 'efg' without the single quote.
 	  	
-		iv) If you have tomcat manager enabled then make sure to set
-			 the values of tomcat.manager.username,tomcat.manager.password
-			 and tomcat.manager.url properties appropriately.
-			 
-		v) Then run ant with the "deployserver" target.	 
+		vi) If you have tomcat manager enabled then make sure
+		to set the values of tomcat.manager.username,
+		tomcat.manager.password and tomcat.manager.url
+		properties appropriately.
+
+		vi) Then run ant with the "deployserver" target.	 
 			ant deployserver
 			ant deployservertc if you have tomcat manager enabled
 			
-		vi) To deploy a war file run ant with the deploywar target.
-			ant deploywar	
-			
-			ant deploywar if you have tomcat manager enabled		   			
-	5. To build both web and client applications follow the instructions in
-		steps 3 and 4 but run ant with the "doall" target
-		ant doall 
+
+
+	  	
+	5. Windows users should cd into the created application directory
+	  	and run login.bat, linux/unix/mac OS X users should run login.sh.
+		efg2 on bdei could run efg2Login.sh
+	  	
+
+
+	6. As a convenience, if you modify the build.properties and
+		webcontext/efg2.xml as described above, you can redeploy
+		both client and server with 
+			ant doall 
 		   
 		
 		
