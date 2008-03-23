@@ -30,181 +30,183 @@ package project.efg.server.factory;
 import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import project.efg.server.exports.ZipExport;
-import project.efg.server.impl.*;
-import project.efg.server.interfaces.*;
+import project.efg.server.impl.SearchPageHtml;
+import project.efg.server.impl.SearchPageHtmlLists;
+import project.efg.server.impl.SearchPageHtmlPlates;
+import project.efg.server.impl.ServletAbstractFactoryImpl;
+import project.efg.server.impl.TaxonPageHtml;
+import project.efg.server.interfaces.ApplyXSLInterface;
+import project.efg.server.interfaces.EFGParseObjectFactory;
+import project.efg.server.interfaces.SearchableInterface;
+import project.efg.server.interfaces.ServletAbstractFactoryInterface;
 import project.efg.server.rdb.SearchableImpl;
-import project.efg.server.utils.*;
+import project.efg.server.utils.EFGDataObjectImpl;
+import project.efg.server.utils.EFGDataSourceHelperInterface;
+import project.efg.server.utils.EFGDisplayObjectList;
+import project.efg.server.utils.EFGDocumentTypesFactory;
+import project.efg.server.utils.EFGParseObjectFactoryImpl;
+import project.efg.server.utils.XSLTObjectInterface;
 import project.efg.util.interfaces.EFGDataObject;
 import project.efg.util.interfaces.EFGSessionBeanInterface;
 
-public class EFGSpringFactory
-{
+public class EFGSpringFactory {
 
-    private EFGSpringFactory()
-    {
-    }
-
-    public static EFGDataObject getEFGDataObject()
-    {
-    	try{
-        return (EFGDataObject)appcontext.getBean("efgdataobject");
-    	}catch(Exception ee){
-            log.error(ee.getMessage());
-   		
-    	}
-        return new EFGDataObjectImpl();
-    }
-
-    public static SearchableInterface getSearchables()
-    {
-    	try{
-        return (SearchableInterface)appcontext.getBean("searchables");
-    }catch(Exception ee){
-        log.error(ee.getMessage());
-		
+	private EFGSpringFactory() {
 	}
-        return new SearchableImpl();
-    }
 
-    public static EFGDataSourceHelperInterface getDatasourceHelper()
-    {
-    	try{
-        return (EFGDataSourceHelperInterface)appcontext.getBean("datasourcehelper");
-    	  }catch(Exception ee){
-    	        log.error(ee.getMessage());
-    			
-    		}
-        return new EFGDataSourceHelperInterface();
-    }
+	public static EFGDataObject getEFGDataObject() {
+		try {
+			return (EFGDataObject) appcontext.getBean("efgdataobject");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
 
-    public static ZipExport getZipExportInstance()
-    {
-    	try{
-    
-        return (ZipExport)appcontext.getBean("zipexport");
-    }catch(Exception ee){
-        log.error(ee.getMessage());
-		
+		}
+		return new EFGDataObjectImpl();
 	}
-        return new ZipExport();
-    }
 
-    public static EFGDocumentTypesFactory getEFGDocumentTypesFactoryInstance()
-    {
-    	try{
-        return (EFGDocumentTypesFactory)appcontext.getBean("efgdocumenttypesfactory");
-    }catch(Exception ee){
-        log.error(ee.getMessage());
-		
+	public static SearchableInterface getSearchables() {
+		try {
+			return (SearchableInterface) appcontext.getBean("searchables");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+
+		}
+		return new SearchableImpl();
 	}
-        return new EFGDocumentTypesFactory();
-    }
 
-    public static EFGDisplayObjectList getDisplayObjectList()
-    {
-    	try{
-        return (EFGDisplayObjectList)appcontext.getBean("displayobjectlist");
-    	 }catch(Exception ee){
-    	        log.error(ee.getMessage());
-    			
-    		}
-        return new EFGDisplayObjectList();
-    }
+	public static EFGDataSourceHelperInterface getDatasourceHelper() {
+		try {
+			return (EFGDataSourceHelperInterface) appcontext
+					.getBean("datasourcehelper");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
 
-    public static EFGSessionBeanInterface getSessionBean()
-    {
-        return (EFGSessionBeanInterface)appcontext.getBean("efgsessionbean");
-     }
+		}
+		return new EFGDataSourceHelperInterface();
+	}
 
-    public static EFGParseObjectFactory getParseObjectFactory()
-    {
-        return new EFGParseObjectFactoryImpl();
-    }
+	public static ZipExport getZipExportInstance() {
+		try {
 
-    public static ServletAbstractFactoryInterface getServletAbstractFactoryInstance()
-    {
-    	try{
-        return (ServletAbstractFactoryInterface)appcontext.getBean("servletabstractfactory");
-    	}
-    	catch(Exception ee){
-        log.error(ee.getMessage());
-    	}
-        return new ServletAbstractFactoryImpl();
-    }
+			return (ZipExport) appcontext.getBean("zipexport");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
 
-    public static synchronized XSLTObjectInterface getXSLTObjectInstance(int taxonSize, String searchType)
-    {
-        if(taxonSize == 1)
-            return createTaxonPage();
-        if("plates".equalsIgnoreCase(searchType))
-            return createSearchPlatesPage();
-        if("searches".equalsIgnoreCase(searchType))
-            return createSearchPage();
-        else
-            return createSearchListsPage();
-    }
+		}
+		return new ZipExport();
+	}
 
-    public static ApplyXSLInterface createApplyXSLInterface(String springID)
-    {
-        return (ApplyXSLInterface)appcontext.getBean(springID);
-    }
+	public static EFGDocumentTypesFactory getEFGDocumentTypesFactoryInstance() {
+		try {
+			return (EFGDocumentTypesFactory) appcontext
+					.getBean("efgdocumenttypesfactory");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
 
-    private static XSLTObjectInterface createTaxonPage()
-    {
-        try{
-        	return (XSLTObjectInterface)appcontext.getBean("createtaxonpage");
-        }
-         catch(Exception ee){
-    		log.error(ee.getMessage());
-    	}
-        return new TaxonPageHtml();
-    }
+		}
+		return new EFGDocumentTypesFactory();
+	}
 
-    private static XSLTObjectInterface createSearchPlatesPage()
-    {
-    	try{
-   
-        return (XSLTObjectInterface)appcontext.getBean("createsearchplatespage");
-    	}catch(Exception ee){
-    		log.error(ee.getMessage());
-    	}
-        return new SearchPageHtmlPlates();
-    }
+	public static EFGDisplayObjectList getDisplayObjectList() {
+		try {
+			return (EFGDisplayObjectList) appcontext
+					.getBean("displayobjectlist");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
 
-    private static XSLTObjectInterface createSearchPage()
-    {
-    	try{
-        return (XSLTObjectInterface)appcontext.getBean("createsearchpage");
-    	}catch(Exception ee){
-    		log.error(ee.getMessage());
-    	}
-        return new SearchPageHtml();
-    }
+		}
+		return new EFGDisplayObjectList();
+	}
 
-    private static XSLTObjectInterface createSearchListsPage()
-    {
-    	try{
-        return (XSLTObjectInterface)appcontext.getBean("createsearchlistspage");
-    	}
-    	catch(Exception ee){
-    		log.error(ee.getMessage());
-    	}
-        return new SearchPageHtmlLists();
-    }
+	public static EFGSessionBeanInterface getSessionBean() {
+		return (EFGSessionBeanInterface) appcontext.getBean("efgsessionbean");
+	}
 
+	public static EFGParseObjectFactory getParseObjectFactory() {
+		return new EFGParseObjectFactoryImpl();
+	}
 
+	public static ServletAbstractFactoryInterface getServletAbstractFactoryInstance() {
+		try {
+			return (ServletAbstractFactoryInterface) appcontext
+					.getBean("servletabstractfactory");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		return new ServletAbstractFactoryImpl();
+	}
 
-    static Logger log;
-    static ApplicationContext appcontext;
+	public static synchronized XSLTObjectInterface getXSLTObjectInstance(
+			int taxonSize, String searchType) {
+		if (taxonSize == 1)
+			return createTaxonPage();
+		if ("plates".equalsIgnoreCase(searchType))
+			return createSearchPlatesPage();
+		if ("searches".equalsIgnoreCase(searchType))
+			return createSearchPage();
+		else
+			return createSearchListsPage();
+	}
 
-    static 
-    {
-        try
-        {
-            log = Logger.getLogger(project.efg.server.factory.EFGSpringFactory.class);
-            appcontext = new ClassPathXmlApplicationContext("springconfig.xml", project.efg.server.factory.EFGSpringFactory.class);
-        }
-        catch(Exception ee) { }
-    }
+	public static ApplyXSLInterface createApplyXSLInterface(String springID) {
+		return (ApplyXSLInterface) appcontext.getBean(springID);
+	}
+
+	private static XSLTObjectInterface createTaxonPage() {
+		try {
+			return (XSLTObjectInterface) appcontext.getBean("createtaxonpage");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		return new TaxonPageHtml();
+	}
+
+	private static XSLTObjectInterface createSearchPlatesPage() {
+		try {
+
+			return (XSLTObjectInterface) appcontext
+					.getBean("createsearchplatespage");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		return new SearchPageHtmlPlates();
+	}
+
+	private static XSLTObjectInterface createSearchPage() {
+		try {
+			return (XSLTObjectInterface) appcontext.getBean("createsearchpage");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		return new SearchPageHtml();
+	}
+
+	private static XSLTObjectInterface createSearchListsPage() {
+		try {
+			return (XSLTObjectInterface) appcontext
+					.getBean("createsearchlistspage");
+		} catch (Exception ee) {
+			log.error(ee.getMessage());
+		}
+		return new SearchPageHtmlLists();
+	}
+
+	static Logger log;
+	static ApplicationContext appcontext;
+
+	static {
+		try {
+			System.out.println("Getting springconfig.xml");
+			log = Logger
+					.getLogger(project.efg.server.factory.EFGSpringFactory.class);
+			appcontext = new ClassPathXmlApplicationContext("springconfig.xml",
+					project.efg.server.factory.EFGSpringFactory.class);
+		} catch (Exception ee) {
+			System.out.println("Error getting springconfig.xml");
+			ee.printStackTrace();
+
+		}
+	}
 }
