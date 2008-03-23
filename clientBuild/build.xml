@@ -27,7 +27,7 @@
  */
  -->
 <project name="Electronic Field Guide" default="build" basedir=".">
-	<property name="client.app.name" value="${efg.client.folder.name}"/>
+	<property name="client.app.name" value="${efg2.client.folder.name}"/>
 	<property name="efg2.lib.home" value="${efg2.home}/lib"/>
 	<property name="efg2.lib.util.home" value="${efg2.lib.home}/util"/>
 	<property name="efg2.lib.client.home" value="${efg2.lib.home}/client"/>
@@ -129,13 +129,11 @@
 		</javac>
 	</target>
 	<!-- Clean All -->
-	<target name="cleanBuildClient">
+	<target name="clean">
 		<delete dir="${compile.home}" quiet="true"/>
 		<delete dir="${efg2.src.temp.home}" quiet="true"/>
-		<delete dir="${efg2.src.temp.home}" quiet="true"/>
-		<delete file="${efg2.lib.client.home}/${client.jar.file}" quiet="true"/>
-	</target>
-	<target name="clean" depends="cleanBuildClient">
 		<delete dir="${efg2.client.dist.home}/${client.jar.file}" quiet="true"/>
+		<delete dir="${efg2.client.folder.name}" quiet="true"/>
 	</target>
+
 </project>

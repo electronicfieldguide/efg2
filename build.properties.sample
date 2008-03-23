@@ -13,7 +13,7 @@
 #********************************************************************************
 
 #Client application home
-efg.client.folder.name=efg2Client
+efg2.client.folder.name=efg2Client
 
 #MySQL port number
 efg2.mysql.port=3306
