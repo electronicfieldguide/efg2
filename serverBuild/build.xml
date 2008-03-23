@@ -162,7 +162,9 @@
 	   <copy todir="${efg2.tomcat.home}/webapps/efg2" preservelastmodified="true">
 	       <fileset dir="${web.dir}"  excludes="jsp"/>
 		</copy> 
-
+		 <copy todir="${efg2.tomcat.home}/common/lib" preservelastmodified="true">
+	       <fileset dir="${efg2.lib.util.home}"  includes="mysqldriver.jar"/>
+		</copy> 
  		<delete dir="${efg2.tomcat.home}/webapps/efg2/jsp" quiet="true"/>  
 		<copy todir="${efg2.tomcat.home}/webapps/efg2" preservelastmodified="true">
          <fileset dir="${web.dir}/jsp"/>
