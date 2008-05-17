@@ -30,66 +30,74 @@ import org.apache.log4j.Logger;
 
 import project.efg.util.interfaces.EFGDataObject;
 
+public abstract class SearchableInterface {
+	protected EFGDataObjectListInterface searchableList;
+	protected EFGDataObjectListInterface mediaResourceList;
 
-
-public abstract class SearchableInterface
-{
-	  protected EFGDataObjectListInterface searchableList;
-	   protected EFGDataObjectListInterface mediaResourceList;
-	  
-	    private String mainTableName;
+	private String mainTableName;
 
 	static Logger log = null;
 	static {
 		try {
-			//log = Logger.getLogger(SearchableInterface.class);
+			// log = Logger.getLogger(SearchableInterface.class);
 		} catch (Exception ee) {
 		}
 	}
 
-    public void setMainDataTableName(String mainTableName)
-    {
-        this.mainTableName = mainTableName;
-    }
+	public void setMainDataTableName(String mainTableName) {
+		this.mainTableName = mainTableName;
+	}
 
-    public String getMainTableName()
-    {
-        return mainTableName;
-    }
+	public String getMainTableName() {
+		return mainTableName;
+	}
 
-    public SearchableInterface()
-    {
-        searchableList = createSearchableList();
-        mediaResourceList = createMediaResourcesList();
-    }
+	public SearchableInterface() {
+		searchableList = createSearchableList();
+		mediaResourceList = createMediaResourcesList();
+	}
+
 	/**
 	 * Return a list of searchable items given a display name
-	 * @param datasourceName - The name of the datasource Table
+	 * 
+	 * @param datasourceName -
+	 *            The name of the datasource Table
 	 * @return EFGDataObjectListInterface that encapsulate the lists.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public abstract EFGDataObjectListInterface getSearchables( String displayName, String datasourceName) throws Exception;
+	public abstract EFGDataObjectListInterface getSearchables(
+			String displayName, String datasourceName);
+
 	/**
 	 * Return a list of Medairesource items given a display name
-	 * @param datasourceName - The name of the datasource Table
+	 * 
+	 * @param datasourceName -
+	 *            The name of the datasource Table
 	 * @return EFGDataObjectListInterface that encapsulate the lists.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public abstract EFGDataObjectListInterface getMediaResources(String displayName,String datasourceName) throws Exception;
+	public abstract EFGDataObjectListInterface getMediaResources(
+			String displayName, String datasourceName);
+
 	/**
 	 * A factory method
+	 * 
 	 * @return the EFGDataObject created by the implementation class
 	 */
 	public abstract EFGDataObject createEFGDataObject();
+
 	/**
 	 * A factory for creating a searchable list by implementing classes
+	 * 
 	 * @return
 	 */
 	public abstract EFGDataObjectListInterface createSearchableList();
+
 	/**
 	 * A factory for creating a MediaResource list by implementing classes
+	 * 
 	 * @return
 	 */
 	public abstract EFGDataObjectListInterface createMediaResourcesList();
-   
+
 }

@@ -31,114 +31,111 @@
  */
 package project.efg.server.utils;
 
-import com.opensymphony.oscache.base.NeedsRefreshException;
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import java.util.Map;
-import project.efg.server.servlets.EFGContextListener;
-import project.efg.templates.taxonPageTemplates.*;
+
+import project.efg.templates.taxonPageTemplates.TaxonPageTemplateType;
+import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
+import project.efg.templates.taxonPageTemplates.XslFileNamesType;
+import project.efg.templates.taxonPageTemplates.XslPage;
+import project.efg.templates.taxonPageTemplates.XslPageType;
 import project.efg.util.interfaces.EFGImportConstants;
 import project.efg.util.utils.TemplateMapObjectHandler;
 
 // Referenced classes of package project.efg.server.utils:
-//            ServletCacheManager
+// ServletCacheManager
 
-public class FindTemplate
-{
-	   private String dsName;
-	    private String xslType;
-	    private TaxonPageTemplates tps;
-	    private XslPage page;
-	    private static GeneralCacheAdministrator cacheAdmin = EFGContextListener.getCacheAdmin();
+public class FindTemplate {
+	private String dsName;
+	private String xslType;
+	private TaxonPageTemplates tps;
+	private XslPage page;
 
+	public FindTemplate(String dsName, String xslType) {
+		this.dsName = dsName;
+		this.xslType = xslType;
+		this.tps = getTaxonPageTemplate();
+	}
 
+	/**
+	 * 
+	 * @return
+	 */
+	public XslPage getXSLFileName() {
+		if (this.page == null && this.tps != null) {
+			this.page = this.getXSL();
+		}
+		if (this.page == null) {
+			createXSLDefaultPage();
+		}
+		return this.page;
+	}
 
-    public FindTemplate(String dsName, String xslType)
-    {
-        this.dsName = dsName;
-        this.xslType = xslType;
-        this.tps = getTaxonPageTemplate();
-    }
-    /**
-     * 
-     * @return
-     */
-    public XslPage getXSLFileName()
-    {
-        if(this.page == null && this.tps != null){
-            this.page = this.getXSL();
-        }
-        if(this.page == null){
-            createXSLDefaultPage();
-        }
-        return this.page;
-    }
+	public XslPageType getXSLPageType() {
 
-    public XslPageType getXSLPageType()
-    {
-    	
 		try {
 
 			int counter = tps.getTaxonPageTemplateCount();
-			
+
 			for (int i = 0; i < counter; i++) {
 
-				TaxonPageTemplateType tp = 
-					tps.getTaxonPageTemplate(i);
+				TaxonPageTemplateType tp = tps.getTaxonPageTemplate(i);
 				String ds = tp.getDatasourceName();
 				if (ds.equalsIgnoreCase(this.dsName.trim())) {
-					//log.debug("Found datasource: " + ds);
+					// log.debug("Found datasource: " + ds);
 					XslFileNamesType xslFileNames = tp.getXSLFileNames();
 
 					if (EFGImportConstants.TAXONPAGE_XSL
 							.equalsIgnoreCase(this.xslType)) {
-							//log.debug("It is a taxon Page");
-						return  xslFileNames.getXslTaxonPages();
+						// log.debug("It is a taxon Page");
+						return xslFileNames.getXslTaxonPages();
 
-					} 
+					}
 					if (EFGImportConstants.SEARCHPAGE_PLATES_XSL
 							.equalsIgnoreCase(this.xslType)) {
-						//log.debug("It is a palte");
+						// log.debug("It is a palte");
 						return xslFileNames.getXslPlatePages();
-					} 
+					}
 					if (EFGImportConstants.SEARCHPAGE_LISTS_XSL
 							.equalsIgnoreCase(this.xslType)) {
-						//log.debug("It is a list");
+						// log.debug("It is a list");
 						return xslFileNames.getXslListPages();
-						
+
 					}
 					if (EFGImportConstants.SEARCHPAGE_XSL
 							.equalsIgnoreCase(this.xslType)) {
-						//log.debug("It is a list");
+						// log.debug("It is a list");
 						return xslFileNames.getXslSearchPages();
-						
+
 					}
-					if (EFGImportConstants.SEARCHPAGE_PDF_XSL 
+					if (EFGImportConstants.SEARCHPAGE_PDF_XSL
 							.equalsIgnoreCase(this.xslType)) {
-						//log.debug("It is a list");
+						// log.debug("It is a list");
 						return xslFileNames.getXslPdfPages();
-						
+
 					}
-					 if("XSL_FILENAME_SEARCHPAGE_PDFBOOK".equalsIgnoreCase(xslType)){
-				            return xslFileNames.getXslBookPages();
-					 }
-					 break;
+					if ("XSL_FILENAME_SEARCHPAGE_PDFBOOK"
+							.equalsIgnoreCase(xslType)) {
+						return xslFileNames.getXslBookPages();
+					}
+					break;
 				}
 			}
 		} catch (Exception ee) {
-			
+
 		}
-		
+
 		return null;
 
-    }
+	}
+
 	private XslPage getXSL() {
 		try {
 			XslPageType xslPageType = getXSLPageType();
 			XslPage currentPage = null;
-			
-			if(xslPageType != null){			
+
+			if (xslPageType != null) {
 				for (int j = 0; j < xslPageType.getXslPageCount(); ++j) {// find
-					currentPage = xslPageType.getXslPage(j);					
+					currentPage = xslPageType.getXslPage(j);
 					boolean isDefault = currentPage.getIsDefault();
 					if (isDefault) {// if
 						this.page = currentPage;
@@ -146,7 +143,7 @@ public class FindTemplate
 					}
 				}
 			}
-			if(this.page == null){
+			if (this.page == null) {
 				this.page = currentPage;
 			}
 		} catch (Exception ee) {
@@ -154,54 +151,33 @@ public class FindTemplate
 		}
 		return page;
 	}
+
 	private TaxonPageTemplates getTaxonPageTemplate() {
 		TaxonPageTemplates tps = null;
-	
-		//if the file does not exists 
-		//get the defaults from database
-		//if that fails then return null;
-		
-		try {
-			  
-			tps = (TaxonPageTemplates)cacheAdmin.getFromCache(this.dsName.toLowerCase());
-			//log.debug("Object obtained from cache ");
-		} catch (NeedsRefreshException nre) {
-			
-            try
-            {
-                String tName = EFGImportConstants.EFG_RDB_TABLES;
-                Map map = ServletCacheManager.getDatasourceCache(tName.toLowerCase());
-                if(map != null && !map.containsKey(dsName.toLowerCase())){
-                    tName = EFGImportConstants.EFG_GLOSSARY_TABLES;
-                }
-                tps = TemplateMapObjectHandler.getTemplateFromDB(null, null, dsName, tName);
-                cacheAdmin.putInCache(dsName.toLowerCase(), tps, EFGContextListener.templateFilesGroup);
-            }
-            catch(Exception ex)
-            {
-                tps = (TaxonPageTemplates)nre.getCacheContent();
-                cacheAdmin.cancelUpdate(dsName.toLowerCase());
-            }
+		String tName = EFGImportConstants.EFG_RDB_TABLES;
+		Map map = ServletCacheManager.getDatasources(tName.toLowerCase());
+		if (map != null && !map.containsKey(dsName.toLowerCase())) {
+			tName = EFGImportConstants.EFG_GLOSSARY_TABLES;
 		}
-		return tps;
+		return TemplateMapObjectHandler.getTemplateFromDB(null, null, dsName,
+				tName);
 	}
-		/**
-		 * 
-		 */
-		private void createXSLDefaultPage() {
-			
-			this.page = new XslPage();
-			String xslName = EFGImportConstants.DEFAULT_SEARCH_FILE;
-			if (EFGImportConstants.TAXONPAGE_XSL
-					.equalsIgnoreCase(this.xslType)) {
-				xslName = EFGImportConstants.DEFAULT_TAXON_PAGE_FILE;
-			}
-			else if(EFGImportConstants.SEARCHPAGE_XSL
-					.equalsIgnoreCase(this.xslType)){
-				xslName = EFGImportConstants.DEFAULT_SEARCH_PAGE_FILE;
-			}
-			this.page.setFileName(xslName);
-			this.page.setIsDefault(true);
+
+	/**
+	 * 
+	 */
+	private void createXSLDefaultPage() {
+
+		this.page = new XslPage();
+		String xslName = EFGImportConstants.DEFAULT_SEARCH_FILE;
+		if (EFGImportConstants.TAXONPAGE_XSL.equalsIgnoreCase(this.xslType)) {
+			xslName = EFGImportConstants.DEFAULT_TAXON_PAGE_FILE;
+		} else if (EFGImportConstants.SEARCHPAGE_XSL
+				.equalsIgnoreCase(this.xslType)) {
+			xslName = EFGImportConstants.DEFAULT_SEARCH_PAGE_FILE;
 		}
+		this.page.setFileName(xslName);
+		this.page.setIsDefault(true);
+	}
 
 }

@@ -100,7 +100,7 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig
         String displayName = req.getParameter(EFGImportConstants.DISPLAY_NAME);
         if(displayName == null || "".equals(displayName))
         {
-            Map map = ServletCacheManager.getDatasourceCache(req.getParameter("ALL_TABLE_NAME").toLowerCase());
+            Map map = ServletCacheManager.getDatasources(req.getParameter("ALL_TABLE_NAME").toLowerCase());
             displayName = (String)map.get(dsName.toLowerCase());
         }
         String xml = req.getParameter("searchqueryresultsxml");

@@ -27,8 +27,6 @@
 
 package project.efg.server.rdb;
 
-
-
 import java.util.List;
 
 import project.efg.efgDocument.EFGListsType;
@@ -39,6 +37,7 @@ import project.efg.server.factory.EFGSpringFactory;
 import project.efg.server.interfaces.EFGDataObjectListInterface;
 import project.efg.server.interfaces.SearchableInterface;
 import project.efg.server.utils.EFGDocumentTypesFactory;
+import project.efg.server.utils.LoggerUtilsServlet;
 import project.efg.server.utils.SearchableList;
 import project.efg.util.factory.SpringFactory;
 import project.efg.util.interfaces.EFGDataObject;
@@ -47,8 +46,7 @@ import project.efg.util.interfaces.EFGQueueObjectInterface;
 import project.efg.util.interfaces.QueryExecutorInterface;
 import project.efg.util.utils.EFGObject;
 
-public class SearchableImpl extends SearchableInterface
-{
+public class SearchableImpl extends SearchableInterface {
 	private QueryExecutorInterface queryExecutor;
 
 	private EFGDocumentTypesFactory typesFactory;
@@ -62,8 +60,10 @@ public class SearchableImpl extends SearchableInterface
 	public SearchableImpl() {
 		super();
 		this.queryExecutor = SpringFactory.getQueryExecutor();
-		this.typesFactory = EFGSpringFactory.getEFGDocumentTypesFactoryInstance();
+		this.typesFactory = EFGSpringFactory
+				.getEFGDocumentTypesFactoryInstance();
 	}
+
 	/**
 	 * Get a list of Mediaresource fields for the current datasource
 	 * 
@@ -71,13 +71,13 @@ public class SearchableImpl extends SearchableInterface
 	 * @param datasourceName
 	 */
 
-    public EFGDataObjectListInterface getMediaResources(String displayName, String datasourceName)
-        throws Exception
-    {
+	public EFGDataObjectListInterface getMediaResources(String displayName,
+			String datasourceName) {
 		this.addCommonItems(displayName, datasourceName, false);
 		this.setNames(this.mediaResourceList);
 		return mediaResourceList;
-    }
+	}
+
 	/**
 	 * Get a list of searchable fields for the current datasource
 	 * 
@@ -85,7 +85,7 @@ public class SearchableImpl extends SearchableInterface
 	 * @param datasourceName
 	 */
 	public EFGDataObjectListInterface getSearchables(String displayName,
-			String datasourceName) throws Exception {
+			String datasourceName) {
 		this.addCommonItems(displayName, datasourceName, true);
 		this.setNames(this.searchableList);
 		return this.searchableList;
@@ -96,8 +96,8 @@ public class SearchableImpl extends SearchableInterface
 	 * 
 	 */
 	public EFGDataObjectListInterface createMediaResourcesList() {
-		return new SearchableList(
-				SpringFactory.getComparator("searchableobject_comparator"));
+		return new SearchableList(SpringFactory
+				.getComparator("searchableobject_comparator"));
 	}
 
 	/**
@@ -117,8 +117,11 @@ public class SearchableImpl extends SearchableInterface
 				.getComparator("searchableobject_comparator"));
 
 	}
+
 	/**
-	 * Set the datasource and display names for the current list of searchable items
+	 * Set the datasource and display names for the current list of searchable
+	 * items
+	 * 
 	 * @param searchLists
 	 */
 	private void setNames(EFGDataObjectListInterface searchLists) {
@@ -126,6 +129,7 @@ public class SearchableImpl extends SearchableInterface
 		searchLists.setDisplayName(this.displayName);
 		searchLists.setMetadatasourceName(this.metadatasourceName);
 	}
+
 	/**
 	 * Generate a query to query metadataTable for some fields
 	 */
@@ -139,8 +143,10 @@ public class SearchableImpl extends SearchableInterface
 		return queryBuffer.toString();
 
 	}
+
 	/**
 	 * Create a list of Items from the results of a query
+	 * 
 	 * @param list
 	 * @param string
 	 */
@@ -170,10 +176,12 @@ public class SearchableImpl extends SearchableInterface
 			String type = null;
 			if (isLists.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				type = EFGImportConstants.ISLISTS;
-			} else if (mediaResource.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
+			} else if (mediaResource
+					.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				isSearchable = false;
 				type = EFGImportConstants.MEDIARESOURCE;
-			} else if (numericRange.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
+			} else if (numericRange
+					.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				type = EFGImportConstants.NUMERIC;
 			} else if (numericval.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
 				type = EFGImportConstants.NUMERIC;
@@ -181,7 +189,8 @@ public class SearchableImpl extends SearchableInterface
 				type = EFGImportConstants.CATEGORICAL;
 			}
 			efgObject.setDataType(type);
-			Object ob = this.typesFactory.getEFGDocumentTypesFactory(efgObject, ds);
+			Object ob = this.typesFactory.getEFGDocumentTypesFactory(efgObject,
+					ds);
 
 			if (ob instanceof StatisticalMeasuresType) {
 				StatisticalMeasuresType st = (StatisticalMeasuresType) ob;
@@ -217,15 +226,17 @@ public class SearchableImpl extends SearchableInterface
 			}
 		}
 	}
+
 	/**
 	 * Add some common items to the lists
+	 * 
 	 * @param displayName
 	 * @param datasourceName
 	 * @param isSearchable
 	 * @throws Exception
 	 */
 	private void addCommonItems(String displayName, String datasourceName,
-			boolean isSearchable) throws Exception {
+			boolean isSearchable) {
 		try {
 
 			List list = this.queryExecutor.executeQueryForList(getQuery(
@@ -248,47 +259,48 @@ public class SearchableImpl extends SearchableInterface
 
 			}
 		} catch (Exception e) {
-			throw e;
+			LoggerUtilsServlet.logErrors(e);
 		}
 
 	}
 
 	/**
 	 * Get a query to get a tableName from the master table
+	 * 
 	 * @param displayName
 	 * @param datasourceName
 	 * @return
 	 */
-		private String getQuery(String displayName, String datasourceName) {
-			String str1 = EFGImportConstants.DS_DATA_COL;
-			String str2 = "DISPLAY_NAME";
-			String str3 = displayName;
+	private String getQuery(String displayName, String datasourceName) {
+		String str1 = EFGImportConstants.DS_DATA_COL;
+		String str2 = "DISPLAY_NAME";
+		String str3 = displayName;
 
-			if ((displayName == null) || (displayName.trim().equals(""))) {
-				str1 = "DISPLAY_NAME";
-				str2 = EFGImportConstants.DS_DATA_COL;
-				str3 = datasourceName.toLowerCase();
-			}
-
-			String efgRDBTable = null;
-			
-			if(this.getMainTableName() == null || "".equals(this.getMainTableName())) {
-				efgRDBTable = EFGImportConstants.EFG_RDB_TABLES;
-			}
-			else {
-				efgRDBTable = this.getMainTableName();
-			}
-			StringBuffer queryBuffer = new StringBuffer();
-			queryBuffer.append("SELECT DS_METADATA, ");
-			queryBuffer.append(str1);
-			queryBuffer.append(" FROM ");
-			queryBuffer.append(efgRDBTable);
-			queryBuffer.append(" WHERE ");
-			queryBuffer.append(str2);
-			queryBuffer.append(" = \"");
-			queryBuffer.append(str3);
-			queryBuffer.append("\"");
-			return queryBuffer.toString();
-
+		if ((displayName == null) || (displayName.trim().equals(""))) {
+			str1 = "DISPLAY_NAME";
+			str2 = EFGImportConstants.DS_DATA_COL;
+			str3 = datasourceName.toLowerCase();
 		}
+
+		String efgRDBTable = null;
+
+		if (this.getMainTableName() == null
+				|| "".equals(this.getMainTableName())) {
+			efgRDBTable = EFGImportConstants.EFG_RDB_TABLES;
+		} else {
+			efgRDBTable = this.getMainTableName();
+		}
+		StringBuffer queryBuffer = new StringBuffer();
+		queryBuffer.append("SELECT DS_METADATA, ");
+		queryBuffer.append(str1);
+		queryBuffer.append(" FROM ");
+		queryBuffer.append(efgRDBTable);
+		queryBuffer.append(" WHERE ");
+		queryBuffer.append(str2);
+		queryBuffer.append(" = \"");
+		queryBuffer.append(str3);
+		queryBuffer.append("\"");
+		return queryBuffer.toString();
+
+	}
 }

@@ -29,11 +29,9 @@ package project.efg.server.servlets;
 
 import java.beans.Introspector;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.sql.Driver;
 import java.sql.DriverManager;
@@ -55,23 +53,15 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.jdbc.support.rowset.SqlRowSet;
-
 import project.efg.server.factory.EFGSpringFactory;
 import project.efg.server.interfaces.EFGServletInitializerInterface;
 import project.efg.server.interfaces.ServletAbstractFactoryInterface;
 import project.efg.server.utils.EFGDisplayObjectList;
 import project.efg.server.utils.EFGServletInitializerInstance;
-import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
-import project.efg.util.factory.TemplateModelFactory;
-import project.efg.util.interfaces.EFGImportConstants;
 import project.efg.util.interfaces.RegularExpresionConstants;
 import project.efg.util.utils.EFGDisplayObject;
 import project.efg.util.utils.EFGRDBImportUtils;
 import project.efg.util.utils.EFGUtils;
-import project.efg.util.utils.TemplateModelHandler;
-
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
 /**
  * Method contextInitialized() is called whenever the efg web application is
@@ -83,14 +73,6 @@ import com.opensymphony.oscache.general.GeneralCacheAdministrator;
  * the efg web application is shutting down.
  */
 public class EFGContextListener implements ServletContextListener {
-
-	public static GeneralCacheAdministrator getCacheAdmin() {
-		return cacheAdmin;
-	}
-
-	public static GeneralCacheAdministrator getCacheAdminMap() {
-		return cacheAdmin_map;
-	}
 
 	/**
 	 * Set the servlet context's parameters in EFGServletUtils. Called whenever
@@ -116,9 +98,6 @@ public class EFGContextListener implements ServletContextListener {
 		createKeyWordMap();
 		EFGUtils.log("Context parameters added");
 		EFGRDBImportUtils.init();
-		cacheAdmin = new GeneralCacheAdministrator();
-		cacheAdmin_map = new GeneralCacheAdministrator();
-		populateCacheAdmin();
 	}
 
 	/**
@@ -135,8 +114,6 @@ public class EFGContextListener implements ServletContextListener {
 			servletContext.log("Context is being destroyed");
 			clean();
 			servletContext.log("Save template cache to database");
-			cacheAdmin.destroy();
-			cacheAdmin_map.destroy();
 			sit.close();
 		} catch (Exception e) {
 			EFGUtils.log(e.getMessage());
@@ -182,47 +159,7 @@ public class EFGContextListener implements ServletContextListener {
 		presentHTML(lines, new PrintWriter(res.getOutputStream()));
 	}
 
-	private void populateCacheWithTemplates() {
-		try {
-			TemplateModelHandler temp = TemplateModelFactory
-					.createExportTemplateHandler();
-			StringBuffer query = new StringBuffer("SELECT ");
-			query.append("DS_DATA");
-			query.append(" ,");
-			query.append("TEMPLATE_OBJECT");
-			query.append(" FROM ");
-			query.append(EFGImportConstants.EFG_RDB_TABLES);
-			SqlRowSet rs = temp.executeQueryForRowSet(query.toString());
-			do {
-				if (!rs.next())
-					break;
-				try {
-					String datasourceName = rs.getString("DS_DATA");
-					Object binStream = rs.getObject("TEMPLATE_OBJECT");
-					if (binStream != null) {
-						byte byteArray[] = (byte[]) binStream;
-						ByteArrayInputStream stream = new ByteArrayInputStream(
-								byteArray);
-						ObjectInputStream objS = new ObjectInputStream(stream);
-						Object obj = objS.readObject();
-						TaxonPageTemplates tps = (TaxonPageTemplates) obj;
-						cacheAdmin.putInCache(datasourceName.toLowerCase(),
-								tps, templateFilesGroup);
-						lastModifiedTemplateFileTable.put(datasourceName
-								.toLowerCase(), new Long(System
-								.currentTimeMillis()));
-					}
-				} catch (Exception ee) {
-					servletContext.log(ee.getMessage());
-				}
-			} while (true);
-		} catch (Exception ee) {
-			servletContext.log(ee.getMessage());
-			ee.printStackTrace();
-		}
-	}
-
-	public static Map populateCacheWithDatasources(String tableName) {
+	public static Map populateMapDatasources(String tableName) {
 		Map map = new HashMap();
 		try {
 			ServletAbstractFactoryInterface servFactory = EFGSpringFactory
@@ -255,30 +192,6 @@ public class EFGContextListener implements ServletContextListener {
 			servletContext.log(ee.getMessage());
 		}
 		return map;
-	}
-
-	private void populateCacheAdmin() {
-		populateCacheWithTemplates();
-		Map map = populateCacheWithDatasources(EFGImportConstants.EFG_RDB_TABLES);
-		if (map != null && map.size() > 0)
-			try {
-				cacheAdmin_map.putInCache(EFGImportConstants.EFG_RDB_TABLES
-						.toLowerCase(), map);
-			} catch (Exception ex) {
-				cacheAdmin_map.cancelUpdate(EFGImportConstants.EFG_RDB_TABLES
-						.toLowerCase());
-			}
-		map = populateCacheWithDatasources(EFGImportConstants.EFG_GLOSSARY_TABLES);
-		if (map != null && map.size() > 0)
-			try {
-				cacheAdmin_map.putInCache(
-						EFGImportConstants.EFG_GLOSSARY_TABLES.toLowerCase(),
-						map);
-			} catch (Exception ex) {
-				 cacheAdmin_map
-				.cancelUpdate(EFGImportConstants.EFG_GLOSSARY_TABLES
-				.toLowerCase());
-			}
 	}
 
 	private void cleanCommonImportExport(File dir) {
@@ -478,8 +391,6 @@ public class EFGContextListener implements ServletContextListener {
 	public static Set configuredDatasources = Collections
 			.synchronizedSet(new HashSet(20));
 	private static Map keyWordsMap = Collections.synchronizedMap(new HashMap());
-	private static GeneralCacheAdministrator cacheAdmin;
-	private static GeneralCacheAdministrator cacheAdmin_map;
 
 }
 

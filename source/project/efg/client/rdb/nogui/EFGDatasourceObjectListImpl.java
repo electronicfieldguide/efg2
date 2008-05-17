@@ -46,7 +46,6 @@ import project.efg.client.interfaces.gui.ImportBehavior;
 import project.efg.client.interfaces.nogui.CSV2DatabaseAbstract;
 import project.efg.client.interfaces.nogui.EFGDataExtractorInterface;
 import project.efg.client.interfaces.nogui.EFGDatasourceObjectInterface;
-import project.efg.client.utils.nogui.FlushServerCache;
 import project.efg.client.utils.nogui.LoggerUtils;
 import project.efg.util.factory.SpringFactory;
 import project.efg.util.interfaces.EFGImportConstants;
@@ -61,21 +60,21 @@ public class EFGDatasourceObjectListImpl extends
 		EFGDatasourceObjectListInterface {
 
 	private JdbcTemplate jdbcTemplate;
-	
+
 	private DataSourceTransactionManager txManager;
 
 	private EFGRowMapperInterface rowMapper;
 	private String mainTableName;
-	
-	//private String mapLocation;
-	
+
+	// private String mapLocation;
+
 	public EFGDatasourceObjectListImpl(DBObject dbObject) {
 		super(dbObject);
-		
+
 		this.mainTableName = EFGUtils.getCurrentTableName();
 		this.txManager = this.getTransactionManager(this.dbObject);
 		this.jdbcTemplate = this.getJDBCTemplate(this.dbObject);
-		//this.rowMapper = new EFGRowMapperImpl();
+		// this.rowMapper = new EFGRowMapperImpl();
 		this.rowMapper = SpringFactory.getRowMapper();
 		this.populateLists();
 	}
@@ -115,24 +114,22 @@ public class EFGDatasourceObjectListImpl extends
 	 * @return true if this datasource was successfully added, false otherwise
 	 */
 	public boolean addEFGDatasourceObject(
-			EFGDatasourceObjectInterface datasource, 
-			ImportBehavior isUpdate) {
+			EFGDatasourceObjectInterface datasource, ImportBehavior isUpdate) {
 
 		try {
-	
+
 			String delimiter = EFGImportConstants.EFGProperties.getProperty(
 					"delimiter").trim();
 			char[] delimArr = delimiter.toCharArray();
 			// log.debug("After char delimiter");
 			EFGDataExtractorInterface extractor = NoGUIFactory
 					.getDataExtractor(datasource.getDataName(), delimArr[0]);
-		
+
 			// use abstract method call
 
-			CSV2DatabaseAbstract table = NoGUIFactory
-					.getDatabaseObject(datasource, extractor, dbObject,
-							isUpdate);
-			
+			CSV2DatabaseAbstract table = NoGUIFactory.getDatabaseObject(
+					datasource, extractor, dbObject, isUpdate);
+
 			boolean bool = table.import2Database();
 			if (bool) {
 				// add only if it is not already present
@@ -153,8 +150,6 @@ public class EFGDatasourceObjectListImpl extends
 		return false;
 	}
 
-
-
 	/**
 	 * @param oldDisplayName -
 	 *            the display name to replace.
@@ -170,45 +165,48 @@ public class EFGDatasourceObjectListImpl extends
 			if (index > -1) {
 				EFGDatasourceObjectInterface obj = (EFGDatasourceObjectInterface) this.lists
 						.get(index);
-				StringBuffer queryBuffer = new StringBuffer("SELECT DS_DATA FROM ");
+				StringBuffer queryBuffer = new StringBuffer(
+						"SELECT DS_DATA FROM ");
 				queryBuffer.append(this.mainTableName);
 				queryBuffer.append(" WHERE DISPLAY_NAME = \"");
 				queryBuffer.append(oldDisplayName);
 				queryBuffer.append("\"");
-				java.util.List list = this.executeQueryForList(queryBuffer.toString(), 1);
+				java.util.List list = this.executeQueryForList(queryBuffer
+						.toString(), 1);
 				String datafn = null;
 				for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
 					EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
 							.next();
 					datafn = queue.getObject(0);
 				}
-				
+
 				String query = "UPDATE " + this.mainTableName
 						+ " SET DISPLAY_NAME = \"" + freshDisplayName + "\" "
 						+ "WHERE DISPLAY_NAME = \"" + oldDisplayName + "\"";
 				// will hold the query
-				
+
 				this.executeStatement(query);
 				obj.setDisplayName(freshDisplayName);
-//				 get the row from the mainTableName if it exists
-				
-				if(datafn == null){
-					throw new Exception("Could not change display Names for : '" + 
-							oldDisplayName  + "' " + " to '" + freshDisplayName + "'");
+				// get the row from the mainTableName if it exists
+
+				if (datafn == null) {
+					throw new Exception(
+							"Could not change display Names for : '"
+									+ oldDisplayName + "' " + " to '"
+									+ freshDisplayName + "'");
 				}
-			
-				boolean bool = TemplateMapObjectHandler.changeDisplayName(datafn,freshDisplayName,this.dbObject);
-			
-				if(!bool){
-					throw new Exception("Could not change display Names for : '" + 
-							oldDisplayName  + "' " + " to '" + freshDisplayName + "'");
-				}
-				else{
-					FlushServerCache.flushServerCache(datafn, 
-							this.mainTableName);
+
+				boolean bool = TemplateMapObjectHandler.changeDisplayName(
+						datafn, freshDisplayName, this.dbObject);
+
+				if (!bool) {
+					throw new Exception(
+							"Could not change display Names for : '"
+									+ oldDisplayName + "' " + " to '"
+									+ freshDisplayName + "'");
 				}
 				return true;
-			} 
+			}
 
 		} catch (Exception ee) {
 			LoggerUtils.logErrors(ee);
@@ -295,14 +293,13 @@ public class EFGDatasourceObjectListImpl extends
 			List list = EFGRDBImportUtils.executeQueryForList(
 					this.jdbcTemplate, query.toString(), 3);
 
-			
 			for (java.util.Iterator iter = list.iterator(); iter.hasNext();) {
 				EFGQueueObjectInterface queue = (EFGQueueObjectInterface) iter
 						.next();
 				String md_name = queue.getObject(0);
 				String name = queue.getObject(1);
 				String display = queue.getObject(2);
-					
+
 				EFGDatasourceObjectInterface doInterface = NoGUIFactory
 						.getEFGDatasourceObject(URI.create(EFGUtils
 								.reverseParseEFGSEP(name)), md_name, display);
@@ -323,8 +320,6 @@ public class EFGDatasourceObjectListImpl extends
 		return true;
 	}
 
-	
-	
 	/**
 	 * 
 	 * @param datafn
@@ -369,22 +364,17 @@ public class EFGDatasourceObjectListImpl extends
 				}
 				// also delete the file if it exists
 				boolean bool = false;
-				
-				try{
-					bool = TemplateMapObjectHandler.removeFromTemplateMap(datafn,this.dbObject);
-					
-					if(!bool){
+
+				try {
+					bool = TemplateMapObjectHandler.removeFromTemplateMap(
+							datafn, this.dbObject);
+
+					if (!bool) {
 						throw new Exception(
 								"Application could not delete the template configurations ");
-									
+
 					}
-					else{//flush server cache. If server cannot be found
-						//Tomcat has to be restarted
-						FlushServerCache.flushServerCache(datafn, 
-								this.mainTableName);
-					}
-				}
-				catch(Exception eex){
+				} catch (Exception eex) {
 					LoggerUtils.logErrors(eex);
 				}
 				isDone = true;

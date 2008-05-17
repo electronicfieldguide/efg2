@@ -159,7 +159,7 @@ public class SearchPageBuilder extends EFGSearchServletInterface implements EFGI
 		   }
 			if(displayName == null || "".equals(displayName)){
 			
-				Map map = ServletCacheManager.getDatasourceCache(tableName.toLowerCase());
+				Map map = ServletCacheManager.getDatasources(tableName.toLowerCase());
 				 	
 				 	displayName = (String)map.get(datasourceName.toLowerCase());
 			}

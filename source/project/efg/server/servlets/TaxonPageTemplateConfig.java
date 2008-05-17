@@ -59,7 +59,7 @@ public class TaxonPageTemplateConfig extends EFGTemplateConfig
             String mTableName = req.getParameter("ALL_TABLE_NAME");
             if(displayName == null || "".equals(displayName))
             {
-                Map map = ServletCacheManager.getDatasourceCache(mTableName);
+                Map map = ServletCacheManager.getDatasources(mTableName);
                 displayName = (String)map.get(dsName.toLowerCase());
             }
             project.efg.templates.taxonPageTemplates.TaxonPageTemplates tps = getTaxonPageTemplateRoot(dsName, mTableName);
