@@ -165,6 +165,10 @@
 		 <copy todir="${efg2.tomcat.home}/common/lib" preservelastmodified="true">
 	       <fileset dir="${efg2.lib.util.home}"  includes="mysqldriver.jar"/>
 		</copy> 
+   	 	<copy todir="${efg2.tomcat.home}/lib" preservelastmodified="true">
+   	       <fileset dir="${efg2.lib.util.home}"  includes="mysqldriver.jar"/>
+   		</copy> 
+    
  		<delete dir="${efg2.tomcat.home}/webapps/efg2/jsp" quiet="true"/>  
 		<copy todir="${efg2.tomcat.home}/webapps/efg2" preservelastmodified="true">
          <fileset dir="${web.dir}/jsp"/>
@@ -181,7 +185,8 @@
        <delete dir="${web.dir}/WEB-INF/lib" quiet="true"/>
       <delete dir="${compile.home}" quiet="true"/>
        <delete dir="${efg2.src.temp.home}" quiet="true"/>
-       
+       <delete file="${efg2.tomcat.home}/webapps/efg2/WEB-INF/lib/xerces.jar"/>
+
     </target>
 	<target name="deploy">
      <antcall target="deployWebApp"/>

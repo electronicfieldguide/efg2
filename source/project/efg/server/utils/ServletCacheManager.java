@@ -13,10 +13,11 @@ import project.efg.server.servlets.EFGContextListener;
  * 
  */
 public class ServletCacheManager {
+	private static Map map;
 	public static Map getDatasources(String whichDatabase) {
 		String mutex = "";
 		synchronized (mutex) {
-			Map map = EFGContextListener
+			map = EFGContextListener
 					.populateMapDatasources(whichDatabase.toLowerCase());
 			if (map == null) {
 				return new HashMap();
@@ -24,5 +25,8 @@ public class ServletCacheManager {
 			return map;
 		}
 
+	}
+	public static Map getDatasourceCache(String database){
+		return getDatasources(database);
 	}
 }

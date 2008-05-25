@@ -42,6 +42,7 @@ import project.efg.util.utils.EFGUtils;
 public class LoggerUtilsServlet {
 	private static Logger log = null;
 	static {
+		System.out.println("Inside static method");
 		try {
 			log = Logger.getLogger(project.efg.server.utils.LoggerUtilsServlet.class);
 			EFGUtils.log("Logger initiliazed for servlet in servlet context");
@@ -51,10 +52,11 @@ public class LoggerUtilsServlet {
 	}
 
 	protected LoggerUtilsServlet() {
-
+		System.out.println("Logger init");
 	}
 
 	public synchronized static void logErrors(Exception ee) {
+		System.out.println("Logging errors");
 		StackTraceElement[] ste = ee.getStackTrace();
 		StringBuffer buff = new StringBuffer();
 		buff.append(ee.getMessage());
