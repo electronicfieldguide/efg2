@@ -182,7 +182,7 @@ public class EFGDatasourceObjectListImpl extends
 
 				String query = "UPDATE " + this.mainTableName
 						+ " SET DISPLAY_NAME = \"" + freshDisplayName + "\" "
-						+ "WHERE DISPLAY_NAME = \"" + oldDisplayName + "\"";
+						+ " WHERE DISPLAY_NAME = \"" + oldDisplayName + "\"";
 				// will hold the query
 
 				this.executeStatement(query);
@@ -191,9 +191,9 @@ public class EFGDatasourceObjectListImpl extends
 
 				if (datafn == null) {
 					throw new Exception(
-							"Could not change display Names for : '"
-									+ oldDisplayName + "' " + " to '"
-									+ freshDisplayName + "'");
+							"Could not change display Names for : \""
+									+ oldDisplayName + "\" " + " to \""
+									+ freshDisplayName + "\"");
 				}
 
 				boolean bool = TemplateMapObjectHandler.changeDisplayName(
@@ -201,9 +201,9 @@ public class EFGDatasourceObjectListImpl extends
 
 				if (!bool) {
 					throw new Exception(
-							"Could not change display Names for : '"
-									+ oldDisplayName + "' " + " to '"
-									+ freshDisplayName + "'");
+							"Could not change display Names for : \""
+									+ oldDisplayName + "\" " + " to \""
+									+ freshDisplayName + "\"");
 				}
 				return true;
 			}

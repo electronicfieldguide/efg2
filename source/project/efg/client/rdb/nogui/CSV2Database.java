@@ -197,7 +197,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					if ((this.getDisplayName() == null)
 							|| this.getDisplayName().trim().equals("")) {
 						this.datasource.setDisplayName(this.tableName);
-						log.debug("A new display name '"
+						log.debug("A new display name \""
 								+ this.getDisplayName()
 								+ " was created successfully");
 					}
@@ -208,9 +208,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						log
 								.debug("A Data table "
 										+ this.tableName
-										+ " was created successfully out of the file: '"
+										+ " was created successfully out of the file: \""
 										+ this.datasource.getDataName()
-												.toString() + "'!!");
+												.toString() + "\"!!");
 
 						this.metadataTableName = this.createMetadataTableName();
 						if (this.metadataTableName == null) {
@@ -251,12 +251,12 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 								// table does
 								// not exists
 								log
-										.error("System could not find the requested metadata table with display name: '"
+										.error("System could not find the requested metadata table with display name: \""
 												+ this.datasource
 														.getTemplateDisplayName()
-												+ "' for the table '"
+												+ "\" for the table \""
 												+ this.datasource.getDataName()
-														.toString() + "'");
+														.toString() + "\"");
 								isSuccess = false;
 							} else {// specified metadata table exists. copy it
 								isSuccess = this.cloneMetadataTable(
@@ -272,9 +272,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 									if (!bool) {
 										log
-												.error("Could not create default templates for '"
+												.error("Could not create default templates for \""
 														+ this.getDisplayName()
-														+ "'");
+														+ "\"");
 									}
 								}
 								// if isSuccess clone the template files for
@@ -302,19 +302,19 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 							if (!bool) {
 								log
-										.error("Could not create default templates for '"
-												+ this.getDisplayName() + "'");
+										.error("Could not create default templates for \""
+												+ this.getDisplayName() + "\"");
 							}
 						} else {
 							log
-									.error("An error occurred while creating Metadata table '"
-											+ this.metadataTableName + "'!!!");
+									.error("An error occurred while creating Metadata table \""
+											+ this.metadataTableName + "\"!!!");
 							isSuccess = false;
 						}
 					} else {
 						log
-								.error("An error occurred while creating data table '"
-										+ this.tableName + "'!!!");
+								.error("An error occurred while creating data table \""
+										+ this.tableName + "\"!!!");
 						isSuccess = false;
 					}
 				} else if (this.isUpdate instanceof ImportBehaviorImplReplace) {
@@ -401,8 +401,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		boolean bool = taxonPageConfig.cloneTemplate(clonedDataTableName, this
 				.getDataTableName(), this.getDisplayName());
 		if (!bool) {
-			log.error("Could not create  templates for '"
-					+ this.getDisplayName() + "'");
+			log.error("Could not create  templates for \""
+					+ this.getDisplayName() + "\"");
 		}
 		return bool;
 	}
@@ -670,8 +670,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 		if ((displayName == null) || (displayName.trim().equals(""))) {
 
-			log.error("Specified display name: '" + displayName
-					+ "' was null or the empty string.");
+			log.error("Specified display name: \"" + displayName
+					+ "\" was null or the empty string.");
 		} else {
 			if (checkEFGRDBTable()) {
 				// StringBuffer query = new StringBuffer(
@@ -776,9 +776,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				String legalname = queue.getObject(0);
 				if (Arrays.binarySearch(this.getSortedLegalNames(), legalname
 						.trim(), this.compare) < 0) {
-					log.error("The column named: '" + legalname
-							+ "' does not exists in the table '"
-							+ this.metadataTableName + "'");
+					log.error("The column named: \"" + legalname
+							+ "\" does not exists in the table \""
+							+ this.metadataTableName + "\"");
 					// remove from table
 					return false;
 				}
@@ -1147,7 +1147,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 */
 	private String createMetadataTableName() {
 		String meta = this.tableName + EFGImportConstants.METAFILESUFFIX;
-		log.debug("About to create Metadata table name: '" + meta + "'");
+		log.debug("About to create Metadata table name: \"" + meta + "\"");
 		return meta.toLowerCase();
 	}
 
@@ -1180,9 +1180,9 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				int ret = this.executeStatement(query.toString());
 
 				if (ret == 0) {
-					log.error("'" + this.metadataTableName
-							+ "' could not be created from '"
-							+ metadataTableToClone + "'");
+					log.error("\"" + this.metadataTableName
+							+ "\" could not be created from \""
+							+ metadataTableToClone + "\"");
 					isDone = false;
 				}
 			}
@@ -1283,8 +1283,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				}
 				if (isDone) {
 					try {
-						log.debug("About to drop the table: '" + infoTable
-								+ "' if it exists");
+						log.debug("About to drop the table: \"" + infoTable
+								+ "\" if it exists");
 						this.executeStatement("DROP TABLE IF EXISTS "
 								+ infoTable);
 
@@ -1294,8 +1294,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 						log.debug("About to execute query : " + stmtQuery);
 						this.executeStatement(stmtQuery);
 
-						log.debug("Metadata table: '" + infoTable
-								+ "' was created successfully");
+						log.debug("Metadata table: \"" + infoTable
+								+ "\" was created successfully");
 					} catch (Exception ee) {
 						isDone = false;
 						this.logMessage(ee);

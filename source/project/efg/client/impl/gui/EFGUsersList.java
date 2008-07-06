@@ -354,7 +354,7 @@ public class EFGUsersList  extends JDialog
 					return;
 				}
 				int result = JOptionPane.showConfirmDialog(null,
-						"Do you really want to delete the user : '" + selectedUserName + "' ?", "Delete User?",
+						"Do you really want to delete the user : \"" + selectedUserName + "\" ?", "Delete User?",
 						JOptionPane.YES_NO_OPTION);
 				if (result == JOptionPane.YES_OPTION) {
 					RunSetUp.deleteSuperUser(this.dbObject,selectedUserName);

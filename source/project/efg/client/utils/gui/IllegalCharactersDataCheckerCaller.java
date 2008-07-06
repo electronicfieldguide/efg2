@@ -48,14 +48,14 @@ public class IllegalCharactersDataCheckerCaller extends DataCheckerCaller {
 				 else{
 					 JOptionPane.showMessageDialog(null,
 								"Application will open a browser window and display error results.\n " +
-								"You can also view errors at '" + fileName  + "'",
+								"You can also view errors at \"" + fileName  + "\"",
 								"Error", JOptionPane.INFORMATION_MESSAGE); 
 					 try{
 						 Browser.displayURL(fileName, "target");
 					 }
 					 catch(Exception ee){
 						 JOptionPane.showMessageDialog(null,
-									"Application could not find error file '" + fileName  + "'",
+									"Application could not find error file \"" + fileName  + "\"",
 									"Error", JOptionPane.ERROR_MESSAGE);  
 					 }
 				 }

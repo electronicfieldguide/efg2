@@ -60,9 +60,9 @@ public class LoginDialogConstants {
 
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("Application will place generated resources\n( media resources, generated templates etc) in \n");
-		buffer.append("'");
+		buffer.append("\"");
 		buffer.append(property);
-		buffer.append("' directory  \n");
+		buffer.append("\" directory  \n");
 		buffer.append("The directories inside the above named folder must be copied\n " +
 				"to the efg2 web application running on your server\n");
 		buffer.append("See the docs on how to copy folders to the web application\n"); 

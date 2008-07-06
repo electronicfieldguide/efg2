@@ -111,7 +111,7 @@ public class PDFConstants {
 	
 		PDFConstants.errorBuffer.append("- Images are missing. If you intended to print a file with no images,\n");
 		PDFConstants.errorBuffer.append("please go back and make sure the box next to \n");
-		PDFConstants.errorBuffer.append("'Always display captions' in the Data Display Settings is checked.\n\n");
+		PDFConstants.errorBuffer.append("\"Always display captions\" in the Data Display Settings is checked.\n\n");
 	
 		PDFConstants.errorBuffer.append("- some other error that causes this page to " +
 				"get generated that we do not know about, please report this to us\n");

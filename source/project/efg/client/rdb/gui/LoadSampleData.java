@@ -42,14 +42,14 @@ public class LoadSampleData {
 
 	private ImportBehavior isUpdate;
 
-	private String searchableField, mediaResourceField,listsField, newDisplayName;
+	private String searchableField, mediaResourceField, listsField,
+			newDisplayName;
 
 	private String metadataTableName;
 
 	private StringBuffer messageBuffer;
 	private boolean isError = false;
 
-	
 	static Logger log = null;
 	static {
 		try {
@@ -57,8 +57,6 @@ public class LoadSampleData {
 		} catch (Exception ee) {
 		}
 	}
-	
-	
 
 	/**
 	 * 
@@ -68,45 +66,46 @@ public class LoadSampleData {
 		this.dbObject = this.getClone(dbObject);
 		this.init();
 	}
+
 	/**
 	 * @param dbObject2
 	 * @return
 	 */
 	private DBObject getClone(DBObject dbObject2) {
-		String url = EFGImportConstants.EFGProperties
-		.getProperty("dburl");
+		String url = EFGImportConstants.EFGProperties.getProperty("dburl");
 		return dbObject2.clone(url);
 	}
-	public String getErrorBuffer(){
+
+	public String getErrorBuffer() {
 		return this.messageBuffer.toString();
 	}
-	public boolean isError(){
+
+	public boolean isError() {
 		return this.isError;
 	}
-	private boolean loadFile(){
-		try{
-		URL url = this.getClass().getResource(
-				EFGImportConstants.EFGProperties.getProperty(
-						EFGImportConstants.SAMPLE_DATA_LOCATION)
-						);
-		String fileName = URLDecoder.decode(url.getFile(),"UTF-8");
-		File dir = new File(fileName);
-		URI file=dir.toURI();
-		
-		
-		
-		fileName = EFGUtils.getName(file);
-		int index = fileName.lastIndexOf(".");
-		String displayName = fileName;
-		if (index > -1) {
-			displayName = fileName.substring(0, index);
-		}
 
-		this.datasource = NoGUIFactory.getEFGDatasourceObject();
-		this.datasource.setDisplayName(displayName);
-		this.datasource.setDataName(file);
-		}
-		catch(Exception ee){
+	private boolean loadFile() {
+		try {
+			URL url = this
+					.getClass()
+					.getResource(
+							EFGImportConstants.EFGProperties
+									.getProperty(EFGImportConstants.SAMPLE_DATA_LOCATION));
+			String fileName = URLDecoder.decode(url.getFile(), "UTF-8");
+			File dir = new File(fileName);
+			URI file = dir.toURI();
+
+			fileName = EFGUtils.getName(file);
+			int index = fileName.lastIndexOf(".");
+			String displayName = fileName;
+			if (index > -1) {
+				displayName = fileName.substring(0, index);
+			}
+
+			this.datasource = NoGUIFactory.getEFGDatasourceObject();
+			this.datasource.setDisplayName(displayName);
+			this.datasource.setDataName(file);
+		} catch (Exception ee) {
 			String message = ee.getMessage();
 			log.error(message);
 			this.messageBuffer.append("\n");
@@ -115,36 +114,29 @@ public class LoadSampleData {
 			return false;
 		}
 		return true;
-	
+
 	}
+
 	private void init() {
 		if (this.jdbcTemplate == null) {
 			this.jdbcTemplate = EFGRDBImportUtils
 					.getJDBCTemplate(this.dbObject);
 		}
-		//find out if file already exists and bail out if it does
-		
-		
-		
-		if(this.loadFile()){
+		// find out if file already exists and bail out if it does
+
+		if (this.loadFile()) {
 			this.readNewDisplayName();
-			this.list = NoGUIFactory
-				.getEFGObjectList(this.dbObject);
-			String behaviorType =
-				EFGImportConstants.EFGProperties.
-				getProperty("importOnlyBehavior");
-			
-			this.isUpdate = GUIFactory.getImportBehavior(
-				this.list,
-				this.datasource, 
-				behaviorType
-				);
-		
-			
+			this.list = NoGUIFactory.getEFGObjectList(this.dbObject);
+			String behaviorType = EFGImportConstants.EFGProperties
+					.getProperty("importOnlyBehavior");
+
+			this.isUpdate = GUIFactory.getImportBehavior(this.list,
+					this.datasource, behaviorType);
+
 			this.readFields();
-			
+
 		}
-	
+
 	}
 
 	/**
@@ -156,8 +148,8 @@ public class LoadSampleData {
 				.getProperty(EFGImportConstants.SAMPLE_MEDIA_RESOURCE_FIELD);
 		this.searchableField = EFGImportConstants.EFGProperties
 				.getProperty(EFGImportConstants.SAMPLE_SEARCHABLE_FIELD);
-		this.listsField=EFGImportConstants.EFGProperties
-		.getProperty(EFGImportConstants.SAMPLE_LISTS_FIELD); 
+		this.listsField = EFGImportConstants.EFGProperties
+				.getProperty(EFGImportConstants.SAMPLE_LISTS_FIELD);
 
 	}
 
@@ -171,8 +163,8 @@ public class LoadSampleData {
 	}
 
 	public boolean loadData() {
-		
-		if(this.list == null){
+
+		if (this.list == null) {
 			this.isError = true;
 			return false;
 		}
@@ -247,7 +239,7 @@ public class LoadSampleData {
 			this.jdbcTemplate.update(buffer.toString());
 			return true;
 		} catch (Exception e) {
-			String message =e.getMessage();
+			String message = e.getMessage();
 			log.error(message);
 			this.messageBuffer.append("\n");
 			this.messageBuffer.append(message);
@@ -267,9 +259,9 @@ public class LoadSampleData {
 		buffer.append("='false',");
 		buffer.append(EFGImportConstants.MEDIARESOURCE);
 		buffer.append("='true' WHERE ");
-		
+
 		buffer.append(parseField(this.mediaResourceField));
-		
+
 		try {
 			this.jdbcTemplate.update(buffer.toString());
 			return true;
@@ -284,6 +276,7 @@ public class LoadSampleData {
 		return false;
 
 	}
+
 	private boolean executeListsUpdateQuery() {
 
 		StringBuffer buffer = new StringBuffer("UPDATE ");
@@ -293,9 +286,9 @@ public class LoadSampleData {
 		buffer.append("='false',");
 		buffer.append(EFGImportConstants.ISLISTS);
 		buffer.append("='true' WHERE ");
-		
+
 		buffer.append(parseField(this.listsField));
-		
+
 		try {
 			this.jdbcTemplate.update(buffer.toString());
 			return true;
@@ -318,14 +311,14 @@ public class LoadSampleData {
 	private String parseField(String string) {
 		StringBuffer buffer = new StringBuffer();
 		String[] resources = string.split(RegularExpresionConstants.COMMASEP);
-		for(int i = 0; i < resources.length;i++){
-			if(i != 0){
+		for (int i = 0; i < resources.length; i++) {
+			if (i != 0) {
 				buffer.append(" OR ");
 			}
-			buffer .append(EFGImportConstants.NAME);
-			buffer.append("='");
+			buffer.append(EFGImportConstants.NAME);
+			buffer.append("=\"");
 			buffer.append(resources[i].trim());
-			buffer.append("'");
+			buffer.append("\"");
 		}
 		return buffer.toString();
 	}
@@ -336,7 +329,7 @@ public class LoadSampleData {
 				&& (!this.metadataTableName.trim().equals(""))) {
 			if (this.executeSearchableFieldUpdateQuery()) {
 				if (this.executeMediaResourceUpdateQuery()) {
-					if(this.executeListsUpdateQuery()){
+					if (this.executeListsUpdateQuery()) {
 						return true;
 					}
 				}
@@ -351,15 +344,15 @@ public class LoadSampleData {
 				this.newDisplayName);
 
 	}
-	public static void main(String[] args){
+
+	public static void main(String[] args) {
 		LoginDialog dialog = new LoginDialog(new JFrame(), "Login", true);
 		dialog.setVisible(true);
 
 		if (dialog.isSuccess()) {
 			String m_loginName = dialog.getLoginName();
 			String m_password = new String(dialog.getPassword());
-			String url = EFGImportConstants.EFGProperties
-					.getProperty("dburl");
+			String url = EFGImportConstants.EFGProperties.getProperty("dburl");
 
 			// factory ?
 			DBObject dbObject = new DBObject(url, m_loginName, m_password);
@@ -373,11 +366,8 @@ public class LoadSampleData {
 								"Error in Loading Sample Data",
 								JOptionPane.ERROR_MESSAGE);
 			}
-		}
-		else{
-			JOptionPane
-			.showMessageDialog(
-					null,
+		} else {
+			JOptionPane.showMessageDialog(null,
 					"Sample Data Loaded Successfully",
 					"Success in Loading Sample Data",
 					JOptionPane.INFORMATION_MESSAGE);

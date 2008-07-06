@@ -299,7 +299,7 @@ implements EFGImportConstants,WindowListener{
 					 if(isTemp){
 					 }
 					 else{
-							log.error("Could not generate thumbnails for '" + srcFile.getAbsolutePath() + "'");
+							log.error("Could not generate thumbnails for \"" + srcFile.getAbsolutePath() + "\"");
 					 }
 				 }
 		}

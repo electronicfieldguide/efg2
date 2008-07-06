@@ -71,8 +71,8 @@ public abstract class DataChecker {
 		}
 		if ((this.displayName == null) || (this.displayName.trim().equals(""))) {
 
-			log.error("Specified display name: '" + displayName
-					+ "' was null or the empty string.");
+			log.error("Specified display name: \"" + displayName
+					+ "\" was null or the empty string.");
 			return false;
 		}
 		StringBuffer query = new StringBuffer(

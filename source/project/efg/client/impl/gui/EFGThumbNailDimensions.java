@@ -346,8 +346,8 @@ public class EFGThumbNailDimensions  extends JDialog{
 			
     	}
 		catch(NumberFormatException nee){
-				JOptionPane.showMessageDialog(frame, "The value you entered: '" +
-						newSelection + "' must be a number!!",
+				JOptionPane.showMessageDialog(frame, "The value you entered: \"" +
+						newSelection + "\" must be a number!!",
 						"Number Format Exception", JOptionPane.ERROR_MESSAGE);
 			return;
 		}

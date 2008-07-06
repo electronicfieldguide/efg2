@@ -170,7 +170,7 @@ public class DeleteNodeThread extends SwingWorker{
 				try {
 					deleteFile(thumbsFile);
 				} catch (Exception ee) {
-					log.error("Could not delete '" + thumbsName + "'");
+					log.error("Could not delete \"" + thumbsName + "\"");
 					return;
 				}
 			}
