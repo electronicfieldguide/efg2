@@ -1,40 +1,13 @@
-<Context path="/efg2" docBase="efg2" debug="5" reloadable="false" crossContext="false">
-	<Logger className="org.apache.catalina.logger.FileLogger" prefix="localhost_efg2_log." suffix=".txt" timestamp="true"/>
-	<Resource name="jdbc/efgMySQL" auth="Container" type="javax.sql.DataSource"/>
-	<ResourceParams name="jdbc/efgMySQL">
-		<parameter>
-			<name>factory</name>
-			<value>org.apache.commons.dbcp.BasicDataSourceFactory</value>
-		</parameter>
-		<parameter>
-			<name>driverClassName</name>
-			<value>com.mysql.jdbc.Driver</value>
-		</parameter>
-		<parameter>
-			<name>url</name>
-			<value>jdbc:mysql://localhost:3306/efg</value>
-		</parameter>
-		<parameter>
-			<name>username</name>
-			<value>efg</value>
-		</parameter>
-		<parameter>
-			<name>password</name>
-			<value>THE_EFG_USER</value>
-		</parameter>
-		<parameter>
-			<name>maxActive</name>
-			<value>20</value>
-		</parameter>
-		<parameter>
-			<name>maxIdle</name>
-			<value>10</value>
-		</parameter>
-		<parameter>
-			<name>maxWait</name>
-			<value>-1</value>
-		</parameter>
-	</ResourceParams>
+<Context path="/efg2"  debug="5" reloadable="false" crossContext="false">
+       <Valve className="org.apache.catalina.valves.AccessLogValve"
+                   prefix="efg2_access_log." suffix=".txt"
+                   pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; %S &quot;%{User-Agent}i&quot;" resolveHosts="false"/>
+
+	<Resource name="jdbc/efgMySQL" auth="Container" type="javax.sql.DataSource"
+		factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+               maxActive="20" maxIdle="10" maxWait="-1"
+               username="efg" password="THE_EFG_USER" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://localhost:3306/efg"/>	
 	<Realm className="org.apache.catalina.realm.JDBCRealm" debug="99"
       driverName="com.mysql.jdbc.Driver"
    connectionURL="jdbc:mysql://localhost:3306/efg?user=efg&amp;password=THE_EFG_USER"
