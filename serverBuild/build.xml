@@ -75,17 +75,14 @@
 		</copy>	
 	
 	</target>
+	<target name="remove.old.xerces"  if="java.version.5.or.newer">
+	   	<echo message="Deleting ${web.dir}/WEB-INF/lib/xerces.jar"/>
 
-  
+		<delete file="${web.dir}/WEB-INF/lib/xerces.jar"/>
+	</target>
     <target name="deployWebApp" depends="compile" description="Deploy application">
  
- 		<copy todir="${deploy.context.home}" preservelastmodified="true">
-          <fileset dir="webcontext">
-              <include name="**/*.*"/>
-       	</fileset>
-       </copy>
-       
-       
+	  <mkdir dir="${web.dir}/META-INF"/>     
        <copy todir="${compile.home}/project/efg/util" preservelastmodified="true">
           <fileset dir="${efg2.properties.server}" includes="log4j.properties"/>
         </copy>
@@ -95,9 +92,17 @@
          <copy todir="${compile.home}/project/efg/util/factory" preservelastmodified="true">
           <fileset dir="${efg2.spring.util}" includes="*.*"/>
         </copy>
-        <copy todir="${web.dir}/templateJSP" preservelastmodified="true">
-          <fileset dir="${efg2.skins.home}" excludes=".project, .classpath,*.txt,*.html"/>
-       </copy>  
+        <copy todir="${web.dir}/META-INF" preservelastmodified="true">
+          <fileset dir="webcontext">
+              <include name="**/*.*"/>
+       	</fileset>
+       </copy> 
+ 	<replace file="${web.dir}/META-INF/efg2.xml" token="3306" value="${efg2.mysql.port}"/>
+  	<replace file="${web.dir}/META-INF/efg2.xml" token="THE_EFG_USER" value="${efg.web.user.password}"/>
+	<move file="${web.dir}/META-INF/efg2.xml" tofile="${web.dir}/META-INF/context.xml"/>
+  	<copy todir="${web.dir}/templateJSP" preservelastmodified="true">
+           <fileset dir="${efg2.skins.home}" excludes=".project, .classpath, *.txt, *.html" />
+       </copy>   
         <copy todir="${web.dir}/templateCSSDirectory" overwrite="true" flatten="true">
            <fileset dir="${efg2.skins.home}" includes="**/*.css" />
         </copy>   
@@ -132,9 +137,21 @@
    
        
         <copy todir="${web.dir}/WEB-INF/lib" preservelastmodified="true">
-    	   <fileset dir="${efg2.lib.util.home}"  excludes="mysqldriver.jar"/>
+    	   <fileset dir="${efg2.lib.util.home}"/>
 			<fileset dir="${efg2.lib.server.home}"/>
     	</copy>
+     	<echo message="If java version is 1.5 or newer, this property will be set"/>
+        	  <condition property="java.version.5.or.newer">
+        	    <and>
+        		   <available classname="java.lang.CharSequence"/>
+        			<available classname="java.lang.Readable"/>
+        	     </and>
+        	  </condition>
+
+        	<antcall target="remove.old.xerces"/>
+
+
+ 
     	<mkdir dir="${web.dir}/templateConfigFiles/xml"/>
     	
         <copy todir="${web.dir}/templateConfigFiles/xml" preservelastmodified="true">
@@ -148,6 +165,10 @@
 		 <copy todir="${efg2.tomcat.home}/common/lib" preservelastmodified="true">
 	       <fileset dir="${efg2.lib.util.home}"  includes="mysqldriver.jar"/>
 		</copy> 
+   	 	<copy todir="${efg2.tomcat.home}/lib" preservelastmodified="true">
+   	       <fileset dir="${efg2.lib.util.home}"  includes="mysqldriver.jar"/>
+   		</copy> 
+    
  		<delete dir="${efg2.tomcat.home}/webapps/efg2/jsp" quiet="true"/>  
 		<copy todir="${efg2.tomcat.home}/webapps/efg2" preservelastmodified="true">
          <fileset dir="${web.dir}/jsp"/>
@@ -158,16 +179,14 @@
  		
  	<replace file="${efg2.tomcat.home}/webapps/efg2/WEB-INF/classes/properties/RDBprops.properties" token="3306" value="${efg2.mysql.port}"/>
  	<replace file="${efg2.tomcat.home}/webapps/efg2/WEB-INF/classes/properties/RDBprops.properties" token="THE_EFG_USER" value="${efg.web.user.password}"/>
- 
- 	<replace file="${deploy.context.home}/efg2.xml" token="3306" value="${efg2.mysql.port}"/>
-  	<replace file="${deploy.context.home}/efg2.xml" token="THE_EFG_USER" value="${efg.web.user.password}"/>
-  		 
+    		 
        <delete dir="${web.dir}/templateConfigFiles/xml" quiet="true"/>
        <delete dir="${web.dir}/WEB-INF/classes" quiet="true"/>
        <delete dir="${web.dir}/WEB-INF/lib" quiet="true"/>
       <delete dir="${compile.home}" quiet="true"/>
        <delete dir="${efg2.src.temp.home}" quiet="true"/>
-       
+       <delete file="${efg2.tomcat.home}/webapps/efg2/WEB-INF/lib/xerces.jar"/>
+
     </target>
 	<target name="deploy">
      <antcall target="deployWebApp"/>
@@ -192,7 +211,7 @@
     </target>
 	<!-- Compile sources-->
 	<target name="compile" depends="init">
-		<javac srcdir="${efg2.src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on" source="1.4" target="1.4">
+		<javac srcdir="${efg2.src.temp.home}" destdir="${compile.home}" debug="on" optimize="off" deprecation="on">
 			<classpath refid="compile.class.path"/>
 		</javac>
 	</target>
