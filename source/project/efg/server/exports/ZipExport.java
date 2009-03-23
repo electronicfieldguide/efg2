@@ -382,7 +382,7 @@ public class ZipExport implements ZipInterface {
 	 * @return
 	 */
 	private String makeQuery(String[] datasources, Properties props) {
-		StringBuffer query = new StringBuffer("SELECT ");
+		StringBuilder query = new StringBuilder("SELECT ");
 		query.append(EFGImportConstants.DS_DATA_COL);
 		query.append(",");
 		query.append(EFGImportConstants.TEMPLATE_OBJECT_FIELD);
@@ -467,7 +467,7 @@ public class ZipExport implements ZipInterface {
 		if (datasources != null) {
 			File srcFile = new File(destinationDirectory, SQL_DIR);
 			srcFile.mkdirs();
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			ExportData export = new ExportData();
 			for (int i = 0; i < datasources.length; ++i) {
 				String datasource = datasources[i];
@@ -478,7 +478,7 @@ public class ZipExport implements ZipInterface {
 
 				String templatesTable = EFGImportConstants.EFGProperties
 						.getProperty("efg_template_table_name");
-				StringBuffer query = new StringBuffer("SELECT * FROM ");
+				StringBuilder query = new StringBuilder("SELECT * FROM ");
 				query.append(templatesTable);
 				query.append(" WHERE ");
 				query.append(EFGImportConstants.DATASOURCE_NAME);
@@ -495,7 +495,7 @@ public class ZipExport implements ZipInterface {
 					LoggerUtilsServlet.logErrors(e);
 				}
 
-				query = new StringBuffer(this.getDataQuery(
+				query = new StringBuilder(this.getDataQuery(
 						EFGImportConstants.EFGProperties
 								.getProperty("ALL_EFG_RDB_TABLES"), datasource,
 						metadatasource));
@@ -506,7 +506,7 @@ public class ZipExport implements ZipInterface {
 									.toString()));
 				} catch (Exception e) {
 				}
-				query = new StringBuffer(this.getDataQuery(
+				query = new StringBuilder(this.getDataQuery(
 						EFGImportConstants.EFGProperties
 								.getProperty("ALL_EFG_GLOSSARY_TABLES"),
 						datasource, metadatasource));
@@ -526,7 +526,7 @@ public class ZipExport implements ZipInterface {
 
 	private String getDataQuery(String tableName, String datasource,
 			String metadatasource) {
-		StringBuffer query = new StringBuffer("SELECT * FROM ");
+		StringBuilder query = new StringBuilder("SELECT * FROM ");
 		query.append(tableName);
 		query.append(" WHERE ");
 		query.append(EFGImportConstants.DS_DATA_COL);
