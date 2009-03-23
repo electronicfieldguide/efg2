@@ -113,7 +113,7 @@ public class DigirParserHandler extends DefaultHandler {
 
 	private String conditionalClause;
 
-	private StringBuffer errorMessages;
+	private StringBuilder errorMessages;
 
 	static Logger log = null;
 	static {
@@ -299,7 +299,7 @@ public class DigirParserHandler extends DefaultHandler {
 	 * specific actions at the beginning of a document.
 	 */
 	public void startDocument() throws SAXException {
-		errorMessages = new StringBuffer();
+		errorMessages = new StringBuilder();
 
 		// Get all the data sources in our Database
 		EFGDataSourceHelperInterface dsHelper =
@@ -617,7 +617,7 @@ public class DigirParserHandler extends DefaultHandler {
 							EFGQueryList list1 = (EFGQueryList) popSecond;
 							String obj1 = ((EFGString) popFirst).toString();
 							int i = 0;
-							StringBuffer inBuff = new StringBuffer();
+							StringBuilder inBuff = new StringBuilder();
 							inBuff.append(" ( ");
 							inBuff.append((list1.get(i)).toString());
 							i++;
@@ -637,7 +637,7 @@ public class DigirParserHandler extends DefaultHandler {
 							EFGQueryList list1 = (EFGQueryList) popFirst;
 							String obj1 = ((EFGString) popSecond).toString();
 							int i = 0;
-							StringBuffer inBuff = new StringBuffer();
+							StringBuilder inBuff = new StringBuilder();
 							inBuff.append(" ( ");
 							inBuff.append((list1.get(i)).toString());
 							i++;

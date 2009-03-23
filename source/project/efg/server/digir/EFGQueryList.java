@@ -55,7 +55,7 @@ public class EFGQueryList extends ArrayList {
 	}
 
 	public String toString() {
-		StringBuffer buf = new StringBuffer(this.size() * 2);
+		StringBuilder buf = new StringBuilder(this.size() * 2);
 		for (int i = 0; i < this.size(); i++) {
 			buf.append((String) this.get(i));
 			buf.append(" ");
