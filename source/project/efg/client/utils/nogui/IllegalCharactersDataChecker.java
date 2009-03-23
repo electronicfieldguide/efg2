@@ -33,7 +33,7 @@ public class IllegalCharactersDataChecker extends DataChecker {
 
 	private Hashtable mapTable;
 
-	private StringBuffer errorsBuffer;
+	private StringBuilder errorsBuffer;
 
 	static Logger log = null;
 
@@ -49,14 +49,14 @@ public class IllegalCharactersDataChecker extends DataChecker {
 		//this.rowMapper = new EFGRowMapperImpl();
 		this.rowMapper = SpringFactory.getRowMapper();
 		this.mapTable = new Hashtable();
-		this.errorsBuffer = new StringBuffer();
+		this.errorsBuffer = new StringBuilder();
 	}
 
 	/**
 	 * 
 	 */
 	private boolean loadMap() {
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("SELECT ");
 		query.append(EFGImportConstants.LEGALNAME);
 		query.append(",");
@@ -85,7 +85,7 @@ public class IllegalCharactersDataChecker extends DataChecker {
 	 * @return
 	 */
 	private String getIllegalCharacterQuery() {
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("SELECT * FROM " + this.datasourceName);
 
 		return query.toString();
@@ -142,7 +142,7 @@ public class IllegalCharactersDataChecker extends DataChecker {
 					SqlRowSet rowset = this.rowMapper.mapRows(
 							this.jdbcTemplate, illegalQuery);
 
-					StringBuffer errorsB = null;
+					StringBuilder errorsB = null;
 					SqlRowSetMetaData metadata = rowset.getMetaData(); // Get
 																		// metadata
 					String[] columnNames = metadata.getColumnNames(); // on
@@ -158,7 +158,7 @@ public class IllegalCharactersDataChecker extends DataChecker {
 				
 					while (rowset.next()) {// for each row
 
-						StringBuffer rowBuffer = new StringBuffer("<tr>");
+						StringBuilder rowBuffer = new StringBuilder("<tr>");
 						boolean isError = false;
 						for (int i = 1; i < cols; i++) {
 							String colName = metadata.getColumnName(i);
@@ -221,7 +221,7 @@ public class IllegalCharactersDataChecker extends DataChecker {
 	/**
 	 * @param errorsB
 	 */
-	private void createErrorReport(StringBuffer errorsB) {
+	private void createErrorReport(StringBuilder errorsB) {
 		this.errorsBuffer.append(this.insertHeader());
 		this.errorsBuffer.append(errorsB.toString());
 		this.errorsBuffer.append(this.insertFooter());
@@ -229,7 +229,7 @@ public class IllegalCharactersDataChecker extends DataChecker {
 	}
 
 	private String insertHeader() {
-		StringBuffer errorBuffer = new StringBuffer();
+		StringBuilder errorBuffer = new StringBuilder();
 		errorBuffer.append("<html><body>");
 		errorBuffer.append("<h1>Application Found ");
 		errorBuffer.append(this.getNumberOfErrors() + "");
@@ -242,7 +242,7 @@ public class IllegalCharactersDataChecker extends DataChecker {
 	}
 
 	private String insertFooter() {
-		StringBuffer errorBuffer = new StringBuffer();
+		StringBuilder errorBuffer = new StringBuilder();
 		errorBuffer.append("</table>");
 		errorBuffer.append("</body>");
 		errorBuffer.append("</html>");
@@ -250,8 +250,8 @@ public class IllegalCharactersDataChecker extends DataChecker {
 		return errorBuffer.toString();
 	}
 
-	private StringBuffer createTableHeader(String[] columnNames) {
-		StringBuffer errorBuffer = new StringBuffer();
+	private StringBuilder createTableHeader(String[] columnNames) {
+		StringBuilder errorBuffer = new StringBuilder();
 		for (int i = 0; i < columnNames.length; i++) {
 			errorBuffer.append("<th>");
 

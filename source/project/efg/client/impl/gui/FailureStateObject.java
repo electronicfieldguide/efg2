@@ -64,8 +64,8 @@ EFGDatasourceObjectStateInterface {
 	 */
 	public void handleState(EFGDatasourceObjectInterface obj, 
 			DefaultMutableTreeNode root) {
-		StringBuffer failureMessage = 
-			new StringBuffer(obj.getDataName().toString());
+		StringBuilder failureMessage = 
+			new StringBuilder(obj.getDataName().toString());
 		failureMessage.append(" ");
 		failureMessage.append(EFGImportConstants.EFGProperties.
 				getProperty("SynopticKeyTransferHandler.add.failure"));

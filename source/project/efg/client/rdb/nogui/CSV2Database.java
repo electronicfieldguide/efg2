@@ -513,12 +513,12 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				return false;
 			}
 			if (isDone) {
-				StringBuffer query = new StringBuffer();
+				StringBuilder query = new StringBuilder();
 				query.append("uniqueID VARCHAR(255) PRIMARY KEY");
 				for (int i = 0; i < legalNames.length; i++) {
 					String th = legalNames[i];
 					if ((th == null) || (th.trim().equals(""))) {
-						StringBuffer errBuffer = new StringBuffer();
+						StringBuilder errBuffer = new StringBuilder();
 						errBuffer.append("The file: ");
 						errBuffer.append(this.datasource.getDataName()
 								.toString());
@@ -557,7 +557,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 					// now get each row of data
 					while (this.dataExtractor.nextValue() != null) {
-						query = new StringBuffer();
+						query = new StringBuilder();
 						// Sets up the uniqueID
 						query.append("\"");
 						query.append(EFGUniqueID.getID() + "");
@@ -674,10 +674,10 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 					+ "\" was null or the empty string.");
 		} else {
 			if (checkEFGRDBTable()) {
-				// StringBuffer query = new StringBuffer(
+				// StringBuilder query = new StringBuilder(
 				// "SELECT DS_METADATA, DS_DATA FROM ");
 
-				StringBuffer query = new StringBuffer("SELECT ");
+				StringBuilder query = new StringBuilder("SELECT ");
 				query.append(EFGImportConstants.DS_METADATA_COL);
 				query.append(",");
 				query.append(EFGImportConstants.DS_DATA_COL);
@@ -717,19 +717,19 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 * @return true if the table was successfully updated.
 	 */
 	private boolean createOrUpdateEFGTable() {
-		StringBuffer query = null;
+		StringBuilder query = null;
 		if (!checkEFGRDBTable()) {
 			return false;
 		}
 		try {
-			query = new StringBuffer("SELECT ");
+			query = new StringBuilder("SELECT ");
 			query.append(EFGImportConstants.DS_METADATA_COL);
 			query.append(",");
 			query.append(EFGImportConstants.DS_DATA_COL);
 			query.append(" FROM ");
 			query.append(this.efgRDBTable);
 
-			// query = new StringBuffer("SELECT DS_METADATA,DS_DATA FROM ");
+			// query = new StringBuilder("SELECT DS_METADATA,DS_DATA FROM ");
 			// query.append(this.efgRDBTable);
 			query.append(" WHERE DISPLAY_NAME=");
 			query.append("\"");
@@ -754,7 +754,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				return false;
 			}
 
-			query = new StringBuffer("SELECT LEGALNAME FROM ");
+			query = new StringBuilder("SELECT LEGALNAME FROM ");
 			query.append(this.metadataTableName);
 			list = this.executeQueryForList(query.toString(), 1);
 
@@ -799,18 +799,18 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 * @return true if the table was successfully updated.
 	 */
 	private boolean updateMetadataEFGTable() {
-		StringBuffer query = null;
+		StringBuilder query = null;
 		if (!checkEFGRDBTable()) {
 			return false;
 		}
 		try {
-			query = new StringBuffer("SELECT ");
+			query = new StringBuilder("SELECT ");
 			query.append(EFGImportConstants.DS_METADATA_COL);
 			query.append(",");
 			query.append(EFGImportConstants.DS_DATA_COL);
 			query.append(" FROM ");
 			query.append(this.efgRDBTable);
-			// query = new StringBuffer("SELECT DS_METADATA,DS_DATA FROM ");
+			// query = new StringBuilder("SELECT DS_METADATA,DS_DATA FROM ");
 			// query.append(this.efgRDBTable);
 			query.append(" WHERE DISPLAY_NAME=");
 			query.append("\"");
@@ -835,7 +835,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				return false;
 			}
 
-			query = new StringBuffer("SELECT LEGALNAME FROM ");
+			query = new StringBuilder("SELECT LEGALNAME FROM ");
 			query.append(this.metadataTableName.toLowerCase());
 			list = this.executeQueryForList(query.toString(), 1);
 
@@ -911,7 +911,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				String legalName = legalNames[ii].trim();
 
 				if (itemsToAdd.contains(legalName)) {
-					StringBuffer query = new StringBuffer();
+					StringBuilder query = new StringBuilder();
 					query.append("\"");
 					query.append(legalName);
 					query.append("\"");
@@ -987,8 +987,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 	 * @param oldTableLegalNamesClone1
 	 */
 	private void removeFromMetadataTable(Set itemsToRemove) {
-		StringBuffer deleteQuery = new StringBuffer();
-		StringBuffer selectQuery = new StringBuffer();
+		StringBuilder deleteQuery = new StringBuilder();
+		StringBuilder selectQuery = new StringBuilder();
 
 		selectQuery.append("SELECT OrderValue FROM ");
 		selectQuery.append(this.metadataTableName);
@@ -1001,7 +1001,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 		Iterator iter = itemsToRemove.iterator();
 		int i = 0;
 		while (iter.hasNext()) {
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			String legalname = (String) iter.next();
 			queryBuffer.append(EFGImportConstants.LEGALNAME);
 			queryBuffer.append("=");
@@ -1038,7 +1038,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 			if (queue != null) {
 				int weight = Integer.parseInt(queue.getObject(0));
 
-				StringBuffer query = new StringBuffer();
+				StringBuilder query = new StringBuilder();
 				query.append("UPDATE ");
 				query.append(metaName);
 				query.append(" SET OrderValue = (OrderValue - 1) ");
@@ -1073,8 +1073,8 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 			isDone = true;
 			if (isDone) {
-				StringBuffer query = new StringBuffer();
-				query = new StringBuffer("SELECT count(*) FROM ");
+				StringBuilder query = new StringBuilder();
+				query = new StringBuilder("SELECT count(*) FROM ");
 				query.append(this.efgRDBTable);
 				query.append(" WHERE DISPLAY_NAME=");
 				query.append("\"");
@@ -1092,7 +1092,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 				if (count > 0) {
 					log.debug("Row already exists.Updating row");
-					query = new StringBuffer("UPDATE ");
+					query = new StringBuilder("UPDATE ");
 					query.append(this.efgRDBTable);
 					query.append(" SET DS_METADATA = ");
 					query.append("\"");
@@ -1105,7 +1105,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 				} else {
 					log.debug("Row does not already exists.Inserting row");
-					query = new StringBuffer("INSERT INTO ");
+					query = new StringBuilder("INSERT INTO ");
 					query.append(this.efgRDBTable);
 					query
 							.append(" (DS_DATA,ORIGINAL_FILE_NAME,DS_METADATA,DISPLAY_NAME)");
@@ -1170,7 +1170,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				.toLowerCase(), fieldNames, legalNames);
 		try {
 			if (isDone) {
-				StringBuffer query = new StringBuffer();
+				StringBuilder query = new StringBuilder();
 				query.append("INSERT INTO ");
 				query.append(this.metadataTableName.toLowerCase());
 				query.append("( SELECT * FROM " + metadataTableToClone);
@@ -1238,12 +1238,12 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				// create metadata table headers
 				// get this from a utils class perhaps
 				log.debug("About to create table : " + infoTable);
-				StringBuffer query = new StringBuffer();
+				StringBuilder query = new StringBuilder();
 
 				for (int i = 0; i < metaHead.length; i++) {
 					String th = metaHead[i];
 					if ((th == null) || (th.trim().equals(""))) {
-						StringBuffer errBuffer = new StringBuffer();
+						StringBuilder errBuffer = new StringBuilder();
 						errBuffer.append("The table: ");
 						errBuffer.append(this.tableName);
 						errBuffer.append(" contains a blank column name.\n");
@@ -1308,7 +1308,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 
 	private String getMetadataHeadQuery() {
 
-		StringBuffer query = new StringBuffer("(");
+		StringBuilder query = new StringBuilder("(");
 		query.append(EFGImportConstants.LEGALNAME);
 		query.append(",");
 		query.append(EFGImportConstants.NAME);
@@ -1358,7 +1358,7 @@ public class CSV2Database extends CSV2DatabaseAbstract {
 				log.debug("About to populate metadataTable");
 				String[] metaHead = this.getMetadataTableHeaders();
 				for (int j = 0; j < fieldNames.length; j++) {
-					StringBuffer query = new StringBuffer();
+					StringBuilder query = new StringBuilder();
 
 					for (int i = 0; i < metaHead.length; i++) {
 						String th = metaHead[i].trim();

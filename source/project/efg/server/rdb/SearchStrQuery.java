@@ -64,7 +64,7 @@ public class SearchStrQuery extends SQLQuery {
 			
 			LoggerUtilsServlet.logErrors(ee);
 		}
-		StringBuffer querySB = new StringBuffer("SELECT * FROM ");
+		StringBuilder querySB = new StringBuilder("SELECT * FROM ");
 		querySB.append(this.datasourceName);
 		
 		String searchStrVal = req.getParameter(EFGImportConstants.SEARCHSTR);
@@ -82,13 +82,13 @@ public class SearchStrQuery extends SQLQuery {
 	 * to the query string, except for the "searchStr" parameter.
 	 *
 	 * @param searchStrValue the value of the "searchStr" parameter
-	 * @param querySB the StringBuffer object for the query string
+	 * @param querySB the StringBuilder object for the query string
 	 * @param ht the hashtable that contains the name-to-legal_name mapping
 	 * @param paramNo the number of parameters appended to the query string
 	 * @return the number of parameters appended to the query string
 	 */
 	protected String getSearchStrParamsQuery(String searchStrValue) {
-		StringBuffer querySB = new StringBuffer();
+		StringBuilder querySB = new StringBuilder();
 		
 		int paramNo = 0;
 		int paramCount = paramNo;

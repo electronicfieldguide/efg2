@@ -58,7 +58,7 @@ public class LoginDialogConstants {
 					EFGImportConstants.EFG_RESOUCRES_REPOSITORY);
 		
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("Application will place generated resources\n( media resources, generated templates etc) in \n");
 		buffer.append("\"");
 		buffer.append(property);
@@ -86,7 +86,7 @@ public class LoginDialogConstants {
 			 String[] properties = 
 				 propertyStr.split(RegularExpresionConstants.COMMASEP);
 			 	
-			 StringBuffer buffer = new StringBuffer();
+			 StringBuilder buffer = new StringBuilder();
 	
 			int j = 
 				LoginDialogConstants.pruneServerLocationsProperties(
@@ -194,7 +194,7 @@ public class LoginDialogConstants {
 			
 		
 		if(property.equalsIgnoreCase(EFGImportConstants.EFG_TRUE)) {
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			buffer.append("<html>");
 			buffer.append("<p>If the folder you are about to select is not the root</p>");
 			buffer.append("<p>of your Tomcat server , then be aware of the following: </p>");
@@ -220,7 +220,7 @@ public class LoginDialogConstants {
 	 */
 	public static int pruneServerLocationsProperties(
 			String[] properties,
-			StringBuffer buffer,
+			StringBuilder buffer,
 			String pathToServer) {
 		String current = 
 			EFGImportConstants.EFGProperties.getProperty(
@@ -371,7 +371,7 @@ public class LoginDialogConstants {
 	public static boolean alreadyLoaded(DBObject dbObject) {
 		JdbcTemplate jdbcTemplate =  EFGRDBImportUtils.getJDBCTemplate(dbObject);
 		String displayName= readSampleDataDisplayName();
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("SELECT DS_METADATA");
 		query.append(" FROM ");
 		query.append(EFGImportConstants.EFG_RDB_TABLES);

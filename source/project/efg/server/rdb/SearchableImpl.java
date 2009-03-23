@@ -134,7 +134,7 @@ public class SearchableImpl extends SearchableInterface {
 	 * Generate a query to query metadataTable for some fields
 	 */
 	private String getSearchableDataQuery(String metadataTable) {
-		StringBuffer queryBuffer = new StringBuffer();
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append("SELECT LEGALNAME, NAME, ORDERVALUE,NUMERICVALUE,"
 				+ "NUMERICRANGE,MEDIARESOURCE,ISLISTS,CATEGORICAL FROM ");
 		queryBuffer.append(metadataTable);
@@ -290,7 +290,7 @@ public class SearchableImpl extends SearchableInterface {
 		} else {
 			efgRDBTable = this.getMainTableName();
 		}
-		StringBuffer queryBuffer = new StringBuffer();
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append("SELECT DS_METADATA, ");
 		queryBuffer.append(str1);
 		queryBuffer.append(" FROM ");

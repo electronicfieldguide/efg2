@@ -75,7 +75,7 @@ public class ApplyXSLOtherPagesImpl
 		try {
 			StringWriter writer = new StringWriter();
 			srcDoc.marshal(writer);
-			StringBuffer buffer =writer.getBuffer();
+			StringBuilder buffer =new StringBuilder(writer.getBuffer().toString());
 			Reader reader = new StringReader(buffer.toString());			
 			return new StreamSource(reader);
 		}
@@ -243,7 +243,7 @@ public class ApplyXSLOtherPagesImpl
 
     private Source buildXSL(HttpServletRequest req)
     {
-        StringBuffer xslBuffer = new StringBuffer();
+        StringBuilder xslBuffer = new StringBuilder();
         xslBuffer.append("<?xml version='1.0' encoding='UTF-8'?>");
         xslBuffer.append("<xsl:stylesheet version='1.0' ");
         xslBuffer.append("xmlns:xsl='http://www.w3.org/1999/XSL/Transform' >");

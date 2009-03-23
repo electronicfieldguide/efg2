@@ -65,7 +65,7 @@ public class EFGDocumentTypesFactory {
 	}
 
 	private String getSearchableDataQuery(String name, String ds) {
-		StringBuffer queryBuffer = new StringBuffer();
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append("SELECT ");
 		queryBuffer.append(name);
 		queryBuffer.append(" FROM ");

@@ -80,7 +80,7 @@ public class WorkspaceResources {
 				return false;
 			}
 			applicationHome = parseServerRoot(applicationHome);
-			StringBuffer tmpFile = new StringBuffer();
+			StringBuilder tmpFile = new StringBuilder();
 			tmpFile.append(applicationHome.trim());
 			tmpFile.append(File.separator);
 			tmpFile.append(EFGImportConstants.EFG_WEB_APPS);
@@ -133,7 +133,7 @@ public class WorkspaceResources {
 				// return;
 			}
 			applicationHome = parseServerRoot(applicationHome);
-			StringBuffer tmpFile = new StringBuffer();
+			StringBuilder tmpFile = new StringBuilder();
 			tmpFile.append(applicationHome.trim());
 			tmpFile.append(File.separator);
 			tmpFile.append(EFGImportConstants.EFG_WEB_APPS);
@@ -184,7 +184,7 @@ public class WorkspaceResources {
 	private static void writeDefaultDimesions() {
 		String[] dimensions = getDefaultDimensions();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for (int i = dimensions.length; i > 0; i--) {
 
 			if (i < dimensions.length) {
@@ -220,7 +220,7 @@ public class WorkspaceResources {
 	public static synchronized void doHouseKeepingbeforeClosing() {
 		try {
 
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 
 			/**
 			 * The history of server locations chosen by user

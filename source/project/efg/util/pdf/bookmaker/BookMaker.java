@@ -407,11 +407,11 @@ public class BookMaker{
 				EFGRankObject rank = (EFGRankObject)iter.next();
 				String character = rank.getName();
 				Object obj =taxonEntry.get(character);
-				StringBuffer characterName = new StringBuffer(character);
+				StringBuilder characterName = new StringBuilder(character);
 				characterName.append(" : ");
 				if(obj instanceof ItemsType){
 					items = (ItemsType)obj;
-					StringBuffer stateBuffer = new StringBuffer();
+					StringBuilder stateBuffer = new StringBuilder();
 					for(int i = 0; i < items.getItemCount();i++){
 						item = items.getItem(i);
 						if(i > 0){
@@ -431,7 +431,7 @@ public class BookMaker{
 				else if(obj instanceof StatisticalMeasuresType){ 
 					stats = (StatisticalMeasuresType)obj;
 
-					StringBuffer stateBuffer = new StringBuffer();
+					StringBuilder stateBuffer = new StringBuilder();
 					for(int i = 0; i < stats.getStatisticalMeasureCount();i++){
 						double max = stats.getMax();
 						double min = stats.getMin();

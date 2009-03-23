@@ -254,7 +254,7 @@ public class ServerLocator extends JDialog {
         		if(numberOfItems > cmbURL.getItemCount()) {
         			numberOfItems=cmbURL.getItemCount();
         		}
-        		StringBuffer buffer = new StringBuffer();
+        		StringBuilder buffer = new StringBuilder();
 				for(int index =numberOfItems; index > 0 ;index--) {
 					
             		String currentURL = cmbURL.getItemAt(index-1).toString();

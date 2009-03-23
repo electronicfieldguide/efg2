@@ -139,7 +139,7 @@ public class EFG2PDFConverter extends EFGServlet
 
     private String isError()
     {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append("An error occured during PDF processing. Consult the efg team for help");
         return buffer.toString();
     }

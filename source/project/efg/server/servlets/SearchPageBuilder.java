@@ -298,28 +298,28 @@ public class SearchPageBuilder extends EFGSearchServletInterface implements EFGI
 			HttpServletResponse res) throws ServletException, IOException{
 		String mainTableName = req
 		.getParameter(EFGImportConstants.ALL_TABLE_NAME);
-		StringBuffer fwdStrEncodedBuffer = 
-			new StringBuffer("/SearchPage.jsp?pageType=option");
-		StringBuffer forwardStringBuffer = 
-			new StringBuffer();
-		forwardStringBuffer.append(EFGImportConstants.ALL_TABLE_NAME);
-		forwardStringBuffer.append("=");
-		forwardStringBuffer.append(mainTableName);
-		forwardStringBuffer.append("&");
-		forwardStringBuffer.append("displayFormat=HTML&");
+		StringBuilder fwdStrEncodedBuffer = 
+			new StringBuilder("/SearchPage.jsp?pageType=option");
+		StringBuilder forwardStringBuilder = 
+			new StringBuilder();
+		forwardStringBuilder.append(EFGImportConstants.ALL_TABLE_NAME);
+		forwardStringBuilder.append("=");
+		forwardStringBuilder.append(mainTableName);
+		forwardStringBuilder.append("&");
+		forwardStringBuilder.append("displayFormat=HTML&");
 		if(req.getParameter(EFGImportConstants.DISPLAY_NAME) != null){
-			forwardStringBuffer.append(EFGImportConstants.DISPLAY_NAME);
-			forwardStringBuffer.append("=");
-			forwardStringBuffer.append(req.getParameter(EFGImportConstants.DISPLAY_NAME));
-			forwardStringBuffer.append("&");
+			forwardStringBuilder.append(EFGImportConstants.DISPLAY_NAME);
+			forwardStringBuilder.append("=");
+			forwardStringBuilder.append(req.getParameter(EFGImportConstants.DISPLAY_NAME));
+			forwardStringBuilder.append("&");
 		}
-		forwardStringBuffer.append(EFGImportConstants.DATASOURCE_NAME);
-		forwardStringBuffer.append("=");
-		forwardStringBuffer.append(req.getParameter(EFGImportConstants.DATASOURCE_NAME));
+		forwardStringBuilder.append(EFGImportConstants.DATASOURCE_NAME);
+		forwardStringBuilder.append("=");
+		forwardStringBuilder.append(req.getParameter(EFGImportConstants.DATASOURCE_NAME));
 		
 
 		fwdStrEncodedBuffer.append(
-				URLEncoder.encode(forwardStringBuffer.toString(), 
+				URLEncoder.encode(forwardStringBuilder.toString(), 
 						"UTF-8")
 						);
 		ServletContext sctxt = getServletConfig().getServletContext();
@@ -387,20 +387,20 @@ public class SearchPageBuilder extends EFGSearchServletInterface implements EFGI
 		req.setAttribute(EFGImportConstants.XSL_STRING, xslFileName);
 		setApplXSLAttributes(req,page.getGuid());
 		// get xsl file name from the templateConfig file name
-		StringBuffer forwardStringBuffer = 
-		new StringBuffer(req.getContextPath());
-		forwardStringBuffer.append("/");
-		forwardStringBuffer
+		StringBuilder forwardStringBuilder = 
+		new StringBuilder(req.getContextPath());
+		forwardStringBuilder.append("/");
+		forwardStringBuilder
 		.append(EFGImportConstants.TEMPLATES_FOLDER_NAME);
-		forwardStringBuffer.append("/");
-		forwardStringBuffer.append(xslFileName);
+		forwardStringBuilder.append("/");
+		forwardStringBuilder.append(xslFileName);
 		
-		StringBuffer fwdStrEncodedBuffer = new StringBuffer("/");
+		StringBuilder fwdStrEncodedBuffer = new StringBuilder("/");
 		//forward to pdf or html xslt servlet
 		fwdStrEncodedBuffer.append(applyXSLServlet);
 		fwdStrEncodedBuffer.append("?xsl=");
 		fwdStrEncodedBuffer.append(
-				URLEncoder.encode(forwardStringBuffer.toString(), 
+				URLEncoder.encode(forwardStringBuilder.toString(), 
 						"UTF-8")
 						);
 		ServletContext sctxt = getServletConfig().getServletContext();

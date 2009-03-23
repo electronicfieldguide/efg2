@@ -133,7 +133,7 @@ public class MapQuery extends SQLQuery
         }
         String maxDispStr = req.getParameter(EFGImportConstants.MAX_DISPLAY);
         int maxDisplay = getMaxDisplay(maxDispStr);
-        StringBuffer querySB = new StringBuffer();
+        StringBuilder querySB = new StringBuilder();
   
     		try {
     			querySB.append(this.getCommonQuery());

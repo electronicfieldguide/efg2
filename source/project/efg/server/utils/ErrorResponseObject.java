@@ -30,7 +30,7 @@ public class ErrorResponseObject extends ResponseObject {
 	}
 	private void logErrorMessage(){
 		Enumeration paramEnum = req.getParameterNames();
-		StringBuffer errorBuffer = new StringBuffer();
+		StringBuilder errorBuffer = new StringBuilder();
 		errorBuffer.append("An Error ocurred for this request!!!\n");
 		errorBuffer.append("*****************************\n");
 		while (paramEnum.hasMoreElements()) {
@@ -54,7 +54,7 @@ public class ErrorResponseObject extends ResponseObject {
 	 */
 	protected void createForwardPage() {
 		this.logErrorMessage();
-		StringBuffer fwdStrEncodedBuffer = new StringBuffer("/");
+		StringBuilder fwdStrEncodedBuffer = new StringBuilder("/");
 		fwdStrEncodedBuffer.append(EFGImportConstants.ERROR_PAGE);
 		this.forwardPage = fwdStrEncodedBuffer.toString();
 	}

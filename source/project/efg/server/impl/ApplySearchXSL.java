@@ -75,7 +75,7 @@ public class ApplySearchXSL implements ApplyXSLInterface {
 			
 			StringWriter writer = new StringWriter();
 			srcDoc.marshal(writer);
-			StringBuffer buffer =writer.getBuffer();
+			StringBuilder buffer =new StringBuilder(writer.getBuffer().toString());
 			Reader reader = new StringReader(buffer.toString());			
 			return new StreamSource(reader);
 		}

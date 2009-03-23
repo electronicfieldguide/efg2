@@ -85,12 +85,12 @@ public class PDFConstants {
 		PDFConstants.fontFamilyMap = FontHandler.LoadFonts();
 	}
 
-	public static StringBuffer errorBuffer;
+	public static StringBuilder errorBuffer;
 
 	static{
 		String errorProps =EFGImportConstants.EFGProperties.getProperty("pdferrormessage");
 		if(errorProps != null && !errorProps.trim().equals("")){
-			PDFConstants.errorBuffer= new StringBuffer(); 
+			PDFConstants.errorBuffer= new StringBuilder(); 
 	
 			 String[] props = errorProps.split(RegularExpresionConstants.PIPESEP);
 			 for(int i = 0; i < props.length;i++){
@@ -105,7 +105,7 @@ public class PDFConstants {
 			 }
 		}
 		else{
-		PDFConstants.errorBuffer= new StringBuffer("Error occured during processing of document\n"); 
+		PDFConstants.errorBuffer= new StringBuilder("Error occured during processing of document\n"); 
 		PDFConstants.errorBuffer.append("---------\n");
 		PDFConstants.errorBuffer.append("Possible Causes:\n\n");
 	

@@ -155,7 +155,7 @@ public class EFGPageEventHandler extends PdfPageEventHelper {
 	 * @param set- Retrieve Text from the Set
 	 */
 	private String getText(SortedSet set) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		if(set == null){
 			return buffer.toString();
 		}
@@ -303,7 +303,7 @@ public class EFGPageEventHandler extends PdfPageEventHelper {
     	   if(this.hasFirstPage){
     		   pgNumber = pgNumber-1;
     	   }
-    	   StringBuffer pageNumber = new StringBuffer("- "); 
+    	   StringBuilder pageNumber = new StringBuilder("- "); 
    		   pageNumber.append(pgNumber);
    		   pageNumber.append(" -");
  

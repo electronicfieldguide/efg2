@@ -149,7 +149,7 @@ public class DiGIRQuery extends SQLQuery {
 	private String processDigirRequest(DigirParserHandler dph) {
 		//log.debug("Inside Digir request");
 		Stack stack = dph.getStack();
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 
 		while (!stack.empty()) {
 			EFGString efg = (EFGString) stack.pop();
@@ -183,7 +183,7 @@ public class DiGIRQuery extends SQLQuery {
 			String datasource) {
 
 		
-		StringBuffer queryString = new StringBuffer();
+		StringBuilder queryString = new StringBuilder();
 		this.initServerFactory();
 		Map map = makeLegalNameMap();
 		String arr[] = RegularExpresionConstants.spacePattern.split(digirQuery);
@@ -251,7 +251,7 @@ public class DiGIRQuery extends SQLQuery {
 				}
 			}
 		}
-		StringBuffer insertB = new StringBuffer();
+		StringBuilder insertB = new StringBuilder();
 		insertB.append("SELECT * FROM ");
 		insertB.append(datasource);
 		

@@ -44,7 +44,7 @@ public abstract class TemplateModelHandler {
 		if (!doChecks(datasourceName)) {
 			return false;
 		}
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("DELETE FROM ");
 		query.append(this.templateName);
 		query.append(" WHERE ");
@@ -82,7 +82,7 @@ public abstract class TemplateModelHandler {
 		if (!doChecks(datasourceName)) {
 			return false;
 		}
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("DELETE FROM ");
 		query.append(this.templateName.toLowerCase());
 		query.append(" WHERE ");
@@ -126,7 +126,7 @@ public abstract class TemplateModelHandler {
 		if (!doChecks(displayName)) {
 			return false;
 		}
-		// StringBuffer updateStatement = new StringBuffer(
+		// StringBuilder updateStatement = new StringBuilder(
 		// this.getDisplayNameChangePreparedStatement(this.templateName.toLowerCase()));
 
 		try {
@@ -156,7 +156,7 @@ public abstract class TemplateModelHandler {
 	 */
 	private void replaceKeysColumn(String tableName, String displayName,
 			String datasourceName) {
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 
 		List list;
 		try {
@@ -175,7 +175,7 @@ public abstract class TemplateModelHandler {
 
 				String oldDisplayName = ((EFGQueueObjectInterface) list.get(i))
 						.getObject(0);
-				StringBuffer replace = new StringBuffer();
+				StringBuilder replace = new StringBuilder();
 				// MySQL Query
 				replace.append("UPDATE ");
 				replace.append(tableName);
@@ -187,7 +187,7 @@ public abstract class TemplateModelHandler {
 				replace.append("\")");
 				this.executeStatement(replace.toString());
 
-				replace = new StringBuffer();
+				replace = new StringBuilder();
 				// MySQL Query
 				replace.append("UPDATE ");
 				replace.append(tableName);
@@ -201,7 +201,7 @@ public abstract class TemplateModelHandler {
 				// use a real sql query here instead of a mysql
 				// Update efg.efg_template_tables set displayName='Trees'
 				// where displayName='PITreesFinalJennEditDecember';
-				replace = new StringBuffer();
+				replace = new StringBuilder();
 				// MySQL Query
 				replace.append("UPDATE ");
 				replace.append(tableName);
@@ -291,7 +291,7 @@ public abstract class TemplateModelHandler {
 			return null;
 		}
 
-		StringBuffer queryString = new StringBuffer("Select ");
+		StringBuilder queryString = new StringBuilder("Select ");
 		queryString.append(EFGImportConstants.TEMPLATE_OBJECT_FIELD);
 		queryString.append(" FROM ");
 		queryString.append(dbTableName);
@@ -368,7 +368,7 @@ public abstract class TemplateModelHandler {
 		}
 
 		try {
-			StringBuffer updateStatement = new StringBuffer(this
+			StringBuilder updateStatement = new StringBuilder(this
 					.getUpdatePreparedStatement(tableName));
 			BatchPreparedStatementSetter p = new EFGBatchUpdatePreparedStatement(
 					datasourceName, tps);
@@ -408,7 +408,7 @@ public abstract class TemplateModelHandler {
 			return false;
 		}
 
-		StringBuffer updateString = new StringBuffer(this
+		StringBuilder updateString = new StringBuilder(this
 				.getUpdatePreparedStatement(tableName));
 		try {
 
@@ -423,7 +423,7 @@ public abstract class TemplateModelHandler {
 
 	public boolean removeGuidFromTable(final String guid) {
 
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("DELETE FROM ");
 		query.append(this.templateName.toLowerCase());
 		query.append(" WHERE ");
@@ -455,7 +455,7 @@ public abstract class TemplateModelHandler {
 	 */
 	public Hashtable getAll() {
 
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("SELECT ");
 		query.append(getHeaderQuery());
 		query.append(" FROM ");
@@ -516,7 +516,7 @@ public abstract class TemplateModelHandler {
 		if (!doChecks(datasourceName)) {
 			return null;
 		}
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("SELECT ");
 		query.append(EFGImportConstants.TEMPLATE_KEY);
 		query.append(" FROM ");
@@ -548,7 +548,7 @@ public abstract class TemplateModelHandler {
 		if (!doChecks(key)) {
 			return null;
 		}
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("SELECT ");
 		query.append(EFGImportConstants.GUID);
 		query.append(",");
@@ -622,7 +622,7 @@ public abstract class TemplateModelHandler {
 			skey = skey;
 		}
 		final String key = skey;
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 
 		query.append("UPDATE ");
 		query.append(this.templateName.toLowerCase());
@@ -669,7 +669,7 @@ public abstract class TemplateModelHandler {
 			skey = skey;
 		}
 		final String key = skey;
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("INSERT INTO ");
 		query.append(this.templateName.toLowerCase());
 		query.append(" ");
@@ -717,7 +717,7 @@ public abstract class TemplateModelHandler {
 	 */
 	private static String getHeaderQuery() {
 
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 
 		query.append(EFGImportConstants.TEMPLATE_KEY);
 		query.append(",");
@@ -750,7 +750,7 @@ public abstract class TemplateModelHandler {
 	}
 
 	private final String getUpdatePreparedStatement(String tableName) {
-		StringBuffer updateString = new StringBuffer("UPDATE ");
+		StringBuilder updateString = new StringBuilder("UPDATE ");
 		updateString.append(tableName);
 		updateString.append(" SET ");
 		updateString.append(EFGImportConstants.TEMPLATE_OBJECT_FIELD);

@@ -154,7 +154,7 @@ public class TaxonPageDefaultConfig {
 			String displayName,
 			String type, 
 			String uniqueName){
-		StringBuffer querySearch = new StringBuffer("/");
+		StringBuilder querySearch = new StringBuilder("/");
 		querySearch.append(EFGImportConstants.EFG_APPS);
 		
 		String xslName = EFGImportConstants.DEFAULT_SEARCH_FILE;

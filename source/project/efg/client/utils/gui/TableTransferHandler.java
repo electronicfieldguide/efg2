@@ -42,7 +42,7 @@ public class TableTransferHandler extends TransferHandler{
          JTable table = (JTable)c;
          rows = table.getSelectedRows();
          int colCount = table.getColumnCount();
-         StringBuffer buff = new StringBuffer();
+         StringBuilder buff = new StringBuilder();
          for (int i = 0; i < rows.length; i++) {
              for (int j = 0; j < colCount; j++) {
                  Object val = table.getValueAt(rows[i], j);

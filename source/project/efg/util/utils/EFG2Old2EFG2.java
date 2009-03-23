@@ -30,7 +30,7 @@ public class EFG2Old2EFG2 {
 		String key = null;
 		TemplateObject templateObject = null;
 		
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append(templateHome);
 		buffer.append("/");
 		buffer.append("templateMap.out");
@@ -66,7 +66,7 @@ public class EFG2Old2EFG2 {
 				displayName = "";
 			}
 			
-			StringBuffer query = new StringBuffer();
+			StringBuilder query = new StringBuilder();
 			query.append("INSERT INTO efg.efg_template_tables "); 
 			query.append("( ");
 			query.append(getHeaderQuery());
@@ -102,7 +102,7 @@ public class EFG2Old2EFG2 {
 		}
 	}
 	private String getHeaderQuery() {		
-		StringBuffer query = new StringBuffer();		
+		StringBuilder query = new StringBuilder();		
 		query.append(EFGImportConstants.TEMPLATE_KEY);
 		query.append(",");
 		query.append(EFGImportConstants.GUID);

@@ -206,15 +206,15 @@ public class EFGContextListener implements ServletContextListener {
 	}
 
 	private synchronized void cleanImportExportDirectories() {
-		StringBuffer fileLocationBuffer = new StringBuffer();
+		StringBuilder fileLocationBuffer = new StringBuilder();
 		fileLocationBuffer.append(servletContext.getRealPath("/"));
 		fileLocationBuffer.append(File.separator);
-		StringBuffer cBuffer = new StringBuffer(fileLocationBuffer.toString());
+		StringBuilder cBuffer = new StringBuilder(fileLocationBuffer.toString());
 		cBuffer.append("imports");
 		cBuffer.append(File.separator);
 		File dir = new File(cBuffer.toString());
 		cleanCommonImportExport(dir);
-		cBuffer = new StringBuffer(fileLocationBuffer.toString());
+		cBuffer = new StringBuilder(fileLocationBuffer.toString());
 		cBuffer.append("exports");
 		cBuffer.append(File.separator);
 		dir = new File(cBuffer.toString());
@@ -355,7 +355,7 @@ public class EFGContextListener implements ServletContextListener {
 					String tokens[] = RegularExpresionConstants.spacePattern
 							.split(word);
 					if (tokens.length >= 2) {
-						StringBuffer buf = new StringBuffer();
+						StringBuilder buf = new StringBuilder();
 						for (int i = 1; i < tokens.length; i++) {
 							String temp = tokens[i];
 							int index = temp.indexOf("#");

@@ -175,7 +175,7 @@ public class BookMakerDriver{
 		return null;
 	}
 	static String help(){
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		 buffer.append("usage java BookMakerDriver URL datasourceName templateName glossary(true or false) [outputFileName]\n\n");
 
 		buffer.append("URL = url to server where configuration was done\n");
@@ -253,7 +253,7 @@ public class BookMakerDriver{
 	 * @return
 	 */
 	private static String appendDOCURL(String strURL, String datasourceName, String glossary) {
-		StringBuffer url = new StringBuffer();
+		StringBuilder url = new StringBuilder();
 		url.append(strURL);
 		url.append("/doc2xml");
 		url.append("?");

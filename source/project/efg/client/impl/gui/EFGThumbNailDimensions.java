@@ -252,7 +252,7 @@ public class EFGThumbNailDimensions  extends JDialog{
 	 */
 	private void loadHistoryList(String[] dimensions) {
 		
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for(int i=0; i < dimensions.length;i++) {
 			this.historyList.add(dimensions[i]);
 			if(i > 0) {
@@ -271,7 +271,7 @@ public class EFGThumbNailDimensions  extends JDialog{
 		
 	}
 	private String getCurrentHistoryLists() {
- 		StringBuffer buffer = new StringBuffer();
+ 		StringBuilder buffer = new StringBuilder();
  		
 		for (Iterator iter = this.historyList.iterator(); iter.hasNext();) {
 			String element = (String)iter.next();

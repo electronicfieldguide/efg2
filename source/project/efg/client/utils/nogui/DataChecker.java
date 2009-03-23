@@ -75,7 +75,7 @@ public abstract class DataChecker {
 					+ "\" was null or the empty string.");
 			return false;
 		}
-		StringBuffer query = new StringBuffer(
+		StringBuilder query = new StringBuilder(
 				"SELECT DS_METADATA, DS_DATA FROM ");
 		query.append(this.efgRDBTable);
 		query.append(" WHERE DISPLAY_NAME=");
@@ -106,7 +106,7 @@ public abstract class DataChecker {
 			return null;
 		}
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("Select ");
 		buffer.append(fieldName);
 		buffer.append(" From ");
@@ -133,7 +133,7 @@ public abstract class DataChecker {
 	}
 
 	public static String getServerHome() {
-		StringBuffer serverHomeBuffer = new StringBuffer(EFGUtils
+		StringBuilder serverHomeBuffer = new StringBuilder(EFGUtils
 				.getServerHome());
 		serverHomeBuffer.append(File.separator);
 		serverHomeBuffer.append(EFGImportConstants.EFG_WEB_APPS);

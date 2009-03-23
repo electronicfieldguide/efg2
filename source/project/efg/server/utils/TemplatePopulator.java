@@ -53,7 +53,7 @@ public class TemplatePopulator implements EFGImportConstants {
 			String itemType, String dsName, String dbTableName) {
 		String mutex = "";
 		synchronized (mutex) {
-			StringBuffer key = new StringBuffer(fileName);
+			StringBuilder key = new StringBuilder(fileName);
 			key.append(EFGImportConstants.UNDER_SCORE);
 			key.append(guid);
 			key.append(EFGImportConstants.UNDER_SCORE);

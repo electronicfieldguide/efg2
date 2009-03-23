@@ -104,7 +104,7 @@ import project.efg.util.interfaces.EFGRowMapperInterface;
 	        // Default to not having a quote character	       
 	        try {
 	        	this.dbMetadata = new EFGDBMetadata(tableName);
-	        	StringBuffer result = new StringBuffer();
+	        	StringBuilder result = new StringBuilder();
 	        	result.append(
 	        			(String)JdbcUtils.extractDatabaseMetaData
 	        			(
@@ -133,7 +133,7 @@ import project.efg.util.interfaces.EFGRowMapperInterface;
 		 */
 	    private  String getColumnNames( 
 	    		SqlRowSetMetaData metaData) throws SQLException, Exception {
-	    	StringBuffer result = new StringBuffer();
+	    	StringBuilder result = new StringBuilder();
 	    	String[] columnNames = metaData.getColumnNames(); 
            for (int i=0; i<columnNames.length; i++) {
                 if (i > 0) {
@@ -155,7 +155,7 @@ import project.efg.util.interfaces.EFGRowMapperInterface;
 	    public String dumpTable( String tableName, String query)throws Exception {
 	    	
 	       
-	    	StringBuffer result = new StringBuffer();
+	    	StringBuilder result = new StringBuilder();
 			SqlRowSet rs = this.rowMapper.mapRows(
 					this.jdbcTemplate, query);
 	

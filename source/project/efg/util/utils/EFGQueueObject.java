@@ -145,7 +145,7 @@ public class EFGQueueObject implements EFGQueueObjectInterface{
 		return this.list.hashCode();
 	}
 	public String toString(){
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		for(int i=0; i < this.list.size(); i++){
 			String obj1 = this.getObject(i);
 			if((obj1 != null) && (!obj1.trim().equals(""))){

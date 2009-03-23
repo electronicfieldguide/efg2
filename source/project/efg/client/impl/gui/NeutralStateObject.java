@@ -63,7 +63,7 @@ EFGDatasourceObjectStateInterface {
 	 */
 	public void handleState(EFGDatasourceObjectInterface obj,
 			DefaultMutableTreeNode root) {
-		StringBuffer message = new StringBuffer(obj.getDataName().toString());
+		StringBuilder message = new StringBuilder(obj.getDataName().toString());
 		message.append(" ");
 	message.append(EFGImportConstants.EFGProperties.
 				getProperty("SynopticKeyTransferHandler.update.neutral"));

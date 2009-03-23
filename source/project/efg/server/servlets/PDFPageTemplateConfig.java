@@ -196,7 +196,7 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig
             if(req.getParameter("pdfbook") != null)
             {
                 String context = req.getContextPath();
-                StringBuffer querySearch = new StringBuffer(context);
+                StringBuilder querySearch = new StringBuilder(context);
                 querySearch.append("/");
                 querySearch.append("books");
                 querySearch.append("/");
@@ -206,7 +206,7 @@ public class PDFPageTemplateConfig extends EFGTemplateConfig
                 handlePDFTests(req, res, xslPage);
             } else
             {
-                StringBuffer querySearch = new StringBuffer();
+                StringBuilder querySearch = new StringBuilder();
                 querySearch.append("/pdfDisplay?");
                 querySearch.append(formatQuery(efg2Req).replaceAll("=xml", "=HTML"));
                 if(guid != null)

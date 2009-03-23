@@ -421,7 +421,7 @@ public class ImageInfo {
 				{
 					int extensionType = read();
 					if (collectComments && extensionType == 0xfe) {
-						StringBuffer sb = new StringBuffer();
+						StringBuilder sb = new StringBuilder();
 						int n;
 						do
 						{
@@ -1078,7 +1078,7 @@ public class ImageInfo {
 		System.out.println(value);
 	}
 
-	private static void printLine2Html(StringBuffer buffer,String text, int value, int minValidValue) {
+	private static void printLine2Html(StringBuilder buffer,String text, int value, int minValidValue) {
 		if (value >= minValidValue) {
 			printLine2Html(buffer,text, Integer.toString(value));
 		}
@@ -1087,7 +1087,7 @@ public class ImageInfo {
 		return printHtmlVerbose(ii);
 	}
 
-	private static void printLine2Html(StringBuffer buffer,String text, String value) {
+	private static void printLine2Html(StringBuilder buffer,String text, String value) {
 		if (value == null || value.length() == 0) {
 			return;
 		}
@@ -1100,7 +1100,7 @@ public class ImageInfo {
 		buffer.append("</p>");
 	}
 	private static String printHtmlVerbose(ImageInfo ii) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		printLine2Html(buffer,"File format: ", ii.getFormatName());
 		//printLine2Html(buffer,"MIME type: ", ii.getMimeType());
 		printLine2Html(buffer,"Width (pixels): ", ii.getWidth(), 1);
@@ -1139,10 +1139,10 @@ public class ImageInfo {
 	}
 
 	private String readLine() throws IOException {
-		return readLine(new StringBuffer());
+		return readLine(new StringBuilder());
 	}
 
-	private String readLine(StringBuffer sb) throws IOException {
+	private String readLine(StringBuilder sb) throws IOException {
 		boolean finished;
 		do {
 			int value = read();

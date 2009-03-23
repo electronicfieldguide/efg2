@@ -28,7 +28,7 @@ public class NoMatchResponseObject extends ResponseObject {
 	 * @see project.efg.servlets.efgInterface.ResponseObject#createForwardPage()
 	 */
 	protected void createForwardPage() {
-		StringBuffer fwdStrEncodedBuffer = new StringBuffer("/");
+		StringBuilder fwdStrEncodedBuffer = new StringBuilder("/");
 		fwdStrEncodedBuffer.append(EFGImportConstants.NO_MATCH_PAGE);
 		this.forwardPage = fwdStrEncodedBuffer.toString();
 	}

@@ -63,7 +63,7 @@ public class EFGUtils {
 		}
 	}
 	public synchronized static String constructCacheKey(String ds, String bool){
-		StringBuffer key = new StringBuffer(ds);
+		StringBuilder key = new StringBuilder(ds);
 		key.append(bool);
 		return key.toString().toLowerCase();
 	}
@@ -281,7 +281,7 @@ public class EFGUtils {
 	 * 
 	 */
 	private static String toRDBFieldName(String origString) {
-		StringBuffer sb = new StringBuffer(origString);
+		StringBuilder sb = new StringBuilder(origString);
 		int strLength = sb.length();
 		
 		//move the character to the end of the string		
@@ -290,7 +290,7 @@ public class EFGUtils {
 			//make a new field name and prepend a constant 'E' to it
 			long legalName = EFGUniqueID.getID();
 			//sb.setCharAt(0, '_');
-			sb = new StringBuffer();
+			sb = new StringBuilder();
 			sb.append(EFGImportConstants.FIELDS_BEGIN_CHAR + legalName);
 			return sb.toString();
 		}

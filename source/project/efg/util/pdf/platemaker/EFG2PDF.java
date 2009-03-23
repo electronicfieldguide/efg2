@@ -626,7 +626,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 		
 		Font font = co.getFont();
 		Phrase ph = null;
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		int i = 0;
 		for(Iterator iter = states.iterator(); iter.hasNext();){
 			String state = (String)iter.next();

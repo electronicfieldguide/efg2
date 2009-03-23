@@ -52,7 +52,7 @@ public abstract class ImportBehavior {
 	protected EFGDatasourceObjectListInterface lists;
 	protected EFGDatasourceObjectInterface obj; 
 	
-	protected StringBuffer responseMessage;
+	protected StringBuilder responseMessage;
 	/**
 	 * 
 	 */
@@ -61,7 +61,7 @@ public abstract class ImportBehavior {
 		this.lists=lists;
 		this.obj = obj; 
 	
-		this.responseMessage = new StringBuffer();
+		this.responseMessage = new StringBuilder();
 		
 	}
 	/**

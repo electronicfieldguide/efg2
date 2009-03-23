@@ -114,7 +114,7 @@ public class LoggerUtils {
 			init();
 		}
 		StackTraceElement[] ste = ee.getStackTrace();
-		StringBuffer buff = new StringBuffer();
+		StringBuilder buff = new StringBuilder();
 		buff.append(ee.getMessage());
 		buff.append("\n");
 		for (int ii = 0; ii < ste.length; ii++) {

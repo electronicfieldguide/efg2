@@ -252,7 +252,7 @@ public class LoginDialog extends JDialog implements LoginDialogInterface {
 					LoginDialogConstants.releaseLock(lock);
 				}
 			} else {
-				StringBuffer message = new StringBuffer();
+				StringBuilder message = new StringBuilder();
 				
 				message.append("The application cannot find your workspace directory\n");
 				message.append("Please read the docs on how to set your workspace directory\n");

@@ -61,7 +61,7 @@ public class RunSetUp {
 	 */
 	private static void flushPrivileges(DBObject db) {
 		try {
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer.append(EFGImportConstants.EFGProperties
 					.getProperty("flushprivileges"));
 			if (!queryBuffer.toString().trim().equals("")) {
@@ -102,9 +102,9 @@ public class RunSetUp {
 			return true;
 		}
 
-		StringBuffer queryBuffer = null;
+		StringBuilder queryBuffer = null;
 		try {
-			queryBuffer = new StringBuffer();
+			queryBuffer = new StringBuilder();
 			queryBuffer.append("GRANT ALL ON mysql.* to \"");
 			queryBuffer.append(superuserInfo.getUserName());
 			queryBuffer.append("\"@'localhost' IDENTIFIED BY \"");
@@ -121,7 +121,7 @@ public class RunSetUp {
 
 			}
 
-			queryBuffer = new StringBuffer();
+			queryBuffer = new StringBuilder();
 			queryBuffer.append("GRANT ALL ON efg.* to \"");
 			queryBuffer.append(superuserInfo.getUserName());
 			queryBuffer.append("\"@'localhost' IDENTIFIED BY \"");
@@ -142,7 +142,7 @@ public class RunSetUp {
 			return false;
 		}
 		try {
-			queryBuffer = new StringBuffer();
+			queryBuffer = new StringBuilder();
 			queryBuffer.append("GRANT ALL ON efg.* to \"");
 			queryBuffer.append(superuserInfo.getUserName());
 			queryBuffer.append("\"@'%' IDENTIFIED BY \"");
@@ -181,7 +181,7 @@ public class RunSetUp {
 			}
 			String property = EFGImportConstants.EFGProperties
 					.getProperty("selectefguser");
-			StringBuffer queryBuffer = new StringBuffer(property);
+			StringBuilder queryBuffer = new StringBuilder(property);
 
 			List list = jdbcTemplate.queryForList(queryBuffer.toString(),
 					String.class);
@@ -211,7 +211,7 @@ public class RunSetUp {
 			if (jdbcTemplate == null) {
 				jdbcTemplate = EFGRDBImportUtils.getJDBCTemplate(db);
 			}
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer.append("DROP USER \"");
 			queryBuffer.append(userName);
 			queryBuffer.append("\"@'%'");
@@ -222,7 +222,7 @@ public class RunSetUp {
 			} catch (Exception ee) {
 
 			}
-			queryBuffer = new StringBuffer();
+			queryBuffer = new StringBuilder();
 			queryBuffer.append("DROP USER \"");
 			queryBuffer.append(userName);
 			queryBuffer.append("\"@'localhost'");
@@ -335,7 +335,7 @@ public class RunSetUp {
 					.getJDBCTemplate(newDb);
 
 			// read from properties file
-			StringBuffer query = new StringBuffer("CREATE TABLE ");
+			StringBuilder query = new StringBuilder("CREATE TABLE ");
 			query.append(" IF NOT EXISTS ");
 			query.append(EFGImportConstants.EFGProperties
 					.getProperty("users_table"));
@@ -344,7 +344,7 @@ public class RunSetUp {
 
 			newjdbcTemplate.execute(query.toString());
 
-			query = new StringBuffer("CREATE TABLE ");
+			query = new StringBuilder("CREATE TABLE ");
 			query.append(" IF NOT EXISTS ");
 			query.append(EFGImportConstants.EFGProperties
 					.getProperty("role_table"));
@@ -355,7 +355,7 @@ public class RunSetUp {
 			query.append(")");
 			newjdbcTemplate.execute(query.toString());
 
-			query = new StringBuffer("INSERT INTO ");
+			query = new StringBuilder("INSERT INTO ");
 			query.append(EFGImportConstants.EFGProperties
 					.getProperty("role_table"));
 			query.append(" VALUES(\"");
@@ -367,7 +367,7 @@ public class RunSetUp {
 			query.append("\")");
 			newjdbcTemplate.execute(query.toString());
 
-			query = new StringBuffer("INSERT INTO ");
+			query = new StringBuilder("INSERT INTO ");
 			query.append(EFGImportConstants.EFGProperties
 					.getProperty("users_table"));
 			query.append(" VALUES(\"");
@@ -441,7 +441,7 @@ public class RunSetUp {
 			return false;
 		}
 
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 
 		query.append("CREATE TABLE IF NOT EXISTS ");
 		query.append(templateName.toLowerCase());
@@ -472,7 +472,7 @@ public class RunSetUp {
 	private static boolean createRDBOrGlossaryTable(
 			JdbcTemplate efgjdbcTemplate, String tableName) {
 		try {
-			StringBuffer query = new StringBuffer();
+			StringBuilder query = new StringBuilder();
 
 			// PUT IN PROPERTIES FILE
 			query.append("CREATE TABLE IF NOT EXISTS ");

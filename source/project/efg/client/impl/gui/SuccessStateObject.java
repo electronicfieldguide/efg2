@@ -66,7 +66,7 @@ EFGDatasourceObjectStateInterface {
 			DefaultMutableTreeNode root) {
 		boolean isFound = false;
 		String fileName = obj.getDataName().toString();
-		StringBuffer message = new StringBuffer();
+		StringBuilder message = new StringBuilder();
 		int childCount = root.getChildCount();
 		for (int j = 0; j < childCount; j++) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode) root
@@ -87,8 +87,8 @@ EFGDatasourceObjectStateInterface {
 				DefaultMutableTreeNode node = new DefaultMutableTreeNode(
 						obj);
 				root.add(node);
-				StringBuffer successMessage = 
-					new StringBuffer(fileName);
+				StringBuilder successMessage = 
+					new StringBuilder(fileName);
 				successMessage.append(" "); 
 				successMessage.append(EFGImportConstants.EFGProperties.
 						getProperty("SynopticKeyTransferHandler.add.success"));

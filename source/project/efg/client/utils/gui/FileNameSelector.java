@@ -93,7 +93,7 @@ public class FileNameSelector{
             // Add filter
         	FileTypeFilter f = new FileTypeFilter(this.extn);
             //f.addExtension(extn);
-        	/*StringBuffer descriptions = new StringBuffer();
+        	/*StringBuilder descriptions = new StringBuilder();
         	for(int i = 0; i < extn.length;i++) {
         		if(i > 0) {
         			descriptions.append(",");

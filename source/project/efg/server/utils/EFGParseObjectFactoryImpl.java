@@ -406,7 +406,7 @@ public class EFGParseObjectFactoryImpl implements EFGParseObjectFactory {
 		return this.parseStatsMeasure(states);
 	}
 	private String parseUnits(String inputStr) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		try {
 			//String patternStr = "[A-Z]+";
 			//Pattern p = Pattern.compile(patternStr, Pattern.CASE_INSENSITIVE);

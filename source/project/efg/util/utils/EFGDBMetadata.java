@@ -34,7 +34,7 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
 		this.setTableName(tableName);
 	}
 	private String getPrimaryKey(DatabaseMetaData dbMetaData) throws SQLException {
-	StringBuffer result= new StringBuffer();
+	StringBuilder result= new StringBuilder();
     try {
     	
         ResultSet primaryKeys = 
@@ -47,7 +47,7 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
         // KEY_SEQ short => sequence number within primary key
         // PK_NAME String => primary key name (may be null)
         String primaryKeyName = null;
-        StringBuffer primaryKeyColumns = new StringBuffer();
+        StringBuilder primaryKeyColumns = new StringBuilder();
         while (primaryKeys.next()) {
             String thisKeyName = primaryKeys.getString("PK_NAME");
             if ((thisKeyName != null && primaryKeyName == null)
@@ -68,7 +68,7 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
                     result.append(")");
                 }
                 // Start again with the new name
-                primaryKeyColumns = new StringBuffer();
+                primaryKeyColumns = new StringBuilder();
                 primaryKeyName = thisKeyName;
             }
             // Now append the column
@@ -92,7 +92,7 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
     return result.toString();
 	}
 	private String getColumns(DatabaseMetaData dbMetaData) throws SQLException {
-		StringBuffer resultsColumn = new StringBuffer();
+		StringBuilder resultsColumn = new StringBuilder();
 		String columnNameQuote = "";
 		ResultSet tableMetaData = dbMetaData.getColumns(null, null, this.getTableName(), "%");
         boolean firstLine = true;
@@ -147,7 +147,7 @@ public class EFGDBMetadata implements DatabaseMetaDataCallback {
 	 * @see org.springframework.jdbc.support.DatabaseMetaDataCallback#processMetaData(java.sql.DatabaseMetaData)
 	 */
 	public Object processMetaData(DatabaseMetaData dbmd) throws SQLException, MetaDataAccessException {
-		StringBuffer results = new StringBuffer();
+		StringBuilder results = new StringBuilder();
 
 		try{
 

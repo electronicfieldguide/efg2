@@ -74,7 +74,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 			String displayName, String datasourceName) {
 		EFGMediaResourceSearchableObject searchObj = new EFGMediaResourceSearchableObject();
 		String metaName = getMetadataNameFromCache(displayName, datasourceName);
-		StringBuffer queryBuffer = new StringBuffer();
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append("SELECT DISTINCT  ");
 		queryBuffer.append(EFGImportConstants.LEGALNAME);
 		queryBuffer.append(",");
@@ -125,7 +125,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 		try {
 			String metaName = getMetadataNameFromCache(displayName,
 					datasourceName);
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer.append("SELECT DISTINCT LEGALNAME,NAME FROM ");
 			queryBuffer.append(metaName);
 			queryBuffer.append(" ORDER BY NAME");
@@ -154,7 +154,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 		List arrList = new ArrayList();
 		try {
 
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer
 					.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE ONTAXONPAGE=\"true\" ORDER BY NAME");
@@ -178,7 +178,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 		List arrList = new ArrayList();
 		try {
 
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer
 					.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE ISLISTS=\"true\" ORDER BY NAME");
@@ -202,7 +202,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 		List arrList = new ArrayList();
 		try {
 
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer
 					.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE ");
@@ -229,7 +229,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 		List arrList = new ArrayList();
 		try {
 
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer
 					.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE CATEGORICAL=\"true\" ORDER BY NAME");
@@ -253,7 +253,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 		List arrList = new ArrayList();
 		try {
 
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer
 					.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE NARRATIVE=\"true\" ORDER BY NAME");
@@ -277,7 +277,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 		List arrList = new ArrayList();
 		try {
 
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer
 					.append(this.getCommonQuery(displayName, datasourceName));
 			queryBuffer.append(" WHERE MEDIARESOURCE=\"true\" ORDER BY NAME");
@@ -311,7 +311,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 
 	private String getCommonQuery(String displayName, String datasourceName) {
 
-		StringBuffer queryBuffer = new StringBuffer();
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append(this.commonQuery);
 		queryBuffer
 				.append(getMetadataNameFromCache(displayName, datasourceName));
@@ -331,7 +331,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 
 		}
 
-		StringBuffer queryBuffer = new StringBuffer();
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append("SELECT ");
 		queryBuffer.append(EFGImportConstants.DS_DATA_COL);
 		queryBuffer.append(",");
@@ -398,7 +398,7 @@ public class ServletAbstractFactoryImpl extends ServletAbstractFactoryInterface 
 			efgRDBTable = this.getMainTableName();
 		}
 
-		StringBuffer queryBuffer = new StringBuffer();
+		StringBuilder queryBuffer = new StringBuilder();
 		queryBuffer.append(query);
 		queryBuffer.append(" ");
 		queryBuffer.append(efgRDBTable);

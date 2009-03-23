@@ -76,7 +76,7 @@ public class PDFDisplay extends SearchEngine
             XslPage page = getXSLPage(efgDocument.getTaxonPageTemplates(), guid, dsName, isBook);
             if(page == null)
             {
-                StringBuffer errorBuffer = new StringBuffer();
+                StringBuilder errorBuffer = new StringBuilder();
                 errorBuffer.append("Could not find configuration for: ");
                 errorBuffer.append(dsName);
                 errorBuffer.append(" with guid: ");

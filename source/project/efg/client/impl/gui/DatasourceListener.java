@@ -60,7 +60,7 @@ public abstract class DatasourceListener implements ActionListener{
 		
 		
 		if (this.getDBObject() == null) {
-			StringBuffer buffer = new StringBuffer(this.errorMessage + "\n");
+			StringBuilder buffer = new StringBuilder(this.errorMessage + "\n");
 
 			JOptionPane.showMessageDialog(this.frame, buffer.toString(),
 						"Error Message", JOptionPane.ERROR_MESSAGE);

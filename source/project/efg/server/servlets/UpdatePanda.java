@@ -100,7 +100,7 @@ public class UpdatePanda extends HttpServlet
         try
         {
             TemplateModelHandler temp = TemplateModelFactory.createExportTemplateHandler();
-            StringBuffer query = new StringBuffer("SELECT ");
+            StringBuilder query = new StringBuilder("SELECT ");
             query.append("DS_DATA");
             query.append(" ,");
             query.append("TEMPLATE_OBJECT");

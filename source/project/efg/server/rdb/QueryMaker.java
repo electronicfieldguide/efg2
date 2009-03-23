@@ -68,7 +68,7 @@ public class QueryMaker {
 				LoggerUtilsServlet.logErrors(e);
 			}
 		}
-		StringBuffer querySB = new StringBuffer();
+		StringBuilder querySB = new StringBuilder();
 		Hashtable paramValuesTable = new Hashtable();
 		try {
 			
@@ -92,7 +92,7 @@ public class QueryMaker {
 			
 				//iterate over it and add ors
 				String pVal = null;
-				StringBuffer orBuffer = new StringBuffer();
+				StringBuilder orBuffer = new StringBuilder();
 				int orCounter = 0;
 				for (int jj = 0; jj < paramValues.length; jj++) {//add or query
 					

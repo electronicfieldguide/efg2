@@ -355,7 +355,7 @@ public class DnDFileBrowserMain extends JDialog {
 	
 			String[] dimensions = WorkspaceResources.getDefaultDimensions();
 			//String maxDim = null;
-			StringBuffer buffer = new StringBuffer();
+			StringBuilder buffer = new StringBuilder();
 			for(int i= dimensions.length;i > 0;i--) {
 
 				if(i < dimensions.length) {
@@ -553,8 +553,8 @@ public class DnDFileBrowserMain extends JDialog {
 							return;
 						}
 						BufferedImage image = javax.imageio.ImageIO.read(imageFile);
-						StringBuffer buffer = 
-							new StringBuffer("<html>");
+						StringBuilder buffer = 
+							new StringBuilder("<html>");
 						buffer.append(ImageInfo.getFileInfoHtml(imageFile,imageInfo));
 						buffer.append("</html>");
 						

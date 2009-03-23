@@ -103,7 +103,7 @@ public class ExportEFG extends HttpServlet implements EFGImportConstants {
 							ds, 
 							mediaresources, 
 							otherResources);
-				StringBuffer successMessage = new StringBuffer();
+				StringBuilder successMessage = new StringBuilder();
 				successMessage.append("<div id=\"success\">");
 				successMessage.append(context);
 				successMessage.append("/");
@@ -117,7 +117,7 @@ public class ExportEFG extends HttpServlet implements EFGImportConstants {
 		} catch (Exception ee) {
 			//log.error(ee.getMessage());
 			LoggerUtilsServlet.logErrors(ee);
-			StringBuffer errorMessage = new StringBuffer();
+			StringBuilder errorMessage = new StringBuilder();
 			errorMessage.append("<div id=\"error\">");
 			errorMessage.append(ee.getMessage());
 			errorMessage.append(".Please see server logs for more information.");

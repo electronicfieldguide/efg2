@@ -185,7 +185,7 @@ public class EFGBookProgressServlet extends HttpServlet
     {
         try
         {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             buffer.append("<div class='makingbookmsg'>Your book is now being created. Please wait <span class='makingbookmsg'>5 minutes</span> and then ");
             buffer.append("<a  class='makingbookmsg' title='Download Book'");
             buffer.append(" href=\"");

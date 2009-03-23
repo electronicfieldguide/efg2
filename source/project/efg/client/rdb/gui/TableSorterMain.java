@@ -93,7 +93,7 @@ public class TableSorterMain extends TableSorterMainInterface {
 				return null;
 			}
 			ArrayList buttonTable = new ArrayList();
-			StringBuffer query = new StringBuffer();
+			StringBuilder query = new StringBuilder();
 			query.append("SELECT * FROM " + tableName.toLowerCase()
 					+ " ORDER BY " + EFGImportConstants.ORDER);
 
@@ -173,7 +173,7 @@ public class TableSorterMain extends TableSorterMainInterface {
 	private String getTableName(EFGDatasourceObjectInterface ds) {
 		String tableName = null;
 		try {
-			StringBuffer query = new StringBuffer();
+			StringBuilder query = new StringBuilder();
 			query.append("SELECT DS_METADATA");
 			query.append(" FROM ");
 			query.append(EFGUtils.getCurrentTableName());
@@ -217,15 +217,15 @@ public class TableSorterMain extends TableSorterMainInterface {
 			return;
 		}
 
-		StringBuffer startQuery = new StringBuffer("UPDATE ");
+		StringBuilder startQuery = new StringBuilder("UPDATE ");
 		startQuery.append(tableName.toLowerCase());
 		startQuery.append(" SET ");
 
 		boolean isDone = true;
 		try {
 			for (int row = 0; row < sorter.getRowCount(); row++) {
-				StringBuffer query = new StringBuffer(startQuery.toString());
-				StringBuffer nameEndQuery = new StringBuffer(" WHERE ");
+				StringBuilder query = new StringBuilder(startQuery.toString());
+				StringBuilder nameEndQuery = new StringBuilder(" WHERE ");
 				nameEndQuery.append(EFGImportConstants.NAME);
 				nameEndQuery.append("=");
 

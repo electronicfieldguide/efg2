@@ -165,7 +165,7 @@ public class EFGDatasourceObjectListImpl extends
 			if (index > -1) {
 				EFGDatasourceObjectInterface obj = (EFGDatasourceObjectInterface) this.lists
 						.get(index);
-				StringBuffer queryBuffer = new StringBuffer(
+				StringBuilder queryBuffer = new StringBuilder(
 						"SELECT DS_DATA FROM ");
 				queryBuffer.append(this.mainTableName);
 				queryBuffer.append(" WHERE DISPLAY_NAME = \"");
@@ -286,7 +286,7 @@ public class EFGDatasourceObjectListImpl extends
 
 		try {
 			// check if there is a table with that name
-			StringBuffer query = new StringBuffer();
+			StringBuilder query = new StringBuilder();
 			query.append("SELECT DS_METADATA, ORIGINAL_FILE_NAME,"
 					+ " DISPLAY_NAME FROM ");
 			query.append(this.mainTableName);
@@ -335,10 +335,10 @@ public class EFGDatasourceObjectListImpl extends
 		}
 
 		boolean isDone = false;
-		StringBuffer query = null;
+		StringBuilder query = null;
 		try {
 			// get the row from the mainTableName if it exists
-			query = new StringBuffer("SELECT DS_DATA, DS_METADATA FROM ");
+			query = new StringBuilder("SELECT DS_DATA, DS_METADATA FROM ");
 			query.append(this.mainTableName);
 			query.append(" WHERE DISPLAY_NAME = \"");
 			query.append(displayName);

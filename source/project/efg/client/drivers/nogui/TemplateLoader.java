@@ -79,7 +79,7 @@ public class TemplateLoader {
 	 * 
 	 */
 	private void alterRDBTable(String tableName) {	
-		StringBuffer buffer = new StringBuffer("ALTER TABLE ");
+		StringBuilder buffer = new StringBuilder("ALTER TABLE ");
 		buffer.append(tableName);
 	
 		buffer.append(" ADD COLUMN ");
@@ -113,7 +113,7 @@ public class TemplateLoader {
 	}
 	
 	private String makeQuery(String tableName){
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		query.append("SELECT ");
 		query.append(EFGImportConstants.DS_DATA_COL);
 		query.append(",");

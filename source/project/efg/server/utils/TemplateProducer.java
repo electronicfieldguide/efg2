@@ -163,7 +163,7 @@ public class TemplateProducer implements EFGImportConstants{
 		if(isCharacter){
 			incrementCharacter(isCharacter);
 		}
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append(type);
 		buffer.append(groupConstants(isCharacter));
 		return buffer.toString();
@@ -172,7 +172,7 @@ public class TemplateProducer implements EFGImportConstants{
 	
 
 	private String groupConstants(boolean isCharacter) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append(RegularExpresionConstants.COLON_SEPARATOR);
 		buffer.append(this.groupIDCounter);
 		buffer.append(RegularExpresionConstants.COLON_SEPARATOR);

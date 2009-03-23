@@ -58,7 +58,7 @@ public class LoggerUtilsServlet {
 	public synchronized static void logErrors(Exception ee) {
 		System.out.println("Logging errors");
 		StackTraceElement[] ste = ee.getStackTrace();
-		StringBuffer buff = new StringBuffer();
+		StringBuilder buff = new StringBuilder();
 		buff.append(ee.getMessage());
 		buff.append("\n");
 		for (int ii = 0; ii < ste.length; ii++) {

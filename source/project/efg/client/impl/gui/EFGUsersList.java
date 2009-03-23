@@ -238,7 +238,7 @@ public class EFGUsersList  extends JDialog
 		private void handleInput(){
 			try {
 				if (this.dbObject == null) {
-					StringBuffer buffer = new StringBuffer(
+					StringBuilder buffer = new StringBuilder(
 						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
 						"\n");
 					buffer
@@ -306,7 +306,7 @@ public class EFGUsersList  extends JDialog
 		private void handleInput(){
 			try {
 				if (this.dbObject == null) {
-					StringBuffer buffer = new StringBuffer(
+					StringBuilder buffer = new StringBuilder(
 						EFGImportConstants.EFGProperties.getProperty("HandleDatasourceListener.buffermessage.1") +	
 						"\n");
 					buffer

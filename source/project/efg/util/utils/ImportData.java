@@ -38,7 +38,7 @@ import project.efg.util.interfaces.EFGQueueObjectInterface;
  */
 public class ImportData {
 	private boolean isCreate = false;
-	private StringBuffer currentCreateBuffer;
+	private StringBuilder currentCreateBuffer;
 	private JdbcTemplate jdbcTemplate;
 	private DBObject dbObject;
 	static Logger log = null;
@@ -157,7 +157,7 @@ public class ImportData {
 	 * @return
 	 */
 	private String makeQuery(String ds_data, String ds_metadata) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 
 		buffer.append("UPDATE ");
 		buffer.append(EFGImportConstants.EFGProperties
@@ -177,7 +177,7 @@ public class ImportData {
 	 * @return
 	 */
 	private String getRDBQuery() {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("SELECT DISTINCT DS_DATA,DS_METADATA FROM ");
 		buffer.append(EFGImportConstants.EFGProperties
 				.getProperty("ALL_EFG_RDB_TABLES"));
@@ -196,7 +196,7 @@ public class ImportData {
 		if ("".equals(toLower)) {
 			this.isCreate = false;
 		} else if (toLower.startsWith("create")) {
-			this.currentCreateBuffer = new StringBuffer();
+			this.currentCreateBuffer = new StringBuilder();
 			this.currentCreateBuffer.append(line);
 			this.isCreate = true;
 		} else if ((toLower.startsWith("insert"))

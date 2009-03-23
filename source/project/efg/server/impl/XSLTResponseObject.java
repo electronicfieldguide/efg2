@@ -207,20 +207,20 @@ public class XSLTResponseObject extends ResponseObject
 			req.setAttribute(EFGImportConstants.XSL_STRING, xslFileName);
 			
 			// get xsl file name from the templateConfig file name
-			StringBuffer forwardStringBuffer = 
-			new StringBuffer(req.getContextPath());
-			forwardStringBuffer.append("/");
-			forwardStringBuffer
+			StringBuilder forwardStringBuilder = 
+			new StringBuilder(req.getContextPath());
+			forwardStringBuilder.append("/");
+			forwardStringBuilder
 			.append(EFGImportConstants.TEMPLATES_FOLDER_NAME);
-			forwardStringBuffer.append("/");
-			forwardStringBuffer.append(xslFileName);
+			forwardStringBuilder.append("/");
+			forwardStringBuilder.append(xslFileName);
 			
-			StringBuffer fwdStrEncodedBuffer = new StringBuffer("/");
+			StringBuilder fwdStrEncodedBuffer = new StringBuilder("/");
 			//forward to pdf or html xslt servlet
 			fwdStrEncodedBuffer.append(this.createForwardString(xslFileName));
 			fwdStrEncodedBuffer.append("?xsl=");
 			fwdStrEncodedBuffer.append(
-					URLEncoder.encode(forwardStringBuffer.toString(), 
+					URLEncoder.encode(forwardStringBuilder.toString(), 
 							"UTF-8")
 							);
 			this.forwardPage = fwdStrEncodedBuffer.toString();

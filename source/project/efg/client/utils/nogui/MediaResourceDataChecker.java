@@ -96,7 +96,7 @@ public class MediaResourceDataChecker extends DataChecker {
 	private String getMediaQuery() {
 		if (this.mediaQuery == null) {
 
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer.append("SELECT DISTINCT ");
 			queryBuffer.append(EFGImportConstants.LEGALNAME);
 			queryBuffer.append(" FROM ");
@@ -111,7 +111,7 @@ public class MediaResourceDataChecker extends DataChecker {
 
 	private static String getWebImagesHome() {
 		if (imagesHome == null) {
-			StringBuffer imagesHomeBuffer = new StringBuffer(getServerHome());
+			StringBuilder imagesHomeBuffer = new StringBuilder(getServerHome());
 			
 			imagesHomeBuffer.append(File.separator);
 			imagesHomeBuffer.append(images_home);
@@ -124,7 +124,7 @@ public class MediaResourceDataChecker extends DataChecker {
 	
 	private static String getWebThumbsHome() {
 		if (thumbsHome == null) {
-			StringBuffer imagesHomeBuffer = new StringBuffer(getServerHome());
+			StringBuilder imagesHomeBuffer = new StringBuilder(getServerHome());
 			
 			imagesHomeBuffer.append(File.separator);
 			imagesHomeBuffer.append(thumbs_home);
@@ -135,7 +135,7 @@ public class MediaResourceDataChecker extends DataChecker {
 
 	}
 	private String printErrors(Map map){
-		StringBuffer errorBuffer = new StringBuffer();
+		StringBuilder errorBuffer = new StringBuilder();
 		errorBuffer.append("<table border=\"1\">");
 		errorBuffer
 				.append("<tr><th>Field Name</th> <th>Missing Files</th></tr>");
@@ -166,7 +166,7 @@ public class MediaResourceDataChecker extends DataChecker {
 	}
 	public String displayErrors() {
 
-		StringBuffer errorBuffer = new StringBuffer();
+		StringBuilder errorBuffer = new StringBuilder();
 		errorBuffer.append("<html><body>");
 		errorBuffer.append("<h1>Application Found ");
 		errorBuffer.append(this.getNumberOfErrors() + "");

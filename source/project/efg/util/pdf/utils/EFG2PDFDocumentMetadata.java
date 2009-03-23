@@ -122,7 +122,7 @@ public class EFG2PDFDocumentMetadata {
 	 * @return
 	 */
 	private static String addKeyWords(PDFMaker pdfMaker) {
-		StringBuffer keywordsBuffer = new StringBuffer();
+		StringBuilder keywordsBuffer = new StringBuilder();
 		Set set = new TreeSet(new EFGRankObjectSortingCriteria());
 		
 		Set captions = pdfMaker.getCaptionsAbove();
@@ -143,7 +143,7 @@ public class EFG2PDFDocumentMetadata {
 	 * @param captions
 	 * @param keywordsBuffer
 	 */
-	private static void addSet(Set captions, StringBuffer keywordsBuffer) {
+	private static void addSet(Set captions, StringBuilder keywordsBuffer) {
 		for (Iterator iter = captions.iterator(); iter.hasNext();) {
 			CaptionFontObject element = (CaptionFontObject) iter.next();
 			String keyword = element.getCaption();

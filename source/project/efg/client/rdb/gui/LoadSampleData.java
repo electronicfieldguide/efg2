@@ -47,7 +47,7 @@ public class LoadSampleData {
 
 	private String metadataTableName;
 
-	private StringBuffer messageBuffer;
+	private StringBuilder messageBuffer;
 	private boolean isError = false;
 
 	static Logger log = null;
@@ -62,7 +62,7 @@ public class LoadSampleData {
 	 * 
 	 */
 	public LoadSampleData(DBObject dbObject) {
-		this.messageBuffer = new StringBuffer();
+		this.messageBuffer = new StringBuilder();
 		this.dbObject = this.getClone(dbObject);
 		this.init();
 	}
@@ -195,7 +195,7 @@ public class LoadSampleData {
 		synchronized (mutex) {
 			String tableName = null;
 			try {
-				StringBuffer query = new StringBuffer();
+				StringBuilder query = new StringBuilder();
 				query.append("SELECT DS_METADATA");
 				query.append(" FROM ");
 				query.append(EFGImportConstants.EFG_RDB_TABLES);
@@ -225,7 +225,7 @@ public class LoadSampleData {
 
 	private boolean executeSearchableFieldUpdateQuery() {
 
-		StringBuffer buffer = new StringBuffer("UPDATE ");
+		StringBuilder buffer = new StringBuilder("UPDATE ");
 		buffer.append(this.getMetadataTableName());
 		buffer.append(" SET ");
 		buffer.append(EFGImportConstants.SEARCHABLE);
@@ -252,7 +252,7 @@ public class LoadSampleData {
 
 	private boolean executeMediaResourceUpdateQuery() {
 
-		StringBuffer buffer = new StringBuffer("UPDATE ");
+		StringBuilder buffer = new StringBuilder("UPDATE ");
 		buffer.append(this.getMetadataTableName());
 		buffer.append(" SET ");
 		buffer.append(EFGImportConstants.NARRATIVE);
@@ -279,7 +279,7 @@ public class LoadSampleData {
 
 	private boolean executeListsUpdateQuery() {
 
-		StringBuffer buffer = new StringBuffer("UPDATE ");
+		StringBuilder buffer = new StringBuilder("UPDATE ");
 		buffer.append(this.getMetadataTableName());
 		buffer.append(" SET ");
 		buffer.append(EFGImportConstants.NARRATIVE);
@@ -309,7 +309,7 @@ public class LoadSampleData {
 	 * @return
 	 */
 	private String parseField(String string) {
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		String[] resources = string.split(RegularExpresionConstants.COMMASEP);
 		for (int i = 0; i < resources.length; i++) {
 			if (i != 0) {

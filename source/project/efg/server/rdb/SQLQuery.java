@@ -96,7 +96,7 @@ public class SQLQuery extends EFGHTTPQuery {
 		String maxDispStr = req.getParameter(EFGImportConstants.MAX_DISPLAY);
 		int maxDisplay = this.getMaxDisplay(maxDispStr);
 
-		StringBuffer querySB = new StringBuffer();
+		StringBuilder querySB = new StringBuilder();
 		try {
 			querySB.append(this.getCommonQuery());
 			
@@ -313,7 +313,7 @@ public class SQLQuery extends EFGHTTPQuery {
 			throws Exception {
 		Hashtable typeTable = new Hashtable();
 
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		buffer.append("Select name,legalName,isLists,NumericValue,NumericRange,MediaResource,Categorical,Narrative From ");
 		buffer.append(metadatasourceName);
 
@@ -401,7 +401,7 @@ public class SQLQuery extends EFGHTTPQuery {
 				efgRDBTable = this.getMainTableName();
 			}
 			
-			StringBuffer queryBuffer = new StringBuffer();
+			StringBuilder queryBuffer = new StringBuilder();
 			queryBuffer.append("SELECT DS_DATA,DS_METADATA,DISPLAY_NAME FROM ");
 			queryBuffer.append(efgRDBTable);
 
@@ -497,7 +497,7 @@ public class SQLQuery extends EFGHTTPQuery {
 
 	protected String getORQuery(String[] paramValues, String legalName) {
 		int orCounter = 0;
-		StringBuffer orBuffer = new StringBuffer();
+		StringBuilder orBuffer = new StringBuilder();
 		//iterate over it and add ors where necessary
 		for (int jj = 0; jj < paramValues.length; jj++) {//add or query
 
@@ -583,7 +583,7 @@ public class SQLQuery extends EFGHTTPQuery {
 	}
 
 	protected String getCommonQuery() {
-		StringBuffer commonBuffer = new StringBuffer();
+		StringBuilder commonBuffer = new StringBuilder();
 		commonBuffer.append("SELECT * FROM ");
 		commonBuffer.append(this.datasourceName);
 		return commonBuffer.toString();

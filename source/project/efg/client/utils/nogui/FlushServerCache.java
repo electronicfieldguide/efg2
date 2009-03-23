@@ -66,7 +66,7 @@ public class FlushServerCache {
 			return false;
 		}
 		datasourceName = toTableName(datasourceName);
-		StringBuffer str = new StringBuffer(serverURL);
+		StringBuilder str = new StringBuilder(serverURL);
 		//TODO remove hard coded strings
 		str.append("/Flush.jsp?");
 		str.append(EFGImportConstants.DATASOURCE_NAME);

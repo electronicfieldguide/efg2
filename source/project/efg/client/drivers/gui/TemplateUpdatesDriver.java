@@ -48,7 +48,7 @@ public class TemplateUpdatesDriver {
  * 
  */
 protected static void updateDB(DBObject dbObject) {
-	StringBuffer  buffer = new StringBuffer("SELECT ");
+	StringBuilder  buffer = new StringBuilder("SELECT ");
 	buffer.append(EFGImportConstants.QUERY_STR);
 	buffer.append(" FROM ");
 	buffer.append(EFGImportConstants.TEMPLATE_TABLE);
