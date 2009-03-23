@@ -146,7 +146,7 @@ public class EFGProperties {
 			}
 			else{
 				try {
-					InputStream input = newFile.toURL().openStream();
+					InputStream input = newFile.toURI().toURL().openStream();
 					efgProperties = new Properties(efgProperties);
 					
 					efgProperties.load(input);

@@ -544,7 +544,7 @@ public class EFG2PDF implements EFG2PDFInterface {
 		PdfPCell imageCell = null;
 		try{
 			if(imageName != null && !imageName.trim().equals("")){
-				image = Image.getInstance(new File(this.mediaResourcesDirectory,imageName).toURL());
+				image = Image.getInstance(new File(this.mediaResourcesDirectory,imageName).toURI().toURL());
 				Color c = Color.decode(this.pdfMaker.getCOLOR_FOR_FRAME_AROUND_IMAGE());
 				image.setBorder(Rectangle.BOX);
 				image.setBorderColor(c);

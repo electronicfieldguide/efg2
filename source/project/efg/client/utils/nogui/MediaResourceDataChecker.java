@@ -238,7 +238,7 @@ public class MediaResourceDataChecker extends DataChecker {
 				String imageName = obj.getState();
 				
 				File dir = new File(imagesDir + File.separator + imageName.trim());
-				URL dirURL = dir.toURL();
+				URL dirURL = dir.toURI().toURL();
 				String dir1 = URLDecoder.decode(dirURL.getFile(),"UTF-8");
 		
 				File file = new File(dir1);

@@ -114,7 +114,7 @@ public class EFGBookProgressServlet extends HttpServlet
         File mediaResource = new File(realPath + File.separator + "EFGImages");
         try
         {
-            mediaResourceDirectory = mediaResource.toURL();
+            mediaResourceDirectory = mediaResource.toURI().toURL();
         }
         catch(MalformedURLException e) { }
         pdfFolderName = new File(realPath, "books");

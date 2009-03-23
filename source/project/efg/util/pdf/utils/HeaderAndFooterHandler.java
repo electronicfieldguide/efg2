@@ -222,7 +222,7 @@ public class HeaderAndFooterHandler {
 			String element = (String) iter.next();
 			
 			try {
-				Image image = Image.getInstance(new File(this.imagesDirectory,element).toURL());
+				Image image = Image.getInstance(new File(this.imagesDirectory,element).toURI().toURL());
 				image.setAlignment(Element.ALIGN_RIGHT | Image.TEXTWRAP);
 				footerCell.addElement(image);
 			} catch (BadElementException e) {

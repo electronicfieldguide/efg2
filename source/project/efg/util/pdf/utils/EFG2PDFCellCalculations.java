@@ -356,7 +356,7 @@ public class EFG2PDFCellCalculations {
 				
 				
 				try {
-					Image image = Image.getInstance(new File(this.footerImagesDirectory,element).toURL());
+					Image image = Image.getInstance(new File(this.footerImagesDirectory,element).toURI().toURL());
 					float imageHeight1 = image.height();
 					if(imageHeight1 > imageHeight){
 						imageHeight = imageHeight1;
