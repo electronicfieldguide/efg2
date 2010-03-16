@@ -4,7 +4,8 @@
                    pattern="%h %l %u %t &quot;%r&quot; %s %b &quot;%{Referer}i&quot; %S &quot;%{User-Agent}i&quot;" resolveHosts="false"/>
 
 	<Resource name="jdbc/efgMySQL" auth="Container" type="javax.sql.DataSource"
-		factory="org.apache.tomcat.dbcp.dbcp.BasicDataSourceFactory"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory"
+		validationQuery="SELECT 1"
                maxActive="20" maxIdle="10" maxWait="-1"
                username="efg" password="THE_EFG_USER" driverClassName="com.mysql.jdbc.Driver"
                url="jdbc:mysql://localhost:3306/efg"/>	
