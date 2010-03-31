@@ -10,10 +10,13 @@ import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.Priority;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+//import project.efg.server.utils.LoggerUtilsServlet;
 import project.efg.templates.taxonPageTemplates.TaxonPageTemplates;
 import project.efg.util.factory.SpringFactory;
 import project.efg.util.interfaces.EFGImportConstants;
@@ -24,6 +27,7 @@ import project.efg.util.interfaces.EFGQueueObjectInterface;
  * 
  */
 public abstract class TemplateModelHandler {
+	static Logger logger = Logger.getLogger(TemplateModelHandler.class);
 
 	protected String templateName;
 
@@ -282,7 +286,7 @@ public abstract class TemplateModelHandler {
 	 */
 	public TaxonPageTemplates getTemplateConfigFromDB(DBObject dbObject,
 			String displayName, String datasourceName, String dbTableName) {
-
+		logger.log(Priority.ERROR, "displayName = " + displayName + " datasourceName = " + datasourceName);
 		if (displayName == null && datasourceName == null) {
 			return null;
 		}
@@ -320,9 +324,11 @@ public abstract class TemplateModelHandler {
 			TaxonPageTemplates tps = null;
 			Object binStream = rs
 					.getObject(EFGImportConstants.TEMPLATE_OBJECT_FIELD);
+			logger.log(Priority.ERROR, "binStream is " + binStream.getClass().getName());
 			if (binStream != null) {
-
+					
 				byte[] byteArray = (byte[]) binStream;
+				logger.log(Priority.ERROR, "byteArray.length = " + byteArray.length);
 				final ByteArrayInputStream stream = new ByteArrayInputStream(
 						byteArray);
 
@@ -331,11 +337,12 @@ public abstract class TemplateModelHandler {
 				tps = (TaxonPageTemplates) obj;
 
 			}
-
+			logger.log(Priority.ERROR, "about to return tps = " + tps);
 			return tps;
 		} catch (Exception e) {
-
+            logger.log(Priority.ERROR, "tps error : " + e.getMessage());
 		}
+		logger.log(Priority.ERROR, "about to return null");
 		return null;
 	}
 
