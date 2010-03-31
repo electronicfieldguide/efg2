@@ -37,9 +37,9 @@ public class TemplateConfigProcessor {
 		try {
 			String tName = EFGImportConstants.EFG_RDB_TABLES;
 			Map map = ServletCacheManager.getDatasources(tName.toLowerCase());
-			if (map != null && !map.containsKey(tName.toLowerCase())) {
-				tName = EFGImportConstants.EFG_GLOSSARY_TABLES;
-			}
+			//if (map != null && !map.containsKey(tName.toLowerCase())) {
+				//tName = EFGImportConstants.EFG_GLOSSARY_TABLES;
+			//}
 			TemplateMapObjectHandler.updateDatabase(null, tps, dsName, tName);
 			EFGContextListener.lastModifiedTemplateFileTable.put(dsName
 					.toLowerCase(), new Long(System.currentTimeMillis()));
@@ -83,18 +83,26 @@ public class TemplateConfigProcessor {
 	}
 
 	private void setTaxonPageTemplateRoot() {
+		LoggerUtilsServlet.logErrors(new Exception(
+				"1: tps = " + tps));
 		if (dsName == null) {
 			return;
 		}
+		LoggerUtilsServlet.logErrors(new Exception(
+				"2: tps = " + tps));
 		reLoad();
+		LoggerUtilsServlet.logErrors(new Exception(
+				"3: tps = " + tps));
 	}
 
 	private void reLoad() {
 		try {
 			String tName = EFGImportConstants.EFG_RDB_TABLES;
 			Map map = ServletCacheManager.getDatasources(tName.toLowerCase());
-			if (map != null && !map.containsKey(tName.toLowerCase()))
-				tName = EFGImportConstants.EFG_GLOSSARY_TABLES;
+			LoggerUtilsServlet.logErrors(new Exception(
+					"4: map = " + map));
+			//if (map != null && !map.containsKey(tName.toLowerCase()))
+				//tName = EFGImportConstants.EFG_GLOSSARY_TABLES;
 			tps = TemplateMapObjectHandler.getTemplateFromDB(null, null,
 					dsName, tName);
 			if (tps != null) {
