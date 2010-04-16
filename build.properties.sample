@@ -26,7 +26,13 @@ efg2.mysql.port=3306
 efg2.cacheserver.url=http://localhost:8080/efg2
 
 #efg2.tomcat.home must point to the root of your tomcat installation
-efg2.tomcat.home=C:/Program Files/Electronic Field Guide Applications/tomcat
+#Uncomment on and edit as desired if examples here are not to your liking.
+#   Typical for ubuntu linux
+#   (But see /etc/init.d/tomcat6 for CATLINA_HOME, the per-site directory
+#   and CATLINA_BASE, the per-instance directory):
+#/var/lib/tomcat6
+#   Typical for Windows:
+#efg2.tomcat.home=C:/Program Files/Electronic Field Guide Applications/tomcat
 
 #your tomcat web apps home
 efg2.tomcat.webapps.home=C:/Program Files/Electronic Field Guide Applications/tomcat/webapps
