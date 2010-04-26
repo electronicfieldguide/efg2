@@ -363,7 +363,7 @@ public class RunSetUp {
 					.getProperty("dbusername"));
 			query.append("\",\"");
 			query.append(EFGImportConstants.EFGProperties
-					.getProperty("dbpassword"));
+					.getProperty("db_role"));
 			query.append("\")");
 			newjdbcTemplate.execute(query.toString());
 
@@ -375,7 +375,7 @@ public class RunSetUp {
 					.getProperty("dbusername"));
 			query.append("\",\"");
 			query.append(EFGImportConstants.EFGProperties
-					.getProperty("db_role"));
+					.getProperty("dbpassword"));
 			query.append("\")");
 			newjdbcTemplate.execute(query.toString());
 
