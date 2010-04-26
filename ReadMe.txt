@@ -23,7 +23,7 @@ Build Client and Web applications
 	2.  Rename build.properties.sample to build.properties.(please do not
 		check this file into svn).	
 	
-	3. To build the client application only (The importer app) -
+	3. First build the client application (The importer app) -
 	  	i) Edit the build.properties by setting efg2.mysql.port value
 	  	to your MySQL port number(the default on most machines is 3306).
 	  	Also edit the efg2.cacheserver.url value to point to the url to your efg2
@@ -34,9 +34,9 @@ Build Client and Web applications
 	
 	  
 	  	Then run ant with the "buildclient" target.
-	  	ant buildclient
+	  	sudo ant buildclient
 	  	
-	4. To build and deploy the server application only(the efg2 web apps)	
+	4. Next build and deploy the server application (the efg2 web apps)	
 		i) Set the value of efg2.mysql.port to your mysql port
 		if it is not 3306 
 
@@ -70,11 +70,29 @@ Build Client and Web applications
 		properties appropriately.
 
 		vi) Then run ant with the "deployserver" target.	 
-			ant deployserver
-			ant deployservertc if you have tomcat manager enabled
+			sudo ant deployserver
+			sudo ant deployservertc if you have tomcat manager enabled
 			
-
-
+		vii) Recursively change the tomcat6 webapps/efg2 directory to owner and 
+		group tomcat6 to make sure that the user as which tomcat executes can write on webapps/efg2.
+		on ubuntu linux, tomcat6 normally runs as user tomcat6, group tomcat6, so this suffices;
+		sudo chmod -R  g+wrx /var/lib/tomcat6/webapps/efg2
+		sudo chgrp -R tomcat6 /var/lib/tomcat6/webapps/efg2
+			
+        viii) In the client directory, locate workspace.configs.properties within the properties directory and edit this file.
+        uncomment the efg.serverlocations.lists and efg.serverlocations.current properties to 
+        point to the tomcat home directory
+        efg.serverlocations.lists=/var/lib/tomcat6
+        efg.serverlocations.current=/var/lib/tomcat6/
+        
+        ix) Log in to mysql via the client as root and run the following sql commands to fix an issue with how the
+        client build writes the webapp configuration password into the database (the password value from the build.properties file is written
+        to the wrong table:
+        mysql> use efg;
+        mysql> update efg_users set user_pass = "password" where user_name = "efg";
+        mysql> update efg_roles set role_name = "efg" where user_name = "efg";
+        
+        
 	  	
 	5. Windows users should cd into the created application directory
 	  	and run login.bat, linux/unix/mac OS X users should run login.sh.
@@ -85,9 +103,9 @@ Build Client and Web applications
 	6. As a convenience, if you modify the build.properties and
 		webcontext/efg2.xml as described above, you can redeploy
 		both client and server with 
-			ant doall 
+			sudo ant doall 
 		   
-		
+		 
 		
 	
 	
