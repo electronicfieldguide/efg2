@@ -17,6 +17,10 @@ Requirements
 
 Build Client and Web applications
 ================================
+    0. INSURE THAT TOMCAT6 SECURITY MANAGER IS OFF.
+    In ubuntu: edit /etc/default/tomcat6 so that the TOMCAT_SECURITY section carries
+       TOMCAT6_SECURITY=no
+       
 
 	1. The .xml files and the .properties files in this directory 
 		are all needed to build this application.
@@ -85,6 +89,7 @@ Build Client and Web applications
         efg.serverlocations.lists=/var/lib/tomcat6
         efg.serverlocations.current=/var/lib/tomcat6/
         
+        //ix) is moot by RunSetup.java SVN ver 482. Ignore it
         ix) Log in to mysql via the client as root and run the following sql commands to fix an issue with how the
         client build writes the webapp configuration password into the database (the password value from the build.properties file is written
         to the wrong table:
