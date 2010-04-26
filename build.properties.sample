@@ -30,12 +30,10 @@ efg2.cacheserver.url=http://localhost:8080/efg2
 #   Typical for ubuntu linux
 #   (But see /etc/init.d/tomcat6 for CATLINA_HOME, the per-site directory
 #   and CATLINA_BASE, the per-instance directory):
-#/var/lib/tomcat6
+#efg2.tomcat.home=/var/lib/tomcat6
 #   Typical for Windows:
 #efg2.tomcat.home=C:/Program Files/Electronic Field Guide Applications/tomcat
 
-#your tomcat web apps home
-efg2.tomcat.webapps.home=C:/Program Files/Electronic Field Guide Applications/tomcat/webapps
 
 #****************************************************************
 #If you have tomcat manager enabled then edit these variables
@@ -65,8 +63,13 @@ efg.web.user.password=THE_EFG_USER
 #**************************************************************
 #DO NOT EDIT THE FOLLOWING VARIABLES UNLESS YOUR TOMCAT 'webapps' 
 #DIRECTORY OR YOUR TOMCAT 'logs' DIRECTORY ARE OUTSIDE YOUR TOMCAT 
-#ROOT DIRECTORY 
+#ROOT DIRECTORY . In that case, be sure to change the respective
+#key below
 #******************************************************************
+
+#webapps directory. Change if not directly under tomcat home
+efg2.tomcat.webapps.home = ${efg2.tomcat.home}/webapps
+
 efg2.home=.
 efg2.client.home=${efg2.home}/clientBuild
 efg2.server.home=${efg2.home}/serverBuild
