@@ -82,6 +82,9 @@ Build Client and Web applications
 		on ubuntu linux, tomcat6 normally runs as user tomcat6, group tomcat6, so this suffices;
 		sudo chmod -R  g+wrx /var/lib/tomcat6/webapps/efg2
 		sudo chgrp -R tomcat6 /var/lib/tomcat6/webapps/efg2
+		
+		you must restart tomcat after making the changes to permissions:
+		sudo /etc/init.d/tomcat6 restart
 			
         viii) In the client directory, locate workspace.configs.properties within the properties directory and edit this file.
         uncomment the efg.serverlocations.lists and efg.serverlocations.current properties to 
