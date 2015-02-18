@@ -35,7 +35,7 @@ Build Client and Web applications
 	  	ii)Edit the efg.client.folder.name value if you wish to change
 	  		the name of the folder that will be holding the importer
 	  		application files.(The default is efg2Client).
-	
+			Also properly set tomcat.manager.{username,password} as indicated.	
 	  
 	  	Then run ant with the "buildclient" target.
 	  	sudo ant buildclient

@@ -1,0 +1,93 @@
+#$Id$
+#
+#******************************************************************************
+# Example properties file for build.xml
+# 
+# Copy and save this file build.properties in the current directory
+#
+# Edit the resulting build.properties file to
+# reflect your environment.
+#
+# PLEASE DO NOT CHECK THIS FILE AND THE build.properties FILE INTO THE REPOSITORY
+#
+#********************************************************************************
+
+#Client application home
+efg2.client.folder.name=efg2Client
+
+#MySQL port number
+efg2.mysql.port=3306
+
+#The url to your tomcat
+#This is used to notify the server
+#when updates are made to the datasources
+#The server then flushes its cache and
+#reloads the updated data
+efg2.cacheserver.url=http://localhost:8080/efg2
+
+#efg2.tomcat.home must point to the root of your tomcat installation
+#Uncomment on and edit as desired if examples here are not to your liking.
+#   Typical for ubuntu linux
+#   (But see /etc/init.d/tomcat6 for CATLINA_HOME, the per-site directory
+#   and CATLINA_BASE, the per-instance directory):
+#efg2.tomcat.home=/var/lib/tomcat6
+#   Typical for Windows:
+#efg2.tomcat.home=C:/Program Files/Electronic Field Guide Applications/tomcat
+
+
+#****************************************************************
+#If you have tomcat manager enabled then edit these variables
+#
+#****************************************************************
+
+#tomcat.manager.url is the url to your tomcat manager. Change port number
+#to reflect yours
+tomcat.manager.url=http://localhost:8180/manager
+
+#tomcat.manager.username is your tomcat manager username. See tomcat docs 
+#on how to set this if you do not know what it is. 
+#Replace MY_USER_NAME with your tomcat manager username
+tomcat.manager.username=YOUR_TOMCAT_USER_NAME
+
+#tomcat.manager.password is your tomcat manager password. See tomcat docs 
+#on how to set this if you do not know what it is.
+ #Replace MY_PASSWORD with your tomcat manager password
+tomcat.manager.password=YOUR_TOMCAT_PASSWORD
+
+**********************************************************
+SET THE PASSWORD FOR THE efg user HERE.
+TEMPLATE CONFIGURATION WILL NOT WORK OTHERWISE.
+**********************************************************
+efg.web.user.password=THE_EFG_USER
+
+#**************************************************************
+#DO NOT EDIT THE FOLLOWING VARIABLES UNLESS YOUR TOMCAT 'webapps' 
+#DIRECTORY OR YOUR TOMCAT 'logs' DIRECTORY ARE OUTSIDE YOUR TOMCAT 
+#ROOT DIRECTORY . In that case, be sure to change the respective
+#key below
+#******************************************************************
+
+#webapps directory. Change if not directly under tomcat home
+efg2.tomcat.webapps.home = ${efg2.tomcat.home}/webapps
+
+efg2.home=.
+efg2.client.home=${efg2.home}/clientBuild
+efg2.server.home=${efg2.home}/serverBuild
+#efg2.webapps.name is the name of the web application 
+efg2.webapps.name=efg2
+
+#location of efg2_website module
+efg2.website.home=../efg2_website
+efg2.skins.home=../efg2_skins
+efg2.bookmaker.home=../efg2_bookmaker
+efg2.platemaker.home=../efg2_platemaker
+efg2.software.doc=docs/efg2doc.html
+
+#deploy.path The path to your  webapps directory of tomcat
+deploy.path=${efg2.tomcat.webapps.home}
+efg2.web.home="${deploy.path}/${efg2.webapps.name}
+
+#Where the efg2 context file is
+deploy.context.home=${efg2.tomcat.home}/conf/Catalina/localhost
+#deploy.path The path to your logs directory of tomcat
+deploy.logs=${efg2.tomcat.home}/logs
